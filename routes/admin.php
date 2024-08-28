@@ -11,4 +11,17 @@ Route::prefix('admin')
             return view('admin.dashboard');
         });
 
+        Route::get('posts', function() {
+            return view('admin.posts.index');
+        });
+        Route::get('posts/create', function() {
+            return view('admin.posts.create');
+        });
+        
+
+        // Route::get('posts/edit', function() {
+        //     return view('admin.posts.edit');
+        // });
+
+
     });
