@@ -33,7 +33,7 @@
                 </div>
             @endif
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h4 class="card-title mb-0 flex-grow-1">Thông tin thành phố</h4>
@@ -41,11 +41,11 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <div class="row gy-4">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="name" class="form-label ">Tên thành phố:</label>
                                     <!-- <input type="text" class="form-control fs-4 fw-semibold" id="name" name="name"> -->
-                                    
+
                                     <select name="name" id="" class="form-select">
 
                                     {{-- @foreach ($name as $key => $value )
@@ -67,6 +67,9 @@
                                 </select>
                                 </div>
                             </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-info">Save</button>
+                            </div>
                         </div>
 
                         <!--end row-->
@@ -74,19 +77,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header align-items-center d-flex">
-                    <button type:s class="btn btn-info">Save</button>
-                </div>
-            </div>
-        </div>
-        <!--end col-->
     </div>
 </form>
 @endsection
