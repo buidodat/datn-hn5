@@ -120,6 +120,7 @@
                         </tbody> --}}
                         <tbody>
                         <tr>
+                            @for ($i = 0; $i < 3; $i++)
                             <td>1</td>
                             <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ?</td>
                             <td>
@@ -138,6 +139,7 @@
                                             class="fas fa-edit"></i></button>
                                 </a>
                             </td>
+                            @endfor
                         </tr>
                         </tbody>
 
