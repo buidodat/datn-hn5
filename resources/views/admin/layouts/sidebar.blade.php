@@ -9,22 +9,22 @@
             </span>
             <span class="logo-lg">
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt=""
-                     height="17">
+                    height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt=""
-                     height="22">
+                    height="22">
             </span>
             <span class="logo-lg">
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-light.png" alt=""
-                     height="17">
+                    height="17">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-                id="vertical-hover">
+            id="vertical-hover">
             <i class="ri-record-circle-line"></i>
         </button>
     </div>
@@ -44,11 +44,11 @@
                 </li> <!-- end Dashboard Menu -->
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts">
+                    <a class="nav-link menu-link" href="#sidebarLayouts-0" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarLayouts-0">
                         <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Thành Phố</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts">
+                    <div class="collapse menu-dropdown" id="sidebarLayouts-0">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{route('admin.cities.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
@@ -64,20 +64,18 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarLayouts">
+                        aria-expanded="false" aria-controls="sidebarLayouts">
                         <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.foods.index')}}" class="nav-link" data-key="t-horizontal">Danh
-                                    sách</a>
+                                <a href="{{route('admin.foods.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.foods.create')}}" class="nav-link" data-key="t-horizontal">Thêm
-                                    mới</a>
+                                <a href="{{route('admin.foods.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -85,7 +83,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-2" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarLayouts-2">
+                        aria-expanded="false" aria-controls="sidebarLayouts-2">
                         <i class="ri-file-list-3-line"></i> <span data-key="t-layouts">Quản lý bài viết</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-2">
@@ -98,27 +96,25 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.posts.create') }}" class="nav-link"
-                                   data-key="t-horizontal">Thêm mới</a>
+                                    data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarLayouts-3">
+                        aria-expanded="false" aria-controls="sidebarLayouts-3">
                         <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Liên hệ</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-3">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal">Danh
-                                    sách</a>
+                                <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.contacts.create') }}" class="nav-link" data-key="t-horizontal">Thêm
-                                    mới</a>
+                                <a href="{{ route('admin.contacts.create') }}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -126,20 +122,18 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarLayouts-4">
-                        <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Quản lý slideshows</span>
+                        aria-expanded="false" aria-controls="sidebarLayouts-4">
+                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Thanh Toán</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-4">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.slideshows.list') }}" class="nav-link" data-key="t-horizontal">Danh
-                                    sách</a>
+                                <a href="{{route('admin.payments.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.slideshows.create') }}" class="nav-link"
-                                   data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{route('admin.payments.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>

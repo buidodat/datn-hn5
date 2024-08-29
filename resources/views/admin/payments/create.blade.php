@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới thành phố
+    Thêm mới phương thức thanh toán
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Thêm mới Thành phố</h4>
+                <h4 class="mb-sm-0">Thêm mới Thanh Toán</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -36,28 +36,29 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Thông tin thành phố</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">Thông tin phương thức thanh toán</h4>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="live-preview">
                         <div class="row gy-4">
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label ">Tên thành phố:</label>
-                                    <input type="text" class="form-control" id="name" name="name">
+                                    <label for="name" class="form-label ">Tên phương thức thanh toán:</label>
+                                    <input type="text" class="form-control fs-4 fw-semibold" id="name" name="name">
                                     @error("name")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                <label class="form-check-label" for="is_active">Is Active</label>
-                                        <div class="form-check form-switch form-switch-default">
-                                            <input class="form-check-input" type="checkbox" role=""
-                                                name="is_active" checked>
-                                        </div>
-                                </select>
+                            <div class="card-body">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                            <label for="description" class="form-label">Mô tả:</label>
+                                            <textarea class="form-control" rows="3" name="description"></textarea>
+                                            @error('description')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
