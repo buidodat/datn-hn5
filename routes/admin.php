@@ -25,8 +25,6 @@ Route::prefix('admin')
             });
 
 
-
-
         //--Start Route Giới thiệu---
 
         Route::get('introduces', function() {
