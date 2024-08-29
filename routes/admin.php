@@ -29,11 +29,24 @@ Route::prefix('admin')
                 })->name('create');
             });
 
+        Route::prefix('slideshows')
+            ->as('slideshows.')
+            ->group(function () {
 
-        Route::get('cities', function() {
+                Route::get('/', function () {
+                    return view('admin.slideshows.index');
+                })->name('list');
+
+                Route::get('create', function () {
+                    return view('admin.slideshows.create');
+                })->name('create');
+
+            });
+
+        Route::get('cities', function () {
             return view('admin.cities.index');
         });
-        Route::get('cities/create', function() {
+        Route::get('cities/create', function () {
             return view('admin.cities.create');
         });
 
