@@ -37,29 +37,56 @@
                         <div class="st_indx_slider_main_container float_left">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="row">
+                                    <div class="row ">
                                         <div class="col-md-4 image-movie-detail">
                                             <img src="https://media.lottecinemavn.com/Media/MovieFile/MovieImg/202408/11514_103_100003.jpg"
                                                 alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <h1>Làm giàu không khó</h1>
+                                            <div class="title  ">
+                                                <h1>Phim Ma Da Hiếu Sợ Khóc Huhu</h1>
+                                            </div>
+                                            <div class="description">
+                                                <p>
+                                                    Hellboy và một điệp viên BPRD mới vào nghề bị mắc kẹt ở
+                                                    vùng nông thôn Appalachia những năm 1950 và phát hiện ra một cộng đồng nhỏ
+                                                    bị phù thủy ám ảnh, do Crooked Man đứng đầu.
+                                                </p>
+                                            </div>
                                             <hr>
+                                            <div class="details ">
+                                                <ul >
+                                                    <li>
+                                                        <strong>Phân loại:</strong> T16
+                                                    </li>
+                                                    <li>
+                                                        <strong>Định dạng:</strong> 2D
+                                                    </li>
+                                                    <li>
+                                                        <strong>Đạo diễn:</strong> Brian Taylor
+                                                    </li>
+                                                    <li>
+                                                        <strong>Diễn viên:</strong> Jack Kesy, Jefferson White
+                                                    </li>
+                                                    <li>
+                                                        <strong>Thể loại:</strong> Action
+                                                    </li>
+                                                    <li>
+                                                        <strong>Khởi chiếu:</strong> 30/08/2024
+                                                    </li>
+                                                    <li>
+                                                        <strong>Thời lượng:</strong> 100 phút
+                                                    </li>
+                                                    <li>
+                                                        <strong>Ngôn ngữ:</strong> Phụ đề
+                                                    </li>
+                                                </ul>
+                                            </div>
 
-                                            <ul class="details">
-                                                <li><strong>Phân loại:</strong> <span class="badge">T16</span> Phim phổ
-                                                    biến đến người xem từ 16 tuổi trở lên</li>
-                                                <li><strong>Định dạng:</strong> <span class="badge">2D</span></li>
-                                                <li><strong>Đạo diễn:</strong> Brian Taylor</li>
-                                                <li><strong>Diễn viên:</strong> Jack Kesy, Jefferson White</li>
-                                                <li><strong>Thể loại:</strong> Action</li>
-                                                <li><strong>Khởi chiếu:</strong> 30/08/2024</li>
-                                                <li><strong>Thời lượng:</strong> 100 phút</li>
-                                                <li><strong>Ngôn ngữ:</strong> Phụ đề</li>
-                                            </ul>
                                             <div class="buttons">
+                                                <a rel='external' href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'
+                                                class="test-popup-link"><button class="watch-trailer">Xem Trailer</button></a>
                                                 <button class="buy-ticket">Mua Vé Ngay</button>
-                                                <button class="watch-trailer">Xem Trailer</button>
                                             </div>
                                         </div>
                                     </div>
