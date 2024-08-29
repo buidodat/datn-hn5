@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FoodController;
+use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\ContactController;
 
 use Illuminate\Support\Facades\Route;
@@ -28,14 +29,9 @@ Route::prefix('admin')
                     return view('admin.posts.create');
                 })->name('create');
             });
-
-
-        Route::get('cities', function() {
-            return view('admin.cities.index');
-        });
-        Route::get('cities/create', function() {
-            return view('admin.cities.create');
-        });
+        
+        // City
+        Route::resource('cities', CityController::class);
 
         Route::resource('contacts', ContactController::class);
 
