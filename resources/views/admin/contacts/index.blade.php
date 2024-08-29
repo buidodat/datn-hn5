@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách thành phố
+    Danh mục sản phẩm
 @endsection
 
 @section('style-libs')
@@ -38,8 +38,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Quản lý thành phố</h5>
-                    <a href="" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách bài viết</h5>
+                    <a href="{{ route('admin.posts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -53,72 +53,40 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên thành phố</th>
-                                <th>Trạng thái</th>
+                                <th>Nội dung</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
                                 <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($cities as $city)
+                        <tbody>
+                            @for ($i = 0; $i < 5; $i++)
                                 <tr>
-                                    <td>{{ $city->id }}</td>
-                                    <td>{{ $city->name }}</td>
-                                    <td>{!! $city->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $city->created_at }}</td>
-                                    <td>{{ $city->updated_at }}</td>
+                                    <td>{{ $i+1 }}</td>
+                                    <td style="!implement width: 5%">Tôi muốn mua vé nhóm</td>
+                                    <td>
+                                        Bùi Đỗ Đạt
+                                    </td>
+                                    <td>datbdph38211@fpt.edu.vn
+                                    </td>
+                                    <td>0965263725</td>
+                                    <td>29/08/2024</td>
                                     <td>
                                         <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-
                                         <a href="">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Hà Nội</td>
-                                <td class="badge bg-primary">Yes</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
+                            @endfor
 
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <!-- 2  -->
-                        <tbody>
-                            <tr>
-                                <td>2</td>
-                                <td>Hồ Chí Minh</td>
-                                <td class="badge bg-danger">No</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
 
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
+
                         </tbody>
 
                     </table>
