@@ -1,329 +1,83 @@
-<article>
-    <div class="sliderContainer no-fouc">
-        <div class="slider video-container">
-
-            <!-- BEGIN VIDEO SLIDE 1  -->
-
-            <div id="video-1">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/watch?v=xO_Z6kvLL9U&t=455s"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/coOKvrsmQiI"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s1.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 1  -->
-
-            <!-- BEGIN VIDEO SLIDE 2  -->
-
-            <div id="video-2">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url({{ asset('theme/client/images/index_iv/s2.jpg') }};">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 2  -->
-
-            <!-- BEGIN VIDEO SLIDE 3  -->
-
-            <div id="video-3">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s3.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 3  -->
-
-            <!-- BEGIN VIDEO SLIDE 4  -->
-
-            <div id="video-4">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/coOKvrsmQiI"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/coOKvrsmQiI"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s1.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 4  -->
-
-            <!-- BEGIN VIDEO SLIDE 5  -->
-
-            <div id="video-5">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s2.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 5  -->
-
-            <!-- BEGIN VIDEO SLIDE 6  -->
-
-            <div id="video-6">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s3.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 6  -->
-
-            <!-- BEGIN VIDEO SLIDE 7  -->
-
-            <div id="video-7">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/coOKvrsmQiI"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/coOKvrsmQiI"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s1.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 7  -->
-            <!-- BEGIN VIDEO SLIDE 8  -->
-
-            <div id="video-8">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/-jpoBJYw9y4"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s2.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 8  -->
-            <!-- BEGIN VIDEO SLIDE 9  -->
-
-            <div id="video-9">
-                <div class="videoWrapper videoWrapper169 js-videoWrapper">
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- the poster frame - in the form of a button to make it keyboard accessible -->
-                    <!-- YouTube iframe. -->
-
-                    <iframe class="videoIframe js-videoIframe" src="" frameborder="0" allowTransparency="true"
-                        allowfullscreen data-src="https://www.youtube.com/embed/6prr2MIHE0Q"
-                        allow="autoplay; fullscreen"></iframe>
-                    <!-- Poster frame in the form of a button to make it keyboard accessible. Background is Youtube Image  -->
-                    <button class="videoPoster js-videoPoster"
-                        style="background-image:url(images/index_iv/s3.jpg);">
-                        <svg class="play-vid" viewBox="0 0 100 100">
-                            <path class="stroke-solid" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="stroke-dotted" fill="none" stroke="white" d="M49.9,2.5C23.6,2.8,2.1,24.4,2.5,50.4C2.9,76.5,24.7,98,50.3,97.5c26.4-0.6,47.4-21.8,47.2-47.7
-     C97.3,23.7,75.7,2.3,49.9,2.5" />
-                            <path class="vid-icon" fill="white"
-                                d="M38,69c-1,0.5-1.8,0-1.8-1.1V32.1c0-1.1,0.8-1.6,1.8-1.1l34,18c1,0.5,1,1.4,0,1.9L38,69z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- // END VIDEO SLIDE 9  -->
-
-            <!-- // END VIDEO CONTAINER -->
+<div class="prs_main_slider_wrapper">
+    <div id="rev_slider_41_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="food-carousel26"
+        data-source="gallery" style="margin:0px auto;padding:0px;margin-top:0px;margin-bottom:0px;">
+        <div class="prs_slider_overlay"></div>
+        <!-- START REVOLUTION SLIDER 5.4.1 fullwidth mode -->
+        <div id="rev_slider_41_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.1">
+            <ul>
+                <!-- SLIDE  -->
+                <li data-index="rs-145" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
+                    data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
+                    data-rotate="0" data-saveperformance="off" data-title="The Healthy Bowl" data-param1=""
+                    data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
+                    data-param8="" data-param9="" data-param10="" data-description="">
+                    <!-- MAIN IMAGE -->
+                    <img src="{{asset('theme/client/images/header/01.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                        data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                    <!-- LAYERS -->
+                    <!-- LAYER NR. 3 -->
+                    <div class="tp-caption FoodCarousel-CloseButton rev-btn  tp-resizeme" id="slide-145-layer-5"
+                        data-x="441" data-y="110" data-width="['auto']" data-height="['auto']" data-type="button"
+                        data-actions='[{"event":"click","action":"stoplayer","layer":"slide-145-layer-3","delay":""},{"event":"click","action":"stoplayer","layer":"slide-145-layer-5","delay":""},{"event":"click","action":"startlayer","layer":"slide-145-layer-1","delay":""}]'
+                        data-responsive_offset="on"
+                        data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":800,"to":"o:1;","delay":"bytrigger","ease":"Power3.easeInOut"},{"delay":"bytrigger","speed":500,"to":"auto:auto;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255,255,255,1);bg:rgba(41,46,49,1);bw:1px 1px 1px 1px;"}]'
+                        data-textAlign="['left','left','left','left']" data-paddingtop="[14,14,14,14]"
+                        data-paddingright="[14,14,14,14]" data-paddingbottom="[14,14,14,14]"
+                        data-paddingleft="[16,16,16,16]" data-lasttriggerstate="reset"
+                        style="z-index: 7; white-space: nowrap;border-color:transparent;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+                        <i class="fa-icon-remove"></i>
+                    </div>
+                </li>
+                <!-- SLIDE  -->
+                <li data-index="rs-146" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
+                    data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
+                    data-rotate="0" data-saveperformance="off" data-title="Spicy Chili Soup" data-param1=""
+                    data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
+                    data-param8="" data-param9="" data-param10="" data-description="">
+                    <!-- MAIN IMAGE -->
+                    <img src="{{asset('theme/client/images/header/02.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                        data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                    <!-- LAYERS -->
+                    <!-- LAYER NR. 6 -->
+                    <div class="tp-caption FoodCarousel-CloseButton rev-btn  tp-resizeme" id="slide-146-layer-5"
+                        data-x="441" data-y="110" data-width="['auto']" data-height="['auto']" data-type="button"
+                        data-actions='[{"event":"click","action":"stoplayer","layer":"slide-146-layer-3","delay":""},{"event":"click","action":"stoplayer","layer":"slide-146-layer-5","delay":""},{"event":"click","action":"startlayer","layer":"slide-146-layer-1","delay":""}]'
+                        data-responsive_offset="on"
+                        data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":800,"to":"o:1;","delay":"bytrigger","ease":"Power3.easeInOut"},{"delay":"bytrigger","speed":500,"to":"auto:auto;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255,255,255,1);bg:rgba(41,46,49,1);bw:1px 1px 1px 1px;"}]'
+                        data-textAlign="['left','left','left','left']" data-paddingtop="[14,14,14,14]"
+                        data-paddingright="[14,14,14,14]" data-paddingbottom="[14,14,14,14]"
+                        data-paddingleft="[16,16,16,16]" data-lasttriggerstate="reset"
+                        style="z-index: 10; white-space: nowrap;border-color:transparent;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+                        <i class="fa-icon-remove"></i>
+                    </div>
+                </li>
+                <!-- SLIDE  -->
+                <li data-index="rs-147" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
+                    data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
+                    data-rotate="0" data-saveperformance="off" data-title="Classic Bolognese" data-param1=""
+                    data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
+                    data-param8="" data-param9="" data-param10="" data-description="">
+                    <!-- MAIN IMAGE -->
+                    <img src="{{asset('theme/client/images/header/03.jpg') }}" alt="" data-bgposition="center center"
+                        data-bgfit="contain" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                    <!-- LAYERS -->
+                    <!-- LAYER NR. 9 -->
+                    <div class="tp-caption FoodCarousel-CloseButton rev-btn  tp-resizeme" id="slide-147-layer-5"
+                        data-x="441" data-y="110" data-width="['auto']" data-height="['auto']"
+                        data-type="button"
+                        data-actions='[{"event":"click","action":"stoplayer","layer":"slide-147-layer-3","delay":""},{"event":"click","action":"stoplayer","layer":"slide-147-layer-5","delay":""},{"event":"click","action":"startlayer","layer":"slide-147-layer-1","delay":""}]'
+                        data-responsive_offset="on"
+                        data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":800,"to":"o:1;","delay":"bytrigger","ease":"Power3.easeInOut"},{"delay":"bytrigger","speed":500,"to":"auto:auto;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255,255,255,1);bg:rgba(41,46,49,1);bw:1px 1px 1px 1px;"}]'
+                        data-textAlign="['left','left','left','left']" data-paddingtop="[14,14,14,14]"
+                        data-paddingright="[14,14,14,14]" data-paddingbottom="[14,14,14,14]"
+                        data-paddingleft="[16,16,16,16]" data-lasttriggerstate="reset"
+                        style="z-index: 13; white-space: nowrap;border-color:transparent;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
+                        <i class="fa-icon-remove"></i>
+                    </div>
+                </li>
+            </ul>
+            <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
         </div>
-
-        <!-- BEGIN THUMBNAIL SLIDER  
-       Thumbnail and background-image ID should correspond to the Video ID.
-       Using the same image as the Video placer for the background as it's already cached - i.e. 1/2 the downloads then calling a seperate thumb.
-  -->
-        <div class="slider video-thumbnails">
-            <div id="thumb-1"
-                style="background-image:url(images/index_iv/s1.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-2"
-                style="background-image:url(images/index_iv/s2.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-3"
-                style="background-image:url(images/index_iv/s3.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-4"
-                style="background-image:url(images/index_iv/s1.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-5"
-                style="background-image:url(images/index_iv/s2.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-6"
-                style="background-image:url(images/index_iv/s3.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-7"
-                style="background-image:url(images/index_iv/s1.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-8"
-                style="background-image:url(images/index_iv/s2.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <div id="thumb-9"
-                style="background-image:url(images/index_iv/s3.jpg);background-position:center 0;background-size:cover;">
-            </div>
-            <!-- END THUMBNAIL SLIDER  -->
-        </div>
-</article>
+    </div>
+    <!-- END REVOLUTION SLIDER -->
+</div>
