@@ -15,7 +15,9 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
+
                             <li class="breadcrumb-item"><a href="{{ route('admin.foods.index') }}">Danh sách</a></li>
+
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -90,10 +92,6 @@
                                 <div class="col-lg-12">
                                     <a href="{{ route('admin.foods.create') }}" class="btn btn-warning">Quay lại</a>
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>
-
-                                </div>
-
-                                
                             </div>
 
                             <!--end row-->
