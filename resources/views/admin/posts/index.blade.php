@@ -38,8 +38,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Quản lý bà viết</h5>
-                    <a href="" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách bài viết</h5>
+                    <a href="{{ route('admin.posts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -55,14 +55,10 @@
                                 <th>#</th>
                                 <th>Tiêu đề</th>
                                 <th>Hình ảnh</th>
-                                <th>Danh mục </th>
-                                <th>Tác giả</th>
-                                <th>Lượt xem</th>
-                                <th>Is active</th>
-                                <th>Is popular</th>
-                                <th>Is hot</th>
+                                <th>Mô tả ngắn</th>
+                                <th>Nội dung</th>
                                 <th>Slug</th>
-                                <th>Tags</th>
+                                <th>Hoạt động</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Chức năng</th>
@@ -126,40 +122,36 @@
                             @endforeach
                         </tbody> --}}
                         <tbody>
-                            <tr>
-                                <td>id</td>
-                                <td style="!implement width: 5%">title</td>
-                                <td>
-                                   image
+                            @for ($i = 0; $i < 7; $i++)
+                                <tr>
+                                    <td>1</td>
+                                    <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ? </td>
+                                    <td>
+                                        image
+                                    </td>
+                                    <td>Theo báo mới 24h, phim KingKong của Mỹ sẽ được quay tại Vịnh Hạ Long Việt Nam....
+                                    </td>
+                                    <td>Theo ông Kim Jong Jun đánh giá bộ phim này hứa hẹn sẽ mang lại nhiều trải nghiệm, ấn
+                                        tượng, thu hút lượng khách hàng lớn đến với Việt Nam du lịch</td>
+                                    <td>phim-king-kong-2025-se-quay-tai-viet-nam</td>
+                                    <td><span class="badge bg-primary">Yes</span></td>
 
-                                </td>
-                                <td>category</td>
-                                <td>name</td>
-                                <td>views</td>
-                                <td> is active</td>
-                                <td> is popular</td>
-                                <td> is hot post</td>
-
-                                <td>slug </td>
-                                <td>
-                                    tag
-                                </td>
-                                <td>$post->created_at </td>
-                                <td>$post->updated_at</td>
-                                <td>
+                                    <td>$post->created_at </td>
+                                    <td>$post->updated_at</td>
+                                    <td>
+                                        <a href="">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a>
+                                        <a href="">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endfor
 
 
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
 
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-
-                                </td>
-                            </tr>
                         </tbody>
 
                     </table>
