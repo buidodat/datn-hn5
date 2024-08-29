@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Quản lý thành phố</h5>
-                    <a href="" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{route('admin.cities.create')}}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -85,7 +85,7 @@
                             <tr>
                                 <td>1</td>
                                 <td>Hà Nội</td>
-                                <td class="badge bg-primary">Yes</td>
+                                <td>Yes</td>
                                 <td>00:00:00 29/08/2024</td>
                                 <td>15:00:00 29/08/2024</td>
                                 <td>
@@ -105,7 +105,7 @@
                             <tr>
                                 <td>2</td>
                                 <td>Hồ Chí Minh</td>
-                                <td class="badge bg-danger">No</td>
+                                <td>No</td>
                                 <td>00:00:00 29/08/2024</td>
                                 <td>15:00:00 29/08/2024</td>
                                 <td>

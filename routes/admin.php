@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FoodController;
+use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\ContactController;
 
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::prefix('admin')
                     return view('admin.posts.create');
                 })->name('create');
             });
+        
+        // City
+        Route::resource('cities', CityController::class);
 
         Route::prefix('slideshows')
             ->as('slideshows.')
@@ -43,6 +47,13 @@ Route::prefix('admin')
 
             });
 
+
+        //--Start Route Giới thiệu---
+
+        Route::get('introduces', function () {
+            return view('admin.posts.index');
+        });
+
         Route::get('cities', function () {
             return view('admin.cities.index');
         });
@@ -51,6 +62,4 @@ Route::prefix('admin')
         });
 
         Route::resource('contacts', ContactController::class);
-
-
     });
