@@ -119,7 +119,9 @@
                             @endforeach
                         </tbody> --}}
                         <tbody>
+                            @for ($i = 0; $i < 3; $i++)
                         <tr>
+                            
                             <td>1</td>
                             <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ?</td>
                             <td>
@@ -129,16 +131,15 @@
                             <td>URL</td>
                             <td><span class="badge bg-primary">Yes</span></td>
                             <td>
-                                <a href="">
-                                    <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                            class="fas fa-eye"></i></button>
-                                </a>
+                            
                                 <a href="">
                                     <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                             class="fas fa-edit"></i></button>
                                 </a>
                             </td>
+                            
                         </tr>
+                        @endfor
                         </tbody>
 
                     </table>
