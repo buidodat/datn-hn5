@@ -38,3 +38,4 @@
 <link rel="stylesheet" id="theme-color" type="text/css" href="#"/>
 <!-- favicon links -->
 <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />
+
