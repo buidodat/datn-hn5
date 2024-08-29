@@ -139,6 +139,27 @@
                     </div>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarLayouts-4">
+                        <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarLayouts-4">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.slideshows.list') }}" class="nav-link" data-key="t-horizontal">Danh
+                                    sách</a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.slideshows.create') }}" class="nav-link"
+                                   data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
 
             </ul>
         </div>
