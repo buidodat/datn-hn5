@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Đồ Ăn
+    Danh sách Combo
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Đồ Ăn</h4>
+                <h4 class="mb-sm-0">Combo</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Đồ Ăn</li>
+                        <li class="breadcrumb-item active">Combo</li>
                     </ol>
                 </div>
 
@@ -38,7 +38,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Đồ Ăn</h5>
+                    <h5 class="card-title mb-0">Danh sách Combo</h5>
                     <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
@@ -61,47 +61,22 @@
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($posts as $post)
+                        <tbody>
+                            @foreach ($data as $item)
                                 <tr>
-                                    <td>{{ $post->id }}</td>
-                                    <td style="!implement width: 5%">{{ $post->title }}</td>
-                                    <td>
-                                        @if ($post->image && \Storage::exists($post->image))
-                                            <img src="{{ Storage::url($post->image) }}" alt="" width="50px">
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-center">
+                                        @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" alt=""
+                                                width="100px" height="60px">
                                         @else
                                             No image !
                                         @endif
-
-                                        @php
-                                            $url = $post->image;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($post->image))
-                                            <img src="{{ $url }}" alt="" width="100px">
-                                        @else
-                                            No image !
-                                        @endif
-
                                     </td>
-                                    <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->author->name }}</td>
-                                    <td>{{ $post->views }}</td>
-                                    <td>{!! $post->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_popular ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_hot_post ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $post->slug }}</td>
-                                    <td>
-                                        @foreach ($post->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $post->created_at }}</td>
-                                    <td>{{ $post->updated_at }}</td>
+                                    <td>{{ number_format($item->price) }} VNĐ</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>{!! $item->is_active ? '<span class="badge bg-primary">Đang hoạt động</span>' : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}</td>
                                     <td>
 
 
@@ -117,7 +92,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
+                        </tbody>
                     </table>
                 </div>
             </div>

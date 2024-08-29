@@ -21,10 +21,11 @@ class ComboController extends Controller
      */
     public function index()
     {
-        $data = Combo::query()->get();
+        $data = Combo::query()->latest('id')->get();
 
-        dd($data->toArray());
-        return view(self::PATH_VIEW . __FUNCTION__);
+
+        // dd($data->toArray());
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**
@@ -51,7 +52,7 @@ class ComboController extends Controller
             Combo::query()->create($data);
 
             return redirect()
-                ->route('admin.combos.create')
+                ->route('admin.combos.index')
                 ->with('success', 'Thêm thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());

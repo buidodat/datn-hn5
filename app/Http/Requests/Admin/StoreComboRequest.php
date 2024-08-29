@@ -23,7 +23,7 @@ class StoreComboRequest extends FormRequest
     {
         return [
             'name'          => 'required|unique:combos,name', 
-            'img_thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+            'img_thumbnail' => 'required|image|max:2048', 
             'price'         => 'required|numeric|min:0', 
             'is_active'     => 'nullable|boolean', 
             'description'   => 'required|string|max:1000',
