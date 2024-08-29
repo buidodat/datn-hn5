@@ -11,7 +11,6 @@ Route::prefix('admin')
             return view('admin.dashboard');
         });
 
-
         Route::prefix('posts')
             ->as('posts.')
             ->group(function () {
@@ -26,9 +25,17 @@ Route::prefix('admin')
 
 
 
-        // Route::get('posts/edit', function() {
-        //     return view('admin.posts.edit');
-        // });
 
+
+        //--Start Route Giới thiệu---
+
+        Route::get('introduces', function() {
+            return view('admin.posts.index');
+        });
+        Route::get('introduces/create', function() {
+            return view('admin.posts.create');
+        });
+
+        //--End Route Giới thiệu---
 
     });
