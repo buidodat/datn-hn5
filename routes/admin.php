@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\ContactController;
 
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,8 @@ Route::prefix('admin')
 
         // City
         Route::resource('cities', CityController::class);
+        // Payment
+        Route::resource('payments', PaymentController::class);
 
         Route::prefix('slideshows')
             ->as('slideshows.')
