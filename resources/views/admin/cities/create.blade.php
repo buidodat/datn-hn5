@@ -57,6 +57,16 @@
                                 </select>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                <label class="form-check-label" for="is_active">Is Active</label>
+                                        <div class="form-check form-switch form-switch-default">
+                                            <input class="form-check-input" type="checkbox" role=""
+                                                name="is_active" checked>
+                                        </div>
+                                </select>
+                                </div>
+                            </div>
                         </div>
 
                         <!--end row-->
@@ -64,28 +74,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-check-label" for="is_active">Is Active</label>
-                                        <div class="form-check form-switch form-switch-default">
-                                            <input class="form-check-input" type="checkbox" role=""
-                                                name="is_active" checked>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--end col-->
     </div>
 
 
