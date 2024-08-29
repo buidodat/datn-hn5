@@ -15,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.posts.list') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -95,7 +95,7 @@
                                         </div>
                                     </div>
                                     <!--end col-->
-                                </div> 
+                                </div>
                             </div>
 
                             <!--end row-->
