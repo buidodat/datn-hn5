@@ -35,6 +35,17 @@ Route::prefix('admin')
         Route::get('introduces/create', function() {
             return view('admin.posts.create');
         });
+        Route::get('cities', function() {
+            return view('admin.cities.index');
+        });
+        Route::get('cities/create', function() {
+            return view('admin.cities.create');
+        });
+        
+
+        // Route::get('posts/edit', function() {
+        //     return view('admin.posts.edit');
+        // });
 
         //--End Route Giới thiệu---
 
