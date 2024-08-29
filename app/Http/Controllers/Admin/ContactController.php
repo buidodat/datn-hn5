@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+
     const PATH_VIEW = 'admin.contacts.';
-    public function index()
-    {
-        return view(self::PATH_VIEW . __FUNCTION__ );
-    }
+
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      */
-    public function create()
+    public function index()
     {
         return view(self::PATH_VIEW . __FUNCTION__ );
     }
@@ -23,23 +22,23 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+     public function create()
+     {
+        return view(self::PATH_VIEW . __FUNCTION__ );
+     }
+
+
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }
