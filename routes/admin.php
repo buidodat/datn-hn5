@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\FoodController;
+use App\Http\Controllers\ContactController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,7 +22,7 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('/', function () {
                     return view('admin.posts.index');
-                })->name('list');
+                })->name('index');
 
                 Route::get('create', function () {
                     return view('admin.posts.create');
@@ -28,29 +30,14 @@ Route::prefix('admin')
             });
 
 
-
-
-
-        //--Start Route Giới thiệu---
-
-        Route::get('introduces', function() {
-            return view('admin.posts.index');
-        });
-        Route::get('introduces/create', function() {
-            return view('admin.posts.create');
-        });
         Route::get('cities', function() {
             return view('admin.cities.index');
         });
         Route::get('cities/create', function() {
             return view('admin.cities.create');
         });
-        
 
-        // Route::get('posts/edit', function() {
-        //     return view('admin.posts.edit');
-        // });
+        Route::resource('contacts', ContactController::class);
 
-        //--End Route Giới thiệu---
 
     });
