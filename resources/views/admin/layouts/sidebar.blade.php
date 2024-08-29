@@ -71,7 +71,7 @@
                     <div class="collapse menu-dropdown" id="sidebarLayouts-2">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.posts.list') }}" class="nav-link" data-key="t-horizontal">Danh
+                                <a href="{{ route('admin.posts.index') }}" class="nav-link" data-key="t-horizontal">Danh
                                     sách</a>
                             </li>
                         </ul>
@@ -86,17 +86,17 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-3">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Quản lý người dùng</span>
+                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Liên hệ</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-3">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{ route('admin.contacts.create') }}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
