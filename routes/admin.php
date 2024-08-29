@@ -33,12 +33,27 @@ Route::prefix('admin')
         // City
         Route::resource('cities', CityController::class);
 
+        Route::prefix('slideshows')
+            ->as('slideshows.')
+            ->group(function () {
+
+                Route::get('/', function () {
+                    return view('admin.slideshows.index');
+                })->name('list');
+
+                Route::get('create', function () {
+                    return view('admin.slideshows.create');
+                })->name('create');
+
+            });
+
 
         //--Start Route Giới thiệu---
 
         Route::get('introduces', function () {
             return view('admin.posts.index');
         });
+
         Route::get('cities', function () {
             return view('admin.cities.index');
         });
