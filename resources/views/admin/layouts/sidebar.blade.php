@@ -109,7 +109,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarLayouts-4">
-                        <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Quản lý slideshows</span>
+                        <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-4">
                         <ul class="nav nav-sm flex-column">
