@@ -140,11 +140,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarLayouts-4">
+                    <a class="nav-link menu-link" href="#sidebarLayouts-5" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarLayouts-5">
                         <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-4">
+                    <div class="collapse menu-dropdown" id="sidebarLayouts-5">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.slideshows.list') }}" class="nav-link" data-key="t-horizontal">Danh
