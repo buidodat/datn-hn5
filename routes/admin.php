@@ -48,6 +48,10 @@ Route::prefix('admin')
                     return view('admin.slideshows.create');
                 })->name('create');
 
+                Route::get('edit', function () {
+                    return view('admin.slideshows.edit');
+                })->name('edit');
+
             });
 
 
