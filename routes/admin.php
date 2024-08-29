@@ -30,14 +30,17 @@ Route::prefix('admin')
             });
 
 
-        Route::get('cities', function() {
+        //--Start Route Giới thiệu---
+
+        Route::get('introduces', function () {
+            return view('admin.posts.index');
+        });
+        Route::get('cities', function () {
             return view('admin.cities.index');
         });
-        Route::get('cities/create', function() {
+        Route::get('cities/create', function () {
             return view('admin.cities.create');
         });
 
         Route::resource('contacts', ContactController::class);
-
-
     });
