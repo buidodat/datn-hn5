@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\ContactController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -11,6 +13,9 @@ Route::prefix('admin')
         Route::get('/', function () {
             return view('admin.dashboard');
         });
+
+        // Food
+        Route::resource('foods', FoodController::class);
 
         Route::prefix('posts')
             ->as('posts.')

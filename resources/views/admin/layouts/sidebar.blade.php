@@ -38,7 +38,7 @@
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống Kê</span>
                     </a>
 
                 </li> <!-- end Dashboard Menu -->
@@ -47,17 +47,17 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý danh mục</span>
+                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{route('admin.foods.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{route('admin.foods.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
