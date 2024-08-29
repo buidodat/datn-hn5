@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Đồ Ắn
+    Danh sách Đồ Ăn
 @endsection
 
 @section('style-libs')
@@ -55,8 +55,8 @@
                                 <th>#</th>
                                 <th>Tên</th>
                                 <th>Hình ảnh</th>
-                                <th>Mô tả</th>
                                 <th>Giá</th>
+                                <th>Mô tả</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
