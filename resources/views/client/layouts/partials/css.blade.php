@@ -34,6 +34,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/settings.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/style.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/responsive.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/mainstyle.css') }}" />
 <link rel="stylesheet" id="theme-color" type="text/css" href="#"/>
 <!-- favicon links -->
 <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />

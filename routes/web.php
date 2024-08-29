@@ -23,6 +23,6 @@ Route::get('/movie-detail', function () {
     return view('client.movie-detail');
 });
 
-
-
-
+Route::get('choose-seat', function () {
+    return view('client.choose-seat');
+});
