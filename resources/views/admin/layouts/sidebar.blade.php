@@ -8,13 +8,15 @@
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt="" height="17">
+                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt=""
+                    height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
+                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt=""
+                    height="22">
             </span>
             <span class="logo-lg">
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-light.png" alt=""
@@ -35,7 +37,7 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="" >
+                    <a class="nav-link menu-link" href="">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                     </a>
 
@@ -50,14 +52,12 @@
                     <div class="collapse menu-dropdown" id="sidebarLayouts">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -71,13 +71,13 @@
                     <div class="collapse menu-dropdown" id="sidebarLayouts-2">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.posts.list') }}" class="nav-link" data-key="t-horizontal">Danh
+                                    sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
+                                <a href="{{ route('admin.posts.create') }}" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
@@ -91,14 +91,12 @@
                     <div class="collapse menu-dropdown" id="sidebarLayouts-3">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href=""  class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                <a href="" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
