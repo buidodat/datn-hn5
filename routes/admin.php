@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\CityController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\ComboController;
+use App\Http\Controllers\Admin\ContactController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +15,8 @@ Route::prefix('admin')
             return view('admin.dashboard');
         });
 
-        // Food
-        Route::resource('foods', FoodController::class);
+        // Combo
+        Route::resource('combos', ComboController::class);
 
         Route::prefix('posts')
             ->as('posts.')
