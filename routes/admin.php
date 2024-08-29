@@ -17,11 +17,17 @@ Route::prefix('admin')
         Route::get('posts/create', function() {
             return view('admin.posts.create');
         });
-        
 
-        // Route::get('posts/edit', function() {
-        //     return view('admin.posts.edit');
-        // });
 
+        //--Start Route Giới thiệu---
+
+        Route::get('introduces', function() {
+            return view('admin.posts.index');
+        });
+        Route::get('introduces/create', function() {
+            return view('admin.posts.create');
+        });
+
+        //--End Route Giới thiệu---
 
     });
