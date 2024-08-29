@@ -20,7 +20,7 @@
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up1.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -52,12 +52,11 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
 				<li class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up2.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -89,12 +88,11 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
 				<li class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up3.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -126,12 +124,11 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
 				<li class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up4.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -163,12 +160,11 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
 				<li class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up5.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -200,12 +196,11 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
 				<li class="album-slider__item">
 					<figure class="album">
 						<div class="prs_upcom_movie_box_wrapper">
 							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up6.jpg" alt="movie_img" />
+								<img src="{{ asset('theme/client/images/content/up1.jpg') }}" alt="movie_img" />
 								<div class="prs_upcom_movie_img_overlay"></div>
 								<div class="prs_upcom_movie_img_btn_wrapper">
 									<ul>
@@ -237,44 +232,6 @@
 					</figure>
 					<!-- End album -->
 				</li>
-				<!-- End album slider item -->
-				<li class="album-slider__item">
-					<figure class="album">
-						<div class="prs_upcom_movie_box_wrapper">
-							<div class="prs_upcom_movie_img_box">
-								<img src="images/content/up7.jpg" alt="movie_img" />
-								<div class="prs_upcom_movie_img_overlay"></div>
-								<div class="prs_upcom_movie_img_btn_wrapper">
-									<ul>
-										<li><a href="#">View Trailer</a>
-										</li>
-										<li><a href="#">View Details</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="prs_upcom_movie_content_box">
-								<div class="prs_upcom_movie_content_box_inner">
-									<h2><a href="#">Busting Car</a></h2>
-									<p>Drama , Acation</p> <i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
-									<i class="fa fa-star-o"></i>
-								</div>
-								<div class="prs_upcom_movie_content_box_inner_icon">
-									<ul>
-										<li><a href="movie_booking.html"><i class="flaticon-cart-of-ecommerce"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End album body -->
-					</figure>
-					<!-- End album -->
-				</li>
-				<!-- End album slider item -->
 			</ul>
 			<!-- End slider -->
 		</div>
@@ -342,7 +299,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws2.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -376,7 +333,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws3.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -410,7 +367,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -443,7 +400,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -476,7 +433,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws6.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -509,7 +466,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws7.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -576,7 +533,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws7.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -610,7 +567,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws6.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -644,7 +601,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -677,7 +634,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -710,7 +667,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws3.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -743,7 +700,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws2.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -827,7 +784,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws7.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -861,7 +818,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws6.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -895,7 +852,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -928,7 +885,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -961,7 +918,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws3.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -994,7 +951,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws2.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1061,7 +1018,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws2.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1095,7 +1052,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws3.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1129,7 +1086,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1162,7 +1119,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1195,7 +1152,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws6.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1228,7 +1185,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws7.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1312,7 +1269,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws7.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1346,7 +1303,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws6.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1380,7 +1337,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1413,7 +1370,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1446,7 +1403,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws3.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1479,7 +1436,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws2.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1546,7 +1503,7 @@
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws2.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws2.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1580,7 +1537,7 @@
 											class="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-sm prs_upcom_slide_second">
 											<div class="prs_upcom_movie_box_wrapper">
 												<div class="prs_upcom_movie_img_box">
-													<img src="images/content/ws3.jpg" alt="movie_img" />
+													<img src="{{ asset('theme/client/images/content/ws3.jpg') }}" alt="movie_img" />
 													<div class="prs_upcom_movie_img_overlay"></div>
 													<div class="prs_upcom_movie_img_btn_wrapper">
 														<ul>
@@ -1614,7 +1571,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws4.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws4.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1647,7 +1604,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws5.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws5.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1680,7 +1637,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws6.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws6.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1713,7 +1670,7 @@
 											<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 hidden-sm hidden-xs">
 												<div class="prs_upcom_movie_box_wrapper">
 													<div class="prs_upcom_movie_img_box">
-														<img src="images/content/ws7.jpg" alt="movie_img" />
+														<img src="{{ asset('theme/client/images/content/ws7.jpg') }}" alt="movie_img" />
 														<div class="prs_upcom_movie_img_overlay"></div>
 														<div class="prs_upcom_movie_img_btn_wrapper">
 															<ul>
@@ -1781,8 +1738,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp1.jpg" alt="vp_img"> <a
-												href="images/content/vp1.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp1.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp1.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1792,8 +1749,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp2.jpg" alt="vp_img"> <a
-												href="images/content/vp2.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp2.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp2.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1803,8 +1760,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp3.jpg" alt="vp_img"> <a
-												href="images/content/vp3.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp3.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp3.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1814,8 +1771,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp4.jpg" alt="vp_img"> <a
-												href="images/content/vp4.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp4.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp4.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1825,8 +1782,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp5.jpg" alt="vp_img"> <a
-												href="images/content/vp5.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp5.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp5.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1836,8 +1793,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp6.jpg" alt="vp_img"> <a
-												href="images/content/vp6.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp6.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp6.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1852,17 +1809,17 @@
 							<div class="owl-carousel owl-theme">
 								<div class="item">
 									<div class="prs_vp_center_slider_img_wrapper">
-										<img src="images/content/vp7.jpg" alt="vp_img">
+										<img src="{{ asset('theme/client/images/content/vp7.jpg') }}" alt="vp_img">
 									</div>
 								</div>
 								<div class="item">
 									<div class="prs_vp_center_slider_img_wrapper">
-										<img src="images/content/vp7.jpg" alt="vp_img">
+										<img src="{{ asset('theme/client/images/content/vp7.jpg') }}" alt="vp_img">
 									</div>
 								</div>
 								<div class="item">
 									<div class="prs_vp_center_slider_img_wrapper">
-										<img src="images/content/vp7.jpg" alt="vp_img">
+										<img src="{{ asset('theme/client/images/content/vp7.jpg') }}" alt="vp_img">
 									</div>
 								</div>
 							</div>
@@ -1874,8 +1831,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp6.jpg" alt="vp_img"> <a
-												href="images/content/vp6.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp6.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp6.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1885,8 +1842,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp5.jpg" alt="vp_img"> <a
-												href="images/content/vp5.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp5.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp5.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1896,8 +1853,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp4.jpg" alt="vp_img"> <a
-												href="images/content/vp4.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp4.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp4.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1907,8 +1864,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp3.jpg" alt="vp_img"> <a
-												href="images/content/vp3.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp3.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp3.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1918,8 +1875,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp2.jpg" alt="vp_img"> <a
-												href="images/content/vp2.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp2.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp2.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1929,8 +1886,8 @@
 								<li class="album-slider__item prs_vp_hover_overlay">
 									<figure class="album">
 										<div class="prs_vp_img_overlay">
-											<img src="images/content/vp1.jpg" alt="vp_img"> <a
-												href="images/content/vp1.jpg" class="venobox info"
+											<img src="{{ asset('theme/client/images/content/vp1.jpg') }}" alt="vp_img"> <a
+												href="{{ asset('theme/client/images/content/vp1.jpg') }}" class="venobox info"
 												data-title="PORTFOLIO TITTLE" data-gall="gall12"><i
 													class="fa fa-search"></i></a>
 										</div>
@@ -1941,7 +1898,7 @@
 						</div>
 					</div>
 					<div class="prs_vp_bottom_banner_wrapper">
-						<img src="images/content/vp8.jpg" alt="banner">
+						<img src="{{ asset('theme/client/images/content/vp8.jpg') }}" alt="banner">
 					</div>
 				</div>
 			</div>
@@ -1986,7 +1943,7 @@
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div class="prs_ln_right_first_box_wrapper">
 									<div class="prs_in_right_box_img_wrapper">
-										<img src="images/content/nl2.jpg" alt="news_img" />
+										<img src="{{ asset('theme/client/images/content/nl2.jpg') }}" alt="news_img" />
 									</div>
 									<div class="prs_in_right_box_img_cont_wrapper">
 										<h2><a href="#">The News of theater</a></h2>
@@ -2005,7 +1962,7 @@
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div class="prs_ln_right_first_box_wrapper2">
 									<div class="prs_in_right_box_img_wrapper">
-										<img src="images/content/nl3.jpg" alt="news_img" />
+										<img src="{{ asset('theme/client/images/content/nl3.jpg') }}" alt="news_img" />
 									</div>
 									<div class="prs_in_right_box_img_cont_wrapper">
 										<h2><a href="#">The News of theater</a></h2>
@@ -2042,32 +1999,32 @@
 						<div class="owl-carousel owl-theme">
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p1.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p1.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p2.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p2.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p3.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p3.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p4.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p4.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p5.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p5.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 							<div class="item">
 								<div class="prs_pn_img_wrapper">
-									<img src="images/content/p6.jpg" alt="patner_img">
+									<img src="{{ asset('theme/client/images/content/p6.jpg') }}" alt="patner_img">
 								</div>
 							</div>
 						</div>

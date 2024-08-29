@@ -90,12 +90,12 @@
                     <ul>
                         <li>
                             <a href="#">
-                                <img src="images/content/f1.jpg" alt="footer_img">
+                                <img src="{{ asset('theme/client/images/content/f1.jpg') }}" alt="footer_img">
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <img src="images/content/f2.jpg" alt="footer_img">
+                                <img src="{{ asset('theme/client/images/content/f2.jpg') }}" alt="footer_img">
                             </a>
                         </li>
                     </ul>

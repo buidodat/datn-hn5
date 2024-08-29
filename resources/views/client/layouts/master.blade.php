@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8" />
-    
+
     <title>
         @yield('title')
     </title>
@@ -18,35 +18,32 @@
 </head>
 
 <body>
-	<!-- preloader Start -->
-	<div id="preloader">
-		<div id="status">
-			<img src="{{ asset('theme/client/images/header/horoscope.gif') }}" id="preloader_image" alt="loader">
-		</div>
-	</div>
-	<!-- prs navigation Start -->
+    <!-- preloader Start -->
+    <div id="preloader">
+        <div id="status">
+            <img src="{{ asset('theme/client/images/header/horoscope.gif') }}" id="preloader_image" alt="loader">
+        </div>
+    </div>
+    <!-- prs navigation Start -->
 
     @include('client.layouts.header')
 
-	<!-- prs navigation End -->
-
-    
-
+    <!-- prs navigation End -->
 
     @yield('content')
 
-	<!-- prs patner slider End -->
-	<!-- prs Newsletter Wrapper Start -->
+    <!-- prs patner slider End -->
+    <!-- prs Newsletter Wrapper Start -->
 
     @include('client.layouts.footer')
 
-	<!-- prs footer Wrapper End -->
-	<!-- st login wrapper Start -->
+    <!-- prs footer Wrapper End -->
+    <!-- st login wrapper Start -->
 
-	<!-- st login wrapper End -->
-	<!--main js file start-->
+    <!-- st login wrapper End -->
+    <!--main js file start-->
     @include('client.layouts.partials.js')
-	<!--main js file end-->
+    <!--main js file end-->
 </body>
 
 </html>

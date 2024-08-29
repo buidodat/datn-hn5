@@ -8,14 +8,14 @@
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
                 <a href="index.html">
-                    <img src="images/header/logo.png" alt="logo" />
+                    <img src="{{ asset('theme/client/images/header/logo.png') }}" alt="logo" />
                 </a>
             </div>
             <div class="prs_menu_main_wrapper">
                 <nav class="navbar navbar-default">
                     <div id="dl-menu" class="xv-menuwrapper responsive-menu">
                         <button class="dl-trigger">
-                            <img src="images/header/bars.png" alt="bar_png">
+                            <img src="{{ asset('theme/client/images/header/bars.png') }}" alt="bar_png">
                         </button>
                         <div class="prs_mobail_searchbar_wrapper" id="search_button"> <i class="fa fa-search"></i>
                         </div>
@@ -24,9 +24,6 @@
                             <li class="parent"><a href="#">Home</a>
                                 <ul class="lg-submenu">
                                     <li><a href="index.html">Index-I</a></li>
-                                    <li><a href="index2.html">Index-II</a></li>
-                                    <li><a href="index3.html">Index-III</a></li>
-                                    <li><a href="index4.html">Index-IV</a></li>
                                 </ul>
                             </li>
                             <li class="parent megamenu"><a href="#">movie</a>
@@ -38,95 +35,11 @@
                                             </li>
                                             <li class="ar_left"><i class="fa fa-film"></i><a href="#">Drishyam</a>
                                             </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Queen</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Wanted</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Veer</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Jannat</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Baaghi</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Baaghi-2</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Ki & Ka</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Kahaani</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Jab We Met</a>
-                                            </li>
                                         </ul>
                                     </li>
                                     <li><a>Popular Kannada Movies</a>
                                         <ul class="lg-submenu">
                                             <li class="ar_left"><i class="fa fa-film"></i><a href="#">Zoom</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Kirik
-                                                    Party</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Mahakali</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">karvva</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Ishtakamya</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a
-                                                    href="#">Jigarthanda</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Abhimani</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Priyanka</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a>Popular Bengali Movies</a>
-                                        <ul class="lg-submenu">
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Baro Bou</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Tomake</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Jeevan</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Haraner </a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Bidhilipi</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Bhalobasa </a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Prateek</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Aparanher</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a
-                                                    href="#">Mukhyamantri</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Charmurti</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a>Popular Hollywood Movies</a>
-                                        <ul class="lg-submenu">
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Wind River</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Logan</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Coco</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Meyerowitz
-                                                </a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Ragnarok</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Driver</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Dunkirk</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Big Sick </a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">American </a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Logan </a>
                                             </li>
                                         </ul>
                                     </li>
@@ -134,131 +47,45 @@
                                         <div class="prs_navi_slider_wraper">
                                             <div class="owl-carousel owl-theme">
                                                 <div class="item">
-                                                    <img src="images/content/up1.jpg" alt="navi_img">
+                                                    <img src="{{ asset('theme/client/images/content/up1.jpg') }}"
+                                                        alt="navi_img">
                                                 </div>
                                                 <div class="item">
-                                                    <img src="images/content/up2.jpg" alt="navi_img">
+                                                    <img src="{{ asset('theme/client/images/content/up2.jpg') }}"
+                                                        alt="navi_img">
                                                 </div>
                                                 <div class="item">
-                                                    <img src="images/content/up3.jpg" alt="navi_img">
+                                                    <img src="{{ asset('theme/client/images/content/up3.jpg') }}"
+                                                        alt="navi_img">
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                </ul>
-                            </li>
-                            <li class="parent"><a href="#">tv show</a>
-                                <ul class="lg-submenu">
-                                    <li><a href="#">Star Plus</a></li>
-                                    <li><a href="#">Star Jalsha</a></li>
-                                    <li><a href="#">Star Gold</a></li>
-                                    <li><a href="#">Sony TV</a></li>
-                                    <li><a href="#">Sab TV</a></li>
-                                    <li><a href="#">Sony Pal</a></li>
-                                    <li><a href="#">Set Max</a></li>
                                 </ul>
                             </li>
                             <li class="parent megamenu"><a href="#">video</a>
                                 <ul class="lg-submenu prs_navi_video_wrapper">
                                     <li>
                                         <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp1.jpg" alt="video_img">
+                                            <img src="{{ asset('theme/client/images/content/vp1.jpg') }}"
+                                                alt="video_img">
                                             <div class="prs_video_navi_overlay_wrapper"> <a
                                                     class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp2.jpg" alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp3.jpg" alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp4.jpg" alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp5.jpg" alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
+                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'><i
+                                                        class="flaticon-play-button"></i></a>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="hidden-sm">
                                         <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="images/content/vp6.jpg" alt="video_img">
+                                            <img src="{{ asset('theme/client/images/content/vp6.jpg') }}"
+                                                alt="video_img">
                                             <div class="prs_video_navi_overlay_wrapper"> <a
                                                     class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0'
-                                                    title='title'><i class="flaticon-play-button"></i></a>
+                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'><i
+                                                        class="flaticon-play-button"></i></a>
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="parent"><a href="#">pages</a>
-                                <ul class="lg-submenu">
-                                    <li class="parent"><a href="#">Blog</a>
-                                        <ul class="lg-submenu">
-                                            <li><a href="blog_category.html">Blog-Category</a>
-                                            </li>
-                                            <li><a href="blog_single.html">Blog-Single</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="parent"><a href="#">Event</a>
-                                        <ul class="lg-submenu">
-                                            <li><a href="event_category.html">Event-Category</a>
-                                            </li>
-                                            <li><a href="event_single.html">Event-Single</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="parent"><a href="#">Movie</a>
-                                        <ul class="lg-submenu">
-                                            <li><a href="movie_category.html">Movie-Category</a>
-                                            </li>
-                                            <li><a href="movie_single.html">Movie-Single</a>
-                                            </li>
-                                            <li><a href="movie_single_second.html">Movie-Single-II</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="gallery.html">gallery</a>
-                                    </li>
-                                    <li><a href="booking_type.html">Booking-Type</a>
-                                    </li>
-                                    <li><a href="confirmation_screen.html">Confirmation-Screen</a>
-                                    </li>
-                                    <li><a href="movie_booking.html">Movie-Booking</a>
-                                    </li>
-                                    <li><a href="seat_booking.html">Seat-Booking</a>
                                     </li>
                                 </ul>
                             </li>
@@ -273,7 +100,7 @@
         <div class="prs_navi_right_main_wrapper">
             <div class="prs_slidebar_wrapper">
                 <button class="second-nav-toggler" type="button">
-                    <img src="images/header/bars.png" alt="bar_png">
+                    <img src="{{ asset('theme/client/images/header/bars.png') }}" alt="bar_png">
                 </button>
             </div>
             <div class="prs_top_login_btn_wrapper">
@@ -385,8 +212,8 @@
                 <div class="prs_top_login_btn_wrapper prs_slidebar_searchbar_btn_wrapper">
                     <div class="prs_animate_btn1">
                         <ul>
-                            <li><a href="#" class="button button--tamaya" data-text="sign up" data-toggle="modal"
-                                    data-target="#myModal"><span>sign up</span></a>
+                            <li><a href="#" class="button button--tamaya" data-text="sign up"
+                                    data-toggle="modal" data-target="#myModal"><span>sign up</span></a>
                             </li>
                         </ul>
                     </div>
