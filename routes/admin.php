@@ -17,6 +17,12 @@ Route::prefix('admin')
         Route::get('posts/create', function() {
             return view('admin.posts.create');
         });
+        Route::get('cities', function() {
+            return view('admin.cities.index');
+        });
+        Route::get('cities/create', function() {
+            return view('admin.cities.create');
+        });
         
 
         // Route::get('posts/edit', function() {
