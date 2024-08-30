@@ -55,11 +55,6 @@ Route::prefix('admin')
             });
 
 
-        //--Start Route Giới thiệu---
-
-        Route::get('introduces', function () {
-            return view('admin.posts.index');
-        });
 
         Route::resource('contacts', ContactController::class);
     });

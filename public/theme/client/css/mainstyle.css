@@ -93,7 +93,7 @@
     mask-size: 100% 100%;
 }
 
-/* 
+/*
 .container-choose-seat .st_dtts_left_main_wrapper span {
     font-size: 15px;
 } */
@@ -300,7 +300,7 @@
     color: white;
     border: 0px;
 }
-=======
+
 .buttons {
     display: flex; /* Sắp xếp các nút nằm ngang */
     gap: 15px; /* Khoảng cách giữa các nút */
