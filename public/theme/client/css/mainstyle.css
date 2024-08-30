@@ -2,6 +2,305 @@
     width: 100%;
     height: 100%;
 }
+
+
+.text-warning {
+    color: rgb(228, 228, 5);
+}
+
+.text-danger {
+    color: red;
+}
+
+.text-primary {
+    color: rgb(0, 0, 195);
+}
+
+.text-blue {
+    color: rgb(38, 151, 244);
+}
+
+/* Ghế vip */
+.mdi--love-seat {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 9.15V7c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v2.16c-1.16.41-2 1.51-2 2.81V14H7v-2.04c0-1.29-.84-2.4-2-2.81M20 10c-1.1 0-2 .9-2 2v3H6v-3a2 2 0 1 0-4 0v5c0 1.1.9 2 2 2v2h2v-2h12v2h2v-2c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.solar--sofa-3-bold {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M19.75 12.75c.967-3.884 1.396-5.903.384-7.322a4 4 0 0 0-.215-.275C18.722 3.75 16.481 3.75 12 3.75s-6.72 0-7.918 1.403q-.114.133-.215.275c-1.012 1.42-.583 3.438.384 7.322zm-15 5v2a.75.75 0 0 1-1.5 0v-2.145A2 2 0 0 1 4 13.75h16a2 2 0 0 1 .75 3.855v2.145a.75.75 0 0 1-1.5 0v-2z'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.game-icons--sofa {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23000' d='M112 73c-13.75 0-24.214 4.87-33.047 13.271s-15.755 20.6-20.414 34.575c-5.887 17.661-7.953 38.064-6.887 56.111a57 57 0 0 1 2.461-.187c8.38-.405 16.317 1.094 23.494 4.234c14.355 6.28 25.436 18.27 34.057 32.28c15.104 24.543 23.187 55.746 24.96 80.585c114.097-14.223 124.655-14.223 238.753 0c1.772-24.84 9.855-56.042 24.959-80.586c8.62-14.009 19.702-25.999 34.057-32.28c7.875-3.444 16.67-4.898 25.955-4.046c1.066-18.047-1-38.45-6.887-56.111c-4.659-13.976-11.582-26.173-20.414-34.575C424.214 77.87 413.75 73 400 73zM56.969 194.502q-1.029-.012-2.082.04c-5.621.284-11.8 1.978-18.862 5.509c-23.413 11.707-26.349 65.687 14.82 79.41l4.505 1.502L86.79 391h338.42l31.44-110.037l4.504-1.502c41.17-13.723 38.234-67.703 14.82-79.41c-14.121-7.061-24.722-6.775-34.367-2.555s-18.564 13.23-25.943 25.22C400.906 246.7 393 282 393 304v10.195l-10.117-1.265c-128-16-125.766-16-253.766 0L119 314.195V304c0-22-7.906-57.3-22.664-81.283c-7.38-11.991-16.298-21.001-25.943-25.22c-4.22-1.847-8.624-2.94-13.424-2.995M83.727 409l-23.272 23.271c11.994 3.239 33.75 3.763 42.545-1.666c3.272-4.695 6.903-14.536 10.438-21.605zm314.836 0c1.494 6.017 6.952 19.12 10.437 21.605c13.2 5.463 29.904 5.774 42.545 1.666L428.273 409z'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/* Ghế thường */
+.material-symbols--event-seat {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M4 21v-6h16v6h-2v-4H6v4zm.5-7q-.625 0-1.062-.437T3 12.5t.438-1.062T4.5 11t1.063.438T6 12.5t-.437 1.063T4.5 14M7 14V5q0-.825.588-1.412T9 3h6q.825 0 1.413.588T17 5v9zm12.5 0q-.625 0-1.062-.437T18 12.5t.438-1.062T19.5 11t1.063.438T21 12.5t-.437 1.063T19.5 14'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/* Ghế đôi */
+.iconoir--two-seater-sofa {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'%3E%3Cpath d='M2 16v3m10-6V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-8 4V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2'/%3E%3Cpath d='M20 9a2 2 0 0 0-2 2v2H6v-2a2 2 0 1 0-4 0v6h20v-6a2 2 0 0 0-2-2m2 7v3'/%3E%3C/g%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/* 
+.container-choose-seat .st_dtts_left_main_wrapper span {
+    font-size: 15px;
+} */
+
+/* .container-choose-seat .st_dtts_left_main_wrapper span.status-seat {
+    font-size: 14px;
+} */
+.title-choose-seat a {
+    font-size: 20px;
+}
+
+.border.my-3 {
+    display: flex;
+    justify-content: space-around;
+}
+
+.list-seats {
+    display: flex;
+    /* justify-content: ; */
+}
+
+.list-seats span.status-seat {
+    margin: auto;
+    margin-left: 5px;
+}
+
+.box-list-status-seat {
+    margin-top: 25px;
+}
+
+/* màn hình chiếu */
+
+
+.container-screen .screen {
+    background-color: #ccc;
+    height: 30px;
+    margin: 20px 0;
+    border-radius: 10px;
+    position: relative;
+    color: #000;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.container-screen .seat-selection {
+    /* display: flex; */
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.container-screen .row {
+    display: flex;
+    justify-content: center;
+    /* margin-bottom: 10px; */
+}
+
+/* .container-screen .seat {
+    width: 40px;
+    height: 40px;
+    background-color: #d1d1d1;
+    margin: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+} */
+.seat-selection .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    /* Khoảng cách giữa các hàng */
+}
+
+.seat {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    font-size: 20px;
+    /* Điều chỉnh kích thước font nếu cần */
+    /* margin-right: 5px; */
+    /* Khoảng cách giữa các ghế */
+    background-color: #ccc;
+    /* Màu nền của ghế */
+    z-index: 5;
+}
+
+.seat-label {
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: rgb(69, 68, 68);
+    pointer-events: none;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.ghe-thuong,
+.ghe-vip,
+.ghe-doi {
+    margin-bottom: 5px;
+
+}
+
+
+.container-screen .seat.available {
+    background-color: #d1d1d1;
+}
+
+.container-screen .seat.selected {
+    background-color: #00a2ff;
+}
+
+.container-screen .seat.reserved {
+    background-color: #ff4d4d;
+}
+
+.container-screen .seat.pre-booked {
+    background-color: #ffcc00;
+}
+
+.container-screen .legend {
+    margin-top: 20px;
+    display: flex;
+    /* justify-content: center; */
+    border: 1px solid rgb(138, 138, 138);
+    border-radius: 5px;
+    height: 50px;
+}
+
+.container-screen .legend div {
+    /* margin: 0px 20px; */
+    padding: 0px 15px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgb(222, 222, 222);
+}
+
+.bold {
+    color: black;
+    font-weight: bold;
+}
+
+.container-screen .legend div:last-child {
+    border-right: 0px;
+}
+
+.container-screen .legend span {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.info-movie div ul {
+    margin-top: 10px;
+    /* display: flex; */
+}
+
+.info-movie div ul li:first-child {
+    display: flex;
+}
+
+.info-movie div ul li h3 {
+    margin-left: 15px;
+    color: #0090e3;
+}
+
+.info-movie div ul li:first-child p {
+    margin-left: 15px;
+}
+
+.info-movie div ul li.bold {
+    font-size: 20px;
+    color: orangered;
+}
+
+.info-movie div ul li:not(.info-movie div ul li:first-child) {
+    /* padding: 12px; */
+    margin: 15px 20px 0px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-price-choose-seat {
+    margin: 18px 20px 0px 20px;
+    padding-right: 40px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 23px;
+}
+
+.total-price-choose-seat h3 {
+    font-size: 20px !important;
+}
+
+.total-price-choose-seat button {
+    padding: 10px 30px;
+    background-color: #ff4d4d;
+    color: white;
+    border: 0px;
+}
+=======
 .buttons {
     display: flex; /* Sắp xếp các nút nằm ngang */
     gap: 15px; /* Khoảng cách giữa các nút */
@@ -217,5 +516,6 @@ textarea {
 .submit-review:hover {
     background-color: #252525;
 }
+
 
 
