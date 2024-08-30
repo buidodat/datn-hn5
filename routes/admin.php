@@ -3,14 +3,13 @@
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
 
 use Illuminate\Support\Facades\Route;
 
 
-Route::prefix('admin')
-    ->as('admin.')
-    ->group(function () {
+
 
         Route::get('/', function () {
             return view('admin.dashboard');
@@ -57,4 +56,5 @@ Route::prefix('admin')
 
 
         Route::resource('contacts', ContactController::class);
-    });
+        Route::resource('movies', MovieController::class);
+
