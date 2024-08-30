@@ -31,6 +31,19 @@
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Combo</h4>
                     </div><!-- end card header -->
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session()->has('error'))
+                        <div class="alert alert-success">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
