@@ -32,12 +32,26 @@
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Cập nhật Combo</h4>
                     </div><!-- end card header -->
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session()->has('error'))
+                        <div class="alert alert-success">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label "> <span class="text-danger">*</span>Tên </label>
+                                        <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
+                                        </label>
                                         <input type="text" class="form-control" id="name" name="name"
                                             value="{{ $combo->name }}">
                                         @error('name')
@@ -46,7 +60,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="img_thumbnail" class="form-label"> 
+                                        <label for="img_thumbnail" class="form-label">
                                             <span class="text-danger">*</span>Hình ảnh</label>
                                         <input type="file" name="img_thumbnail" id="img_thumbnail" class="form-control">
 
@@ -63,7 +77,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="price" class="form-label "> <span class="text-danger">*</span>Giá</label>
+                                        <label for="price" class="form-label "> <span
+                                                class="text-danger">*</span>Giá</label>
                                         <input type="number" class="form-control" id="price" name="price"
                                             value="{{ $combo->price }}">
                                         @error('price')
@@ -83,7 +98,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="description" class="form-label"> <span class="text-danger">*</span>Mô tả ngắn</label>
+                                        <label for="description" class="form-label"> <span class="text-danger">*</span>Mô tả
+                                            ngắn</label>
                                         <textarea class="form-control" rows="3" name="description">{{ $combo->description }}</textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
