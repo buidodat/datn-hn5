@@ -300,43 +300,60 @@
     color: white;
     border: 0px;
 }
-=======
+
+/* Hết css trang chọn ghế */
 .buttons {
-    display: flex; /* Sắp xếp các nút nằm ngang */
-    gap: 15px; /* Khoảng cách giữa các nút */
+    display: flex;
+    /* Sắp xếp các nút nằm ngang */
+    gap: 15px;
+    /* Khoảng cách giữa các nút */
 
-    margin-top: 20px; /* Khoảng cách phía trên */
-  }
+    margin-top: 20px;
+    /* Khoảng cách phía trên */
+}
 
-  .buttons button {
-    padding: 12px 20px; /* Khoảng cách trong của nút */
-    border: none; /* Xóa viền nút */
-    border-radius: 5px; /* Bo tròn góc nút */
-    font-size: 16px; /* Kích thước chữ */
-    font-weight: bold; /* Chữ đậm */
-    cursor: pointer; /* Con trỏ chuột khi hover */
-    transition: background-color 0.3s ease; /* Hiệu ứng mượt khi hover */
-  }
+.buttons button {
+    padding: 12px 20px;
+    /* Khoảng cách trong của nút */
+    border: none;
+    /* Xóa viền nút */
+    border-radius: 5px;
+    /* Bo tròn góc nút */
+    font-size: 16px;
+    /* Kích thước chữ */
+    font-weight: bold;
+    /* Chữ đậm */
+    cursor: pointer;
+    /* Con trỏ chuột khi hover */
+    transition: background-color 0.3s ease;
+    /* Hiệu ứng mượt khi hover */
+}
 
-  .buy-ticket {
-    background-color: #ff5733; /* Màu nền nút 'Mua Vé Ngay' */
-    color: #fff; /* Màu chữ */
-  }
+.buy-ticket {
+    background-color: #ff5733;
+    /* Màu nền nút 'Mua Vé Ngay' */
+    color: #fff;
+    /* Màu chữ */
+}
 
-  .buy-ticket:hover {
-    background-color: #e74c3c; /* Màu nền khi hover nút 'Mua Vé Ngay' */
-  }
+.buy-ticket:hover {
+    background-color: #e74c3c;
+    /* Màu nền khi hover nút 'Mua Vé Ngay' */
+}
 
-  .watch-trailer {
-    background-color: #3498db; /* Màu nền nút 'Xem Trailer' */
-    color: #fff; /* Màu chữ */
-  }
+.watch-trailer {
+    background-color: #3498db;
+    /* Màu nền nút 'Xem Trailer' */
+    color: #fff;
+    /* Màu chữ */
+}
 
-  .watch-trailer:hover {
-    background-color: #2980b9; /* Màu nền khi hover nút 'Xem Trailer' */
-  }
+.watch-trailer:hover {
+    background-color: #2980b9;
+    /* Màu nền khi hover nút 'Xem Trailer' */
+}
 
-  .review-section {
+.review-section {
     width: 100%;
     margin: 80px auto;
 
@@ -363,14 +380,17 @@
 
 .stars .star {
     font-size: 24px;
-    color: #ddd; /* Màu sao mặc định */
+    color: #ddd;
+    /* Màu sao mặc định */
     margin-right: 5px;
-    transition: color 0.2s; /* Hiệu ứng chuyển màu khi hover */
+    transition: color 0.2s;
+    /* Hiệu ứng chuyển màu khi hover */
 }
 
 .stars .star.hover,
 .stars .star.selected {
-    color: #ffcc00; /* Màu vàng cho các sao khi hover hoặc được chọn */
+    color: #ffcc00;
+    /* Màu vàng cho các sao khi hover hoặc được chọn */
 }
 
 
@@ -444,7 +464,8 @@ textarea {
     font-size: 12px;
     color: #888;
 }
-.title-rating{
+
+.title-rating {
     margin-bottom: 30px;
 }
 
@@ -456,7 +477,7 @@ textarea {
     margin: 5px auto;
 }
 
-.hr-black{
+.hr-black {
     border-top: solid 2px black;
 }
 
@@ -471,31 +492,39 @@ textarea {
     margin-top: 20px;
 }
 
-.form-textarea{
+.form-textarea {
     width: 80%;
     height: 60px;
 }
+
 .button-submit-comment {
     width: 20%;
-    height: 60px; /* Ensures both have the same height */
+    height: 60px;
+    /* Ensures both have the same height */
 }
 
 .form-textarea textarea {
     width: 100%;
-    height: 100%; /* Match the parent height */
+    height: 100%;
+    /* Match the parent height */
     font-size: 16px;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px; /* Rounded corners on the left side */
+    border-radius: 4px 0 0 4px;
+    /* Rounded corners on the left side */
     resize: none;
-    box-sizing: border-box; /* Ensure padding is included in width */
-    margin: 0; /* Remove margin to avoid extra space */
+    box-sizing: border-box;
+    /* Ensure padding is included in width */
+    margin: 0;
+    /* Remove margin to avoid extra space */
 }
 
 .button-submit-comment {
     text-align: center;
-    height: 100%; /* Match the parent height */
-    margin: 0; /* Remove margin to avoid extra space */
+    height: 100%;
+    /* Match the parent height */
+    margin: 0;
+    /* Remove margin to avoid extra space */
 }
 
 .submit-review {
@@ -505,17 +534,18 @@ textarea {
     font-size: 16px;
     font-weight: bold;
     border: none;
-    border-radius: 0 4px 4px 0; /* Rounded corners on the right side */
+    border-radius: 0 4px 4px 0;
+    /* Rounded corners on the right side */
     cursor: pointer;
     width: 100%;
-    height: 100%; /* Ensure the button matches the height of the container */
-    box-sizing: border-box; /* Ensure padding is included in width */
-    margin: 0; /* Remove margin to avoid extra space */
+    height: 100%;
+    /* Ensure the button matches the height of the container */
+    box-sizing: border-box;
+    /* Ensure padding is included in width */
+    margin: 0;
+    /* Remove margin to avoid extra space */
 }
 
 .submit-review:hover {
     background-color: #252525;
 }
-
-
-
