@@ -6,8 +6,8 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="auth-container">
+    <div class="row row-login">
+        <div class="auth-container container-login">
             <div class="content">
 
                     <div class="logo-container">
