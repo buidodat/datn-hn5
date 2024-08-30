@@ -64,7 +64,9 @@ class ComboController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $combo = Combo::findOrFail($id);
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('combo'));
     }
 
     /**
@@ -72,7 +74,9 @@ class ComboController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $combo = Combo::findOrFail($id);
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('combo'));
     }
 
     /**

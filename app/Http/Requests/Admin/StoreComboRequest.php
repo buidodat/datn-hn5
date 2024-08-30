@@ -29,4 +29,18 @@ class StoreComboRequest extends FormRequest
             'description'   => 'required|string|max:1000',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Bạn chưa nhập tên.',
+            'name.unique' => 'Tên đã tồn tại.',
+            'img_thumbnail.required' => 'Bạn chưa thêm ảnh.',
+            'img_thumbnail.image' => 'File phải là một hình ảnh.',
+            'price.required' => 'Bạn chưa nhập giá.',
+            'price.numeric' => 'Giá phải là số.',
+            'price.min' => 'Giá phải là số lớn hơn 0.',
+            'description.required' => 'Bạn chưa nhập mô tả.',
+        ];
+    }
 }

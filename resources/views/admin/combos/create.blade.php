@@ -26,14 +26,6 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-md-12">
-                @if (session()->has('error'))
-                    <div class="alert alert-danger m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
-            </div>
-
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
@@ -44,7 +36,8 @@
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label ">Tên </label>
+                                        <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
+                                        </label>
                                         <input type="text" class="form-control" id="name" name="name"
                                             value="{{ old('name') }}">
                                         @error('name')
@@ -53,7 +46,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="img_thumbnail" class="form-label">Hình ảnh</label>
+                                        <label for="img_thumbnail" class="form-label"> <span
+                                                class="text-danger">*</span>Hình ảnh</label>
                                         <input type="file" name="img_thumbnail" id="img_thumbnail" class="form-control">
                                         @error('img_thumbnail')
                                             <span class="text-danger">{{ $message }}</span>
@@ -61,14 +55,14 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="price" class="form-label ">Giá </label>
+                                        <label for="price" class="form-label "> <span class="text-danger">*</span>Giá
+                                        </label>
                                         <input type="number" class="form-control" id="price" name="price"
                                             value="{{ old('price') }}">
                                         @error('price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
 
                                 </div>
 
@@ -82,24 +76,20 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="description" class="form-label">Mô tả ngắn:</label>
+                                        <label for="description" class="form-label"> <span class="text-danger">*</span>Mô tả
+                                            ngắn</label>
                                         <textarea class="form-control" rows="3" name="description">{{ old('description') }}</textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
-
                                 </div>
                                 <div class="col-lg-12">
                                     <a href="{{ route('admin.combos.index') }}" class="btn btn-warning">Quay lại</a>
                                     <button type="submit" class="btn btn-primary">Thêm mới</button>
-
                                 </div>
-
-
                             </div>
-
                             <!--end row-->
                         </div>
                     </div>

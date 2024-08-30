@@ -13,22 +13,18 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
-
-
 @section('content')
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0">Combo</h4>
-
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
                         <li class="breadcrumb-item active">Combo</li>
                     </ol>
                 </div>
-
             </div>
         </div>
     </div>
@@ -41,12 +37,6 @@
                     <h5 class="card-title mb-0">Danh sách Combo</h5>
                     <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
-                @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
-
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -76,19 +66,19 @@
                                     </td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ $item->description }}</td>
-                                    <td>{!! $item->is_active ? '<span class="badge bg-primary">Đang hoạt động</span>' : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}</td>
+                                    <td>{!! $item->is_active
+                                        ? '<span class="badge bg-primary">Đang hoạt động</span>'
+                                        : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}
+                                    </td>
                                     <td>
-
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
+                                        <a href="{{ route('admin.combos.show', $item)}}">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                                <i class="fas fa-eye"></i></button>
                                         </a>
-
+                                        <a href="{{ route('admin.combos.edit', $item)}}">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button">
+                                                <i class="fas fa-edit"></i></button>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
