@@ -26,3 +26,10 @@ Route::get('movie-detail', function () {
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
 });
+
+Route::get('login', function () {
+    return view('client.login');
+});
+Route::get('register', function () {
+    return view('client.register');
+});

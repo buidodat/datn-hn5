@@ -1,4 +1,4 @@
-<div class="prs_newsletter_wrapper">
+{{--<div class="prs_newsletter_wrapper">
     <div class="container">
         <div class="row">
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 <!-- prs Newsletter Wrapper End -->
 <!-- prs footer Wrapper Start -->
 <div class="prs_footer_main_section_wrapper">
