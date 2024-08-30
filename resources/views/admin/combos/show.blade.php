@@ -86,5 +86,4 @@
         </div>
         <!--end col-->
     </div>
-    </form>
 @endsection

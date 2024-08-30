@@ -71,14 +71,21 @@
                                         : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.combos.show', $item)}}">
+                                        <a href="{{ route('admin.combos.show', $item) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button">
                                                 <i class="fas fa-eye"></i></button>
                                         </a>
-                                        <a href="{{ route('admin.combos.edit', $item)}}">
+                                        <a href="{{ route('admin.combos.edit', $item) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
                                         </a>
+                                        {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
+                                            @csrf
+                                            @method('delete')
+
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Có muốn xóa không?')">Xóa</button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
