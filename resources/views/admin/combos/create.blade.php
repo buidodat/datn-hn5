@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{route('admin.foods.store')}}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.combos.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -15,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.combos.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -33,6 +33,7 @@
                     </div>
                 @endif
             </div>
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
@@ -44,22 +45,25 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="name" class="form-label ">Tên </label>
-                                        <input type="text" class="form-control fs-4 fw-semibold" id="name"
-                                            name="name" value="{{ old('name') }}">
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            value="{{ old('name') }}">
                                         @error('name')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="img_food" class="form-label">Hình ảnh</label>
-                                        <input type="file" name="img_food" id="img_food" class="form-control">
+                                        <label for="img_thumbnail" class="form-label">Hình ảnh</label>
+                                        <input type="file" name="img_thumbnail" id="img_thumbnail" class="form-control">
+                                        @error('img_thumbnail')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="price" class="form-label ">Giá </label>
-                                        <input type="text" class="form-control fs-4 fw-semibold" id="price"
-                                            name="price" value="{{ old('price') }}">
+                                        <input type="number" class="form-control" id="price" name="price"
+                                            value="{{ old('price') }}">
                                         @error('price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -71,31 +75,29 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked value="1">
-                                            </div>
+                                        <div class="form-check form-switch form-switch-default">
+                                            <input class="form-check-input" type="checkbox" role="" name="is_active"
+                                                checked value="1">
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control fs-5 fw-semibold" rows="3" name="description"></textarea>
+                                        <textarea class="form-control" rows="3" name="description"></textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+
+
+                                </div>
+                                <div class="col-lg-12">
+                                    <a href="{{ route('admin.combos.index') }}" class="btn btn-warning">Quay lại</a>
+                                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card">
-                                            <div class="card-header align-items-center d-flex">
-                                                <button class="btn btn-primary" type="submit">Thêm mới</button>
-                                            </div><!-- end card header -->
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                </div>
+
                             </div>
 
                             <!--end row-->
@@ -107,4 +109,3 @@
         </div>
     </form>
 @endsection
-
