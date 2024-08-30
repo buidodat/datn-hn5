@@ -37,6 +37,19 @@
                     <h5 class="card-title mb-0">Danh sách Combo</h5>
                     <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
+
+                @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
