@@ -40,4 +40,5 @@
 <script src="{{ asset('theme/client/js/plugin/rs_slider/revolution.extension.slideanims.min.js') }}"></script>
 <script src="{{ asset('theme/client/js/plugin/rs_slider/revolution.extension.video.min.js') }}"></script>
 <script src="{{ asset('theme/client/js/custom.js') }}"></script>
+<script src="{{ asset('theme/client/js/mainjs.js') }}"></script>
 <!--main js file end-->

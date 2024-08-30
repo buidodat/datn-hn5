@@ -37,5 +37,185 @@
     background-color: #2980b9; /* Màu nền khi hover nút 'Xem Trailer' */
   }
 
-  
+  .review-section {
+    width: 100%;
+    margin: 80px auto;
+
+}
+
+.rating-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 0px;
+    height: 155px;
+}
+
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stars {
+    display: flex;
+    cursor: pointer;
+}
+
+.stars .star {
+    font-size: 24px;
+    color: #ddd; /* Màu sao mặc định */
+    margin-right: 5px;
+    transition: color 0.2s; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.stars .star.hover,
+.stars .star.selected {
+    color: #ffcc00; /* Màu vàng cho các sao khi hover hoặc được chọn */
+}
+
+
+.rating-score {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+
+
+.review-list {
+    margin-top: 20px;
+}
+
+.review {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 3px 10px;
+    border-radius: 5px;
+}
+
+.review-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.review-rating .star {
+    color: #ffcc00;
+    font-size: 16px;
+}
+
+.review-rating .star.empty {
+    color: #ddd;
+}
+
+.review-score {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.review-content {
+    margin: 10px 0;
+    color: #555;
+}
+
+.review-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #888;
+}
+.title-rating{
+    margin-bottom: 30px;
+}
+
+.details ul li {
+    margin: 15px auto;
+}
+
+.description p {
+    margin: 5px auto;
+}
+
+.hr-black{
+    border-top: solid 2px black;
+}
+
+
+
+
+.form-comment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-textarea{
+    width: 80%;
+    height: 60px;
+}
+.button-submit-comment {
+    width: 20%;
+    height: 60px; /* Ensures both have the same height */
+}
+
+.form-textarea textarea {
+    width: 100%;
+    height: 100%; /* Match the parent height */
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px; /* Rounded corners on the left side */
+    resize: none;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    margin: 0; /* Remove margin to avoid extra space */
+}
+
+.button-submit-comment {
+    text-align: center;
+    height: 100%; /* Match the parent height */
+    margin: 0; /* Remove margin to avoid extra space */
+}
+
+.submit-review {
+    background-color: #2e2e2e;
+    color: #d9d097;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0 4px 4px 0; /* Rounded corners on the right side */
+    cursor: pointer;
+    width: 100%;
+    height: 100%; /* Ensure the button matches the height of the container */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    margin: 0; /* Remove margin to avoid extra space */
+}
+
+.submit-review:hover {
+    background-color: #252525;
+}
+
 
