@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('client.home');
 });
 
-Route::get('/movie-detail', function () {
+Route::get('movie-detail', function () {
     return view('client.movie-detail');
 });
 
