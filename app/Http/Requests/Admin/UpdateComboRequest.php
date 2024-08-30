@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreComboRequest extends FormRequest
+class UpdateComboRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +21,10 @@ class StoreComboRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('combo')->id;
         return [
-            'name'          => 'required|unique:combos,name', 
-            'img_thumbnail' => 'required|image|max:2048', 
+            'name'          => 'required|unique:combos,name,'. $id, 
+            'img_thumbnail' => 'nullable|image|max:2048', 
             'price'         => 'required|numeric|min:0', 
             'is_active'     => 'nullable|boolean', 
             'description'   => 'required|string|max:1000',
@@ -35,7 +36,7 @@ class StoreComboRequest extends FormRequest
         return [
             'name.required' => 'Bạn chưa nhập tên.',
             'name.unique' => 'Tên đã tồn tại.',
-            'img_thumbnail.required' => 'Bạn chưa thêm ảnh.',
+            // 'img_thumbnail.required' => 'Bạn chưa thêm ảnh.',
             'img_thumbnail.image' => 'File phải là một hình ảnh.',
             'price.required' => 'Bạn chưa nhập giá.',
             'price.numeric' => 'Giá phải là số.',
