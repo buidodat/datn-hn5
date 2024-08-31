@@ -71,3 +71,9 @@ document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
     });
 });
 
+// Js cho chọn suất chiếu
+// Handle date selection
+
+
+
+

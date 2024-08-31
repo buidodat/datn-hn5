@@ -16,7 +16,7 @@
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Danh sách</a></li>
-                            <li class="breadcrumb-item active">Thêm mới</li>
+                            <li class="breadcrumb-item active ">Thêm mới</li>
                         </ol>
                     </div>
 
@@ -44,7 +44,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control fs-4 fw-semibold" id="title"
+                                        <input type="text" class="form-control " id="title"
                                             name="title" value="{{ old('title') }}">
                                         @error('title')
                                             <span class="text-danger">{{ $message }}</span>
@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control fs-5 fw-semibold" rows="3" name="description"></textarea>
+                                        <textarea class="form-control " rows="3" name="description"></textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -87,20 +87,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <label for="slug" class="form-label">Slug:</label>
-                                    <input type="text" class="form-control fs-4 fw-semibold" id="slug"
-                                        name="slug" value="{{ old('slug') }}">
-                                    @error('slug')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="col-md-12">
                         <div class="card">
@@ -128,12 +114,12 @@
         </div>
 
 
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <button type:s class="btn btn-info">Thêm mới</button>
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-info">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                     </div>
                 </div>
             </div>
