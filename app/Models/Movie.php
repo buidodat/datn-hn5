@@ -21,6 +21,8 @@ class Movie extends Model
         'release_date',
         'end_date',
         'trailer_url',
+        'is_active',
+        'is_hot'
     ];
 
     protected $casts =[

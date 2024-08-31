@@ -76,7 +76,7 @@
                                         @else
                                             No image !
                                         @endif
-                                        
+
                                     </td>
                                     <td>
                                         <ul class="nav nav-sm flex-column">
@@ -99,13 +99,13 @@
                                     </td>
                                     <td>
                                         {!! $movie->is_active == 1
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
                                     <td>
                                         {!! $movie->is_hot == 1
-                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
-                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
 
                                     </td>
 
