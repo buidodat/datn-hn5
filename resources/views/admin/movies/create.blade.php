@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -13,7 +13,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
     <form action="{{ route('admin.movies.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
@@ -129,7 +129,7 @@
                                             <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
-                                                    <option value="{{ $rating }}">{{ $rating }}</option>
+                                                    <option value="{{ $rating }}" @selected(old('rating') == $rating )>{{ $rating }}</option>
                                                 @endforeach
                                             </select>
                                             @error('rating')
@@ -143,7 +143,7 @@
                                             <select class="js-example-basic-multiple" name="languages[]"
                                                 multiple="multiple">
                                                 @foreach ($languages as $language)
-                                                    <option value="{{ $language }}" selected>{{ $language }}
+                                                    <option value="{{ $language }}" @selected(in_array($language, old('languages') ?? [] ) )>{{ $language }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -216,7 +216,16 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
+                                                    name="is_active" checked >
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-check-label" for="is_active">Is Hot</label>
+                                            <div class="form-check form-switch form-switch-danger">
+                                                <input class="form-check-input" type="checkbox" role="" name="is_hot" @checked(old('is_hot'))>
                                             </div>
                                         </div>
                                     </div>
