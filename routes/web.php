@@ -45,6 +45,12 @@ Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
 
+
 Route::get('showtime', function () {
     return view('client.showtime');
 })->name('showtime');
+
+Route::get('contact', function () {
+    return view('client.contact');
+})->name('contact');
+

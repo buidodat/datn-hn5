@@ -80,8 +80,8 @@
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ $item->description }}</td>
                                     <td>{!! $item->is_active
-                                        ? '<span class="badge bg-primary">Đang hoạt động</span>'
-                                        : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.combos.show', $item) }}">

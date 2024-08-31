@@ -137,6 +137,14 @@
     text-align: center;
     line-height: 30px;
     font-weight: bold;
+    -webkit-user-select: none;
+    /* Chrome, Safari, Opera */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, hiện đại hơn */    
 }
 
 .container-screen .seat-selection {
@@ -613,7 +621,7 @@ textarea {
     margin: 10px;
 }
 
-/* 
+/*
 .mdi--voucher {
     font-size: 24px;
     color: #ff6600;

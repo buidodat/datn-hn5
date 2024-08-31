@@ -129,9 +129,7 @@
                                             <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
-                                                    {
                                                     <option value="{{ $rating }}">{{ $rating }}</option>
-                                                    }
                                                 @endforeach
                                             </select>
                                             @error('rating')
