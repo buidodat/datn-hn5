@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách bài viết</h5>
-                    <a href="{{ route('admin.posts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -72,7 +72,7 @@
                                     <td class="text-center">
                                         @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
                                             <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
-                                                width="180px" >
+                                                width="160px" >
                                         @else
                                             No image !
                                         @endif
@@ -96,8 +96,17 @@
                                     </div>
 
                                     </td>
-                                    <td>{{ $movie->is_active }}</td>
-                                    <td>{{ $movie->is_hot }}</td>
+                                    <td>
+                                        {!! $movie->is_active == 1
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+                                    </td>
+                                    <td>
+                                        {!! $movie->is_hot == 1
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+
+                                    </td>
 
                                     <td>
                                         <a href="">

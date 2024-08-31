@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MovieLanguage extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'movie_id',
+        'language'
+    ];
 }
