@@ -41,31 +41,35 @@
                 <div class="card-body">
                     <div class="live-preview">
                         <div class="row gy-4">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label ">Tên phương thức thanh toán:</label>
-                                    <input type="text" class="form-control fs-4 fw-semibold" id="name" name="name">
-                                    @error("name")
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                            <div class="col-md-12">
+                                <!-- Hàng đầu tiên chứa tên phương thức thanh toán -->
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="name" class="form-label">Tên phương thức thanh toán:</label>
+                                        <input type="text" class="form-control" id="name" name="name">
+                                        @error("name")
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                            <label for="description" class="form-label">Mô tả:</label>
-                                            <textarea class="form-control" rows="3" name="description"></textarea>
-                                            @error('description')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                <!-- Hàng thứ hai chứa mô tả -->
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="description" class="form-label">Mô tả:</label>
+                                        <textarea class="form-control" rows="3" name="description"></textarea>
+                                        @error('description')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Nút thêm mới -->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button type="submit" class="btn btn-info">Thêm mới</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-info">Save</button>
-                            </div>
                         </div>
-
                         <!--end row-->
                     </div>
                 </div>
