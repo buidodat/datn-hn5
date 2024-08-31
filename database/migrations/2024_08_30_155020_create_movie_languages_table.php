@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('movie_languages', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Movie::class);
-            $table->string('language')->unique();
+            $table->string('language');
             $table->timestamps();
+            $table->unique(['movie_id','language'],'movie_language');
         });
     }
 

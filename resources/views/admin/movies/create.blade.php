@@ -5,6 +5,15 @@
 @endsection
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="{{ route('admin.movies.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
@@ -45,92 +54,116 @@
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
                                             <label for="name" class="form-label ">Tên phim:</label>
-                                            <input type="text" class="form-control" id="name"
-                                                name="name" value="{{ old('name') }}">
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                value="{{ old('name') }}" placeholder="Nhập tên phim">
                                             @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
 
                                         <div class="col-md-4 mb-3">
                                             <label for="director" class="form-label ">Đạo diễn:</label>
-                                            <input type="text" class="form-control" id="director"
-                                                name="director" value="{{ old('director') }}">
+                                            <input type="text" class="form-control" id="director" name="director"
+                                                value="{{ old('director') }}" placeholder="Eiichiro Oda">
                                             @error('director')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-8 mb-3">
                                             <label for="cast" class="form-label ">Diễn viên:</label>
-                                            <input type="text" class="form-control" id="cast"
-                                                name="cast" value="{{ old('cast') }}">
+                                            <input type="text" class="form-control" id="cast" name="cast"
+                                                value="{{ old('cast') }}" placeholder="Monkey D.Luffy, Rononoa Zoro">
                                             @error('cast')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
 
 
                                         <div class="col-md-4 mb-3">
                                             <label for="release_date" class="form-label ">Ngày khởi chiếu:</label>
-                                            <input type="date" class="form-control" id="release_date"
-                                                name="release_date" value="{{ old('release_date') }}">
+                                            <input type="date" class="form-control" id="release_date" name="release_date"
+                                                value="{{ old('release_date', now()->format('Y-m-d')) }}">
                                             @error('release_date')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="end_date" class="form-label ">Ngày kết thúc:</label>
-                                            <input type="date" class="form-control" id="end_date"
-                                                name="end_date" value="{{ old('end_date') }}">
+                                            <input type="date" class="form-control" id="end_date" name="end_date"
+                                                value="{{ old('end_date', now()->addDays(30)->format('Y-m-d')) }}">
                                             @error('end_date')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="duration" class="form-label ">Thời lượng:</label>
-                                            <input type="number" class="form-control" id="duration"
-                                                name="duration" value="{{ old('duration') }}">
+                                            <input type="number" class="form-control" id="duration" name="duration"
+                                                value="{{ old('duration') }}" placeholder="127 (phút)">
                                             @error('duration')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
                                             <label for="category" class="form-label ">Thể loại:</label>
-                                            <input type="text" class="form-control" id="category"
-                                                name="category" value="{{ old('category') }}">
+                                            <input type="text" class="form-control" id="category" name="category"
+                                                value="{{ old('category') }}" placeholder="Hoạt hình, Khám phá">
                                             @error('category')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
                                             <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
-                                                @foreach($ratings as $rating){
+                                                @foreach ($ratings as $rating)
+                                                    {
                                                     <option value="{{ $rating }}">{{ $rating }}</option>
-                                                }
+                                                    }
                                                 @endforeach
                                             </select>
                                             @error('rating')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-check-label mb-2" for="is_active">Ngôn ngữ:</label>
-                                            <select class="js-example-basic-multiple" name="languages[]" multiple="multiple">
-                                                @foreach ($languages as $language )
-                                                    <option value="{{ $language }}" selected>{{ $language }}</option>
+                                            <select class="js-example-basic-multiple" name="languages[]"
+                                                multiple="multiple">
+                                                @foreach ($languages as $language)
+                                                    <option value="{{ $language }}" selected>{{ $language }}
+                                                    </option>
                                                 @endforeach
                                             </select>
 
                                             @error('languages')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="description" class="form-label">Mô tả phim:</label>
-                                            <textarea class="form-control " rows="3" name="description"></textarea>
+                                            <textarea class="form-control " rows="3" name="description"
+                                                placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '></textarea>
                                             @error('description')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -151,7 +184,9 @@
                                     <label for="" class="form-label">Hình ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
                                     @error('img_thumbnail')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <div class='mt-1'>
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
@@ -161,11 +196,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="slug" class="form-label">URL Trailer:</label>
-                                    <input type="text" class="form-control" id="slug"
-                                        name="slug" value="{{ old('slug') }}">
-                                    @error('slug')
-                                        <span class="text-danger">{{ $message }}</span>
+                                    <label for="trailer_url" class="form-label">URL Trailer:</label>
+                                    <input type="text" class="form-control" id="trailer_url" name="trailer_url"
+                                        value="{{ old('trailer_url') }}" placeholder="ZQkU_oI2NOU">
+                                    @error('trailer_url')
+                                        <div class='mt-1'>
+                                            <span class="text-danger">{{ $message }}</span>
+                                        </div>
                                     @enderror
                                 </div>
                             </div>

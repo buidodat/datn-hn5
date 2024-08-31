@@ -16,6 +16,7 @@ class Movie extends Model
         'description',
         'director',
         'cast',
+        'rating',
         'duration',
         'release_date',
         'end_date',
