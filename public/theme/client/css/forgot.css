@@ -1,7 +1,6 @@
-.row {
+.row-login {
     display: flex;
     justify-content: center;
-
 }
 
 /* Container for the form */
@@ -12,7 +11,7 @@
 }
 
 
-.content {
+.container-login .content {
     display: flex;
     justify-content: center;
     width: 550px;
@@ -22,30 +21,29 @@
     border-radius: 8px;
 }
 
-.form-input{
+.container-login .form-input{
     width: 60%;
-
 }
 
-.text-login{
+.container-login .text-login{
     margin-bottom: 30px;
     font-weight: bold;
     text-align: center;
 }
 
 
-.input-container {
+.container-login .input-container {
     margin-bottom: 20px;
 }
 
-.input-container input {
+.container-login .input-container input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
-.forgotpass button {
+.container-login .forgotpass button {
     display: block;
     margin: auto;
     width: 60%;
@@ -57,6 +55,5 @@
     border-radius: 4px;
     margin-bottom: 10px;
 }
-
 
 
