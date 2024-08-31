@@ -38,7 +38,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách bài viết</h5>
+                    <h5 class="card-title mb-0">Danh sách phim</h5>
                     <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
@@ -76,6 +76,7 @@
                                         @else
                                             No image !
                                         @endif
+                                        
                                     </td>
                                     <td>
                                         <ul class="nav nav-sm flex-column">
