@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh mục sản phẩm
+    Danh sách phim
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Datatables</h4>
+                <h4 class="mb-sm-0">Danh sách phim</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Datatables</li>
+                        <li class="breadcrumb-item active">Phim</li>
                     </ol>
                 </div>
 
@@ -39,11 +39,16 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách bài viết</h5>
-                    <a href="{{ route('admin.posts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
                         {{ session()->get('success') }}
+                    </div>
+                @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-warning m-3">
+                        {{ session()->get('error') }}
                     </div>
                 @endif
 
@@ -53,104 +58,67 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tiêu đề</th>
-                                <th>Hình ảnh</th>
-                                <th>Mô tả ngắn</th>
-                                <th>Nội dung</th>
-                                <th>Slug</th>
+                                <th class="text-center" >Hình ảnh</th>
+                                <th>Thông tin phim</th>
                                 <th>Hoạt động</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
+                                <th>Tag hot</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($posts as $post)
+                        <tbody>
+                            @foreach ($movies as $movie)
                                 <tr>
-                                    <td>{{ $post->id }}</td>
-                                    <td style="!implement width: 5%">{{ $post->title }}</td>
-                                    <td>
-                                        @if ($post->image && \Storage::exists($post->image))
-                                            <img src="{{ Storage::url($post->image) }}" alt="" width="50px">
+                                    <td>{{ $movie->id }}</td>
+                                    <td class="text-center">
+                                        @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                            <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
+                                                width="160px" >
                                         @else
                                             No image !
                                         @endif
-
-                                        @php
-                                            $url = $post->image;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($post->image))
-                                            <img src="{{ $url }}" alt="" width="100px">
-                                        @else
-                                            No image !
-                                        @endif
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Tên phim:</span> {{ $movie->name }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Đạo diễn:</span> {{ $movie->director }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Diễn viên:</span> {{ $movie->cast }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày khởi chiếu:</span> {{ $movie->release_date }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ $movie->end_date }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Phân loại:</span> {{ $movie->rating }}</li>
+                                            <li class="nav-item mb-2">
+                                                <span class="fw-semibold">Ngôn ngữ:</span>
+                                                @foreach ( $movie->movieLanguages as $language)
+                                                    <span class="badge bg-info">{{ $language->language }}</span>
+                                                @endforeach
+                                            </li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Trailler URL:</span> <input type="text" disabled value="{{ $movie->trailer_url}}2121"></li>
+                                        </ul>
+                                    </div>
 
                                     </td>
-                                    <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->author->name }}</td>
-                                    <td>{{ $post->views }}</td>
-                                    <td>{!! $post->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_popular ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_hot_post ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $post->slug }}</td>
                                     <td>
-                                        @foreach ($post->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
+                                        {!! $movie->is_active == 1
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
                                     </td>
-                                    <td>{{ $post->created_at }}</td>
-                                    <td>{{ $post->updated_at }}</td>
                                     <td>
+                                        {!! $movie->is_hot == 1
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
 
+                                    </td>
 
+                                    <td>
                                         <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-
                                         <a href="">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            @for ($i = 0; $i < 7; $i++)
-                                <tr>
-                                    <td>1</td>
-                                    <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ? </td>
-                                    <td>
-                                        image
-                                    </td>
-                                    <td>Theo báo mới 24h, phim KingKong của Mỹ sẽ được quay tại Vịnh Hạ Long Việt Nam....
-                                    </td>
-                                    <td>Theo ông Kim Jong Jun đánh giá bộ phim này hứa hẹn sẽ mang lại nhiều trải nghiệm, ấn
-                                        tượng, thu hút lượng khách hàng lớn đến với Việt Nam du lịch</td>
-                                    <td>phim-king-kong-2025-se-quay-tai-viet-nam</td>
-                                    <td><span class="badge bg-primary">Yes</span></td>
-
-                                    <td>$post->created_at </td>
-                                    <td>$post->updated_at</td>
-                                    <td>
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endfor
-
-
 
                         </tbody>
 

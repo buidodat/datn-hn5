@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('client.home');
-});
+})->name('home');
 
 Route::get('movie-detail', function () {
     return view('client.movie-detail');
-});
+})->name('movie-detail');
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
@@ -29,11 +29,18 @@ Route::get('choose-seat', function () {
 
 Route::get('login', function () {
     return view('client.login');
-});
+})->name('login');
+
 Route::get('register', function () {
     return view('client.register');
-});
+})->name('register');
+
 
 Route::get('checkout', function () {
     return view('client.checkout');
 })->name('checkout');
+
+
+Route::get('forgot-password', function () {
+    return view('client.forgot-password');
+})->name('forgot-password');

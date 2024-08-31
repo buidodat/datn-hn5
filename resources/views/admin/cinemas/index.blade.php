@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Combo
+    Danh sách Rạp
 @endsection
 
 @section('style-libs')
@@ -18,11 +18,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Combo</h4>
+                <h4 class="mb-sm-0">Rạp</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Combo</li>
+                        <li class="breadcrumb-item active">Rạp</li>
                     </ol>
                 </div>
             </div>
@@ -34,8 +34,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Combo</h5>
-                    <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách Rạp</h5>
+                    <a href="{{ route('admin.cinemas.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -49,59 +49,47 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                
+
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên combo</th>
-                                <th>Hình ảnh</th>
-                                <th>Giá</th>
-                                <th>Mô tả</th>
+                                <th>Tên rạp</th>
+                                <th>Thành phố</th>
+                                <th>Địa chỉ</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td class="text-center">
-                                        @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
-                                            <img src="{{ Storage::url($item->img_thumbnail) }}" alt=""
-                                                width="100px" height="60px">
-                                        @else
-                                            No image !
-                                        @endif
-                                    </td>
-                                    <td>{{ number_format($item->price) }} VNĐ</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-primary">Đang hoạt động</span>'
-                                        : '<span class="badge bg-danger">Ngừng hoạt động</span>' !!}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.combos.show', $item) }}">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
-                                                <i class="fas fa-eye"></i></button>
-                                        </a>
-                                        <a href="{{ route('admin.combos.edit', $item) }}">
-                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
+                            <tr>
+                                <td>1</td>
+                                <td>tên rạp</td>
+                                <td>Hà nội</td>
+                                <td>Thanh oai, hà nội</td>
+                                <td>
+                                    <span class="badge bg-danger">Ngừng hoạt động</span>
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <button title="xem" class="btn btn-success btn-sm " type="button">
+                                            <i class="fas fa-eye"></i></button>
+                                    </a>
+                                    <a href="">
+                                        <button title="xem" class="btn btn-warning btn-sm " type="button">
+                                            <i class="fas fa-edit"></i></button>
+                                    </a>
+                                    {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
                                             @csrf
                                             @method('delete')
 
                                             <button type="submit" class="btn btn-danger"
                                                 onclick="return confirm('Có muốn xóa không?')">Xóa</button>
                                         </form> --}}
-                                    </td>
-                                </tr>
-                            @endforeach
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

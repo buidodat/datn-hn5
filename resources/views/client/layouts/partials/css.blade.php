@@ -36,7 +36,12 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/responsive.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/mainstyle.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/register.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/forgot.css') }}" />
 <link rel="stylesheet" id="theme-color" type="text/css" href="#"/>
+
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/color/color3.css') }}" />
+
 <!-- favicon links -->
 <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />
 
