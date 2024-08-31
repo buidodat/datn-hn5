@@ -33,6 +33,8 @@ Route::resource('cinemas', CinemaController::class);
 Route::resource('payments', PaymentController::class);
 // Combo
 Route::resource('combos', ComboController::class);
+// Payment
+Route::resource('payments', PaymentController::class);
 
 Route::prefix('slideshows')
     ->as('slideshows.')
@@ -51,6 +53,26 @@ Route::prefix('slideshows')
         })->name('edit');
     });
 
+Route::prefix('vouchers')
+    ->as('vouchers.')
+    ->group(function () {
+
+        Route::get('/', function () {
+            return view('admin.vouchers.index');
+        })->name('list');
+
+        Route::get('create', function () {
+            return view('admin.vouchers.create');
+        })->name('create');
+
+        Route::get('edit', function () {
+            return view('admin.vouchers.edit');
+        })->name('edit');
+
+        Route::get('show', function () {
+            return view('admin.vouchers.show');
+        })->name('show');
+    });
 
 
 Route::resource('contacts', ContactController::class);
