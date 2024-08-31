@@ -23,7 +23,9 @@ class MovieController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__ );
+        $ratings = Movie::RATINGS;
+        $languages = Movie::LANGUAGES;
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings','languages']));
     }
 
     /**

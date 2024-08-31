@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.movies.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -44,86 +44,85 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
-                                            <label for="title" class="form-label ">Tên phim:</label>
-                                            <input type="text" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="name" class="form-label ">Tên phim:</label>
+                                            <input type="text" class="form-control" id="name"
+                                                name="name" value="{{ old('name') }}">
+                                            @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Đạo diễn:</label>
-                                            <input type="text" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="director" class="form-label ">Đạo diễn:</label>
+                                            <input type="text" class="form-control" id="director"
+                                                name="director" value="{{ old('director') }}">
+                                            @error('director')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-8 mb-3">
-                                            <label for="title" class="form-label ">Diễn viên:</label>
-                                            <input type="text" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="cast" class="form-label ">Diễn viên:</label>
+                                            <input type="text" class="form-control" id="cast"
+                                                name="cast" value="{{ old('cast') }}">
+                                            @error('cast')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
 
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Ngày khởi chiếu:</label>
-                                            <input type="date" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="release_date" class="form-label ">Ngày khởi chiếu:</label>
+                                            <input type="date" class="form-control" id="release_date"
+                                                name="release_date" value="{{ old('release_date') }}">
+                                            @error('release_date')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Ngày kết thúc:</label>
-                                            <input type="date" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="end_date" class="form-label ">Ngày kết thúc:</label>
+                                            <input type="date" class="form-control" id="end_date"
+                                                name="end_date" value="{{ old('end_date') }}">
+                                            @error('end_date')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Thời lượng:</label>
-                                            <input type="text" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="duration" class="form-label ">Thời lượng:</label>
+                                            <input type="number" class="form-control" id="duration"
+                                                name="duration" value="{{ old('duration') }}">
+                                            @error('duration')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="title" class="form-label ">Thể loại:</label>
-                                            <input type="text" class="form-control" id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="category" class="form-label ">Thể loại:</label>
+                                            <input type="text" class="form-control" id="category"
+                                                name="category" value="{{ old('category') }}">
+                                            @error('category')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="title" class="form-label ">Giới hạn độ tuổi:</label>
-                                            <select name="" id="" class="form-select">
-                                                <option value="">C13</option>
-                                                <option value="">C16</option>
-                                                <option value="">C18</option>
-                                                <option value="">P</option>
+                                            <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
+                                            <select name="rating" id="" class="form-select">
+                                                @foreach($ratings as $rating){
+                                                    <option value="{{ $rating }}">{{ $rating }}</option>
+                                                }
+                                                @endforeach
                                             </select>
-                                            @error('title')
+                                            @error('rating')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-6 mb-3">
-
                                             <label class="form-check-label mb-2" for="is_active">Ngôn ngữ:</label>
-                                            <select class="js-example-basic-multiple" name="tags[]" multiple="multiple">
-                                                <option value="" selected>Vietsub</option>
-                                                <option value="" selected>Lồng tiếng</option>
-                                                <option value="" selected>Thuyết minh</option>
+                                            <select class="js-example-basic-multiple" name="languages[]" multiple="multiple">
+                                                @foreach ($languages as $language )
+                                                    <option value="{{ $language }}" selected>{{ $language }}</option>
+                                                @endforeach
                                             </select>
 
-                                            @error('title')
+                                            @error('languages')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -150,8 +149,8 @@
                             <div class="card-body">
                                 <div class="mb-2">
                                     <label for="" class="form-label">Hình ảnh:</label>
-                                    <input type="file" name="img_post" id="" class="form-control">
-                                    @error('img_post')
+                                    <input type="file" name="img_thumbnail" id="" class="form-control">
+                                    @error('img_thumbnail')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -204,7 +203,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <button type:s class="btn btn-info">Thêm mới</button>
+                        <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                     </div>
                 </div>
             </div>

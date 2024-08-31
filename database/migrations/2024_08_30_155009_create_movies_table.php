@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('director');
             $table->string('cast')->nullable();
+            $table->unsignedInteger('duration');
             $table->string('rating')->nullable();
             $table->date('release_date');
             $table->date('end_date');
