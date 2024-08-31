@@ -17,22 +17,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('client.home');
-});
+})->name('home');
 
 Route::get('movie-detail', function () {
     return view('client.movie-detail');
-});
+})->name('movie-detail');
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
-});
+})->name('choose-seat');
 
 Route::get('login', function () {
     return view('client.login');
-});
+})->name('login');
 Route::get('register', function () {
     return view('client.register');
-});
-Route::get('forgot', function () {
+})->name('register');
+Route::get('forgot-password', function () {
     return view('client.forgot-password');
-});
+})->name('forgot-password');

@@ -24,69 +24,18 @@
                             <li class="parent"><a href="#">Home</a>
                                 <ul class="lg-submenu">
                                     <li><a href="index.html">Index-I</a></li>
+                                    <li><a href="index2.html">Index-II</a></li>
+                                    <li><a href="index3.html">Index-III</a></li>
+                                    <li><a href="index4.html">Index-IV</a></li>
                                 </ul>
                             </li>
-                            <li class="parent megamenu"><a href="#">movie</a>
-                                <ul class="lg-submenu">
-                                    <li><a>Popular Hindi Movies</a>
-                                        <ul class="lg-submenu">
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Bajiro
-                                                    Mastani</a>
-                                            </li>
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Drishyam</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a>Popular Kannada Movies</a>
-                                        <ul class="lg-submenu">
-                                            <li class="ar_left"><i class="fa fa-film"></i><a href="#">Zoom</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <div class="prs_navi_slider_wraper">
-                                            <div class="owl-carousel owl-theme">
-                                                <div class="item">
-                                                    <img src="{{ asset('theme/client/images/content/up1.jpg') }}"
-                                                        alt="navi_img">
-                                                </div>
-                                                <div class="item">
-                                                    <img src="{{ asset('theme/client/images/content/up2.jpg') }}"
-                                                        alt="navi_img">
-                                                </div>
-                                                <div class="item">
-                                                    <img src="{{ asset('theme/client/images/content/up3.jpg') }}"
-                                                        alt="navi_img">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="parent megamenu"><a href="#">video</a>
-                                <ul class="lg-submenu prs_navi_video_wrapper">
-                                    <li>
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="{{ asset('theme/client/images/content/vp1.jpg') }}"
-                                                alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'><i
-                                                        class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="hidden-sm">
-                                        <div class="prs_video_navi_img_main_wrapper">
-                                            <img src="{{ asset('theme/client/images/content/vp6.jpg') }}"
-                                                alt="video_img">
-                                            <div class="prs_video_navi_overlay_wrapper"> <a
-                                                    class="test-popup-link button" rel='external'
-                                                    href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'><i
-                                                        class="flaticon-play-button"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
+                            <li class="parent"><a href="#">Pages</a>
+                                <ul class="lg-submenu ">
+                                    <li><a href="{{ route('movie-detail') }}">Movie Detail</a></li>
+                                    <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li>
+                                    <li><a href="{{ route('login') }}">Login</a></li>
+                                    <li><a href="{{ route('register') }}">Register</a></li>
+                                    <li><a href="{{ route('forgot-password') }}">Forgot Password</a></li>
                                 </ul>
                             </li>
                             <li class="parent"><a href="contact.html">contact</a>
