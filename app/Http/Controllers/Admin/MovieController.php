@@ -39,7 +39,7 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        try {
+        // try {
 
             DB::transaction(function() use($request){
 
@@ -79,9 +79,9 @@ class MovieController extends Controller
                 ->route('admin.movies.index')
                 ->with('success', 'Thêm mới thành công!');
 
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
-        }
+        // } catch (\Throwable $th) {
+        //     return back()->with('error', $th->getMessage());
+        // }
     }
 
     /**
