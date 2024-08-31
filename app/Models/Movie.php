@@ -41,10 +41,10 @@ class Movie extends Model
     ];
 
     const RATINGS = [
+        'P',
         'C13',
         'C16',
         'C18',
-        'P',
         'K'
     ];
 }

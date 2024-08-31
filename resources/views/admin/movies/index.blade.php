@@ -110,10 +110,10 @@
                                     </td>
 
                                     <td>
-                                        <a href="">
+                                        <a href="{{ route('admin.movies.show',$movie) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-                                        <a href="">
+                                        <a href="{{ route('admin.movies.edit',$movie) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
