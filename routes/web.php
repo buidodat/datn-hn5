@@ -44,3 +44,7 @@ Route::get('checkout', function () {
 Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
+
+Route::get('contact', function () {
+    return view('client.contact');
+})->name('contact');
