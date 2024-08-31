@@ -70,7 +70,7 @@
                                 <td>Hà nội</td>
                                 <td>Thanh oai, hà nội</td>
                                 <td>
-                                    <span class="badge bg-danger">Ngừng hoạt động</span>
+                                    <span class="badge bg-danger-subtle text-danger text-uppercase">No</span>
                                 </td>
                                 <td>
                                     <a href="">
