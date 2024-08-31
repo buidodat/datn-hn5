@@ -25,7 +25,7 @@ Route::get('movie-detail', function () {
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
-});
+})->name('choose-seat');
 
 Route::get('login', function () {
     return view('client.login');
@@ -33,3 +33,7 @@ Route::get('login', function () {
 Route::get('register', function () {
     return view('client.register');
 });
+
+Route::get('checkout', function () {
+    return view('client.checkout');
+})->name('checkout');

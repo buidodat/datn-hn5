@@ -196,8 +196,8 @@
                                 </div>
 
                                 <div class="total-price-choose-seat float_left">
-                                    <form action="">
-                                        <button>Thanh toán</button>
+                                    <form action="{{ route('checkout') }}">
+                                        <button type="submit">Tiếp tục</button>
                                     </form>
                                 </div>
 

@@ -45,3 +45,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Js cho tăng giảm số lượng trang thanh toán 
+document.getElementById('decrease').addEventListener('click', function () {
+    var quantityInput = document.getElementById('quantity-input');
+    var currentValue = parseInt(quantityInput.value);
+
+    if (currentValue >= 1) {
+        quantityInput.value = currentValue - 1;
+    }
+});
+
+document.getElementById('increase').addEventListener('click', function () {
+    var quantityInput = document.getElementById('quantity-input');
+    var currentValue = parseInt(quantityInput.value);
+
+    quantityInput.value = currentValue + 1;
+});
+
+// Js cho đoạn nhập voucher và điểm trang thanh toán 
+document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
+    title.addEventListener('click', function () {
+        const section = this.parentElement;
+        section.classList.toggle('active');
+    });
+});
+

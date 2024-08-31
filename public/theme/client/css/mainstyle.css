@@ -194,10 +194,14 @@
     font-weight: bold;
     z-index: 10;
 
-        -webkit-user-select: none;  /* Chrome, Safari, Opera */
-        -moz-user-select: none;     /* Firefox */
-        -ms-user-select: none;      /* Internet Explorer/Edge */
-        user-select: none;          /* Non-prefixed version, hiện đại hơn */
+    -webkit-user-select: none;
+    /* Chrome, Safari, Opera */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, hiện đại hơn */
 
 }
 
@@ -554,4 +558,457 @@ textarea {
 
 .submit-review:hover {
     background-color: #252525;
+}
+
+
+/* Css trang thanh toán checkout */
+.ei--user {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Cpath fill='%23000' d='M25.1 42c-9.4 0-17-7.6-17-17s7.6-17 17-17s17 7.6 17 17s-7.7 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.8-15-15-15'/%3E%3Cpath fill='%23000' d='m15.3 37.3l-1.8-.8c.5-1.2 2.1-1.9 3.8-2.7s3.8-1.7 3.8-2.8v-1.5c-.6-.5-1.6-1.6-1.8-3.2c-.5-.5-1.3-1.4-1.3-2.6c0-.7.3-1.3.5-1.7c-.2-.8-.4-2.3-.4-3.5c0-3.9 2.7-6.5 7-6.5c1.2 0 2.7.3 3.5 1.2c1.9.4 3.5 2.6 3.5 5.3c0 1.7-.3 3.1-.5 3.8c.2.3.4.8.4 1.4c0 1.3-.7 2.2-1.3 2.6c-.2 1.6-1.1 2.6-1.7 3.1V31c0 .9 1.8 1.6 3.4 2.2c1.9.7 3.9 1.5 4.6 3.1l-1.9.7c-.3-.8-1.9-1.4-3.4-1.9c-2.2-.8-4.7-1.7-4.7-4v-2.6l.5-.3s1.2-.8 1.2-2.4v-.7l.6-.3c.1 0 .6-.3.6-1.1c0-.2-.2-.5-.3-.6l-.4-.4l.2-.5s.5-1.6.5-3.6c0-1.9-1.1-3.3-2-3.3h-.6l-.3-.5c0-.4-.7-.8-1.9-.8c-3.1 0-5 1.7-5 4.5c0 1.3.5 3.5.5 3.5l.1.5l-.4.5c-.1 0-.3.3-.3.7c0 .5.6 1.1.9 1.3l.4.3v.5c0 1.5 1.3 2.3 1.3 2.4l.5.3v2.6c0 2.4-2.6 3.6-5 4.6c-1.1.4-2.6 1.1-2.8 1.6'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.map--food {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Cpath fill='%23000' d='M48.894 15.154L44.959 46H31.668l-3.919-31h16.226l3.207-11.077L49 4.471l-3.077 10.66zM25.87 33s.497-4-6.395-4H8.499c-6.882 0-6.395 4-6.395 4zM2.104 42s-.487 4 6.395 4h10.977c6.892 0 6.395-4 6.395-4zm22.735-2c1.128 0 2.039-1.114 2.039-2.499c0-1.393-.911-2.501-2.039-2.501H3.04C1.917 35 1 36.108 1 37.501C1 38.886 1.917 40 3.04 40z'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    color: #ff6600;
+    margin: 10px;
+}
+
+/* .map--food {
+    font-size: 24px;
+    color: #ff6600;
+} */
+
+.mdi--voucher {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M4 4a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2a2 2 0 0 1-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 1-2-2a2 2 0 0 1 2-2V6a2 2 0 0 0-2-2zm11.5 3L17 8.5L8.5 17L7 15.5zm-6.69.04c.98 0 1.77.79 1.77 1.77a1.77 1.77 0 0 1-1.77 1.77c-.98 0-1.77-.79-1.77-1.77a1.77 1.77 0 0 1 1.77-1.77m6.38 6.38c.98 0 1.77.79 1.77 1.77a1.77 1.77 0 0 1-1.77 1.77c-.98 0-1.77-.79-1.77-1.77a1.77 1.77 0 0 1 1.77-1.77'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    color: #ff6600;
+    margin: 10px;
+}
+
+/* 
+.mdi--voucher {
+    font-size: 24px;
+    color: #ff6600;
+} */
+
+.ic--baseline-payment {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2m0 14H4v-6h16zm0-10H4V6h16z'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    color: #ff6600;
+    margin: 10px;
+}
+
+/* .ic--baseline-payment {
+    font-size: 24px;
+    color: #ff6600;
+} */
+
+.box-checkout .text-info-checkout {
+    display: flex;
+    align-items: center;
+}
+
+.box-checkout .box-voucher {
+    margin-top: 15px;
+}
+
+.box-checkout .box-combo-uu-dai .quantity-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box-checkout .box-combo-uu-dai .quantity-btn {
+    background-color: #b2b2b2;
+    border: 1px solid #ccc;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    /* line-height: 28px; */
+    transition: all 0.5s;
+}
+
+.box-checkout .box-combo-uu-dai #quantity-input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+}
+
+.box-checkout .box-combo-uu-dai .quantity-btn:hover {
+    background-color: rgb(255, 89, 0);
+    color: white;
+}
+
+/* Css cho giảm giá trang thanh toán  */
+
+.box-checkout .text-info-checkout,
+.box-checkout .info-seat-checkout,
+.box-combo-uu-dai {
+    margin-bottom: 20px;
+}
+
+
+.box-checkout .text-info-checkout {
+    display: flex;
+    align-items: center;
+    /* gap: 10px; */
+    padding: 0px 10px;
+    background-color: #f4f4f4;
+    /* border-radius: 8px; */
+}
+
+.box-checkout .text-info-checkout h4 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+}
+
+.box-checkout .ei--user {
+    font-size: 24px;
+    color: #ff6600;
+}
+
+.box-checkout table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+}
+
+.box-checkout th,
+.box-checkout td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.box-checkout th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.box-checkout tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+
+.box-checkout .info-seat-checkout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    /* background-color: #f9f9f9; */
+    border-radius: 8px;
+}
+
+.box-checkout .info-seat-checkout p {
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.box-checkout .info-seat-checkout span {
+    color: #ff6600;
+    font-weight: bold;
+}
+
+
+.box-checkout .box-combo-uu-dai {
+    /* background-color: #f4f4f4; */
+    border-radius: 8px;
+    /* padding: 15px; */
+}
+
+.box-checkout .combo-uu-dai table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.box-checkout .combo-uu-dai img {
+    width: 80px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.box-checkout .quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.box-checkout .quantity-btn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.box-checkout .quantity-btn:hover {
+    background-color: #e65c00;
+}
+
+.box-checkout #quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+
+
+/* Css cho voucher thanh toán */
+.box-checkout .box-voucher .info-voucher-checkout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.box-checkout .box-voucher .voucher-section,
+.box-checkout .box-voucher .points-section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.box-checkout .box-voucher .voucher-title,
+.box-checkout .box-voucher .points-title {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+.box-checkout .box-voucher .voucher-form,
+.box-checkout .box-voucher .points-form {
+    display: none;
+    margin-top: 10px;
+}
+
+.box-checkout .box-voucher .form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.box-voucher input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.box-voucher button[type="submit"] {
+    padding: 8px 12px;
+    border: none;
+    background-color: #ff6600;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.box-voucher button[type="submit"]:hover {
+    background-color: #e65c00;
+}
+
+.box-voucher .points-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.box-voucher .points-table th,
+.box-voucher .points-table td {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+.box-voucher .points-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.box-voucher .points-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hiển thị form khi click vào tiêu đề */
+.box-voucher .voucher-section.active .voucher-form,
+.points-section.active .points-form {
+    display: block;
+}
+
+.box-payment-checkout .payment-checkout img {
+    width: 60px;
+    height: auto;
+
+}
+
+/* Css cho phương thức thanh toán :v */
+
+.box-checkout .total-price-checkout {
+    display: block;
+    /* justify-content: space-between; */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.box-checkout .total-price-checkout>div {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.box-checkout .total-price-checkout p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.box-checkout .total-price-checkout .text-danger {
+    color: #e74c3c;
+    /* Màu đỏ */
+    font-size: 1.2em;
+}
+
+.box-payment-checkout {
+    border: 1px solid #ddd;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* background-color: #f9f9f9; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* gap: 20px; */
+}
+
+.box-checkout .text-info-checkout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.box-checkout .text-info-checkout h4 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #333;
+}
+
+/* .payment-checkout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+} */
+
+.box-checkout .payment-checkout .img-payment-checkout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.box-checkout .payment-checkout img {
+    width: 40px;
+    height: auto;
+}
+
+.box-checkout .payment-checkout label {
+    font-size: 1em;
+    font-weight: normal;
+    color: #333;
+}
+
+.box-checkout .payment-checkout input[type="radio"] {
+    margin-right: 10px;
+}
+
+.box-checkout hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+.box-checkout form {
+    display: ruby;
+}
+
+.box-checkout .payment-checkout input[type="radio"] {
+    margin-right: 8px;
+    width: 15px;
+    font-size: 14px;
+    height: 15px;
+}
+/* Gữi chỗ */
+
+.giu-cho-checkout {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f4f4; /* Màu nền cho hộp chứa */
+    padding: 20px;
+    /* border-radius: 8px; */
+    margin-bottom: 20px;
+}
+
+.giu-cho-checkout > div:first-child {
+    flex-grow: 7;
+    font-size: 1em;
+    color: #333;
+}
+
+.giu-cho-checkout > div:last-child {
+    flex-grow: 3;
+    text-align: right;
+    font-size: 1.2em;
+    color: #e74c3c; /* Màu đỏ cho thời gian còn lại */
 }
