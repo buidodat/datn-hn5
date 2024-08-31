@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
@@ -8,13 +9,9 @@ use App\Http\Controllers\Admin\PaymentController;
 
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/', function () {
     return view('admin.dashboard');
 });
-
-// Combo
-Route::resource('combos', ComboController::class);
 
 Route::prefix('posts')
     ->as('posts.')
@@ -30,6 +27,12 @@ Route::prefix('posts')
 
 // City
 Route::resource('cities', CityController::class);
+// Cinema
+Route::resource('cinemas', CinemaController::class);
+// Payment
+Route::resource('payments', PaymentController::class);
+// Combo
+Route::resource('combos', ComboController::class);
 // Payment
 Route::resource('payments', PaymentController::class);
 
@@ -48,7 +51,6 @@ Route::prefix('slideshows')
         Route::get('edit', function () {
             return view('admin.slideshows.edit');
         })->name('edit');
-
     });
 
 Route::prefix('vouchers')
@@ -70,10 +72,8 @@ Route::prefix('vouchers')
         Route::get('show', function () {
             return view('admin.vouchers.show');
         })->name('show');
-
     });
 
 
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
-
