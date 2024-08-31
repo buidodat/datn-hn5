@@ -56,7 +56,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên</th>
+                                <th>Tên combo</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá</th>
                                 <th>Mô tả</th>
@@ -89,7 +89,7 @@
                                                 <i class="fas fa-eye"></i></button>
                                         </a>
                                         <a href="{{ route('admin.combos.edit', $item) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button">
+                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
                                         </a>
                                         {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
