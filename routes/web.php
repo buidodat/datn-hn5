@@ -33,3 +33,6 @@ Route::get('login', function () {
 Route::get('register', function () {
     return view('client.register');
 });
+Route::get('forgot', function () {
+    return view('client.forgot-password');
+});

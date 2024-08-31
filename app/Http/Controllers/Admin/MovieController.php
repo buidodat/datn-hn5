@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller
@@ -13,7 +14,8 @@ class MovieController extends Controller
     const PATH_VIEW = 'admin.movies.';
     public function index()
     {
-        return view(self::PATH_VIEW . __FUNCTION__ );
+        $movies = Movie::query()->with('movielanguages')->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__ , compact('movies'));
     }
 
     /**

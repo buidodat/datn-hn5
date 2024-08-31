@@ -57,7 +57,15 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label ">URL route:</label>
+                                        <input type="text" class="form-control " id="route_url"
+                                               name="route_url" value="{{ old('route_url') }}">
+                                        @error('route_url')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -73,15 +81,14 @@
                             <div class="card-body">
                                 <div class="mb-2">
                                     <label for="" class="form-label">IMG slideshow</label>
-                                    <input type="file" name="img_post" id="" class="form-control">
-                                    @error('img_post')
+                                    <input type="file" name="img_slideshow" id="" class="form-control">
+                                    @error('img_slideshow')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
 
                     <div class="col-md-12">
                         <div class="card">
@@ -92,7 +99,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
+                                                       name="is_active" checked>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +108,6 @@
                             </div>
                         </div>
                     </div>
-
 
                 </div>
             </div>
