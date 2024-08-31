@@ -33,7 +33,7 @@
                         <div class="row gy-4">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label "> <span class="text-danger">*</span>Tên</label>
+                                    <label for="name" class="form-label "> <span class="text-danger">*</span>Tên Combo</label>
                                     <input type="text" class="form-control" id="name" name="name"
                                         value="{{ $combo->name }}" disabled>
                                 </div>
@@ -60,7 +60,7 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-check-label" for="is_active">Is Active</label>
+                                    <label class="form-check-label" for="is_active">Hoạt động</label>
                                     <div class="form-check form-switch form-switch-default">
                                         <input class="form-check-input" type="checkbox" role="" name="is_active"
                                             @checked($combo->is_active) value="1" @disabled(true)>
