@@ -86,7 +86,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCombos" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarCombos">
-                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
+                        <i class="ri-gift-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarCombos">
                         <ul class="nav nav-sm flex-column">
