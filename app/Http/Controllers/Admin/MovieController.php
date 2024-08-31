@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMovieRequest;
+use App\Http\Requests\Admin\UpdateMovieRequest;
 use App\Models\Movie;
 use App\Models\MovieLanguage;
 use Illuminate\Http\Request;
@@ -95,15 +96,18 @@ class MovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Movie $movie)
     {
-        //
+        $movieLanguages = $movie->movielanguages()->pluck('language')->all();
+        $ratings = Movie::RATINGS;
+        $languages = Movie::LANGUAGES;
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings','languages','movie','movieLanguages']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMovieRequest $request, string $id)
     {
         //
     }

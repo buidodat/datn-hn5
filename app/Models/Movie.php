@@ -21,6 +21,8 @@ class Movie extends Model
         'release_date',
         'end_date',
         'trailer_url',
+        'is_active',
+        'is_hot'
     ];
 
     protected $casts =[
@@ -39,10 +41,10 @@ class Movie extends Model
     ];
 
     const RATINGS = [
+        'P',
         'C13',
         'C16',
         'C18',
-        'P',
         'K'
     ];
 }

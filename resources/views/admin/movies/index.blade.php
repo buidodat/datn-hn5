@@ -76,7 +76,7 @@
                                         @else
                                             No image !
                                         @endif
-                                        
+
                                     </td>
                                     <td>
                                         <ul class="nav nav-sm flex-column">
@@ -99,21 +99,21 @@
                                     </td>
                                     <td>
                                         {!! $movie->is_active == 1
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
                                     <td>
                                         {!! $movie->is_hot == 1
-                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Actice</span>'
-                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">Block</span>' !!}
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
 
                                     </td>
 
                                     <td>
-                                        <a href="">
+                                        <a href="{{ route('admin.movies.show',$movie) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-                                        <a href="">
+                                        <a href="{{ route('admin.movies.edit',$movie) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
