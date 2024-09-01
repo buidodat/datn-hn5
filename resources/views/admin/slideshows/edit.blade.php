@@ -57,7 +57,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    
+
                                 </div>
                             </div>
 
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
 
                     <div class="col-md-12">
                         <div class="card">
@@ -114,8 +114,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="http://127.0.0.1:8000/admin/slideshows" class="btn btn-dark me-2" >Quay lại</a>
-                        <button type:s class="btn btn-warning">Sửa</button>
+                        <a href="http://127.0.0.1:8000/admin/slideshows" class="btn btn-info">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                     </div>
                 </div>
             </div>
