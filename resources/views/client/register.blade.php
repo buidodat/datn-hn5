@@ -1,16 +1,16 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Login
+    Register
 @endsection
 
 @section('content')
 
     <div class="row row-login">
-        <div class="auth-container container-login">
-            <div class="content">
+        <div class="auth-container">
+            <div class="content-register">
 
-                <div class="form-input">
+                <div class="form-input-2">
                     <h2 class="text-login">Đăng ký</h2>
                     <form action="#" method="POST">
 
@@ -52,7 +52,7 @@
                     </form>
                 </div>
 
-                <div class="logo-container">
+                <div class="logo-container-2">
                     <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
                 </div>
 

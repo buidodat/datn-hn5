@@ -7,8 +7,8 @@
 @section('content')
 
     <div class="row row-login">
-        <div class="auth-container container-login">
-            <div class="content">
+        <div class="auth-container">
+            <div class="content-login">
 
                     <div class="logo-container">
                         <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
