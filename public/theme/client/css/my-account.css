@@ -1,0 +1,222 @@
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 10px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .my-account-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        margin-top: 100px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .my-account-tabs {
+        display: flex;
+        border-bottom: 2px solid #ccc;
+        font-size: 0.8em;
+        margin-bottom: 20px;
+    }
+
+    .my-account-tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .my-account-tab.my-account-active {
+        background-color: #0C5689;
+        color: white;
+    }
+
+    .my-account-tab:not(.my-account-active):hover {
+        background-color: #e2e6ea;
+    }
+
+    .my-account-upload-container {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .my-account-image-placeholder {
+        width: 300px;
+        height: 200px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f1f1f1;
+        margin-right: 20px;
+    }
+
+    .my-account-image-placeholder p {
+        color: #aaa;
+    }
+
+    .my-account-buttons {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .my-account-upload-btn,
+    .my-account-save-btn {
+        background-color: #48b4b8;
+        border: none;
+        color: black;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: opacity 0.3s ease;
+    }
+
+    .my-account-upload-btn:hover,
+    .my-account-save-btn:hover {
+        opacity: 0.8;
+    }
+
+    .my-account-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+
+    .my-account-form-group {
+        width: 50%;
+        padding: 10px;
+    }
+
+    /* .my-account-mb-3 {
+        margin-bottom: 15px;
+    } */
+
+    .my-account-form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+
+    .my-account-form-select {
+        width: 100%;
+        padding: -1px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+
+    .my-account-text-center {
+        text-align: center;
+    }
+
+    .my-account-my-3 {
+        margin: 20px 0;
+    }
+
+    .my-account-btn {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .my-account-btn:hover {
+        background-color: #555;
+    }
+
+    .my-account-d-block {
+        display: block;
+        margin-top: 90px;
+        color:red;
+    }
+    .my-account-d-block:hover{
+        color:red;
+        text-decoration: underline; 
+    }
+
+    .my-account-modal {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .my-account-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .my-account-upload-container {
+        display: flex;
+        align-items: center;
+        gap: 20px; 
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .my-account-image-upload-container {
+        border: 2px solid #ccc; 
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        background-color: #f0f0f0;
+    }
+    
+    /* Căn chỉnh ảnh bên trong khung */
+    .my-account-image-upload-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; 
+        display: block;
+    }
+    
+    input[type="file"] {
+        display: none; 
+    }
+
+    .my-account-form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .my-account-form-group {
+        flex: 1;
+        min-width: 200px;
+    }
