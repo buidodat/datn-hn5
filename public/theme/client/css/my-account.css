@@ -1,23 +1,11 @@
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-        margin: 0;
-        padding: 10px;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
     .my-account-container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
-        margin-top: 100px;
+        margin-top: 120px;
+        margin-bottom: 30px;
         background-color: white;
-        border: 1px solid #ddd;
+        border: 3px solid #ddd;
         border-radius: 8px;
     }
 
