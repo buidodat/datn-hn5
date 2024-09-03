@@ -7,7 +7,7 @@
         </div>
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
-                <a href="index.html">
+                <a href="{{ route('home') }}">
                     <img src="{{ asset('theme/client/images/header/logo.png') }}" alt="logo" />
                 </a>
             </div>
@@ -23,7 +23,7 @@
                         <ul class="dl-menu">
                             <li class="parent"><a href="#">Home</a>
                                 <ul class="lg-submenu">
-                                    <li><a href="index.html">Index-I</a></li>
+                                    <li><a href="{{ route('home') }}">Index-I</a></li>
                                     <li><a href="index2.html">Index-II</a></li>
                                     <li><a href="index3.html">Index-III</a></li>
                                     <li><a href="index4.html">Index-IV</a></li>
@@ -36,6 +36,7 @@
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                     <li><a href="{{ route('register') }}">Register</a></li>
                                     <li><a href="{{ route('forgot-password') }}">Forgot Password</a></li>
+                                    <li><a href="{{ route('contact') }}">Contact</a></li>
                                 </ul>
                             </li>
                             <li class="parent"><a href="contact.html">contact</a>
@@ -80,7 +81,7 @@
             <div class="mobail_nav_overlay"></div>
             <div class="mobile-nav-box">
                 <div class="mobile-logo">
-                    <a href="index.html" class="mobile-main-logo">
+                    <a href="{{ route('home') }}" class="mobile-main-logo">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="46.996px"
                             height="40px" viewBox="0 0 46.996 40" enable-background="new 0 0 46.996 40"
