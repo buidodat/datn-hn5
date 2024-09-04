@@ -153,6 +153,10 @@
     flex-wrap: wrap;
 }
 
+.row-seat {
+    text-align: center;
+}
+
 .container-screen .row {
     display: flex;
     justify-content: center;
@@ -282,7 +286,9 @@
 .info-movie div ul li h3 {
     margin-left: 15px;
     color: #0090e3;
+    font-family: serif;
 }
+
 
 .info-movie div ul li:first-child p {
     margin-left: 15px;
