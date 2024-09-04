@@ -42,9 +42,9 @@
                                             <img src="https://media.lottecinemavn.com/Media/MovieFile/MovieImg/202408/11514_103_100003.jpg"
                                                 alt="">
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-8 ">
                                             <div class="movie-detail-content">
-                                                <div class="title  ">
+                                                <div class="title-movie-detail">
                                                     <h1>Phim Ma Da Hiếu Sợ Khóc Huhu</h1>
                                                 </div>
                                                 <div class="description">
@@ -115,10 +115,10 @@
                                                             </div>
                                                             <div class="form-comment">
                                                                 <div class="form-textarea">
-                                                                    <textarea placeholder="Vui lòng viết đánh giá phim." maxlength="220"></textarea>
+                                                                    <textarea class="textarea-comment"placeholder="Vui lòng viết đánh giá phim." maxlength="220"></textarea>
                                                                 </div>
                                                                 <div class='button-submit-comment'>
-                                                                    <button class="submit-review">Bình luận</button>
+                                                                    <button class="submit-review">Đánh giá</button>
                                                                 </div>
                                                             </div>
                                                         </div>
