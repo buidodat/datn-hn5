@@ -41,7 +41,7 @@
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Mã voucher:</label>
                                         <input type="text" class="form-control " id="title"
@@ -52,12 +52,22 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="quantity" class="form-label ">Số lượng:</label>
                                         <input type="text" class="form-control " id="quantity"
                                                name="quantity" value="{{ old('quantity') }}">
                                         @error('quantity')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Giới hạn sử dụng</label>
+                                        <input type="text" name="limit" id="" class="form-control">
+                                        @error('limit')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -124,19 +134,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="mb-2">
-                                    <label for="" class="form-label">Giới hạn sử dụng</label>
-                                    <input type="text" name="limit" id="" class="form-control">
-                                    @error('limit')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-2">
@@ -163,8 +160,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="http://127.0.0.1:8000/admin/slideshows" class="btn btn-dark me-2">Quay lại</a>
-                        <button type:s class="btn btn-info">Thêm mới</button>
+                        <a href="http://127.0.0.1:8000/admin/vouchers" class="btn btn-info">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                     </div>
                 </div>
             </div>

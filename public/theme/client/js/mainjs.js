@@ -71,3 +71,8 @@ document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
     });
 });
 
+
+
+
+
+

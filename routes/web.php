@@ -35,6 +35,9 @@ Route::get('register', function () {
     return view('client.register');
 })->name('register');
 
+Route::get('my-account', function () {
+    return view('client.my-account');
+})->name('my-account');
 
 Route::get('checkout', function () {
     return view('client.checkout');
@@ -44,6 +47,11 @@ Route::get('checkout', function () {
 Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
+
+Route::get('showtime', function () {
+    return view('client.showtime');
+})->name('showtime');
+
 
 Route::get('contact', function () {
     return view('client.contact');

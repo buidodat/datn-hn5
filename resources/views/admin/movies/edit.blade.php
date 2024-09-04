@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới phim
+    Cập nhật phim
 @endsection
 
 @section('content')
@@ -14,18 +14,18 @@
             </ul>
         </div>
     @endif --}}
-    <form action="{{ route('admin.movies.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.movies.update',$movie) }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Thêm mới phim</h4>
+                    <h4 class="mb-sm-0">Cập nhật phim</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.movies.index') }}">Danh sách</a></li>
-                            <li class="breadcrumb-item active">Thêm mới</li>
+                            <li class="breadcrumb-item active">Cập nhật</li>
                         </ol>
                     </div>
 
@@ -55,7 +55,7 @@
                                         <div class="col-md-12 mb-3">
                                             <label for="name" class="form-label ">Tên phim:</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Nhập tên phim">
+                                                value="{{ $movie->name }}" placeholder="Nhập tên phim">
                                             @error('name')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -66,7 +66,7 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="director" class="form-label ">Đạo diễn:</label>
                                             <input type="text" class="form-control" id="director" name="director"
-                                                value="{{ old('director') }}" placeholder="Eiichiro Oda">
+                                                value="{{ $movie->director }}" placeholder="Eiichiro Oda">
                                             @error('director')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -76,7 +76,7 @@
                                         <div class="col-md-8 mb-3">
                                             <label for="cast" class="form-label ">Diễn viên:</label>
                                             <input type="text" class="form-control" id="cast" name="cast"
-                                                value="{{ old('cast') }}" placeholder="Monkey D.Luffy, Rononoa Zoro">
+                                                value="{{ $movie->cast }}" placeholder="Monkey D.Luffy, Rononoa Zoro">
                                             @error('cast')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -88,7 +88,7 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="release_date" class="form-label ">Ngày khởi chiếu:</label>
                                             <input type="date" class="form-control" id="release_date" name="release_date"
-                                                value="{{ old('release_date', now()->format('Y-m-d')) }}">
+                                                value="{{ $movie->release_date }}">
                                             @error('release_date')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -98,7 +98,7 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="end_date" class="form-label ">Ngày kết thúc:</label>
                                             <input type="date" class="form-control" id="end_date" name="end_date"
-                                                value="{{ old('end_date', now()->addDays(30)->format('Y-m-d')) }}">
+                                                value="{{ $movie->end_date }}">
                                             @error('end_date')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -108,7 +108,7 @@
                                         <div class="col-md-4 mb-3">
                                             <label for="duration" class="form-label ">Thời lượng:</label>
                                             <input type="number" class="form-control" id="duration" name="duration"
-                                                value="{{ old('duration') }}" placeholder="127 (phút)">
+                                                value="{{ $movie->duration }}" placeholder="127 (phút)">
                                             @error('duration')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -118,7 +118,7 @@
                                         <div class="col-md-3 mb-3">
                                             <label for="category" class="form-label ">Thể loại:</label>
                                             <input type="text" class="form-control" id="category" name="category"
-                                                value="{{ old('category') }}" placeholder="Hoạt hình, Khám phá">
+                                                value="{{ $movie->category }}" placeholder="Hoạt hình, Khám phá">
                                             @error('category')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -129,7 +129,7 @@
                                             <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
-                                                    <option value="{{ $rating }}" @selected(old('rating') == $rating )>{{ $rating }}</option>
+                                                    <option value="{{ $rating }}" @selected($movie->rating == $rating )>{{ $rating }}</option>
                                                 @endforeach
                                             </select>
                                             @error('rating')
@@ -143,7 +143,7 @@
                                             <select class="js-example-basic-multiple" name="languages[]"
                                                 multiple="multiple">
                                                 @foreach ($languages as $language)
-                                                    <option value="{{ $language }}" @selected(in_array($language, old('languages') ?? [] ) )>{{ $language }}
+                                                    <option value="{{ $language }}" @selected(in_array($language, $movieLanguages ) )>{{ $language }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -157,7 +157,7 @@
                                         <div class="col-md-12 mb-3">
                                             <label for="description" class="form-label">Mô tả phim:</label>
                                             <textarea class="form-control " rows="3" name="description"
-                                                placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '></textarea>
+                                                placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '>{{ $movie->description }}</textarea>
                                             @error('description')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -181,6 +181,14 @@
                                 <div class="mb-2">
                                     <label for="" class="form-label">Hình ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
+                                    @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                        <div class="text-center">
+                                            <img src="{{ Storage::url($movie->img_thumbnail) }}" alt="" class="mt-3 "
+                                            width="45%" >
+                                        </div>
+                                    @else
+                                        No image !
+                                    @endif
                                     @error('img_thumbnail')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -196,7 +204,7 @@
                                 <div class="mb-2">
                                     <label for="trailer_url" class="form-label">URL Trailer:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
-                                        value="{{ old('trailer_url') }}" placeholder="ZQkU_oI2NOU">
+                                        value="{{ $movie->trailer_url }}" placeholder="ZQkU_oI2NOU">
                                     @error('trailer_url')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -216,7 +224,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked >
+                                                    name="is_active" @checked($movie->is_active == 1) >
                                             </div>
                                         </div>
 
@@ -225,7 +233,7 @@
                                         <div class="mb-2">
                                             <label class="form-check-label" for="is_active">Is Hot</label>
                                             <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="" name="is_hot" @checked(old('is_hot'))>
+                                                <input class="form-check-input" type="checkbox" role="" name="is_hot" @checked($movie->is_hot == 1)>
                                             </div>
                                         </div>
                                     </div>
@@ -248,7 +256,7 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                     </div>
                 </div>
             </div>
