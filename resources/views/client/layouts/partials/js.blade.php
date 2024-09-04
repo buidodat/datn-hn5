@@ -43,3 +43,6 @@
 <script src="{{ asset('theme/client/js/mainjs.js') }}"></script>
 <script src="{{ asset('theme/client/js/my-account.js') }}"></script>
 <!--main js file end-->
+
+
+<script src="{{ mix('js/app.js') }}"></script>

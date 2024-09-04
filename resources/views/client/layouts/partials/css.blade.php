@@ -44,3 +44,5 @@
 <!-- favicon links -->
 <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />
 
+<link rel="stylesheet" href="{{ mix('css/app.css') }}">
+
