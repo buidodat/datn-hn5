@@ -144,13 +144,17 @@
     -ms-user-select: none;
     /* Internet Explorer/Edge */
     user-select: none;
-    /* Non-prefixed version, hiện đại hơn */    
+    /* Non-prefixed version, hiện đại hơn */
 }
 
 .container-screen .seat-selection {
     /* display: flex; */
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.row-seat {
+    text-align: center;
 }
 
 .container-screen .row {
@@ -282,7 +286,9 @@
 .info-movie div ul li h3 {
     margin-left: 15px;
     color: #0090e3;
+    font-family: serif;
 }
+
 
 .info-movie div ul li:first-child p {
     margin-left: 15px;

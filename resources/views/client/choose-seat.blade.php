@@ -40,84 +40,91 @@
 
                                     <div>
                                         <div class="container-screen">
-                                            <div class="screen">Màn Hình Chiếu</div>
+                                            <div class="container-detail-seat">
+                                                <div class="screen">Màn Hình Chiếu</div>
 
-                                            <div class="seat-selection">
-                                                <div class="ghe-thuong">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 12; $i++)
-                                                            <span class="solar--sofa-3-bold seat" id="A{{ $i }}">
-                                                                <span class="seat-label">A{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                <div class="seat-selection">
+                                                    <div class="ghe-thuong">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 12; $i++)
+                                                                <span class="solar--sofa-3-bold seat"
+                                                                    id="A{{ $i }}">
+                                                                    <span class="seat-label">A{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ghe-thuong">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 13; $i++)
-                                                            <span class="solar--sofa-3-bold seat" id="A{{ $i }}">
-                                                                <span class="seat-label">A{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-thuong">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 13; $i++)
+                                                                <span class="solar--sofa-3-bold seat"
+                                                                    id="A{{ $i }}">
+                                                                    <span class="seat-label">A{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ghe-thuong">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 14; $i++)
-                                                            <span class="solar--sofa-3-bold seat" id="A{{ $i }}">
-                                                                <span class="seat-label">A{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-thuong">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 14; $i++)
+                                                                <span class="solar--sofa-3-bold seat"
+                                                                    id="A{{ $i }}">
+                                                                    <span class="seat-label">A{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="ghe-vip">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 15; $i++)
-                                                            <span class="mdi--love-seat text-muted seat"
-                                                                id="B{{ $i }}">
-                                                                <span class="seat-label">B{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-vip">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 15; $i++)
+                                                                <span class="mdi--love-seat text-muted seat"
+                                                                    id="B{{ $i }}">
+                                                                    <span class="seat-label">B{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ghe-vip">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 15; $i++)
-                                                            <span class="mdi--love-seat text-muted seat"
-                                                                id="B{{ $i }}">
-                                                                <span class="seat-label">B{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-vip">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 15; $i++)
+                                                                <span class="mdi--love-seat text-muted seat"
+                                                                    id="B{{ $i }}">
+                                                                    <span class="seat-label">B{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ghe-vip">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 15; $i++)
-                                                            <span class="mdi--love-seat text-muted seat"
-                                                                id="B{{ $i }}">
-                                                                <span class="seat-label">B{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-vip">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 15; $i++)
+                                                                <span class="mdi--love-seat text-muted seat"
+                                                                    id="B{{ $i }}">
+                                                                    <span class="seat-label">B{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="ghe-doi">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 12; $i++)
-                                                            <span class="game-icons--sofa seat" id="C{{ $i }}">
-                                                                <span class="seat-label">C{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-doi">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 12; $i++)
+                                                                <span class="game-icons--sofa seat"
+                                                                    id="C{{ $i }}">
+                                                                    <span class="seat-label">C{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="ghe-doi">
-                                                    <div class="row">
-                                                        @for ($i = 1; $i < 13; $i++)
-                                                            <span class="game-icons--sofa seat" id="C{{ $i }}">
-                                                                <span class="seat-label">C{{ $i }}</span>
-                                                            </span>
-                                                        @endfor
+                                                    <div class="ghe-doi">
+                                                        <div class="row-seat">
+                                                            @for ($i = 1; $i < 13; $i++)
+                                                                <span class="game-icons--sofa seat"
+                                                                    id="C{{ $i }}">
+                                                                    <span class="seat-label">C{{ $i }}</span>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
