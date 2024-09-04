@@ -87,7 +87,7 @@
                                                 <div class="buttons">
                                                     <a rel='external'  title='title'
                                                     class=""><button class="watch-trailer">Xem Trailer</button></a>
-                                                    <button class="buy-ticket">Mua Vé Ngay</button>
+                                                    <button class="buy-ticket" id="buy-ticket-btn">Mua Vé Ngay</button>
                                                 </div>
                                             </div>
 
@@ -177,5 +177,6 @@
                 </div>
             </div>
         </div>
+        @include('client.showtime')
         <!-- st slider sidebar wrapper End -->
     @endsection

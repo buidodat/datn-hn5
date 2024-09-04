@@ -31,41 +31,42 @@
 
 
             <div class="location-selection">
-                <button class="location-btn active">California</button>
-                <button class="location-btn">New York</button>
-                <button class="location-btn">Texas</button>
-                <button class="location-btn">Florida</button>
+                <button class="location-btn active">Hà Nội</button>
+                <button class="location-btn">Hồ Chí Minh</button>
+                <button class="location-btn">Huế</button>
+                <button class="location-btn">Đà Nẵng</button>
             </div>
 
             <div class="format-selection">
-                <button class="format-btn active">3D</button>
-                <button class="format-btn">2D</button>
-                <button class="format-btn">IMAX</button>
-                <button class="format-btn">4DX</button>
+                <button class="format-btn active">2D Phụ Đề</button>
+                <button class="format-btn">Thuyết Minh</button>
+                <button class="format-btn">VietSub</button>
+                <button class="format-btn">3D</button>
+                <button class="format-btn">Chẳng hạn thế</button>
             </div>
 
             <div class="showtimes">
                 <div class="showtime-item">
-                    <h3>San Francisco</h3>
-                    <p>IMAX</p>
+                    <h3>Poly Hà Đông</h3>
+                    <p>Rạp 2D</p>
                     <button class="time-btn">7:30 am</button>
                     <button class="time-btn">10:00 am</button>
-                    <button class="time-btn">12:30 am</button>
-                    <button class="time-btn">14:00 am</button>
-                    <button class="time-btn">16:30 am</button>
-                    <button class="time-btn">20:00 am</button>
+                    <button class="time-btn">12:30 pm</button>
+                    <button class="time-btn">14:00 pm</button>
+                    <button class="time-btn">16:30 pm</button>
+                    <button class="time-btn">20:00 pm</button>
                     <!-- Add more times as needed -->
                 </div>
                 <div class="showtime-item">
-                    <h3>San Francisco</h3>
-                    <p>IMAX</p>
+                    <h3>Poly Cầu Giấy</h3>
+                    <p>Rạp 2D</p>
                     <button class="time-btn">7:30 am</button>
                     <button class="time-btn">10:00 am</button>
                     <!-- Add more times as needed -->
                 </div>
                 <div class="showtime-item">
-                    <h3>San Francisco</h3>
-                    <p>IMAX</p>
+                    <h3>Poly Thanh Xuân</h3>
+                    <p>Rạp 2D</p>
                     <button class="time-btn">7:30 am</button>
                     <button class="time-btn">10:00 am</button>
                     <!-- Add more times as needed -->
@@ -75,6 +76,7 @@
         </div>
     </div>
 </div>
+
 <script>
     // Handle date selection
     document.addEventListener('DOMContentLoaded', () => {

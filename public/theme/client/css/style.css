@@ -313,9 +313,9 @@ ul.colors li:hover p {
 	position: relative;
     z-index: 1;
 }
-.prs_menu_main_wrapper{
-	float:left;
-	padding-left: 30px;
+.prs_menu_main_wrapper {
+    /* float: left; */
+    padding-left: 30px;
 }
 #sticktop {
 	width: 100%;
