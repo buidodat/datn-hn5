@@ -1,23 +1,26 @@
 .content-login-3 {
     margin: 10% auto 3% auto;
     padding: 20px 110px 20px 110px;
-    border: 1px solid #888;
+    /*border: 1px solid #888;*/
     width: 85%;
 }
 @media (max-width: 767px) {
     .content-login-3 {
         margin-top: 24%;
-        margin-bottom: 4%;
+
         padding: 20px;
     }
     .logo-container {
         display: none;
     }
-    .nutfb{
-        width: 100%;
+    .logo-container-2 {
+        display: none;
     }
-    .nutgm{
-        width: 100%;
+    .col-md-6{
+        margin-bottom: 225px;
+    }
+    .fom-regis{
+        margin-bottom: 308px;
     }
 }
  .logo-container {
@@ -35,6 +38,12 @@
     height: 100%;
     border-radius: 15px;
 }
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+
 
 
 

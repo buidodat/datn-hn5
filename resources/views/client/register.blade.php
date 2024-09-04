@@ -8,7 +8,7 @@
 
     <div class="content-login-3 row" >
         <h2 style="text-align: center">Đăng ký tài khoản</h2>
-        <div class="col-md-6">
+        <div class="col-md-6 fom-regis">
 
             <div class="st_profile_input float_left">
                 <label>Họ và tên</label>
