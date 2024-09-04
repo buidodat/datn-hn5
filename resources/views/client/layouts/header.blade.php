@@ -7,7 +7,7 @@
         </div>
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
-                <a href="index.html">
+                <a href="{{ route('home') }}">
                     <img src="{{ asset('theme/client/images/header/logo.png') }}" alt="logo" />
                 </a>
             </div>
@@ -21,15 +21,15 @@
                         </div>
                         <div class="clearfix"></div>
                         <ul class="dl-menu">
-                            <li class="parent"><a href="#">Home</a>
+                            {{-- <li class="parent"><a href="{{ route('home') }}">Trang chủ</a>
                                 <ul class="lg-submenu">
                                     <li><a href="index.html">Index-I</a></li>
                                     <li><a href="index2.html">Index-II</a></li>
                                     <li><a href="index3.html">Index-III</a></li>
                                     <li><a href="index4.html">Index-IV</a></li>
                                 </ul>
-                            </li>
-                            <li class="parent"><a href="#">Pages</a>
+                            </li> --}}
+                            <li class="parent"><a href="#">Trang</a>
                                 <ul class="lg-submenu ">
                                     <li><a href="{{ route('movie-detail') }}">Movie Detail</a></li>
                                     <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li>
@@ -39,8 +39,21 @@
                                     <li><a href="{{ route('forgot-password') }}">Forgot Password</a></li>
                                 </ul>
                             </li>
-                            <li class="parent"><a href="contact.html">contact</a>
+                         
+                            <li class="parent"><a href="#">Lọc chiếu theo rạp</a>
                             </li>
+                            <li class="parent"><a href="#">Phim</a>
+                            </li>
+                            <li class="parent"><a href="#">Chính sách</a>
+                            </li>
+                            {{-- <li class="parent"><a href="#">Giới thiệu</a>
+                            </li> --}}
+                            <li class="parent"><a href="#">Tin tức</a>
+                            </li>
+                            <li class="parent"><a href="#">Liên hệ</a>
+                            </li>
+                            {{-- <li class="parent"><a href="#">Thành viên</a>
+                            </li> --}}
                         </ul>
                     </div>
                     <!-- /dl-menuwrapper -->
@@ -62,7 +75,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="product-heading">
+            {{-- <div class="product-heading">
                 <div class="con">
                     <select>
                         <option>All Categories</option>
@@ -75,7 +88,7 @@
                     <button type="submit"><i class="flaticon-tool"></i>
                     </button>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div id="mobile-nav" data-prevent-default="true" data-mouse-events="true">
             <div class="mobail_nav_overlay"></div>
@@ -83,9 +96,8 @@
                 <div class="mobile-logo">
                     <a href="index.html" class="mobile-main-logo">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="46.996px"
-                            height="40px" viewBox="0 0 46.996 40" enable-background="new 0 0 46.996 40"
-                            xml:space="preserve">
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="46.996px" height="40px"
+                            viewBox="0 0 46.996 40" enable-background="new 0 0 46.996 40" xml:space="preserve">
                             <g>
                                 <g>
                                     <path d="M39.919,19.833C39.919,8.88,30.984,0,19.959,0C8.937,0,0,8.88,0,19.833
