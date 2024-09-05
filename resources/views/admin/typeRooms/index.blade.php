@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách thành phố
+    Danh sách loại phòng
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Datatables</h4>
+                <h4 class="mb-sm-0">Danh sách loại phòng</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Datatables</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
+                        <li class="breadcrumb-item active">Loại phòng</li>
                     </ol>
                 </div>
 
@@ -38,12 +38,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Quản lý thành phố</h5>
-                    <a href="{{route('admin.cities.create')}}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách loại phòng</h5>
+                    <a href="{{ route('admin.typeRooms.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
                         {{ session()->get('success') }}
+                    </div>
+                @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-warning m-3">
+                        {{ session()->get('error') }}
                     </div>
                 @endif
 
@@ -53,72 +58,32 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên thành phố</th>
-                                <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
+                                <th>Tên loại phòng</th>
+                                <th>Phụ phí</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($cities as $city)
+                        <tbody>
+                            @foreach ($typeRooms as $typeRoom)
                                 <tr>
-                                    <td>{{ $city->id }}</td>
-                                    <td>{{ $city->name }}</td>
-                                    <td>{!! $city->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $city->created_at }}</td>
-                                    <td>{{ $city->updated_at }}</td>
-                                    <td>
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
+                                    <td>{{ $typeRoom->id }}</td>
+                                    <td>{{ $typeRoom->name }}</td>
+                                    <td>{{ number_format($typeRoom->surcharge, 0, ',', '.') }} VNĐ</td>
 
-                                        <a href="">
+                                    <td>
+
+                                        <a href="{{ route('admin.typeRooms.edit', $typeRoom) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
+                                        </a>
+                                        <a href="{{ route('admin.typeRooms.destroy', $typeRoom) }}">
+                                            <button title="xem" class="btn btn-danger btn-sm " type="button"><i
+                                                    class="ri-delete-bin-7-fill"></i></button>
                                         </a>
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Hà Nội</td>
-                                <td>Yes</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
 
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <!-- 2  -->
-                        <tbody>
-                            <tr>
-                                <td>2</td>
-                                <td>Hồ Chí Minh</td>
-                                <td>No</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
 
                     </table>

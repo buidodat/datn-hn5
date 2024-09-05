@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Controllers\Admin\CinemaController;
-use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
+
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\TypeRoomController;
+
+use App\Http\Controllers\Admin\TypeSeatController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +32,7 @@ Route::prefix('posts')
     });
 
 // City
-Route::resource('cities', CityController::class);
+Route::resource('branches', BranchController::class);
 // Cinema
 Route::resource('cinemas', CinemaController::class);
 // Payment
@@ -78,7 +82,18 @@ Route::prefix('vouchers')
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
+Route::resource('typeRooms', TypeRoomController::class);
+Route::resource('rooms', RoomController::class);
+
+
+Route::get('price-ticket',function(){
+    return view('admin.price-ticket');
+});
+
 // food
 Route::resource('food', FoodController::class);
 // Combo
 Route::resource('combos', ComboController::class);
+// TypeSeat
+Route::resource('typeseats', TypeSeatController::class);
+

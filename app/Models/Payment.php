@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'is_active',
+    ];
+    protected $cast = [
+        'is_active'=>'boolean'
+    ];
 }
