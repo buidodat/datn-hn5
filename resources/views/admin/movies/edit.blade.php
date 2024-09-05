@@ -16,7 +16,7 @@
     @endif --}}
     <form action="{{ route('admin.movies.update',$movie) }}" method="post" enctype="multipart/form-data">
         @csrf
-
+        @method('PUT')
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -35,15 +35,15 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12   ">
                 @if (session()->has('error'))
                     <div class="alert alert-danger m-3">
                         {{ session()->get('error') }}
                     </div>
                 @endif
             </div>
-            <div class="col-lg-9">
-                <div class="card">
+            <div class="col-lg-9 col-md-9 ">
+                <div class="card card-left">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thông tin phim</h4>
                     </div><!-- end card header -->
@@ -173,7 +173,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-3 ">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -182,9 +182,9 @@
                                     <label for="" class="form-label">Hình ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
                                     @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
-                                        <div class="text-center">
-                                            <img src="{{ Storage::url($movie->img_thumbnail) }}" alt="" class="mt-3 "
-                                            width="45%" >
+                                        <div class="text-center mt-2">
+                                            <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
+                                            width="35%" >
                                         </div>
                                     @else
                                         No image !
@@ -205,6 +205,15 @@
                                     <label for="trailer_url" class="form-label">URL Trailer:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
                                         value="{{ $movie->trailer_url }}" placeholder="ZQkU_oI2NOU">
+                                        @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                        <div class="text-center">
+                                            <iframe class="w-100 mt-2" src="https://www.youtube.com/embed/WO4n11LJHkM"
+                                                title="YouTube video player" " allowfullscreen>
+                                            </iframe>
+                                            </div>
+                                        @else
+                                            No image !
+                                        @endif
                                     @error('trailer_url')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
