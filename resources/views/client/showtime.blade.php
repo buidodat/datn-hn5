@@ -27,6 +27,16 @@
                 <div class="date-middle">04</div>
                 <div class="date-bottom">T4</div>
             </div>
+            <div class="date-display">
+                <div class="date-top">09</div>
+                <div class="date-middle">04</div>
+                <div class="date-bottom">T4</div>
+            </div>
+            <div class="date-display">
+                <div class="date-top">09</div>
+                <div class="date-middle">04</div>
+                <div class="date-bottom">T4</div>
+            </div>
 
 
 
@@ -42,7 +52,7 @@
                 <button class="format-btn">Thuyết Minh</button>
                 <button class="format-btn">VietSub</button>
                 <button class="format-btn">3D</button>
-                <button class="format-btn">Chẳng hạn thế</button>
+               
             </div>
 
             <div class="showtimes">

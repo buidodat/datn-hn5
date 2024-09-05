@@ -1127,7 +1127,7 @@
 .showtime-container .location-btn:hover,
 .showtime-container .format-btn:hover {
     border-color: #333;
-    color: #333;
+    /* color: #333; */
 }
 
 .showtime-container .showtimes {
