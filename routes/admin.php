@@ -78,8 +78,6 @@ Route::prefix('vouchers')
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
-// Drink
-Route::resource('drinks', DrinkController::class);
 // food
 Route::resource('food', FoodController::class);
 // Combo

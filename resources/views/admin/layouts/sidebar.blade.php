@@ -212,28 +212,6 @@
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#sidebarDrink" data-bs-toggle="collapse" role="button"
-                                   aria-expanded="false" aria-controls="sidebarDrink">
-                                    <i class=" ri-cup-line"></i> <span data-key="t-layouts">Quản lý Nước</span>
-                                </a>
-                                <div class="collapse menu-dropdown" id="sidebarDrink">
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.drinks.index')}}" class="nav-link" data-key="t-horizontal">Danh
-                                                sách</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item">
-                                            <a href="{{route('admin.drinks.create')}}" class="nav-link" data-key="t-horizontal">Thêm
-                                                mới</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
                                 <a class="nav-link menu-link" href="#sidebarCombos1" data-bs-toggle="collapse" role="button"
                                    aria-expanded="false" aria-controls="sidebarCombos1">
                                     <i class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>

@@ -21,7 +21,7 @@
                 <h4 class="mb-sm-0">Combo</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
                         <li class="breadcrumb-item active">Combo</li>
                     </ol>
                 </div>
@@ -49,7 +49,7 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                
+
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -58,50 +58,46 @@
                                 <th>#</th>
                                 <th>Tên combo</th>
                                 <th>Hình ảnh</th>
-                                <th>Giá</th>
+                                {{-- <th>Đồ ăn</th>
+                                <th>Nước uống</th> --}}
+                                <th>Thông tin combo</th>
+                                <th>Giá gốc</th>
+                                <th>Giá bán</th>
                                 <th>Mô tả</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td class="text-center">
-                                        @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
-                                            <img src="{{ Storage::url($item->img_thumbnail) }}" alt=""
-                                                width="100px" height="60px">
-                                        @else
-                                            No image !
-                                        @endif
-                                    </td>
-                                    <td>{{ number_format($item->price) }} VNĐ</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.combos.show', $item) }}">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
-                                                <i class="fas fa-eye"></i></button>
-                                        </a>
-                                        <a href="{{ route('admin.combos.edit', $item) }}">
-                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
-                                            @csrf
-                                            @method('delete')
-
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Có muốn xóa không?')">Xóa</button>
-                                        </form> --}}
-                                    </td>
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <td>1</td>
+                                <td>Family Combo 69oz</td>
+                                <td class="text-center">No image !</td>
+                                {{-- <td>Bimbim oishi x (1)</td>
+                                    <td>Nước Coca x (2)</td> --}}
+                                <td>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item mb-2"><span class="fw-semibold">Đồ ăn:</span> Bimbim oishi x (1)</li>
+                                        <li class="nav-item mb-2"><span class="fw-semibold">Nước uống:</span> Nước Coca x (2)</li>
+                                    </ul>
+                                </td>
+                                <td>100.000 vnd</td>
+                                <td>50.000 vnd</td>
+                                <td>
+                                    TIẾT KIỆM 50K!!! Gồm: 2 Nước Coca (22oz) + 1 Snack Oishi (80g)
+                                </td>
+                                <td><span class="badge bg-success-subtle text-success text-uppercase">Yes</span>
+                                <td>
+                                    <a href="">
+                                        <button title="xem" class="btn btn-success btn-sm " type="button">
+                                            <i class="fas fa-eye"></i></button>
+                                    </a>
+                                    <a href="">
+                                        <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                            <i class="fas fa-edit"></i></button>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

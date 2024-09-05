@@ -13,6 +13,7 @@ class Combo extends Model
         'name',
         'img_thumbnail',
         'price',
+        'price_sale',
         'description',
         'is_active',
     ];
