@@ -37,6 +37,7 @@ class TypeRoomController extends Controller
     public function store(Request $request)
     {
         //
+        
     }
 
     /**

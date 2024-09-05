@@ -47,21 +47,28 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Js cho tăng giảm số lượng trang thanh toán 
-document.getElementById('decrease').addEventListener('click', function () {
-    var quantityInput = document.getElementById('quantity-input');
-    var currentValue = parseInt(quantityInput.value);
+// Lấy tất cả các nút giảm số lượng
+document.querySelectorAll('.decrease').forEach((decreaseBtn, index) => {
+    decreaseBtn.addEventListener('click', function () {
+        var quantityInput = document.querySelectorAll('.quantity-input')[index];
+        var currentValue = parseInt(quantityInput.value);
 
-    if (currentValue >= 1) {
-        quantityInput.value = currentValue - 1;
-    }
+        if (currentValue >= 1) {
+            quantityInput.value = currentValue - 1;
+        }
+    });
 });
 
-document.getElementById('increase').addEventListener('click', function () {
-    var quantityInput = document.getElementById('quantity-input');
-    var currentValue = parseInt(quantityInput.value);
+// Lấy tất cả các nút tăng số lượng
+document.querySelectorAll('.increase').forEach((increaseBtn, index) => {
+    increaseBtn.addEventListener('click', function () {
+        var quantityInput = document.querySelectorAll('.quantity-input')[index];
+        var currentValue = parseInt(quantityInput.value);
 
-    quantityInput.value = currentValue + 1;
+        quantityInput.value = currentValue + 1;
+    });
 });
+
 
 // Js cho đoạn nhập voucher và điểm trang thanh toán 
 document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
