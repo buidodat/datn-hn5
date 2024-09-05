@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
@@ -91,8 +90,6 @@ Route::get('price-ticket',function(){
     return view('admin.price-ticket');
 });
 
-// Drink
-Route::resource('drinks', DrinkController::class);
 // food
 Route::resource('food', FoodController::class);
 // Combo

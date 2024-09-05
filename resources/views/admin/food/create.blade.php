@@ -49,7 +49,7 @@
                             <div class="row gy-4">
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
                                                 Đồ ăn
                                             </label>
@@ -60,7 +60,16 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="price" class="form-label ">Loại đồ ăn</label>
+                                            <select name="type" id="type" class="form-select">
+                                                @foreach ($types as $type)
+                                                    <option value="{{ $type }}" @selected(old('type') == $type )>{{ $type }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
                                             <label for="price" class="form-label "> <span class="text-danger">*</span>Giá
                                             </label>
                                             <input type="number" class="form-control" id="price" name="price"

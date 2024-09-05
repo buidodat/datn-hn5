@@ -49,9 +49,8 @@
                             <div class="row gy-4">
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
-                                                Combo
+                                        <div class="col-md-12 mb-3">
+                                            <label for="name" class="form-label "> <span class="text-danger">*</span>Tên combo
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Nhập tên combo">
@@ -61,11 +60,52 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="price" class="form-label "> <span class="text-danger">*</span>Giá
-                                            </label>
+                                            <label for="food_id" class="form-label ">Đồ ăn</label>
+                                            <select name="food_id" id="food_id" class="form-control">
+                                                <option value="1">Bimbim oishi</option>
+                                                <option value="1">Bỏng</option>
+                                                <option value="1">Bỏng vị caramel</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="qty_food" class="form-label "> <span class="text-danger">*</span>Số lượng</label>
+                                            <input type="number" class="form-control" id="qty_food" name="qty_food"
+                                                value="{{ old('qty_food') }}" placeholder="Nhập số lượng đồ ăn" min="1">
+                                            @error('qty_food')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="drink_id" class="form-label ">Nước uống</label>
+                                            <select name="drink_id" id="drink_id" class="form-control">
+                                                <option value="1">Nước Coca</option>
+                                                <option value="1">Nước cam</option>
+                                                <option value="1">Nước 7up</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="qty_drink" class="form-label "> <span class="text-danger">*</span>Số lượng</label>
+                                            <input type="number" class="form-control" id="qty_drink" name="qty_drink"
+                                                value="{{ old('qty_drink') }}" placeholder="Nhập số lượng nước uống" min="1">
+                                            @error('qty_drink')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="price" class="form-label "> <span class="text-danger">*</span>Giá gốc</label>
                                             <input type="number" class="form-control" id="price" name="price"
-                                                value="{{ old('price') }}" placeholder="Nhập giá">
-                                            @error('price')
+                                                placeholder="80.000 Vnd"  disabled>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="price_sale" class="form-label "> <span class="text-danger">*</span>Giá bán</label>
+                                            <input type="number" class="form-control" id="price_sale" name="price_sale"
+                                                value="{{ old('price_sale') }}" placeholder="Nhập giá bán">
+                                            @error('price_sale')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
