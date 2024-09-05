@@ -41,18 +41,18 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-0" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-0">
-                        <i class="ri-ancient-gate-fill"></i> <span data-key="t-layouts">Quản lý Thành Phố</span>
+                        <i class="ri-ancient-gate-fill"></i> <span data-key="t-layouts">Quản lý chi nhánh</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-0">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.cities.index') }}" class="nav-link"
+                                <a href="{{ route('admin.branches.index') }}" class="nav-link"
                                     data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.cities.create') }}" class="nav-link"
+                                <a href="{{ route('admin.branches.create') }}" class="nav-link"
                                     data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>

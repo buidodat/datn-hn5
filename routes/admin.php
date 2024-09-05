@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CinemaController;
-use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DrinkController;
@@ -33,7 +33,7 @@ Route::prefix('posts')
     });
 
 // City
-Route::resource('cities', CityController::class);
+Route::resource('branches', BranchController::class);
 // Cinema
 Route::resource('cinemas', CinemaController::class);
 // Payment
