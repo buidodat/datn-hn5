@@ -6,28 +6,31 @@
 
 @section('content')
 
-    <div class="row row-login">
-        <div class="auth-container">
-            <div class="content-forgot">
+    <div class="content-login-3 row" >
+        <h2 style="text-align: center">Quên mật khẩu</h2>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
 
-                <div class="form-input-3">
-                    <h2 class="text-forgot">Quên mật khẩu</h2>
-                    <form action="#" method="POST">
+            <div class="st_profile_input float_left">
+                <label>Email</label>
+                <input type="text" >
+            </div>
 
-                        <div class="input-container-3">
-                            <input type="email" name="email" placeholder="Nhập email">
-                        </div>
 
-                        <div class="forgotpass">
-                            <button type="submit">Gửi email</button>
-                        </div>
+            <div class="st_form_pop_login_btn" style="margin: 25px auto 0px auto; width: 50%; text-align: center;">
+                <a href="page-1-7_profile_settings.html">Gửi email</a>
+            </div>
 
-                    </form>
-                </div>
-
+            <div class="st_form_pop_signin_btn float_left">
+                <h4>Đã có tài khoản? <a href="#" data-toggle="modal" data-target="#myModa3" target="_blank">Đăng nhập</a></h4>
             </div>
         </div>
+        <div class="col-md-3"></div>
+
+
     </div>
+
+
 
 
 @endsection
