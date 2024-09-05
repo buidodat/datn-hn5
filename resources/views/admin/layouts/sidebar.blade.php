@@ -84,27 +84,6 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCombos" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarCombos">
-                        <i class="ri-gift-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarCombos">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{route('admin.combos.index')}}" class="nav-link" data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{route('admin.combos.create')}}" class="nav-link" data-key="t-horizontal">Thêm
-                                    mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-2" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-2">
                         <i class="ri-file-list-3-line"></i> <span data-key="t-layouts">Quản lý bài viết</span>
@@ -202,6 +181,82 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarCombos" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarCombos">
+                        <i class="ri-gift-2-line"></i> <span data-key="t-layouts">Combo</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarCombos">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#sidebarFood" data-bs-toggle="collapse" role="button"
+                                   aria-expanded="false" aria-controls="sidebarFood">
+                                    <i class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarFood">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.food.index')}}" class="nav-link" data-key="t-horizontal">Danh
+                                                sách</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.food.create')}}" class="nav-link" data-key="t-horizontal">Thêm
+                                                mới</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#sidebarDrink" data-bs-toggle="collapse" role="button"
+                                   aria-expanded="false" aria-controls="sidebarDrink">
+                                    <i class=" ri-cup-line"></i> <span data-key="t-layouts">Quản lý Nước</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarDrink">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.drinks.index')}}" class="nav-link" data-key="t-horizontal">Danh
+                                                sách</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.drinks.create')}}" class="nav-link" data-key="t-horizontal">Thêm
+                                                mới</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link menu-link" href="#sidebarCombos1" data-bs-toggle="collapse" role="button"
+                                   aria-expanded="false" aria-controls="sidebarCombos1">
+                                    <i class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarCombos1">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.combos.index')}}" class="nav-link" data-key="t-horizontal">Danh
+                                                sách</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="{{route('admin.combos.create')}}" class="nav-link" data-key="t-horizontal">Thêm
+                                                mới</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-15" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarLayouts-15">
