@@ -701,8 +701,14 @@
     /* line-height: 28px; */
     transition: all 0.5s;
 }
+.box-checkout .box-combo-uu-dai .increase {
+    position: sticky;
+}
+.box-checkout .box-combo-uu-dai .decrease {
+    position: sticky;
+}
 
-.box-checkout .box-combo-uu-dai #quantity-input {
+.box-checkout .box-combo-uu-dai .quantity-input {
     width: 50px;
     height: 30px;
     text-align: center;
@@ -827,7 +833,7 @@
     background-color: #e65c00;
 }
 
-.box-checkout #quantity-input {
+.box-checkout .quantity-input {
     width: 40px;
     text-align: center;
     border: 1px solid #ddd;

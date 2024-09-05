@@ -82,12 +82,19 @@
                                                         <td>Combo Poly {{ $i }} 79k</td>
                                                         <td>TIẾT KIỆM 25K!!! Gồm: 2 Bắp (69oz) + 4 Nước có gaz (22oz) + 2
                                                             Snack Oishi (80g)</td>
-                                                        <td>
+                                                        {{-- <td>
                                                             <div class="quantity-container">
                                                                 <button class="quantity-btn" id="decrease">-</button>
                                                                 <input type="text" id="quantity-input" value="0"
                                                                     min="1">
                                                                 <button class="quantity-btn" id="increase">+</button>
+                                                            </div>
+                                                        </td> --}}
+                                                        <td>
+                                                            <div class="quantity-container">
+                                                                <button class="quantity-btn decrease">-</button>
+                                                                <input type="text" class="quantity-input" value="0" min="1">
+                                                                <button class="quantity-btn increase">+</button>
                                                             </div>
                                                         </td>
 
