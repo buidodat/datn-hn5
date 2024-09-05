@@ -70,9 +70,23 @@
                                 <tr>
                                     <td>{{ $movie->id }}</td>
                                     <td class="text-center">
-                                        @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                        {{-- @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
                                             <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
                                                 width="160px" >
+                                        @else
+                                            No image !
+                                        @endif --}}
+
+                                        @php
+                                            $url = $movie->img_thumbnail;
+
+                                            if (!\Str::contains($url, 'http')) {
+                                                $url = Storage::url($url);
+                                            }
+
+                                        @endphp
+                                        @if(!empty($movie->img_thumbnail))
+                                            <img src="{{ $url }}" alt="" width="160px">
                                         @else
                                             No image !
                                         @endif
@@ -83,6 +97,7 @@
                                             <li class="nav-item mb-2"><span class="fw-semibold">Tên phim:</span> {{ $movie->name }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Đạo diễn:</span> {{ $movie->director }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Diễn viên:</span> {{ $movie->cast }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Thể loại:</span> {{ $movie->category }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Ngày khởi chiếu:</span> {{ $movie->release_date }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ $movie->end_date }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Phân loại:</span> {{ $movie->rating }}</li>
@@ -92,7 +107,7 @@
                                                     <span class="badge bg-info">{{ $language->language }}</span>
                                                 @endforeach
                                             </li>
-                                            <li class="nav-item mb-2"><span class="fw-semibold">Trailler URL:</span> <input type="text" disabled value="{{ $movie->trailer_url}}2121"></li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Code Youtube:</span> <input type="text" disabled value="{{ $movie->trailer_url}}2121"></li>
                                         </ul>
                                     </div>
 

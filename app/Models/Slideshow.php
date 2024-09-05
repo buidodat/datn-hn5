@@ -10,7 +10,7 @@ class Slideshow extends Model
     use HasFactory;
     protected $fillable = [
         'title',
-        'img_slideshow',
+        'img_thumbnail',
         'description',
         'route_url',
         'is_active',

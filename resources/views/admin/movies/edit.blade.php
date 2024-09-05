@@ -181,10 +181,26 @@
                                 <div class="mb-2">
                                     <label for="" class="form-label">Hình ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
-                                    @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                    {{-- @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
                                         <div class="text-center mt-2">
                                             <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
                                             width="35%" >
+                                        </div>
+                                    @else
+                                        No image !
+                                    @endif --}}
+
+                                    @php
+                                        $url = $movie->img_thumbnail;
+
+                                        if (!\Str::contains($url, 'http')) {
+                                            $url = Storage::url($url);
+                                        }
+
+                                    @endphp
+                                    @if(!empty($movie->img_thumbnail))
+                                        <div class="text-center mt-2">
+                                            <img src="{{ $url }}" alt="" width="35%">
                                         </div>
                                     @else
                                         No image !
@@ -194,6 +210,10 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         </div>
                                     @enderror
+
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -202,17 +222,15 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="trailer_url" class="form-label">URL Trailer:</label>
+                                    <label for="trailer_url" class="form-label">Code Youtube:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
                                         value="{{ $movie->trailer_url }}" placeholder="ZQkU_oI2NOU">
-                                        @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
+                                        @if ($movie->trailer_url )
                                         <div class="text-center">
-                                            <iframe class="w-100 mt-2" src="https://www.youtube.com/embed/WO4n11LJHkM"
-                                                title="YouTube video player" " allowfullscreen>
+                                            <iframe class="w-100 mt-2" src="https://www.youtube.com/embed/{{ $movie->trailer_url  }}"
+                                                title="YouTube video player"  allowfullscreen>
                                             </iframe>
                                             </div>
-                                        @else
-                                            No image !
                                         @endif
                                     @error('trailer_url')
                                         <div class='mt-1'>
