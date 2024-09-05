@@ -9,7 +9,7 @@ class TypeRoom extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 
+        'name',
         'surcharge'
     ];
 }
