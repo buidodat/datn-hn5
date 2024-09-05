@@ -83,12 +83,12 @@ Route::prefix('vouchers')
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
-Route::resource('typeRooms', TypeRoomController::class);    
+Route::resource('typeRooms', TypeRoomController::class);
 Route::resource('rooms', RoomController::class);
 
 
 Route::get('price-ticket',function(){
-
+    return view('admin.price-ticket');
 });
 
 // Drink
