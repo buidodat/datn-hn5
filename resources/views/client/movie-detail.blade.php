@@ -5,31 +5,6 @@
 @endsection
 
 @section('content')
-    <!-- prs video top Start -->
-    <div class="prs_top_video_section_wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="st_video_slider_inner_wrapper float_left " style="height:400px">
-                        <div class="st_video_slider_overlay"></div>
-                        <div class="st_video_slide_sec float_left mt-5">
-                            <a rel='external' href='https://www.youtube.com/embed/ryzOXAO0Ss0' title='title'
-                                class="test-popup-link">
-                                <img src="{{ env('APP_URL') . '/theme/client/' }}images/index_III/icon.png" alt="img">
-                            </a>
-                            <h3>Trailler</h3>
-                        </div>
-                        <div class="st_video_slide_social float_left">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- prs video top End -->
-        <!-- st slider rating wrapper Start -->
-
-        <!-- st slider rating wrapper End -->
-        <!-- st slider sidebar wrapper Start -->
         <div class="st_slider_index_sidebar_main_wrapper st_slider_index_sidebar_main_wrapper_md float_left">
             <div class="container">
                 <div class="row">
@@ -50,13 +25,14 @@
                                                 <div class="description">
                                                     <p>
                                                         Hellboy và một điệp viên BPRD mới vào nghề bị mắc kẹt ở
-                                                        vùng nông thôn Appalachia những năm 1950 và phát hiện ra một cộng đồng nhỏ
+                                                        vùng nông thôn Appalachia những năm 1950 và phát hiện ra một cộng
+                                                        đồng nhỏ
                                                         bị phù thủy ám ảnh, do Crooked Man đứng đầu.
                                                     </p>
                                                 </div>
                                                 <hr>
                                                 <div class="details ">
-                                                    <ul >
+                                                    <ul>
                                                         <li>
                                                             <strong>Phân loại:</strong> T16
                                                         </li>
@@ -85,8 +61,9 @@
                                                 </div>
 
                                                 <div class="buttons">
-                                                    <a rel='external'  title='title'
-                                                    class=""><button class="watch-trailer">Xem Trailer</button></a>
+                                                    <button class="watch-trailer" id='openModalBtn-trailer'>Xem
+                                                        Trailer</button>
+
                                                     <button class="buy-ticket" id="buy-ticket-btn">Mua Vé Ngay</button>
                                                 </div>
                                             </div>
@@ -97,7 +74,8 @@
                                             <div class="review-section">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="ne_recent_heading_main_wrapper ne_recent_heading_main_wrapper_index_II float_left title-rating">
+                                                        <div
+                                                            class="ne_recent_heading_main_wrapper ne_recent_heading_main_wrapper_index_II float_left title-rating">
                                                             <h2>Xếp hạng và đánh giá phim</h2>
                                                         </div>
                                                     </div>
@@ -177,6 +155,19 @@
                 </div>
             </div>
         </div>
+        <div id="trailerModal-trailer" class="modal-trailer">
+            <div class="modal-content-trailer">
+                <span class="close-trailer">&times;</span>
+                <h2>TRAILER - Làm Giàu Với Ma</h2>
+                <hr>
+                <div class="video-container-trailer">
+                    <iframe src="https://www.youtube.com/embed/MtZ_hf7tLxk" title="YouTube video"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
         @include('client.showtime')
         <!-- st slider sidebar wrapper End -->
+
     @endsection
