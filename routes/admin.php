@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DrinkController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\TypeSeatController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -84,3 +85,5 @@ Route::resource('drinks', DrinkController::class);
 Route::resource('food', FoodController::class);
 // Combo
 Route::resource('combos', ComboController::class);
+// TypeSeat
+Route::resource('typeseats', TypeSeatController::class);
