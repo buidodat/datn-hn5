@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('slideshows', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('img_slideshow');
+            $table->string('title')->nullable();
+            $table->string('img_thumbnail');
             $table->text('description')->nullable();
-            $table->string('route_url')->comment('Đường dẫn điều hướng');
+            $table->string('route_url')->comment('Đường dẫn điều hướng')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
