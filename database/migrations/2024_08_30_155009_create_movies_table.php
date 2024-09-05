@@ -25,8 +25,8 @@ return new class extends Migration
             $table->date('release_date');
             $table->date('end_date');
             $table->string('trailer_url')->nullable();
-            $table->boolean('is_active')->default(1);
-            $table->boolean('is_hot')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_hot')->default(false);
             $table->timestamps();
         });
     }

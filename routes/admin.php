@@ -77,6 +77,9 @@ Route::prefix('vouchers')
 
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
+Route::get('price-ticket',function(){
+
+});
 
 // Drink
 Route::resource('drinks', DrinkController::class);

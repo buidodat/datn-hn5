@@ -277,7 +277,11 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="">
+                        <i class=" ri-ticket-2-line"></i> <span data-key="t-dashboards">Giá vé</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
