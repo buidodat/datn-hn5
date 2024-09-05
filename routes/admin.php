@@ -6,7 +6,8 @@ use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
-
+use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\TypeRoomController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -77,3 +78,6 @@ Route::prefix('vouchers')
 
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
+Route::resource('typeRooms', TypeRoomController::class);    
+Route::resource('rooms', RoomController::class);
+
