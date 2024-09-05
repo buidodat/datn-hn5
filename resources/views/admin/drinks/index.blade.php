@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Đồ Ăn
+    Danh sách Nước
 @endsection
 
 @section('style-libs')
@@ -22,7 +22,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Đồ Ăn</li>
+                        <li class="breadcrumb-item active">Nước</li>
                     </ol>
                 </div>
             </div>
@@ -34,8 +34,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Đồ Ăn</h5>
-                    <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách Nước</h5>
+                    <a href="{{ route('admin.drinks.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -56,7 +56,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Tên Đồ Ăn</th>
+                                <th>Tên Nước</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá</th>
                                 <th>Mô tả</th>
