@@ -2,6 +2,7 @@
 
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Voucher;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Payment::class);
-            $table->unsignedInteger('voucher_id')->nullable();
+            $table->foreignIdFor(Voucher::class)->nullable();
             $table->string('voucher_code')->nullable();
             $table->unsignedInteger('voucher_discount')->nullable();
             $table->string('code')->unique()->comment('Mã quét Qr hoặc mã vạch');
