@@ -12,9 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cenimas', function (Blueprint $table) {
+        Schema::create('cinemas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Branch::class);
+            $table->foreignIdFor(Branch::class)->constrained();
             $table->string('name');
             $table->string('address');
             $table->string('description')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cenimas');
+        Schema::dropIfExists('cinemas');
     }
 };
