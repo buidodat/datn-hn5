@@ -49,8 +49,9 @@
                             <div class="row gy-4">
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-12 mb-3">
-                                            <label for="name" class="form-label "> <span class="text-danger">*</span>Tên combo
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
+                                                combo
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Nhập tên combo">
@@ -60,49 +61,8 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="food_id" class="form-label ">Đồ ăn</label>
-                                            <select name="food_id" id="food_id" class="form-control">
-                                                <option value="1">Bimbim oishi</option>
-                                                <option value="1">Bỏng</option>
-                                                <option value="1">Bỏng vị caramel</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="qty_food" class="form-label "> <span class="text-danger">*</span>Số lượng</label>
-                                            <input type="number" class="form-control" id="qty_food" name="qty_food"
-                                                value="{{ old('qty_food') }}" placeholder="Nhập số lượng đồ ăn" min="1">
-                                            @error('qty_food')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="drink_id" class="form-label ">Nước uống</label>
-                                            <select name="drink_id" id="drink_id" class="form-control">
-                                                <option value="1">Nước Coca</option>
-                                                <option value="1">Nước cam</option>
-                                                <option value="1">Nước 7up</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="qty_drink" class="form-label "> <span class="text-danger">*</span>Số lượng</label>
-                                            <input type="number" class="form-control" id="qty_drink" name="qty_drink"
-                                                value="{{ old('qty_drink') }}" placeholder="Nhập số lượng nước uống" min="1">
-                                            @error('qty_drink')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="price" class="form-label "> <span class="text-danger">*</span>Giá gốc</label>
-                                            <input type="number" class="form-control" id="price" name="price"
-                                                placeholder="80.000 Vnd"  disabled>
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="price_sale" class="form-label "> <span class="text-danger">*</span>Giá bán</label>
+                                            <label for="price_sale" class="form-label "> <span
+                                                    class="text-danger">*</span>Giá bán</label>
                                             <input type="number" class="form-control" id="price_sale" name="price_sale"
                                                 value="{{ old('price_sale') }}" placeholder="Nhập giá bán">
                                             @error('price_sale')
@@ -110,8 +70,18 @@
                                             @enderror
                                         </div>
 
+                                        <div class="col-md-12 d-flex justify-content-between">
+                                            <label for="price_sale" class="form-label">Đồ ăn</label>
+                                            <button type="button" class="btn btn-primary" onclick="addFood()">Thêm đồ
+                                                ăn</button>
+                                        </div>
+                                        <div id="food_list" class="col-md-12">
+                                            <!-- Các phần tử food sẽ được thêm vào đây -->
+                                        </div>
+
                                         <div class="col-md-12 mb-3">
-                                            <label for="description" class="form-label"> <span class="text-danger">*</span>Mô tả
+                                            <label for="description" class="form-label"> <span
+                                                    class="text-danger">*</span>Mô tả
                                                 ngắn</label>
                                             <textarea class="form-control" rows="3" name="description" placeholder="Nhập mô tả">{{ old('description') }}</textarea>
                                             @error('description')
@@ -176,5 +146,79 @@
             </div>
             <!--end col-->
         </div>
+
     </form>
 @endsection
+
+@section('scripts')
+<script>
+    function addFood() {
+        const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+        const foodList = document.getElementById('food_list');
+
+        // Tạo HTML mới
+        const html = `
+        <div class="col-md-12 mb-1" id="${id}_item">
+            <div class="d-flex">
+                <div class="col-md-6">
+                    <label for="${id}_select" class="form-label">Đồ ăn</label>
+                    <select name="combo_food[]" id="${id}_select" class="form-control mb-3 mx-2">
+                        <option value="1">hihi</option>
+                        <option value="2">haha</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5 mx-3">
+                    <label for="${id}" class="form-label">Số lượng</label>
+                    <input type="number" class="form-control" name="combo_quantity[]" id="${id}">
+                </div>
+
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger remove-btn mt-4">
+                        <span class="bx bx-trash"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+        // Thêm HTML vào danh sách food
+        foodList.insertAdjacentHTML('beforeend', html);
+
+        // Gán sự kiện cho nút xóa
+        foodList.querySelector(`#${id}_item .remove-btn`).addEventListener('click', function() {
+            removeFood(`${id}_item`);
+        });
+    }
+
+    function removeFood(id) {
+        if (confirm('Chắc chắn xóa không?')) {
+            // Thêm hiệu ứng khi xóa
+            const element = document.getElementById(id);
+            element.style.transition = 'opacity 0.5s ease';
+            element.style.opacity = '0';
+
+            // Xóa phần tử sau khi hiệu ứng hoàn tất
+            setTimeout(() => {
+                element.remove();
+            }, 500);
+        }
+    }
+</script>
+
+
+@endsection
+
+
+{{-- <label for="${id}" class="form-label">Đồ ăn</label>
+<div class="d-flex">
+    <select name="" id="" class="form-control mb-3 mx-2">
+        <option value="1">hihi</option>
+        <option value="2">haha</option>
+    </select>
+
+    <input type="number" class="form-control" name="combo_food[]" id="${id}">
+    <button type="button" class="btn btn-danger remove-btn mx-2">
+        <span class="bx bx-trash"></span>
+    </button>
+</div> --}}
