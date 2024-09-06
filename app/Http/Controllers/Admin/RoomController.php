@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    const PATH_VIEW = 'admin.rooms.';
+    const PATH_UPLOAD = 'rooms';
     public function index()
     {
-        //
+        $rooms = Room::query()->with(['typeRoom','cenima'])->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__ ,compact('rooms'));
     }
 
     /**
@@ -20,7 +21,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view(self::PATH_VIEW . __FUNCTION__ );
     }
 
     /**
