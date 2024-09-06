@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách Đồ Ăn</h5>
-                    <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.food.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -49,7 +49,7 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                
+
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -66,7 +66,37 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->type }}</td>
+                                <td class="text-center">
+                                    @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                        <img src="{{ Storage::url($item->img_thumbnail) }}" alt="" width="100px"
+                                            height="60px">
+                                    @else
+                                        No image !
+                                    @endif
+                                </td>
+                                <td>{{ number_format($item->price) }} VNĐ</td>
+                                <td>{{ $item->description }}</td>
+                                <td>{!! $item->is_active
+                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                </td>
+                                <td>
+                                    <a href="">
+                                        <button title="xem" class="btn btn-success btn-sm " type="button">
+                                            <i class="fas fa-eye"></i></button>
+                                    </a>
+                                    <a href="{{ route('admin.food.edit', $item) }}">
+                                        <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                            <i class="fas fa-edit"></i></button>
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreFoodRequest;
+use App\Http\Requests\Admin\UpdateFoodRequest;
 use App\Models\Food;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FoodController extends Controller
 {
@@ -16,7 +19,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $data = Food::query()->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**
@@ -27,12 +31,27 @@ class FoodController extends Controller
         $types = Food::TYPES;
         return view(self::PATH_VIEW . __FUNCTION__, compact('types'));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreFoodRequest $request)
     {
+        try {
+            $data = $request->all();
+            $data['is_active'] ??= 0;
+            if ($data['img_thumbnail']) {
+                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+            }
+
+            Food::query()->create($data);
+
+            return redirect()
+                ->route('admin.food.index')
+                ->with('success', 'Thêm thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -44,11 +63,48 @@ class FoodController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Food $food)
+    {
+        $types = Food::TYPES;
+        return view(self::PATH_VIEW . __FUNCTION__, compact('food', 'types'));
+    }
+
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateFoodRequest $request, Food $food)
     {
-        //
+        try {
+            $data = $request->all();
+            $data['is_active'] ??= 0;
+
+            // Kiểm tra nếu người dùng có tải lên ảnh mới
+            if (!empty($data['img_thumbnail'])) {
+                // Lưu ảnh mới và lấy đường dẫn
+                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+
+                // Lưu lại đường dẫn của ảnh hiện tại để so sánh sau
+                $ImgThumbnailCurrent = $food->img_thumbnail;
+            } else {
+                // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+                unset($data['img_thumbnail']);
+            }
+
+            $food->update($data);
+
+            // Nếu có ảnh mới và ảnh mới khác với ảnh cũ, xóa ảnh cũ khỏi hệ thống
+            if (!empty($ImgThumbnailCurrent) && ($data['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
+                Storage::delete($ImgThumbnailCurrent);
+            }
+
+            return redirect()
+                ->back()
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
