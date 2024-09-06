@@ -40,24 +40,25 @@ class ComboController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreComboRequest $request)
+    public function store(Request $request)
     {
-        try {
-            $data = $request->all();
-            $data['is_active'] ??= 0;
+        dd($request->all());
+        // try {
+        //     $data = $request->all();
+        //     $data['is_active'] ??= 0;
 
-            if ($data['img_thumbnail']) {
-                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
-            }
+        //     if ($data['img_thumbnail']) {
+        //         $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+        //     }
 
-            Combo::query()->create($data);
+        //     Combo::query()->create($data);
 
-            return redirect()
-                ->route('admin.combos.index')
-                ->with('success', 'Thêm thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
-        }
+        //     return redirect()
+        //         ->route('admin.combos.index')
+        //         ->with('success', 'Thêm thành công!');
+        // } catch (\Throwable $th) {
+        //     return back()->with('error', $th->getMessage());
+        // }
     }
 
     /**

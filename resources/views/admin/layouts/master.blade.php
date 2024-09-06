@@ -131,6 +131,8 @@
 
     <!-- App js -->
     <script src="{{ asset('theme/admin/assets/js/app.js') }}"></script>
+
+    @yield('scripts')
 </body>
 
 </html>

@@ -131,32 +131,6 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCombos" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarCombos">
-                        <i class="ri-gift-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarCombos">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.combos.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.combos.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm
-                                    mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-
-
-                <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-4">
                         <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Thanh Toán</span>

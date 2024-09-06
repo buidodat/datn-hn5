@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('combo_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Combo::class)->constrained();
-            $table->foreignIdFor(Food::class)->constrained();
+            $table->foreignIdFor(Food::class)->constrained();;
             $table->unsignedInteger('quatity')->default(0);
             $table->timestamps();
         });
