@@ -35,7 +35,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/style.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/responsive.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/mainstyle.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" />
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" /> --}}
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/my-account.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/trailler.css') }}" />
 <link rel="stylesheet" id="theme-color" type="text/css" href="#"/>
