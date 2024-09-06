@@ -42,6 +42,7 @@ class StoreFoodRequest extends FormRequest
             'price.numeric' => 'Giá phải là số.',
             'price.min' => 'Giá phải là số lớn hơn 0.',
             'description.required' => 'Bạn chưa nhập mô tả.',
+            'description.max' => 'Trường mô tả không được lớn hơn 1000 ký tự.',
         ];
     }
 }

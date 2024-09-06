@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cenima extends Model
+class Cinema extends Model
 {
     use HasFactory;
+
     protected $fillable = [
+        'branch_id',
         'name',
         'address',
         'description',
@@ -17,4 +19,8 @@ class Cenima extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
+    }
 }

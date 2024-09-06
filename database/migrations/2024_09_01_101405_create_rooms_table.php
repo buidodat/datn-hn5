@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cenima;
+use App\Models\Cinema;
 use App\Models\TypeRoom;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Cenima::class);
+            $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
             $table->string('name')->unique();
             $table->unsignedSmallInteger('total_seat');

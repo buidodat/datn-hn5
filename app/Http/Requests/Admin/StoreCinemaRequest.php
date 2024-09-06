@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFoodRequest extends FormRequest
+class StoreCinemaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,9 @@ class UpdateFoodRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('food')->id;
         return [
-            'name'          => 'required|unique:food,name,'. $id,
-            'img_thumbnail' => 'nullable|image|max:2048', 
-            'price'         => 'required|numeric|min:1', 
-            'type'          => 'nullable', 
+            'name'          => 'required|unique:cinemas,name', 
+            'address'   => 'required|string|max:150',
             'is_active'     => 'nullable|boolean', 
             'description'   => 'required|string|max:1000',
         ];
@@ -37,13 +34,11 @@ class UpdateFoodRequest extends FormRequest
         return [
             'name.required' => 'Bạn chưa nhập tên.',
             'name.unique' => 'Tên đã tồn tại.',
-            // 'img_thumbnail.required' => 'Bạn chưa thêm ảnh.',
-            'img_thumbnail.image' => 'File phải là một hình ảnh.',
-            'price.required' => 'Bạn chưa nhập giá.',
-            'price.numeric' => 'Giá phải là số.',
-            'price.min' => 'Giá phải là số lớn hơn 0.',
+            'address.required' => 'Bạn chưa nhập địa chỉ.',
+            'address.max' => 'Trường địa chỉ không được lớn hơn 200 ký tự.',
             'description.required' => 'Bạn chưa nhập mô tả.',
             'description.max' => 'Trường mô tả không được lớn hơn 1000 ký tự.',
+
         ];
     }
 }

@@ -21,7 +21,7 @@
                 <h4 class="mb-sm-0">Rạp</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
                         <li class="breadcrumb-item active">Rạp</li>
                     </ol>
                 </div>
@@ -57,27 +57,29 @@
                             <tr>
                                 <th>#</th>
                                 <th>Tên rạp</th>
-                                <th>Thành phố</th>
+                                <th>Chi nhánh</th>
                                 <th>Địa chỉ</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($data as $item)
                             <tr>
-                                <td>1</td>
-                                <td>tên rạp</td>
-                                <td>Hà nội</td>
-                                <td>Thanh oai, hà nội</td>
-                                <td>
-                                    <span class="badge bg-danger-subtle text-danger text-uppercase">No</span>
+                                <td>{{ $item->id}}</td>
+                                <td>{{ $item->name}}</td>
+                                <td>{{ $item->branch->name}}</td>
+                                <td>{{ $item->address}}</td>
+                                <td>{!! $item->is_active
+                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                 </td>
                                 <td>
                                     <a href="">
                                         <button title="xem" class="btn btn-success btn-sm " type="button">
                                             <i class="fas fa-eye"></i></button>
                                     </a>
-                                    <a href="">
+                                    <a href="{{ route('admin.cinemas.edit', $item)}}">
                                         <button title="xem" class="btn btn-warning btn-sm " type="button">
                                             <i class="fas fa-edit"></i></button>
                                     </a>
@@ -90,6 +92,7 @@
                                         </form> --}}
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

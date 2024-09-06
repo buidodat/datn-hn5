@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCinemaRequest;
+use App\Http\Requests\Admin\UpdateCinemaRequest;
+use App\Models\Branch;
+use App\Models\Cinema;
+use App\Models\Food;
 use Illuminate\Http\Request;
 
 class CinemaController extends Controller
@@ -14,7 +19,8 @@ class CinemaController extends Controller
      */
     public function index()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $data = Cinema::query()->with('branch')->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**
@@ -22,15 +28,27 @@ class CinemaController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('branches'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCinemaRequest $request)
     {
-        //
+        try {
+            $data = $request->all();
+            $data['is_active'] ??= 0;
+
+            Cinema::query()->create($data);
+
+            return redirect()
+                ->route('admin.cinemas.index')
+                ->with('success', 'Thêm thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -44,17 +62,29 @@ class CinemaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Cinema $cinema)
     {
-        //
+        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('branches', 'cinema'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCinemaRequest $request, Cinema $cinema)
     {
-        //
+        try {
+            $data = $request->all();
+            $data['is_active'] ??= 0;
+
+            $cinema->update($data);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**

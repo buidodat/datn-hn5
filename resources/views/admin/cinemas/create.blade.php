@@ -62,12 +62,12 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="city_id" class="form-label "> <span
-                                                    class="text-danger">*</span>Thành phố:
+                                                    class="text-danger">*</span>Chi nhánh:
                                             </label>
-                                            <select name="city_id" id="city_id" class="form-control">
-                                                <option value="1">Chọn thành phố</option>
-                                                <option value="2">Hà Nội</option>
-
+                                            <select name="branch_id" id="branch_id" class="form-control">
+                                                @foreach ($branches as $id => $name)
+                                                    <option value="{{ $id}}">{{ $name}}</option>
+                                                @endforeach
                                             </select>
                                             @error('city_id')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -95,8 +95,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
                             </div>
                             <!--end row-->
                         </div>
@@ -114,7 +112,7 @@
                                             <label class="form-check-label" for="is_active">Is Active:</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
+                                                    name="is_active" value="1" checked>
                                             </div>
                                         </div>
                                     </div>
