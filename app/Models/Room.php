@@ -18,4 +18,17 @@ class Room extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
+
+    const TOTAL_SEATS =[
+        100,
+        150,
+        200
+    ];
+
+    public function cenima(){
+        return $this->belongsTo(Cenima::class);
+    }
+    public function typeRoom(){
+        return $this->belongsTo(TypeRoom::class);
+    }
 }

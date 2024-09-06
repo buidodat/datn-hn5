@@ -96,4 +96,5 @@ Route::resource('food', FoodController::class);
 Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('typeseats', TypeSeatController::class);
+Route::resource('rooms', RoomController::class);
 
