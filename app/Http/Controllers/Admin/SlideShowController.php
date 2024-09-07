@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreSlideShowRequest;
+use App\Http\Requests\Admin\UpdateSlideShowRequest;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +33,7 @@ class SlideShowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSlideShowRequest $request)
     {
         try {
             $data = $request->all();
@@ -63,7 +65,7 @@ class SlideShowController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSlideShowRequest $request, string $id)
     {
         try {
             $data = $request->all();
