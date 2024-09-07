@@ -106,7 +106,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" checked>
+                                                       name="is_active" checked value="1">
                                             </div>
                                         </div>
                                     </div>

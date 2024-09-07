@@ -84,12 +84,25 @@
                             </td>
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->route_url }}</td>
-                            <td><span class="badge bg-primary">Yes</span></td>
+                            <td>{!! $item->is_active
+                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                            </td>
                             <td>
                                 <a href="{{ route('admin.slideshows.edit', $item) }}">
                                     <button title="sửa" class="btn btn-warning btn-sm " type="button">
                                         <i class="fas fa-edit"></i></button>
                                 </a>
+                                <form method="POST" action="{{route('admin.slideshows.destroy',$item->id)}}"
+                                      onsubmit="return confirm('Xác nhận xoá?')" class="d-inline-flex">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger waves-effect waves-light">
+                                       <i class="ri-delete-bin-5-line"></i>
+                                    </button>
+
+
+                                </form>
                             </td>
 
                         </tr>
