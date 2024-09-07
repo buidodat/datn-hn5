@@ -76,10 +76,15 @@
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        <a href="{{ route('admin.typeRooms.destroy', $typeRoom) }}">
-                                            <button title="xem" class="btn btn-danger btn-sm " type="button"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </a>
+                                       
+                                        {{-- <form action="{{ route('admin.typeRooms.destroy', $typeRoom) }}" method="post"
+                                            class="d-inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                class="ri-delete-bin-7-fill"></i></button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
