@@ -61,7 +61,7 @@
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @foreach ($data as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
@@ -76,63 +76,16 @@
                                             <button title="sửa" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
                                         </a>
-                                        <form action="{{ route('admin.typeseats.destroy', $item) }}" method="post" class="mt-2">
+                                        {{-- <form action="{{ route('admin.typeseats.destroy', $item) }}" method="post" class="mt-2">
                                             @csrf
                                             @method('delete')
 
                                             <button type="submit" class="btn btn-danger"
                                                 onclick="return confirm('Có muốn xóa không?')">Xóa</button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Vip</td>
-                                <td>80,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Thường</td>
-                                <td>75,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Đôi</td>
-                                <td>150,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
