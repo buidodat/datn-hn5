@@ -5,16 +5,14 @@
 @endsection
 
 @section('style-libs')
-    <!--datatable css-->
+    <!-- Datatable CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
 @section('content')
-    <!-- start page title -->
+    <!-- Start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -28,14 +26,14 @@
             </div>
         </div>
     </div>
-    <!-- end page title -->
+    <!-- End page title -->
 
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách loại ghế</h5>
-                    <a href="{{ route('admin.typeseats.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.type_seats.create') }}" class="btn btn-primary mb-3">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -45,11 +43,11 @@
                 @endif
 
                 @if (session()->has('error'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-danger">
                         {{ session('error') }}
                     </div>
                 @endif
-                
+
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
@@ -61,78 +59,27 @@
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($data as $item)
+                        <tbody>
+                            @foreach ($typeSeats as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>
-                                        <a href="{{ route('admin.typeseats.show', $item) }}">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
-                                                <i class="fas fa-eye"></i></button>
+                                        <a href="{{ route('admin.type_seats.show', $item) }}" class="btn btn-success btn-sm" title="Xem">
+                                            <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.typeseats.edit', $item) }}">
-                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
+                                        <a href="{{ route('admin.type_seats.edit', $item) }}" class="btn btn-warning btn-sm" title="Sửa">
+                                            <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('admin.typeseats.destroy', $item) }}" method="post" class="mt-2">
+                                        {{-- <form action="{{ route('admin.type_seats.destroy', $item) }}" method="post" class="d-inline-block">
                                             @csrf
                                             @method('delete')
-
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Có muốn xóa không?')">Xóa</button>
-                                        </form>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Có muốn xóa không?')">Xóa</button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Vip</td>
-                                <td>80,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Thường</td>
-                                <td>75,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Đôi</td>
-                                <td>150,000 VNĐ</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -141,12 +88,11 @@
     </div><!--end row-->
 @endsection
 
-
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <!--datatable js-->
+    <!-- Datatable JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>

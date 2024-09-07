@@ -308,12 +308,12 @@
                     <div class="collapse menu-dropdown" id="sidebarTypeSeat">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.typeseats.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{route('admin.type_seats.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.typeseats.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{route('admin.type_seats.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
