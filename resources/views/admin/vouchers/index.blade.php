@@ -20,11 +20,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">VOUCHERS</h4>
+                <h4 class="mb-sm-0">Vouchers</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
                         <li class="breadcrumb-item active">Vouchers</li>
                     </ol>
                 </div>
@@ -38,12 +38,19 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Quản lý vouchers </h5>
-                    <a href="{{--{{ route('admin.slideshow.create') }}--}}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0"> Danh sách vouchers </h5>
+                    <a href="{{ route('admin.vouchers.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
+
                 @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -54,98 +61,67 @@
                         <tr>
                             <th>#</th>
                             <th>Mã voucher</th>
+                            {{--<th>Thông tin voucher</th>--}}
                             <th>Tiêu đề</th>
-                            <th>Mô tả</th>
-                            <th>Thời gian bắt đầu</th>
-                            <th>Thời gian kết thúc</th>
-                            <th>Giá trị giảm giá</th>
+                            <th>Thời gian sử dụng</th>
+                            {{--<th>Thời gian kết thúc</th>--}}
+                            <th>Giảm giá</th>
                             <th>Số lượng</th>
-                            <th>Giới hạn sử dụng</th>
+                            <th>Giới hạn</th>
+                            <th>Mô tả</th>
                             <th>Hoạt động</th>
                             <th>Chức năng</th>
                         </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($posts as $post)
-                                <tr>
-                                    <td>{{ $post->id }}</td>
-                                    <td style="!implement width: 5%">{{ $post->title }}</td>
-                                    <td>
-                                        @if ($post->image && \Storage::exists($post->image))
-                                            <img src="{{ Storage::url($post->image) }}" alt="" width="50px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                        @php
-                                            $url = $post->image;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($post->image))
-                                            <img src="{{ $url }}" alt="" width="100px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                    </td>
-                                    <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->author->name }}</td>
-                                    <td>{{ $post->views }}</td>
-                                    <td>{!! $post->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_popular ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_hot_post ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $post->slug }}</td>
-                                    <td>
-                                        @foreach ($post->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $post->created_at }}</td>
-                                    <td>{{ $post->updated_at }}</td>
-                                    <td>
-
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody> --}}
                         <tbody>
-                        @for ($i = 0; $i < 3; $i++)
+                        @foreach ($data as $item)
                             <tr>
-                                <td>1</td>
-                                <td style="!implement width: 5%">xnxx</td>
-                                <td>voucher m2/9</td>
-                                <td>Mô tả gì bây giờ</td>
-                                <td>13h 29/2/2024</td>
-                                <td>13h 31/2/2024</td>
-                                <td>90%</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td><span class="badge bg-primary">Yes</span></td>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->code }}</td>
+                                <td>{{ $item->title }}</td>
+                                {{--<td class="nav nav-sm flex-column">
+                                    --}}{{--<li class="nav-item mb-2"><span
+                                            class="fw-semibold">Mã code:</span> {{ $item->code }}</li>--}}{{--
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Tiêu đề:</span> {{ $item->title }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Giảm giá:</span> {{ $item->discount }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Số lượng:</span> {{ $item->quantity }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Giới hạn:</span> {{ $item->limit }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Bắt đầu:</span> {{ $item->start_date_time }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Kết thúc:</span> {{ $item->end_date_time }}</li>
+                                </td>--}}
+                                <td class="nav nav-sm flex-column">
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Bắt đầu:</span> {{ $item->start_date_time }}</li>
+                                    <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Kết thúc:</span> {{ $item->end_date_time }}</li>
+                                    </td>
+                                <td>{{ $item->discount }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->limit }}</td>
+                                <td>{{ $item->description }}</td>
                                 <td>
-                                    <a href="">
+                                    {!! $item->is_active == 1
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.vouchers.show', $item) }}">
                                         <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-                                    <a href="">
+                                                class="fas fa-eye"></i></button>
+                                    </a>
+                                    <a href="{{ route('admin.vouchers.edit', $item) }}">
                                         <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                 class="fas fa-edit"></i></button>
                                     </a>
                                 </td>
                             </tr>
-                        @endfor
+                        @endforeach
                         </tbody>
 
                     </table>
