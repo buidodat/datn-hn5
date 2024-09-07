@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.slideshows.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -15,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="#">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.slideshows.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -26,18 +26,25 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-md-12">
-                @if (session()->has('error'))
-                    <div class="alert alert-danger m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
-            </div>
+
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thêm slideshow</h4>
                     </div><!-- end card header -->
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session()->has('error'))
+                        <div class="alert alert-success">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -45,7 +52,7 @@
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
                                         <input type="text" class="form-control " id="title"
-                                            name="title" value="{{ old('title') }}">
+                                            name="title" value="{{ old('title') }}" placeholder="Nhập tiêu đề slide">
                                         @error('title')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -58,9 +65,9 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label for="title" class="form-label ">URL route:</label>
+                                        <label for="title" class="form-label ">Đường dẫn url:</label>
                                         <input type="text" class="form-control " id="route_url"
-                                               name="route_url" value="{{ old('route_url') }}">
+                                               name="route_url" value="{{ old('route_url') }}" placeholder="Nhập đường dẫn của phim">
                                         @error('route_url')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -80,9 +87,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">IMG slideshow</label>
-                                    <input type="file" name="img_slideshow" id="" class="form-control">
-                                    @error('img_slideshow')
+                                    <label for="" class="form-label">Ảnh slide</label>
+                                    <input type="file" name="img_thumbnail" id="" class="form-control">
+                                    @error('img_thumbnail')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
