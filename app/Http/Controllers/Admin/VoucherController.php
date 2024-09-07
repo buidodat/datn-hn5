@@ -58,7 +58,9 @@ class VoucherController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $voucher = Voucher::query()->findOrFail($id);
+        /*dd($voucher->start_date_time);*/
+        return view(self::PATH_VIEW . __FUNCTION__, compact('voucher'));
     }
 
     /**
@@ -66,7 +68,19 @@ class VoucherController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $data = $request->all();
+            $data['is_active'] = $request->has('is_active') ? 1 : 0;
+            $voucher = Voucher::query()->findOrFail($id);
+
+            $voucher->update($data);
+
+            return redirect()
+                ->back()
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
