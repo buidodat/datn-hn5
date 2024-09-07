@@ -111,10 +111,10 @@
                                         : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.vouchers.show', $item) }}">
+                                    {{--<a href="{{ route('admin.vouchers.show', $item) }}">
                                         <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                 class="fas fa-eye"></i></button>
-                                    </a>
+                                    </a>--}}
                                     <a href="{{ route('admin.vouchers.edit', $item) }}">
                                         <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                 class="fas fa-edit"></i></button>

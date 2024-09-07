@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="discount" class="form-label ">Giá trị giảm giá:</label>
+                                        <label for="discount" class="form-label ">Giảm giá:</label>
                                         <input type="text" class="form-control " id="discount"
                                                name="discount" value="{{ $voucher->discount }}">
                                         @error('discount')
