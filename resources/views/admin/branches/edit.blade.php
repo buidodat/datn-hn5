@@ -1,22 +1,23 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới chi nhánh
+    Cập nhật chi nhánh
 @endsection
 
 @section('content')
-<form action="{{ route('admin.branches.store') }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('admin.branches.update', $branch) }}" method="post" enctype="multipart/form-data">
+    @method('PUT')
     @csrf
 
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Thêm mới chi nhánh</h4>
+                <h4 class="mb-sm-0">Cập nhật chi nhánh</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Thêm mới</li>
+                        <li class="breadcrumb-item active">Cập nhật</li>
                     </ol>
                 </div>
 
@@ -36,15 +37,29 @@
         <div class="col-lg-9">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Thông tin chi nhánh</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">Cập nhật thông tin chi nhánh</h4>
                 </div><!-- end card header -->
+
+                @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <div class="card-body">
                     <div class="live-preview">
                         <div class="row gy-4">
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="name" class="form-label ">Tên chi nhánh:</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên chi nhánh">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                    value="{{$branch->name}}", placeholder="Nhập tên chi nhánh">
                                     @error("name")
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -62,15 +77,15 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="mb-2">
-                                        <label class="form-check-label" for="is_active">Is active:</label>
-                                        <div class="form-check form-switch form-switch-default">
-                                            <input class="form-check-input" type="checkbox" role=""
-                                                name="is_active" checked value="1">
+                                   <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-check-label" for="is_active">Is active:</label>
+                                            <div class="form-check form-switch form-switch-default">
+                                                <input class="form-check-input" type="checkbox" role=""
+                                                    name="is_active" @checked($branch->is_active) value="1">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,7 +98,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <a href="{{ route('admin.branches.index') }}" class="btn btn-info">Danh sách</a>
-                    <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                 </div>
             </div>
         </div>
