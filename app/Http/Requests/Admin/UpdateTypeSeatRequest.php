@@ -21,9 +21,9 @@ class UpdateTypeSeatRequest extends FormRequest
      */
     public function rules(): array
     {
-        $typeseatId = $this->route('type_seats') ? $this->route('type_seats')->id : null;
+        $id = $this->route('type_seat')->id;
         return [
-            'name' => 'required|unique:type_seats,name'. $typeseatId,
+            'name' => 'required|unique:type_seats,name,'. $id,
             'price' => 'required|numeric|min:1',
         ];
     }

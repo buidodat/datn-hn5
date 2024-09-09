@@ -153,21 +153,21 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-15" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-15">
+                       aria-expanded="false" aria-controls="sidebarLayouts-15">
                         <i class=" ri-coupon-3-line "></i> <span data-key="t-layouts">Vouchers</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-15">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.vouchers.list') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
+                                <a href="{{ route('admin.vouchers.index') }}" class="nav-link"
+                                   data-key="t-horizontal">Danh
                                     sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.vouchers.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                   data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
@@ -250,25 +250,25 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-5" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-5">
+                       aria-expanded="false" aria-controls="sidebarLayouts-5">
                         <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-5">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.slideshows.list') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
+                                <a href="{{ route('admin.slideshows.index') }}" class="nav-link"
+                                   data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.slideshows.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
+                                   data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-3">

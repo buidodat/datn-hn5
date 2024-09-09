@@ -5,18 +5,18 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.vouchers.update', $voucher) }}" method="post" enctype="multipart/form-data">
         @csrf
-
+        @method('PUT')
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Vouchers</h4>
+                    <h4 class="mb-sm-0">Cập nhật voucher</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="#">Danh sách</a></li>
-                            <li class="breadcrumb-item active">Chỉnh sửa</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.vouchers.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item active">Cập nhật</li>
                         </ol>
                     </div>
 
@@ -26,27 +26,32 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-md-12">
-                @if (session()->has('error'))
-                    <div class="alert alert-danger m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
-            </div>
+
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Sửa voucher</h4>
                     </div><!-- end card header -->
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session()->has('error'))
+                        <div class="alert alert-success">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="title" class="form-label">Mã voucher: </label>
-                                        <input type="text" class="form-control " id="title"
-                                               name="title" value="xnxx">
-                                        @error('title')
+                                        <label for="code" class="form-label">Mã voucher: </label>
+                                        <input type="text" class="form-control " id="code"
+                                               name="code" value="{{ $voucher->code }}">
+                                        @error('code')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -56,7 +61,7 @@
                                     <div class="mb-3">
                                         <label for="quantity" class="form-label ">Số lượng: </label>
                                         <input type="text" class="form-control " id="quantity"
-                                               name="quantity" value="12">
+                                               name="quantity" value="{{ $voucher->quantity }}">
                                         @error('quantity')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -66,7 +71,7 @@
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Giới hạn sử dụng</label>
-                                        <input type="text" name="limit" id="" class="form-control"  value="1">
+                                        <input type="text" name="limit" id="" class="form-control"  value="{{ $voucher->limit }}">
                                         @error('limit')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -77,8 +82,8 @@
                                     <div class="mb-3">
                                         <label for="start_time" class="form-label ">Thời gian bắt đầu:</label>
                                         <input type="date" class="form-control" id="start_time"
-                                               name="start_time" value="">
-                                        @error('start_time')
+                                               name="start_date_time" value="{{ date('Y-m-d', strtotime($voucher->start_date_time)) }}">
+                                        @error('start_date_time')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -87,17 +92,17 @@
                                     <div class="mb-3">
                                         <label for="end_time" class="form-label ">Thời gian kết thúc:</label>
                                         <input type="date" class="form-control" id="start_time"
-                                               name="start_time" value="">
-                                        @error('start_time')
+                                               name="end_date_time" value="{{ date('Y-m-d', strtotime($voucher->end_date_time)) }}">
+                                        @error('end_date_time')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="discount" class="form-label ">Giá trị giảm giá:</label>
+                                        <label for="discount" class="form-label ">Giảm giá:</label>
                                         <input type="text" class="form-control " id="discount"
-                                               name="discount" value="10000">
+                                               name="discount" value="{{ $voucher->discount }}">
                                         @error('discount')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -108,14 +113,14 @@
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
                                         <input type="text" class="form-control " id="title"
-                                               name="title" value="mgg ngày m2/9">
+                                               name="title" value="{{ $voucher->title }}">
                                         @error('title')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control " rows="3" name="description">hihihehe</textarea>
+                                        <textarea class="form-control " rows="3" name="description">{{ $voucher->description }}</textarea>
                                         @error('description')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -141,7 +146,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" checked>
+                                                       name="is_active" @checked($voucher->is_active) value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +166,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="http://127.0.0.1:8000/admin/vouchers" class="btn btn-info">Danh sách</a>
+                        <a href="{{ route('admin.vouchers.index') }}" class="btn btn-info">Danh sách</a>
                         <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                     </div>
                 </div>

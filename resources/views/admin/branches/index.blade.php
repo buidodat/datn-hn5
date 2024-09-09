@@ -60,7 +60,7 @@
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @foreach ($branches as $branch)
                                 <tr>
                                     <td>{{ $branch->id }}</td>
@@ -73,52 +73,18 @@
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
 
-                                        <a href="">
+                                        <a href="{{ route('admin.branches.edit', $branch) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+                                        <form action="{{route('admin.branches.destroy', $branch)}}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Hà Nội</td>
-                                <td>Yes</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <!-- 2  -->
-                        <tbody>
-                            <tr>
-                                <td>2</td>
-                                <td>Hồ Chí Minh</td>
-                                <td>No</td>
-                                <td>00:00:00 29/08/2024</td>
-                                <td>15:00:00 29/08/2024</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
 
                     </table>

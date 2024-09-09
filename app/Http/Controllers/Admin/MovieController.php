@@ -42,7 +42,7 @@ class MovieController extends Controller
     {
         try {
 
-            DB::transaction(function () use ($request) {
+            DB::transaction(function() use($request){
 
                 $dataMovie = [
                     'name' => $request->name,

@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Datatables</h4>
+                <h4 class="mb-sm-0">Thanh toán</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Datatables</li>
+                        <li class="breadcrumb-item active">Thanh toán</li>
                     </ol>
                 </div>
 
@@ -58,71 +58,30 @@
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
+                        <tbody>
                             @foreach ($payments as $payment)
                                 <tr>
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->name }}</td>
-                                    <td>{{ $payment->descripton }}</td>>
+                                    <td>{{ $payment->description }}</td>
                                     <td>
                                         <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
 
-                                        <a href="">
+                                        <a href="{{ route('admin.payments.edit', $payment)}}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+                                        <form action="{{route('admin.payments.destroy', $payment)}}" method="post" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> --}}
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>VNPAY</td>
-                                <td>Được giảm giá 3% khi thanh toán</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>MOMO</td>
-                                <td>Được giảm giá 0% khi thanh toán</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>ZALOPAY</td>
-                                <td>Được giảm giá ?% khi thanh toán</td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
+                        </tbody>
                         </tbody>
 
                     </table>
