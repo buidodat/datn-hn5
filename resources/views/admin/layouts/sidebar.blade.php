@@ -89,7 +89,7 @@
                     <div class="collapse menu-dropdown" id="sidebarLayouts-phong">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.typeRooms.index') }}" class="nav-link"
+                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
                                     data-key="t-horizontal">Loại phòng</a>
                             </li>
                         </ul>

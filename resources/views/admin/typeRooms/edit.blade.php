@@ -14,7 +14,7 @@
             </ul>
         </div>
     @endif --}}
-    <form action="{{ route('admin.typeRooms.update', $typeRoom) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.type-rooms.update', $typeRoom) }}" method="post" enctype="multipart/form-data">
         @method('PUT')
         @csrf
 
@@ -25,7 +25,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.typeRooms.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.type-rooms.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -92,7 +92,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.typeRooms.index') }}" class="btn btn-info">Danh sách</a>
+                        <a href="{{ route('admin.type-rooms.index') }}" class="btn btn-info">Danh sách</a>
                         <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                     </div>
                 </div>

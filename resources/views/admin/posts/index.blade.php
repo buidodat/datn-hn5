@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh mục sản phẩm
+    Danh sách bài viết
 @endsection
 
 @section('style-libs')
@@ -59,8 +59,6 @@
                                 <th>Nội dung</th>
                                 <th>Slug</th>
                                 <th>Hoạt động</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -122,35 +120,43 @@
                             @endforeach
                         </tbody> --}}
                         <tbody>
-                            @for ($i = 0; $i < 7; $i++)
+                            @foreach ($posts as $post)
                                 <tr>
-                                    <td>1</td>
-                                    <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ? </td>
+                                    <td>{{ $post->id }}</td>
+                                    <td style="!implement width: 5%">{{ $post->title }}</td>
                                     <td>
-                                        image
-                                    </td>
-                                    <td>Theo báo mới 24h, phim KingKong của Mỹ sẽ được quay tại Vịnh Hạ Long Việt Nam....
-                                    </td>
-                                    <td>Theo ông Kim Jong Jun đánh giá bộ phim này hứa hẹn sẽ mang lại nhiều trải nghiệm, ấn
-                                        tượng, thu hút lượng khách hàng lớn đến với Việt Nam du lịch</td>
-                                    <td>phim-king-kong-2025-se-quay-tai-viet-nam</td>
-                                    <td><span class="badge bg-primary">Yes</span></td>
+                                        @if (!empty($post->img_post))
+                                            <img width="100px" src="{{ Storage::url($post->img_post) }}" alt="">
+                                        @else
+                                            Không có ảnh
+                                        @endif
 
-                                    <td>$post->created_at </td>
-                                    <td>$post->updated_at</td>
+                                    </td>
+                                    <td>{{ $post->description }}
+                                    </td>
+                                    <td>{{ $post->content }}</td>
+                                    <td>{{ $post->slug }}</td>
                                     <td>
-                                        <a href="">
+
+                                        @if ($post->is_active == 1)
+                                            <span class="badge bg-success">Yes</span>
+                                        @else
+                                            <span class="badge bg-danger">No</span>
+                                        @endif
+                                    </td>
+
+
+                                    <td>
+                                        <a href="#">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-                                        <a href="">
+                                        <a href="{{ route('admin.posts.edit', $post) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
                                     </td>
                                 </tr>
-                            @endfor
-
-
+                            @endforeach
 
                         </tbody>
 
