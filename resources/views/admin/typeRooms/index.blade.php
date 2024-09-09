@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách loại phòng</h5>
-                    <a href="{{ route('admin.typeRooms.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.type-rooms.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -72,12 +72,12 @@
 
                                     <td>
 
-                                        <a href="{{ route('admin.typeRooms.edit', $typeRoom) }}">
+                                        <a href="{{ route('admin.type-rooms.edit', $typeRoom) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
                                        
-                                        {{-- <form action="{{ route('admin.typeRooms.destroy', $typeRoom) }}" method="post"
+                                        {{-- <form action="{{ route('admin.type-rooms.destroy', $typeRoom) }}" method="post"
                                             class="d-inline-block">
                                             @csrf
                                             @method('delete')

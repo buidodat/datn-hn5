@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -44,7 +44,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control " id="title"
+                                        <input type="text" class="form-control" id="title"
                                             name="title" value="{{ old('title') }}">
                                         @error('title')
                                             <span class="text-danger">{{ $message }}</span>
@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control " rows="3" name="description"></textarea>
+                                        <textarea class="form-control " rows="3" name="description">{{ old('description') }}</textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

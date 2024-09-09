@@ -47,7 +47,7 @@ class TypeRoomController extends Controller
             TypeRoom::create($data);
 
             return redirect()
-                ->route('admin.typeRooms.index')
+                ->route('admin.type-rooms.index')
                 ->with('success', 'Thêm mới thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -82,7 +82,7 @@ class TypeRoomController extends Controller
             $typeRoom->update($data);
 
             return redirect()
-                ->route('admin.typeRooms.index')
+                ->route('admin.type-rooms.index')
                 ->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());

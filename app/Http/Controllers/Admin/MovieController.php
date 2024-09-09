@@ -22,7 +22,7 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie::query()->with('movielanguages')->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__ , compact('movies'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('movies'));
     }
 
     /**
@@ -32,7 +32,7 @@ class MovieController extends Controller
     {
         $ratings = Movie::RATINGS;
         $languages = Movie::LANGUAGES;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings','languages']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'languages']));
     }
 
     /**
@@ -45,19 +45,19 @@ class MovieController extends Controller
             DB::transaction(function() use($request){
 
                 $dataMovie = [
-                    'name'=>$request->name ,
-                    'slug'=>Str::slug($request->name),
-                    'category'=>$request->category,
-                    'description'=>$request->description,
-                    'director'=>$request->director,
-                    'cast'=>$request->cast,
-                    'rating'=>$request->rating,
-                    'duration'=>$request->duration,
-                    'release_date'=>$request->release_date,
-                    'end_date'=>$request->end_date,
-                    'trailer_url'=>$request->trailer_url,
-                    'is_active'=> isset($request->is_active) ? 1 : 0,
-                    'is_hot'=> isset($request->is_hot) ? 1 : 0,
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->name),
+                    'category' => $request->category,
+                    'description' => $request->description,
+                    'director' => $request->director,
+                    'cast' => $request->cast,
+                    'rating' => $request->rating,
+                    'duration' => $request->duration,
+                    'release_date' => $request->release_date,
+                    'end_date' => $request->end_date,
+                    'trailer_url' => $request->trailer_url,
+                    'is_active' => isset($request->is_active) ? 1 : 0,
+                    'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
 
 
@@ -73,13 +73,11 @@ class MovieController extends Controller
                         'language' => $language
                     ]);
                 }
-
             });
 
             return redirect()
                 ->route('admin.movies.index')
                 ->with('success', 'Thêm mới thành công!');
-
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -101,7 +99,7 @@ class MovieController extends Controller
         $movieLanguages = $movie->movielanguages()->pluck('language')->all();
         $ratings = Movie::RATINGS;
         $languages = Movie::LANGUAGES;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings','languages','movie','movieLanguages']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'languages', 'movie', 'movieLanguages']));
     }
 
     /**
@@ -111,21 +109,21 @@ class MovieController extends Controller
     {
         try {
 
-            DB::transaction(function() use($request, $movie){
+            DB::transaction(function () use ($request, $movie) {
                 $dataMovie = [
-                    'name'=>$request->name ,
-                    'slug'=>Str::slug($request->name),
-                    'category'=>$request->category,
-                    'description'=>$request->description,
-                    'director'=>$request->director,
-                    'cast'=>$request->cast,
-                    'rating'=>$request->rating,
-                    'duration'=>$request->duration,
-                    'release_date'=>$request->release_date,
-                    'end_date'=>$request->end_date,
-                    'trailer_url'=>$request->trailer_url,
-                    'is_active'=> isset($request->is_active) ? 1 : 0,
-                    'is_hot'=> isset($request->is_hot) ? 1 : 0,
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->name),
+                    'category' => $request->category,
+                    'description' => $request->description,
+                    'director' => $request->director,
+                    'cast' => $request->cast,
+                    'rating' => $request->rating,
+                    'duration' => $request->duration,
+                    'release_date' => $request->release_date,
+                    'end_date' => $request->end_date,
+                    'trailer_url' => $request->trailer_url,
+                    'is_active' => isset($request->is_active) ? 1 : 0,
+                    'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
 
 
@@ -133,7 +131,7 @@ class MovieController extends Controller
                     $dataMovie['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
                     // Lưu lại đường dẫn của ảnh hiện tại để so sánh sau
                     $ImgThumbnailCurrent = $movie->img_thumbnail;
-                }else {
+                } else {
                     // Nếu không có ảnh mới, giữ nguyên ảnh cũ
                     unset($dataMovie['img_thumbnail']);
                 }
@@ -148,20 +146,18 @@ class MovieController extends Controller
                 $movieLanguages = $movie->movieLanguages()->pluck('language')->all();
 
                 foreach ($request->languages as $language) {
-                    if(!in_array($language,$movieLanguages ) ){
+                    if (!in_array($language, $movieLanguages)) {
                         MovieLanguage::create([
                             'movie_id' => $movie->id,
                             'language' => $language
                         ]);
                     }
                 }
-
             });
 
             return redirect()
                 ->back()
                 ->with('success', 'Cập nhật thành công!');
-
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
