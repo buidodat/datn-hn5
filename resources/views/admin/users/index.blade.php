@@ -69,19 +69,20 @@
                                     <td>{{ $user->name }}</td>
                                     <td>
                                         @if (!empty($user->img_thumbnail))
-
                                             <img src="{{ Storage::url($user->img_thumbnail) }}"
-                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image"
-                                                    alt="user-profile-image">
+                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                alt="user-profile-image">
                                         @else
-                                            Không có ảnh
+                                            <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
+                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                alt="user-profile-image">
                                         @endif
 
                                     </td>
                                     <td>{{ $user->email }}
                                     </td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{$user->birthday ?? 'Null' }}</td>
+                                    <td>{{ $user->birthday ?? 'Null' }}</td>
                                     <td>{{ $user->gender }}</td>
                                     <td>
                                         @if ($user->type == App\Models\User::TYPE_ADMIN)
@@ -93,13 +94,20 @@
 
 
                                     <td>
-                                        <a href="#">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a href="{{ route('admin.users.edit', $user) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
+                                        <div class="d-flex">
+                                            <a href="#">
+                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                        class="fas fa-eye"></i></button></a>
+                                            <a href="{{ route('admin.users.edit', $user) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm mx-1 " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" >
+                                                @method("DELETE")
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm " onclick="return confirm('Bạn có muốn xóa ?')"><i class="fas fa-trash-alt"></i></button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
