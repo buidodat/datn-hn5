@@ -55,9 +55,10 @@
                                 <th>#</th>
                                 <th>Họ và tên</th>
                                 <th>Hình ảnh</th>
-                                <th>Email đăng nhập</th>
+                                <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Ngày sinh</th>
+                                <th>Giới tính</th>
                                 <th>Loại người dùng</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -77,9 +78,10 @@
                                     <td>{{ $user->email }}
                                     </td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->birthday }}</td>
+                                    <td>{{$user->birthday }}</td>
+                                    <td>{{ $user->gender }}</td>
                                     <td>
-                                        @if ($user->type == User::TYPE_ADMIN)
+                                        @if ($user->type == App\Models\User::TYPE_ADMIN)
                                             Quản trị viên
                                         @else
                                             Khách hàng

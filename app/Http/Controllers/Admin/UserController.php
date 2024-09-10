@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -21,15 +23,32 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view(self::PATH_VIEW . __FUNCTION__ );
+        $typeAdmin = User::TYPE_ADMIN;
+        $typeMember = User::TYPE_MEMBER;
+        $genders = User::GENDERS;
+        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeAdmin','typeMember','genders']));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        try {
+            $user = $request->all();
+
+            if ($request->img_thumbnail) {
+                $user['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
+            }
+
+            User::create($user);
+
+            return redirect()
+                ->route('admin.users.index')
+                ->with('success', 'Thêm mới thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
