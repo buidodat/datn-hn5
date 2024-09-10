@@ -40,43 +40,10 @@ Route::resource('payments', PaymentController::class);
 // Payment
 Route::resource('payments', PaymentController::class);
 
-Route::prefix('slideshows')
-    ->as('slideshows.')
-    ->group(function () {
+Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
+Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
 
-        Route::get('/', function () {
-            return view('admin.slideshows.index');
-        })->name('list');
 
-        Route::get('create', function () {
-            return view('admin.slideshows.create');
-        })->name('create');
-
-        Route::get('edit', function () {
-            return view('admin.slideshows.edit');
-        })->name('edit');
-    });
-
-Route::prefix('vouchers')
-    ->as('vouchers.')
-    ->group(function () {
-
-        Route::get('/', function () {
-            return view('admin.vouchers.index');
-        })->name('list');
-
-        Route::get('create', function () {
-            return view('admin.vouchers.create');
-        })->name('create');
-
-        Route::get('edit', function () {
-            return view('admin.vouchers.edit');
-        })->name('edit');
-
-        Route::get('show', function () {
-            return view('admin.vouchers.show');
-        })->name('show');
-    });
 
 
 Route::resource('contacts', ContactController::class);

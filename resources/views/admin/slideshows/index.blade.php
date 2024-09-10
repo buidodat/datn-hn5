@@ -20,11 +20,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">SLIDESHOWS</h4>
+                <h4 class="mb-sm-0">Slideshows</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
                         <li class="breadcrumb-item active">Slideshows</li>
                     </ol>
                 </div>
@@ -38,12 +38,19 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Quản lý slideshow </h5>
-                    <a href="{{--{{ route('admin.slideshow.create') }}--}}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0"> Danh sách slideshow </h5>
+                    <a href="{{ route('admin.slideshows.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
+
                 @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -61,85 +68,45 @@
                             <th>Chức năng</th>
                         </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($posts as $post)
-                                <tr>
-                                    <td>{{ $post->id }}</td>
-                                    <td style="!implement width: 5%">{{ $post->title }}</td>
-                                    <td>
-                                        @if ($post->image && \Storage::exists($post->image))
-                                            <img src="{{ Storage::url($post->image) }}" alt="" width="50px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                        @php
-                                            $url = $post->image;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($post->image))
-                                            <img src="{{ $url }}" alt="" width="100px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                    </td>
-                                    <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->author->name }}</td>
-                                    <td>{{ $post->views }}</td>
-                                    <td>{!! $post->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_popular ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_hot_post ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $post->slug }}</td>
-                                    <td>
-                                        @foreach ($post->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $post->created_at }}</td>
-                                    <td>{{ $post->updated_at }}</td>
-                                    <td>
-
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody> --}}
                         <tbody>
-                            @for ($i = 0; $i < 3; $i++)
+                        @foreach ($data as $item)
                         <tr>
 
-                            <td>1</td>
-                            <td style="!implement width: 5%">Phim KINGKONG 2025 sẽ quay ở Việt Nam ?</td>
-                            <td>
-                                image
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->title }}</td>
+                            <td class="text-center">
+                                @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                    <img src="{{ Storage::url($item->img_thumbnail) }}" alt="" width="100px"
+                                         height="60px">
+                                @else
+                                    No image !
+                                @endif
                             </td>
-                            <td>Theo báo mới 24h, phim KingKong của Mỹ sẽ được quay tại Vịnh Hạ Long Việt Nam....</td>
-                            <td>URL</td>
-                            <td><span class="badge bg-primary">Yes</span></td>
+                            <td>{{ $item->description }}</td>
+                            <td>{{ $item->route_url }}</td>
+                            <td>{!! $item->is_active
+                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                            </td>
                             <td>
-
-                                <a href="">
-                                    <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                            class="fas fa-edit"></i></button>
+                                <a href="{{ route('admin.slideshows.edit', $item) }}">
+                                    <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                        <i class="fas fa-edit"></i></button>
                                 </a>
+                                <form method="POST" action="{{route('admin.slideshows.destroy',$item->id)}}"
+                                      onsubmit="return confirm('Xác nhận xoá?')" class="d-inline-flex">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger waves-effect waves-light">
+                                       <i class="ri-delete-bin-5-line"></i>
+                                    </button>
+
+
+                                </form>
                             </td>
 
                         </tr>
-                        @endfor
+                        @endforeach
                         </tbody>
 
                     </table>

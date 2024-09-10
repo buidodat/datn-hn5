@@ -24,12 +24,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        //
+        //5 bản ghi slideshow
         for ($i=0; $i < 5 ; $i++) {
             Slideshow::create([
                 'img_thumbnail'=> 'https://media.lottecinemavn.com/Media/MovieFile//MovieImg/202408/11448_105_100001.jpg'
             ]);
         }
+
+        //20 bản ghi movie và 40 bản ghi movie_language
         $img_thumbnails = [
             'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f27%2f400x633%2D13%2D093512%2D270824%2D67.jpg',
             'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f08%2fscreenshot%2D2024%2D08%2D08%2D151702%2D151742%2D080824%2D61.png',
@@ -59,7 +61,6 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
                 'is_hot' => false
             ]);
-
             DB::table('movie_languages')->insert([
                 'movie_id' => $movie,
                 'language' => 'Vietsub'
@@ -69,5 +70,56 @@ class DatabaseSeeder extends Seeder
                 'language' => 'Lồng tiếng'
             ]);
         }
+
+        //4 bản ghi chi nhánh
+        $branches = [
+           'Hà nội','Hồ Chí Minh','Đà Nẵng','Hải Phòng'
+        ];
+        foreach ($branches as $branch) {
+            DB::table('branches')->insert([
+                'name'=>$branch
+            ]);
+        }
+
+        //8 bản ghi rạp tương ứng với mỗi chi nhánh 2 rạp
+        $cinemas = [
+            'Hà Đông','Mỹ Đình', 'Sài Gòn', 'Gò Vấp', 'Hải Châu','Cẩm  Lệ','Đồ Sơn','Lương Khê'
+        ];
+        $branchId = 1;
+        $counter = 0;
+        foreach ($cinemas as $cinema) {
+            DB::table('cinemas')->insert([
+                'branch_id' => $branchId,
+                'name'=>$cinema,
+                'address'=> $cinema . ', ' . fake()->address(),
+            ]);
+            $counter++;
+
+            if ($counter % 2 == 0) {
+                $branchId++;
+            }
+        }
+
+        //3 bản ghi loại phòng
+        $typeRooms = [
+            ['name'=>'2D','surcharge'=> 0],
+            ['name'=>'3D','surcharge'=> 30000],
+            ['name'=>'IMAX','surcharge'=> 20000],
+        ];
+
+        DB::table('type_rooms')->insert($typeRooms);
+
+         //3 bản ghi loại ghế
+         $typeSeats = [
+            ['name'=>'Ghế Thường','price'=> 50000],
+            ['name'=>'Ghế Vip','price'=> 55000],
+            ['name'=>'Ghế Đôi','price'=> 110000],
+        ];
+
+        DB::table('type_seats')->insert($typeSeats);
+
+
+
+
     }
 }

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<form action="" method="post" enctype="multipart/form-data">
+<form action="{{route('admin.payments.store')}}" method="post" enctype="multipart/form-data">
     @csrf
 
     <div class="row">
@@ -16,7 +16,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Basic Elements</li>
+                        <li class="breadcrumb-item active">Thêm mới</li>
                     </ol>
                 </div>
 
@@ -46,7 +46,7 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="name" class="form-label">Tên phương thức thanh toán:</label>
-                                        <input type="text" class="form-control" id="name" name="name">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên phương thức thanh toán">
                                         @error("name")
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -56,16 +56,10 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="description" class="form-label">Mô tả:</label>
-                                        <textarea class="form-control" rows="3" name="description"></textarea>
+                                        <textarea class="form-control" rows="3" name="description" placeholder="Nhập mô tả thanh toán"></textarea>
                                         @error('description')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div>
-                                </div>
-                                <!-- Nút thêm mới -->
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-info">Thêm mới</button>
                                     </div>
                                 </div>
                             </div>
@@ -75,6 +69,17 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <a href="{{ route('admin.payments.index') }}" class="btn btn-info">Danh sách</a>
+                    <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
     </div>
 </form>
 @endsection
