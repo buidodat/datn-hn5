@@ -9,7 +9,7 @@ class Room extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'cenima_id',
+        'cinema_id',
         'type_room_id',
         'name',
         'total_seat',
@@ -25,8 +25,8 @@ class Room extends Model
         200
     ];
 
-    public function cenima(){
-        return $this->belongsTo(Cenima::class);
+    public function cinema(){
+        return $this->belongsTo(Cinema::class);
     }
     public function typeRoom(){
         return $this->belongsTo(TypeRoom::class);
