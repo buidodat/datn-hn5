@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="col-md-6 logo-login">
-                <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
+                <img src="{{ asset('theme/client/images/movie1.png') }}" alt="">
             </div>
         </div>
 

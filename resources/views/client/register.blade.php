@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="st_profile_input st_profile__pass_input_pop float_left">
-                    <input type="text"  placeholder="Email">
+                    <input type="text" placeholder="Email">
                 </div>
                 <div class="st_profile__pass_input st_profile__pass_input_pop float_left">
                     <input type="password" placeholder="Mật khẩu">
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-6 logo-register">
 
-                    <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
+                <img src="{{ asset('theme/client/images/movie1.png') }}" alt="">
 
             </div>
         </div>
