@@ -68,8 +68,11 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>
-                                        @if (!empty($user->img_user))
-                                            <img width="100px" src="{{ Storage::url($user->img_user) }}" alt="">
+                                        @if (!empty($user->img_thumbnail))
+
+                                            <img src="{{ Storage::url($user->img_thumbnail) }}"
+                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                    alt="user-profile-image">
                                         @else
                                             Không có ảnh
                                         @endif
@@ -78,7 +81,7 @@
                                     <td>{{ $user->email }}
                                     </td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{$user->birthday }}</td>
+                                    <td>{{$user->birthday ?? 'Null' }}</td>
                                     <td>{{ $user->gender }}</td>
                                     <td>
                                         @if ($user->type == App\Models\User::TYPE_ADMIN)

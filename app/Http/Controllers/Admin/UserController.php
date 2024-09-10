@@ -36,7 +36,6 @@ class UserController extends Controller
     {
         try {
             $user = $request->all();
-
             if ($request->img_thumbnail) {
                 $user['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
             }

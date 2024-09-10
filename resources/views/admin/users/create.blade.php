@@ -53,7 +53,7 @@
                                                     alt="user-profile-image">
                                                 <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
                                                     <input id="profile-img-file-input" type="file"
-                                                        class="profile-img-file-input" accept="image/png, image/jpeg">
+                                                        class="profile-img-file-input" accept="image/png, image/jpeg" name="img_thumbnail">
                                                     <label for="profile-img-file-input"
                                                         class="profile-photo-edit avatar-xs">
                                                         <span class="avatar-title rounded-circle bg-light text-body">
