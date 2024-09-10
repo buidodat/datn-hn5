@@ -30,104 +30,19 @@
                 </div>
             @endif
         </div>
+        <form action="">
+
+        </form>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">Tiến trình cách bước</h4>
+                        <h4 class="card-title mb-0">Thông tin tài khoản</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
-                        <form action="#" class="form-steps" autocomplete="off">
-                            <div class="text-center pt-3 pb-4 mb-1">
-                                <h5>Đăng ký tài khoản</h5>
-                            </div>
-                            <div id="custom-progress-bar" class="progress-nav mb-4">
-                                <div class="progress" style="height: 1px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-
-                                <ul class="nav nav-pills progress-bar-tab custom-nav" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link rounded-pill active" data-progressbar="custom-progress-bar"
-                                            id="pills-gen-info-tab" data-bs-toggle="pill" data-bs-target="#pills-gen-info"
-                                            type="button" role="tab" aria-controls="pills-gen-info"
-                                            aria-selected="true">1</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar"
-                                            id="pills-info-desc-tab" data-bs-toggle="pill" data-bs-target="#pills-info-desc"
-                                            type="button" role="tab" aria-controls="pills-info-desc"
-                                            aria-selected="false">2</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar"
-                                            id="pills-success-tab" data-bs-toggle="pill" data-bs-target="#pills-success"
-                                            type="button" role="tab" aria-controls="pills-success"
-                                            aria-selected="false">3</button>
-                                    </li>
-                                </ul>
-                            </div>
-
+                        <form action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data">
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="pills-gen-info" role="tabpanel"
-                                    aria-labelledby="pills-gen-info-tab">
-                                    <div>
-                                        <div class="mb-4">
-                                            <div>
-                                                <h5 class="mb-1">Thông tin đăng nhập</h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="gen-info-email-input">Email</label>
-                                                    <input type="email" class="form-control"
-                                                        placeholder="user123@gmail.com" name="email" >
-                                                        @error('email')
-                                                            <div class='mt-1'>
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            </div>
-                                                        @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="gen-info-username-input">Số điện thoại</label>
-                                                    <input type="text" class="form-control" id="gen-info-username-input"
-                                                        placeholder="0965263725" required>
-                                                    @error('email')
-                                                        <div class='mt-1'>
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="gen-info-password-input">Mật khẩu</label>
-                                            <input type="password" class="form-control" id="gen-info-password-input"
-                                                placeholder="Mật khẩu" required>
-                                            <div class="invalid-feedback">Please enter a password</div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="gen-info-password-input">Xác nhận mật khẩu</label>
-                                            <input type="password" class="form-control" id="gen-info-password-input"
-                                                placeholder="Xác nhận mật khẩu" required>
-                                            <div class="invalid-feedback">Please enter a password</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button"
-                                            class="btn btn-success btn-label right ms-auto nexttab nexttab"
-                                            data-nexttab="pills-info-desc-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to
-                                            more info</button>
-                                    </div>
-                                </div>
-                                <!-- end tab pane -->
-
-                                <div class="tab-pane fade" id="pills-info-desc" role="tabpanel"
+                                <div class="" id="pills-info-desc" role="tabpanel"
                                     aria-labelledby="pills-info-desc-tab">
                                     <div>
                                         <div class="text-center">
@@ -151,9 +66,21 @@
                                         </div>
                                         <div>
                                             <div class="row">
-                                                <div class="col-lg-12 col-md-12">
+                                                <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-email-input">Họ và tên</label>
+                                                        <label class="form-label">Họ và tên</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Họ và tên" name="name" >
+                                                            @error('name')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="user123@gmail.com" name="email" >
                                                             @error('email')
@@ -165,10 +92,46 @@
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-email-input">Ngày sinh</label>
-                                                        <input type="date" class="form-control"
-                                                            placeholder="user123@gmail.com" name="email" >
+                                                        <label class="form-label">Số điện thoại</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="0965263725" name="phone" >
+                                                            @error('phone')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Mật khẩu</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Mật khẩu" name="password" >
+                                                            @error('password')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Xác nhận mật khẩu</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Xác nhận mật khẩu" name="email" >
                                                             @error('email')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Ngày sinh</label>
+                                                        <input type="date" class="form-control" name="birthday" >
+                                                            @error('birthday')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
                                                                 </div>
@@ -177,7 +140,7 @@
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-email-input">Giới tính</label>
+                                                        <label class="form-label">Giới tính</label>
                                                         <select name="" id="" class="form-control">
                                                             <option value="Nam">Nam</option>
                                                             <option value="Nữ">Nữ</option>
@@ -192,10 +155,10 @@
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-email-input">Loại tài khoản</label>
+                                                        <label class="form-label">Loại tài khoản</label>
                                                         <select name="" id="" class="form-control">
-                                                            <option value="Nam">Quản trị viên</option>
-                                                            <option value="Nữ">Khách hàng</option>
+                                                            <option value="Quản trị viên">Quản trị viên</option>
+                                                            <option value="Khách hàng">Khách hàng</option>
                                                         </select>
                                                             @error('email')
                                                                 <div class='mt-1'>
@@ -206,8 +169,8 @@
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-email-input">Địa chỉ</label>
-                                                        <textarea name="" id="" cols="3"  class="form-control"></textarea>
+                                                        <label class="form-label">Địa chỉ</label>
+                                                        <textarea name="" id="" cols="3" rows="3" class="form-control" placeholder="Tòa FPT, Trịnh Văn Bô, Nam Từ Liêm, Hà Nội."></textarea>
                                                             @error('email')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
@@ -220,35 +183,14 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                        <button type="button"
-                                            class="btn btn-link text-decoration-none btn-label previestab"
-                                            data-previous="pills-gen-info-tab"><i
-                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to
-                                            General</button>
-                                        <button type="button"
+                                       <a href="{{ route("admin.users.index") }}" class="btn btn btn-link text-decoration-none btn-label previestab"> <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Trở về</a>
+                                        <button type="submit"
                                             class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                             data-nexttab="pills-success-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit</button>
+                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Xác nhận</button>
                                     </div>
                                 </div>
-                                <!-- end tab pane -->
 
-                                <div class="tab-pane fade" id="pills-success" role="tabpanel"
-                                    aria-labelledby="pills-success-tab">
-                                    <div>
-                                        <div class="text-center">
-
-                                            <div class="mb-4">
-                                                <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
-                                                    colors="primary:#0ab39c,secondary:#405189"
-                                                    style="width:120px;height:120px"></lord-icon>
-                                            </div>
-                                            <h5>Hoàn thành !</h5>
-                                            <p class="text-muted">Bạn đã đăng ký tài khoản thành công</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end tab pane -->
                             </div>
                             <!-- end tab content -->
                         </form>
@@ -264,5 +206,5 @@
     @endsection
 
     @section('script-libs')
-
+            <script src="{{ asset('theme/admin/assets/js/pages/form-wizard.init.js') }}"></script>
     @endsection

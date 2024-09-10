@@ -67,3 +67,4 @@ Route::resource('type_seats', TypeSeatController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('users', UserController::class);
 
+
