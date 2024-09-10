@@ -30,6 +30,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        // dd('Đã đi vào create @');
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
@@ -38,7 +39,8 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        // 
+        // dd('Đã vào store add');
         try {
             $dataPost = [
                 'title' => $request->title,
@@ -48,10 +50,11 @@ class PostController extends Controller
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
+
             if ($request->img_post) {
                 $dataPost['img_post'] = Storage::put(self::PATH_UPLOAD, $request->img_post);
             }
-
+            // dd($dataPost);
             Post::query()->create($dataPost);
 
             return redirect()->route('admin.posts.index')->with('success', 'Thêm mới thành công!');

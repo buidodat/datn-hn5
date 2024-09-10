@@ -42,6 +42,7 @@ class TypeRoomController extends Controller
     public function store(StoreTypeRoomRequest $request)
     {
         //
+        // dd('Đã vào store');
         try {
             $data = $request->all();
             TypeRoom::create($data);

@@ -25,10 +25,10 @@ class StorePostRequest extends FormRequest
             //
             'title' => 'required|unique:posts,title',
             'img_post' => 'nullable|image|max:2048',
-            'slug' => 'required',
+            // 'slug' => 'required|unique:posts,slug',
             'description' => 'required',
             'content' => 'required',
-            'is_active'     => 'required|boolean',
+            // 'is_active'     => 'required|boolean',
         ];
     }
     public function messages()
@@ -37,7 +37,7 @@ class StorePostRequest extends FormRequest
             'title.required' => 'Tiêu đề không được để trống.',
             'title.unique' => "Tiêu đề bài viết này đã tồn tại.",
             'img_post.image' => 'File phải là một hình ảnh.',
-            'slug.required' => "Đường link slug không được để trống.",
+            // 'slug.required' => "Đường link slug không được để trống.",
             'description.required' => "Mô tả ngắn không được để trống.",
             'content.required' => "Nội dung không được để trống.",
 
