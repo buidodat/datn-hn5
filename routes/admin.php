@@ -54,7 +54,8 @@ Route::resource('type-rooms', TypeRoomController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('posts', PostController::class);
 
-Route::get('price-ticket',function(){
+
+Route::get('price-ticket', function () {
     return view('admin.price-ticket');
 })->name('price-ticket');
 
@@ -65,6 +66,8 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 Route::resource('rooms', RoomController::class);
+
 Route::resource('users', UserController::class);
+
 
 
