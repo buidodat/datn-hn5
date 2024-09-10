@@ -32,14 +32,12 @@
                     <a href="#"> Đăng nhập với Google</a>
                 </div>
                 <div class="st_form_pop_signin_btn float_left">
-                    <h4>Không có tài khoản? <a href="#" data-toggle="modal" data-target="#myModa3" target="_blank">Đăng
-                            ký</a></h4>
-                    <h5>Chấp nhận <a href="#">Điều Khoản &amp; Điều kiện</a> của chúng tôi! {{-- &amp; <a href="#">Privacy Policy</a> --}}
-                    </h5>
+                    <h4>Không có tài khoản? <a href="#">Đăng ký</a></h4>
+                    <h5>Chấp nhận <a href="#">Điều Khoản &amp; Điều kiện</a> của chúng tôi!</h5>
                 </div>
             </div>
             <div class="col-md-6 logo-login">
-                    <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
+                <img src="{{ asset('theme/client/images/auth-img.png') }}" alt="">
             </div>
         </div>
 
@@ -48,5 +46,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}"/>
 @endsection
