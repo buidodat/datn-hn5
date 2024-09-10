@@ -66,9 +66,10 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
         //
+        return view(self::PATH_VIEW . __FUNCTION__, compact('post'));
     }
 
     /**
@@ -117,8 +118,20 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
         //
+        try {
+
+            if (Storage::exists($post->img_post)) {
+                Storage::delete($post->img_post);
+            }
+            $post->delete();
+
+            return back()
+                ->with('success', 'Xóa thành công !');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }
