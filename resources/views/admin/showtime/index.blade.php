@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách bài viết
+    Danh sách suất chiếu
 @endsection
 
 @section('style-libs')
@@ -20,11 +20,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách bài viết</h4>
+                <h4 class="mb-sm-0">Danh sách Suất chiếu</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Bài viết</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Suất chiếu</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -38,8 +38,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách bài viết</h5>
-                    <a href="{{ route('admin.posts.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách Suất chiếu</h5>
+                    <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -48,7 +48,7 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive table-striped align-middle"
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
                             <tr>
@@ -56,14 +56,14 @@
                                 <th>Tiêu đề</th>
                                 <th>Hình ảnh</th>
                                 <th>Mô tả ngắn</th>
-                                {{-- <th>Nội dung</th> --}}
+                                <th>Nội dung</th>
                                 <th>Slug</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         {{-- <tbody>
-                            @foreach ($posts as $post)
+                            @foreach ($showtimes as $post)
                                 <tr>
                                     <td>{{ $post->id }}</td>
                                     <td style="!implement width: 5%">{{ $post->title }}</td>
@@ -120,7 +120,7 @@
                             @endforeach
                         </tbody> --}}
                         <tbody>
-                            @foreach ($posts as $post)
+                            @foreach ($showtimes as $post)
                                 <tr>
                                     <td>{{ $post->id }}</td>
                                     <td style="!implement width: 5%">{{ $post->title }}</td>
@@ -134,7 +134,7 @@
                                     </td>
                                     <td>{{ $post->description }}
                                     </td>
-                                    {{-- <td>{!! $post->content !!}</td> --}}
+                                    <td>{!! $post->content !!}</td>
                                     <td>{{ $post->slug }}</td>
                                     <td>
 
@@ -147,21 +147,13 @@
 
 
                                     <td>
-                                        <a href="{{ route('admin.posts.show', $post) }}">
+                                        <a href="#">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-                                        <a href="{{ route('admin.posts.edit', $post) }}">
+                                        <a href="{{ route('admin.showtimes.edit', $post) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        <form action="{{ route('admin.posts.destroy', $post) }}" method="post"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

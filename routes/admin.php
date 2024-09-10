@@ -49,11 +49,12 @@ Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
-Route::resource('type-rooms', TypeRoomController::class); 
+Route::resource('type-rooms', TypeRoomController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('posts', PostController::class);
+// Route::get('detail/{id}', PostController::class, 'detail')->name('detailPost');
 
-Route::get('price-ticket',function(){
+Route::get('price-ticket', function () {
     return view('admin.price-ticket');
 });
 
@@ -64,4 +65,3 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 Route::resource('rooms', RoomController::class);
-
