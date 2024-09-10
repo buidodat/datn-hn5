@@ -55,9 +55,10 @@
                                 <th>#</th>
                                 <th>Họ và tên</th>
                                 <th>Hình ảnh</th>
-                                <th>Email đăng nhập</th>
+                                <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Ngày sinh</th>
+                                <th>Giới tính</th>
                                 <th>Loại người dùng</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -67,8 +68,11 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>
-                                        @if (!empty($user->img_user))
-                                            <img width="100px" src="{{ Storage::url($user->img_user) }}" alt="">
+                                        @if (!empty($user->img_thumbnail))
+
+                                            <img src="{{ Storage::url($user->img_thumbnail) }}"
+                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                    alt="user-profile-image">
                                         @else
                                             Không có ảnh
                                         @endif
@@ -77,9 +81,10 @@
                                     <td>{{ $user->email }}
                                     </td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->birthday }}</td>
+                                    <td>{{$user->birthday ?? 'Null' }}</td>
+                                    <td>{{ $user->gender }}</td>
                                     <td>
-                                        @if ($user->type == User::TYPE_ADMIN)
+                                        @if ($user->type == App\Models\User::TYPE_ADMIN)
                                             Quản trị viên
                                         @else
                                             Khách hàng
