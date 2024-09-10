@@ -81,7 +81,7 @@
                                             $url = $movie->img_thumbnail;
 
                                             if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
+                                                $url = Storage::url($url); 
                                             }
 
                                         @endphp

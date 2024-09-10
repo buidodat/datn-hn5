@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\TypeRoomController;
 
 use App\Http\Controllers\Admin\TypeSeatController;
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,13 +50,13 @@ Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
-Route::resource('type-rooms', TypeRoomController::class); 
+Route::resource('type-rooms', TypeRoomController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('posts', PostController::class);
 
 Route::get('price-ticket',function(){
     return view('admin.price-ticket');
-});
+})->name('price-ticket');
 
 // food
 Route::resource('food', FoodController::class);
@@ -64,4 +65,5 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 Route::resource('rooms', RoomController::class);
+Route::resource('users', UserController::class);
 

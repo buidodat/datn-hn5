@@ -3,26 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cinema;
-use App\Models\Room;
-use App\Models\TypeRoom;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class RoomController extends Controller
+class UserController extends Controller
 {
-    const PATH_VIEW = 'admin.rooms.';
-    const PATH_UPLOAD = 'rooms';
-    // public function getCinemasByBranch(Request $request)
-    // {
-    //     $branch_id = $request->branch_id;
-    //     $cinemas = Cinema::where('branch_id', $branch_id)->get();
-
-    //     return response()->json($cinemas);
-    // }
+    const PATH_VIEW = 'admin.users.';
+    const PATH_UPLOAD = 'users';
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom','cinema'])->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__ ,compact('rooms'));
+        $users = User::query()->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__ ,compact('users'));
     }
 
     /**
@@ -30,9 +21,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        $totalSeats = Room::TOTAL_SEATS;
-        $typeRooms = TypeRoom::pluck('name')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','totalSeats']) );
+        return view(self::PATH_VIEW . __FUNCTION__ );
     }
 
     /**

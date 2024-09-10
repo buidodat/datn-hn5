@@ -42,4 +42,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    const TYPE_ADMIN = 'admin';
+    const TYPE_MEMBER = 'member';
 }
