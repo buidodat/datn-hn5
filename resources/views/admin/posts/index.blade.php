@@ -134,7 +134,7 @@
                                     </td>
                                     <td>{{ $post->description }}
                                     </td>
-                                    <td>{{ $post->content }}</td>
+                                    <td>{!! $post->content !!}</td>
                                     <td>{{ $post->slug }}</td>
                                     <td>
 

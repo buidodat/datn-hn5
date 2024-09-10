@@ -32,6 +32,16 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
+                {{-- @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+                @endif --}}
             </div>
             <div class="col-lg-9">
                 <div class="card">
@@ -44,8 +54,8 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control" id="title"
-                                            name="title" value="{{ old('title') }}">
+                                        <input type="text" class="form-control" id="title" name="title"
+                                            value="{{ old('title') }}">
                                         @error('title')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -57,9 +67,13 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                    {{-- <div class="mb-3">
+                                        <label for="" class="form-label">Nội dung</label>
+                                        <input type="text" name="content" class="form-control">
+                                    </div> --}}
                                     <div class="mb-3">
                                         <label for="content" class="form-label">Nội dung:</label>
-                                        <textarea class="form-control" cols="50" rows="30" name="content"></textarea>
+                                        <textarea class="form-control" cols="50" rows="30" name="content">{{ old('content') }}</textarea>
                                         @error('content')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
