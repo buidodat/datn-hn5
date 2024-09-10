@@ -81,18 +81,45 @@
                         </ul>
                     </div>
                 </li>
+                {{-- loại phòng --}}
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarLayouts-loaiPhong" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="sidebarLayouts-loaiPhong">
+                        <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Loại phòng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarLayouts-loaiPhong">
+                        {{-- <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Loại phòng</a>
+                            </li>
+                        </ul> --}}
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.type-rooms.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarLayouts-phong" data-bs-toggle="collapse" role="button"
                         aria-expanded="false" aria-controls="sidebarLayouts-phong">
                         <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarLayouts-phong">
-                        <ul class="nav nav-sm flex-column">
+                        {{-- <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
                                     data-key="t-horizontal">Loại phòng</a>
                             </li>
-                        </ul>
+                        </ul> --}}
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.rooms.index') }}" class="nav-link"
@@ -197,26 +224,28 @@
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCombos" data-bs-toggle="collapse" role="button"
-                       aria-expanded="false" aria-controls="sidebarCombos">
+                        aria-expanded="false" aria-controls="sidebarCombos">
                         <i class="ri-gift-2-line"></i> <span data-key="t-layouts">Combo</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarCombos">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#sidebarFood" data-bs-toggle="collapse" role="button"
-                                   aria-expanded="false" aria-controls="sidebarFood">
+                                <a class="nav-link menu-link" href="#sidebarFood" data-bs-toggle="collapse"
+                                    role="button" aria-expanded="false" aria-controls="sidebarFood">
                                     <i class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarFood">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('admin.food.index')}}" class="nav-link" data-key="t-horizontal">Danh
+                                            <a href="{{ route('admin.food.index') }}" class="nav-link"
+                                                data-key="t-horizontal">Danh
                                                 sách</a>
                                         </li>
                                     </ul>
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('admin.food.create')}}" class="nav-link" data-key="t-horizontal">Thêm
+                                            <a href="{{ route('admin.food.create') }}" class="nav-link"
+                                                data-key="t-horizontal">Thêm
                                                 mới</a>
                                         </li>
                                     </ul>
@@ -225,20 +254,23 @@
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a class="nav-link menu-link" href="#sidebarCombos1" data-bs-toggle="collapse" role="button"
-                                   aria-expanded="false" aria-controls="sidebarCombos1">
-                                    <i class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý Combo</span>
+                                <a class="nav-link menu-link" href="#sidebarCombos1" data-bs-toggle="collapse"
+                                    role="button" aria-expanded="false" aria-controls="sidebarCombos1">
+                                    <i class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý
+                                        Combo</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarCombos1">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('admin.combos.index')}}" class="nav-link" data-key="t-horizontal">Danh
+                                            <a href="{{ route('admin.combos.index') }}" class="nav-link"
+                                                data-key="t-horizontal">Danh
                                                 sách</a>
                                         </li>
                                     </ul>
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="{{route('admin.combos.create')}}" class="nav-link" data-key="t-horizontal">Thêm
+                                            <a href="{{ route('admin.combos.create') }}" class="nav-link"
+                                                data-key="t-horizontal">Thêm
                                                 mới</a>
                                         </li>
                                     </ul>
@@ -308,12 +340,14 @@
                     <div class="collapse menu-dropdown" id="sidebarTypeSeat">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.type_seats.index')}}" class="nav-link" data-key="t-horizontal">Danh sách</a>
+                                <a href="{{ route('admin.type_seats.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
                             </li>
                         </ul>
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{route('admin.type_seats.create')}}" class="nav-link" data-key="t-horizontal">Thêm mới</a>
+                                <a href="{{ route('admin.type_seats.create') }}" class="nav-link"
+                                    data-key="t-horizontal">Thêm mới</a>
                             </li>
                         </ul>
                     </div>
