@@ -19,8 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'img_thumbnail',
+        'phone',
         'email',
+        'email_verified_at',
         'password',
+        'gender',
+        'birthday',
+        'address',
+        'type'
     ];
 
     /**
@@ -41,5 +48,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+    ];
+    const TYPE_ADMIN = 'admin';
+    const TYPE_MEMBER = 'member';
+    const GENDERS = [
+        'Nam',
+        'Nữ',
+        'Khác'
     ];
 }

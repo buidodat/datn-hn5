@@ -1,103 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trailer Modal Example</title>
-  <style>
-    /* Modal container */
-    .modal-trailer {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    /* Modal content */
-    .modal-content-trailer {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 5px;
-      width: 80%;
-      max-width: 800px;
-      position: relative;
-    }
-
-    /* Close button */
-    .close-trailer {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-    }
-
-    /* Responsive video */
-    .video-container-trailer {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 ratio */
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-      background: #000;
-    }
-
-    .video-container-trailer iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Chi Nhánh và Rạp Chiếu</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container mt-5">
+        <div class="form-group">
+            <label for="branch">Chi nhánh:</label>
+            <select class="form-control" id="branch">
+                <option value="">Chọn chi nhánh</option>
+                <option value="hanoi">Hà Nội</option>
+                <option value="hochiminh">Hồ Chí Minh</option>
+            </select>
+        </div>
 
-<!-- Button to open modal -->
-<button id="openModalBtn-trailer">Watch Trailer</button>
-
-<!-- The Modal -->
-<div id="trailerModal-trailer" class="modal-trailer">
-  <div class="modal-content-trailer">
-    <span class="close-trailer">&times;</span>
-    <h2>TRAILER - Làm Giàu Với Ma</h2>
-    <div class="video-container-trailer">
-      <iframe src="https://www.youtube.com/embed/your-video-id" title="YouTube video" allowfullscreen></iframe>
+        <div class="form-group">
+            <label for="cinema">Rạp chiếu:</label>
+            <select class="form-control" id="cinema">
+                <option value="">Chọn rạp chiếu</option>
+                <!-- Các tùy chọn sẽ được thêm vào thông qua JavaScript -->
+            </select>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-  // Get modal elements
-  var modal = document.getElementById("trailerModal-trailer");
-  var openModalBtn = document.getElementById("openModalBtn-trailer");
-  var closeModal = document.getElementsByClassName("close-trailer")[0];
+    <script>
+        // Dữ liệu các rạp chiếu tương ứng với từng chi nhánh
+        const cinemas = {
+            hanoi: [
+                { value: 'ha_dong', text: 'Hà Đông' },
+                { value: 'my_dinh', text: 'Mỹ Đình' }
+            ],
+            hochiminh: [
+                { value: 'sai_gon', text: 'Sài Gòn' },
+                { value: 'go_vap', text: 'Gò Vấp' }
+            ]
+        };
 
-  // Open modal
-  openModalBtn.onclick = function() {
-    modal.style.display = "block";
-  }
+        // Lắng nghe sự thay đổi trong ô select "chi nhánh"
+        document.getElementById('branch').addEventListener('change', function() {
+            const branch = this.value;
+            const cinemaSelect = document.getElementById('cinema');
 
-  // Close modal
-  closeModal.onclick = function() {
-    modal.style.display = "none";
-  }
+            // Xóa các tùy chọn hiện tại
+            cinemaSelect.innerHTML = '<option value="">Chọn rạp chiếu</option>';
 
-  // Close modal when clicking outside of the modal content
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-</script>
-
+            // Nếu người dùng đã chọn một chi nhánh hợp lệ
+            if (branch && cinemas[branch]) {
+                // Thêm các tùy chọn rạp chiếu tương ứng
+                cinemas[branch].forEach(function(cinema) {
+                    const option = document.createElement('option');
+                    option.value = cinema.value;
+                    option.text = cinema.text;
+                    cinemaSelect.appendChild(option);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
