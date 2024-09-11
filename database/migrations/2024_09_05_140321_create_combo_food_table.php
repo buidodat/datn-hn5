@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('combo_items', function (Blueprint $table) {
+        Schema::create('combo_food', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Combo::class)->constrained();
             $table->foreignIdFor(Food::class)->constrained();
-            $table->unsignedInteger('quatity')->default(0);
+            $table->unsignedInteger('quantity')->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('combo_items');
+        Schema::dropIfExists('combo_food');
     }
 };
