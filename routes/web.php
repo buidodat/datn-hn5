@@ -56,3 +56,7 @@ Route::get('showtime', function () {
 Route::get('contact', function () {
     return view('client.contact');
 })->name('contact');
+
+Route::get('introduce', function () {
+    return view('client.introduce');
+})->name('introduce');
