@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Admin\TypeRoomController;
 
 use App\Http\Controllers\Admin\TypeSeatController;
@@ -46,14 +47,13 @@ Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class
 
 
 
-
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
 Route::resource('type-rooms', TypeRoomController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('posts', PostController::class);
-
+Route::resource('showtimes', ShowtimeController::class);
 
 Route::get('price-ticket', function () {
     return view('admin.price-ticket');
