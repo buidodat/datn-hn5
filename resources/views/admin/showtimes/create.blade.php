@@ -1,21 +1,21 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới bài viết
+    Thêm mới Suất chiếu
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.showtimes.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Thêm mới Bài viết</h4>
+                    <h4 class="mb-sm-0">Thêm mới Suất chiếu</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.showtimes.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active ">Thêm mới</li>
                         </ol>
                     </div>
@@ -32,7 +32,7 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
-                {{-- @if ($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -41,43 +41,69 @@
                         </ul>
 
                     </div>
-                @endif --}}
+                @endif
             </div>
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin bài viết</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Suất chiếu</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="live-preview">
-                            <div class="row gy-4">
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control" id="title" name="title"
-                                            value="{{ old('title') }}">
-                                        @error('title')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <label for="title" class="form-label ">Tên phim:</label>
+                                        <select name="moive_id" id="" class="form-select">
+                                            <option value="">Chọn</option>
+                                            <option value="1">Ma Da</option>
+                                            <option value="2">P201</option>
+                                            <option value="3">P303</option>
+                                        </select>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row gy-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control " rows="3" name="description">{{ old('description') }}</textarea>
-                                        @error('description')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <label for="title" class="form-label ">Tên phòng:</label>
+                                        <select name="room_id" id="" class="form-select">
+                                            <option value="">Chọn</option>
+                                            <option value="1">P202</option>
+                                            <option value="2">P201</option>
+                                            <option value="3">P303</option>
+                                        </select>
                                     </div>
-                                    {{-- <div class="mb-3">
-                                        <label for="" class="form-label">Nội dung</label>
-                                        <input type="text" name="content" class="form-control">
-                                    </div> --}}
+
+
+                                </div>
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="content" class="form-label">Nội dung:</label>
-                                        <textarea class="form-control" cols="50" rows="30" name="content">{{ old('content') }}</textarea>
-                                        @error('content')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <label for="title" class="form-label ">Ngôn ngữ phim:</label>
+                                        <select name="movie_language_id" id="" class="form-select">
+                                            <option value="">Chọn</option>
+                                            <option value="1">Vietsub</option>
+                                            <option value="2">P201</option>
+                                            <option value="3">P303</option>
+                                        </select>
                                     </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="date" class="form-label ">Ngày chiếu:</label>
+                                    <input type="date" class="form-control" name="date" id="date">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label for="start_time" class="form-label ">Giờ chiếu:</label>
+                                    <input type="time" class="form-control" name="start_time" id="start_time">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="end_time" class="form-label ">Giờ kết thúc:</label>
+                                    <input type="time" class="form-control" name="end_time" id="end_time">
                                 </div>
                             </div>
 
@@ -89,7 +115,7 @@
             <div class="col-lg-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
+                        {{-- <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
                                     <label for="" class="form-label">Ảnh đại diện:</label>
@@ -99,12 +125,12 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body"> 
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-2">
@@ -132,7 +158,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.posts.index') }}" class="btn btn-info">Danh sách</a>
+                        <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
                         <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                     </div>
                 </div>
