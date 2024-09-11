@@ -1,19 +1,19 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới tài khoản
+    Cập nhật tài khoản
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Thêm mới tài khoản</h4>
+                <h4 class="mb-sm-0">Cập nhật tài khoản</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Danh sách</a></li>
-                        <li class="breadcrumb-item active ">Thêm mới</li>
+                        <li class="breadcrumb-item active ">Cập nhật</li>
                     </ol>
                 </div>
 
@@ -40,17 +40,24 @@
                         <h4 class="card-title mb-0">Thông tin tài khoản</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
-                        <form action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('admin.users.update', $user) }}" method="post" enctype="multipart/form-data">
                             @csrf
+                            @method("PUT")
                             <div class="tab-content">
                                 <div class="" id="pills-info-desc" role="tabpanel"
                                     aria-labelledby="pills-info-desc-tab">
                                     <div>
                                         <div class="text-center">
                                             <div class="profile-user position-relative d-inline-block mx-auto mb-2">
-                                                <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
-                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image"
-                                                    alt="user-profile-image">
+                                                @if (!empty($user->img_thumbnail))
+                                                    <img src="{{ Storage::url($user->img_thumbnail) }}"
+                                                        class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                        alt="user-profile-image">
+                                                @else
+                                                    <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
+                                                        class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                        alt="user-profile-image">
+                                                @endif
                                                 <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
                                                     <input id="profile-img-file-input" type="file"
                                                         class="profile-img-file-input" accept="image/png, image/jpeg" name="img_thumbnail">
@@ -72,7 +79,7 @@
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Họ và tên</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Họ và tên" name="name" value="{{ old('name') }}" >
+                                                            placeholder="Họ và tên" name="name" value="{{ $user->name }}" >
                                                             @error('name')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
@@ -85,7 +92,7 @@
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Email</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="user123@gmail.com" name="email"  value="{{ old('email') }}">
+                                                            placeholder="user123@gmail.com" name="email"  value="{{ $user->email }}">
                                                             @error('email')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
@@ -98,7 +105,7 @@
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Số điện thoại</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="0965263725" name="phone" value="{{ old('phone') }}">
+                                                            placeholder="0965263725" name="phone" value="{{ $user->phone }}">
                                                             @error('phone')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
@@ -106,7 +113,7 @@
                                                             @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 col-md-6">
+                                                {{-- <div class="col-lg-6 col-md-6">
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Mật khẩu</label>
@@ -131,12 +138,12 @@
                                                                 </div>
                                                             @enderror
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Ngày sinh</label>
-                                                        <input type="date" class="form-control" name="birthday" value="{{ old('birthday') }}">
+                                                        <input type="date" class="form-control" name="birthday" value="{{ $user->birthday }}">
                                                             @error('birthday')
                                                                 <div class='mt-1'>
                                                                     <span class="text-danger">{{ $message }}</span>
@@ -149,7 +156,7 @@
                                                         <label class="form-label">Giới tính</label>
                                                         <select name="gender" id="" class="form-select">
                                                             @foreach ($genders as $gender)
-                                                                <option value="{{ $gender }}" @selected(old("gender") == $gender)>{{ $gender }}</option>
+                                                                <option value="{{ $gender }}" @selected($user->gender == $gender)>{{ $gender }}</option>
                                                             @endforeach
                                                         </select>
                                                             @error('gender')
@@ -164,8 +171,8 @@
 
                                                         <label class="form-label">Loại tài khoản</label>
                                                         <select name="type" id="" class="form-select">
-                                                            <option value="{{ $typeAdmin }}" @selected(old('type') == $typeAdmin)>Quản trị viên</option>
-                                                            <option value="{{ $typeMember }}"@selected(old('type') == $typeMember)>Khách hàng</option>
+                                                            <option value="{{ $typeAdmin }}" @selected($user->type == $typeAdmin)>Quản trị viên</option>
+                                                            <option value="{{ $typeMember }}"@selected($user->type == $typeMember)>Khách hàng</option>
                                                         </select>
                                                             @error('type')
                                                                 <div class='mt-1'>
@@ -177,7 +184,7 @@
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Địa chỉ</label>
-                                                        <textarea name="address" id="" cols="2" rows="2" class="form-control" placeholder="Tòa FPT, Trịnh Văn Bô, Nam Từ Liêm, Hà Nội.">{{ old('address') }}</textarea>
+                                                        <textarea name="address" id="" cols="2" rows="2" class="form-control" placeholder="Tòa FPT, Trịnh Văn Bô, Nam Từ Liêm, Hà Nội.">{{ $user->address }}</textarea>
 
                                                     </div>
                                                 </div>
@@ -190,7 +197,7 @@
                                         <button type="submit"
                                             class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                             data-nexttab="pills-success-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Xác nhận</button>
+                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Cập nhật</button>
                                     </div>
                                 </div>
 
