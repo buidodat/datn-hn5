@@ -1,3 +1,54 @@
 .card-left{
     height: 96.6%;
+
 }
+.srceen{
+    background-color: #ccc;
+    height: 30px;
+    margin: 20px 0;
+    border-radius: 10px;
+    position: relative;
+    color: #000;
+    text-align: center;
+    line-height: 30px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+.seat-item  {
+    position: relative; /* Đặt vị trí tương đối cho container */
+    display: inline-block; /* Đảm bảo kích thước của container phù hợp với nội dung */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .seat-item img {
+    display: block; /* Đảm bảo hình ảnh được xử lý như một block element */
+  }
+
+  .seat-label {
+    position: absolute; /* Đặt vị trí tuyệt đối cho phần tử */
+    top: 40%; /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
+    font-size: 10px; /* Kích thước của văn bản */
+    /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+  }
+  .seat-row {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .layout-seat{
+    overflow-x: auto;
+    white-space: nowrap;
+    align-content: center;
+    text-align: center;
+  }
+

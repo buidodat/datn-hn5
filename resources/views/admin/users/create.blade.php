@@ -47,7 +47,7 @@
                                     aria-labelledby="pills-info-desc-tab">
                                     <div>
                                         <div class="text-center">
-                                            <div class="profile-user position-relative d-inline-block mx-auto mb-2">
+                                            <div class="profile-user position-relative d-inline-block mx-auto mb-2 img-fluid" >
                                                 <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
                                                     class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                     alt="user-profile-image">

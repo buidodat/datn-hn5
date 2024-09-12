@@ -68,15 +68,17 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>
+
                                         @if (!empty($user->img_thumbnail))
                                             <img src="{{ Storage::url($user->img_thumbnail) }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image "
                                                 alt="user-profile-image">
                                         @else
                                             <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
                                                 class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                 alt="user-profile-image">
                                         @endif
+
 
                                     </td>
                                     <td>{{ $user->email }}
@@ -86,9 +88,9 @@
                                     <td>{{ $user->gender }}</td>
                                     <td>
                                         @if ($user->type == App\Models\User::TYPE_ADMIN)
-                                            Quản trị viên
+                                        <span class="badge badge-gradient-success">Quản trị viên</span>
                                         @else
-                                            Khách hàng
+                                        <span class="badge rounded-pill bg-primary-subtle text-primary">Khách hàng</span>
                                         @endif
                                     </td>
 
