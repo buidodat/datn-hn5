@@ -51,4 +51,11 @@
     align-content: center;
     text-align: center;
   }
+  .resset-password{
+    color:orangered;
+    cursor: pointer;
+  }
+  .resset-password:hover{
+    color:rgb(231, 2, 2)
+  }
 
