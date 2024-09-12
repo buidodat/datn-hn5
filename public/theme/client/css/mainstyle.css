@@ -388,6 +388,7 @@
         width: 50%;
         height: 60px;
     }
+
     .button-submit-comment {
         display: flex;
         width: 50%;
@@ -398,6 +399,7 @@
         margin: 0;
         /* Remove margin to avoid extra space */
     }
+
     .form-comment {
         display: flex;
         align-items: center;
@@ -567,8 +569,9 @@
     margin: 0;
     /* Remove margin to avoid extra space */
 }
-.title-movie-detail{
-    margin: 10px  0;
+
+.title-movie-detail {
+    margin: 10px 0;
 }
 
 
@@ -701,9 +704,11 @@
     /* line-height: 28px; */
     transition: all 0.5s;
 }
+
 .box-checkout .box-combo-uu-dai .increase {
     position: sticky;
 }
+
 .box-checkout .box-combo-uu-dai .decrease {
     position: sticky;
 }
@@ -1264,3 +1269,18 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+
+/* Css trang home */
+.movie-name-home {
+    max-width: 225px;
+    max-height: 33px;
+    overflow: hidden;
+}
+.tab-content .is_hot {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 65px !important;
+    height: auto !important;
+} 
