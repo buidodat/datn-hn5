@@ -87,8 +87,9 @@
                                                 @if ($value->food_id == $food->id)
                                                     <ul class="nav nav-sm flex-column">
                                                         <li class="nav-item mb-2">
-                                                            <span class="fw-semibold">{{ $food->type }}: </span> {{ $food->name }} x
-                                                           ({{ $value->quantity }})
+                                                            <span class="fw-semibold">{{ $food->type }}: </span>
+                                                            {{ $food->name }} x
+                                                            ({{ $value->quantity }})
                                                         </li>
                                                     </ul>
                                                 @endif
@@ -102,27 +103,16 @@
                                         ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
                                         : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
-
-                                    {{-- <td>
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item mb-2"><span class="fw-semibold">Đồ ăn:</span> Bimbim oishi x
-                                                (1)</li>
-                                            <li class="nav-item mb-2"><span class="fw-semibold">Nước uống:</span> Nước Coca
-                                                x (2)</li>
-                                        </ul>
-                                    </td>
                                     <td>
-                                        TIẾT KIỆM 50K!!! Gồm: 2 Nước Coca (22oz) + 1 Snack Oishi (80g)
-                                    </td>
-                                    <td><span class="badge bg-success-subtle text-success text-uppercase">Yes</span> --}}
-                                    <td>
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
-                                                <i class="fas fa-eye"></i></button>
+                                        <a href="#" class="text-primary d-inline-block">
+                                            <i class="ri-eye-fill fs-16"></i>
                                         </a>
-                                        <a href="">
-                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
+                                        <a href="{{ route('admin.combos.edit', $item) }}"
+                                            class="text-primary d-inline-block edit-item-btn mx-2">
+                                            <i class="ri-pencil-fill fs-16"></i>
+                                        </a>
+                                        <a href="#" class="text-danger d-inline-block remove-item-btn">
+                                            <i class="ri-delete-bin-5-fill fs-16"></i>
                                         </a>
                                     </td>
                                 </tr>
