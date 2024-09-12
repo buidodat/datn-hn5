@@ -157,55 +157,23 @@
             </div>
 
         </div>
-
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <div class="card card-left">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
 
-                        <table class="table table-bordered dt-responsive nowrap table-striped align-middle">
+                        {{-- <table class="table table-none text-center align-middle">
                             <tbody>
                                 <!-- Row A -->
                                 <tr>
-                                    <td>
-                                        <div class="seat">A1</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A2</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A3</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A4</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A5</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A6</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A7</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A8</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A9</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A10</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A11</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">A12</div>
-                                    </td>
+                                    @for ($i =0 ; $i < 10 ; $i++)
+                                        <td>
+                                            <img src="{{ asset('svg/seat-regular.svg') }}" width="40px">
+                                        </td>
+                                    @endfor
                                     <td>
                                         <button class="btn btn-link edit-btn">
                                             <i class="fas fa-edit edit-icon"></i>
@@ -214,42 +182,23 @@
                                 </tr>
                                 <!-- Row B -->
                                 <tr>
+                                    @for ($i =0 ; $i < 10 ; $i++)
+                                        <td>
+                                            <img src="{{ asset('svg/seat-vip.svg') }}" width="40px">
+                                        </td>
+                                    @endfor
                                     <td>
-                                        <div class="seat">B1</div>
+                                        <button class="btn btn-link edit-btn">
+                                            <i class="fas fa-edit edit-icon"></i>
+                                        </button>
                                     </td>
-                                    <td>
-                                        <div class="seat">B2</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B3</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B4</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B5</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B6</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B7</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B8</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B9</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B10</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B11</div>
-                                    </td>
-                                    <td>
-                                        <div class="seat">B12</div>
-                                    </td>
+                                </tr>
+                                <tr>
+                                    @for ($i =0 ; $i < 5 ; $i++)
+                                        <td colspan="2">
+                                            <img src="{{ asset('svg/seat-double.svg') }}" width="70px">
+                                        </td>
+                                    @endfor
                                     <td>
                                         <button class="btn btn-link edit-btn">
                                             <i class="fas fa-edit edit-icon"></i>
@@ -258,33 +207,110 @@
                                 </tr>
                                 <!-- Add more rows as needed -->
                             </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
-                                            </div>
+                        </table> --}}
+
+                        <div class="col-md-12 w-75 mx-auto content-room-seat">
+
+                            <div class="list-seats">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('svg/seat-regular.svg') }}" class='seat' width="40px">
+                                            <span class=" fs-5 mx-2">Ghế thường</span>
                                         </div>
-
                                     </div>
-
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px">
+                                            <span class=" fs-5 mx-2">Ghế Vip</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="d-flex align-items-center">
+                                            {{-- <div class="d-flex"> --}}
+                                                <img src="{{ asset('svg/seat-double.svg') }}" class='seat' width="40px">
+                                                {{-- <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px">
+                                                <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px"> --}}
+                                            {{-- </div> --}}
+                                            <span class=" fs-5 mx-2 ">Ghế Đôi</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="srceen">
+                                Màn Hình Chiếu
+                            </div>
+
+                            <div class="layout-seat">
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 14; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-regular.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 16; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-regular.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 17; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-regular.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 18; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 18; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 18; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-vip.svg') }}" class='seat' width="40px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                {{-- <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 18; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-double.svg') }}" class='seat' width="45px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div>
+                                <div class='seat seat-row text-center '>
+                                    @for($i = 0; $i < 18; $i++)
+                                        <div class="seat-item">
+                                            <img src="{{ asset('svg/seat-double.svg') }}" class='seat' width="45px">
+                                            <span class="seat-label">A{{ $i+1 }}</span>
+                                        </div>
+                                    @endfor
+                                </div> --}}
+                            </div>
                         </div>
+
                     </div>
-
-
                 </div>
             </div>
 
@@ -469,36 +495,6 @@
 @endsection
 
 @section('style-libs')
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
-    <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-    <!-- custom Css-->
-    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
 @endsection
 
-@section('script-libs')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!--select2 cdn-->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script src="{{ asset('theme/admin/assets/js/pages/select2.init.js') }}"></script>
-
-    <script src="https:////cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace("content", {
-            width: "100%",
-            height: "750px"
-        });
-    </script>
-@endsection
