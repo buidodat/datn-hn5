@@ -23,11 +23,13 @@ class UpdateComboRequest extends FormRequest
     {
         $id = $this->route('combo')->id;
         return [
-            'name'          => 'required|unique:combos,name,'. $id, 
-            'img_thumbnail' => 'nullable|image|max:2048', 
-            'price'         => 'required|numeric|min:0', 
-            'is_active'     => 'nullable|boolean', 
+            'name'          => 'required|unique:combos,name,' . $id,
+            'img_thumbnail' => 'nullable|image|max:2048',
+            'price_sale'    => 'required|numeric|min:0',
+            'is_active'     => 'nullable|boolean',
             'description'   => 'required|string|max:1000',
+            'combo_food.*'  => 'required|exists:food,id',  // Đảm bảo đồ ăn được chọn có tồn tại trong DB
+            'combo_quantity.*' => 'required|integer|min:1|max:9'
         ];
     }
 
@@ -38,10 +40,14 @@ class UpdateComboRequest extends FormRequest
             'name.unique' => 'Tên đã tồn tại.',
             // 'img_thumbnail.required' => 'Bạn chưa thêm ảnh.',
             'img_thumbnail.image' => 'File phải là một hình ảnh.',
-            'price.required' => 'Bạn chưa nhập giá.',
-            'price.numeric' => 'Giá phải là số.',
-            'price.min' => 'Giá phải là số lớn hơn 0.',
+            'price_sale.required' => 'Bạn chưa nhập giá.',
+            'price_sale.numeric' => 'Giá phải là số.',
+            'price_sale.min' => 'Giá phải là số lớn hơn 0.',
             'description.required' => 'Bạn chưa nhập mô tả.',
+            'combo_food.*.exists' => 'Món ăn bạn chọn không tồn tại.',
+            'combo_quantity.*.integer' => 'Số lượng phải là số nguyên.',
+            'combo_quantity.*.min' => 'Số lượng phải lớn hơn 0.',
+            'combo_quantity.*.max' => 'Số lượng phải nhỏ hơn 9.',
         ];
     }
 }

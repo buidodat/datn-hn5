@@ -42,14 +42,6 @@
                         </div>
                     @endif
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </div>
-                    @endif
-
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
@@ -84,10 +76,10 @@
                                                                     max="10" readonly>
                                                                 <button type="button" class="pluss">+</button>
                                                             </div>
-                                                            @error('combo_quantity.0')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
+                                                        @error('combo_quantity.0')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -121,10 +113,10 @@
                                                                     max="10" readonly>
                                                                 <button type="button" class="pluss">+</button>
                                                             </div>
-                                                            @error('combo_quantity.1')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
+                                                        @error('combo_quantity.1')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
