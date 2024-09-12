@@ -69,35 +69,64 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Family Combo 69oz</td>
-                                <td class="text-center">No image !</td>
-                                {{-- <td>Bimbim oishi x (1)</td>
-                                    <td>Nước Coca x (2)</td> --}}
-                                <td>
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item mb-2"><span class="fw-semibold">Đồ ăn:</span> Bimbim oishi x (1)</li>
-                                        <li class="nav-item mb-2"><span class="fw-semibold">Nước uống:</span> Nước Coca x (2)</li>
-                                    </ul>
-                                </td>
-                                <td>100.000 vnd</td>
-                                <td>50.000 vnd</td>
-                                <td>
-                                    TIẾT KIỆM 50K!!! Gồm: 2 Nước Coca (22oz) + 1 Snack Oishi (80g)
-                                </td>
-                                <td><span class="badge bg-success-subtle text-success text-uppercase">Yes</span>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button">
-                                            <i class="fas fa-eye"></i></button>
-                                    </a>
-                                    <a href="">
-                                        <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                            <i class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
+                            @foreach ($data as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-center">
+                                        @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" alt=""
+                                                width="100px" height="60px">
+                                        @else
+                                            No image !
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @foreach ($item->comboFood as $value)
+                                            @foreach ($foods as $food)
+                                                @if ($value->food_id == $food->id)
+                                                    <ul class="nav nav-sm flex-column">
+                                                        <li class="nav-item mb-2">
+                                                            <span class="fw-semibold">{{ $food->type }}: </span> {{ $food->name }} x
+                                                           ({{ $value->quantity }})
+                                                        </li>
+                                                    </ul>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </td>
+                                    <td>{{ number_format($item->price) }} VNĐ</td>
+                                    <td>{{ number_format($item->price_sale) }} VNĐ</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>{!! $item->is_active
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    </td>
+
+                                    {{-- <td>
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Đồ ăn:</span> Bimbim oishi x
+                                                (1)</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Nước uống:</span> Nước Coca
+                                                x (2)</li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        TIẾT KIỆM 50K!!! Gồm: 2 Nước Coca (22oz) + 1 Snack Oishi (80g)
+                                    </td>
+                                    <td><span class="badge bg-success-subtle text-success text-uppercase">Yes</span> --}}
+                                    <td>
+                                        <a href="">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                                <i class="fas fa-eye"></i></button>
+                                        </a>
+                                        <a href="">
+                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                                <i class="fas fa-edit"></i></button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

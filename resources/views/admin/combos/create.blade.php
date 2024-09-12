@@ -12,14 +12,12 @@
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Thêm mới Combo</h4>
-
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.combos.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -39,20 +37,102 @@
                     @endif
 
                     @if (session()->has('error'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-danger">
                             {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
                         </div>
                     @endif
 
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 px-4">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div id="food_list" class="col-md-12 mb-3">
+                                            <div class="col-md-12 mb-1">
+                                                <div class="d-flex">
+                                                    <div class="col-md-8">
+                                                        <label for="combo_food" class="form-label">Đồ ăn</label>
+                                                        <select name="combo_food[]" id="combo_food"
+                                                            class="form-control food-select">
+                                                            {{-- <option value="">Chọn đồ ăn</option> --}}
+                                                            @foreach ($food as $item)
+                                                                @if ($item->type == 'Đồ Ăn')
+                                                                    <option value="{{ $item->id }}">{{ $item->name }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                        @error('combo_food.0')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-md-4 mx-3">
+                                                        <label for="combo_quantity" class="form-label">Số lượng</label>
+                                                        <div class="d-flex flex-wrap align-items-start gap-2">
+                                                            <div class="input-step step-primary">
+                                                                <button type="button" class="minuss">-</button>
+                                                                <input type="number" name="combo_quantity[]"
+                                                                    class="product-quantity" value="0" min="0"
+                                                                    max="10" readonly>
+                                                                <button type="button" class="pluss">+</button>
+                                                            </div>
+                                                            @error('combo_quantity.0')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="food_list" class="col-md-12">
+                                            <div class="col-md-12 mb-1">
+                                                <div class="d-flex">
+                                                    <div class="col-md-8">
+                                                        <label for="combo_food" class="form-label">Nước uống</label>
+                                                        <select name="combo_food[]" id="combo_food"
+                                                            class="form-control mb-3 food-select">
+                                                            {{-- <option value="">Chọn nước uống</option> --}}
+                                                            @foreach ($food as $item)
+                                                                @if ($item->type == 'Nước Uống')
+                                                                    <option value="{{ $item->id }}">{{ $item->name }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                        @error('combo_food.1')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="col-md-4 mx-3">
+                                                        <label for="combo_quantity" class="form-label">Số lượng</label>
+                                                        <div class="d-flex flex-wrap align-items-start gap-2">
+                                                            <div class="input-step step-primary">
+                                                                <button type="button" class="minuss">-</button>
+                                                                <input type="number" name="combo_quantity[]"
+                                                                    class="product-quantity" value="0" min="0"
+                                                                    max="10" readonly>
+                                                                <button type="button" class="pluss">+</button>
+                                                            </div>
+                                                            @error('combo_quantity.1')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
                                             <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
-                                                combo
-                                            </label>
+                                                combo</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Nhập tên combo">
                                             @error('name')
@@ -60,7 +140,13 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="price" class="form-label ">Giá gốc</label>
+                                            <input type="number" class="form-control" id="price" name="price"
+                                                value="0" disabled>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
                                             <label for="price_sale" class="form-label "> <span
                                                     class="text-danger">*</span>Giá bán</label>
                                             <input type="number" class="form-control" id="price_sale" name="price_sale"
@@ -70,26 +156,15 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-12 d-flex justify-content-between">
-                                            <label for="price_sale" class="form-label">Đồ ăn</label>
-                                            <button type="button" class="btn btn-primary" onclick="addFood()">Thêm đồ
-                                                ăn</button>
-                                        </div>
-                                        <div id="food_list" class="col-md-12">
-                                            <!-- Các phần tử food sẽ được thêm vào đây -->
-                                        </div>
-
                                         <div class="col-md-12 mb-3">
                                             <label for="description" class="form-label"> <span
-                                                    class="text-danger">*</span>Mô tả
-                                                ngắn</label>
+                                                    class="text-danger">*</span>Mô tả ngắn</label>
                                             <textarea class="form-control" rows="3" name="description" placeholder="Nhập mô tả">{{ old('description') }}</textarea>
                                             @error('description')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <!--end row-->
@@ -126,7 +201,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -146,79 +220,68 @@
             </div>
             <!--end col-->
         </div>
-
     </form>
 @endsection
 
 @section('scripts')
-<script>
-    function addFood() {
-        const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
-        const foodList = document.getElementById('food_list');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mảng giá đồ ăn lấy từ PHP
+            var foodPrices = @json($food->pluck('price', 'id')); // Mảng giá với key là ID
 
-        // Tạo HTML mới
-        const html = `
-        <div class="col-md-12 mb-1" id="${id}_item">
-            <div class="d-flex">
-                <div class="col-md-6">
-                    <label for="${id}_select" class="form-label">Đồ ăn</label>
-                    <select name="combo_food[]" id="${id}_select" class="form-control mb-3 mx-2">
-                        <option value="1">hihi</option>
-                        <option value="2">haha</option>
-                    </select>
-                </div>
+            function updatePrice() {
+                let totalPrice = 0;
 
-                <div class="col-md-5 mx-3">
-                    <label for="${id}" class="form-label">Số lượng</label>
-                    <input type="number" class="form-control" name="combo_quantity[]" id="${id}">
-                </div>
+                // Lặp qua các combo food
+                document.querySelectorAll('select[name="combo_food[]"]').forEach(function(select, index) {
+                    let quantityInput = document.querySelectorAll('input[name="combo_quantity[]"]')[index];
+                    let quantity = parseInt(quantityInput.value);
 
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger remove-btn mt-4">
-                        <span class="bx bx-trash"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
+                    // Lấy giá của món ăn dựa trên ID
+                    let price = foodPrices[select.value] || 0;
 
-        // Thêm HTML vào danh sách food
-        foodList.insertAdjacentHTML('beforeend', html);
+                    totalPrice += price * quantity;
+                });
 
-        // Gán sự kiện cho nút xóa
-        foodList.querySelector(`#${id}_item .remove-btn`).addEventListener('click', function() {
-            removeFood(`${id}_item`);
+                // Cập nhật giá trị cho ô price
+                document.querySelector('#price').value = totalPrice;
+            }
+
+            // Gán sự kiện thay đổi cho combo_food và combo_quantity
+            document.querySelectorAll('select[name="combo_food[]"]').forEach(function(select) {
+                select.addEventListener('change', updatePrice);
+            });
+
+            document.querySelectorAll('input[name="combo_quantity[]"]').forEach(function(input) {
+                input.addEventListener('input', updatePrice);
+            });
+
+            // Gán sự kiện click cho nút tăng số lượng
+            document.querySelectorAll('.pluss').forEach(function(button, index) {
+                button.addEventListener('click', function() {
+                    let quantityInput = document.querySelectorAll('input[name="combo_quantity[]"]')[
+                        index];
+                    let currentValue = parseInt(quantityInput.value);
+                    quantityInput.value = currentValue + 1; // Tăng số lượng
+                    updatePrice(); // Tính lại giá
+                });
+            });
+
+            // Gán sự kiện click cho nút giảm số lượng
+            document.querySelectorAll('.minuss').forEach(function(button, index) {
+                button.addEventListener('click', function() {
+                    let quantityInput = document.querySelectorAll('input[name="combo_quantity[]"]')[
+                        index];
+                    let currentValue = parseInt(quantityInput.value);
+                    if (currentValue > 0) { // Đảm bảo số lượng không âm
+                        quantityInput.value = currentValue - 1; // Giảm số lượng
+                        updatePrice(); // Tính lại giá
+                    }
+                });
+            });
+
+            // Khởi tạo giá ngay khi trang tải xong
+            updatePrice();
         });
-    }
-
-    function removeFood(id) {
-        if (confirm('Chắc chắn xóa không?')) {
-            // Thêm hiệu ứng khi xóa
-            const element = document.getElementById(id);
-            element.style.transition = 'opacity 0.5s ease';
-            element.style.opacity = '0';
-
-            // Xóa phần tử sau khi hiệu ứng hoàn tất
-            setTimeout(() => {
-                element.remove();
-            }, 500);
-        }
-    }
-</script>
-
-
+    </script>
 @endsection
-
-
-{{-- <label for="${id}" class="form-label">Đồ ăn</label>
-<div class="d-flex">
-    <select name="" id="" class="form-control mb-3 mx-2">
-        <option value="1">hihi</option>
-        <option value="2">haha</option>
-    </select>
-
-    <input type="number" class="form-control" name="combo_food[]" id="${id}">
-    <button type="button" class="btn btn-danger remove-btn mx-2">
-        <span class="bx bx-trash"></span>
-    </button>
-</div> --}}

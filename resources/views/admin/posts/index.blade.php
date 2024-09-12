@@ -56,69 +56,12 @@
                                 <th>Tiêu đề</th>
                                 <th>Hình ảnh</th>
                                 <th>Mô tả ngắn</th>
-                                {{-- <th>Nội dung</th> --}}
-                                <th>Slug</th>
+
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($posts as $post)
-                                <tr>
-                                    <td>{{ $post->id }}</td>
-                                    <td style="!implement width: 5%">{{ $post->title }}</td>
-                                    <td>
-                                        @if ($post->image && \Storage::exists($post->image))
-                                            <img src="{{ Storage::url($post->image) }}" alt="" width="50px">
-                                        @else
-                                            No image !
-                                        @endif
 
-                                        @php
-                                            $url = $post->image;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($post->image))
-                                            <img src="{{ $url }}" alt="" width="100px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                    </td>
-                                    <td>{{ $post->category->name }}</td>
-                                    <td>{{ $post->author->name }}</td>
-                                    <td>{{ $post->views }}</td>
-                                    <td>{!! $post->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_popular ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{!! $post->is_hot_post ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $post->slug }}</td>
-                                    <td>
-                                        @foreach ($post->tags as $tag)
-                                            <span class="badge bg-info">{{ $tag->name }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $post->created_at }}</td>
-                                    <td>{{ $post->updated_at }}</td>
-                                    <td>
-
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-
-                                        <a href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody> --}}
                         <tbody>
                             @foreach ($posts as $post)
                                 <tr>
@@ -134,34 +77,39 @@
                                     </td>
                                     <td>{{ $post->description }}
                                     </td>
-                                    {{-- <td>{!! $post->content !!}</td> --}}
-                                    <td>{{ $post->slug }}</td>
+
                                     <td>
 
                                         @if ($post->is_active == 1)
-                                            <span class="badge bg-success">Yes</span>
+                                            <span class="badge bg-success-subtle text-success text-uppercase">Yes</span>
                                         @else
-                                            <span class="badge bg-danger">No</span>
+                                            <span class="badge bg-danger-subtle text-danger text-uppercase">No</span>
                                         @endif
                                     </td>
 
 
                                     <td>
-                                        <a href="{{ route('admin.posts.show', $post) }}">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a href="{{ route('admin.posts.edit', $post) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        <form action="{{ route('admin.posts.destroy', $post) }}" method="post"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
+                                        <div class="d-flex">
+
+
+                                            <a href="{{ route('admin.posts.show', $post) }}">
+                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                        class="fas fa-eye"></i></button></a>
+                                            <a class="mx-1" href="{{ route('admin.posts.edit', $post) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                            {{-- Xóa --}}
+
+                                            <form action="{{ route('admin.posts.destroy', $post) }}" method="post"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                        class="ri-delete-bin-7-fill"></i></button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
