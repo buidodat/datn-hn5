@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{route('admin.contacts.store')}}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -15,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.contacts.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.contacts.index') }}">Forms</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -44,40 +44,39 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Họ và tên:</label>
-                                            <input type="text" class="form-control " id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="user_contact" class="form-label">Họ và tên:</label>
+                                            <input type="text" class="form-control" id="user_contact" name="user_contact" placeholder="Nhập họ và tên">
+                                            @error("user_contact")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Email:</label>
-                                            <input type="text" class="form-control " id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="email" class="form-label">Email:</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email">
+                                            @error("email")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="title" class="form-label ">Số điện thoại</label>
-                                            <input type="text" class="form-control " id="title"
-                                                name="title" value="{{ old('title') }}">
-                                            @error('title')
+                                            <label for="phone" class="form-label">Số điện thoại:</label>
+                                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại">
+                                            @error("phone")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label for="description" class="form-label">Nội dung:</label>
-                                            <textarea class="form-control " rows="3" name="description"></textarea>
-                                            @error('description')
+                                            <label for="title" class="form-label">Tiêu đề:</label>
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề">
+                                            @error("title")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="col-lg-12">
-                                            <a href="{{ route('admin.contacts.index') }}" class="btn btn-warning">Quay lại</a>
-                                            <button type="submit" class="btn btn-info">Thêm mới</button>
-
+                                        <div class="col-md-12 mb-3">
+                                            <label for="content" class="form-label">Nội dung:</label>
+                                            <textarea class="form-control " rows="3" id="content" name="content" placeholder="Nhập nội dung"></textarea>
+                                            @error('content')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -89,10 +88,19 @@
                     </div>
                 </div>
             </div>
-
             <!--end col-->
         </div>
-
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <a href="{{ route('admin.contacts.index') }}" class="btn btn-info">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
     </form>
 @endsection
 

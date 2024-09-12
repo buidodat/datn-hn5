@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh mục sản phẩm
+    Liên hệ
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Datatables</h4>
+                <h4 class="mb-sm-0">Liên hệ</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Datatables</li>
+                        <li class="breadcrumb-item active">Liên hệ</li>
                     </ol>
                 </div>
 
@@ -38,8 +38,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách bài viết</h5>
-                    <a href="{{ route('admin.posts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách liên hệ</h5>
+                    <a href="{{ route('admin.contacts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -53,42 +53,43 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nội dung</th>
                                 <th>Họ tên</th>
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung</th>
                                 <th>Ngày tạo</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for ($i = 0; $i < 5; $i++)
+                            @foreach ($contacts as $contact)
                                 <tr>
-                                    <td>{{ $i+1 }}</td>
-                                    <td style="!implement width: 5%">Tôi muốn mua vé nhóm</td>
-                                    <td>
-                                        Bùi Đỗ Đạt
-                                    </td>
-                                    <td>datbdph38211@fpt.edu.vn
-                                    </td>
-                                    <td>0965263725</td>
-                                    <td>29/08/2024</td>
+                                    <td>{{ $contact->id }}</td>
+                                    <td>{{ $contact->user_contact }}</td>
+                                    <td>{{ $contact->email }}</td>
+                                    <td>{{ $contact->phone }}</td>
+                                    <td>{{ $contact->title }}</td>
+                                    <td>{{ $contact->content }}</td>
+                                    <td>{{ $contact->created_at }}</td>
                                     <td>
                                         <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a>
-                                        <a href="">
+
+                                        <a href="{{ route('admin.contacts.edit', $contact)}}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+                                        <form action="{{route('admin.contacts.destroy', $contact)}}" method="post" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
-                            @endfor
-
-
-
+                            @endforeach
                         </tbody>
-
                     </table>
                 </div>
             </div>
