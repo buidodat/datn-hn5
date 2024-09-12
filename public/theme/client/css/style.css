@@ -1508,7 +1508,7 @@ body.active #mobile-nav {
 	float:left;
 	width:100%;
 	padding-top:95px;
-	padding-bottom:94px;
+	/* padding-bottom:94px; */
 	background:#f6f6f6;
 }
 .prs_upcom_movie_video_box_wrapper{
@@ -1634,7 +1634,7 @@ body.active #mobile-nav {
 	left:0;
 	right:0;
     margin:0px auto;
-    display: block;
+    display: none;
 }
 .prs_upcom_slider_slides_wrapper .owl-theme .owl-nav .owl-prev{
     font-size: 20px;
@@ -1802,7 +1802,7 @@ body.active #mobile-nav {
 .prs_upcom_movie_box_wrapper{
 	float:left;
 	width:100%;
-	margin-bottom: 10px;
+	margin-bottom: 30px;
 }
 .prs_upcom_movie_img_box{
 	float:left;
@@ -1994,17 +1994,18 @@ body.active #mobile-nav {
     -moz-transition: all 0.5s;
     transition: all 0.5s;
 }
-.prs_upcom_movie_content_box p{
-	padding-top:5px;
-	padding-bottom:5px;
-	margin-right:-200px;
+.prs_upcom_movie_content_box p {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: -200px;
+    width: 100%;
 }
 .prs_upcom_movie_content_box i{
 	color:#ff4444;
 }
 .prs_upcom_movie_content_box_inner{
 	float:left;
-	width:75%;
+	width:100%;
 }
 .prs_upcom_movie_content_box_inner_icon{
 	float:left;
