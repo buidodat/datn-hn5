@@ -100,6 +100,32 @@ class UserController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    public function resetPassword(Request $request, User $user){
+
+        //validate
+        $request->validate([
+            'password' => 'required|min:8|max:30|confirmed',
+        ],[
+            'password.required' =>'Vui lòng nhập mật khẩu.',
+            'password.min' =>'Mật khẩu tối thiểu phải 8 ký tự.',
+            'password.max' =>'Mật khẩu không được quá 30 ký tự.',
+            'password.confirmed' =>'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
+        ]);
+
+        try {
+            $user->update([
+                'password'=>$request->password
+            ]);
+            return redirect()
+                ->back()
+                ->with('success', 'Đổi mật khẩu thành công!');
+
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+
+
+    }
 
     /**
      * Remove the specified resource from storage.

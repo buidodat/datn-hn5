@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'img_thumbnail'  => 'nullable|image|max:2048',
             'phone' => 'required|min:9|max:12|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8|max:30|confirmed',
 
         ];
     }
@@ -46,6 +46,7 @@ class StoreUserRequest extends FormRequest
             'email.unique' => 'Email đã tồn tại.',
             'password.required' =>'Vui lòng nhập mật khẩu.',
             'password.min' =>'Mật khẩu tối thiểu phải 8 ký tự.',
+            'password.max' =>'Mật khẩu không được quá 30 ký tự.',
             'password.confirmed' =>'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
         ];
     }

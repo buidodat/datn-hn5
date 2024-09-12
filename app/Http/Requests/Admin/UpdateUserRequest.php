@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'img_thumbnail'  => 'nullable|image|max:2048',
             'phone' => 'required|min:9|max:12|unique:users,phone, ' . $id,
             'email' => 'required|email|unique:users,email, ' .$id,
-            'password' => 'nullable|min:8|confirmed',
+            'password' => 'nullable|min:8|max:30|confirmed',
         ];
     }
     public function messages()
@@ -44,6 +44,7 @@ class UpdateUserRequest extends FormRequest
             'email.email' => 'Email không đúng định dạng.',
             'email.required' => 'Vui lòng nhập email.',
             'password.min' =>'Mật khẩu tối thiểu phải 8 ký tự.',
+            'password.max' =>'Mật khẩu không được quá 30 ký tự.',
             'password.confirmed' =>'Mật khẩu không trùng khớp.',
         ];
     }
