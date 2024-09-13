@@ -84,7 +84,7 @@
                                     <td>{{ $user->email }}
                                     </td>
                                     <td>{{ $user->phone }}</td>
-                                    <td>{{ $user->birthday ?? 'Null' }}</td>
+                                    <td>{{  Carbon\Carbon::parse($user->birthday)->format('d/m/Y') ?? 'null' }}</td>
                                     <td>{{ $user->gender }}</td>
                                     <td>
                                         @if ($user->type == App\Models\User::TYPE_ADMIN)
@@ -97,18 +97,18 @@
 
                                     <td>
                                         <div class="d-flex">
-                                            <a href="#">
+                                            <a href="{{ route('admin.users.show', $user) }}">
                                                 <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                         class="fas fa-eye"></i></button></a>
                                             <a href="{{ route('admin.users.edit', $user) }}">
                                                 <button title="xem" class="btn btn-warning btn-sm mx-1 " type="button"><i
                                                         class="fas fa-edit"></i></button>
                                             </a>
-                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" >
+                                            {{-- <form action="{{ route('admin.users.destroy', $user) }}" method="POST" >
                                                 @method("DELETE")
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm " onclick="return confirm('Bạn có muốn xóa ?')"><i class="fas fa-trash-alt"></i></button>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                     </td>
                                 </tr>
