@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreContactRequest; 
 use Illuminate\Http\Request;
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -16,7 +18,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view(self::PATH_VIEW . __FUNCTION__ );
+        $contacts = Contact::query()->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('contacts'));
     }
 
     /**
@@ -30,9 +33,19 @@ class ContactController extends Controller
      }
 
 
-    public function store(Request $request)
+    public function store(StoreContactRequest $request)
     {
-        
+        try{
+            $data = $request->all();
+
+            Contact::query()->create($data);
+            
+            return redirect()
+                ->route('admin.contacts.index')
+                ->with('success', 'Thêm thành công');
+        }catch(\Throwable $th){
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -54,8 +67,14 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Contact $contact)
     {
-        //
+        try{
+            $contact->delete();
+
+            return back()->with('success', 'Xóa thành công');
+        }catch(\Throwable $th){
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

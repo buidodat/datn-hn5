@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Client\MovieDetailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +21,10 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('client.home');
 // })->name('home');
+
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::get('movie-detail', function () {
-    return view('client.movie-detail');
-})->name('movie-detail');
+Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
