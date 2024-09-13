@@ -27,7 +27,9 @@ class DatabaseSeeder extends Seeder
         //5 bản ghi slideshow
         for ($i=0; $i < 5 ; $i++) {
             Slideshow::create([
-                'img_thumbnail'=> 'https://media.lottecinemavn.com/Media/MovieFile//MovieImg/202408/11448_105_100001.jpg'
+                'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg',
+                // 'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg',
+                // 'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
             ]);
         }
 
