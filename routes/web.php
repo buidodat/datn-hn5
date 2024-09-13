@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('client.home');
 // })->name('home');
+
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');

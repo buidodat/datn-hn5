@@ -1277,10 +1277,80 @@
     max-height: 33px;
     overflow: hidden;
 }
+
 .tab-content .is_hot {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 65px !important;
     height: auto !important;
+}
+
+/* Vẫn là trang home, nhưng css paginate */
+
+.pagination-wrapper {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.pagination-wrapper .d-flex.justify-content-between.flex-fill.d-sm-none {
+    display: none;
+}
+
+.pagination-wrapper p.small.text-muted {
+    display: none;
+}
+
+.pagination-wrapper .pagination {
+    padding: 0px;
+    margin: 0px;
+}
+
+.pagination-wrapper .page-link {
+    border-radius: 10px !important;
+    /* color: #777; */
+    /* cursor: not-allowed; */
+    background-color: #fff;
+    border-color: hsl(0, 0%, 87%);
+    margin: 0px;
+
+    color: #000000;
+    background: #ffffff;
+    font-size: 16px;
+    border: 1px solid #e7e7e7;
+    text-transform: uppercase;
+    /* -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -moz-transition: all 0.5s; */
+    transition: all 0.5s;
+    width: 50px;
+    height: 50px;
+    line-height: 35px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 10px;
+    margin-top: 0px !important;
+}
+
+/* .pagination-wrapper .page-link:hover {
+    background-color: #ff9344 !important;
+} */
+
+.pagination-wrapper .pagination>li:first-child>a {
+    /* border-radius: 10px !important; */
+    background: #ff9344;
+    border: 1px solid #ff9344;
+    margin-right: 10px;
+}
+
+.pagination-wrapper .pagination>li:last-child>a {
+    background: #ff9344;
+    border: 1px solid #ff9344;
+    margin-left: 0px;
+}
+.pagination-wrapper .pagination>li >a:hover {
+    background: #ff9344;
 } 
