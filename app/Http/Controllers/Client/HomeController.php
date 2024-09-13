@@ -15,11 +15,33 @@ class HomeController extends Controller
     {
         $currentNow = now()->format('Y-m-d');
 
-        $movies = Movie::where('is_active', '1')
-            ->where('is_show_home', '1')
-            ->latest('id')
-            ->get();
-        // dd($movies);
-        return view('client.home', compact('movies', 'currentNow'));
+        // phim sắp chiếu
+        $moviesUpcoming = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['release_date', '>', $currentNow],
+            ['is_special', '!=', '1']
+        ])->latest('id')
+            ->paginate(8);
+
+        //phim đang chiếu
+        $moviesShowing = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['release_date', '<=', $currentNow],
+            ['end_date', '>', $currentNow],
+            ['is_special', '!=', '1']
+        ])->latest('id')
+            ->paginate(8);
+
+        $moviesSpecial = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['is_special', '1']
+        ])->latest('id')
+            ->paginate(8);
+
+
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow'));
     }
 }
