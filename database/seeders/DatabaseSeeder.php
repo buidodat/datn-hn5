@@ -46,8 +46,8 @@ class DatabaseSeeder extends Seeder
         $ratings = Movie::RATINGS;
         for ($i=0; $i < 20 ; $i++) {
             $movie = DB::table('movies')->insertGetId([
-                'name' => fake()->unique()->name(),
-                'slug' => fake()->slug,
+                'name' => $name = fake()->unique()->name(),
+                'slug' => Str::slug($name),
                 'category' => fake()->word,
                 'img_thumbnail' => $img_thumbnails[rand(0,3)],
                 'description' => fake()->paragraph,
