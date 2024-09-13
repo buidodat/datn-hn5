@@ -33,6 +33,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/navigation.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/settings.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/policy.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/responsive.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/mainstyle.css') }}" />
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" /> --}}

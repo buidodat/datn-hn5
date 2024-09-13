@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Movie Detail
+    Chi tiết phim
 @endsection
 
 @section('content')

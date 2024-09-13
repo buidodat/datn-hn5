@@ -44,4 +44,9 @@ class HomeController extends Controller
 
         return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow'));
     }
+
+    public function policy()
+    {
+        return view('client.policy');
+    }
 }
