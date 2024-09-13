@@ -65,6 +65,6 @@ Route::get('introduce', function () {
     return view('client.introduce');
 })->name('introduce');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
