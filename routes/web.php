@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Client\HomeController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,3 +64,7 @@ Route::get('contact', function () {
 Route::get('introduce', function () {
     return view('client.introduce');
 })->name('introduce');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
