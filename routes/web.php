@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // })->name('home');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
 
 Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
 

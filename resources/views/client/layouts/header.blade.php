@@ -42,11 +42,13 @@
                                 </ul>
                             </li>
 
-                            <li class="parent"><a href="#">Lọc chiếu theo rạp</a>
-                            </li>
+                            {{-- <li class="parent"><a href="#">Lọc chiếu theo rạp</a>
+                            </li> --}}
                             <li class="parent"><a href="#">Phim</a>
                             </li>
-                            <li class="parent"><a href="#">Chính sách</a>
+                            <li class="parent"><a href="{{ route('policy') }}">Chính sách</a>
+                            </li>
+                            <li class="parent"><a href="">Giá vé</a>
                             </li>
                             {{-- <li class="parent"><a href="#">Giới thiệu</a>
                             </li> --}}
