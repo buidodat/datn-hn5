@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Đặt mặt khẩu
+    Đặt mật khẩu
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
 
                 <div class="col-md-6 forgot-fom">
-                    
+
                     <div class="st_profile_input float_left">
                         <label for="email">Email</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"

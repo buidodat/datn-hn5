@@ -12,7 +12,7 @@
                     data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                     data-param8="" data-param9="" data-param10="" data-description="">
                     <!-- MAIN IMAGE -->
-                    <img src="{{asset('theme/client/images/header/01.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                    <img src="{{asset('https://www.webstrot.com/html/moviepro/html/images/header/01.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
                         data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                     <!-- LAYERS -->
                     <!-- LAYER NR. 3 -->
@@ -35,7 +35,7 @@
                     data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                     data-param8="" data-param9="" data-param10="" data-description="">
                     <!-- MAIN IMAGE -->
-                    <img src="{{asset('theme/client/images/header/02.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                    <img src="{{asset('https://www.webstrot.com/html/moviepro/html/images/header/03.jpg') }}" alt="" data-bgposition="center center" data-bgfit="contain"
                         data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                     <!-- LAYERS -->
                     <!-- LAYER NR. 6 -->
@@ -58,7 +58,7 @@
                     data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                     data-param8="" data-param9="" data-param10="" data-description="">
                     <!-- MAIN IMAGE -->
-                    <img src="{{asset('theme/client/images/header/03.jpg') }}" alt="" data-bgposition="center center"
+                    <img src="{{asset('https://www.webstrot.com/html/moviepro/html/images/header/02.jpg') }}" alt="" data-bgposition="center center"
                         data-bgfit="contain" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                     <!-- LAYERS -->
                     <!-- LAYER NR. 9 -->
