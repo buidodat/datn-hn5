@@ -54,9 +54,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $typeAdmin = User::TYPE_ADMIN;
+        $typeMember = User::TYPE_MEMBER;
+        $genders = User::GENDERS;
+        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeAdmin','typeMember','genders','user']));
     }
 
     /**

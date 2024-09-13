@@ -49,7 +49,7 @@
                                                         <ul>
                                                             <li><a id="buy-ticket-btn">Buy Ticket</a>
                                                             </li>
-                                                           
+
                                                             <li><a href="#">View Details</a>
                                                             </li>
                                                         </ul>
@@ -75,135 +75,7 @@
                                             </div>
                                         </div> --}}
                                         @foreach ($movies as $movie)
-                                        @if ($currentNow < $movie->release_date)
-                                            
-                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                                <div class="prs_upcom_movie_box_wrapper">
-                                                    <div class="prs_upcom_movie_img_box">
-                                                        @if ($movie->is_hot == '1')
-                                                            <img class="is_hot"
-                                                                src="{{ asset('theme/client/images/hot.png') }}"
-                                                                alt="">
-                                                        @endif
-
-                                                        @php
-                                                            $url = $movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-
-                                                        @endphp
-
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                        <div class="prs_upcom_movie_img_overlay"></div>
-                                                        <div class="prs_upcom_movie_img_btn_wrapper">
-                                                            <ul>
-                                                                <li><a id="buy-ticket-btn">Mua vé</a>
-                                                                </li>
-                                                                <li><a href="">Xem chi tiết</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="prs_upcom_movie_content_box">
-                                                        <div class="prs_upcom_movie_content_box_inner">
-                                                            <h2 class="movie-name-home"><a
-                                                                    href="#">{{ $movie->name }}</a></h2>
-                                                            <p>Thể loại: {{ $movie->category }}</p>
-                                                            <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                      
-                    </div>
-                    {{-- Phim đang chiếu --}}
-                    <div role="tabpanel" class="tab-pane fade  in active" id="hot">
-                        <div class="prs_upcom_slider_slides_wrapper">
-                            <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <div class="row">
-                                        @foreach ($movies as $movie)
-                                        @if ($movie->release_date <= $currentNow && $currentNow < $movie->end_date && $movie->is_special == "0")
-                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                                <div class="prs_upcom_movie_box_wrapper">
-                                                    <div class="prs_upcom_movie_img_box">
-                                                        @if ($movie->is_hot == '1')
-                                                            <img class="is_hot"
-                                                                src="{{ asset('theme/client/images/hot.png') }}"
-                                                                alt="">
-                                                        @endif
-
-                                                        @php
-                                                            $url = $movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-
-                                                        @endphp
-
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                        <div class="prs_upcom_movie_img_overlay"></div>
-                                                        <div class="prs_upcom_movie_img_btn_wrapper">
-                                                            <ul>
-                                                                <li><a id="buy-ticket-btn">Mua vé</a>
-                                                                </li>
-                                                                <li><a href="{{ $movie->id }}">Xem chi tiết</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="prs_upcom_movie_content_box">
-                                                        <div class="prs_upcom_movie_content_box_inner">
-                                                            <h2 class="movie-name-home"><a
-                                                                    href="{{ $movie->id }}">{{ $movie->name }}</a></h2>
-                                                            <p>Thể loại: {{ $movie->category }}</p>
-                                                            <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-                                        @endforeach
-
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    
-                    </div>
-
-                    {{-- Suất chiếu đặc biệt --}}
-                    <div role="tabpanel" class="tab-pane fade" id="trand">
-                        <div class="prs_upcom_slider_slides_wrapper">
-                            <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <div class="row">
-                                        @foreach ($movies as $movie)
-                                            @if ($movie->is_special == "1")
+                                            @if ($currentNow < $movie->release_date)
                                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                                     <div class="prs_upcom_movie_box_wrapper">
                                                         <div class="prs_upcom_movie_img_box">
@@ -251,10 +123,138 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                    
                                     </div>
                                 </div>
-                                
+
+                            </div>
+                        </div>
+
+                    </div>
+                    {{-- Phim đang chiếu --}}
+                    <div role="tabpanel" class="tab-pane fade  in active" id="hot">
+                        <div class="prs_upcom_slider_slides_wrapper">
+                            <div class="owl-carousel owl-theme">
+                                <div class="item">
+                                    <div class="row">
+                                        @foreach ($movies as $movie)
+                                            @if ($movie->release_date <= $currentNow && $currentNow < $movie->end_date && $movie->is_special == '0')
+                                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                                    <div class="prs_upcom_movie_box_wrapper">
+                                                        <div class="prs_upcom_movie_img_box">
+                                                            @if ($movie->is_hot == '1')
+                                                                <img class="is_hot"
+                                                                    src="{{ asset('theme/client/images/hot.png') }}"
+                                                                    alt="">
+                                                            @endif
+
+                                                            @php
+                                                                $url = $movie->img_thumbnail;
+
+                                                                if (!\Str::contains($url, 'http')) {
+                                                                    $url = Storage::url($url);
+                                                                }
+
+                                                            @endphp
+
+                                                            <img src="{{ $url }}" alt="movie_img" />
+                                                            <div class="prs_upcom_movie_img_overlay"></div>
+                                                            <div class="prs_upcom_movie_img_btn_wrapper">
+                                                                <ul>
+                                                                    <li><a id="buy-ticket-btn">Mua vé</a>
+                                                                    </li>
+                                                                    <li><a href="{{ $movie->slug }}">Xem chi tiết</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="prs_upcom_movie_content_box">
+                                                            <div class="prs_upcom_movie_content_box_inner">
+                                                                <h2 class="movie-name-home"><a
+                                                                        href="{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                                </h2>
+                                                                <p>Thể loại: {{ $movie->category }}</p>
+                                                                <p>Thời lượng: {{ $movie->duration }} phút </p>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {{-- Suất chiếu đặc biệt --}}
+                    <div role="tabpanel" class="tab-pane fade" id="trand">
+                        <div class="prs_upcom_slider_slides_wrapper">
+                            <div class="owl-carousel owl-theme">
+                                <div class="item">
+                                    <div class="row">
+                                        @foreach ($movies as $movie)
+                                            @if ($movie->is_special == '1')
+                                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                                    <div class="prs_upcom_movie_box_wrapper">
+                                                        <div class="prs_upcom_movie_img_box">
+                                                            @if ($movie->is_hot == '1')
+                                                                <img class="is_hot"
+                                                                    src="{{ asset('theme/client/images/hot.png') }}"
+                                                                    alt="">
+                                                            @endif
+
+                                                            @php
+                                                                $url = $movie->img_thumbnail;
+
+                                                                if (!\Str::contains($url, 'http')) {
+                                                                    $url = Storage::url($url);
+                                                                }
+
+                                                            @endphp
+
+                                                            <img src="{{ $url }}" alt="movie_img" />
+                                                            <div class="prs_upcom_movie_img_overlay"></div>
+                                                            <div class="prs_upcom_movie_img_btn_wrapper">
+                                                                <ul>
+                                                                    <li><a id="buy-ticket-btn">Mua vé</a>
+                                                                    </li>
+                                                                    <li><a href="">Xem chi tiết</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="prs_upcom_movie_content_box">
+                                                            <div class="prs_upcom_movie_content_box_inner">
+                                                                <h2 class="movie-name-home"><a
+                                                                        href="#">{{ $movie->name }}</a></h2>
+                                                                <p>Thể loại: {{ $movie->category }}</p>
+                                                                <p>Thời lượng: {{ $movie->duration }} phút </p>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         {{-- <div class="row">

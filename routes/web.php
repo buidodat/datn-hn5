@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\MovieDetailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +22,7 @@ use Illuminate\Support\Facades\Route;
 // })->name('home');
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::get('movie-detail', function () {
-    return view('client.movie-detail');
-})->name('movie-detail');
+Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
