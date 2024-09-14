@@ -163,10 +163,10 @@
     <div id="trailerModal-trailer" class="modal-trailer">
         <div class="modal-content-trailer">
             <span class="close-trailer">&times;</span>
-            <h2>TRAILER - Làm Giàu Với Ma</h2>
+            <h2>TRAILER - {{ $movie->name }}</h2>
             <hr>
             <div class="video-container-trailer">
-                <iframe src="{{ $movie->trailer_url }}" title="YouTube video" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video" allowfullscreen></iframe>
             </div>
         </div>
     </div>

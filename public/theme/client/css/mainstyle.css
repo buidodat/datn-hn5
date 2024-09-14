@@ -571,7 +571,7 @@
 }
 
 .title-movie-detail {
-    margin: 10px 0;
+    margin: 20px auto 10px auto;
 }
 
 
@@ -1353,4 +1353,4 @@
 }
 .pagination-wrapper .pagination>li >a:hover {
     background: #ff9344;
-} 
+}
