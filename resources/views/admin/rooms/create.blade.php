@@ -53,9 +53,10 @@
                                 <div class="col-md-12">
                                     <div class="row ">
                                         <div class="col-md-12 mb-3">
+                                            <span class='text-danger'>*</span>
                                             <label for="name" class="form-label ">Tên phòng chiếu:</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Nhập tên phòng chiếu">
+                                                value="{{ old('name') }}" placeholder="Poly Cinema 01">
                                             @error('name')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -63,30 +64,44 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
+                                            <span class='text-danger'>*</span>
                                             <label for="branch" class="form-label">Chi nhánh:</label>
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chọn chi nhánh</option>
                                                 @foreach ($branches as $id => $name)
-                                                    <option value="{{ $id }}">{{ $name }}</option>
+                                                    <option value="{{ $id }}" >{{ $name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('branch_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-8 mb-3">
+                                            <span class='text-danger'>*</span>
                                             <label for="cinema" class="form-label">Rạp chiếu:</label>
-                                            <select name="cinema_id" id="cinema" class="form-select">
+                                            <select name="cinema_id" id="cinema" class="form-select" >
                                                 <option value="">Chọn rạp chiếu</option>
+
                                             </select>
+                                            @error('cinema_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
                                         </div>
                                         <div class="col-md-6 mb-3">
+                                            <span class='text-danger'>*</span>
                                             <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
-                                            <select name="rating" id="" class="form-select">
+                                            <select name="type_room_id" id="" class="form-select">
                                                 <option value="">Chọn loại phòng chiếu</option>
-                                                @foreach ($typeRooms as $typeRoom)
-                                                    <option value="{{ $typeRoom }}" @selected(old('typeRoom') == $typeRoom )>{{ $typeRoom }}</option>
+                                                @foreach ($typeRooms as $id => $name)
+                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id )>{{ $name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('surcharge')
+                                            @error('type_room_id')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
@@ -94,15 +109,16 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="surcharge" class="form-label ">Tổng số ghế:</label>
-                                            <select name="rating" id="" class="form-select">
-                                                <option value="">Chọn tổng số ghế</option>
-                                                @foreach ($totalSeats as $totalSeat)
-                                                    <option value="{{ $totalSeat }}" @selected(old('totalSeat') == $totalSeat)>
-                                                        {{ $totalSeat }}</option>
+                                            <span class='text-danger'>*</span>
+                                            <label for="surcharge" class="form-label ">Sức chứa:</label>
+                                            <select name="capacity" id="" class="form-select">
+                                                <option value="">Chọn sức chứa</option>
+                                                @foreach ($capacities as $capacity)
+                                                    <option value="{{ $capacity }}" @selected(old('capacity') == $capacity)>
+                                                        {{ $capacity }} chỗ ngồi</option>
                                                 @endforeach
                                             </select>
-                                            @error('surcharge')
+                                            @error('capacity')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
@@ -178,17 +194,17 @@
                 cinemaSelect.append('<option value="">Chọn rạp chiếu</option>');
 
                 if (branchId) {
-                    cinemaSelect.empty();
                     $.ajax({
                         url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option value="' + cinema.id + '">' + cinema.name + '</option>');
+                                cinemaSelect.append('<option  value="' + cinema.id + '">' + cinema.name + '</option>');
                             });
                         }
                     });
                 }
+
             });
         });
     </script>

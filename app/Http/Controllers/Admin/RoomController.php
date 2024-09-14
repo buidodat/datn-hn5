@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreRoomRequest;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Room;
 use App\Models\TypeRoom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -31,18 +33,35 @@ class RoomController extends Controller
      */
     public function create()
     {
-        $totalSeats = Room::TOTAL_SEATS;
+        $capacities = Room::CAPACITIESS;
         $branches = Branch::where('is_active',1)->pluck('name','id')->all();
-        $typeRooms = TypeRoom::pluck('name')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','totalSeats','branches']) );
+        $cinemas = Cinema::pluck('name','id')->all();
+        $typeRooms = TypeRoom::pluck('name','id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','capacities','branches','cinemas']) );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoomRequest $request)
     {
-        //
+        try {
+            $dataRoom = [
+                'cinema_id' => $request->cinema_id,
+                'type_room_id'=> $request->type_room_id,
+                'name' => $request->name,
+                'capacity' => $request->capacity,
+                'is_active' => isset($request->is_active) ? 1 : 0,
+            ];
+
+            Room::create($dataRoom);
+
+            return redirect()
+                ->route('admin.room.index')
+                ->with('success', 'Thêm mới thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**

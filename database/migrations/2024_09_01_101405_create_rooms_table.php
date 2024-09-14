@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
             $table->string('name')->unique();
-            $table->unsignedSmallInteger('total_seat');
+            $table->unsignedSmallInteger('capacity');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
