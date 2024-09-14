@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Room;
 use App\Models\TypeRoom;
@@ -31,8 +32,9 @@ class RoomController extends Controller
     public function create()
     {
         $totalSeats = Room::TOTAL_SEATS;
+        $branches = Branch::where('is_active',1)->pluck('name','id')->all();
         $typeRooms = TypeRoom::pluck('name')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','totalSeats']) );
+        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','totalSeats','branches']) );
     }
 
     /**

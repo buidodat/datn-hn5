@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\APIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // // Định nghĩa các route chuẩn cho CRUD của Branch
 // Route::apiResource('branches', BranchController::class);
+Route::get('cinemas/{branchId}', [APIController::class, 'getCinemas']);
