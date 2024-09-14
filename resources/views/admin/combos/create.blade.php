@@ -54,7 +54,7 @@
                                                         <label for="combo_food" class="form-label">Đồ ăn</label>
                                                         <select name="combo_food[]" id="combo_food"
                                                             class="form-control food-select">
-                                                            {{-- <option value="">Chọn đồ ăn</option> --}}
+                                                            <option value="">Chọn đồ ăn</option>
                                                             @foreach ($food as $item)
                                                                 @if ($item->type == 'Đồ Ăn')
                                                                     <option value="{{ $item->id }}">{{ $item->name }}
@@ -90,8 +90,8 @@
                                                     <div class="col-md-8">
                                                         <label for="combo_food" class="form-label">Nước uống</label>
                                                         <select name="combo_food[]" id="combo_food"
-                                                            class="form-control mb-3 food-select">
-                                                            {{-- <option value="">Chọn nước uống</option> --}}
+                                                            class="form-control food-select">
+                                                            <option value="">Chọn nước uống</option>
                                                             @foreach ($food as $item)
                                                                 @if ($item->type == 'Nước Uống')
                                                                     <option value="{{ $item->id }}">{{ $item->name }}
