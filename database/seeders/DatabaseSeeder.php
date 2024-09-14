@@ -24,14 +24,18 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        //5 bản ghi slideshow
-        for ($i=0; $i < 5 ; $i++) {
-            Slideshow::create([
-                'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg',
-                // 'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg',
-                // 'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
+        //3 bản ghi slideshow
+
+            Slideshow::insert([
+                [
+                    'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
+                ],[
+                    'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg'
+                ]
+                ,[
+                    'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                ]
             ]);
-        }
 
         //20 bản ghi movie và 40 bản ghi movie_language
         $img_thumbnails = [
@@ -45,6 +49,9 @@ class DatabaseSeeder extends Seeder
             'XuX2HKeMkVw',
             'SGg9DxLFCtc'
         ];
+        $booleans = [
+            true,false,false,false
+        ];
         $ratings = Movie::RATINGS;
         for ($i=0; $i < 20 ; $i++) {
             $movie = DB::table('movies')->insertGetId([
@@ -57,11 +64,13 @@ class DatabaseSeeder extends Seeder
                 'cast' => fake()->name(),
                 'rating' => $ratings[rand(0,3)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-05-05','2024-09-09'),
-                'end_date' => fake()->dateTimeBetween('2024-10-10','2024-12-29'),
+                'release_date' => fake()->dateTimeBetween('2024-05-05','2024-11-09'),
+                'end_date' => fake()->dateTimeBetween('2024-11-15','2024-12-29'),
                 'trailer_url' => $url_youtubes[rand(0,2)],
                 'is_active' => true,
-                'is_hot' => false
+                'is_hot' => $booleans[rand(0,3)],
+                'is_special' => $booleans[rand(0,3)],
+
             ]);
             DB::table('movie_languages')->insert([
                 'movie_id' => $movie,
