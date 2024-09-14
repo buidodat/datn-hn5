@@ -15,53 +15,50 @@
 
                     <div class="st_profile_input float_left">
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" placeholder="Email" autocomplete="email"
-                            autofocus>
+                               name="email" value="{{ old('email') }}" placeholder="Email" autocomplete="email"
+                               autofocus>
 
                         @error('email')
-                            <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                     </div>
                     <div class="st_profile__pass_input st_profile__pass_input_pop float_left">
                         <input id="password" type="password" placeholder="Mật khẩu"
-                            class="form-control @error('password') is-invalid @enderror" name="password"
-                            autocomplete="current-password">
+                               class="form-control @error('password') is-invalid @enderror" name="password"
+                               autocomplete="current-password">
 
                         @error('password')
-                            <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                     </div>
-                    <div class="form-check">
+                    <div class="form-check custom-form">
                         <input class="form-check-input" type="checkbox" name="remember" id="remember"
                             {{ old('remember') ? 'checked' : '' }}>
 
                         <label class="form-check-label" for="remember">
-                            {{ __('Remember Me') }}
+                            {{ __('Nhớ mật khẩu') }}
                         </label>
+
+                        @if (Route::has('password.request'))
+                            <a class="btn btn-link quenpw" href="{{ route('password.request') }}">
+                                Quên mật khẩu?
+                            </a>
+                        @endif
+
                     </div>
-                    <div class="st_form_pop_fp float_left">
-                        <h3>
-                            @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Quên mật khẩu?
-                                </a>
-                            @endif
-                        </h3>
-                    </div>
+
                     <div class="float_left nutdn">
-                        <button type="submit">
-                            Đăng nhập
-                        </button>
+                        <button type="submit">Đăng nhập</button>
                     </div>
                     <div class="st_form_pop_or_btn float_left"></div>
                     <div class="st_form_pop_facebook_btn float_left nutfb">
                         <a href="#"> Đăng nhập với Facebook</a>
                     </div>
-                    <div class=" float_left nutgm">
+                    <div class="float_left nutgm">
                         <a href="#"> Đăng nhập với Google</a>
                     </div>
                     <div class="st_form_pop_signin_btn float_left">
@@ -81,5 +78,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}"/>
 @endsection
