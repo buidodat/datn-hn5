@@ -45,8 +45,16 @@
                                     <div>
                                         <div class="text-center">
                                             <div class="profile-user position-relative d-inline-block mx-auto mb-2">
+                                                @php
+                                                    $url = $user->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+
+                                                @endphp
                                                 @if (!empty($user->img_thumbnail))
-                                                    <img src="{{ Storage::url($user->img_thumbnail) }}"
+                                                    <img src="{{ $url}}"
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                         alt="user-profile-image">
                                                 @else
