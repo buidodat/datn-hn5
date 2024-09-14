@@ -157,7 +157,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
-                'img_thumbnail' =>'hDF',
+                'img_thumbnail' =>'',
                 'phone'=> '0975098710',
                 'email'=>'hieuhdph36384@fpt.edu.vn',
                 'password'=>Hash::make('hieuhdph36384@fpt.edu.vn'),

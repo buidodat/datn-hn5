@@ -60,7 +60,7 @@
                     <div class="modal-footer">
                         <div class="hstack gap-2 justify-content-end">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                            <button  class="btn btn-success" id="add-btn">Xác nhận</button>
+                            <button class="btn btn-success" id="add-btn">Xác nhận</button>
                         </div>
                     </div>
                 </form>
@@ -95,8 +95,16 @@
                                     <div>
                                         <div class="text-center">
                                             <div class="profile-user position-relative d-inline-block mx-auto mb-2">
+                                                @php
+                                                    $url = $user->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+
+                                                @endphp
                                                 @if (!empty($user->img_thumbnail))
-                                                    <img src="{{ Storage::url($user->img_thumbnail) }}"
+                                                    <img src="{{ $url }}"
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                         alt="user-profile-image">
                                                 @else
@@ -221,7 +229,8 @@
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <span class=" resset-password " data-bs-toggle="modal"
-                                                        id="create-btn" data-bs-target="#showModalResetPassword">Đặt lại mật
+                                                        id="create-btn" data-bs-target="#showModalResetPassword">Đặt lại
+                                                        mật
                                                         khẩu ?</span>
                                                 </div>
 
@@ -252,4 +261,6 @@
             </div>
         </div>
     @endsection
-
+    @section('script-libs')
+        <script src="{{ asset('theme/admin/assets/js/pages/form-wizard.init.js') }}"></script>
+    @endsection
