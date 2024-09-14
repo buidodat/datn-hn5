@@ -49,7 +49,7 @@
                                                         <ul>
                                                             <li><a id="buy-ticket-btn">Buy Ticket</a>
                                                             </li>
-                                                           
+
                                                             <li><a href="#">View Details</a>
                                                             </li>
                                                         </ul>
@@ -99,7 +99,7 @@
                                                             <ul>
                                                                 <li><a id="buy-ticket-btn">Mua vé</a>
                                                                 </li>
-                                                                <li><a href="">Xem chi tiết</a>
+                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -107,7 +107,7 @@
                                                     <div class="prs_upcom_movie_content_box">
                                                         <div class="prs_upcom_movie_content_box_inner">
                                                             <h2 class="movie-name-home"><a
-                                                                    href="#">{{ $movie->name }}</a></h2>
+                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
                                                             <p>Thể loại: {{ $movie->category }}</p>
                                                             <p>Thời lượng: {{ $movie->duration }} phút </p>
                                                             <i class="fa fa-star"></i>
@@ -162,7 +162,7 @@
                                                             <ul>
                                                                 <li><a id="buy-ticket-btn">Mua vé</a>
                                                                 </li>
-                                                                <li><a href="{{ $movie->id }}">Xem chi tiết</a>
+                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -170,7 +170,7 @@
                                                     <div class="prs_upcom_movie_content_box">
                                                         <div class="prs_upcom_movie_content_box_inner">
                                                             <h2 class="movie-name-home"><a
-                                                                    href="{{ $movie->id }}">{{ $movie->name }}</a>
+                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
                                                             </h2>
                                                             <p>Thể loại: {{ $movie->category }}</p>
                                                             <p>Thời lượng: {{ $movie->duration }} phút </p>
@@ -241,7 +241,7 @@
                                                             <ul>
                                                                 <li><a id="buy-ticket-btn">Mua vé</a>
                                                                 </li>
-                                                                <li><a href="">Xem chi tiết</a>
+                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -249,7 +249,7 @@
                                                     <div class="prs_upcom_movie_content_box">
                                                         <div class="prs_upcom_movie_content_box_inner">
                                                             <h2 class="movie-name-home"><a
-                                                                    href="#">{{ $movie->name }}</a></h2>
+                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
                                                             <p>Thể loại: {{ $movie->category }}</p>
                                                             <p>Thời lượng: {{ $movie->duration }} phút </p>
                                                             <i class="fa fa-star"></i>
