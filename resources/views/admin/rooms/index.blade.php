@@ -58,22 +58,22 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Tên phòng chiếu</th>
                                 <th>Rạp chiếu</th>
-                                <th>Loại phòng</th>
-                                <th>Tên phòng</th>
-                                <th>Tổng số ghế</th>
+                                <th>Loại phòng chiếu</th>
+                                <th>Sức chứa</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($rooms as $room)
+                            @foreach ($rooms as $index => $room)
                                 <tr>
-                                    <td>{{ $room->id }}</td>
-                                    <td>{{ $room->cenima->name }}</td>
-                                    <td>{{ $room->typeRoom->name }}</td>
+                                    <td>{{ $index+1  }}</td>
                                     <td>{{ $room->name }}</td>
-                                    <td>{{ $room->total_seat }}</td>
+                                    <td>{{ $room->cinema->name }}</td>
+                                    <td>{{ $room->typeRoom->name }}</td>
+                                    <td>{{ $room->capacity }} chỗ ngồi</td>
                                     <td>
                                         {!! $room->is_active == 1
                                         ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
