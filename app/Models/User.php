@@ -56,4 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'Nữ',
         'Khác'
     ];
+
+    public function isAdmin()
+    {
+        return $this->type === self::TYPE_ADMIN;
+    }
 }
