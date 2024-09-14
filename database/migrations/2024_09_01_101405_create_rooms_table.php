@@ -18,10 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
-            $table->string('name')->unique();
+            $table->string('name');
             $table->unsignedSmallInteger('capacity');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->unique(['name','cinema_id'],'name_cinema');
         });
     }
 

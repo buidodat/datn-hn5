@@ -133,17 +133,7 @@ class DatabaseSeeder extends Seeder
 
         //tạo 5 bản ghỉ user type admin
         $users = [
-            [
-                'name' => 'Bùi Đỗ Đạt',
-                'img_thumbnail' =>'https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-1/452225598_1222108569223026_3034596182689563543_n.jpg?stp=dst-jpg_s160x160&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFkL2tp4r6CfMw41hxWmmvvQn_xOwpIMg9Cf_E7CkgyD3A0v4tp7jH4tumA_mY16BYIweBTwInZHv3-ewc-Xuv1&_nc_ohc=Rb2AkaAICU4Q7kNvgGTw_W7&_nc_ht=scontent.fhan5-9.fna&_nc_gid=A11gFe0tM_BGiNtmQW9hKts&oh=00_AYCktrv7R8SZSaW_GopvP8L4DYcUTPaGcRQR2rGAN_UClg&oe=66EB6EDF',
-                'phone'=> '0965263725',
-                'email'=>'datbdph38211@fpt.edu.vn',
-                'password'=>Hash::make('datbdph38211@fpt.edu.vn'),
-                'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
-                'gender'=> 'Nam',
-                'birthday'=>'2004-10-14',
-                'type'=>'admin'
-            ],
+
             [
                 'name' => 'Trương Công Lực',
                 'img_thumbnail' =>'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
@@ -188,7 +178,17 @@ class DatabaseSeeder extends Seeder
                 'birthday'=>'2004-11-11',
                 'type'=>'admin'
             ],
-
+            [
+                'name' => 'Bùi Đỗ Đạt',
+                'img_thumbnail' =>'https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-1/452225598_1222108569223026_3034596182689563543_n.jpg?stp=dst-jpg_s160x160&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFkL2tp4r6CfMw41hxWmmvvQn_xOwpIMg9Cf_E7CkgyD3A0v4tp7jH4tumA_mY16BYIweBTwInZHv3-ewc-Xuv1&_nc_ohc=Rb2AkaAICU4Q7kNvgGTw_W7&_nc_ht=scontent.fhan5-9.fna&_nc_gid=A11gFe0tM_BGiNtmQW9hKts&oh=00_AYCktrv7R8SZSaW_GopvP8L4DYcUTPaGcRQR2rGAN_UClg&oe=66EB6EDF',
+                'phone'=> '0965263725',
+                'email'=>'datbdph38211@fpt.edu.vn',
+                'password'=>Hash::make('datbdph38211@fpt.edu.vn'),
+                'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
+                'gender'=> 'Nam',
+                'birthday'=>'2004-10-14',
+                'type'=>'admin'
+            ],
         ];
         User::insert($users);
 
