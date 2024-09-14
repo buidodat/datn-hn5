@@ -9,9 +9,6 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, ValidatesRequests;
-    public function scopeActive(Builder $query)
-    {
-        return $query->where('is_active', 1);
-    }
+
+    
 }

@@ -57,7 +57,7 @@ class RoomController extends Controller
             Room::create($dataRoom);
 
             return redirect()
-                ->route('admin.room.index')
+                ->route('admin.rooms.index')
                 ->with('success', 'Thêm mới thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
