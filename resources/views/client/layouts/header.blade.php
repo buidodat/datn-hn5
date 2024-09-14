@@ -8,7 +8,7 @@
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
                 <a href="/">
-                    <img src="{{ asset('theme/client/images/header/logo.png') }}" alt="logo" />
+                    <img src="{{ asset('theme/client/images/header/logo6.png') }}" alt="logo" />
                 </a>
             </div>
             <div class="prs_menu_main_wrapper">
@@ -31,7 +31,7 @@
                             </li> --}}
                             <li class="parent"><a href="#">Trang</a>
                                 <ul class="lg-submenu ">
-                                    
+
                                     <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li>
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                     <li><a href="{{ route('register') }}">Register</a></li>

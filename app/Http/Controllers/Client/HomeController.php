@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Slideshow;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,6 +14,9 @@ class HomeController extends Controller
     // const PATH_UPLOAD = 'home';
     public function home()
     {
+
+        $slideShow = Slideshow::query()->where('is_active', 1)->get();
+
         $currentNow = now()->format('Y-m-d');
 
         // phim sắp chiếu
@@ -42,7 +46,7 @@ class HomeController extends Controller
             ->paginate(8);
 
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow','slideShow'));
     }
 
     public function policy()
