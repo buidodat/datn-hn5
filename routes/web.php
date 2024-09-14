@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
+use App\Http\Controllers\Client\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,15 +57,15 @@ Route::get('showtime', function () {
     return view('client.showtime');
 })->name('showtime');
 
-
+// Contact
 Route::get('contact', function () {
     return view('client.contact');
 })->name('contact');
+
+Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('introduce', function () {
     return view('client.introduce');
 })->name('introduce');
 
 Auth::routes(['verify' => true]);
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
