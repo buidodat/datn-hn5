@@ -7,20 +7,20 @@
 @section('content')
     <div class="content-forgot row">
         <div class="bg-round-forgot col-md-12">
-            <h2 style="text-align: center">Quên mật khẩu</h2>
+            <h2 class="text-login">Quên mật khẩu</h2>
             @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
                 </div>
             @endif
             <div class="col-md-3"></div>
-            <form method="POST" action="{{ route('password.email') }}">
+            <form class="fom2" method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="col-md-6 forgot-fom">
                     <div class="st_profile_input float_left">
-                        <label>Email</label>
+
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+                            name="email" value="{{ old('email') }}" autocomplete="email" placeholder="Nhập email" autofocus>
 
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                         @enderror
                     </div>
                     <div class="rs-pw">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit">
                             Gửi email
                         </button>
                     </div>

@@ -7,9 +7,9 @@
 @section('content')
     <div class="content-forgot row">
         <div class="bg-round-forgot col-md-12">
-            <h2 style="text-align: center">Đặt mật khẩu</h2>
+            <h2 class="text-login">Đặt mật khẩu</h2>
             <div class="col-md-3"></div>
-            <form method="POST" action="{{ route('password.update') }}">
+            <form class="fom2"  method="POST" action="{{ route('password.update') }}">
                 @csrf
 
                 <input type="hidden" name="token" value="{{ $token }}">
@@ -17,9 +17,9 @@
                 <div class="col-md-6 forgot-fom">
 
                     <div class="st_profile_input float_left">
-                        <label for="email">Email</label>
+
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                               name="email" value="{{ $email ?? old('email') }}" required autocomplete="email"
+                               name="email" value="{{ $email ?? old('email') }}" placeholder="Email của bạn" required autocomplete="email"
                                autofocus>
 
                         @error('email')
@@ -29,11 +29,11 @@
                         @enderror
                     </div>
 
-                    <div class="st_profile_input float_left">
-                        <label for="password">Mật khẩu</label>
+                    <div class="st_profile_input float_left" style="margin: 10px 0">
+
                         <input id="password" type="password"
                                class="form-control @error('password') is-invalid @enderror"
-                               name="password" required autocomplete="new-password">
+                               name="password" required autocomplete="new-password" placeholder="Nhập mật khẩu mới">
 
                         @error('password')
                         <span class="invalid-feedback" role="alert">
@@ -43,13 +43,12 @@
                     </div>
 
                     <div class="st_profile_input float_left">
-                        <label for="password-confirm">Xác nhận mật khẩu</label>
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                               required autocomplete="new-password">
+                               required autocomplete="new-password" placeholder="Xác nhận mật khẩu">
                     </div>
 
-                    <div class="rs-pw">
-                        <button type="submit" class="btn btn-primary">
+                    <div class="rs-pw-2" >
+                        <button type="submit" class="btn" style="margin-top: 22px; margin-bottom: 10px;">
                             Đặt lại mật khẩu
                         </button>
                     </div>
