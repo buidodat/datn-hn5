@@ -139,16 +139,16 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-check-label mb-2" for="is_active">Ngôn ngữ:</label>
-                                            <select class="js-example-basic-multiple" name="languages[]"
+                                            <label class="form-check-label mb-2" for="is_active">Phiên bản:</label>
+                                            <select class="js-example-basic-multiple" name="versions[]"
                                                 multiple="multiple">
-                                                @foreach ($languages as $language)
-                                                    <option value="{{ $language }}" @selected(in_array($language, old('languages') ?? [] ) )>{{ $language }}
+                                                @foreach ($versions as $version)
+                                                    <option value="{{ $version }}" @selected(in_array($version, old('versions') ?? [] ) )>{{ $version }}
                                                     </option>
                                                 @endforeach
                                             </select>
 
-                                            @error('languages')
+                                            @error('versions')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
@@ -194,7 +194,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="trailer_url" class="form-label">URL Trailer:</label>
+                                    <label for="trailer_url" class="form-label">Code Youtube:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
                                         value="{{ old('trailer_url') }}" placeholder="ZQkU_oI2NOU">
                                     @error('trailer_url')

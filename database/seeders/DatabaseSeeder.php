@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
                 ]
             ]);
 
-        //20 bản ghi movie và 40 bản ghi movie_language
+        //20 bản ghi movie và 40 bản ghi movie_version
         $img_thumbnails = [
             'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f27%2f400x633%2D13%2D093512%2D270824%2D67.jpg',
             'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f08%2fscreenshot%2D2024%2D08%2D08%2D151702%2D151742%2D080824%2D61.png',
@@ -74,13 +74,13 @@ class DatabaseSeeder extends Seeder
                 'is_special' => $booleans[rand(0,3)],
 
             ]);
-            DB::table('movie_languages')->insert([
+            DB::table('movie_versions')->insert([
                 'movie_id' => $movie,
-                'language' => 'Vietsub'
+                'name' => 'Vietsub'
             ]);
-            DB::table('movie_languages')->insert([
+            DB::table('movie_versions')->insert([
                 'movie_id' => $movie,
-                'language' => 'Lồng tiếng'
+                'name' => 'Lồng Tiếng'
             ]);
         }
 

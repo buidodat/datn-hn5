@@ -30,11 +30,11 @@ class Movie extends Model
         'is_hot'=>'boolean',
     ];
 
-    public function movieLanguages(){
-        return $this->hasMany(MovieLanguage::class);
+    public function movieVersions(){
+        return $this->hasMany(MovieVersion::class);
     }
 
-    const LANGUAGES = [
+    const VERSIONS = [
         'Vietsub',
         'Lồng Tiếng',
         'Thuyết Minh'

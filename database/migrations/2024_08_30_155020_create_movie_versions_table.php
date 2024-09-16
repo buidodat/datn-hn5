@@ -12,12 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movie_languages', function (Blueprint $table) {
+        Schema::create('movie_versions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Movie::class);
-            $table->string('language');
+            $table->string('name');
             $table->timestamps();
-            $table->unique(['movie_id','language'],'movie_language');
+            $table->unique(['movie_id','name'],'movie_version');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movie_languages');
+        Schema::dropIfExists('movie_versions');
     }
 };

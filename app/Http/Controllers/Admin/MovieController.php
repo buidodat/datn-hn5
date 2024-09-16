@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMovieRequest;
 use App\Http\Requests\Admin\UpdateMovieRequest;
 use App\Models\Movie;
-use App\Models\MovieLanguage;
+use App\Models\MovieVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +21,7 @@ class MovieController extends Controller
     const PATH_UPLOAD = 'movies';
     public function index()
     {
-        $movies = Movie::query()->with('movielanguages')->latest('id')->get();
+        $movies = Movie::query()->with('movieVersions')->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies'));
     }
 
@@ -31,8 +31,8 @@ class MovieController extends Controller
     public function create()
     {
         $ratings = Movie::RATINGS;
-        $languages = Movie::LANGUAGES;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'languages']));
+        $versions = Movie::VERSIONS;
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions']));
     }
 
     /**
@@ -42,7 +42,7 @@ class MovieController extends Controller
     {
         try {
 
-            DB::transaction(function() use($request){
+            DB::transaction(function () use ($request) {
 
                 $dataMovie = [
                     'name' => $request->name,
@@ -67,10 +67,10 @@ class MovieController extends Controller
 
                 $movie = Movie::create($dataMovie);
 
-                foreach ($request->languages as $language) {
-                    MovieLanguage::create([
+                foreach ($request->versions as $version) {
+                    MovieVersion::create([
                         'movie_id' => $movie->id,
-                        'language' => $language
+                        'name' => $version
                     ]);
                 }
             });
@@ -96,10 +96,10 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie)
     {
-        $movieLanguages = $movie->movielanguages()->pluck('language')->all();
+        $movieVersions = $movie->movieVersions()->pluck('name')->all();
         $ratings = Movie::RATINGS;
-        $languages = Movie::LANGUAGES;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'languages', 'movie', 'movieLanguages']));
+        $versions = Movie::VERSIONS;
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions']));
     }
 
     /**
@@ -143,13 +143,13 @@ class MovieController extends Controller
                     Storage::delete($ImgThumbnailCurrent);
                 }
 
-                $movieLanguages = $movie->movieLanguages()->pluck('language')->all();
+                $movieVersions = $movie->movieVersions()->pluck('name')->all();
 
-                foreach ($request->languages as $language) {
-                    if (!in_array($language, $movieLanguages)) {
-                        MovieLanguage::create([
+                foreach ($request->versions as $version) {
+                    if (!in_array($version, $movieVersions)) {
+                        MovieVersion::create([
                             'movie_id' => $movie->id,
-                            'language' => $language
+                            'name' => $version
                         ]);
                     }
                 }
