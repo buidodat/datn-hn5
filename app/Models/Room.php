@@ -12,17 +12,17 @@ class Room extends Model
         'cinema_id',
         'type_room_id',
         'name',
-        'total_seat',
+        'capacity',
         'is_active',
     ];
     protected $cast = [
         'is_active'=>'boolean'
     ];
 
-    const TOTAL_SEATS =[
-        100,
+    const CAPACITIESS =[ // Sức chứa
+        130,
         150,
-        200
+        170
     ];
 
     public function cinema(){

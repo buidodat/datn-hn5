@@ -47,13 +47,15 @@
                                     aria-labelledby="pills-info-desc-tab">
                                     <div>
                                         <div class="text-center">
-                                            <div class="profile-user position-relative d-inline-block mx-auto mb-2 img-fluid" >
+                                            <div
+                                                class="profile-user position-relative d-inline-block mx-auto mb-2 img-fluid">
                                                 <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
                                                     class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                     alt="user-profile-image">
                                                 <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
                                                     <input id="profile-img-file-input" type="file"
-                                                        class="profile-img-file-input" accept="image/png, image/jpeg" name="img_thumbnail">
+                                                        class="profile-img-file-input" accept="image/png, image/jpeg"
+                                                        name="img_thumbnail">
                                                     <label for="profile-img-file-input"
                                                         class="profile-photo-edit avatar-xs">
                                                         <span class="avatar-title rounded-circle bg-light text-body">
@@ -71,13 +73,13 @@
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Họ và tên</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Họ và tên" name="name" value="{{ old('name') }}" >
-                                                            @error('name')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        <input type="text" class="form-control" placeholder="Họ và tên"
+                                                            name="name" value="{{ old('name') }}">
+                                                        @error('name')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
@@ -85,63 +87,65 @@
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Email</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="user123@gmail.com" name="email"  value="{{ old('email') }}">
-                                                            @error('email')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                            placeholder="user123@gmail.com" name="email"
+                                                            value="{{ old('email') }}">
+                                                        @error('email')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Số điện thoại</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="0965263725" name="phone" value="{{ old('phone') }}">
-                                                            @error('phone')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        <input type="text" class="form-control" placeholder="0965263725"
+                                                            name="phone" value="{{ old('phone') }}">
+                                                        @error('phone')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Mật khẩu</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Mật khẩu" name="password" >
-                                                            @error('password')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        <input type="password" class="form-control" placeholder="Mật khẩu"
+                                                            name="password">
+                                                        @error('password')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Xác nhận mật khẩu</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Xác nhận mật khẩu" name="password_confirmation" >
-                                                            @error('password_confirmation')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        <input type="password" class="form-control"
+                                                            placeholder="Xác nhận mật khẩu" name="password_confirmation">
+                                                        @error('password_confirmation')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Ngày sinh</label>
-                                                        <input type="date" class="form-control" name="birthday" value="{{ old('birthday') }}">
-                                                            @error('birthday')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        <input type="date" class="form-control" name="birthday"
+                                                            value="{{ old('birthday') }}">
+                                                        @error('birthday')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
@@ -149,14 +153,16 @@
                                                         <label class="form-label">Giới tính</label>
                                                         <select name="gender" id="" class="form-select">
                                                             @foreach ($genders as $gender)
-                                                                <option value="{{ $gender }}" @selected(old("gender") == $gender)>{{ $gender }}</option>
+                                                                <option value="{{ $gender }}"
+                                                                    @selected(old('gender') == $gender)>{{ $gender }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
-                                                            @error('gender')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        @error('gender')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
@@ -164,20 +170,24 @@
 
                                                         <label class="form-label">Loại tài khoản</label>
                                                         <select name="type" id="" class="form-select">
-                                                            <option value="{{ $typeAdmin }}" @selected(old('type') == $typeAdmin)>Quản trị viên</option>
-                                                            <option value="{{ $typeMember }}"@selected(old('type') == $typeMember)>Khách hàng</option>
+                                                            <option value="{{ $typeAdmin }}"
+                                                                @selected(old('type') == $typeAdmin)>Quản trị viên</option>
+                                                            <option
+                                                                value="{{ $typeMember }}"@selected(old('type') == $typeMember)>
+                                                                Khách hàng</option>
                                                         </select>
-                                                            @error('type')
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                        @error('type')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Địa chỉ</label>
-                                                        <textarea name="address" id="" cols="2" rows="2" class="form-control" placeholder="Tòa FPT, Trịnh Văn Bô, Nam Từ Liêm, Hà Nội.">{{ old('address') }}</textarea>
+                                                        <textarea name="address" id="" cols="2" rows="2" class="form-control"
+                                                            placeholder="Tòa FPT, Trịnh Văn Bô, Nam Từ Liêm, Hà Nội.">{{ old('address') }}</textarea>
 
                                                     </div>
                                                 </div>
@@ -186,11 +196,15 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-start gap-3 mt-4">
-                                       <a href="{{ route("admin.users.index") }}" class="btn btn btn-link text-decoration-none btn-label previestab"> <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Trở về</a>
+                                        <a href="{{ route('admin.users.index') }}"
+                                            class="btn btn btn-link text-decoration-none btn-label previestab"> <i
+                                                class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Trở
+                                            về</a>
                                         <button type="submit"
                                             class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                             data-nexttab="pills-success-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Xác nhận</button>
+                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Xác
+                                            nhận</button>
                                     </div>
                                 </div>
 
@@ -205,9 +219,7 @@
         </div>
     @endsection
 
-    @section('style-libs')
-    @endsection
 
     @section('script-libs')
-            <script src="{{ asset('theme/admin/assets/js/pages/form-wizard.init.js') }}"></script>
+        <script src="{{ asset('theme/admin/assets/js/pages/form-wizard.init.js') }}"></script>
     @endsection

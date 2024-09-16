@@ -32,7 +32,7 @@ class StoreMovieRequest extends FormRequest
             'release_date'=>'required|date',
             'end_date'=>'required|date',
             'trailer_url'=>'nullable',
-            'languages'=>'required|array',
+            'versions'=>'required|array',
         ];
     }
     public function messages()
@@ -48,8 +48,8 @@ class StoreMovieRequest extends FormRequest
             'duration.min'=> 'Thời lượng tối thiểu phải lớn hơn 50 phút.',
             'release_date.required'=> 'Vui lòng nhập ngày khởi chiếu.',
             'end_date.required'=> 'Vui lòng nhập ngày kết thúc.',
-            'languages.required' =>'Vui lòng chọn ít nhất một ngôn ngữ.',
-            'languages.array' =>'Ngôn ngữ phải là một mảng.',
+            'versions.required' =>'Vui lòng chọn ít nhất một ngôn ngữ.',
+            'versions.array' =>'Ngôn ngữ phải là một mảng.',
         ];
     }
 }
