@@ -81,7 +81,7 @@
                                             $url = $movie->img_thumbnail;
 
                                             if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url); 
+                                                $url = Storage::url($url);
                                             }
 
                                         @endphp
@@ -102,9 +102,9 @@
                                             <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ $movie->end_date }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Phân loại:</span> {{ $movie->rating }}</li>
                                             <li class="nav-item mb-2">
-                                                <span class="fw-semibold">Ngôn ngữ:</span>
-                                                @foreach ( $movie->movieLanguages as $language)
-                                                    <span class="badge bg-info">{{ $language->language }}</span>
+                                                <span class="fw-semibold">Phiên bản:</span>
+                                                @foreach ( $movie->movieVersions as $version)
+                                                    <span class="badge bg-info">{{ $version->name }}</span>
                                                 @endforeach
                                             </li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Code Youtube:</span> <input type="text" disabled value="{{ $movie->trailer_url}}2121"></li>

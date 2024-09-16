@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\MovieLanguage;
+use App\Models\MovieVersion;
 use App\Models\Room;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('showtimes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Room::class);
-            $table->foreignIdFor(MovieLanguage::class);
+            $table->foreignIdFor(MovieVersion::class);
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');

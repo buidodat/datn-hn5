@@ -113,7 +113,7 @@
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Mật khẩu</label>
-                                                        <input type="text" class="form-control" placeholder="Mật khẩu"
+                                                        <input type="password" class="form-control" placeholder="Mật khẩu"
                                                             name="password">
                                                         @error('password')
                                                             <div class='mt-1'>
@@ -126,7 +126,7 @@
                                                     <div class="mb-3">
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Xác nhận mật khẩu</label>
-                                                        <input type="text" class="form-control"
+                                                        <input type="password" class="form-control"
                                                             placeholder="Xác nhận mật khẩu" name="password_confirmation">
                                                         @error('password_confirmation')
                                                             <div class='mt-1'>
