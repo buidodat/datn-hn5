@@ -140,15 +140,17 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-check-label mb-2" for="is_active">Ngôn ngữ:</label>
-                                            <select class="js-example-basic-multiple" name="languages[]"
+                                            <select class="js-example-basic-multiple" name="versions[]"
                                                 multiple="multiple">
-                                                @foreach ($languages as $language)
-                                                    <option value="{{ $language }}" @selected(in_array($language, $movieLanguages ) )>{{ $language }}
+
+                                                @foreach ($versions as $version)
+                                                    <option value="{{ $version }}" @selected(in_array($version, $movieVersions ) )>{{ $version }}
                                                     </option>
                                                 @endforeach
+
                                             </select>
 
-                                            @error('languages')
+                                            @error('versions')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>

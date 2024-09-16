@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\MovieLanguage;
+use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('movie_reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(MovieLanguage::class);
+            $table->foreignIdFor(Movie::class);
             $table->foreignIdFor(User::class);
             $table->unsignedTinyInteger('rating');
             $table->string('description');
             $table->timestamps();
-            $table->unique(['movie_language_id','user_id'],'movie_language_user');
+            $table->unique(['movie_id','user_id'],'movie_user');
         });
     }
 
