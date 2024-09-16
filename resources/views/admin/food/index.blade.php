@@ -67,35 +67,45 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
-                            <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->type }}</td>
-                                <td class="text-center">
-                                    @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
-                                        <img src="{{ Storage::url($item->img_thumbnail) }}" alt="" width="100px"
-                                            height="60px">
-                                    @else
-                                        No image !
-                                    @endif
-                                </td>
-                                <td>{{ number_format($item->price) }} VNĐ</td>
-                                <td>{{ $item->description }}</td>
-                                <td>{!! $item->is_active
-                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                </td>
-                                <td>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button">
-                                            <i class="fas fa-eye"></i></button>
-                                    </a>
-                                    <a href="{{ route('admin.food.edit', $item) }}">
-                                        <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                            <i class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->type }}</td>
+                                    <td class="text-center">
+                                        @php
+                                            $url = $item->img_thumbnail;
+
+                                            if (!\Str::contains($url, 'http')) {
+                                                $url = Storage::url($url);
+                                            }
+                                        @endphp
+                                        @if (!empty($item->img_thumbnail))
+                                            <img src="{{ $url }}" alt="" width="100px" height="60px">
+                                        @endif
+                                        {{-- @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" alt=""
+                                                width="100px" height="60px">
+                                        @else
+                                            No image !
+                                        @endif --}}
+                                    </td>
+                                    <td>{{ number_format($item->price) }} VNĐ</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>{!! $item->is_active
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    </td>
+                                    <td>
+                                        <a href="">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                                <i class="fas fa-eye"></i></button>
+                                        </a>
+                                        <a href="{{ route('admin.food.edit', $item) }}">
+                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                                <i class="fas fa-edit"></i></button>
+                                        </a>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

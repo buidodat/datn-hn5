@@ -132,7 +132,7 @@ class ComboController extends Controller
                 // Lấy dữ liệu từ request
                 $data = $request->all();
                 $data['is_active'] ??= 0;
-    
+
                 // Xử lý upload hình ảnh nếu có
                 if ($request->hasFile('img_thumbnail')) {
                     // Xóa ảnh cũ nếu có
@@ -144,19 +144,19 @@ class ComboController extends Controller
                     // Nếu không upload ảnh mới, giữ nguyên ảnh cũ
                     $data['img_thumbnail'] = $combo->img_thumbnail;
                 }
-    
+
                 // Tính tổng giá của combo dựa trên giá của món ăn và số lượng
                 $foodIds = $request->input('combo_food');
                 $quantities = $request->input('combo_quantity');
                 $totalPrice = 0;
-    
+
                 foreach ($foodIds as $key => $foodId) {
                     $food = Food::findOrFail($foodId); // Lấy món ăn
                     $quantity = $quantities[$key];     // Lấy số lượng của món ăn tương ứng
-    
+
                     $totalPrice += $food->price * $quantity;
                 }
-    
+
                 // Cập nhật thông tin combo
                 $combo->update([
                     'name' => $data['name'],
@@ -166,10 +166,10 @@ class ComboController extends Controller
                     'img_thumbnail' => $data['img_thumbnail'],
                     'is_active' => $data['is_active'],
                 ]);
-    
+
                 // Xóa các món ăn hiện tại trong combo
                 ComboFood::where('combo_id', $combo->id)->delete();
-    
+
                 // Lưu các món ăn vào combo
                 foreach ($foodIds as $key => $foodId) {
                     ComboFood::create([
@@ -179,7 +179,7 @@ class ComboController extends Controller
                     ]);
                 }
             });
-    
+
             return redirect()
                 ->back()
                 ->with('success', 'Cập nhật thành công!');

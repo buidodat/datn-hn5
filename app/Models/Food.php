@@ -24,6 +24,7 @@ class Food extends Model
 
     const TYPES = [
         'Đồ Ăn',
-        'Nước Uống'
+        'Nước Uống',
+        'Khác'
     ];
 }
