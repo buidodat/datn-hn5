@@ -7,13 +7,21 @@
             <ul>
                 @foreach($slideShow as $index => $slide)
                     <!-- SLIDE  -->
+                    @php
+                        $url = $slide->img_thumbnail;
+
+                        if (!\Str::contains($url, 'http')) {
+                            $url = Storage::url($url);
+                        }
+                    @endphp
+                    @if(!empty($slide->img_thumbnail))
                     <li data-index="{{ $slide->id }}" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
                         data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
                         data-rotate="0" data-saveperformance="off" data-title="{{ $slide->title }}" data-param1=""
                         data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                         data-param8="" data-param9="" data-param10="" data-description="{{ $slide->description }}">
                         <!-- MAIN IMAGE -->
-                        <img src="{{ asset('storage/' . $slide->img_thumbnail) }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                        <img src="{{ asset($url) }}" alt="" data-bgposition="center center" data-bgfit="contain"
                              data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                         <!-- LAYERS -->
                         <!-- LAYER NR. 3 -->
@@ -29,6 +37,9 @@
                             <i class="fa-icon-remove"></i>
                         </div>
                     </li>
+                    @else
+                        không có ảnh!
+                    @endif
                 @endforeach
 
 

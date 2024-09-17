@@ -75,12 +75,26 @@
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->title }}</td>
                             <td class="text-center">
-                                @if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
+                                @php
+                                    $url = $item->img_thumbnail;
+
+                                    if (!\Str::contains($url, 'http')) {
+                                        $url = Storage::url($url);
+                                    }
+
+                                @endphp
+                                @if(!empty($item->img_thumbnail))
+                                    <img src="{{ $url }}" alt="" width="160px">
+                                @else
+                                    No image !
+                                @endif
+
+                                {{--@if ($item->img_thumbnail && \Storage::exists($item->img_thumbnail))
                                     <img src="{{ Storage::url($item->img_thumbnail) }}" alt="" width="100px"
                                          height="60px">
                                 @else
                                     No image !
-                                @endif
+                                @endif--}}
                             </td>
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->route_url }}</td>
