@@ -74,6 +74,7 @@ Route::put('users/reset-password/{user}',[UserController::class,'resetPassword']
 Route::get('my-account', [MyAccountController::class,'show'])->name('my-account');
 Route::get('my-account/edit', [MyAccountController::class,'edit'])->name('my-account.edit');
 Route::put('my-account/update', [MyAccountController::class,'update'])->name('my-account.update');
+Route::post('my-account/change-password', [MyAccountController::class,'changePassword'])->name('my-account.change-password');
 
 
 

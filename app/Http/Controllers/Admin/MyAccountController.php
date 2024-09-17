@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class MyAccountController extends Controller
@@ -54,5 +55,42 @@ class MyAccountController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    public function changePassword(Request $request)
+    {
+
+        $request->validate([
+            'old_password' =>'required',
+            'password' => 'required|min:8|max:30|confirmed',
+        ],[
+            'old_password.required' =>'Vui lòng nhập mật khẩu hiện tại.',
+            'password.required' =>'Vui lòng nhập mật khẩu.',
+            'password.min' =>'Mật khẩu tối thiểu phải 8 ký tự.',
+            'password.max' =>'Mật khẩu không được quá 30 ký tự.',
+            'password.confirmed' =>'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
+        ]);
+
+        $user = User::findOrFail(Auth::user()->id);
+
+        // Kiểm tra xem mật khẩu hiện tại có khớp không
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'errors' => [
+                    'old_password' => ['Mật khẩu hiện tại không chính xác.'],
+                ]
+            ], 422); // 422 là mã trạng thái cho dữ liệu không hợp lệ
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Lưu thông báo vào session
+        session()->flash('success', 'Đổi mật khẩu thành công!');
+
+        // Trả về phản hồi thành công
+        return response()->json(['success' => true]);
     }
 }
