@@ -53,7 +53,7 @@
                         <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                    <i class="fas fa-home"></i> Thông tin cá nhân
+                                    <i class="fas fa-home"></i> Hồ sơ cá nhân
                                 </a>
                             </li>
                             <li class="nav-item">
