@@ -110,25 +110,28 @@
                                             <hr class="hr-black">
                                             <div class="review-list">
                                                 <!-- Một bình luận -->
+                                                @foreach($listBinhLuan as $index => $comment)
                                                 <div class="review">
                                                     <div class="review-header">
-                                                        <span class="reviewer-name">Khách</span>
+                                                        <span class="reviewer-name">{{$comment->user->name}}</span>
                                                         <div class="review-rating">
                                                             <span class="star">&#9733;</span>
                                                             <span class="star">&#9733;</span>
                                                             <span class="star empty">&#9733;</span>
                                                             <span class="star empty">&#9733;</span>
                                                             <span class="star empty">&#9733;</span>
-                                                            <span class="review-score">2</span>
+                                                            <span class="review-score">{{$comment->rating}}</span>
                                                         </div>
                                                     </div>
-                                                    <p class="review-content">Dở</p>
+                                                    <p class="review-content">{{$comment->description}}</p>
                                                     <div class="review-footer">
-                                                        <span class="review-date">29/08/2024</span>
+                                                        <span class="review-date">{{$comment->created_at}}</span>
                                                         <span class="review-likes">| &#128077; 0</span>
                                                     </div>
                                                 </div>
-                                                <div class="review">
+                                                @endforeach
+
+                                                {{--<div class="review">
                                                     <div class="review-header">
                                                         <span class="reviewer-name">Khách</span>
                                                         <div class="review-rating">
@@ -145,7 +148,7 @@
                                                         <span class="review-date">27/08/2024</span>
                                                         <span class="review-likes">| &#128077; 3</span>
                                                     </div>
-                                                </div>
+                                                </div>--}}
                                                 <!-- Thêm nhiều bình luận tương tự -->
                                             </div>
                                         </div>
