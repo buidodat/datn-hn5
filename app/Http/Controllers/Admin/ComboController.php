@@ -38,9 +38,10 @@ class ComboController extends Controller
      */
     public function create()
     {
-        $food = Food::where('is_active', '1')->get(['id', 'name', 'price', 'type']);
+        $food = Food::query()->where('is_active', '1')->pluck('name', 'id')->all();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('food'));
+        $foodPrice = Food::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('food', 'foodPrice'));
     }
 
     /**
@@ -102,6 +103,7 @@ class ComboController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -116,10 +118,11 @@ class ComboController extends Controller
      */
     public function edit(Combo $combo)
     {
-        $food = Food::where('is_active', '1')->get(['id', 'name', 'price', 'type']);
-        $comboFood = $combo->comboFood()->pluck('quantity', 'food_id')->all();
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('combo', 'food', 'comboFood'));
+        $combo->load('comboFood');
+        $food = Food::query()->where('is_active', '1')->pluck('name', 'id')->all();
+        // dd($combo->toArray());
+        $foodPrice = Food::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('combo', 'food', 'foodPrice'));
     }
 
     /**
@@ -128,57 +131,28 @@ class ComboController extends Controller
     public function update(UpdateComboRequest $request, Combo $combo)
     {
         try {
-            DB::transaction(function () use ($request, $combo) {
-                // Lấy dữ liệu từ request
-                $data = $request->all();
-                $data['is_active'] ??= 0;
+            $data = $request->all();
+            $data['is_active'] ??= 0;
 
-                // Xử lý upload hình ảnh nếu có
-                if ($request->hasFile('img_thumbnail')) {
-                    // Xóa ảnh cũ nếu có
-                    if ($combo->img_thumbnail && Storage::exists($combo->img_thumbnail)) {
-                        Storage::delete($combo->img_thumbnail);
-                    }
-                    $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('img_thumbnail'));
-                } else {
-                    // Nếu không upload ảnh mới, giữ nguyên ảnh cũ
-                    $data['img_thumbnail'] = $combo->img_thumbnail;
-                }
+            // Kiểm tra nếu người dùng có tải lên ảnh mới
+            if (!empty($data['img_thumbnail'])) {
+                // Lưu ảnh mới và lấy đường dẫn
+                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
 
-                // Tính tổng giá của combo dựa trên giá của món ăn và số lượng
-                $foodIds = $request->input('combo_food');
-                $quantities = $request->input('combo_quantity');
-                $totalPrice = 0;
+                // Lưu lại đường dẫn của ảnh hiện tại để so sánh sau
+                $ImgThumbnailCurrent = $combo->img_thumbnail;
+            } else {
+                // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+                unset($data['img_thumbnail']);
+            }
 
-                foreach ($foodIds as $key => $foodId) {
-                    $food = Food::findOrFail($foodId); // Lấy món ăn
-                    $quantity = $quantities[$key];     // Lấy số lượng của món ăn tương ứng
+            // Cập nhật model với dữ liệu mới
+            $combo->update($data);
 
-                    $totalPrice += $food->price * $quantity;
-                }
-
-                // Cập nhật thông tin combo
-                $combo->update([
-                    'name' => $data['name'],
-                    'price_sale' => $data['price_sale'],
-                    'price' => $totalPrice,  // Lưu tổng giá của combo
-                    'description' => $data['description'],
-                    'img_thumbnail' => $data['img_thumbnail'],
-                    'is_active' => $data['is_active'],
-                ]);
-
-                // Xóa các món ăn hiện tại trong combo
-                ComboFood::where('combo_id', $combo->id)->delete();
-
-                // Lưu các món ăn vào combo
-                foreach ($foodIds as $key => $foodId) {
-                    ComboFood::create([
-                        'combo_id' => $combo->id,
-                        'food_id' => $foodId,
-                        'quantity' => $quantities[$key],
-                    ]);
-                }
-            });
+            // Nếu có ảnh mới và ảnh mới khác với ảnh cũ, xóa ảnh cũ khỏi hệ thống
+            if (!empty($ImgThumbnailCurrent) && ($data['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
+                Storage::delete($ImgThumbnailCurrent);
+            }
 
             return redirect()
                 ->back()
@@ -191,21 +165,20 @@ class ComboController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-
     public function destroy(Combo $combo)
     {
-        // try {
+        try {
 
-        //     $combo->delete();
+            $combo->delete();
 
-        //     if ($combo->img_thumbnail && Storage::exists($combo->img_thumbnail)) {
-        //         Storage::delete($combo->img_thumbnail);
-        //     }
+            if ($combo->img_thumbnail && Storage::exists($combo->img_thumbnail)) {
+                Storage::delete($combo->img_thumbnail);
+            }
 
-        //     return back()
-        //         ->with('success', 'Xóa thành công');
-        // } catch (\Throwable $th) {
-        //     return back()->with('error', $th->getMessage());
-        // }
+            return back()
+                ->with('success', 'Xóa thành công');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }
