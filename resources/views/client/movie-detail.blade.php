@@ -25,7 +25,7 @@
 
 
                                         <img src="{{ $url }}"
-                                            alt="" height="">
+                                             alt="" height="">
                                     </div>
                                     <div class="col-md-8 ">
                                         <div class="movie-detail-content">
@@ -67,7 +67,8 @@
 
                                             <div class="buttons">
                                                 <button class="watch-trailer" id='openModalBtn-trailer'>Xem
-                                                    Trailer</button>
+                                                    Trailer
+                                                </button>
 
                                                 <button class="buy-ticket" id="buy-ticket-btn">Mua Vé Ngay</button>
                                             </div>
@@ -77,7 +78,7 @@
 
                                     <div class="col-md-12">
                                         <div class="review-section">
-                                            <div class="row">
+                                            {{--<div class="row">
                                                 <div class="col-md-12">
                                                     <div
                                                         class="ne_recent_heading_main_wrapper ne_recent_heading_main_wrapper_index_II float_left title-rating">
@@ -106,29 +107,83 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>--}}
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div
+                                                        class="ne_recent_heading_main_wrapper ne_recent_heading_main_wrapper_index_II float_left title-rating">
+                                                        <h2>Xếp hạng và đánh giá phim</h2>
+                                                    </div>
+                                                </div>
+                                                @auth
+                                                    <div class="col-md-12">
+                                                        <div class="rating-form">
+                                                            <form method="POST"
+                                                                  action="{{ route('movie.addReview', ['slug' => $movie->slug]) }}">
+                                                                @csrf
+                                                                @if(!$userReviewed)
+                                                                    <div class="rating-input">
+                                                                        <div class="stars" id="stars">
+                                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                                <span class="star" data-value="{{ $i }}"
+                                                                                      style="cursor: pointer;">&#9733;</span>
+                                                                            @endfor
+                                                                        </div>
+                                                                        <input type="hidden" id="rating" name="rating"
+                                                                               value="0">
+                                                                        <span class="rating-score">0 điểm</span>
+                                                                    </div>
+                                                                    <div class="form-comment">
+                                                                        <div class="form-textarea">
+                                                                            <textarea class="textarea-comment"
+                                                                                      name="description"
+                                                                                      placeholder="Vui lòng viết đánh giá phim."
+                                                                                      maxlength="220"></textarea>
+                                                                        </div>
+                                                                        <div class='button-submit-comment'>
+                                                                            <button type="submit" class="submit-review"
+                                                                                    @if(session('userReviewed')) disabled @endif>
+                                                                                Đánh giá
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                @else
+                                                                    <p>Bạn đã đánh giá phim một lần và không thể đánh giá hoặc chỉnh sửa thêm nữa.</p>
+                                                                @endif
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <div class="col-md-12">
+                                                    <p>Vui lòng <a style="color: #f1761d" href="{{ route('login') }}">đăng nhập</a> để viết
+                                                        đánh giá.</p>
+                                                    </div>
+                                                @endauth
                                             </div>
                                             <hr class="hr-black">
                                             <div class="review-list">
                                                 <!-- Một bình luận -->
                                                 @foreach($listBinhLuan as $index => $comment)
-                                                <div class="review">
-                                                    <div class="review-header">
-                                                        <span class="reviewer-name">{{$comment->user->name}}</span>
-                                                        <div class="review-rating">
-                                                            <span class="star">&#9733;</span>
-                                                            <span class="star">&#9733;</span>
-                                                            <span class="star empty">&#9733;</span>
-                                                            <span class="star empty">&#9733;</span>
-                                                            <span class="star empty">&#9733;</span>
-                                                            <span class="review-score">{{$comment->rating}}</span>
+                                                    <div class="review">
+                                                        <div class="review-header">
+                                                            <span class="reviewer-name">{{$comment->user->name}}</span>
+                                                            <div class="review-rating">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    @if ($i <= $comment->rating)
+                                                                        <span class="star">&#9733;</span>
+                                                                    @else
+                                                                        <span class="star empty">&#9733;</span>
+                                                                    @endif
+                                                                @endfor
+                                                                <span class="review-score">{{$comment->rating}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="review-content">{{$comment->description}}</p>
+                                                        <div class="review-footer">
+                                                            <span class="review-date">{{$comment->created_at}}</span>
+                                                            <span class="review-likes">| &#128077; 0</span>
                                                         </div>
                                                     </div>
-                                                    <p class="review-content">{{$comment->description}}</p>
-                                                    <div class="review-footer">
-                                                        <span class="review-date">{{$comment->created_at}}</span>
-                                                        <span class="review-likes">| &#128077; 0</span>
-                                                    </div>
-                                                </div>
                                                 @endforeach
 
                                                 {{--<div class="review">
@@ -154,6 +209,7 @@
                                         </div>
 
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -169,11 +225,50 @@
             <h2>TRAILER - {{ $movie->name }}</h2>
             <hr>
             <div class="video-container-trailer">
-                <iframe src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video"
+                        allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
     @include('client.showtime')
     <!-- st slider sidebar wrapper End -->
+@endsection
+@section('style-libs')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('rating');
+            const ratingScore = document.querySelector('.rating-score');
+
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function () {
+                    let rating = this.getAttribute('data-value');
+                    highlightStars(rating);
+                });
+
+                star.addEventListener('mouseout', function () {
+                    let currentRating = ratingInput.value;
+                    highlightStars(currentRating);
+                });
+
+                star.addEventListener('click', function () {
+                    let rating = this.getAttribute('data-value');
+                    ratingInput.value = rating;
+                    ratingScore.textContent = rating + ' điểm';
+                });
+            });
+
+            function highlightStars(rating) {
+                stars.forEach(star => {
+                    if (star.getAttribute('data-value') <= rating) {
+                        star.classList.add('highlighted');
+                    } else {
+                        star.classList.remove('highlighted');
+                    }
+                });
+            }
+        });
+
+    </script>
 @endsection
