@@ -55,7 +55,7 @@
                                 <th>#</th>
                                 <th>Tên phim</th>
                                 <th>Tên phòng</th>
-                                <th>Ngôn ngữ phim</th>
+                                <th>Phiên bản phim</th>
                                 <th>Ngày chiếu</th>
                                 <th>Giờ chiếu</th>
                                 <th>Giờ kết thúc</th>
@@ -65,46 +65,38 @@
                         </thead>
 
                         <tbody>
-                            {{-- @foreach ($showtimes as $showtime)
+                            @foreach ($showtimes as $i => $showtime)
                                 <tr>
-
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ $showtime->id }}</td>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>{{ $showtime->movie_version->movie->name }}</td>
+                                    <td>{{ $showtime->room->cinema->branch->name }} - {{ $showtime->room->cinema->name }} -
+                                        {{ $showtime->room->name }}</td>
+                                    <td>{{ $showtime->movie_version->name }}</td>
+                                    <td>{{ $showtime->date }}</td>
+                                    <td>{{ $showtime->start_time }}</td>
+                                    <td>{{ $showtime->end_time }}</td>
                                     <td>
-                                        <a href="#">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a href="{{ route('admin.showtimes.edit', $post) }}">
+                                        {!! $showtime->is_active == 1
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+
+                                        <form action="{{ route('admin.showtimes.destroy', $showtime) }}" method="post"
+                                            class="d-inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                    class="ri-delete-bin-7-fill"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
-                            @endforeach --}}
-                            <tr>
-                                <td>1</td>
-                                <td>Ma Da 2</td>
-                                <td>Phòng 202</td>
-                                <td>Vietsub</td>
-                                <td>12/09/2024</td>
-                                <td>19:00</td>
-                                <td>21:15</td>
-                                <td>Yes</td>
-                                <td>
-                                    <a href="#">
-                                        <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                class="fas fa-eye"></i></button></a>
-                                    <a href="">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                </td>
-                            </tr>
-
+                            @endforeach
                         </tbody>
 
                     </table>
