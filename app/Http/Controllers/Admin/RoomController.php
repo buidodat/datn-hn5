@@ -28,7 +28,7 @@ class RoomController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__ ,compact('rooms'));
     }
 
-    /**
+    /**x
      * Show the form for creating a new resource.
      */
     public function create()
