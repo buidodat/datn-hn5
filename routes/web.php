@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginFacebookController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
@@ -44,9 +46,7 @@ Route::get('my-account', function () {
     return view('client.my-account');
 })->name('my-account');
 
-Route::get('checkout', function () {
-    return view('client.checkout');
-})->name('checkout');
+Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
 
 Route::get('forgot-password', function () {
@@ -69,3 +69,8 @@ Route::get('introduce', function () {
 })->name('introduce');
 
 Auth::routes(['verify' => true]);
+// LOGIN FACEBOOK
+Route::controller(LoginFacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
