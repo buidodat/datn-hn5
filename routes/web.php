@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
@@ -69,3 +70,8 @@ Route::get('introduce', function () {
 })->name('introduce');
 
 Auth::routes(['verify' => true]);
+// LOGIN FACEBOOK
+Route::controller(LoginFacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
