@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class MovieVersion extends Model
 {
     use HasFactory;
+    protected $table = 'movie_versions';
     protected $fillable = [
         'movie_id',
         'name'
     ];
+    public function movie(){
+        return $this->belongsTo(Movie::class);
+    }
 }
