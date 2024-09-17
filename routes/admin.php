@@ -71,7 +71,9 @@ Route::resource('rooms', RoomController::class);
 Route::resource('users', UserController::class);
 Route::put('users/reset-password/{user}',[UserController::class,'resetPassword'])->name('users.password.reset');
 //my-account
-Route::get('my-account', [MyAccountController::class,'show']);
+Route::get('my-account', [MyAccountController::class,'show'])->name('my-account');
+Route::get('my-account/edit', [MyAccountController::class,'edit'])->name('my-account.edit');
+Route::put('my-account/update', [MyAccountController::class,'update'])->name('my-account.update');
 
 
 

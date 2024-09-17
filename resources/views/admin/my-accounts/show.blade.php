@@ -21,15 +21,24 @@
                         <div class="card-body p-4">
                             <div class="text-center">
                                 <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                    <img src="{{ asset('theme/admin/assets/images/users/avatar-1.jpg') }}" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
-                                    <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                        <input id="profile-img-file-input" type="file" class="profile-img-file-input">
-                                        <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                            <span class="avatar-title rounded-circle bg-light text-body">
-                                                <i class="ri-camera-fill"></i>
-                                            </span>
-                                        </label>
-                                    </div>
+                                    @php
+                                        $url = $user->img_thumbnail ?? '';
+
+                                        if (!\Str::contains($url, 'http')) {
+                                            $url = Storage::url($url);
+                                        }
+
+                                    @endphp
+                                    @if (!empty($user->img_thumbnail))
+                                        <img src="{{ $url}}"
+                                            class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                            alt="user-profile-image">
+                                    @else
+                                        <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
+                                            class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                            alt="user-profile-image">
+                                    @endif
+
                                 </div>
                                 <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
                                 <p class="text-muted mb-0">{{ $user->type == App\Models\User::TYPE_ADMIN ? 'Quản trị viên' :'Khách hàng' }}</p>
@@ -108,7 +117,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
-                                                    <button type="button" class="btn btn-soft-success">Thay đổi thông tin </button>
+                                                    <a href="{{ route('admin.my-account.edit') }}" class="btn btn-primary">Thay đổi thông tin </a>
                                                 </div>
                                             </div>
 
