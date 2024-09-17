@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateMyAcountRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
+use App\Notifications\PasswordChanged;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class MyAccountController extends Controller
@@ -86,6 +88,9 @@ class MyAccountController extends Controller
         $user->update([
             'password' => Hash::make($request->password),
         ]);
+
+        // Gửi thông báo thay đổi mật khẩu thành công qua email
+        Notification::send($user, new PasswordChanged());
 
         // Lưu thông báo vào session
         session()->flash('success', 'Đổi mật khẩu thành công!');
