@@ -31,14 +31,14 @@
                                         <thead>
                                             <tr>
                                                 <th>Họ tên:</th>
-                                                <th>Số điện thoại</th>
+                                                {{-- <th>Số điện thoại</th> --}}
                                                 <th>Email</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>Nguyễn Viết Sơn</td>
-                                                <td>0987654321</td>
+                                                {{-- <td>0987654321</td> --}}
                                                 <td>sonnvph33874@fpt.edu.vn</td>
                                             </tr>
                                         </tbody>
@@ -90,8 +90,12 @@
                                                                     height="60px">
                                                             @endif
                                                         </td>
-                                                        <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
-                                                        </td>
+                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
+                                                        </td> --}}
+                                                        <td>{{ $item->name }} - <span class="combo-price"
+                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>
+                                                            VNĐ</td>
+
                                                         <td>
 
                                                             @foreach ($item->comboFood as $value)
@@ -114,8 +118,9 @@
                                                         <td>
                                                             <div class="quantity-container">
                                                                 <button class="quantity-btn decrease">-</button>
-                                                                <input type="text" class="quantity-input" value="0"
-                                                                    min="1">
+                                                                <input type="text" class="quantity-input"
+                                                                    name="combo" value="0"
+                                                                    min="1" max="10" readonly> 
                                                                 <button class="quantity-btn increase">+</button>
                                                             </div>
                                                         </td>
@@ -180,7 +185,10 @@
                                 <div class="total-price-checkout">
                                     <div>
                                         <p>Tổng tiền:</p>
-                                        <p class="text-danger">190.000 Vnđ</p>
+                                        <p class="text-danger total-price-checkout">
+                                           0 Vnđ
+                                        </p>
+                                        <input type="text"  name="total-price" id="total-price" value="" hidden readonly>
                                     </div>
                                     <div>
                                         <p>Số tiền được giảm:</p>
@@ -188,7 +196,7 @@
                                     </div>
                                     <div>
                                         <p>Số tiền cần thanh toán:</p>
-                                        <p class="text-danger">190.000 Vnđ</p>
+                                        <p class="text-danger total-price-payment">190.000 Vnđ</p>
                                     </div>
                                 </div>
                                 <div class="box-payment-checkout">
