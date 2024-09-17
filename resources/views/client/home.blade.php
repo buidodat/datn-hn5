@@ -107,7 +107,8 @@
                                                     <div class="prs_upcom_movie_content_box">
                                                         <div class="prs_upcom_movie_content_box_inner">
                                                             <h2 class="movie-name-home"><a
-                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
+                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                            </h2>
                                                             <p>Thể loại: {{ $movie->category }}</p>
                                                             <p>Thời lượng: {{ $movie->duration }} phút </p>
                                                             <i class="fa fa-star"></i>
@@ -122,9 +123,9 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <div class="pagination-wrapper">
+                                    {{-- <div class="pagination-wrapper">
                                         {{ $moviesUpcoming->links() }}
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                             </div>
@@ -136,7 +137,7 @@
                         <div class="prs_upcom_slider_slides_wrapper">
                             <div class="owl-carousel owl-theme">
                                 <div class="item">
-                                    <div class="row">
+                                    <div class="row" id="movie-list">
                                         @foreach ($moviesShowing as $movie)
                                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                                 <div class="prs_upcom_movie_box_wrapper">
@@ -188,26 +189,29 @@
 
 
                                     </div>
-                                    <div class="pagination-wrapper">
+                                    {{-- <div class="pagination-wrapper">
                                         {{ $moviesShowing->links() }}
-                                    </div>
+                                    </div> --}}
 
                                 </div>
 
 
                             </div>
                         </div>
-                        {{-- <div class="row">
+                        <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="prs_animate_btn1 prs_upcom_main_wrapper">
                                     <ul>
-                                        <li><a href="#" class="button button--tamaya prs_upcom_main_btn"
-                                                data-text="view all"><span>View All</span></a>
+                                        <li>
+                                            {{-- <a class="button button--tamaya prs_upcom_main_btn"
+                                                data-text="Xem thêm"  id="load-more"><span>Xem thêm</span></a> --}}
+                                            <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                data-text="Xem thêm" id="load-more">Xem thêm</button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
 
                     {{-- Suất chiếu đặc biệt --}}
@@ -249,7 +253,8 @@
                                                     <div class="prs_upcom_movie_content_box">
                                                         <div class="prs_upcom_movie_content_box_inner">
                                                             <h2 class="movie-name-home"><a
-                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
+                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                            </h2>
                                                             <p>Thể loại: {{ $movie->category }}</p>
                                                             <p>Thời lượng: {{ $movie->duration }} phút </p>
                                                             <i class="fa fa-star"></i>
@@ -265,9 +270,9 @@
                                         @endforeach
 
                                     </div>
-                                    <div class="pagination-wrapper">
+                                    {{-- <div class="pagination-wrapper">
                                         {{ $moviesSpecial->links() }}
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                             </div>
@@ -666,4 +671,22 @@
 
 
     @include('client.showtime')
+@endsection
+
+
+@section('style-libs')
+    {{-- <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}"> --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('load-more');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    alert('Load More');
+                });
+            } else {
+                console.error('Button with ID load-more not found');
+            }
+        });
+    </script>
 @endsection

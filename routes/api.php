@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // // Định nghĩa các route chuẩn cho CRUD của Branch
 // Route::apiResource('branches', BranchController::class);
 Route::get('cinemas/{branchId}', [APIController::class, 'getCinemas']);
+Route::get('rooms/{movieId}', [APIController::class, 'getRooms']);
+Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion']);
+Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
