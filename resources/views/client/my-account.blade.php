@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-My Account
+Tài khoản của tôi
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@ My Account
             <div class="my-account-tab">VOUCHER</div>
         </div>
         <div class="my-account-upload-container">
-            <div class="my-account-image-upload-container" id="imagePlaceholder" >
+            <div class="my-account-image-upload-container" id="img_thumbnail" name="img_thumbnail">
                 <p>No Image</p>
             </div>
             <div class="my-account-buttons">
@@ -28,38 +28,30 @@ My Account
             <div class="my-account-form-row">
                 <div class="my-account-form-group">
                     <div class="my-account-mb-3">
-                        <label for="hoTen"><span style="color: red;">*</span>&nbsp;Họ tên</label>
-                        <input type="text" class="my-account-form-control" placeholder="Họ và tên" name="hoTen"
-                            id="hoTen">
-
+                        <label for="name"><span style="color: red;">*</span>&nbsp;Họ tên</label>
+                        <input type="text" class="my-account-form-control" placeholder="Họ và tên" name="name"
+                            id="name">
+                        @error("name")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="my-account-mb-3">
-                        <label for="txtDienThoai"><span style="color: red;">*</span>&nbsp;Số điện thoại</label>
+                        <label for="phone"><span style="color: red;">*</span>&nbsp;Số điện thoại</label>
                         <i class="fa fa-phone-square phone-icon"></i>
-                        <input type="text" id="txtDienThoai" value="" class="my-account-form-control"
-                            placeholder="0975098710">
-
+                        <input type="text" id="phone" value="" class="my-account-form-control" name="phone"
+                            placeholder="Nhập số điện thoại của bạn">
+                        @error("phone")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="my-account-mb-3">
-                        <label for="txtNgaySinh"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
+                        <label for="birthday"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
                         <i class="fa fa-calendar birthday-icon"></i>
-                        <input type="date" id="txtNgaySinh" value="2004-05-14" class="my-account-form-control"
+                        <input type="date" id="birthday" value="2004-05-14" class="my-account-form-control" name="birthday"
                             placeholder="Ngày sinh" data-date-format="yyyy-mm-dd" />
-
-                    </div>
-                    <div class="my-account-mb-3">
-                        <label for="tinh">Tỉnh/Thành phố</label>
-                        <select name="tinh" class="my-account-form-select" id="tinh">
-                            <option value="">Chọn tỉnh thành phố</option>
-                            <option value="haNoi">Thành phố Hà Nội</option>
-                            <option value="hoChiMinh">Thành phố Hồ Chí Minh</option>
-                        </select>
-                    </div>
-                    <div class="my-account-mb-3">
-                        <label for="xa">Xã/Phường/Thị Trấn</label>
-                        <select name="xa" class="my-account-form-select" id="xa">
-                            <option value="">Xã/Phường/Thị Trấn</option>
-                        </select>
+                        @error("birthday")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="my-account-mb-3">
                         <a href="#" id="changePasswordBtn" class="my-account-d-block">Đổi mật khẩu?</a>
@@ -68,36 +60,25 @@ My Account
 
                 <div class="my-account-form-group">
                     <div class="my-account-mb-3">
-                        <label for="txtEmail"><span style="color: red;">*</span>&nbsp;Email</label>
+                        <label for="email"><span style="color: red;">*</span>&nbsp;Email</label>
                         <i class="fa fa-envelope email-icon"></i>
-                        <input type="email" id="txtEmail" disabled class="my-account-form-control"
+                        <input type="email" id="email" disabled class="my-account-form-control" name="email"
                             placeholder="example@gmail.com">
-
+                        @error("email")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="my-account-mb-3">
-                        <label for="txtCMND"><span style="color: red;">*</span>&nbsp;CMND/Hộ chiếu</label>
-                        <i class="fa fa-credit-card cccd-icon"></i>
-                        <input type="text" id="txtCMND" class="my-account-form-control" placeholder="CMND/Hộ chiếu">
-
-                    </div>
-                    <div class="my-account-mb-3">
-                        <label for="cboSex">Giới tính</label>
+                        <label for="gender">Giới tính</label>
                         <i class="fa fa-male sex-icon"></i>
                         <div class="my-account-input-icon">
-                            <select id="cboSex" class="my-account-form-select">
+                            <select id="gender" class="my-account-form-select" name="gender">
                                 <option value="0">Giới tính</option>
                                 <option value="1">Nam</option>
                                 <option value="2">Nữ</option>
                                 <option value="3">Khác</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="my-account-mb-3">
-                        <label for="huyen">Quận/Huyện</label>
-                        <select name="huyen" class="my-account-form-select" id="huyen">
-                            <option value="">Quận/Huyện</option>
-                        </select>
-                        <label for="huyen" class="my-account-error-message"></label>
                     </div>
                     <div class="my-account-mb-3">
                         <label for="thonNgoXom">Địa chỉ</label>
@@ -115,28 +96,38 @@ My Account
     </div>
 
     <!-- Modal Đổi mật khẩu -->
-    <div class="my-account-overlay" id="overlay"></div>
+    <div class="my-account-overlay" id="overlay">
     <div class="my-account-modal" id="changePasswordForm">
         {{-- <h4>Đổi mật khẩu</h4> --}}
         <form>
             <div class="my-account-mb-3">
-                <label for="txtOldPassword"><span style="color: red;">*</span>&nbsp;Mật khẩu cũ</label>
-                <input type="password" class="my-account-form-control" id="txtOldPassword" required>
+                <label for="password"><span style="color: red;">*</span>&nbsp;Mật khẩu cũ</label>
+                <input type="password" class="my-account-form-control" id="password" name="password">
+                @error("password")
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="my-account-mb-3">
-                <label for="txtNewPassword"><span style="color: red;">*</span>&nbsp;Mật khẩu mới</label>
-                <input type="password" class="my-account-form-control" id="txtNewPassword" required>
+                <label for="password"><span style="color: red;">*</span>&nbsp;Mật khẩu mới</label>
+                <input type="password" class="my-account-form-control" id="password" name="password" placeholder="Nhập mật khẩu mới">
+                @error("password")
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="my-account-mb-3">
-                <label for="txtConfirmNewPassword"><span style="color: red;">*</span>&nbsp;Nhập lại mật khẩu mới</label>
-                <input type="password" class="my-account-form-control" id="txtConfirmNewPassword" required>
+                <label for="password_confirmation"><span style="color: red;">*</span>&nbsp;Nhập lại mật khẩu mới</label>
+                <input type="password" class="my-account-form-control" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu mới">
+                @error('password_confirmation')
+                        <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="my-account-text-center">
-                <button type="submit" class="my-account-btn">Xác nhận</button>
+                <button type="submit" class="my-account-btn" onclick="return confirm('Bạn có chắc chắn muốn đổi mật khẩu không')">Xác nhận</button>
                 <button type="button" class="my-account-btn" id="closeChangePassword">Hủy</button>
             </div>
         </form>
     </div>
+</div>
 
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> --}}
 </body>
