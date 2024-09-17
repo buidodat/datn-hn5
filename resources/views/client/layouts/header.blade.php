@@ -39,6 +39,7 @@
                                     <li><a href="{{ route('forgot-password') }}">Forgot Password</a></li>
                                     <li><a href="{{ route('contact') }}">Contact</a></li>
                                     <li><a href="{{ route('introduce') }}">Introduce</a></li>
+                                    <li><a href="{{ route('checkout') }}">Checkout</a></li>
                                 </ul>
                             </li>
 

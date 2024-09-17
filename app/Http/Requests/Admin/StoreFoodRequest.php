@@ -24,7 +24,7 @@ class StoreFoodRequest extends FormRequest
         return [
             'name'          => 'required|unique:food,name', 
             'img_thumbnail' => 'required|image|max:2048', 
-            'price'         => 'required|numeric|min:1', 
+            'price'         => 'required|numeric|min:1000|max:1000000', 
             'type'         => 'nullable', 
             'is_active'     => 'nullable|boolean', 
             'description'   => 'required|string|max:1000',
@@ -40,7 +40,8 @@ class StoreFoodRequest extends FormRequest
             'img_thumbnail.image' => 'File phải là một hình ảnh.',
             'price.required' => 'Bạn chưa nhập giá.',
             'price.numeric' => 'Giá phải là số.',
-            'price.min' => 'Giá phải là số lớn hơn 0.',
+            'price.min' => 'Giá phải lớn hơn 1000đ.',
+            'price.max' => 'Giá phải nhỏ hơn 1.000.000đ.',
             'description.required' => 'Bạn chưa nhập mô tả.',
             'description.max' => 'Trường mô tả không được lớn hơn 1000 ký tự.',
         ];
