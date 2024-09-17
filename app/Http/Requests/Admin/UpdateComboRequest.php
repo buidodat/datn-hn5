@@ -25,7 +25,7 @@ class UpdateComboRequest extends FormRequest
         return [
             'name'          => 'required|unique:combos,name,' . $id,
             'img_thumbnail' => 'nullable|image|max:2048',
-            'price_sale'    => 'required|numeric|min:0',
+            'price_sale'    => 'required|numeric|min:1000|max:1000000',
             'is_active'     => 'nullable|boolean',
             'description'   => 'required|string|max:1000',
             'combo_food.*'  => 'required|exists:food,id',  // Đảm bảo đồ ăn được chọn có tồn tại trong DB
@@ -42,7 +42,8 @@ class UpdateComboRequest extends FormRequest
             'img_thumbnail.image' => 'File phải là một hình ảnh.',
             'price_sale.required' => 'Bạn chưa nhập giá.',
             'price_sale.numeric' => 'Giá phải là số.',
-            'price_sale.min' => 'Giá phải là số lớn hơn 0.',
+            'price_sale.min' => 'Giá phải lớn hơn 1000đ.',
+            'price_sale.max' => 'Giá phải nhỏ hơn 1.000.000đ.',
             'description.required' => 'Bạn chưa nhập mô tả.',
             'combo_food.*.exists' => 'Món ăn bạn chọn không tồn tại.',
             'combo_quantity.*.integer' => 'Số lượng phải là số nguyên.',
