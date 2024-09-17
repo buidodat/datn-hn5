@@ -75,31 +75,53 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @for ($i = 1; $i < 4; $i++)
+                                                @foreach ($data as $item)
                                                     <tr>
-                                                        <td><img src="{{ asset('theme/client/images/index_III/combo' . $i . '.png') }}"
-                                                                alt=""></td>
-                                                        <td>Combo Poly {{ $i }} 79k</td>
-                                                        <td>TIẾT KIỆM 25K!!! Gồm: 2 Bắp (69oz) + 4 Nước có gaz (22oz) + 2
-                                                            Snack Oishi (80g)</td>
-                                                        {{-- <td>
-                                                            <div class="quantity-container">
-                                                                <button class="quantity-btn" id="decrease">-</button>
-                                                                <input type="text" id="quantity-input" value="0"
-                                                                    min="1">
-                                                                <button class="quantity-btn" id="increase">+</button>
-                                                            </div>
-                                                        </td> --}}
+                                                        <td>
+                                                            @php
+                                                                $url = $item->img_thumbnail;
+
+                                                                if (!\Str::contains($url, 'http')) {
+                                                                    $url = Storage::url($url);
+                                                                }
+                                                            @endphp
+                                                            @if (!empty($item->img_thumbnail))
+                                                                <img src="{{ $url }}" alt="" width="100px"
+                                                                    height="60px">
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
+                                                        </td>
+                                                        <td>
+
+                                                            @foreach ($item->comboFood as $value)
+                                                                @foreach ($foods as $food)
+                                                                    @if ($value->food_id == $food->id)
+                                                                        <ul class="nav nav-sm flex-column">
+                                                                            <li class="nav-item mb-2">
+                                                                                <span
+                                                                                    class="fw-semibold">{{ $food->type }}:
+                                                                                </span>
+                                                                                {{ $food->name }} x
+                                                                                ({{ $value->quantity }})
+                                                                            </li>
+                                                                        </ul>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endforeach
+                                                        </td>
+
                                                         <td>
                                                             <div class="quantity-container">
                                                                 <button class="quantity-btn decrease">-</button>
-                                                                <input type="text" class="quantity-input" value="0" min="1">
+                                                                <input type="text" class="quantity-input" value="0"
+                                                                    min="1">
                                                                 <button class="quantity-btn increase">+</button>
                                                             </div>
                                                         </td>
 
                                                     </tr>
-                                                @endfor
+                                                @endforeach
 
                                             </tbody>
                                         </table>
@@ -266,7 +288,7 @@
                                         <li> Giờ chiếu: <span class="bold">18:10</span></li>
                                         <li> Phòng chiếu: <span class="bold">P1</span></li>
                                         <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
-                                        <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li>
+                                        {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
                                     </ul>
                                 </div>
 
