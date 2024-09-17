@@ -9,9 +9,18 @@ class MovieReview extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'movie_language_id',
+        'movie_id',
         'user_id',
-        'rating_id',
+        'rating',
         'description'
     ];
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class,'movie_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
