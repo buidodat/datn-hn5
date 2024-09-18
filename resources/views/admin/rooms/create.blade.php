@@ -69,7 +69,8 @@
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chọn chi nhánh</option>
                                                 @foreach ($branches as $id => $name)
-                                                    <option value="{{ $id }}" >{{ $name }}</option>
+                                                    <option value="{{ $id }}" @selected($id == old('branch_id'))>
+                                                        {{ $name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('branch_id')
@@ -82,7 +83,7 @@
                                         <div class="col-md-8 mb-3">
                                             <span class='text-danger'>*</span>
                                             <label for="cinema" class="form-label">Rạp chiếu:</label>
-                                            <select name="cinema_id" id="cinema" class="form-select" >
+                                            <select name="cinema_id" id="cinema" class="form-select">
                                                 <option value="">Chọn rạp chiếu</option>
 
                                             </select>
@@ -98,7 +99,8 @@
                                             <select name="type_room_id" id="" class="form-select">
                                                 <option value="">Chọn loại phòng chiếu</option>
                                                 @foreach ($typeRooms as $id => $name)
-                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id )>{{ $name }}</option>
+                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id)>
+                                                        {{ $name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('type_room_id')
@@ -184,8 +186,11 @@
     <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-
         $(document).ready(function() {
+            // Lấy giá trị branchId và cinemaId từ Laravel
+            var selectedBranchId = "{{ old('branch_id', '') }}";
+            var selectedCinemaId = "{{ old('cinema_id', '') }}";
+
             // Xử lý sự kiện thay đổi chi nhánh
             $('#branch').on('change', function() {
                 var branchId = $(this).val();
@@ -199,15 +204,25 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option  value="' + cinema.id + '">' + cinema.name + '</option>');
+                                cinemaSelect.append('<option value="' + cinema.id +
+                                    '">' + cinema.name + '</option>');
                             });
+
+                            // Chọn lại cinema nếu có selectedCinemaId
+                            if (selectedCinemaId) {
+                                cinemaSelect.val(selectedCinemaId);
+                                selectedCinemaId = false;
+                            }
                         }
                     });
                 }
-
             });
-        });
 
+            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
+
+            }
+        });
     </script>
 @endsection
-
