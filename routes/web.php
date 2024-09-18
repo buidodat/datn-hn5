@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
 
 Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
+Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
 Route::get('choose-seat', function () {
     return view('client.choose-seat');
@@ -46,6 +48,7 @@ Route::get('my-account', function () {
 })->name('my-account');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
 
 
 Route::get('forgot-password', function () {
@@ -68,3 +71,8 @@ Route::get('introduce', function () {
 })->name('introduce');
 
 Auth::routes(['verify' => true]);
+// LOGIN FACEBOOK
+Route::controller(LoginFacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});

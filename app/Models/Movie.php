@@ -47,4 +47,10 @@ class Movie extends Model
         'C18',
         'K'
     ];
+
+    public function movieReview()
+    {
+        return $this->hasMany(MovieReview::class,'movie_id');
+    }
+
 }

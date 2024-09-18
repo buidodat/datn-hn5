@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoomController;
@@ -66,9 +67,14 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 Route::resource('rooms', RoomController::class);
-
+//user
 Route::resource('users', UserController::class);
 Route::put('users/reset-password/{user}',[UserController::class,'resetPassword'])->name('users.password.reset');
+//my-account
+Route::get('my-account', [MyAccountController::class,'show'])->name('my-account');
+Route::get('my-account/edit', [MyAccountController::class,'edit'])->name('my-account.edit');
+Route::put('my-account/update', [MyAccountController::class,'update'])->name('my-account.update');
+Route::post('my-account/change-password', [MyAccountController::class,'changePassword'])->name('my-account.change-password');
 
 
 

@@ -56,7 +56,7 @@
                     </div>
                     <div class="st_form_pop_or_btn float_left"></div>
                     <div class="st_form_pop_facebook_btn float_left nutfb">
-                        <a href="#"> Đăng nhập với Facebook</a>
+                        <a href="{{ route('auth.facebook') }}"> Đăng nhập với Facebook</a>
                     </div>
                     <div class="float_left nutgm">
                         <a href="#"> Đăng nhập với Google</a>
