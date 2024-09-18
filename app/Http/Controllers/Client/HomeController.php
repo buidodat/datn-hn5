@@ -35,8 +35,8 @@ class HomeController extends Controller
             ['release_date', '<=', $currentNow],
             ['end_date', '>', $currentNow],
             ['is_special', '!=', '1']
-        ])->latest('id')
-            ->get();
+        ])->first('id')
+            ->paginate(8);
 
         $moviesSpecial = Movie::where([
             ['is_active', '1'],
@@ -46,7 +46,7 @@ class HomeController extends Controller
             ->get();
 
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow','slideShow'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'currentNow', 'slideShow'));
     }
 
     public function policy()
