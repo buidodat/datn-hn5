@@ -36,4 +36,22 @@ class APIController extends Controller
         }
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
+
+
+    public function loadMoreMovies(Request $request)
+    {
+        $currentNow = now()->format('Y-m-d');
+
+        // Lấy phim theo trang
+        $moviesShowing = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['release_date', '<=', $currentNow],
+            ['end_date', '>', $currentNow],
+            ['is_special', '!=', '1']
+        ])->latest('id')->paginate(8);
+
+        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
+        return view('client.layouts.partials.movie-list', compact('moviesShowing'))->render();
+    }
 }

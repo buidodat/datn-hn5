@@ -175,7 +175,7 @@ class DatabaseSeeder extends Seeder
                 'email'=>'sonnvph33874@fpt.edu.vn',
                 'password'=>Hash::make('sonnvph33874@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
-                'gender'=> 'Nữ',
+                'gender'=> 'Nam',
                 'birthday'=>'2004-11-11',
                 'type'=>'admin'
             ],
@@ -186,7 +186,7 @@ class DatabaseSeeder extends Seeder
                 'email'=>'datbdph38211@fpt.edu.vn',
                 'password'=>Hash::make('datbdph38211@fpt.edu.vn'),
                 'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
-                'gender'=> 'Nam',
+                'gender'=> 'Bêdee',
                 'birthday'=>'2004-10-14',
                 'type'=>'admin'
             ],
