@@ -11,6 +11,7 @@ use App\Models\Movie;
 use App\Models\Slideshow;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -63,7 +64,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::slug($name),
                 'category' => fake()->word,
                 'img_thumbnail' => $img_thumbnails[rand(0,3)],
-                'description' => fake()->paragraph,
+                'description' => fake()->text(255),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
                 'rating' => $ratings[rand(0,3)],
@@ -163,10 +164,21 @@ class DatabaseSeeder extends Seeder
                 'phone'=> '0378633611',
                 'email'=>'andpph31859@fpt.edu.vn',
                 'password'=>Hash::make('andpph31859@fpt.edu.vn'),
-                'address' => 'Thác bà, Yên Bái.',
-                'gender'=> 'Nữ',
+                'address' => 'Văn Chấn, Yên Bái.',
+                'gender'=> 'Nam',
                 'birthday'=>'2004-06-06',
                 'type'=>'admin'
+            ],
+            [
+                'name' => 'An Dang Phu',
+                'img_thumbnail' =>'https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG0pP-FGDHy0-uXweXmmsnNIMvtdjEJEpwgy-12MQkSnFPNmEsEvjbTG8ZosZJ4De8rsIMwzOpo8C5PJFBbfOTI&_nc_ohc=O_-7MtjY0RoQ7kNvgHCkypx&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDA4gmkPPxZSCLKPoL2oXl6VM-acUxCebUpqQ0317MFAA&oe=66EB71AD',
+                'phone'=> '0378633611',
+                'email'=>'anpx123@gmail.com',
+                'password'=>Hash::make('anpx123@gmail.com'),
+                'address' => 'Văn Chấn, Yên Bái.',
+                'gender'=> 'Nam',
+                'birthday'=>'2004-01-01',
+                'type'=>'member'
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
@@ -231,5 +243,23 @@ class DatabaseSeeder extends Seeder
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
+
+        for ($i=0; $i < 10 ; $i++) {
+            DB::table('vouchers')->insert([
+                'code' => strtoupper(Str::random(6)),
+                'title' => fake()->sentence(5),
+                'description' => fake()->text(255),
+                'start_date_time' => Carbon::now()->subDays(rand(0, 30)),
+                'end_date_time' => Carbon::now()->addDays(rand(30, 60)),
+                'discount' => fake()->numberBetween(1000, 100000),
+                'quantity' => fake()->numberBetween(1, 100),
+                'limit' => fake()->numberBetween(1, 5),
+                'is_active' => true,
+
+            ]);
+        }
+
+
+
     }
 }
