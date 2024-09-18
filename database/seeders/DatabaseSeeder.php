@@ -9,6 +9,7 @@ use App\Models\ComboFood;
 use App\Models\Food;
 use App\Models\Movie;
 use App\Models\Slideshow;
+use App\Models\TypeRoom;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +64,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => Str::slug($name),
                 'category' => fake()->word,
                 'img_thumbnail' => $img_thumbnails[rand(0,3)],
-                'description' => fake()->paragraph,
+                'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
                 'rating' => $ratings[rand(0,3)],
@@ -121,8 +122,26 @@ class DatabaseSeeder extends Seeder
             ['name'=>'3D','surcharge'=> 30000],
             ['name'=>'IMAX','surcharge'=> 20000],
         ];
-
         DB::table('type_rooms')->insert($typeRooms);
+
+
+        // Duyệt qua các rạp và tạo phòng cho mỗi rạp
+        $cinemaCount = DB::table('cinemas')->count();
+        $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
+
+        for ($cinema_id = 1; $cinema_id <= $cinemaCount; $cinema_id++) {
+            foreach ($roomsName as $room) {
+                DB::table('rooms')->insert([
+                    'cinema_id' => $cinema_id,
+                    'type_room_id' => fake()->numberBetween(1, 3),
+                    'name' => $room,
+                    'capacity' => fake()->randomElement([130, 150, 170]),
+                    'is_active' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
 
         //3 bản ghi loại ghế
         $typeSeats = [
@@ -175,7 +194,7 @@ class DatabaseSeeder extends Seeder
                 'email'=>'sonnvph33874@fpt.edu.vn',
                 'password'=>Hash::make('sonnvph33874@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
-                'gender'=> 'Nữ',
+                'gender'=> 'Nam',
                 'birthday'=>'2004-11-11',
                 'type'=>'admin'
             ],
@@ -186,7 +205,7 @@ class DatabaseSeeder extends Seeder
                 'email'=>'datbdph38211@fpt.edu.vn',
                 'password'=>Hash::make('datbdph38211@fpt.edu.vn'),
                 'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
-                'gender'=> 'Nam',
+                'gender'=> 'Bêdee',
                 'birthday'=>'2004-10-14',
                 'type'=>'admin'
             ],

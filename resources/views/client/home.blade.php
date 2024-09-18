@@ -138,6 +138,7 @@
                             <div class="owl-carousel owl-theme">
                                 <div class="item">
                                     <div class="row" id="movie-list">
+                                        {{-- @dd($moviesShowing) --}}
                                         @foreach ($moviesShowing as $movie)
                                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                                 <div class="prs_upcom_movie_box_wrapper">
@@ -205,8 +206,11 @@
                                         <li>
                                             {{-- <a class="button button--tamaya prs_upcom_main_btn"
                                                 data-text="Xem thêm"  id="load-more"><span>Xem thêm</span></a> --}}
+                                            {{-- <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                data-text="Xem thêm" id="load-more">Xem thêm</button> --}}
                                             <button class="button button--tamaya prs_upcom_main_btn text-white"
-                                                data-text="Xem thêm" id="load-more">Xem thêm</button>
+                                                data-text="Xem thêm" id="load-more" data-page="2">Xem thêm</button>
+
                                         </li>
                                     </ul>
                                 </div>
@@ -679,14 +683,50 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const btn = document.getElementById('load-more');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    alert('Load More');
-                });
-            } else {
-                console.error('Button with ID load-more not found');
-            }
+            document.getElementById('load-more').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                // // Gửi yêu cầu AJAX để lấy thêm phim
+                fetch(`/api/movies?page=${page}`, {
+                        method: 'GET',
+                        // headers: {
+                        //     'X-Requested-With': 'XMLHttpRequest'
+                        // }
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+
+                        // console.log(data);
+
+                        const movieList = document.getElementById('movie-list');
+
+                        console.log(data);
+
+                        if (data.trim().length > 0) {
+
+                            // movieList.appendChild(data);
+                            // movieList.innerHTML += 'okokokokokkook';
+                            movieList.innerHTML += data;
+                            // movieList.innerHTML +=
+                            //     '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first"> <h1> hihi</h1> </div>';
+                            // movieList.insertAdjacentHTML('beforeend', data);
+
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
+
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+
+
         });
     </script>
 @endsection
