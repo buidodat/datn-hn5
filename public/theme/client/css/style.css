@@ -1950,23 +1950,24 @@ body.active #mobile-nav {
 	height: 1px;
 }
 
-.prs_upcom_slider_slides_wrapper .item {
+
+.tab-pane-content-movie-list .item {
 	margin-right: 10px;
 	margin-left: 10px;
 }
 
-.prs_upcom_slider_slides_wrapper {
+.tab-pane-content-movie-list {
 	float: left;
 	width: 100%;
 	padding-top: 55px;
 }
 
-.prs_upcom_slider_slides_wrapper .nav-tabs {
+.tab-pane-content-movie-list .nav-tabs {
 	margin-top: 40px;
 	margin-bottom: 40px;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-theme .owl-nav {
+.tab-pane-content-movie-list .owl-theme .owl-nav {
 	position: absolute;
 	bottom: -30px;
 	left: 0;
@@ -1975,7 +1976,7 @@ body.active #mobile-nav {
 	display: none;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-theme .owl-nav .owl-prev {
+.tab-pane-content-movie-list .owl-theme .owl-nav .owl-prev {
 	font-size: 20px;
 	padding: 0;
 	position: absolute;
@@ -2000,7 +2001,7 @@ body.active #mobile-nav {
 	transition: all 0.5s;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-theme .owl-nav .owl-next {
+.tab-pane-content-movie-list .owl-theme .owl-nav .owl-next {
 	font-size: 20px;
 	margin: 0;
 	padding: 0;
@@ -2026,14 +2027,14 @@ body.active #mobile-nav {
 	transition: all 0.5s;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-prev i:before,
-.prs_upcom_slider_slides_wrapper .owl-next i:before {
+.tab-pane-content-movie-list .owl-prev i:before,
+.tab-pane-content-movie-list .owl-next i:before {
 	margin-left: 0;
 	font-size: 16px;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-theme .owl-nav .owl-prev:hover,
-.prs_upcom_slider_slides_wrapper .owl-theme .owl-nav .owl-next:hover {
+.tab-pane-content-movie-list .owl-theme .owl-nav .owl-prev:hover,
+.tab-pane-content-movie-list .owl-theme .owl-nav .owl-next:hover {
 	background: #ff4444;
 	border: 1px solid #ff4444;
 	color: #ffffff;
@@ -2042,6 +2043,9 @@ body.active #mobile-nav {
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
 	transition: all 0.5s;
+}
+.tab-pane-content-movie-list .owl-carousel .owl-stage:after {
+	height: 20px;
 }
 
 .prs_upcome_tabs_wrapper .nav-tabs>li.active>a,
@@ -2055,9 +2059,7 @@ body.active #mobile-nav {
 	position: relative;
 }
 
-.prs_upcom_slider_slides_wrapper .owl-carousel .owl-stage:after {
-	height: 20px;
-}
+
 
 .cc_featured_second_section {
 	margin-top: 20px;

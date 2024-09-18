@@ -25,6 +25,9 @@ class Room extends Model
         170
     ];
 
+    const MAX_ROW = 15;
+    const MAX_COL = 15;
+
     public function cinema(){
         return $this->belongsTo(Cinema::class);
     }
