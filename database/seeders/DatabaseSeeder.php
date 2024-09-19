@@ -152,6 +152,30 @@ class DatabaseSeeder extends Seeder
 
         DB::table('type_seats')->insert($typeSeats);
 
+        // Lấy số lượng rạp và phòng đã có
+        $roomCount = DB::table('rooms')->count();
+
+        // Các loại ghế có sẵn
+        $typeSeats = [1, 2]; // 1: Ghế Thường, 2: Ghế Vip
+
+        // Tạo dữ liệu cho bảng seats
+        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+            for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
+                for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+                    DB::table('seats')->insert([
+                        'room_id' => $room_id,
+                        'type_seat_id' => fake()->randomElement($typeSeats),
+                        'coordinates_x' => $x,
+                        'coordinates_y' => $y,
+                        'name' => $y . $x,
+                        'is_active' => 1, 
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        }
+
         //tạo 5 bản ghỉ user type admin
         $users = [
             [
