@@ -36,43 +36,7 @@
                     <div role="tabpanel" class="tab-pane fade" id="best">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
-                                <div class="row">
-
-                                    {{-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
-                                                    <img src="{{ asset('theme/client/images/content/up1.jpg') }}"
-                                                        alt="movie_img" />
-                                                    <div class="prs_upcom_movie_img_overlay"></div>
-                                                    <div class="prs_upcom_movie_img_btn_wrapper">
-                                                        <ul>
-                                                            <li><a id="buy-ticket-btn">Buy Ticket</a>
-                                                            </li>
-
-                                                            <li><a href="#">View Details</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="prs_upcom_movie_content_box">
-                                                    <div class="prs_upcom_movie_content_box_inner">
-                                                        <h2><a href="#">Busting Car</a></h2>
-                                                        <p>Drama , Acation</p> <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
-                                                    <div class="prs_upcom_movie_content_box_inner_icon">
-                                                        <ul>
-                                                            <li><a href="movie_booking.html"><i
-                                                                        class="flaticon-cart-of-ecommerce"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
+                                <div class="row" id="movie-list1">
                                     @foreach ($moviesUpcoming as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                             <div class="prs_upcom_movie_box_wrapper">
@@ -126,14 +90,27 @@
                                     </div> --}}
                             </div>
                         </div>
+                        @if ($moviesUpcoming->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more1" data-page="2">Xem thêm</button>
 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     {{-- Phim đang chiếu --}}
                     <div role="tabpanel" class="tab-pane fade  in active" id="hot">
                         <div class="tab-pane-content-movie-list">
-
                             <div class="item">
-                                <div class="row" id="movie-list">
+                                <div class="row" id="movie-list2">
                                     {{-- @dd($moviesShowing) --}}
                                     @foreach ($moviesShowing as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
@@ -192,29 +169,27 @@
                             </div>
 
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="prs_animate_btn1 prs_upcom_main_wrapper">
-                                    <ul>
-                                        <li>
-                                            {{-- <a class="button button--tamaya prs_upcom_main_btn"
-                                                data-text="Xem thêm"  id="load-more"><span>Xem thêm</span></a> --}}
-                                            {{-- <button class="button button--tamaya prs_upcom_main_btn text-white"
-                                                data-text="Xem thêm" id="load-more">Xem thêm</button> --}}
-                                            <button class="button button--tamaya prs_upcom_main_btn text-white"
-                                                data-text="Xem thêm" id="load-more" data-page="2">Xem thêm</button>
+                        @if ($moviesShowing->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more2" data-page="2">Xem thêm</button>
 
-                                        </li>
-                                    </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     {{-- Suất chiếu đặc biệt --}}
                     <div role="tabpanel" class="tab-pane fade" id="trand">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
-                                <div class="row">
+                                <div class="row" id="movie-list3">
                                     @foreach ($moviesSpecial as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                             <div class="prs_upcom_movie_box_wrapper">
@@ -270,17 +245,22 @@
                                     </div> --}}
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="prs_animate_btn1 prs_upcom_main_wrapper">
-                                    <ul>
-                                        <li><a href="#" class="button button--tamaya prs_upcom_main_btn"
-                                                data-text="view all"><span>View All</span></a>
-                                        </li>
-                                    </ul>
+                        @if ($moviesSpecial->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more3" data-page="2">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -672,47 +652,87 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('load-more').addEventListener('click', function() {
+            document.getElementById('load-more2').addEventListener('click', function() {
                 const button = this;
                 const page = button.getAttribute('data-page');
 
-                // // Gửi yêu cầu AJAX để lấy thêm phim
                 fetch(`/api/movies?page=${page}`, {
                         method: 'GET',
-                        // headers: {
-                        //     'X-Requested-With': 'XMLHttpRequest'
-                        // }
+
                     })
                     .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
                     .then(data => {
-
+                        const movieList = document.getElementById('movie-list2');
                         // console.log(data);
 
-                        const movieList = document.getElementById('movie-list');
-
-                        console.log(data);
-
                         if (data.trim().length > 0) {
-
-                            // movieList.appendChild(data);
-                            // movieList.innerHTML += 'okokokokokkook';
                             movieList.innerHTML += data;
-                            // movieList.innerHTML +=
-                            //     '<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first"> <h1> hihi</h1> </div>';
-                            // movieList.insertAdjacentHTML('beforeend', data);
-
 
                         } else {
                             // Nếu không có phim để thêm, ẩn nút "Xem thêm"
                             button.style.display = 'none';
                         }
 
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+            document.getElementById('load-more1').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                fetch(`/api/movies1?page=${page}`, {
+                        method: 'GET',
+
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list1');
+                        // console.log(data);
+
+                        if (data.trim().length > 0) {
+                            movieList.innerHTML += data;
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
 
                         button.setAttribute('data-page', parseInt(page) + 1);
                     })
                     .catch(error => console.error('Error:', error));
 
             });
+
+            document.getElementById('load-more3').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                fetch(`/api/movies3?page=${page}`, {
+                        method: 'GET',
+
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list3');
+                        // console.log(data);
+
+                        if (data.trim().length > 0) {
+                            movieList.innerHTML += data;
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
 
 
 

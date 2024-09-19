@@ -54,4 +54,76 @@ class APIController extends Controller
         // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
         return view('client.layouts.partials.movie-list', compact('moviesShowing'))->render();
     }
+    public function loadMoreMovies1(Request $request)
+    {
+        $currentNow = now()->format('Y-m-d');
+
+        // Lấy phim theo trang
+        $moviesUpcoming = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['release_date', '>', $currentNow],
+            ['is_special', '!=', '1']
+        ])->latest('id')
+            ->paginate(8);
+
+        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
+        return view('client.layouts.partials.movie-list1', compact('moviesUpcoming'))->render();
+    }
+
+    public function loadMoreMovies3(Request $request)
+    {
+        $currentNow = now()->format('Y-m-d');
+
+        // Lấy phim theo trang
+        $moviesSpecial = Movie::where([
+            ['is_active', '1'],
+            ['is_show_home', '1'],
+            ['is_special', '1']
+        ])->latest('id')
+            ->paginate(8);
+
+        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
+        return view('client.layouts.partials.movie-list3', compact('moviesSpecial'))->render();
+    }
+
+
+
+    // public function loadMoreMovies(Request $request)
+    // {
+    //     $type = $request->input('type');
+    //     $currentNow = now()->format('Y-m-d');
+
+    //     switch ($type) {
+    //         case 'upcoming':
+    //             $movies = Movie::where([
+    //                 ['is_active', '1'],
+    //                 ['is_show_home', '1'],
+    //                 ['release_date', '>', $currentNow],
+    //                 ['is_special', '!=', '1']
+    //             ])->latest('id')->paginate(8);
+    //             break;
+    //         case 'showing':
+    //             $movies = Movie::where([
+    //                 ['is_active', '1'],
+    //                 ['is_show_home', '1'],
+    //                 ['release_date', '<=', $currentNow],
+    //                 ['end_date', '>', $currentNow],
+    //                 ['is_special', '!=', '1']
+    //             ])->latest('id')->paginate(8);
+    //             break;
+    //         case 'special':
+    //             $movies = Movie::where([
+    //                 ['is_active', '1'],
+    //                 ['is_show_home', '1'],
+    //                 ['is_special', '1']
+    //             ])->latest('id')->paginate(8);
+    //             break;
+    //         default:
+    //             $movies = collect(); // Trả về danh sách trống nếu không có loại phim
+    //             break;
+    //     }
+
+    //     return view('client.layouts.partials.movie-list', compact('movies'))->render();
+    // }
 }
