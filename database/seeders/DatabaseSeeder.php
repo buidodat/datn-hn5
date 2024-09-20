@@ -33,12 +33,13 @@ class DatabaseSeeder extends Seeder
         //3 bản ghi slideshow
         Slideshow::insert([
             [
-                'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
-            ],[
-                'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg'
-            ]
-            ,[
-                'img_thumbnail'=> 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
+            ],
+            [
+                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg'
+            ],
+            [
+                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
             ]
         ]);
 
@@ -55,26 +56,30 @@ class DatabaseSeeder extends Seeder
             'SGg9DxLFCtc'
         ];
         $booleans = [
-            true,false,false,false
+            true,
+            false,
+            false,
+            false
         ];
+
         $ratings = Movie::RATINGS;
-        for ($i=0; $i < 20 ; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $movie = DB::table('movies')->insertGetId([
                 'name' => $name = fake()->unique()->name(),
                 'slug' => Str::slug($name),
                 'category' => fake()->word,
-                'img_thumbnail' => $img_thumbnails[rand(0,3)],
+                'img_thumbnail' => $img_thumbnails[rand(0, 3)],
                 'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
-                'rating' => $ratings[rand(0,3)],
+                'rating' => $ratings[rand(0, 3)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-05-05','2024-11-09'),
-                'end_date' => fake()->dateTimeBetween('2024-11-15','2024-12-29'),
-                'trailer_url' => $url_youtubes[rand(0,2)],
+                'release_date' => fake()->dateTimeBetween('2024-10-05', '2024-11-09'),
+                'end_date' => fake()->dateTimeBetween('2024-10-15', '2024-12-29'),
+                'trailer_url' => $url_youtubes[rand(0, 2)],
                 'is_active' => true,
-                'is_hot' => $booleans[rand(0,3)],
-                'is_special' => $booleans[rand(0,3)],
+                'is_hot' => $booleans[rand(0, 3)],
+                'is_special' => $booleans[rand(0, 3)],
 
             ]);
             DB::table('movie_versions')->insert([
@@ -89,25 +94,35 @@ class DatabaseSeeder extends Seeder
 
         //4 bản ghi chi nhánh
         $branches = [
-        'Hà nội','Hồ Chí Minh','Đà Nẵng','Hải Phòng'
+            'Hà nội',
+            'Hồ Chí Minh',
+            'Đà Nẵng',
+            'Hải Phòng'
         ];
         foreach ($branches as $branch) {
             DB::table('branches')->insert([
-                'name'=>$branch
+                'name' => $branch
             ]);
         }
 
         //8 bản ghi rạp tương ứng với mỗi chi nhánh 2 rạp
         $cinemas = [
-            'Hà Đông','Mỹ Đình', 'Sài Gòn', 'Gò Vấp', 'Hải Châu','Cẩm  Lệ','Đồ Sơn','Lương Khê'
+            'Hà Đông',
+            'Mỹ Đình',
+            'Sài Gòn',
+            'Gò Vấp',
+            'Hải Châu',
+            'Cẩm  Lệ',
+            'Đồ Sơn',
+            'Lương Khê'
         ];
         $branchId = 1;
         $counter = 0;
         foreach ($cinemas as $cinema) {
             DB::table('cinemas')->insert([
                 'branch_id' => $branchId,
-                'name'=>$cinema,
-                'address'=> $cinema . ', ' . fake()->address(),
+                'name' => $cinema,
+                'address' => $cinema . ', ' . fake()->address(),
             ]);
             $counter++;
 
@@ -118,9 +133,9 @@ class DatabaseSeeder extends Seeder
 
         //3 bản ghi loại phòng
         $typeRooms = [
-            ['name'=>'2D','surcharge'=> 0],
-            ['name'=>'3D','surcharge'=> 30000],
-            ['name'=>'IMAX','surcharge'=> 20000],
+            ['name' => '2D', 'surcharge' => 0],
+            ['name' => '3D', 'surcharge' => 30000],
+            ['name' => 'IMAX', 'surcharge' => 20000],
         ];
         DB::table('type_rooms')->insert($typeRooms);
 
@@ -145,9 +160,9 @@ class DatabaseSeeder extends Seeder
 
         //3 bản ghi loại ghế
         $typeSeats = [
-            ['name'=>'Ghế Thường','price'=> 50000],
-            ['name'=>'Ghế Vip','price'=> 55000],
-            ['name'=>'Ghế Đôi','price'=> 110000],
+            ['name' => 'Ghế Thường', 'price' => 50000],
+            ['name' => 'Ghế Vip', 'price' => 55000],
+            ['name' => 'Ghế Đôi', 'price' => 110000],
         ];
         DB::table('type_seats')->insert($typeSeats);
 
@@ -185,58 +200,58 @@ class DatabaseSeeder extends Seeder
         $users = [
             [
                 'name' => 'Trương Công Lực',
-                'img_thumbnail' =>'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
-                'phone'=> '0332293871',
-                'email'=>'luctcph37171@fpt.edu.vn',
-                'password'=>Hash::make('luctcph37171@fpt.edu.vn'),
+                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'phone' => '0332293871',
+                'email' => 'luctcph37171@fpt.edu.vn',
+                'password' => Hash::make('luctcph37171@fpt.edu.vn'),
                 'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
-                'gender'=> 'Nữ',
-                'birthday'=>'2004-02-07',
-                'type'=>'admin'
+                'gender' => 'Nữ',
+                'birthday' => '2004-02-07',
+                'type' => 'admin'
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
-                'img_thumbnail' =>'',
-                'phone'=> '0975098710',
-                'email'=>'hieuhdph36384@fpt.edu.vn',
-                'password'=>Hash::make('hieuhdph36384@fpt.edu.vn'),
+                'img_thumbnail' => '',
+                'phone' => '0975098710',
+                'email' => 'hieuhdph36384@fpt.edu.vn',
+                'password' => Hash::make('hieuhdph36384@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
-                'gender'=> 'Nam',
-                'birthday'=>'2004-08-08',
-                'type'=>'admin'
+                'gender' => 'Nam',
+                'birthday' => '2004-08-08',
+                'type' => 'admin'
             ],
             [
                 'name' => 'Đặng Phú An',
-                'img_thumbnail' =>'https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG0pP-FGDHy0-uXweXmmsnNIMvtdjEJEpwgy-12MQkSnFPNmEsEvjbTG8ZosZJ4De8rsIMwzOpo8C5PJFBbfOTI&_nc_ohc=O_-7MtjY0RoQ7kNvgHCkypx&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDA4gmkPPxZSCLKPoL2oXl6VM-acUxCebUpqQ0317MFAA&oe=66EB71AD',
-                'phone'=> '0378633611',
-                'email'=>'andpph31859@fpt.edu.vn',
-                'password'=>Hash::make('andpph31859@fpt.edu.vn'),
+                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG0pP-FGDHy0-uXweXmmsnNIMvtdjEJEpwgy-12MQkSnFPNmEsEvjbTG8ZosZJ4De8rsIMwzOpo8C5PJFBbfOTI&_nc_ohc=O_-7MtjY0RoQ7kNvgHCkypx&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDA4gmkPPxZSCLKPoL2oXl6VM-acUxCebUpqQ0317MFAA&oe=66EB71AD',
+                'phone' => '0378633611',
+                'email' => 'andpph31859@fpt.edu.vn',
+                'password' => Hash::make('andpph31859@fpt.edu.vn'),
                 'address' => 'Thác bà, Yên Bái.',
-                'gender'=> 'Nữ',
-                'birthday'=>'2004-06-06',
-                'type'=>'admin'
+                'gender' => 'Nữ',
+                'birthday' => '2004-06-06',
+                'type' => 'admin'
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
-                'img_thumbnail' =>'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEAlF7r3-iAR0crNJPRswHcnbI8umQnb6Wdsjy6ZCdvpQQy4yt-mXX6TisDxnCSzyG28t67CzUVAEm42R6E2k98&_nc_ohc=hTaBFM45cmIQ7kNvgGEeQsQ&_nc_ht=scontent.fhan15-1.fna&_nc_gid=ANZhtEvUs0JriHQC6AXnQHr&oh=00_AYA2MLftOIiQ_KoccKPfxgVBow82KeMv4ftDW-9_TgNoKA&oe=66EB9551',
-                'phone'=> '0973657594',
-                'email'=>'sonnvph33874@fpt.edu.vn',
-                'password'=>Hash::make('sonnvph33874@fpt.edu.vn'),
+                'img_thumbnail' => 'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEAlF7r3-iAR0crNJPRswHcnbI8umQnb6Wdsjy6ZCdvpQQy4yt-mXX6TisDxnCSzyG28t67CzUVAEm42R6E2k98&_nc_ohc=hTaBFM45cmIQ7kNvgGEeQsQ&_nc_ht=scontent.fhan15-1.fna&_nc_gid=ANZhtEvUs0JriHQC6AXnQHr&oh=00_AYA2MLftOIiQ_KoccKPfxgVBow82KeMv4ftDW-9_TgNoKA&oe=66EB9551',
+                'phone' => '0973657594',
+                'email' => 'sonnvph33874@fpt.edu.vn',
+                'password' => Hash::make('sonnvph33874@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
-                'gender'=> 'Nam',
-                'birthday'=>'2004-11-11',
-                'type'=>'admin'
+                'gender' => 'Nam',
+                'birthday' => '2004-11-11',
+                'type' => 'admin'
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
-                'img_thumbnail' =>'https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-1/452225598_1222108569223026_3034596182689563543_n.jpg?stp=dst-jpg_s160x160&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFkL2tp4r6CfMw41hxWmmvvQn_xOwpIMg9Cf_E7CkgyD3A0v4tp7jH4tumA_mY16BYIweBTwInZHv3-ewc-Xuv1&_nc_ohc=Rb2AkaAICU4Q7kNvgGTw_W7&_nc_ht=scontent.fhan5-9.fna&_nc_gid=A11gFe0tM_BGiNtmQW9hKts&oh=00_AYCktrv7R8SZSaW_GopvP8L4DYcUTPaGcRQR2rGAN_UClg&oe=66EB6EDF',
-                'phone'=> '0965263725',
-                'email'=>'datbdph38211@fpt.edu.vn',
-                'password'=>Hash::make('datbdph38211@fpt.edu.vn'),
+                'img_thumbnail' => 'https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-1/452225598_1222108569223026_3034596182689563543_n.jpg?stp=dst-jpg_s160x160&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFkL2tp4r6CfMw41hxWmmvvQn_xOwpIMg9Cf_E7CkgyD3A0v4tp7jH4tumA_mY16BYIweBTwInZHv3-ewc-Xuv1&_nc_ohc=Rb2AkaAICU4Q7kNvgGTw_W7&_nc_ht=scontent.fhan5-9.fna&_nc_gid=A11gFe0tM_BGiNtmQW9hKts&oh=00_AYCktrv7R8SZSaW_GopvP8L4DYcUTPaGcRQR2rGAN_UClg&oe=66EB6EDF',
+                'phone' => '0965263725',
+                'email' => 'datbdph38211@fpt.edu.vn',
+                'password' => Hash::make('datbdph38211@fpt.edu.vn'),
                 'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
-                'gender'=> 'Bêdee',
-                'birthday'=>'2004-10-14',
-                'type'=>'admin'
+                'gender' => 'Bêdee',
+                'birthday' => '2004-10-14',
+                'type' => 'admin'
             ],
         ];
         User::insert($users);
@@ -278,6 +293,63 @@ class DatabaseSeeder extends Seeder
             DB::table('combos')
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
+        }
+
+        // Fake data Suất chiếu 
+        // branch , cinema , phòng, ngày, giờ 
+        // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
+        $roomCount = DB::table('rooms')->count();
+
+        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+            for ($i = 0; $i < 8; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
+                // Giả lập start_time
+                $start_time = fake()->dateTimeBetween('now', '+1 week');
+
+                // Lấy movie_version_id ngẫu nhiên và truy vấn lấy duration của phim
+                $movie_version_id = fake()->numberBetween(1, 40);
+                $movie = DB::table('movies')
+                    ->join('movie_versions', 'movies.id', '=', 'movie_versions.movie_id')
+                    ->where('movie_versions.id', $movie_version_id)
+                    ->select('movies.duration')
+                    ->first();
+
+                if ($movie) {
+                    $duration = $movie->duration; // Thời lượng phim (phút)
+                    $end_time = (clone $start_time)->modify("+{$duration} minutes")->modify('+15 minutes'); // Cộng thêm thời lượng phim và 15 phút vệ sinh
+
+                    // Kiểm tra trùng thời gian với các suất chiếu khác trong cùng phòng
+                    $existingShowtime = DB::table('showtimes')
+                        ->where('room_id', $room_id)
+                        ->where(function ($query) use ($start_time, $end_time) {
+                            // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
+                            $query->whereBetween('start_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
+                                ->orWhereBetween('end_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
+                                ->orWhere(function ($query) use ($start_time, $end_time) {
+                                    // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
+                                    $query->where('start_time', '<=', $start_time->format('H:i:s'))
+                                        ->where('end_time', '>=', $end_time->format('H:i:s'));
+                                });
+                        })
+                        ->exists();
+
+                    if (!$existingShowtime) {
+                        // Không có suất chiếu trùng, thêm mới suất chiếu
+                        DB::table('showtimes')->insert([
+                            'room_id' => $room_id,
+                            'movie_version_id' => $movie_version_id,
+                            'date' => $start_time->format('Y-m-d'),
+                            'start_time' => $start_time->format('H:i:s'),
+                            'end_time' => $end_time->format('H:i:s'),
+                            'is_active' => 1,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    } else {
+                        // Nếu có trùng thời gian, bỏ qua và tiếp tục vòng lặp
+                        continue;
+                    }
+                }
+            }
         }
     }
 }
