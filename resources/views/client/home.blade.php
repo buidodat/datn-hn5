@@ -656,7 +656,7 @@
                 const button = this;
                 const page = button.getAttribute('data-page');
 
-                fetch(`/api/movies?page=${page}`, {
+                fetch(`/movies2?page=${page}`, {
                         method: 'GET',
 
                     })
@@ -683,14 +683,14 @@
                 const button = this;
                 const page = button.getAttribute('data-page');
 
-                fetch(`/api/movies1?page=${page}`, {
+                fetch(`/movies1?page=${page}`, {
                         method: 'GET',
 
                     })
                     .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
                     .then(data => {
                         const movieList = document.getElementById('movie-list1');
-                        // console.log(data);
+                        console.log(data);
 
                         if (data.trim().length > 0) {
                             movieList.innerHTML += data;
@@ -710,7 +710,7 @@
                 const button = this;
                 const page = button.getAttribute('data-page');
 
-                fetch(`/api/movies3?page=${page}`, {
+                fetch(`/movies3?page=${page}`, {
                         method: 'GET',
 
                     })

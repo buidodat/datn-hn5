@@ -74,8 +74,8 @@ class DatabaseSeeder extends Seeder
                 'cast' => fake()->name(),
                 'rating' => $ratings[rand(0, 3)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-10-05', '2024-11-09'),
-                'end_date' => fake()->dateTimeBetween('2024-10-15', '2024-12-29'),
+                'release_date' => fake()->dateTimeBetween('2024-05-05', '2024-11-09'),
+                'end_date' => fake()->dateTimeBetween('2024-11-15', '2024-12-29'),
                 'trailer_url' => $url_youtubes[rand(0, 2)],
                 'is_active' => true,
                 'is_hot' => $booleans[rand(0, 3)],
@@ -269,19 +269,20 @@ class DatabaseSeeder extends Seeder
         // Fake data Suất chiếu 
         // branch , cinema , phòng, ngày, giờ 
         // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
+
         $roomCount = DB::table('rooms')->count();
 
         for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
-            for ($i = 0; $i < 8; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
+            for ($i = 0; $i < 10; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
                 // Giả lập start_time
                 $start_time = fake()->dateTimeBetween('now', '+1 week');
 
-                // Lấy movie_version_id ngẫu nhiên và truy vấn lấy duration của phim
+                // Lấy movie_version_id ngẫu nhiên và truy vấn lấy duration của phim, movie_id
                 $movie_version_id = fake()->numberBetween(1, 40);
                 $movie = DB::table('movies')
                     ->join('movie_versions', 'movies.id', '=', 'movie_versions.movie_id')
                     ->where('movie_versions.id', $movie_version_id)
-                    ->select('movies.duration')
+                    ->select('movies.id as movie_id', 'movies.duration')
                     ->first();
 
                 if ($movie) {
@@ -293,12 +294,12 @@ class DatabaseSeeder extends Seeder
                         ->where('room_id', $room_id)
                         ->where(function ($query) use ($start_time, $end_time) {
                             // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
-                            $query->whereBetween('start_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
-                                ->orWhereBetween('end_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
+                            $query->whereBetween('start_time', [$start_time->format('H:i'), $end_time->format('H:i')])
+                                ->orWhereBetween('end_time', [$start_time->format('H:i'), $end_time->format('H:i')])
                                 ->orWhere(function ($query) use ($start_time, $end_time) {
                                     // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
-                                    $query->where('start_time', '<=', $start_time->format('H:i:s'))
-                                        ->where('end_time', '>=', $end_time->format('H:i:s'));
+                                    $query->where('start_time', '<=', $start_time->format('H:i'))
+                                        ->where('end_time', '>=', $end_time->format('H:i'));
                                 });
                         })
                         ->exists();
@@ -308,9 +309,10 @@ class DatabaseSeeder extends Seeder
                         DB::table('showtimes')->insert([
                             'room_id' => $room_id,
                             'movie_version_id' => $movie_version_id,
+                            'movie_id' => $movie->movie_id, // Thêm movie_id
                             'date' => $start_time->format('Y-m-d'),
-                            'start_time' => $start_time->format('H:i:s'),
-                            'end_time' => $end_time->format('H:i:s'),
+                            'start_time' => $start_time->format('H:i'), // Hiển thị giờ và phút
+                            'end_time' => $end_time->format('H:i'),     // Hiển thị giờ và phút
                             'is_active' => 1,
                             'created_at' => now(),
                             'updated_at' => now(),

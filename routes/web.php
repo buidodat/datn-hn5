@@ -72,7 +72,12 @@ Route::get('introduce', function () {
 
 Auth::routes(['verify' => true]);
 // LOGIN FACEBOOK
-Route::controller(LoginFacebookController::class)->group(function(){
+Route::controller(LoginFacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
+
+Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
+
+Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
+Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
