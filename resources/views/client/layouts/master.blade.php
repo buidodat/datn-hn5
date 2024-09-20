@@ -54,6 +54,8 @@
     <!--main js file start-->
     @include('client.layouts.partials.js')
     <!--main js file end-->
+
+    @yield('scripts')
 </body>
 
 </html>
