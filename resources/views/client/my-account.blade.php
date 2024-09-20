@@ -14,23 +14,41 @@ Tài khoản của tôi
             <div class="my-account-tab">ĐIỂM BETA</div>
             <div class="my-account-tab">VOUCHER</div>
         </div>
-        <div class="my-account-upload-container">
-            <div class="my-account-image-upload-container" id="img_thumbnail" name="img_thumbnail">
-                <p>No Image</p>
+        
+        <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div class="my-account-upload-container">
+                <div class="my-account-image-upload-container" id="img_thumbnail" name="img_thumbnail">
+                    @php
+                        $url = $user->img_thumbnail;
+
+                        if (!\Str::contains($url, 'http')) {
+                            $url = Storage::url($url);
+                        }
+
+                    @endphp
+                        @if (!empty($user->img_thumbnail))
+                        <img src="{{ $url }}">
+                        @else
+                            <img src="{{ asset('theme/client/images/user-dummy-img.jpg') }}">
+                        @endif
+        
+                </div>
+                <div class="my-account-buttons">
+                     <input type="file" id="file-upload" name="img_thumbnail" accept="image/*" style="display: none;" />   
+                     <label for="img_thumbnail" class="my-account-upload-btn" id="uploadBtn">Tải ảnh lên</label>
+                </div>
+                
             </div>
-            <div class="my-account-buttons">
-                <input type="file" id="file-upload" accept="image/*" hidden />
-                <button class="my-account-upload-btn" id="uploadBtn" style="font-size: 14px;">Tải ảnh lên</button>
-                <button class="my-account-save-btn" style="font-size: 14px;">Lưu ảnh</button>
-            </div>
-        </div>
-        <form action="">
+
             <div class="my-account-form-row">
                 <div class="my-account-form-group">
                     <div class="my-account-mb-3">
                         <label for="name"><span style="color: red;">*</span>&nbsp;Họ tên</label>
                         <input type="text" class="my-account-form-control" placeholder="Họ và tên" name="name"
-                            id="name">
+                            id="name" value="{{ old('name', $user->name) }}">
                         @error("name")
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -38,8 +56,8 @@ Tài khoản của tôi
                     <div class="my-account-mb-3">
                         <label for="phone"><span style="color: red;">*</span>&nbsp;Số điện thoại</label>
                         <i class="fa fa-phone-square phone-icon"></i>
-                        <input type="text" id="phone" value="" class="my-account-form-control" name="phone"
-                            placeholder="Nhập số điện thoại của bạn">
+                        <input type="text" id="phone" class="my-account-form-control" name="phone"
+                            placeholder="Nhập số điện thoại của bạn" value="{{ old('phone', $user->phone) }}">
                         @error("phone")
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -47,7 +65,7 @@ Tài khoản của tôi
                     <div class="my-account-mb-3">
                         <label for="birthday"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
                         <i class="fa fa-calendar birthday-icon"></i>
-                        <input type="date" id="birthday" value="2004-05-14" class="my-account-form-control" name="birthday"
+                        <input type="date" id="birthday" value="{{ old('birthday', $user->birthday) }}" class="my-account-form-control" name="birthday"
                             placeholder="Ngày sinh" data-date-format="yyyy-mm-dd" />
                         @error("birthday")
                             <span class="text-danger">{{ $message }}</span>
@@ -63,28 +81,25 @@ Tài khoản của tôi
                         <label for="email"><span style="color: red;">*</span>&nbsp;Email</label>
                         <i class="fa fa-envelope email-icon"></i>
                         <input type="email" id="email" disabled class="my-account-form-control" name="email"
-                            placeholder="example@gmail.com">
-                        @error("email")
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                            placeholder="example@gmail.com" value="{{ old('email', $user->email) }}">
                     </div>
                     <div class="my-account-mb-3">
                         <label for="gender">Giới tính</label>
                         <i class="fa fa-male sex-icon"></i>
                         <div class="my-account-input-icon">
-                            <select id="gender" class="my-account-form-select" name="gender">
-                                <option value="0">Giới tính</option>
-                                <option value="1">Nam</option>
-                                <option value="2">Nữ</option>
-                                <option value="3">Khác</option>
+                            <select name="gender" id="" class="my-account-form-select">
+                                @foreach ($genders as $gender)
+                                    <option value="{{ $gender }}"
+                                        @selected($user->gender == $gender)>{{ $gender }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="my-account-mb-3">
-                        <label for="thonNgoXom">Địa chỉ</label>
+                        <label for="address">Địa chỉ</label>
                         <input type="text" class="my-account-form-control" placeholder="Số nhà, đường, ngõ xóm"
-                            name="thonNgoXom" id="thonNgoXom">
-                        <label for="thonNgoXom" class="my-account-error-message"></label>
+                            name="address" id="address" value="{{ old('address', $user->address) }}">
                     </div>
                 </div>
             </div>
@@ -101,8 +116,8 @@ Tài khoản của tôi
         {{-- <h4>Đổi mật khẩu</h4> --}}
         <form>
             <div class="my-account-mb-3">
-                <label for="password"><span style="color: red;">*</span>&nbsp;Mật khẩu cũ</label>
-                <input type="password" class="my-account-form-control" id="password" name="password">
+                <label for="password"><span style="color: red;">*</span>&nbsp;Mật khẩu hiện tại</label>
+                <input type="password" class="my-account-form-control" id="password" name="password" placeholder="Nhập mật khẩu hiện tại">
                 @error("password")
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
