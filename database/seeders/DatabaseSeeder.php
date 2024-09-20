@@ -141,22 +141,81 @@ class DatabaseSeeder extends Seeder
 
 
         // Duyệt qua các rạp và tạo phòng cho mỗi rạp
-        $cinemaCount = DB::table('cinemas')->count();
+        $cinemaCount = [1, 2];
         $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
 
-        for ($cinema_id = 1; $cinema_id <= $cinemaCount; $cinema_id++) {
-            foreach ($roomsName as $room) {
+        foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
+            foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
                 DB::table('rooms')->insert([
                     'cinema_id' => $cinema_id,
-                    'type_room_id' => fake()->numberBetween(1, 3),
-                    'name' => $room,
-                    'capacity' => fake()->randomElement([130, 150, 170]),
+                    'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
+                    'name' => $room, // Tên phòng
+                    'capacity' => fake()->randomElement([130, 150, 170]), // Sức chứa ngẫu nhiên
                     'is_active' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
         }
+
+
+        // Fake data Suất chiếu 
+        // branch , cinema , phòng, ngày, giờ 
+        // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
+        $roomCount = [1,2,3,4];
+
+        foreach ($roomCount as $room_id) {
+            for ($i = 0; $i < 10; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
+                // Giả lập start_time
+                $start_time = fake()->dateTimeBetween('now', '+1 week');
+
+                // Lấy movie_version_id ngẫu nhiên và truy vấn lấy duration của phim
+                $movie_version_id = fake()->numberBetween(1, 40);
+                $movie = DB::table('movies')
+                    ->join('movie_versions', 'movies.id', '=', 'movie_versions.movie_id')
+                    ->where('movie_versions.id', $movie_version_id)
+                    ->select('movies.duration')
+                    ->first();
+
+                if ($movie) {
+                    $duration = $movie->duration; // Thời lượng phim (phút)
+                    $end_time = (clone $start_time)->modify("+{$duration} minutes")->modify('+15 minutes'); // Cộng thêm thời lượng phim và 15 phút vệ sinh
+
+                    // Kiểm tra trùng thời gian với các suất chiếu khác trong cùng phòng
+                    $existingShowtime = DB::table('showtimes')
+                        ->where('room_id', $room_id)
+                        ->where(function ($query) use ($start_time, $end_time) {
+                            // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
+                            $query->whereBetween('start_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
+                                ->orWhereBetween('end_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
+                                ->orWhere(function ($query) use ($start_time, $end_time) {
+                                    // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
+                                    $query->where('start_time', '<=', $start_time->format('H:i:s'))
+                                        ->where('end_time', '>=', $end_time->format('H:i:s'));
+                                });
+                        })
+                        ->exists();
+
+                    if (!$existingShowtime) {
+                        // Không có suất chiếu trùng, thêm mới suất chiếu
+                        DB::table('showtimes')->insert([
+                            'room_id' => $room_id,
+                            'movie_version_id' => $movie_version_id,
+                            'date' => $start_time->format('Y-m-d'),
+                            'start_time' => $start_time->format('H:i:s'),
+                            'end_time' => $end_time->format('H:i:s'),
+                            'is_active' => 1,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    } else {
+                        // Nếu có trùng thời gian, bỏ qua và tiếp tục vòng lặp
+                        continue;
+                    }
+                }
+            }
+        }
+
 
         //3 bản ghi loại ghế
         $typeSeats = [
@@ -194,6 +253,25 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        // Lấy số lượng ghế và suất chiếu
+        $seatCount = DB::table('seats')->count();
+        $showtimeCount = DB::table('showtimes')->count();
+
+        for ($seat_id = 1; $seat_id <= $seatCount; $seat_id++) {
+            for ($showtime_id = 1; $showtime_id <= $showtimeCount; $showtime_id++) {
+                
+                // Thêm mới dữ liệu vào bảng seat_showtimes
+                DB::table('seat_showtimes')->insert([
+                    'seat_id' => $seat_id,
+                    'showtime_id' => $showtime_id,
+                    'status' => 'Trống',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
 
 
         //tạo 5 bản ghỉ user type admin
@@ -295,61 +373,6 @@ class DatabaseSeeder extends Seeder
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
 
-        // Fake data Suất chiếu 
-        // branch , cinema , phòng, ngày, giờ 
-        // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
-        $roomCount = DB::table('rooms')->count();
-
-        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
-            for ($i = 0; $i < 8; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
-                // Giả lập start_time
-                $start_time = fake()->dateTimeBetween('now', '+1 week');
-
-                // Lấy movie_version_id ngẫu nhiên và truy vấn lấy duration của phim
-                $movie_version_id = fake()->numberBetween(1, 40);
-                $movie = DB::table('movies')
-                    ->join('movie_versions', 'movies.id', '=', 'movie_versions.movie_id')
-                    ->where('movie_versions.id', $movie_version_id)
-                    ->select('movies.duration')
-                    ->first();
-
-                if ($movie) {
-                    $duration = $movie->duration; // Thời lượng phim (phút)
-                    $end_time = (clone $start_time)->modify("+{$duration} minutes")->modify('+15 minutes'); // Cộng thêm thời lượng phim và 15 phút vệ sinh
-
-                    // Kiểm tra trùng thời gian với các suất chiếu khác trong cùng phòng
-                    $existingShowtime = DB::table('showtimes')
-                        ->where('room_id', $room_id)
-                        ->where(function ($query) use ($start_time, $end_time) {
-                            // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
-                            $query->whereBetween('start_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
-                                ->orWhereBetween('end_time', [$start_time->format('H:i:s'), $end_time->format('H:i:s')])
-                                ->orWhere(function ($query) use ($start_time, $end_time) {
-                                    // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
-                                    $query->where('start_time', '<=', $start_time->format('H:i:s'))
-                                        ->where('end_time', '>=', $end_time->format('H:i:s'));
-                                });
-                        })
-                        ->exists();
-
-                    if (!$existingShowtime) {
-                        // Không có suất chiếu trùng, thêm mới suất chiếu
-                        DB::table('showtimes')->insert([
-                            'room_id' => $room_id,
-                            'movie_version_id' => $movie_version_id,
-                            'date' => $start_time->format('Y-m-d'),
-                            'start_time' => $start_time->format('H:i:s'),
-                            'end_time' => $end_time->format('H:i:s'),
-                            'is_active' => 1,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
-                    } else {
-                        // Nếu có trùng thời gian, bỏ qua và tiếp tục vòng lặp
-                        continue;
-                    }
-                }
-            }
-        }
+        
     }
 }
