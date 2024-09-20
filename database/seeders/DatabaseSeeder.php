@@ -69,8 +69,8 @@ class DatabaseSeeder extends Seeder
                 'cast' => fake()->name(),
                 'rating' => $ratings[rand(0,3)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-10-05','2024-11-09'),
-                'end_date' => fake()->dateTimeBetween('2024-10-15','2024-12-29'),
+                'release_date' => fake()->dateTimeBetween('2024-05-05','2024-11-09'),
+                'end_date' => fake()->dateTimeBetween('2024-11-15','2024-12-29'),
                 'trailer_url' => $url_youtubes[rand(0,2)],
                 'is_active' => true,
                 'is_hot' => $booleans[rand(0,3)],
@@ -149,22 +149,26 @@ class DatabaseSeeder extends Seeder
             ['name'=>'Ghế Vip','price'=> 55000],
             ['name'=>'Ghế Đôi','price'=> 110000],
         ];
-
         DB::table('type_seats')->insert($typeSeats);
 
         // Lấy số lượng rạp và phòng đã có
         $roomCount = DB::table('rooms')->count();
 
-        // Các loại ghế có sẵn
-        $typeSeats = [1, 2]; // 1: Ghế Thường, 2: Ghế Vip
-
         // Tạo dữ liệu cho bảng seats
         for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
             for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
                 for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+                    
+                    // Xác định loại ghế dựa trên hàng (y)
+                    if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
+                        $type_seat_id = 1; // Ghế thường
+                    } else {
+                        $type_seat_id = 2; // Ghế VIP
+                    }
+
                     DB::table('seats')->insert([
                         'room_id' => $room_id,
-                        'type_seat_id' => fake()->randomElement($typeSeats),
+                        'type_seat_id' => $type_seat_id,
                         'coordinates_x' => $x,
                         'coordinates_y' => $y,
                         'name' => $y . $x,
@@ -175,6 +179,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
 
         //tạo 5 bản ghỉ user type admin
         $users = [
