@@ -24,7 +24,6 @@ class StoreShowtimeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //Check lịch chiếu trùng lặp trong cùng 1 phòng, cùng 1 ngày 
             'room_id' => [
                 'required',
                 'exists:rooms,id',
@@ -37,11 +36,12 @@ class StoreShowtimeRequest extends FormRequest
             'cinema_id' => 'required',
             'branch_id' => 'required',
             'movie_version_id' => 'required|exists:movie_versions,id',
-            'date' => 'required|date|after_or_equal:today',   //ngăn chặn chọn ngày trog quá khứ
+            'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i|before:end_time',
             'end_time' => 'required|date_format:H:i|after:start_time',
         ];
     }
+
 
     public function messages()
     {
