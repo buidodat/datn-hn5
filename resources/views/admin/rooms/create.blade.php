@@ -176,12 +176,12 @@
 
                         <style>
                             .light-orange {
-                                background-color: #fff5e2;
+                                background-color: #fcf5e6;
                                 /* Màu cam nhạt */
                             }
 
                             .light-blue {
-                                background-color: #f7fbff;
+                                background-color: #fcfdff;
                                 /* Màu xanh da trời nhạt */
                             }
 
@@ -223,8 +223,8 @@
                                                     <div class="box-item-seat-selected">
                                                         <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
                                                             width="100%">
-                                                        <input type="hidden" name="seat_info[]"
-                                                            value='{"x": {{ $col + 1 }}, "y": "{{ chr(65 + $row) }}", "type": regular}'>
+                                                        <input type="hidden" name="seatJsons[]"
+                                                            value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
                                                     </div>
                                                 </td>
                                                 {{-- kết thúchàng ghế thường --}}
@@ -234,8 +234,8 @@
                                                     <div class="box-item-seat-selected">
                                                         <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
                                                             width="100%">
-                                                        <input type="hidden" name="seat_info[]"
-                                                            value='{"x": {{ $col + 1 }}, "y": "{{ chr(65 + $row) }}", "type": "vip"}'>
+                                                        <input type="hidden" name="seatJsons[]"
+                                                            value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
                                                     </div>
                                                 </td>
                                                 {{-- kết thúc hàng ghế vip --}}
@@ -250,7 +250,6 @@
                                 @endfor
                             </tbody>
                         </table>
-
 
                         <script>
                             document.querySelectorAll('.box-item-seat').forEach(function(seat) {
@@ -279,6 +278,7 @@
 
 
 
+
                     </div>
                 </div>
             </div>
@@ -289,33 +289,33 @@
                     </div><!-- end card header -->
                     <div class="card-body ">
 
-                            <div class="row mb-3" >
-                                <div class="col-lg-8 col-md-8 col-8">
-                                    <label  class="form-label">Hàng ghế thường</label>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-4 ">
-                                    <div class='box-item border light-orange'>
-                                    </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-8 col-md-8 col-8">
+                                <label class="form-label">Hàng ghế thường</label>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-4 ">
+                                <div class='box-item border light-orange'>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-8 col-md-8 col-8">
-                                    <label  class="form-label">Hàng ghế vip</label>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-4">
-                                    <div class='box-item border  light-blue'>
-                                    </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-8 col-md-8 col-8">
+                                <label class="form-label">Hàng ghế vip</label>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-4">
+                                <div class='box-item border  light-blue'>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-8 col-md-8 col-8">
-                                    <label  class="form-label">Hàng ghế đôi</label>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-4">
-                                    <div class='box-item border  light-pink'>
-                                    </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-8 col-md-8 col-8">
+                                <label class="form-label">Hàng ghế đôi</label>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-4">
+                                <div class='box-item border  light-pink'>
                                 </div>
                             </div>
+                        </div>
 
                     </div>
                 </div>
@@ -341,6 +341,10 @@
 
 @section('style-libs')
     <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
+@endsection
+
+
+@section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -382,4 +386,5 @@
             }
         });
     </script>
+
 @endsection

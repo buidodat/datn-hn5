@@ -69,6 +69,11 @@
     -moz-user-select: none; /* Ngăn chọn văn bản trên Firefox */
     -ms-user-select: none; /* Ngăn chọn văn bản trên Internet Explorer/Edge */
 
+
+
+}
+.table-chart-chair img {
+    -webkit-user-drag: none;
 }
 
 .box-item-seat-selected {
