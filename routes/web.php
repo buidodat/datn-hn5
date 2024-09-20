@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
+use App\Http\Controllers\Client\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,9 +44,8 @@ Route::get('register', function () {
     return view('client.register');
 })->name('register');
 
-Route::get('my-account', function () {
-    return view('client.my-account');
-})->name('my-account');
+Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
+Route::put('/my-account/update', [UserController::class,'update'])->name('my-account.update');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 

@@ -158,3 +158,67 @@
     </div>
 
 </div>
+
+
+
+
+
+
+
+
+code có style màu màu cho ghế đôi
+
+
+<style>
+    .light-orange {
+        background-color: #ffd997;
+        /* Màu cam nhạt */
+    }
+
+    .light-blue {
+        background-color: #d0e7f9;
+        /* Màu xanh da trời nhạt */
+    }
+
+    .light-pink {
+        background-color: #f9d0d0;
+        /* Màu hồng nhạt */
+    }
+</style>
+
+<table class="table-none align-middle mx-auto text-center">
+    <thead>
+        <tr>
+            <th></th> <!-- Ô trống góc trên bên trái -->
+            @for ($col = 0; $col < App\Models\Room::MAX_COL; $col++)
+                <th class="box-item">
+                    {{-- thao tác 1 loạt trên 1 cột --}}
+                    <input type="checkbox" name="col_checkbox_{{ $col + 1 }}" value="{{ $col + 1 }}">
+                </th>
+            @endfor
+            <th></th> <!-- Ô trống góc trên bên trái -->
+        </tr>
+    </thead>
+    <tbody>
+        @for ($row = 0; $row < App\Models\Room::MAX_ROW; $row++)
+            <tr>
+                {{-- cột hàng ghế A,B,C --}}
+                <td class="box-item">
+                    {{ chr(65 + $row) }}
+                </td>
+                @for ($col = 0; $col < App\Models\Room::MAX_COL; $col++)
+                    <td class="box-item border-1
+                        {{ $row < App\Models\Room::ROW_SEAT_REGULAR ? 'light-orange' : ($row >= App\Models\Room::MAX_ROW - 2 ? 'light-pink' : 'light-blue') }}">
+                        {{ chr(65 + $row) }}{{ $col + 1 }}
+                        <input type="hidden" name="hi"
+                            value="{{ $row < App\Models\Room::ROW_SEAT_REGULAR ? 'cam' : ($row >= App\Models\Room::MAX_ROW - 2 ? 'hong' : 'xanh') }}">
+                    </td>
+                @endfor
+                <td class="box-item">
+                    {{-- thao tác 1 loạt trên 1 hàng --}}
+                    <input type="checkbox" name="row_checkbox_{{ $row + 1 }}" value="{{ chr(65 + $row) }}">
+                </td>
+            </tr>
+        @endfor
+    </tbody>
+</table>

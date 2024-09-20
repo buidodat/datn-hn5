@@ -35,7 +35,7 @@
                                     <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li>
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                     <li><a href="{{ route('register') }}">Register</a></li>
-                                    <li><a href="{{ route('my-account') }}">My Account</a></li>
+                                    {{-- <li><a href="{{ route('my-account') }}">My Account</a></li> --}}
                                     <li><a href="{{ route('forgot-password') }}">Forgot Password</a></li>
                                     <li><a href="{{ route('contact') }}">Contact</a></li>
                                     <li><a href="{{ route('introduce') }}">Introduce</a></li>
@@ -91,6 +91,7 @@
                                             document.getElementById('logout-form').submit();">
                                         {{ __('Đăng Xuất') }}
                                     </a>
+                                    <a href="{{route('my-account.edit')}}">Tài khoản của tôi</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

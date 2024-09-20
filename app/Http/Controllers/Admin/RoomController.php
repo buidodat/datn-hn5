@@ -7,8 +7,10 @@ use App\Http\Requests\Admin\StoreRoomRequest;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Room;
+use App\Models\Seat;
 use App\Models\TypeRoom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
@@ -24,8 +26,8 @@ class RoomController extends Controller
     // }
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom','cinema'])->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__ ,compact('rooms'));
+        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }
 
     /**x
@@ -34,10 +36,10 @@ class RoomController extends Controller
     public function create()
     {
         $capacities = Room::CAPACITIESS;
-        $branches = Branch::where('is_active',1)->pluck('name','id')->all();
-        $cinemas = Cinema::pluck('name','id')->all();
-        $typeRooms = TypeRoom::pluck('name','id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','capacities','branches','cinemas']) );
+        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        $cinemas = Cinema::pluck('name', 'id')->all();
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'branches', 'cinemas']));
     }
 
     /**
@@ -45,40 +47,63 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
-        try {
+
+        // try {
+        DB::transaction(function () use ($request) {
+
             $dataRoom = [
                 'cinema_id' => $request->cinema_id,
-                'type_room_id'=> $request->type_room_id,
+                'type_room_id' => $request->type_room_id,
                 'name' => $request->name,
                 'capacity' => $request->capacity,
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
-            Room::create($dataRoom);
+            $room =  Room::create($dataRoom);
 
-            return redirect()
-                ->route('admin.rooms.index')
-                ->with('success', 'Thêm mới thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
-        }
+
+            $rowSeatRegular = $this->convertNumberToLetters(4);
+            foreach ($request->seatJsons as $seat) { // duyệt mảng json
+
+                $seat = json_decode($seat, true); // chuyển đổi json thành mẩng
+
+                $seat['room_id'] = $room->id;
+
+                if (in_array($seat['coordinates_y'], $rowSeatRegular)) { // logic gắn thêm loại ghế vào $seat
+                    $seat['type_seat_id'] = 1;
+                } else {
+                    $seat['type_seat_id'] = 2;
+                }
+
+                Seat::create($seat);
+            }
+        });
+
+
+        return redirect()
+            ->route('admin.rooms.index')
+            ->with('success', 'Thêm mới thành công!');
+        // } catch (\Throwable $th) {
+        //     return back()->with('error', $th->getMessage());
+        // }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Room $room)
     {
-        //
+        $seatRegulars = Seat::where(['room_id' => $room->id, 'type_seat_id' => 1])->get();
+        $seatVips = Seat::where(['room_id' => $room->id, 'type_seat_id' => 2])->get();
+        $capacities = Room::CAPACITIESS;
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room', 'seatRegulars', 'seatVips']));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(Room $room) {}
 
     /**
      * Update the specified resource in storage.
@@ -94,5 +119,16 @@ class RoomController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function convertNumberToLetters($number = Room::ROW_SEAT_REGULAR)
+    { // hàm chuyển đổi số thành mangr chữ câis
+        $letters = [];
+
+        for ($i = 0; $i < $number; $i++) {
+            $letters[] = chr(65 + $i); // 65 là mã ASCII của chữ cái 'A'
+        }
+
+        return $letters;
     }
 }
