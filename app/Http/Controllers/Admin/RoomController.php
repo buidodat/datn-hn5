@@ -34,10 +34,11 @@ class RoomController extends Controller
     public function create()
     {
         $capacities = Room::CAPACITIESS;
+        $rows = Room::MAX_ROW ;
         $branches = Branch::where('is_active',1)->pluck('name','id')->all();
         $cinemas = Cinema::pluck('name','id')->all();
         $typeRooms = TypeRoom::pluck('name','id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','capacities','branches','cinemas']) );
+        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','capacities','branches','cinemas','rows']) );
     }
 
     /**
