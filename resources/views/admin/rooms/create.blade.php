@@ -285,9 +285,37 @@
             <div class="col-lg-3">
                 <div class="card ">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Chú thích</h4>
                     </div><!-- end card header -->
                     <div class="card-body ">
+
+                            <div class="row mb-3" >
+                                <div class="col-lg-8 col-md-8 col-8">
+                                    <label  class="form-label">Hàng ghế thường</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-4 ">
+                                    <div class='box-item border light-orange'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-lg-8 col-md-8 col-8">
+                                    <label  class="form-label">Hàng ghế vip</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-4">
+                                    <div class='box-item border  light-blue'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-lg-8 col-md-8 col-8">
+                                    <label  class="form-label">Hàng ghế đôi</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-4">
+                                    <div class='box-item border  light-pink'>
+                                    </div>
+                                </div>
+                            </div>
 
                     </div>
                 </div>
