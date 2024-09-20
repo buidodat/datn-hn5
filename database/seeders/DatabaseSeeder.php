@@ -189,7 +189,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
-                'img_thumbnail' =>'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEAlF7r3-iAR0crNJPRswHcnbI8umQnb6Wdsjy6ZCdvpQQy4yt-mXX6TisDxnCSzyG28t67CzUVAEm42R6E2k98&_nc_ohc=hTaBFM45cmIQ7kNvgGEeQsQ&_nc_ht=scontent.fhan15-1.fna&_nc_gid=ANZhtEvUs0JriHQC6AXnQHr&oh=00_AYA2MLftOIiQ_KoccKPfxgVBow82KeMv4ftDW-9_TgNoKA&oe=66EB9551',
+                'img_thumbnail' =>'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEAlF7r3-iAR0crNJPRswHcnbI8umQnb6Wdsjy6ZCdvpQQy4yt-mXX6TisDxnCSzyG28t67CzUVAEm42R6E2k98&_nc_ohc=Qk1YWJ8PlQcQ7kNvgE2_TiU&_nc_ht=scontent.fhan15-1.fna&_nc_gid=AgWwivNA4s8Jztj4i--qQgS&oh=00_AYCadDBYztZNGM_JXjY2K59iDYOUgjjeoZI9RZ-DtOtepw&oe=66F34611',
                 'phone'=> '0973657594',
                 'email'=>'sonnvph33874@fpt.edu.vn',
                 'password'=>Hash::make('sonnvph33874@fpt.edu.vn'),

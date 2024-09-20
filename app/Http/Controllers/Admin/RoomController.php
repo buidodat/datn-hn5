@@ -26,8 +26,8 @@ class RoomController extends Controller
     // }
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom','cinema'])->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__ ,compact('rooms'));
+        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }
 
     /**x
@@ -36,10 +36,10 @@ class RoomController extends Controller
     public function create()
     {
         $capacities = Room::CAPACITIESS;
-        $branches = Branch::where('is_active',1)->pluck('name','id')->all();
-        $cinemas = Cinema::pluck('name','id')->all();
-        $typeRooms = TypeRoom::pluck('name','id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeRooms','capacities','branches','cinemas']) );
+        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        $cinemas = Cinema::pluck('name', 'id')->all();
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'branches', 'cinemas']));
     }
 
     /**
@@ -49,43 +49,40 @@ class RoomController extends Controller
     {
 
         // try {
-            DB::transaction(function () use($request) {
+        DB::transaction(function () use ($request) {
 
-                $dataRoom = [
-                    'cinema_id' => $request->cinema_id,
-                    'type_room_id'=> $request->type_room_id,
-                    'name' => $request->name,
-                    'capacity' => $request->capacity,
-                    'is_active' => isset($request->is_active) ? 1 : 0,
-                ];
+            $dataRoom = [
+                'cinema_id' => $request->cinema_id,
+                'type_room_id' => $request->type_room_id,
+                'name' => $request->name,
+                'capacity' => $request->capacity,
+                'is_active' => isset($request->is_active) ? 1 : 0,
+            ];
 
-                $room =  Room::create($dataRoom);
+            $room =  Room::create($dataRoom);
 
 
-                $rowSeatRegular = $this->convertNumberToLetters(3);
-                foreach ($request->seatJsons as $seat) { // duyệt mảng json
+            $rowSeatRegular = $this->convertNumberToLetters(4);
+            foreach ($request->seatJsons as $seat) { // duyệt mảng json
 
-                    $seat = json_decode($seat, true); // chuyển đổi json thành mẩng
+                $seat = json_decode($seat, true); // chuyển đổi json thành mẩng
 
-                    $seat['room_id'] = 1;
+                $seat['room_id'] = $room->id;
 
-                    if (in_array($seat['coordinates_y'], $rowSeatRegular) ) { // logic gắn thêm loại ghế vào $seat
-                        $seat['type_seat_id'] = 1;
-                    } else {
-                        $seat['type_seat_id'] = 2;
-                    }
-
-                    Seat::create($seat);
+                if (in_array($seat['coordinates_y'], $rowSeatRegular)) { // logic gắn thêm loại ghế vào $seat
+                    $seat['type_seat_id'] = 1;
+                } else {
+                    $seat['type_seat_id'] = 2;
                 }
 
+                Seat::create($seat);
+            }
+        });
 
 
-            });
-
-
-            return redirect()
-                ->route('admin.rooms.index')
-                ->with('success', 'Thêm mới thành công!');
+        return redirect()
+            ->route('admin.rooms.index')
+            ->with('success', 'Thêm mới thành công!');
         // } catch (\Throwable $th) {
         //     return back()->with('error', $th->getMessage());
         // }
@@ -94,18 +91,19 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Room $room)
     {
-        //
+        $seatRegulars = Seat::where(['room_id' => $room->id, 'type_seat_id' => 1])->get();
+        $seatVips = Seat::where(['room_id' => $room->id, 'type_seat_id' => 2])->get();
+        $capacities = Room::CAPACITIESS;
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room', 'seatRegulars', 'seatVips']));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(Room $room) {}
 
     /**
      * Update the specified resource in storage.
@@ -123,7 +121,8 @@ class RoomController extends Controller
         //
     }
 
-    public function convertNumberToLetters($number = Room::ROW_SEAT_REGULAR) { // hàm chuyển đổi số thành mangr chữ câis
+    public function convertNumberToLetters($number = Room::ROW_SEAT_REGULAR)
+    { // hàm chuyển đổi số thành mangr chữ câis
         $letters = [];
 
         for ($i = 0; $i < $number; $i++) {
