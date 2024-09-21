@@ -8,7 +8,7 @@
     margin: 20px 0;
     border-radius: 10px;
     position: relative;
-    color: #000;
+    color:#6c6c6c;
     text-align: center;
     line-height: 30px;
     -webkit-user-select: none;
@@ -16,6 +16,12 @@
     -ms-user-select: none;
     user-select: none;
 
+}
+.card-seat{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .seat-item  {
@@ -25,6 +31,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    width: 100%;
   }
 
   .seat-item img {
@@ -36,8 +43,9 @@
     top: 40%; /* Căn giữa theo chiều dọc */
     left: 50%; /* Căn giữa theo chiều ngang */
     transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
-    font-size: 10px; /* Kích thước của văn bản */
+    font-size: 9px; /* Kích thước của văn bản */
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+    color:#6c6c6c
   }
   .seat-row {
     -webkit-user-select: none;
@@ -72,7 +80,7 @@
 
 
 }
-.table-chart-chair img {
+.box-item-seat-selected img {
     -webkit-user-drag: none;
 }
 

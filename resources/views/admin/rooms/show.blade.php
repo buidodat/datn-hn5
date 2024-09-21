@@ -34,7 +34,7 @@
         </div>
 
         <!-- thông tin -->
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-md-12">
                 @if (session()->has('error'))
                     <div class="alert alert-danger m-3">
@@ -64,14 +64,14 @@
                                                 value="{{ $room->cinema->branch->name }}" disabled>
                                         </div>
 
-                                        <div class="col-md-8 mb-3">
+                                        <div class="col-md-4 mb-3">
 
                                             <label for="cinema" class="form-label">Rạp chiếu:</label>
                                             <input type="text" class="form-control" value="{{ $room->cinema->name }}"
                                                 disabled>
 
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
 
                                             <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
                                             <select name="type_room_id" id="" class="form-select" disabled>
@@ -83,17 +83,7 @@
 
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
 
-                                            <label for="surcharge" class="form-label ">Sức chứa:</label>
-                                            <select name="capacity" id="" class="form-select" disabled>
-                                                @foreach ($capacities as $capacity)
-                                                    <option value="{{ $capacity }}" @selected($room->capacity == $capacity)>
-                                                        {{ $capacity }} chỗ ngồi</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
 
                                     </div>
                                 </div>
@@ -139,7 +129,7 @@
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
                     </div><!-- end card header -->
-                    <div class="card-body ">
+                    <div class="card-body mb-3">
 
 
                         <style>
@@ -163,6 +153,9 @@
                             $maxRow = App\Models\Room::MAX_ROW;
                             $rowSeatRegular = App\Models\Room::ROW_SEAT_REGULAR;
                         @endphp
+                        <div class="srceen w-75 mx-auto mb-5">
+                            Màn Hình Chiếu
+                        </div>
                         <table class="table-chart-chair table-none align-middle mx-auto text-center">
 
                             <tbody>
@@ -173,66 +166,32 @@
                                             {{ chr(65 + $row) }}
                                         </td>
                                         @for ($col = 0; $col < $maxCol; $col++)
-                                            @if ($row < $rowSeatRegular)
-                                                {{-- bắt đầu hàng ghế thường --}}
-                                                <td class="box-item box-item-seat border-1 light-orange">
+                                            <td class="box-item box-item-seat ">
 
-                                                    @foreach($seatRegulars as $seat)
-                                                        @if ($seat->coordinates_x  === $col +1  && $seat->coordinates_y  === chr(65 + $row )    )
-                                                            <div class="box-item-seat-selected">
-
-                                                                <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
-                                                                    width="100%">
-
+                                                @foreach ($seats as $seat)
+                                                    @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                        @if ($seat->type_seat_id == 1)
+                                                            <div class="seat-item">
+                                                                <img src="{{ asset('svg/seat-regular.svg') }}"
+                                                                    class='seat' width="100%">
+                                                                <span class="seat-label">{{ $seat->name }}</span>
                                                             </div>
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                {{-- kết thúchàng ghế thường --}}
-                                            @else
-                                                {{-- bắt đầu hàng ghế vip --}}
-                                                <td class=" box-item box-item-seat border-1 light-blue">
-                                                    @foreach($seatVips as $seat)
-                                                        @if ($seat->coordinates_x  == $col +1  && $seat->coordinates_y  == chr(65 + $row )    )
-                                        
-                                                            <div class="box-item-seat-selected">
-
+                                                        @else
+                                                            <div class="seat-item">
                                                                 <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
                                                                     width="100%">
-
+                                                                <span class="seat-label">{{ $seat->name }}</span>
                                                             </div>
                                                         @endif
-                                                    @endforeach
-                                                </td>
-                                                {{-- kết thúc hàng ghế vip --}}
-                                            @endif
+                                                    @endif
+                                                @endforeach
+                                            </td>
                                         @endfor
 
                                     </tr>
                                 @endfor
                             </tbody>
                         </table>
-
-                        {{-- <script>
-                            document.querySelectorAll('.box-item-seat').forEach(function(seat) {
-                                // Lưu trữ nội dung ban đầu của .box-item-seat-selected
-                                let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
-
-                                seat.addEventListener('click', function() {
-                                    let seatSelected = seat.querySelector('.box-item-seat-selected');
-
-                                    // Kiểm tra nếu div đang chứa nội dung ban đầu
-                                    if (seatSelected.innerHTML.trim() === originalContent.trim()) {
-                                        // Nếu là nội dung ban đầu, thay đổi thành hình ảnh mới
-                                        seatSelected.innerHTML =
-                                            `<img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="70%" >`;
-                                    } else {
-                                        // Nếu không phải nội dung ban đầu, khôi phục lại nội dung ban đầu
-                                        seatSelected.innerHTML = originalContent;
-                                    }
-                                });
-                            });
-                        </script> --}}
 
 
 
@@ -245,39 +204,30 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="card ">
+                <div class="card card-seat ">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Chú thích</h4>
                     </div><!-- end card header -->
                     <div class="card-body ">
+                        <table class="table table-borderless   align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Ghế thường</td>
+                                    <td class="text-center" > <img src="{{ asset('svg/seat-regular.svg') }}" height="35px"></td>
+                                </tr>
+                                <tr>
+                                    <td>Ghế vip</td>
+                                    <td class="text-center" > <img src="{{ asset('svg/seat-vip.svg') }}" height="35px"></td>
+                                </tr>
+                                <tr>
+                                    <td>Ghế đôi</td>
+                                    <td class="text-center" > <img src="{{ asset('svg/seat-double.svg') }}" height="35px"></td>
+                                <tr class="table-active">
+                                    <th colspan='2' class="text-center">Tổng {{ $seats->count() }} chỗ ngồi</th>
 
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế thường</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4 ">
-                                <div class='box-item border light-orange'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế vip</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4">
-                                <div class='box-item border  light-blue'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế đôi</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4">
-                                <div class='box-item border  light-pink'>
-                                </div>
-                            </div>
-                        </div>
+                                </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
