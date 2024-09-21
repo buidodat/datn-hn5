@@ -84,3 +84,5 @@ Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 
 Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
 Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
+Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+
