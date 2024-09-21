@@ -49,6 +49,8 @@ Route::put('/my-account/update', [UserController::class,'update'])->name('my-acc
 Route::put('my-account/changePassword', [UserController::class,'changePassword'])->name('my-account.changePassword');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
+route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
 
 
