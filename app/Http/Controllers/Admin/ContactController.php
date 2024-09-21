@@ -29,7 +29,8 @@ class ContactController extends Controller
 
      public function create()
      {
-        return view(self::PATH_VIEW . __FUNCTION__ );
+        $status = Contact::STATUS;
+        return view(self::PATH_VIEW . __FUNCTION__, compact('status'));
      }
 
 
@@ -56,12 +57,27 @@ class ContactController extends Controller
         //
     }
 
+    public function edit(Contact $contact){
+        $status = Contact::STATUS;
+        return view(self::PATH_VIEW . __FUNCTION__, compact('contact','status'));
+    }
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Contact $contact)
     {
-        //
+        try{
+            $data = $request->all();
+
+            $contact->update($data);
+            
+            return redirect()
+                ->back()
+                ->with('success', 'Cập nhật thành công');
+        }catch(\Throwable $th){
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**

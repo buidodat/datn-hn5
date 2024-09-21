@@ -1,22 +1,22 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới liên hệ
+    Sửa trạng thái liên hệ
 @endsection
 
 @section('content')
-    <form action="{{route('admin.contacts.store')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('admin.contacts.update', $contact)}}" method="post" enctype="multipart/form-data">
         @csrf
-
+        @method('PUT')
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Thêm mới liên hệ</h4>
+                    <h4 class="mb-sm-0">Sửa trạng thái liên hệ</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.contacts.index') }}">Forms</a></li>
-                            <li class="breadcrumb-item active">Thêm mới</li>
+                            <li class="breadcrumb-item active">Sửa trạng thái liên hệ</li>
                         </ol>
                     </div>
 
@@ -51,38 +51,23 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="user_contact" class="form-label">Họ và tên:</label>
-                                            <input type="text" class="form-control" id="user_contact" name="user_contact" placeholder="Nhập họ và tên">
-                                            @error("user_contact")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="text" class="form-control" id="user_contact" name="user_contact" placeholder="Nhập họ và tên" value="{{$contact->user_contact}}" disabled>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="email" class="form-label">Email:</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email">
-                                            @error("email")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" value="{{$contact->email}}" disabled>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="phone" class="form-label">Số điện thoại:</label>
-                                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại">
-                                            @error("phone")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" value="{{$contact->phone}}" disabled>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="title" class="form-label">Tiêu đề:</label>
-                                            <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề">
-                                            @error("title")
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề" value="{{$contact->title}}" disabled>    
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="content" class="form-label">Nội dung:</label>
-                                            <textarea class="form-control " rows="3" id="content" name="content" placeholder="Nhập nội dung"></textarea>
-                                            @error('content')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <textarea class="form-control" rows="3" id="content" name="content" placeholder="Nhập nội dung" value="{{$contact->content}}" disabled>{{ $contact->content }}</textarea>
                                         </div>
                                     </div>
 
@@ -105,7 +90,7 @@
                                             <label for="status" class="form-label">Trạng thái:</label>
                                             <select name="status" id="" class="form-select">
                                                 @foreach ($status as $key => $value)
-                                                    <option value="{{ $key }}" @selected(old('status') == $key )>{{ $value }}</option>
+                                                    <option value="{{ $key }}" @selected(old('status', $contact->status) == $key)>{{ $value }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -123,7 +108,7 @@
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <a href="{{ route('admin.contacts.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
                     </div>
                 </div>
             </div>

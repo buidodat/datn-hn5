@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('title');
             $table->text('content');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
