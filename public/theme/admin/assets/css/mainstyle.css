@@ -58,4 +58,25 @@
   .resset-password:hover{
     color:rgb(231, 2, 2)
   }
+  .box-item {
+    width: 35px;
+    height: 35px;
+  }
+
+  .table-chart-chair {
+    user-select: none; /* Ngăn chọn văn bản */
+    -webkit-user-select: none; /* Ngăn chọn văn bản trên các trình duyệt WebKit */
+    -moz-user-select: none; /* Ngăn chọn văn bản trên Firefox */
+    -ms-user-select: none; /* Ngăn chọn văn bản trên Internet Explorer/Edge */
+
+
+
+}
+.table-chart-chair img {
+    -webkit-user-drag: none;
+}
+
+.box-item-seat-selected {
+    cursor: pointer; /* Hiển thị con trỏ dạng tay khi hover */
+}
 

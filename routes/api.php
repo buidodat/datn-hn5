@@ -26,6 +26,4 @@ Route::get('rooms/{movieId}', [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
 
-Route::get('movies3', [APIController::class, 'loadMoreMovies3']);
-Route::get('movies1', [APIController::class, 'loadMoreMovies1']);
-Route::get('movies', [APIController::class, 'loadMoreMovies']);
+ 
