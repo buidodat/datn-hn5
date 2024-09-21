@@ -10,8 +10,7 @@
             <div class="row">
                 <div class="mb-3 title-choose-seat">
 
-                    <a href="">Trang chủ ></a> <a href="">Đặt vé ></a> <a href="">Phim Shin Cậu Bé Bút
-                        Chì: Nhật Ký Khủng Long Của Chúng Mình</a>
+                    <a href="#">Trang chủ ></a> <a href="#">Đặt vé ></a> <a href="#">{{ $showTime->movie->name }}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -40,20 +39,54 @@
 
                                     <div>
                                         <div class="container-screen">
+                                            @php
+                                                $maxCol = App\Models\Room::MAX_COL;
+                                                $maxRow = App\Models\Room::MAX_ROW;
+                                            @endphp
                                             <div class="container-detail-seat">
                                                 <div class="screen">Màn Hình Chiếu</div>
-
                                                 <div class="seat-selection">
-                                                    @foreach ($seatsGroupedByRow as $row => $seatsInRow)
-                                                        <div class="seat-row">
-                                                            @foreach ($seatsInRow as $seat)
-                                                                <div class="seat {{ $seat->status }}"> {{-- Thêm class theo trạng thái của ghế (ghế thường, ghế VIP,...) --}}
-                                                                    <span
-                                                                        class="seat-label">{{ $seat->coordinates_y }}{{ $seat->coordinates_x }}</span>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    @endforeach
+                                                    <table class="table-seat">
+                                                        <tbody>
+                                                            @for ($row = 0; $row < $maxRow; $row++)
+                                                                <tr>
+                                                                    {{-- <td class="box-item">
+                                                                        {{ chr(65 + $row) }}
+                                                                    </td> --}}
+                                                                    @for ($col = 0; $col < $maxCol; $col++)
+                                                                        <td class="row-seat">
+                                                                            @foreach ($showTime->room->seats as $seat)
+                                                                                @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                                                    @if ($seat->type_seat_id == 1)
+                                                                                        <span
+                                                                                            class="solar--sofa-3-bold seat span-seat">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    @endif
+                                                                                    @if ($seat->type_seat_id == 2)
+                                                                                        <span
+                                                                                            class="mdi--love-seat text-muted seat span-seat">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    @endif
+                                                                                    @if ($seat->type_seat_id == 3)
+                                                                                        <span
+                                                                                            class="game-icons--sofa seat span-seat">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </td>
+                                                                    @endfor
+
+                                                                </tr>
+                                                            @endfor
+                                                        </tbody>
+                                                    </table>
 
                                                     {{-- <div class="ghe-thuong">
                                                         <div class="row-seat">
@@ -237,49 +270,4 @@
             });
         });
     </script>
-@endsection
-
-@section('styles')
-    <style>
-        /* Đảm bảo các hàng ghế được bố trí theo hàng ngang */
-        .seat-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-            /* Tạo khoảng cách giữa các hàng ghế */
-        }
-
-        /* Định dạng chung cho ghế */
-        .seat {
-            width: 40px;
-            height: 40px;
-            margin: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        /* Ví dụ về trạng thái ghế */
-        .seat.available {
-            background-color: #4CAF50;
-            /* Màu ghế trống */
-        }
-
-        .seat.selected {
-            background-color: #FF9800;
-            /* Màu ghế đang chọn */
-        }
-
-        .seat.reserved {
-            background-color: #F44336;
-            /* Màu ghế đã đặt */
-        }
-
-        .seat.vip {
-            background-color: #9C27B0;
-            /* Màu ghế VIP */
-        }
-    </style>
 @endsection
