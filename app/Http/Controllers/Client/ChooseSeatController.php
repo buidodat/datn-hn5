@@ -13,10 +13,14 @@ class ChooseSeatController extends Controller
     {
         $showTime = Showtime::findOrFail($id);
 
-        // $d = $showtime->room;
-        // $showtime->room->seats;
-        // dd($showtime->toArray());
+        $seatsGroupedByRow = $showTime->room->seats->groupBy('coordinates_y');
 
-        return view('client.choose-seat', compact('showTime'));
+        // $showTime->room->seats;
+        // $showTime->movie;
+        // $showTime->movie_version;
+        // $showTime->room->cinema;
+        // dd($showTime->toArray());
+
+        return view('client.choose-seat', compact('showTime', 'seatsGroupedByRow'));
     }
 }

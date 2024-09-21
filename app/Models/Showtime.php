@@ -11,6 +11,7 @@ class Showtime extends Model
     protected $fillable = [
         'room_id',
         'movie_version_id',
+        'movie_id',
         'date',
         'start_time',
         'end_time',
@@ -24,17 +25,22 @@ class Showtime extends Model
     {
         return $this->belongsTo(Room::class);
     }
-    
+
     public function movie_version()
     {
         return $this->belongsTo(MovieVersion::class);
     }
 
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
+
     public function seats()
     {
         return $this->belongsToMany(Seat::class, 'seat_showtimes')
-                    ->withPivot('status') // Trạng thái của ghế
-                    ->withTimestamps();   // Thêm các cột `created_at` và `updated_at`
+            ->withPivot('status') // Trạng thái của ghế
+            ->withTimestamps();   // Thêm các cột `created_at` và `updated_at`
     }
 
     // Thời gian dọn phòng: 15p

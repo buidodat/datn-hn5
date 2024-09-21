@@ -44,17 +44,18 @@
                                                 <div class="screen">Màn Hình Chiếu</div>
 
                                                 <div class="seat-selection">
-                                                    <div class="ghe-thuong">
-                                                        <div class="row-seat">
-                                                            @for ($i = 1; $i < 12; $i++)
-                                                                <span class="solar--sofa-3-bold seat"
-                                                                    id="A{{ $i }}">
-                                                                    <span class="seat-label">A{{ $i }}</span>
-                                                                </span>
-                                                            @endfor
+                                                    @foreach ($seatsGroupedByRow as $row => $seatsInRow)
+                                                        <div class="seat-row">
+                                                            @foreach ($seatsInRow as $seat)
+                                                                <div class="seat {{ $seat->status }}"> {{-- Thêm class theo trạng thái của ghế (ghế thường, ghế VIP,...) --}}
+                                                                    <span
+                                                                        class="seat-label">{{ $seat->coordinates_y }}{{ $seat->coordinates_x }}</span>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
-                                                    </div>
-                                                    <div class="ghe-thuong">
+                                                    @endforeach
+
+                                                    {{-- <div class="ghe-thuong">
                                                         <div class="row-seat">
                                                             @for ($i = 1; $i < 13; $i++)
                                                                 <span class="solar--sofa-3-bold seat"
@@ -125,10 +126,9 @@
                                                                 </span>
                                                             @endfor
                                                         </div>
-                                                    </div>
-                                                </  >
+                                                    </div> --}}
+                                                </div>
                                             </div>
-
 
                                             <div class="legend">
                                                 {{-- <div><span class="seat available"></span> Ghế trống</div> --}}
@@ -179,24 +179,32 @@
                                     <ul>
                                         <li>
                                             <div>
-                                                <img width="150px"
-                                                    src="{{ asset('theme/client/images/index_III/img_phim_chon_ghe.png') }}"
-                                                    alt="">
+                                                @php
+                                                    $url = $showTime->movie->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+                                                @endphp
+                                                <img width="150px" src="{{ $url }}" alt="">
                                             </div>
                                             <div>
-                                                <h3>Phim Shin Cậu Bé Bút Chì: Nhật Ký Khủng Long Của Chúng Mình</h3>
+                                                <h3>{{ $showTime->movie->name }}</h3>
                                                 <br>
-                                                <p>2D Lồng tiếng</p>
+                                                <p>{{ $showTime->movie_version->name }}</p>
                                             </div>
 
                                         </li>
-                                        <li>Thể loại: <span class="bold">Gia đình, Hoạt hình</span></li>
-                                        <li> Thời lượng: <span class="bold">105 phút</span></li>
+                                        <li>Thể loại: <span class="bold">{{ $showTime->movie->category }}</span></li>
+                                        <li> Thời lượng: <span class="bold">{{ $showTime->movie->duration }} phút</span>
+                                        </li>
                                         <hr>
-                                        <li> Rạp chiếu: <span class="bold">Beta Thái Nguyên</span></li>
-                                        <li> Ngày chiếu: <span class="bold">31/08/2024</span></li>
-                                        <li> Giờ chiếu: <span class="bold">18:10</span></li>
-                                        <li> Phòng chiếu: <span class="bold">P1</span></li>
+                                        <li> Rạp chiếu: <span class="bold">{{ $showTime->room->cinema->name }}</span>
+                                        </li>
+                                        <li> Ngày chiếu: <span class="bold">{{ $showTime->movie->release_date }}</span>
+                                        </li>
+                                        <li> Giờ chiếu: <span class="bold">{{ $showTime->start_time }}</span></li>
+                                        <li> Phòng chiếu: <span class="bold">{{ $showTime->room->name }}</span></li>
                                         <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
                                         <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li>
                                     </ul>
@@ -229,4 +237,49 @@
             });
         });
     </script>
+@endsection
+
+@section('styles')
+    <style>
+        /* Đảm bảo các hàng ghế được bố trí theo hàng ngang */
+        .seat-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            /* Tạo khoảng cách giữa các hàng ghế */
+        }
+
+        /* Định dạng chung cho ghế */
+        .seat {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Ví dụ về trạng thái ghế */
+        .seat.available {
+            background-color: #4CAF50;
+            /* Màu ghế trống */
+        }
+
+        .seat.selected {
+            background-color: #FF9800;
+            /* Màu ghế đang chọn */
+        }
+
+        .seat.reserved {
+            background-color: #F44336;
+            /* Màu ghế đã đặt */
+        }
+
+        .seat.vip {
+            background-color: #9C27B0;
+            /* Màu ghế VIP */
+        }
+    </style>
 @endsection
