@@ -9949,6 +9949,7 @@ i:before {
 
 .prs_upcom_movie_img_btn_wrapper li:first-child a {
 	display: inline-block;
+	cursor: pointer;
 	width: 150px;
 	height: 50px;
 	text-align: center;

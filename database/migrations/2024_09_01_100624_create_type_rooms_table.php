@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('type_rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name')->unique();           //2D, 3D , 4D
             $table->unsignedInteger('surcharge');
             $table->timestamps();
         });

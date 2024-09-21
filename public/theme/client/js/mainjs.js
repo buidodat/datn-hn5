@@ -48,27 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Js cho tăng giảm số lượng trang thanh toán
 
-// // Lấy tất cả các nút giảm số lượng
-// document.querySelectorAll('.decrease').forEach((decreaseBtn, index) => {
-//     decreaseBtn.addEventListener('click', function () {
-//         var quantityInput = document.querySelectorAll('.quantity-input')[index];
-//         var currentValue = parseInt(quantityInput.value);
-
-//         if (currentValue >= 1) {
-//             quantityInput.value = currentValue - 1;
-//         }
-//     });
-// });
-
-// // Lấy tất cả các nút tăng số lượng
-// document.querySelectorAll('.increase').forEach((increaseBtn, index) => {
-//     increaseBtn.addEventListener('click', function () {
-//         var quantityInput = document.querySelectorAll('.quantity-input')[index];
-//         var currentValue = parseInt(quantityInput.value);
-
-//         quantityInput.value = currentValue + 1;
-//     });
-// });
 
 
 
@@ -100,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const input = this.closest('.quantity-container').querySelector('.quantity-input');
             let currentValue = parseInt(input.value);
-            const max = parseInt(input.getAttribute('max')); 
+            const max = parseInt(input.getAttribute('max'));
             if (currentValue < max) { // Chỉ tăng nếu giá trị hiện tại nhỏ hơn max
                 input.value = currentValue + 1;
                 calculateTotal(); // Cập nhật tổng tiền
@@ -123,11 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-
-
-
 // Js cho đoạn nhập voucher và điểm trang thanh toán 
 document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
     title.addEventListener('click', function () {
@@ -135,6 +109,53 @@ document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
         section.classList.toggle('active');
     });
 });
+
+
+// js cho modal chọn suất chiếu trang home 
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.date-display').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+            // console.log('Button clicked:', btn);
+
+            const currentActive = document.querySelector('.date-display.active');
+            if (currentActive) {
+                currentActive.classList.remove('active');
+            }
+            btn.classList.add('active');
+        });
+    });
+});
+
+//
+document.querySelectorAll('.location-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('.location-btn.active').classList.remove('active');
+        btn.classList.add('active');
+    });
+});
+
+// 
+document.querySelectorAll('.format-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('.format-btn.active').classList.remove('active');
+        btn.classList.add('active');
+    });
+});
+
+// 
+document.querySelectorAll('.time-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // You can add custom functionality here for when a time is selected
+        alert(`You selected the ${btn.innerText} showtime.`);
+    });
+});
+
+
+
+
+
 
 
 
