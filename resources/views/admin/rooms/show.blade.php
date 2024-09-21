@@ -14,8 +14,6 @@
             </ul>
         </div>
     @endif --}}
-    <form action="{{ route('admin.rooms.store') }}" method="post" enctype="multipart/form-data">
-        @csrf
 
         <div class="row">
             <div class="col-12">
@@ -34,7 +32,7 @@
         </div>
 
         <!-- thông tin -->
-        <div class="row mb-2">
+        {{-- <div class="row mb-2">
             <div class="col-md-12">
                 @if (session()->has('error'))
                     <div class="alert alert-danger m-3">
@@ -120,10 +118,90 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
 
         <div class="row">
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Thông tin phòng chiếu</h4>
+                            </div><!-- end card header -->
+                            <div class="card-body">
+                                <div class="live-preview">
+                                    <div class="row gy-4">
+                                        <div class="col-md-12">
+                                            <div class="row ">
+                                                <div class="col-md-12 mb-2">
+
+                                                    <label for="name" class="form-label ">Tên phòng chiếu:</label>
+                                                    <input type="text" class="form-control" value="{{ $room->name }}" disabled>
+
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <label for="branch" class="form-label">Chi nhánh:</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $room->cinema->branch->name }}" disabled>
+                                                </div>
+
+                                                <div class="col-md-12 mb-2">
+
+                                                    <label for="cinema" class="form-label">Rạp chiếu:</label>
+                                                    <input type="text" class="form-control" value="{{ $room->cinema->name }}"
+                                                        disabled>
+
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+
+                                                    <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
+
+                                                    <input type="text" class="form-control" value="{{ $room->typeRoom->name }}" disabled>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--end row-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card card-seat ">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Chú thích</h4>
+                            </div><!-- end card header -->
+                            <div class="card-body ">
+                                <table class="table table-borderless   align-middle mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Ghế thường</td>
+                                            <td class="text-center" > <img src="{{ asset('svg/seat-regular.svg') }}" height="30px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ghế vip</td>
+                                            <td class="text-center" > <img src="{{ asset('svg/seat-vip.svg') }}" height="30px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ghế đôi</td>
+                                            <td class="text-center" > <img src="{{ asset('svg/seat-double.svg') }}" height="30px"></td>
+                                        <tr class="table-active">
+                                            <th colspan='2' class="text-center">Tổng {{ $seats->count() }} chỗ ngồi</th>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-9">
                 <div class="card card-left">
                     <div class="card-header align-items-center d-flex">
@@ -132,22 +210,7 @@
                     <div class="card-body mb-3">
 
 
-                        <style>
-                            .light-orange {
-                                background-color: #fcf5e6;
-                                /* Màu cam nhạt */
-                            }
 
-                            .light-blue {
-                                background-color: #fcfdff;
-                                /* Màu xanh da trời nhạt */
-                            }
-
-                            .light-pink {
-                                background-color: #f9d0d0;
-                                /* Màu hồng nhạt */
-                            }
-                        </style>
                         @php
                             $maxCol = App\Models\Room::MAX_COL;
                             $maxRow = App\Models\Room::MAX_ROW;
@@ -203,52 +266,25 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="card card-seat ">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Chú thích</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body ">
-                        <table class="table table-borderless   align-middle mb-0">
-                            <tbody>
-                                <tr>
-                                    <td>Ghế thường</td>
-                                    <td class="text-center" > <img src="{{ asset('svg/seat-regular.svg') }}" height="35px"></td>
-                                </tr>
-                                <tr>
-                                    <td>Ghế vip</td>
-                                    <td class="text-center" > <img src="{{ asset('svg/seat-vip.svg') }}" height="35px"></td>
-                                </tr>
-                                <tr>
-                                    <td>Ghế đôi</td>
-                                    <td class="text-center" > <img src="{{ asset('svg/seat-double.svg') }}" height="35px"></td>
-                                <tr class="table-active">
-                                    <th colspan='2' class="text-center">Tổng {{ $seats->count() }} chỗ ngồi</th>
 
-                                </tr>
-                            </tbody>
-                        </table>
 
-                    </div>
-                </div>
-            </div>
 
         </div>
 
 
 
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
+            <div class="col-lg-12 mb-5 text-end">
+
+                    <div class="">
                         <a href="{{ route('admin.rooms.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                        <a href="{{ route('admin.rooms.index') }}" class="btn btn-primary mx-2">Chỉnh sửa</a>
                     </div>
-                </div>
+
             </div>
             <!--end col-->
         </div>
-    </form>
+
 @endsection
 
 @section('style-libs')

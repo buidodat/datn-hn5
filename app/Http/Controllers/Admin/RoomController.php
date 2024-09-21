@@ -103,7 +103,12 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Room $room) {}
+    public function edit(Room $room) {
+        $seats = Seat::where(['room_id' => $room->id])->get();
+        $capacities = Room::CAPACITIESS;
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
+    }
 
     /**
      * Update the specified resource in storage.
