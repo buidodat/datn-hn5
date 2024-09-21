@@ -68,6 +68,7 @@ class RoomController extends Controller
                 $seat = json_decode($seat, true); // chuyển đổi json thành mẩng
 
                 $seat['room_id'] = $room->id;
+                $seat['name'] = $seat['coordinates_y'].$seat['coordinates_x'];
 
                 if (in_array($seat['coordinates_y'], $rowSeatRegular)) { // logic gắn thêm loại ghế vào $seat
                     $seat['type_seat_id'] = 1;
@@ -93,17 +94,21 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        $seatRegulars = Seat::where(['room_id' => $room->id, 'type_seat_id' => 1])->get();
-        $seatVips = Seat::where(['room_id' => $room->id, 'type_seat_id' => 2])->get();
+        $seats = Seat::where(['room_id' => $room->id])->get();
         $capacities = Room::CAPACITIESS;
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room', 'seatRegulars', 'seatVips']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Room $room) {}
+    public function edit(Room $room) {
+        $seats = Seat::where(['room_id' => $room->id])->get();
+        $capacities = Room::CAPACITIESS;
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
+    }
 
     /**
      * Update the specified resource in storage.
