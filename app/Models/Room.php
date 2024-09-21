@@ -31,7 +31,18 @@ class Room extends Model
     public function cinema(){
         return $this->belongsTo(Cinema::class);
     }
+    
     public function typeRoom(){
         return $this->belongsTo(TypeRoom::class);
+    }
+
+    public function seats()
+    {
+        return $this->hasMany(Seat::class);
+    }
+
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
     }
 }
