@@ -48,6 +48,8 @@ Route::get('my-account', function () {
 })->name('my-account');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
+route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
 
 

@@ -64,9 +64,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type === self::TYPE_ADMIN;
     }
 
-    public function movieReview()
+    public function vouchers()
     {
-        return $this->hasMany(MovieReview::class,'user_id');
+        return $this->belongsToMany(Voucher::class, 'user_vouchers')->withTimestamps();
     }
 
 }
