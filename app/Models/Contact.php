@@ -14,5 +14,11 @@ class Contact extends Model
         'phone',
         'title',
         'content',
+        'status',
+    ];
+
+    const STATUS = [
+        'Chưa xử lí',
+        'Đã xử lí',
     ];
 }
