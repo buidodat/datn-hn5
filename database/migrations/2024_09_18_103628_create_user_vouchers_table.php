@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Movie;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movie_versions', function (Blueprint $table) {
+        Schema::create('user_vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Movie::class);
-            $table->string('name');             //Vietsub, Lồng tiếng, thuyết minh
+            $table->foreignIdFor(\App\Models\User::class)->constrained();
+            $table->foreignIdFor(\App\Models\Voucher::class)->constrained();
+            $table->dateTime('used_at')->nullable();
+            $table->unsignedInteger('discount_applied')->nullable();
             $table->timestamps();
-            $table->unique(['movie_id','name'],'movie_version');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movie_versions');
+        Schema::dropIfExists('user_vouchers');
     }
 };

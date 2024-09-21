@@ -13,6 +13,7 @@ class Seat extends Model
         'type_seat_id',
         'coordinates_x',
         'coordinates_y',
+        'name',
         'is_active',
     ];
     protected $cast = [

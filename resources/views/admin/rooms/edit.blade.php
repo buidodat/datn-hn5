@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thêm mới phòng chiếu
+    Cập nhập phòng chiếu
 @endsection
 
 @section('content')
@@ -14,18 +14,18 @@
             </ul>
         </div>
     @endif --}}
-    <form action="{{ route('admin.rooms.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.rooms.edit',$room)  }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Thêm mới phòng chiếu</h4>
+                    <h4 class="mb-sm-0">Cập nhập phòng chiếu</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.rooms.index') }}">Danh sách</a></li>
-                            <li class="breadcrumb-item active">Thêm mới</li>
+                            <li class="breadcrumb-item active">Cập nhập</li>
                         </ol>
                     </div>
 
@@ -42,7 +42,7 @@
                     </div>
                 @endif
             </div>
-            <div class="col-lg-9 mb-3">
+            <div class="col-lg-9">
                 <div class="card card-left">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thông tin phòng chiếu</h4>
@@ -63,54 +63,34 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3 mb-2">
                                             <span class='text-danger'>*</span>
                                             <label for="branch" class="form-label">Chi nhánh:</label>
-                                            <select name="branch_id" id="branch" class="form-select">
-                                                <option value="">Chọn chi nhánh</option>
-                                                @foreach ($branches as $id => $name)
-                                                    <option value="{{ $id }}" @selected($id == old('branch_id'))>
-                                                        {{ $name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('branch_id')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
+                                            <input type="text" class="form-control"
+                                                value="{{ $room->cinema->branch->name }}" disabled>
                                         </div>
 
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3 mb-2">
                                             <span class='text-danger'>*</span>
                                             <label for="cinema" class="form-label">Rạp chiếu:</label>
-                                            <select name="cinema_id" id="cinema" class="form-select">
-                                                <option value="">Chọn rạp chiếu</option>
+                                            <input type="text" class="form-control" value="{{ $room->cinema->name }}"
+                                                disabled>
 
-                                            </select>
-                                            @error('cinema_id')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-3 mb-2">
                                             <span class='text-danger'>*</span>
                                             <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
-                                            <select name="type_room_id" id="" class="form-select">
-                                                <option value="">Chọn loại phòng chiếu</option>
-                                                @foreach ($typeRooms as $id => $name)
-                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id)>
-                                                        {{ $name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('type_room_id')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
+
+                                            <input type="text" class="form-control" value="{{ $room->typeRoom->name }}" disabled>
+
                                         </div>
+                                        <div class="col-md-3 mb-2">
+                                            <span class='text-danger'>*</span>
+                                            <label for="surcharge" class="form-label ">Sức chứa:</label>
 
+                                            <input type="text" class="form-control" value="{{ $room->capacity}} chỗ ngồi" disabled>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +111,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
+                                                    name="is_active" checked disabled>
                                             </div>
                                         </div>
 
@@ -155,7 +135,7 @@
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
                     </div><!-- end card header -->
-                    <div class="card-body mb-4 ">
+                    <div class="card-body ">
 
 
                         <style>
@@ -175,7 +155,6 @@
                             }
                         </style>
                         @php
-                            $capacity = 0;
                             $maxCol = App\Models\Room::MAX_COL;
                             $maxRow = App\Models\Room::MAX_ROW;
                             $rowSeatRegular = App\Models\Room::ROW_SEAT_REGULAR;
@@ -187,7 +166,8 @@
                                     @for ($col = 0; $col < $maxCol; $col++)
                                         <th class="box-item">
                                             {{-- thao tác 1 loạt trên 1 cột --}}
-                                            {{-- <i class="fas fa-edit primary"></i> --}}
+                                            <input type="checkbox" name="col_checkbox_{{ $col + 1 }}"
+                                                value="{{ $col + 1 }}">
                                         </th>
                                     @endfor
                                     <th></th> <!-- Ô trống góc trên bên trái -->
@@ -209,9 +189,6 @@
                                                             width="100%">
                                                         <input type="hidden" name="seatJsons[]"
                                                             value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
-                                                            @php
-                                                                $capacity ++;
-                                                            @endphp
                                                     </div>
                                                 </td>
                                                 {{-- kết thúchàng ghế thường --}}
@@ -223,9 +200,6 @@
                                                             width="100%">
                                                         <input type="hidden" name="seatJsons[]"
                                                             value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
-                                                            @php
-                                                                $capacity ++;
-                                                            @endphp
                                                     </div>
                                                 </td>
                                                 {{-- kết thúc hàng ghế vip --}}
@@ -233,13 +207,41 @@
                                         @endfor
                                         <td class="box-item">
                                             {{-- thao tác 1 loạt trên 1 hàng --}}
-                                            <i class="fas fa-edit primary"></i>
+                                            <input type="checkbox" name="row_checkbox_{{ $row + 1 }}"
+                                                value="{{ chr(65 + $row) }}">
                                         </td>
                                     </tr>
                                 @endfor
-                                <input type="hidden" name="capacity" value="{{ $capacity }}">
                             </tbody>
                         </table>
+
+                        <script>
+                            document.querySelectorAll('.box-item-seat').forEach(function(seat) {
+                                // Lưu trữ nội dung ban đầu của .box-item-seat-selected
+                                let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
+
+                                seat.addEventListener('click', function() {
+                                    let seatSelected = seat.querySelector('.box-item-seat-selected');
+
+                                    // Kiểm tra nếu div đang chứa nội dung ban đầu
+                                    if (seatSelected.innerHTML.trim() === originalContent.trim()) {
+                                        // Nếu là nội dung ban đầu, thay đổi thành hình ảnh mới
+                                        seatSelected.innerHTML =
+                                            `<img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="70%" >`;
+                                    } else {
+                                        // Nếu không phải nội dung ban đầu, khôi phục lại nội dung ban đầu
+                                        seatSelected.innerHTML = originalContent;
+                                    }
+                                });
+                            });
+                        </script>
+
+
+
+
+
+
+
 
                     </div>
                 </div>
@@ -307,26 +309,6 @@
 
 
 @section('script-libs')
-<script>
-     document.querySelectorAll('.box-item-seat').forEach(function(seat) {
-            // Lưu trữ nội dung ban đầu của .box-item-seat-selected
-            let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
-
-            seat.addEventListener('click', function() {
-                let seatSelected = seat.querySelector('.box-item-seat-selected');
-
-                // Kiểm tra nếu div đang chứa nội dung ban đầu
-                if (seatSelected.innerHTML.trim() === originalContent.trim()) {
-                    // Nếu là nội dung ban đầu, thay đổi thành hình ảnh mới
-                    seatSelected.innerHTML =
-                        `<img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="60%" >`;
-                } else {
-                    // Nếu không phải nội dung ban đầu, khôi phục lại nội dung ban đầu
-                    seatSelected.innerHTML = originalContent;
-                }
-            });
-        });
-</script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -367,7 +349,6 @@
 
             }
         });
-
-
     </script>
+
 @endsection
