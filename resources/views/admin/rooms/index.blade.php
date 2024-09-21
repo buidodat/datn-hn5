@@ -69,22 +69,26 @@
                         <tbody>
                             @foreach ($rooms as $index => $room)
                                 <tr>
-                                    <td>{{ $index+1  }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $room->name }}</td>
                                     <td>{{ $room->cinema->name }}</td>
                                     <td>{{ $room->typeRoom->name }}</td>
                                     <td>{{ $room->capacity }} chỗ ngồi</td>
                                     <td>
                                         {!! $room->is_active == 1
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
                                     <td>
-
+                                        <a href="{{ route('admin.rooms.show', $room) }}">
+                                            <button title="xem" class="btn btn-primary btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button>
+                                        </a>
                                         <a href="{{ route('admin.rooms.edit', $room) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+
                                         <a href="{{ route('admin.rooms.destroy', $room) }}">
                                             <button title="xem" class="btn btn-danger btn-sm " type="button"><i
                                                     class="ri-delete-bin-7-fill"></i></button>

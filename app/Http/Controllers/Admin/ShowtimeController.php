@@ -24,8 +24,6 @@ class ShowtimeController extends Controller
     {
         //
         $showtimes = Showtime::with(['room', 'movie_version'])->get();
-
-
         return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes'));
     }
 
@@ -123,7 +121,6 @@ class ShowtimeController extends Controller
             // dd($request->all());
 
             $showtime->update($dataShowtimes);
-
 
             return redirect()
                 ->back()

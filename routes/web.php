@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
+use App\Http\Controllers\Client\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,9 +44,9 @@ Route::get('register', function () {
     return view('client.register');
 })->name('register');
 
-Route::get('my-account', function () {
-    return view('client.my-account');
-})->name('my-account');
+Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
+Route::put('/my-account/update', [UserController::class,'update'])->name('my-account.update');
+Route::put('my-account/changePassword', [UserController::class,'changePassword'])->name('my-account.changePassword');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
@@ -74,7 +75,12 @@ Route::get('introduce', function () {
 
 Auth::routes(['verify' => true]);
 // LOGIN FACEBOOK
-Route::controller(LoginFacebookController::class)->group(function(){
+Route::controller(LoginFacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
+
+Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
+
+Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
+Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);

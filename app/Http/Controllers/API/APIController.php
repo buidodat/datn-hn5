@@ -36,4 +36,8 @@ class APIController extends Controller
         }
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
+
+
+   
+   
 }

@@ -36,17 +36,17 @@ class StoreRoomRequest extends FormRequest
         // ];
         $cinemaId = $this->branch_id;
         return [
-            'name' => [
-                'required',
-                Rule::unique('rooms')
-                    ->where(function ($query) use ($cinemaId) {
-                        return $query->where('cinema_id', $cinemaId);
-                    }),
-            ],
-            'branch_id' => 'required|integer',
-            'cinema_id' => 'required|integer',
-            'type_room_id' => 'required|integer',
-            'capacity' => 'required|integer',
+            // 'name' => [
+            //     'required',
+            //     Rule::unique('rooms')
+            //         ->where(function ($query) use ($cinemaId) {
+            //             return $query->where('cinema_id', $cinemaId);
+            //         }),
+            // ],
+            // 'branch_id' => 'required|integer',
+            // 'cinema_id' => 'required|integer',
+            // 'type_room_id' => 'required|integer',
+            // 'capacity' => 'required|integer',
         ];
 
     }

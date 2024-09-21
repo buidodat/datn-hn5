@@ -20,10 +20,13 @@ class Room extends Model
     ];
 
     const CAPACITIESS =[ // Sức chứa
-        130,
+        130 ,
         150,
         170
     ];
+    const ROW_SEAT_REGULAR = 4;
+    const MAX_ROW = 15;
+    const MAX_COL = 15;
 
     public function cinema(){
         return $this->belongsTo(Cinema::class);

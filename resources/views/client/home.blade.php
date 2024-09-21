@@ -34,260 +34,233 @@
                 <div class="tab-content">
                     {{-- Phim sắp chiếu --}}
                     <div role="tabpanel" class="tab-pane fade" id="best">
-                        <div class="prs_upcom_slider_slides_wrapper">
-                            <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <div class="row">
-
-                                        {{-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                        <div class="tab-pane-content-movie-list">
+                            <div class="item">
+                                <div class="row" id="movie-list1">
+                                    @foreach ($moviesUpcoming as $movie)
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
                                             <div class="prs_upcom_movie_box_wrapper">
                                                 <div class="prs_upcom_movie_img_box">
-                                                    <img src="{{ asset('theme/client/images/content/up1.jpg') }}"
-                                                        alt="movie_img" />
+                                                    @if ($movie->is_hot == '1')
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                            alt="">
+                                                    @endif
+
+                                                    @php
+                                                        $url = $movie->img_thumbnail;
+
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
+
+                                                    @endphp
+
+                                                    <img src="{{ $url }}" alt="movie_img" />
                                                     <div class="prs_upcom_movie_img_overlay"></div>
                                                     <div class="prs_upcom_movie_img_btn_wrapper">
                                                         <ul>
-                                                            <li><a id="buy-ticket-btn">Buy Ticket</a>
+                                                            <li><a id="buy-ticket-btn">Mua vé</a>
                                                             </li>
-
-                                                            <li><a href="#">View Details</a>
+                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="prs_upcom_movie_content_box">
                                                     <div class="prs_upcom_movie_content_box_inner">
-                                                        <h2><a href="#">Busting Car</a></h2>
-                                                        <p>Drama , Acation</p> <i class="fa fa-star"></i>
+                                                        <h2 class="movie-name-home"><a
+                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                        </h2>
+                                                        <p>Thể loại: {{ $movie->category }}</p>
+                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
+                                                        <i class="fa fa-star"></i>
                                                         <i class="fa fa-star"></i>
                                                         <i class="fa fa-star"></i>
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                     </div>
-                                                    <div class="prs_upcom_movie_content_box_inner_icon">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                {{-- <div class="pagination-wrapper">
+                                        {{ $moviesUpcoming->links() }}
+                                    </div> --}}
+                            </div>
+                        </div>
+                        @if ($moviesUpcoming->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more1" data-page="2">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    {{-- Phim đang chiếu --}}
+                    <div role="tabpanel" class="tab-pane fade  in active" id="hot">
+                        <div class="tab-pane-content-movie-list">
+                            <div class="item">
+                                <div class="row" id="movie-list2">
+                                    {{-- @dd($moviesShowing) --}}
+                                    @foreach ($moviesShowing as $movie)
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                            <div class="prs_upcom_movie_box_wrapper">
+                                                <div class="prs_upcom_movie_img_box">
+                                                    @if ($movie->is_hot == '1')
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                            alt="">
+                                                    @endif
+
+                                                    @php
+                                                        $url = $movie->img_thumbnail;
+
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
+
+                                                    @endphp
+
+                                                    <img src="{{ $url }}" alt="movie_img" />
+                                                    <div class="prs_upcom_movie_img_overlay"></div>
+                                                    <div class="prs_upcom_movie_img_btn_wrapper">
                                                         <ul>
-                                                            <li><a href="movie_booking.html"><i
-                                                                        class="flaticon-cart-of-ecommerce"></i></a>
+                                                            <li><a id="buy-ticket-btn">Mua vé</a>
+                                                            </li>
+                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div> --}}
-                                        @foreach ($moviesUpcoming as $movie)
-                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                                <div class="prs_upcom_movie_box_wrapper">
-                                                    <div class="prs_upcom_movie_img_box">
-                                                        @if ($movie->is_hot == '1')
-                                                            <img class="is_hot"
-                                                                src="{{ asset('theme/client/images/hot.png') }}"
-                                                                alt="">
-                                                        @endif
-
-                                                        @php
-                                                            $url = $movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-
-                                                        @endphp
-
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                        <div class="prs_upcom_movie_img_overlay"></div>
-                                                        <div class="prs_upcom_movie_img_btn_wrapper">
-                                                            <ul>
-                                                                <li><a id="buy-ticket-btn">Mua vé</a>
-                                                                </li>
-                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                <div class="prs_upcom_movie_content_box">
+                                                    <div class="prs_upcom_movie_content_box_inner">
+                                                        <h2 class="movie-name-home"><a
+                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                        </h2>
+                                                        <p>Thể loại: {{ $movie->category }}</p>
+                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
                                                     </div>
-                                                    <div class="prs_upcom_movie_content_box">
-                                                        <div class="prs_upcom_movie_content_box_inner">
-                                                            <h2 class="movie-name-home"><a
-                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                            </h2>
-                                                            <p>Thể loại: {{ $movie->category }}</p>
-                                                            <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
 
-                                                    </div>
                                                 </div>
                                             </div>
-                                        @endforeach
-                                    </div>
-                                    {{-- <div class="pagination-wrapper">
-                                        {{ $moviesUpcoming->links() }}
-                                    </div> --}}
+                                        </div>
+                                    @endforeach
+
+
                                 </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    {{-- Phim đang chiếu --}}
-                    <div role="tabpanel" class="tab-pane fade  in active" id="hot">
-                        <div class="prs_upcom_slider_slides_wrapper">
-                            <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <div class="row" id="movie-list">
-                                        @foreach ($moviesShowing as $movie)
-                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                                <div class="prs_upcom_movie_box_wrapper">
-                                                    <div class="prs_upcom_movie_img_box">
-                                                        @if ($movie->is_hot == '1')
-                                                            <img class="is_hot"
-                                                                src="{{ asset('theme/client/images/hot.png') }}"
-                                                                alt="">
-                                                        @endif
-
-                                                        @php
-                                                            $url = $movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-
-                                                        @endphp
-
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                        <div class="prs_upcom_movie_img_overlay"></div>
-                                                        <div class="prs_upcom_movie_img_btn_wrapper">
-                                                            <ul>
-                                                                <li><a id="buy-ticket-btn">Mua vé</a>
-                                                                </li>
-                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="prs_upcom_movie_content_box">
-                                                        <div class="prs_upcom_movie_content_box_inner">
-                                                            <h2 class="movie-name-home"><a
-                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                            </h2>
-                                                            <p>Thể loại: {{ $movie->category }}</p>
-                                                            <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-
-
-                                    </div>
-                                    {{-- <div class="pagination-wrapper">
+                                {{-- <div class="pagination-wrapper">
                                         {{ $moviesShowing->links() }}
                                     </div> --}}
 
-                                </div>
-
-
                             </div>
+
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="prs_animate_btn1 prs_upcom_main_wrapper">
-                                    <ul>
-                                        <li>
-                                            {{-- <a class="button button--tamaya prs_upcom_main_btn"
-                                                data-text="Xem thêm"  id="load-more"><span>Xem thêm</span></a> --}}
-                                            <button class="button button--tamaya prs_upcom_main_btn text-white"
-                                                data-text="Xem thêm" id="load-more">Xem thêm</button>
-                                        </li>
-                                    </ul>
+                        @if ($moviesShowing->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more2" data-page="2">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
-
                     {{-- Suất chiếu đặc biệt --}}
                     <div role="tabpanel" class="tab-pane fade" id="trand">
-                        <div class="prs_upcom_slider_slides_wrapper">
-                            <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <div class="row">
-                                        @foreach ($moviesSpecial as $movie)
-                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                                <div class="prs_upcom_movie_box_wrapper">
-                                                    <div class="prs_upcom_movie_img_box">
-                                                        @if ($movie->is_hot == '1')
-                                                            <img class="is_hot"
-                                                                src="{{ asset('theme/client/images/hot.png') }}"
-                                                                alt="">
-                                                        @endif
+                        <div class="tab-pane-content-movie-list">
+                            <div class="item">
+                                <div class="row" id="movie-list3">
+                                    @foreach ($moviesSpecial as $movie)
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                            <div class="prs_upcom_movie_box_wrapper">
+                                                <div class="prs_upcom_movie_img_box">
+                                                    @if ($movie->is_hot == '1')
+                                                        <img class="is_hot"
+                                                            src="{{ asset('theme/client/images/hot.png') }}"
+                                                            alt="">
+                                                    @endif
 
-                                                        @php
-                                                            $url = $movie->img_thumbnail;
+                                                    @php
+                                                        $url = $movie->img_thumbnail;
 
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
 
-                                                        @endphp
+                                                    @endphp
 
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                        <div class="prs_upcom_movie_img_overlay"></div>
-                                                        <div class="prs_upcom_movie_img_btn_wrapper">
-                                                            <ul>
-                                                                <li><a id="buy-ticket-btn">Mua vé</a>
-                                                                </li>
-                                                                <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="prs_upcom_movie_content_box">
-                                                        <div class="prs_upcom_movie_content_box_inner">
-                                                            <h2 class="movie-name-home"><a
-                                                                    href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                            </h2>
-                                                            <p>Thể loại: {{ $movie->category }}</p>
-                                                            <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                        </div>
-
+                                                    <img src="{{ $url }}" alt="movie_img" />
+                                                    <div class="prs_upcom_movie_img_overlay"></div>
+                                                    <div class="prs_upcom_movie_img_btn_wrapper">
+                                                        <ul>
+                                                            <li><a id="buy-ticket-btn">Mua vé</a>
+                                                            </li>
+                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                                <div class="prs_upcom_movie_content_box">
+                                                    <div class="prs_upcom_movie_content_box_inner">
+                                                        <h2 class="movie-name-home"><a
+                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
+                                                        </h2>
+                                                        <p>Thể loại: {{ $movie->category }}</p>
+                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
 
-                                    </div>
-                                    {{-- <div class="pagination-wrapper">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                                {{-- <div class="pagination-wrapper">
                                         {{ $moviesSpecial->links() }}
                                     </div> --}}
-                                </div>
-
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="prs_animate_btn1 prs_upcom_main_wrapper">
-                                    <ul>
-                                        <li><a href="#" class="button button--tamaya prs_upcom_main_btn"
-                                                data-text="view all"><span>View All</span></a>
-                                        </li>
-                                    </ul>
+                        @if ($moviesSpecial->total() > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more3" data-page="2">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -679,14 +652,90 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const btn = document.getElementById('load-more');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    alert('Load More');
-                });
-            } else {
-                console.error('Button with ID load-more not found');
-            }
+            document.getElementById('load-more2').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                fetch(`/movies2?page=${page}`, {
+                        method: 'GET',
+
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list2');
+                        // console.log(data);
+
+                        if (data.trim().length > 0) {
+                            movieList.innerHTML += data;
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+            document.getElementById('load-more1').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                fetch(`/movies1?page=${page}`, {
+                        method: 'GET',
+
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list1');
+                        console.log(data);
+
+                        if (data.trim().length > 0) {
+                            movieList.innerHTML += data;
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+            document.getElementById('load-more3').addEventListener('click', function() {
+                const button = this;
+                const page = button.getAttribute('data-page');
+
+                fetch(`/movies3?page=${page}`, {
+                        method: 'GET',
+
+                    })
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(data => {
+                        const movieList = document.getElementById('movie-list3');
+                        // console.log(data);
+
+                        if (data.trim().length > 0) {
+                            movieList.innerHTML += data;
+
+                        } else {
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            button.style.display = 'none';
+                        }
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+
+
+
         });
     </script>
 @endsection
