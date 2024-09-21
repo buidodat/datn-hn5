@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Room::class);
             $table->foreignIdFor(MovieVersion::class);
+            $table->foreignIdFor(Movie::class);
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
