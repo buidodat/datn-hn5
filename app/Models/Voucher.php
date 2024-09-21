@@ -22,4 +22,8 @@ class Voucher extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_vouchers')->withTimestamps();
+    }
 }
