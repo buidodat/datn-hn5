@@ -37,9 +37,9 @@ return [
         'redirect' => env('FACEBOOK_CALLBACK_URL'),
     ],
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' =>  env('GOOGLE_CALLBACK_URL'),
+        'client_id' => "484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com",
+        'client_secret' => "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",
+        'redirect' =>  "http://127.0.0.1:8000/auth/google/callback",
     ],
 
 ];
