@@ -36,13 +36,16 @@ class Room extends Model
     public function typeRoom(){
         return $this->belongsTo(TypeRoom::class);
     }
+
+
+
+
     public function branch(){
         return $this->belongsTo(Branch::class);
     }
     public function seats(){
         return $this->hasMany(Seat::class);
     }
-
 
     public function showtimes()
     {
