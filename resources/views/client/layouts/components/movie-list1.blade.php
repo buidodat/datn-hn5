@@ -15,7 +15,8 @@
                 <div class="prs_upcom_movie_img_overlay"></div>
                 <div class="prs_upcom_movie_img_btn_wrapper">
                     <ul>
-                        <li><a id="buy-ticket-btn">Mua vé</a></li>
+                        <li>    <a class="buy-ticket-btn"
+                            data-movie-id="{{ $movie->id }}">Mua vé</a></li>
                         <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a></li>
                     </ul>
                 </div>
