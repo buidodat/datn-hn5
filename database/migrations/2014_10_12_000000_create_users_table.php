@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('gender')->default(User::GENDERS['2']);
             $table->date('birthday')->nullable();
-            $table->integer('service_id')->nullable();
+            $table->string('service_id')->nullable();
             $table->string('service_name')->nullable();
             $table->string('type')->default(User::TYPE_MEMBER);
             $table->softDeletes();
