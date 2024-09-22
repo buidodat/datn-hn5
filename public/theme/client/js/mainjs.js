@@ -1,33 +1,31 @@
-/*document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+    const ratingScore = document.querySelector('.rating-score');
     let selectedRating = 0;
 
     stars.forEach(star => {
-        // Handle hover event
         star.addEventListener('mouseover', function () {
             resetStars();
             const value = parseInt(this.getAttribute('data-value'));
             highlightStars(value);
-            document.querySelector('.rating-score').innerText = `${value} điểm`;
+            ratingScore.textContent = `${value} điểm`;
         });
 
         // Handle mouseout event
         star.addEventListener('mouseout', function () {
             resetStars();
-            if (selectedRating > 0) {
-                highlightStars(selectedRating);
-                document.querySelector('.rating-score').innerText = `${selectedRating} điểm`;
-            } else {
-                document.querySelector('.rating-score').innerText = `0 điểm`;
-            }
+            let currentRating = selectedRating > 0 ? selectedRating : 0;
+            highlightStars(currentRating);
+            ratingScore.textContent = `${currentRating} điểm`;
         });
 
-        // Handle click event to select rating
         star.addEventListener('click', function () {
             selectedRating = parseInt(this.getAttribute('data-value'));
+            ratingInput.value = selectedRating;
             resetStars();
             highlightStars(selectedRating);
-            document.querySelector('.rating-score').innerText = `${selectedRating} điểm`;
+            ratingScore.textContent = `${selectedRating} điểm`;
         });
     });
 
@@ -35,6 +33,9 @@
         stars.forEach(star => {
             if (parseInt(star.getAttribute('data-value')) <= rating) {
                 star.classList.add('hover');
+                star.classList.add('highlighted');
+            } else {
+                star.classList.remove('highlighted');
             }
         });
     }
@@ -44,10 +45,10 @@
             star.classList.remove('hover');
         });
     }
-});*/
+});
+
 
 // Js cho tăng giảm số lượng trang thanh toán
-
 
 
 
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Js cho đoạn nhập voucher và điểm trang thanh toán 
+// Js cho đoạn nhập voucher và điểm trang thanh toán
 document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
     title.addEventListener('click', function () {
         const section = this.parentElement;
@@ -149,53 +150,6 @@ $(document).ready(function () {
                 $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' VNĐ');
                 $('.total-discount').text(discountAmount.toLocaleString() + ' VNĐ');
 
-// js cho modal chọn suất chiếu trang home 
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.date-display').forEach(btn => {
-
-        btn.addEventListener('click', () => {
-            // console.log('Button clicked:', btn);
-
-            const currentActive = document.querySelector('.date-display.active');
-            if (currentActive) {
-                currentActive.classList.remove('active');
-            }
-            btn.classList.add('active');
-        });
-    });
-});
-
-//
-document.querySelectorAll('.location-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelector('.location-btn.active').classList.remove('active');
-        btn.classList.add('active');
-    });
-});
-
-// 
-document.querySelectorAll('.format-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelector('.format-btn.active').classList.remove('active');
-        btn.classList.add('active');
-    });
-});
-
-// 
-document.querySelectorAll('.time-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // You can add custom functionality here for when a time is selected
-        alert(`You selected the ${btn.innerText} showtime.`);
-    });
-});
-
-
-
-
-
-
-
 
                 $('#apply-voucher-btn').attr('disabled', false);
                 attachCancelVoucherEvent();
@@ -233,6 +187,117 @@ document.querySelectorAll('.time-btn').forEach(btn => {
         });
     }
 });
+
+function attachCancelVoucherEvent() {
+    $('#cancel-voucher-btn').on('click', function () {
+        // Phục hồi giá trị và nút bấm về trạng thái ban đầu
+        $('#voucher-form')[0].reset();
+        $('#voucher-response').html('');
+
+        // Lấy giá trị tổng tiền ban đầu và định dạng lại
+        var originalTotalPrice = parseInt($('#total-price').val());
+        $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' VNĐ');
+
+        $('.total-discount').text('0 VNĐ');
+
+        // Cập nhật lại trạng thái nút
+        $('#apply-voucher-btn').attr('disabled', false);
+    });
+}
+
+// Code xử lý chính
+$('#voucher-form').on('submit', function (e) {
+    e.preventDefault();
+
+    $('#apply-voucher-btn').attr('disabled', true);
+
+    var formData = {
+        code: $('#voucher_code').val(),
+        _token: csrfToken
+    };
+
+    $.ajax({
+        url: routeUrl,
+        type: "POST",
+        data: formData,
+        success: function (response) {
+            var discountAmount = response.discount;
+            var discountAmountFormated = response.discount.toLocaleString();
+
+            $('#voucher-response').html(`
+        <div class="t-success" style="">${response.success}</div>
+        <div class="show-text">
+        <span>Voucher: <b>${response.voucher_code}</b></span>
+        <span>Giảm giá: <b>${discountAmountFormated}</b> vnđ</span>
+        <button id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
+        </div>
+      `);
+
+            var totalPrice = parseInt($('#total-price').val());
+            var totalPricePayment = totalPrice - discountAmount;
+
+            $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' VNĐ');
+            $('.total-discount').text(discountAmount.toLocaleString() + ' VNĐ');
+
+            $('#apply-voucher-btn').attr('disabled', false);
+            attachCancelVoucherEvent();
+        },
+        error: function (xhr) {
+            var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
+            showModalError(error);
+            $('#apply-voucher-btn').attr('disabled', false);
+        }
+    });
+});
+
+
+
+// js cho modal chọn suất chiếu trang home
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.date-display').forEach(btn => {
+
+        btn.addEventListener('click', () => {
+            // console.log('Button clicked:', btn);
+
+            const currentActive = document.querySelector('.date-display.active');
+            if (currentActive) {
+                currentActive.classList.remove('active');
+            }
+            btn.classList.add('active');
+        });
+    });
+});
+
+//
+document.querySelectorAll('.location-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('.location-btn.active').classList.remove('active');
+        btn.classList.add('active');
+    });
+});
+
+//
+document.querySelectorAll('.format-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('.format-btn.active').classList.remove('active');
+        btn.classList.add('active');
+    });
+});
+
+//
+document.querySelectorAll('.time-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // You can add custom functionality here for when a time is selected
+        alert(`You selected the ${btn.innerText} showtime.`);
+    });
+});
+
+
+
+
+
+
 
 //cancer voucher
 // function attachCancelVoucherEvent() {

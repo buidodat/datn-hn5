@@ -30,6 +30,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
 
 Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
+Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
 Route::get('choose-seat', function () {
@@ -78,6 +79,11 @@ Auth::routes(['verify' => true]);
 Route::controller(LoginFacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
+// LOGIN GOOGLE
+Route::controller(\App\Http\Controllers\Auth\GoogleAuthController::class)->group(function () {
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'callBackGoogle');
 });
 
 Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);

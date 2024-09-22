@@ -59,7 +59,7 @@
                         <a href="{{ route('auth.facebook') }}"> Đăng nhập với Facebook</a>
                     </div>
                     <div class="float_left nutgm">
-                        <a href="#"> Đăng nhập với Google</a>
+                        <a href="{{ route('auth.google') }}"> Đăng nhập với Google</a>
                     </div>
                     <div class="st_form_pop_signin_btn float_left">
                         <h4>Không có tài khoản? <a href="{{ route('register') }}">Đăng ký</a></h4>

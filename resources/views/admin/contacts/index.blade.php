@@ -59,6 +59,7 @@
                                 <th>Tiêu đề</th>
                                 <th>Nội dung</th>
                                 <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -72,20 +73,23 @@
                                     <td>{{ $contact->title }}</td>
                                     <td>{{ $contact->content }}</td>
                                     <td>{{ $contact->created_at }}</td>
+                                    <td>{!! $contact->status ? 
+                                        '<span class="badge bg-success-subtle text-success text-uppercase">Đã xử lý</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Chưa xử lí</span>' !!}</td>
                                     <td>
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
+                                        {{-- <a href="">
+                                            <button title="Xem chi tiết" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a> --}}
 
                                         <a href="{{ route('admin.contacts.edit', $contact)}}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                            <button title="Sửa" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        <form action="{{route('admin.contacts.destroy', $contact)}}" method="post" class="d-inline-block">
+                                        {{-- <form action="{{route('admin.contacts.destroy', $contact)}}" method="post" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach

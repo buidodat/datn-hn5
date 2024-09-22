@@ -12,7 +12,7 @@ class MovieDetailController extends Controller
 {
     public function show(string $slug){
         $movie = Movie::where('slug',$slug)->firstOrFail();
-        $listBinhLuan = $movie->movieReview;
+//        $listBinhLuan = $movie->movieReview;
         $userReviewed = false;
         if (Auth::check()) {
             $review = MovieReview::where('user_id', Auth::id())
@@ -22,9 +22,16 @@ class MovieDetailController extends Controller
                 $userReviewed = true;
             }
         }
-        return view('client.movie-detail' , compact('movie','listBinhLuan','userReviewed'));
+        return view('client.movie-detail' , compact('movie','userReviewed'));
     }
+    public function getComments($movieId)
+    {
+        $movie = Movie::findOrFail($movieId);
 
+        $listBinhLuan = $movie->movieReview()->with('user')->get();
+
+        return response()->json($listBinhLuan);
+    }
     public function addReview(Request $request, string $slug)
     {
         //dd($request->all());
