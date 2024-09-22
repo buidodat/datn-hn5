@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Js cho đoạn nhập voucher và điểm trang thanh toán 
+// Js cho đoạn nhập voucher và điểm trang thanh toán
 document.querySelectorAll('.voucher-title, .points-title').forEach(title => {
     title.addEventListener('click', function () {
         const section = this.parentElement;
@@ -151,7 +151,6 @@ $(document).ready(function () {
                 $('.total-discount').text(discountAmount.toLocaleString() + ' VNĐ');
 
 
-
                 $('#apply-voucher-btn').attr('disabled', false);
                 attachCancelVoucherEvent();
             },
@@ -189,8 +188,71 @@ $(document).ready(function () {
     }
 });
 
+function attachCancelVoucherEvent() {
+    $('#cancel-voucher-btn').on('click', function () {
+        // Phục hồi giá trị và nút bấm về trạng thái ban đầu
+        $('#voucher-form')[0].reset();
+        $('#voucher-response').html('');
 
-// js cho modal chọn suất chiếu trang home 
+        // Lấy giá trị tổng tiền ban đầu và định dạng lại
+        var originalTotalPrice = parseInt($('#total-price').val());
+        $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' VNĐ');
+
+        $('.total-discount').text('0 VNĐ');
+
+        // Cập nhật lại trạng thái nút
+        $('#apply-voucher-btn').attr('disabled', false);
+    });
+}
+
+// Code xử lý chính
+$('#voucher-form').on('submit', function (e) {
+    e.preventDefault();
+
+    $('#apply-voucher-btn').attr('disabled', true);
+
+    var formData = {
+        code: $('#voucher_code').val(),
+        _token: csrfToken
+    };
+
+    $.ajax({
+        url: routeUrl,
+        type: "POST",
+        data: formData,
+        success: function (response) {
+            var discountAmount = response.discount;
+            var discountAmountFormated = response.discount.toLocaleString();
+
+            $('#voucher-response').html(`
+        <div class="t-success" style="">${response.success}</div>
+        <div class="show-text">
+        <span>Voucher: <b>${response.voucher_code}</b></span>
+        <span>Giảm giá: <b>${discountAmountFormated}</b> vnđ</span>
+        <button id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
+        </div>
+      `);
+
+            var totalPrice = parseInt($('#total-price').val());
+            var totalPricePayment = totalPrice - discountAmount;
+
+            $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' VNĐ');
+            $('.total-discount').text(discountAmount.toLocaleString() + ' VNĐ');
+
+            $('#apply-voucher-btn').attr('disabled', false);
+            attachCancelVoucherEvent();
+        },
+        error: function (xhr) {
+            var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
+            showModalError(error);
+            $('#apply-voucher-btn').attr('disabled', false);
+        }
+    });
+});
+
+
+
+// js cho modal chọn suất chiếu trang home
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.date-display').forEach(btn => {
@@ -215,7 +277,7 @@ document.querySelectorAll('.location-btn').forEach(btn => {
     });
 });
 
-// 
+//
 document.querySelectorAll('.format-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelector('.format-btn.active').classList.remove('active');
@@ -223,7 +285,7 @@ document.querySelectorAll('.format-btn').forEach(btn => {
     });
 });
 
-// 
+//
 document.querySelectorAll('.time-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         // You can add custom functionality here for when a time is selected
