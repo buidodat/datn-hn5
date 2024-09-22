@@ -27,6 +27,7 @@ class HomeController extends Controller
             ['release_date', '>', $currentNow],
             ['is_special', '!=', '1']
         ])
+            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
@@ -39,6 +40,7 @@ class HomeController extends Controller
             ['end_date', '>', $currentNow],
             ['is_special', '!=', '1']
         ])
+            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
@@ -48,6 +50,7 @@ class HomeController extends Controller
             ['is_show_home', '1'],
             ['is_special', '1']
         ])
+            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
@@ -120,11 +123,7 @@ class HomeController extends Controller
 
     public function getShowtimes($movieId)
     {
-        // $showtimes = Showtime::with(['room.cinema.branch', 'movieVersion', 'room.typeRoom'])
-        //     ->where('movie_id', $movieId)
-        //     ->where('is_active', '1')
-        //     ->get();
-        $showtimes = Showtime::with('room', 'movieVersion', 'movie')
+        $showtimes = Showtime::with(['room.cinema', 'movieVersion', 'movie'])
             ->where('movie_id', $movieId)
             ->where('is_active', '1')
             ->get();

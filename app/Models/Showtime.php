@@ -24,9 +24,13 @@ class Showtime extends Model
     {
         return $this->belongsTo(Room::class);
     }
-    public function movie_version()
+    public function movieVersion()
     {
         return $this->belongsTo(MovieVersion::class);
+    }
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
     }
 
     // Thời gian dọn phòng: 15p

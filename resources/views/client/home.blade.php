@@ -60,9 +60,12 @@
                                                     <div class="prs_upcom_movie_img_btn_wrapper">
                                                         <ul>
                                                             <li>
-                                                                {{-- <a id="buy-ticket-btn">Mua vé</a> --}}
-                                                                <a class="buy-ticket-btn"
-                                                                    data-movie-id="{{ $movie->id }}">Mua vé</a>
+                                                                @if ($movie->showtimes->count() > 0)
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
+                                                                @else
+                                                                    <a>Không suất chiếu</a>
+                                                                @endif
 
 
                                                             </li>
@@ -138,10 +141,14 @@
                                                     <div class="prs_upcom_movie_img_btn_wrapper">
                                                         <ul>
                                                             <li>
-                                                                {{-- <a id="buy-ticket-btn">Mua vé</a> --}}
-                                                                <a class="buy-ticket-btn"
-                                                                    data-movie-id="{{ $movie->id }}">Mua vé</a>
 
+
+                                                                @if ($movie->showtimes->count() > 0)
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
+                                                                @else
+                                                                    <a>Không suất chiếu</a>
+                                                                @endif
                                                             </li>
                                                             <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                             </li>
@@ -169,9 +176,7 @@
 
 
                                 </div>
-                                {{-- <div class="pagination-wrapper">
-                                        {{ $moviesShowing->links() }}
-                                    </div> --}}
+
 
                             </div>
 
@@ -221,10 +226,12 @@
                                                     <div class="prs_upcom_movie_img_btn_wrapper">
                                                         <ul>
                                                             <li>
-                                                                {{-- <a id="buy-ticket-btn">Mua vé</a> --}}
-                                                                <a class="buy-ticket-btn"
-                                                                    data-movie-id="{{ $movie->id }}">Mua vé</a>
-
+                                                                @if ($movie->showtimes->count() > 0)
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
+                                                                @else
+                                                                    <a>Không suất chiếu</a>
+                                                                @endif
                                                             </li>
                                                             <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
                                                             </li>
@@ -666,7 +673,7 @@
         // Ajax load xem thêm 3 tab
         document.addEventListener('DOMContentLoaded', function() {
             attachBuyTicketEvent
-        (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
+                (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
 
             document.getElementById('load-more2').addEventListener('click', function() {
                 const button = this;
@@ -765,11 +772,11 @@
                         const movieId = this.getAttribute("data-movie-id");
                         console.log(movieId);
 
-                        // Fetch showtimes for the movie
+
                         fetch(`/movie/${movieId}/showtimes`)
                             .then(response => response.json())
                             .then(data => {
-                                // console.log("Showtimes data: ", data);
+                                console.log("Showtimes data: ", data);
                                 populateShowtimes(
                                     data); // Bắt đầu từ đây là Sai, là code lỏ, ko chạy đc
                             })
@@ -777,43 +784,45 @@
                                 console.error("Lỗi fetch showtime api: ", error);
                             });
 
-                        modal.style.display = "block"; // Show modal
+                        modal.style.display = "block";
                     };
                 });
 
                 closeBtn.onclick = function() {
-                    modal.style.display = "none"; // Close modal
+                    modal.style.display = "none";
                 };
 
                 window.onclick = function(event) {
                     if (event.target == modal) {
-                        modal.style.display = "none"; // Close modal on outside click
+                        modal.style.display = "none";
                     }
                 };
             }
 
-            function populateShowtimes(data) { //Hàm lỏ ko chạy đc
+            function populateShowtimes(data) {
                 const showtimeContainer = document.querySelector(".showtimes");
-                showtimeContainer.innerHTML = ''; // Clear any existing showtimes
-                console.log(data);
+                showtimeContainer.innerHTML = ''; // Xóa tất cả suất chiếu hiện tại
 
                 data.forEach(showtime => {
-                    const cinemaName = showtime.room_id.cinema_id.name;
-                    const roomName = showtime.room_id.name;
-                    const movieVersion = showtime.movie_version_id.name;
+                    const cinemaName = showtime.room && showtime.room.cinema ? showtime.room.cinema.name :
+                        'Không xác định';
+                    const roomName = showtime.room ? showtime.room.name : 'Không xác định';
+                    const movieVersion = showtime.movie_version ? showtime.movie_version.name :
+                        'Không xác định';
                     const startTime = showtime.start_time;
                     const endTime = showtime.end_time;
 
-                    console.log(showtime);
+                    console.log(showtime); // Kiểm tra dữ liệu suất chiếu
 
-                    // Create HTML for each showtime
+                    // Tạo HTML cho mỗi suất chiếu
                     const showtimeItem = `
-                <div class="showtime-item">
-                    <h3>${cinemaName}</h3>
-                    <p>Rạp: ${roomName}, Phiên bản: ${movieVersion}</p>
-                    <button class="time-btn">${startTime} - ${endTime}</button>
-                </div>
-            `;
+            <div class="showtime-item">
+                <h3>${cinemaName}</h3>
+                <p>Rạp: ${roomName}, Phiên bản: ${movieVersion}</p>
+                <button class="time-btn">${startTime}</button>
+            </div>
+        `;
+
 
                     showtimeContainer.innerHTML += showtimeItem;
                 });
@@ -821,8 +830,9 @@
 
 
 
+
             attachBuyTicketEvent
-        (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
+                (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
 
 
 
