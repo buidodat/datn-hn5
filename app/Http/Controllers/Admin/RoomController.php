@@ -26,8 +26,9 @@ class RoomController extends Controller
     // }
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
+        // $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
+        $branches = Branch::with('cinemas')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('branches'));
     }
 
     /**x
@@ -36,7 +37,7 @@ class RoomController extends Controller
     public function create()
     {
         $capacities = Room::CAPACITIESS;
-        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        $branches = Branch::where('is_active',1)->pluck('name', 'id')->all();
         $cinemas = Cinema::pluck('name', 'id')->all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'branches', 'cinemas']));
@@ -52,17 +53,19 @@ class RoomController extends Controller
         DB::transaction(function () use ($request) {
 
             $dataRoom = [
+                'branch_id' =>$request->branch_id,
                 'cinema_id' => $request->cinema_id,
                 'type_room_id' => $request->type_room_id,
                 'name' => $request->name,
-                'capacity' => $request->capacity,
+                'capacity' => 225,
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
             $room =  Room::create($dataRoom);
 
 
-            $rowSeatRegular = $this->convertNumberToLetters(4);
+            $rowSeatRegular = $this->convertNumberToLetters();
+
             foreach ($request->seatJsons as $seat) { // duyệt mảng json
 
                 $seat = json_decode($seat, true); // chuyển đổi json thành mẩng

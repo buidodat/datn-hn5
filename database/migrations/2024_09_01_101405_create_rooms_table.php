@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch;
 use App\Models\Cenima;
 use App\Models\Cinema;
 use App\Models\TypeRoom;
@@ -16,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Branch::class);
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
             $table->string('name');
