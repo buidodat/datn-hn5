@@ -30,6 +30,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
 
 Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
+Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
 Route::get('choose-seat', function () {

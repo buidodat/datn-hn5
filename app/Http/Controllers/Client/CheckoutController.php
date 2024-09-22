@@ -80,12 +80,12 @@ class CheckoutController extends Controller
 //            return response()->json(['error' => 'Voucher không tồn tại hoặc chưa được áp dụng.'], 400);
 //        }
 //
-//        /*$voucher = Voucher::find($userVoucher->voucher_id);
+//        $voucher = Voucher::find($userVoucher->voucher_id);
 //        if ($voucher) {
 //            $voucher->increment('quantity');
 //        }
 //
-//        $userVoucher->delete();*/
+//        $userVoucher->delete();
 //
 //        DB::transaction(function() use ($userVoucher) {
 //            $voucher = Voucher::find($userVoucher->voucher_id);

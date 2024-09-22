@@ -1,33 +1,31 @@
-/*document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+    const ratingScore = document.querySelector('.rating-score');
     let selectedRating = 0;
 
     stars.forEach(star => {
-        // Handle hover event
         star.addEventListener('mouseover', function () {
             resetStars();
             const value = parseInt(this.getAttribute('data-value'));
             highlightStars(value);
-            document.querySelector('.rating-score').innerText = `${value} điểm`;
+            ratingScore.textContent = `${value} điểm`;
         });
 
         // Handle mouseout event
         star.addEventListener('mouseout', function () {
             resetStars();
-            if (selectedRating > 0) {
-                highlightStars(selectedRating);
-                document.querySelector('.rating-score').innerText = `${selectedRating} điểm`;
-            } else {
-                document.querySelector('.rating-score').innerText = `0 điểm`;
-            }
+            let currentRating = selectedRating > 0 ? selectedRating : 0;
+            highlightStars(currentRating);
+            ratingScore.textContent = `${currentRating} điểm`;
         });
 
-        // Handle click event to select rating
         star.addEventListener('click', function () {
             selectedRating = parseInt(this.getAttribute('data-value'));
+            ratingInput.value = selectedRating;
             resetStars();
             highlightStars(selectedRating);
-            document.querySelector('.rating-score').innerText = `${selectedRating} điểm`;
+            ratingScore.textContent = `${selectedRating} điểm`;
         });
     });
 
@@ -35,6 +33,9 @@
         stars.forEach(star => {
             if (parseInt(star.getAttribute('data-value')) <= rating) {
                 star.classList.add('hover');
+                star.classList.add('highlighted');
+            } else {
+                star.classList.remove('highlighted');
             }
         });
     }
@@ -44,7 +45,8 @@
             star.classList.remove('hover');
         });
     }
-});*/
+});
+
 
 // Js cho tăng giảm số lượng trang thanh toán
 
@@ -69,7 +71,6 @@
 //         quantityInput.value = currentValue + 1;
 //     });
 // });
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -120,12 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
-
-
-
-
-
 
 
 // Js cho đoạn nhập voucher và điểm trang thanh toán

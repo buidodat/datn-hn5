@@ -4,6 +4,39 @@
     Chi tiết phim
 @endsection
 
+@section('styles')
+    <style>
+        .content-cmt{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .content-cmt button {
+            padding: 8px 17px;
+            margin: 0 5px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content-cmt button:disabled {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+            cursor: not-allowed;
+        }
+
+        .content-cmt button:hover:enabled {
+            background-color: #f1761d;
+            color: #fff;
+            border-color: #f1761d;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="st_slider_index_sidebar_main_wrapper st_slider_index_sidebar_main_wrapper_md float_left">
         <div class="container">
@@ -20,10 +53,7 @@
                                             if (!\Str::contains($url, 'http')) {
                                                 $url = Storage::url($url);
                                             }
-
                                         @endphp
-
-
                                         <img src="{{ $url }}"
                                              alt="" height="">
                                     </div>
@@ -148,22 +178,23 @@
                                                                         </div>
                                                                     </div>
                                                                 @else
-                                                                    <p>Bạn đã đánh giá phim một lần và không thể đánh giá hoặc chỉnh sửa thêm nữa.</p>
+                                                                    <p>Bạn đã đánh giá phim một lần và không thể đánh
+                                                                        giá hoặc chỉnh sửa thêm nữa.</p>
                                                                 @endif
                                                             </form>
                                                         </div>
                                                     </div>
                                                 @else
                                                     <div class="col-md-12">
-                                                    <p>Vui lòng <a style="color: #f1761d" href="{{ route('login') }}">đăng nhập</a> để viết
-                                                        đánh giá.</p>
+                                                        <p>Vui lòng <a style="color: #f1761d"
+                                                                       href="{{ route('login') }}">đăng nhập</a> để viết
+                                                            đánh giá.</p>
                                                     </div>
                                                 @endauth
                                             </div>
                                             <hr class="hr-black">
-                                            <div class="review-list">
-                                                <!-- Một bình luận -->
-                                                @foreach($listBinhLuan as $index => $comment)
+                                            <div class="review-list" id="comments">
+                                                {{--@foreach($listBinhLuan as $index => $comment)
                                                     <div class="review">
                                                         <div class="review-header">
                                                             <span class="reviewer-name">{{$comment->user->name}}</span>
@@ -181,31 +212,16 @@
                                                         <p class="review-content">{{$comment->description}}</p>
                                                         <div class="review-footer">
                                                             <span class="review-date">{{$comment->created_at}}</span>
-                                                            <span class="review-likes">| &#128077; 0</span>
                                                         </div>
                                                     </div>
-                                                @endforeach
-
-                                                {{--<div class="review">
-                                                    <div class="review-header">
-                                                        <span class="reviewer-name">Khách</span>
-                                                        <div class="review-rating">
-                                                            <span class="star">&#9733;</span>
-                                                            <span class="star">&#9733;</span>
-                                                            <span class="star ">&#9733;</span>
-                                                            <span class="star ">&#9733;</span>
-                                                            <span class="star ">&#9733;</span>
-                                                            <span class="review-score">5</span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="review-content">Phim quá hay luôn tuyệt vời</p>
-                                                    <div class="review-footer">
-                                                        <span class="review-date">27/08/2024</span>
-                                                        <span class="review-likes">| &#128077; 3</span>
-                                                    </div>
-                                                </div>--}}
-                                                <!-- Thêm nhiều bình luận tương tự -->
+                                                @endforeach--}}
                                             </div>
+                                            <div class="content-cmt">
+                                                <button id="prev" onclick="previousComments()" disabled>Trở Lại</button>
+                                                <button id="next" onclick="nextComments()">Tiếp Tục</button>
+                                            </div>
+
+
                                         </div>
 
                                     </div>
@@ -231,44 +247,85 @@
         </div>
     </div>
 
+
+
     @include('client.showtime')
     <!-- st slider sidebar wrapper End -->
 @endsection
-@section('style-libs')
+
+@section('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const stars = document.querySelectorAll('.star');
-            const ratingInput = document.getElementById('rating');
-            const ratingScore = document.querySelector('.rating-score');
+        // Lấy danh sách bình luận từ server
+        let comments = [];
+        let currentPage = 0;
+        const perPage = 3;
+        const movieId = {{ $movie->id }};
 
-            stars.forEach(star => {
-                star.addEventListener('mouseover', function () {
-                    let rating = this.getAttribute('data-value');
-                    highlightStars(rating);
-                });
+        function fetchComments() {
+            fetch(`/movie/${movieId}/comments`)
+                .then(response => response.json())
+                .then(data => {
+                    comments = data;
+                    showComments();
+                })
+                .catch(error => console.error('Lỗi khi tải bình luận:', error));
+        }
 
-                star.addEventListener('mouseout', function () {
-                    let currentRating = ratingInput.value;
-                    highlightStars(currentRating);
-                });
+        function showComments() {
+            const start = currentPage * perPage;
+            const selectedComments = comments.slice(start, start + perPage);
 
-                star.addEventListener('click', function () {
-                    let rating = this.getAttribute('data-value');
-                    ratingInput.value = rating;
-                    ratingScore.textContent = rating + ' điểm';
-                });
+            let html = '';
+
+            selectedComments.forEach(comment => {
+                html += `
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">${comment.user.name}</span>
+                                <div class="review-rating">
+                                    `;
+
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= comment.rating) {
+                        html += `<span class="star">&#9733;</span>`;
+                    } else {
+                        html += `<span class="star empty">&#9733;</span>`;
+                    }
+                }
+
+                html += `
+                            <span class="review-score">${comment.rating}</span>
+                        </div>
+                    </div>
+                    <p class="review-content">${comment.description}</p>
+                    <div class="review-footer">
+                        <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `;
             });
 
-            function highlightStars(rating) {
-                stars.forEach(star => {
-                    if (star.getAttribute('data-value') <= rating) {
-                        star.classList.add('highlighted');
-                    } else {
-                        star.classList.remove('highlighted');
-                    }
-                });
+            document.getElementById('comments').innerHTML = html;
+
+            document.getElementById('prev').disabled = currentPage === 0;
+            document.getElementById('next').disabled = (currentPage + 1) * perPage >= comments.length;
+        }
+
+        function nextComments() {
+            if ((currentPage + 1) * perPage < comments.length) {
+                currentPage++;
+                showComments();
             }
-        });
+        }
+
+        function previousComments() {
+            if (currentPage > 0) {
+                currentPage--;
+                showComments();
+            }
+        }
+
+        fetchComments();
 
     </script>
 @endsection
