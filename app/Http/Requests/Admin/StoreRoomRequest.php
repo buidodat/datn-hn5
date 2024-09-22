@@ -36,17 +36,16 @@ class StoreRoomRequest extends FormRequest
         // ];
         $cinemaId = $this->branch_id;
         return [
-            // 'name' => [
-            //     'required',
-            //     Rule::unique('rooms')
-            //         ->where(function ($query) use ($cinemaId) {
-            //             return $query->where('cinema_id', $cinemaId);
-            //         }),
-            // ],
-            // 'branch_id' => 'required|integer',
-            // 'cinema_id' => 'required|integer',
-            // 'type_room_id' => 'required|integer',
-            // 'capacity' => 'required|integer',
+            'name' => [
+                'required',
+                Rule::unique('rooms')
+                    ->where(function ($query) use ($cinemaId) {
+                        return $query->where('cinema_id', $cinemaId);
+                    }),
+            ],
+            'branch_id' => 'required|integer',
+            'cinema_id' => 'required|integer',
+            'type_room_id' => 'required|integer',
         ];
 
     }
@@ -59,7 +58,6 @@ class StoreRoomRequest extends FormRequest
             'branch_id.required' => "Vui lòng chọn chi nhánh.",
             'cinema_id.required' => "Vui lòng chọn rạp chiếu.",
             'type_room_id.required' => "Vui lòng chọn loại phòng.",
-            'capacity.required' => "Vui lòng chọn sức chứa.",
         ];
     }
 }

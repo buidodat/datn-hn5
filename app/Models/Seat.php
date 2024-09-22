@@ -17,6 +17,25 @@ class Seat extends Model
         'is_active',
     ];
     protected $cast = [
-        'is_active'=>'boolean'
+        'is_active' => 'boolean'
     ];
+
+    // Quan hệ với phòng (Room)
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    // Quan hệ với loại ghế (TypeSeat)
+    public function typeSeat()
+    {
+        return $this->belongsTo(TypeSeat::class);
+    }
+
+    public function showtimes()
+    {
+        return $this->belongsToMany(Showtime::class, 'seat_showtimes', 'seat_id', 'showtime_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }
