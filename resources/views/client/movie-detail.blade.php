@@ -6,12 +6,13 @@
 
 @section('styles')
     <style>
-        .content-cmt{
+        .content-cmt {
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 20px 0;
         }
+
         .content-cmt button {
             padding: 8px 17px;
             margin: 0 5px;
@@ -254,8 +255,8 @@
 @endsection
 
 @section('scripts')
+
     <script>
-        // Lấy danh sách bình luận từ server
         let comments = [];
         let currentPage = 0;
         const perPage = 3;
@@ -266,6 +267,13 @@
                 .then(response => response.json())
                 .then(data => {
                     comments = data;
+                    if (comments.length > perPage) {
+                        document.getElementById('prev').style.visibility = 'visible';
+                        document.getElementById('next').style.visibility = 'visible';
+                    } else {
+                        document.getElementById('prev').style.visibility = 'hidden';
+                        document.getElementById('next').style.visibility = 'hidden';
+                    }
                     showComments();
                 })
                 .catch(error => console.error('Lỗi khi tải bình luận:', error));
@@ -279,11 +287,11 @@
 
             selectedComments.forEach(comment => {
                 html += `
-                        <div class="review">
-                            <div class="review-header">
-                                <span class="reviewer-name">${comment.user.name}</span>
-                                <div class="review-rating">
-                                    `;
+        <div class="review">
+            <div class="review-header">
+                <span class="reviewer-name">${comment.user.name}</span>
+                <div class="review-rating">
+        `;
 
                 for (let i = 1; i <= 5; i++) {
                     if (i <= comment.rating) {
@@ -294,15 +302,15 @@
                 }
 
                 html += `
-                            <span class="review-score">${comment.rating}</span>
-                        </div>
-                    </div>
-                    <p class="review-content">${comment.description}</p>
-                    <div class="review-footer">
-                        <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
-                    </div>
+                <span class="review-score">${comment.rating}</span>
                 </div>
-            `;
+            </div>
+            <p class="review-content">${comment.description}</p>
+            <div class="review-footer">
+                <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
+            </div>
+        </div>
+        `;
             });
 
             document.getElementById('comments').innerHTML = html;
@@ -326,6 +334,6 @@
         }
 
         fetchComments();
-
     </script>
+
 @endsection
