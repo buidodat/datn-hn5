@@ -169,9 +169,8 @@ class DatabaseSeeder extends Seeder
         // branch , cinema , phòng, ngày, giờ
         // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
 
-        $roomCount = DB::table('rooms')->count();
-
-        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+        $roomCount = [1,2,3,4];
+        foreach ($roomCount as $room_id) {
             for ($i = 0; $i < 10; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
                 // Giả lập start_time
                 $start_time = fake()->dateTimeBetween('now', '+1 week');
