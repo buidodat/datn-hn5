@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Client\ChooseSeatController;
 use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
 use App\Http\Controllers\Client\UserController;
+use App\Models\Room;
+use App\Models\Seat;
+use App\Models\Showtime;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,9 +37,22 @@ Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-
 Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
-Route::get('choose-seat', function () {
-    return view('client.choose-seat');
-})->name('choose-seat');
+
+
+Route::get('choose-seat/', [ChooseSeatController::class, 'show'])->name('choose-seat');
+
+
+Route::get('show-time/{id}', [ChooseSeatController::class, 'show'])->name('show-time');
+// Route::get('show-time/{id}',  function ($id) {
+//     $showtime = Showtime::findOrFail($id);
+
+//     // $d = $showtime->room;
+//     $showtime->room->seats;
+//     dd($showtime->toArray());
+// });
+
+
+
 
 Route::get('login', function () {
     return view('client.login');
