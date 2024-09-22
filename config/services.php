@@ -32,9 +32,9 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => env('FACEBOOK_CLIENT_ID'),
-        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect' => env('FACEBOOK_CALLBACK_URL'),
+        'client_id' => '1191806508754166',
+        'client_secret' => '1cdae081c9bd6ba5cd5fff569e7912a7',
+        'redirect' => env('APP_URL') . '/auth/facebook/callback',
     ],
     'google' => [
         'client_id' => "484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com",

@@ -25,6 +25,7 @@ class Showtime extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
     public function movieVersion()
     {
         return $this->belongsTo(MovieVersion::class);
@@ -32,6 +33,14 @@ class Showtime extends Model
     public function movie()
     {
         return $this->belongsTo(Movie::class);
+    }
+
+
+        public function seats()
+    {
+        return $this->belongsToMany(Seat::class, 'seat_showtimes', 'showtime_id', 'seat_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
     }
 
     // Thời gian dọn phòng: 15p

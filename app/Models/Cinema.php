@@ -23,4 +23,7 @@ class Cinema extends Model
     public function branch(){
         return $this->belongsTo(Branch::class);
     }
+    public function rooms(){
+        return $this->hasMany(Branch::class);
+    }
 }

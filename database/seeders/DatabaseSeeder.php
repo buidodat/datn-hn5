@@ -146,8 +146,12 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
 
         foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
+            // Lấy branch_id từ cinema_id
+            $branch_id = DB::table('cinemas')->where('id', $cinema_id)->value('branch_id');
+
             foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
                 DB::table('rooms')->insert([
+                    'branch_id' => $branch_id, // Thêm branch_id vào đây
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
@@ -160,13 +164,13 @@ class DatabaseSeeder extends Seeder
         }
 
 
+
         // Fake data Suất chiếu
         // branch , cinema , phòng, ngày, giờ
         // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
 
-        $roomCount = DB::table('rooms')->count();
-
-        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+        $roomCount = [1,2,3,4];
+        foreach ($roomCount as $room_id) {
             for ($i = 0; $i < 10; $i++) { // Tạo 10 lịch chiếu cho mỗi phòng
                 // Giả lập start_time
                 $start_time = fake()->dateTimeBetween('now', '+1 week');
