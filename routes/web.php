@@ -80,6 +80,11 @@ Route::controller(LoginFacebookController::class)->group(function () {
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
+// LOGIN GOOGLE
+Route::controller(\App\Http\Controllers\Auth\GoogleAuthController::class)->group(function () {
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'callBackGoogle');
+});
 
 Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 
