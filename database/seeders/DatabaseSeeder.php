@@ -146,8 +146,12 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
 
         foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
+            // Lấy branch_id từ cinema_id
+            $branch_id = DB::table('cinemas')->where('id', $cinema_id)->value('branch_id');
+
             foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
                 DB::table('rooms')->insert([
+                    'branch_id' => $branch_id, // Thêm branch_id vào đây
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
@@ -158,6 +162,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
 
 
         // Fake data Suất chiếu

@@ -33,77 +33,81 @@
         </div>
     </div>
     <!-- end page title -->
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách phòng chiếu</h5>
-                    <a href="{{ route('admin.rooms.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
-                </div>
-                @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
+    @foreach ($branches as $branch)
+        @php
+            $rooms = App\Models\Room::with('seats')->where('branch_id', $branch->id)->get();
+        @endphp
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5 class="card-title mb-0">Chi nhánh {{ $branch->name }}</h5>
+                        <a href="{{ route('admin.rooms.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                     </div>
-                @endif
-                @if (session()->has('error'))
-                    <div class="alert alert-warning m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
+                    @if (session()->has('success'))
+                        <div class="alert alert-success m-3">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+                    @if (session()->has('error'))
+                        <div class="alert alert-warning m-3">
+                            {{ session()->get('error') }}
+                        </div>
+                    @endif
 
-                <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên phòng chiếu</th>
-                                <th>Rạp chiếu</th>
-                                <th>Loại phòng chiếu</th>
-                                <th>Sức chứa</th>
-                                <th>Hoạt động</th>
-                                <th>Chức năng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($rooms as $index => $room)
+                    <div class="card-body">
+                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                            style="width:100%">
+                            <thead>
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $room->name }}</td>
-                                    <td>{{ $room->cinema->name }}</td>
-                                    <td>{{ $room->typeRoom->name }}</td>
-                                    <td>{{ $room->capacity }} chỗ ngồi</td>
-                                    <td>
-                                        {!! $room->is_active == 1
-                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.rooms.show', $room) }}">
-                                            <button title="xem" class="btn btn-primary btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button>
-                                        </a>
-                                        <a href="{{ route('admin.rooms.edit', $room) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                        <a href="{{ route('admin.rooms.destroy', $room) }}">
-                                            <button title="xem" class="btn btn-danger btn-sm " type="button"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </a>
-                                    </td>
+                                    <th>#</th>
+                                    <th>Tên phòng chiếu</th>
+                                    <th>Rạp chiếu</th>
+                                    <th>Loại phòng chiếu</th>
+                                    <th>Sức chứa</th>
+                                    <th>Hoạt động</th>
+                                    <th>Chức năng</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($rooms as  $room)
+                                    <tr>
+                                        <td>{{ $room->id }}</td>
+                                        <td>{{ $room->name }}</td>
+                                        <td>{{ $room->cinema->name }}</td>
+                                        <td>{{ $room->typeRoom->name }}</td>
+                                        <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                        <td>
+                                            {!! $room->is_active == 1
+                                                ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.rooms.show', $room) }}">
+                                                <button title="xem" class="btn btn-primary btn-sm " type="button"><i
+                                                        class="fas fa-eye"></i></button>
+                                            </a>
+                                            <a href="{{ route('admin.rooms.edit', $room) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
 
-                        </tbody>
+                                            {{-- <a href="{{ route('admin.rooms.destroy', $room) }}">
+                                                <button title="xem" class="btn btn-danger btn-sm " type="button"><i
+                                                        class="ri-delete-bin-7-fill"></i></button>
+                                            </a> --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                    </table>
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </div><!--end col-->
-    </div><!--end row-->
+            </div><!--end col-->
+        </div>
+    @endforeach
 @endsection
 
 
