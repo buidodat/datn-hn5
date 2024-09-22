@@ -801,16 +801,21 @@
 
             function populateShowtimes(data) {
                 const showtimeContainer = document.querySelector(".showtimes");
-                showtimeContainer.innerHTML = ''; // Xóa tất cả suất chiếu hiện tại
+                // const locationSelectionBtn = document.querySelector(".location-selection");
+                showtimeContainer.innerHTML = '';
+                // locationSelectionBtn.innerHTML = '';
 
                 data.forEach(showtime => {
                     const cinemaName = showtime.room && showtime.room.cinema ? showtime.room.cinema.name :
                         'Không xác định';
                     const roomName = showtime.room ? showtime.room.name : 'Không xác định';
+                    // const typeRoomName = showtime.room && showtime.room.typeRoom ? showtime.room.typeRoom : 'Không xác định';
+
                     const movieVersion = showtime.movie_version ? showtime.movie_version.name :
                         'Không xác định';
                     const startTime = showtime.start_time;
                     const endTime = showtime.end_time;
+                    // const branch = showtime.room.cinema.branch.name;
 
                     console.log(showtime); // Kiểm tra dữ liệu suất chiếu
 
@@ -820,9 +825,10 @@
                 <h3>${cinemaName}</h3>
                 <p>Rạp: ${roomName}, Phiên bản: ${movieVersion}</p>
                 <button class="time-btn">${startTime}</button>
-            </div>
-        `;
+            </div>`;
+                    // const locationSelectionItem = `<button class="location-btn">${ branch }</button>`;
 
+                    // locationSelectionBtn.innerHTML += locationSelectionItem;
 
                     showtimeContainer.innerHTML += showtimeItem;
                 });

@@ -170,7 +170,7 @@
                                     <span class='text-danger'>*</span>
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                     <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ old('end_time') }}" disabled>
+                                        value="{{ old('end_time') }}" >
                                     @error('end_time')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
