@@ -10,7 +10,8 @@
             <div class="row">
                 <div class="mb-3 title-choose-seat">
 
-                    <a href="#">Trang chủ ></a> <a href="#">Đặt vé ></a> <a href="#">{{ $showTime->movie->name }}</a>
+                    <a href="#">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
+                        href="#">{{ $showTime->movie->name }}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -36,7 +37,6 @@
 
                                 </div>
                                 <div class="">
-
                                     <div>
                                         <div class="container-screen">
                                             @php
@@ -57,6 +57,13 @@
                                                                         <td class="row-seat">
                                                                             @foreach ($showTime->room->seats as $seat)
                                                                                 @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                                                    @php
+                                                                                        // Lấy status từ bảng seat_showtimes thông qua pivot
+                                                                                        $seatStatus = $seat->showtimes
+                                                                                            ->where('id', $showTime->id)
+                                                                                            ->first()->pivot->status;
+                                                                                    @endphp
+
                                                                                     @if ($seat->type_seat_id == 1)
                                                                                         <span
                                                                                             class="solar--sofa-3-bold seat span-seat">
@@ -78,6 +85,31 @@
                                                                                                 class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
+
+                                                                                    {{-- @if ($seat->type_seat_id == 1)
+                                                                                        <span
+                                                                                            class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}
+                                                                                                ({{ $seatStatus }})</span>
+                                                                                        </span>
+                                                                                    @endif
+                                                                                    @if ($seat->type_seat_id == 2)
+                                                                                        <span
+                                                                                            class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}
+                                                                                                ({{ $seatStatus }})</span>
+                                                                                        </span>
+                                                                                    @endif
+                                                                                    @if ($seat->type_seat_id == 3)
+                                                                                        <span
+                                                                                            class="game-icons--sofa seat span-seat {{ $seatStatus }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}
+                                                                                                ({{ $seatStatus }})</span>
+                                                                                        </span>
+                                                                                    @endif --}}
                                                                                 @endif
                                                                             @endforeach
                                                                         </td>
@@ -239,7 +271,7 @@
                                         <li> Giờ chiếu: <span class="bold">{{ $showTime->start_time }}</span></li>
                                         <li> Phòng chiếu: <span class="bold">{{ $showTime->room->name }}</span></li>
                                         <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
-                                        <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li>
+                                        {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
                                     </ul>
                                 </div>
 
@@ -270,4 +302,20 @@
             });
         });
     </script>
+@endsection
+
+@section('styles')
+    <style>
+        .available {
+            background-color: green;
+        }
+
+        .reserved {
+            background-color: yellow;
+        }
+
+        .sold {
+            background-color: red;
+        }
+    </style>
 @endsection

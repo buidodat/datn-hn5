@@ -12,15 +12,13 @@ class ChooseSeatController extends Controller
     public function show(string $id)
     {
         $showTime = Showtime::findOrFail($id);
+        // $showTime = Showtime::with(['seats'])->findOrFail($id);
 
-
-        $showTime->seats;
-        
         // $showTime->room->seats;
         // $showTime->movie;
         // $showTime->movie_version;
         // $showTime->room->cinema;
-        dd($showTime->toArray());
+        // dd($showTime->toArray());
 
         return view('client.choose-seat', compact('showTime'));
     }

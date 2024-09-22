@@ -32,11 +32,10 @@ class Seat extends Model
         return $this->belongsTo(TypeSeat::class);
     }
 
-    // Quan hệ với lịch chiếu qua bảng trung gian seat_showtimes
-    public function showTimes()
+    public function showtimes()
     {
-        return $this->belongsToMany(ShowTime::class, 'seat_showtimes')
-            ->withPivot('status') // Trạng thái ghế tại suất chiếu
-            ->withTimestamps();   // created_at và updated_at
+        return $this->belongsToMany(Showtime::class, 'seat_showtimes', 'seat_id', 'showtime_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
     }
 }
