@@ -19,3 +19,11 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 - sử dụng queue thì chỉ cần implements ShouldQueue vào là xong 
 - để chạy được queue thì chạy php aritisan queue:work hoặc queue:listen. để ngắt thì Ctrl +C 
 - đối với chạy trên hosting thì queue:listen
+
+3. Đăng nhập bằng google 
+- php artisan ser
+- ENV: 
+GOOGLE_CLIENT_ID="484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+GOOGLE_CALLBACK_URL="http://127.0.0.1:8000/auth/google/callback"
+
