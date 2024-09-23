@@ -62,10 +62,12 @@ class ShowtimeController extends Controller
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
+
             // dd($request->all());
 
             Showtime::create($dataShowtimes);
 
+            
 
             return redirect()
                 ->route('admin.showtimes.index')

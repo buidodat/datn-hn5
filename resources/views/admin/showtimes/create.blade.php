@@ -90,7 +90,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Chi Nhánh:</label>
+                                        <label for="title" class="form-label ">Tên Chi nhánh:</label>
                                         <select name="branch_id" id="branch" class="form-select">
                                             <option value="">Chọn</option>
                                             @foreach ($branches as $item)
@@ -170,7 +170,7 @@
                                     <span class='text-danger'>*</span>
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                     <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ old('end_time') }}" >
+                                        value="{{ old('end_time') }}" readonly>
                                     @error('end_time')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -290,7 +290,7 @@
                         success: function(data) {
                             $.each(data, function(index, room) {
                                 roomSelect.append('<option  value="' + room.id +
-                                    '">' + room.name + '</option>');
+                                    '" >' + room.name + '</option>');
                             });
 
                             if (selectedRoomId) {
