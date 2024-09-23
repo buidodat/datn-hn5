@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(MovieVersion::class);
             $table->foreignIdFor(Movie::class);
             $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
