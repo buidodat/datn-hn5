@@ -23,7 +23,7 @@ class ShowtimeController extends Controller
     public function index()
     {
         //
-        $showtimes = Showtime::with(['room', 'movie_version'])->get();
+        $showtimes = Showtime::with(['room', 'movieVersion'])->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes'));
     }
 
@@ -55,6 +55,7 @@ class ShowtimeController extends Controller
             $dataShowtimes = [
                 'room_id' => $request->room_id,
                 'movie_version_id' => $request->movie_version_id,
+                'movie_id' => $request->movie_id,
                 'date' => $request->date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
@@ -89,7 +90,7 @@ class ShowtimeController extends Controller
     {
         //
 
-        $showtimes = Showtime::with(['room', 'movie_version'])->get();
+        $showtimes = Showtime::with(['room', 'movieVersion'])->get();
 
         $movies = Movie::where('is_active', '1')->get();
         $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
@@ -112,6 +113,7 @@ class ShowtimeController extends Controller
             $dataShowtimes = [
                 'room_id' => $request->room_id,
                 'movie_version_id' => $request->movie_version_id,
+                'movie_id' => $request->movie_id,
                 'date' => $request->date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
