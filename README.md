@@ -24,3 +24,7 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 - Laragon -> setting -> general -> hostname template: {name}.me
 ![img.png](img.png)
 
+Cho ai bị lỗi: 
+- php artisan optimize:clear
+- xóa cache trên máy (ctrl shìt r)
+
