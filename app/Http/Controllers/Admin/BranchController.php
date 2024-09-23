@@ -6,31 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBranchRequest;
 use App\Http\Requests\Admin\UpdateBranchRequest;
 use App\Models\Branch;
-use Illuminate\Http\Request;
-// use GuzzleHttp\Client; // Call api 
+use Illuminate\Support\Str;
+// use GuzzleHttp\Client; // Call api
 
 
 class BranchController extends Controller
 {
     const PATH_VIEW = 'admin.branches.'; // Sử dụng snake_case cho tên thư mục.
 
-    // public function fetchExternalBranches()
-    // {
-    //     $client = new Client();
-
-    //     try {
-    //         $response = $client->request('GET', 'https://api.example.com/branches');
-
-    //         if ($response->getStatusCode() == 200) {
-    //             $branches = json_decode($response->getBody(), true);
-    //             return response()->json($branches);
-    //         } else {
-    //             return response()->json(['error' => 'Unable to fetch branches'], 500);
-    //         }
-    //     } catch (\Exception $e) {
-    //         return response()->json(['error' => $e->getMessage()], 500);
-    //     }
-    // }
 
     public function index()
     {
@@ -47,6 +30,7 @@ class BranchController extends Controller
     public function store(StoreBranchRequest $request){
         try{
             $data = $request->all();
+            $data['slug'] = Str::slug($data['name']);
             $data['is_active'] ??= 0;
 
             Branch::query()->create($data);
@@ -59,9 +43,7 @@ class BranchController extends Controller
         }
     }
 
-    public function show(string $id){
 
-    }
     public function edit(Branch $branch){
         return view(self::PATH_VIEW . __FUNCTION__, compact('branch'));
     }
@@ -70,6 +52,7 @@ class BranchController extends Controller
     {
         try {
             $data = $request->all();
+            $data['slug'] = Str::slug($data['name']);
             $data['is_active'] ??= 0;
 
             $branch->update($data);

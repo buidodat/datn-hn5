@@ -60,7 +60,7 @@ class RoomController extends Controller
                 'capacity' => 225,
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
-
+            
             $room =  Room::create($dataRoom);
 
 
