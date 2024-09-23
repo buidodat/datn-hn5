@@ -102,7 +102,8 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($branches as $branch) {
             DB::table('branches')->insert([
-                'name' => $branch
+                'name' => $branch,
+                'slug' => Str::slug($branch)
             ]);
         }
 
@@ -123,6 +124,7 @@ class DatabaseSeeder extends Seeder
             DB::table('cinemas')->insert([
                 'branch_id' => $branchId,
                 'name' => $cinema,
+                'slug' => Str::slug($cinema),
                 'address' => $cinema . ', ' . fake()->address(),
             ]);
             $counter++;

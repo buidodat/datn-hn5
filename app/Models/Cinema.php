@@ -12,6 +12,7 @@ class Cinema extends Model
     protected $fillable = [
         'branch_id',
         'name',
+        'slug',
         'address',
         'description',
         'is_active'
