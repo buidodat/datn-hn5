@@ -114,11 +114,13 @@
                                             {{-- <a href="{{ route('admin.users.edit', $user) }}">
                                                 <button title="xem" class="btn btn-warning btn-sm mx-1 "
                                                     type="button"><i class="fas fa-edit"></i></button>
-                                            </a> --}}
-                                            {{-- <form action="{{ route('admin.users.destroy', $user) }}" method="POST" >
-                                                @method("DELETE")
+                                            </a>
+                                            <form action="{{route('admin.users.destroy', $user)}}" method="POST" class="d-inline-block">
                                                 @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm " onclick="return confirm('Bạn có muốn xóa ?')"><i class="fas fa-trash-alt"></i></button>
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
                                             </form> --}}
                                         </div>
                                     </td>

@@ -188,7 +188,7 @@
                                                 <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
                                             </td>
                                             <td rowspan="{{ $rowCount }}">
-                                                {{ \Carbon\Carbon::parse($showtime->date)->format('Y-m-d') }}
+                                                {{ \Carbon\Carbon::parse($showtime->date)->format('d-m-Y') }}
                                             </td>
                                         @endif
 
@@ -198,6 +198,10 @@
                                                 : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                         </td>
                                         <td>
+                                            {{-- <a href="{{ route('admin.showtimes.show',$showtime) }}">
+                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                        class="fas fa-eye"></i></button></a> --}}
+
                                             <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                                                 <button title="xem" class="btn btn-warning btn-sm" type="button"><i
                                                         class="fas fa-edit"></i></button>

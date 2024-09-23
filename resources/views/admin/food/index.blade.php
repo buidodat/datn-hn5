@@ -104,6 +104,13 @@
                                             <button title="sửa" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
                                         </a>
+                                         {{-- <form action="{{route('admin.food.destroy', $item)}}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
