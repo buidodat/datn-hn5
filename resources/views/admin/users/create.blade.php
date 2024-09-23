@@ -201,10 +201,9 @@
                                                 class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Trở
                                             về</a>
                                         <button type="submit"
-                                            class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                            class="btn btn-primary btn-label right ms-auto nexttab nexttab"
                                             data-nexttab="pills-success-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Xác
-                                            nhận</button>
+                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Thêm mới</button>
                                     </div>
                                 </div>
 
