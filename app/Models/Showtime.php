@@ -36,11 +36,11 @@ class Showtime extends Model
     }
 
 
-        public function seats()
+    public function seats()
     {
         return $this->belongsToMany(Seat::class, 'seat_showtimes', 'showtime_id', 'seat_id')
-                    ->withPivot('status')
-                    ->withTimestamps();
+            ->withPivot('status')
+            ->withTimestamps();
     }
 
     // Thời gian dọn phòng: 15p

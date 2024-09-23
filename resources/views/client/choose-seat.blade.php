@@ -11,7 +11,7 @@
                 <div class="mb-3 title-choose-seat">
 
                     <a href="#">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
-                        href="#">{{ $showTime->movie->name }}</a>
+                        href="#">{{ $showtime->movie->name }}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -31,9 +31,9 @@
                                     <div class="list-seats"><span class="mdi--love-seat text-danger"></span>
                                         <span class="status-seat">Ghế đã bán</span>
                                     </div>
-                                    <div class="list-seats"> <span class="mdi--love-seat text-warning"></span>
+                                    {{-- <div class="list-seats"> <span class="mdi--love-seat text-warning"></span>
                                         <span class="status-seat">Ghế đặt trước</span>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                                 <div class="">
@@ -55,61 +55,33 @@
                                                                     </td> --}}
                                                                     @for ($col = 0; $col < $maxCol; $col++)
                                                                         <td class="row-seat">
-                                                                            @foreach ($showTime->room->seats as $seat)
+                                                                            @foreach ($showtime->room->seats as $seat)
                                                                                 @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                                                     @php
                                                                                         // Lấy status từ bảng seat_showtimes thông qua pivot
                                                                                         $seatStatus = $seat->showtimes
-                                                                                            ->where('id', $showTime->id)
+                                                                                            ->where('id', $showtime->id)
                                                                                             ->first()->pivot->status;
                                                                                     @endphp
 
                                                                                     @if ($seat->type_seat_id == 1)
                                                                                         <span
-                                                                                            class="solar--sofa-3-bold seat span-seat">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}</span>
-                                                                                        </span>
-                                                                                    @endif
-                                                                                    @if ($seat->type_seat_id == 2)
-                                                                                        <span
-                                                                                            class="mdi--love-seat text-muted seat span-seat">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}</span>
-                                                                                        </span>
-                                                                                    @endif
-                                                                                    @if ($seat->type_seat_id == 3)
-                                                                                        <span
-                                                                                            class="game-icons--sofa seat span-seat">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}</span>
-                                                                                        </span>
-                                                                                    @endif
-
-                                                                                    {{-- @if ($seat->type_seat_id == 1)
-                                                                                        <span
                                                                                             class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}
-                                                                                                ({{ $seatStatus }})</span>
+                                                                                            <span class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
                                                                                     @if ($seat->type_seat_id == 2)
                                                                                         <span
                                                                                             class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}
-                                                                                                ({{ $seatStatus }})</span>
+                                                                                            <span class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
                                                                                     @if ($seat->type_seat_id == 3)
                                                                                         <span
                                                                                             class="game-icons--sofa seat span-seat {{ $seatStatus }}">
-                                                                                            <span
-                                                                                                class="seat-label">{{ $seat->name }}
-                                                                                                ({{ $seatStatus }})</span>
+                                                                                            <span class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
-                                                                                    @endif --}}
+                                                                                    @endif
                                                                                 @endif
                                                                             @endforeach
                                                                         </td>
@@ -245,7 +217,7 @@
                                         <li>
                                             <div>
                                                 @php
-                                                    $url = $showTime->movie->img_thumbnail;
+                                                    $url = $showtime->movie->img_thumbnail;
 
                                                     if (!\Str::contains($url, 'http')) {
                                                         $url = Storage::url($url);
@@ -254,22 +226,22 @@
                                                 <img width="150px" src="{{ $url }}" alt="">
                                             </div>
                                             <div>
-                                                <h3>{{ $showTime->movie->name }}</h3>
+                                                <h3>{{ $showtime->movie->name }}</h3>
                                                 <br>
-                                                <p>{{ $showTime->movie_version->name }}</p>
+                                                <p>{{ $showtime->movieVersion->name }}</p>
                                             </div>
 
                                         </li>
-                                        <li>Thể loại: <span class="bold">{{ $showTime->movie->category }}</span></li>
-                                        <li> Thời lượng: <span class="bold">{{ $showTime->movie->duration }} phút</span>
+                                        <li>Thể loại: <span class="bold">{{ $showtime->movie->category }}</span></li>
+                                        <li> Thời lượng: <span class="bold">{{ $showtime->movie->duration }} phút</span>
                                         </li>
                                         <hr>
-                                        <li> Rạp chiếu: <span class="bold">{{ $showTime->room->cinema->name }}</span>
+                                        <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                         </li>
-                                        <li> Ngày chiếu: <span class="bold">{{ $showTime->movie->release_date }}</span>
+                                        <li> Ngày chiếu: <span class="bold">{{ $showtime->movie->release_date }}</span>
                                         </li>
-                                        <li> Giờ chiếu: <span class="bold">{{ $showTime->start_time }}</span></li>
-                                        <li> Phòng chiếu: <span class="bold">{{ $showTime->room->name }}</span></li>
+                                        <li> Giờ chiếu: <span class="bold">{{ $showtime->start_time }}</span></li>
+                                        <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span></li>
                                         <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
                                         {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
                                     </ul>

@@ -32,7 +32,7 @@
                             <li class="parent"><a href="#">Trang</a>
                                 <ul class="lg-submenu ">
 
-                                    <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li>
+                                    {{-- <li><a href="{{ route('choose-seat') }}">Chosse Seat</a></li> --}}
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                     <li><a href="{{ route('register') }}">Register</a></li>
                                     {{-- <li><a href="{{ route('my-account') }}">My Account</a></li> --}}

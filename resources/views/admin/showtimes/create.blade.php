@@ -90,7 +90,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Chi Nhánh:</label>
+                                        <label for="title" class="form-label ">Tên Chi nhánh:</label>
                                         <select name="branch_id" id="branch" class="form-select">
                                             <option value="">Chọn</option>
                                             @foreach ($branches as $item)
@@ -142,7 +142,6 @@
 
                             </div>
                             <div class="row">
-
                                 <div class="col-md-4">
                                     <span class='text-danger'>*</span>
                                     <label for="date" class="form-label ">Ngày chiếu:</label>
@@ -164,13 +163,12 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         </div>
                                     @enderror
-
                                 </div>
                                 <div class="col-md-4">
                                     <span class='text-danger'>*</span>
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                     <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ old('end_time') }}" >
+                                        value="{{ old('end_time') }}" readonly>
                                     @error('end_time')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -290,7 +288,7 @@
                         success: function(data) {
                             $.each(data, function(index, room) {
                                 roomSelect.append('<option  value="' + room.id +
-                                    '">' + room.name + '</option>');
+                                    '" >' + room.name + '</option>');
                             });
 
                             if (selectedRoomId) {
@@ -308,7 +306,6 @@
 
             }
         });
-
 
 
         // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
@@ -400,29 +397,7 @@
                     document.getElementById('end_time').value = endTime;
                 }
             }
-            // function updateEndTime(duration) {
-            //     const startTime = document.getElementById('start_time').value;
-            //     const showDate = document.getElementById('date').value;
-
-            //     if (startTime && showDate && duration) {
-            //         // Kết hợp ngày và giờ thành đối tượng Date
-            //         let [hours, minutes] = startTime.split(':');
-            //         let startTimeDate = new Date(showDate); // Tạo đối tượng Date từ ngày chiếu
-            //         startTimeDate.setHours(parseInt(hours), parseInt(minutes));
-
-            //         // Thêm thời lượng phim và thời gian dọn dẹp (15 phút)
-            //         let totalMinutes = duration + cleaningTime;
-            //         startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
-
-            //         // Lấy thời gian kết thúc được định dạng
-            //         let endHours = String(startTimeDate.getHours()).padStart(2, '0');
-            //         let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
-            //         const endTime = `${endHours}:${endMinutes}`;
-
-            //         // Gán vào ô thời gian kết thúc
-            //         document.getElementById('end_time').value = endTime;
-            //     }
-            // }
+            
 
 
         });
