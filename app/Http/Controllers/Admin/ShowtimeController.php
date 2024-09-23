@@ -20,11 +20,27 @@ class ShowtimeController extends Controller
      */
     const PATH_VIEW = 'admin.showtimes.';
     const PATH_UPLOAD = 'showtimes';
-    public function index()
+    public function index(Request $request)
     {
         //
-        $showtimes = Showtime::with(['room', 'movie_version'])->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes'));
+        $cinemas = Cinema::all();
+
+        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie']);
+
+
+        if ($request->input('cinema_id')) {
+            $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
+                $query->where('id', $request->cinema_id);
+            });
+        }
+
+        if ($request->input('date')) {
+            $showtimes = $showtimes->where('date', $request->date);
+        }
+
+        $showtimes = $showtimes->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'cinemas'));
     }
 
     /**
@@ -52,18 +68,25 @@ class ShowtimeController extends Controller
     {
         //
         try {
+            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time)->format('Y-m-d H:i');
+            $endTime = \Carbon\Carbon::parse($request->date . ' ' . $request->end_time)->format('Y-m-d H:i');
+
+
             $dataShowtimes = [
                 'room_id' => $request->room_id,
                 'movie_version_id' => $request->movie_version_id,
+                'movie_id' => $request->movie_id,
                 'date' => $request->date,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
+                'start_time' => $startTime,
+                'end_time' => $endTime,
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
+
 
             // dd($request->all());
 
             Showtime::create($dataShowtimes);
+
 
 
             return redirect()
@@ -89,7 +112,7 @@ class ShowtimeController extends Controller
     {
         //
 
-        $showtimes = Showtime::with(['room', 'movie_version'])->get();
+        $showtimes = Showtime::with(['room', 'movieVersion'])->get();
 
         $movies = Movie::where('is_active', '1')->get();
         $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
@@ -112,6 +135,7 @@ class ShowtimeController extends Controller
             $dataShowtimes = [
                 'room_id' => $request->room_id,
                 'movie_version_id' => $request->movie_version_id,
+                'movie_id' => $request->movie_id,
                 'date' => $request->date,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,

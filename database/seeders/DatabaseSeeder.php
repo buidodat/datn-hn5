@@ -146,8 +146,12 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
 
         foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
+            // Lấy branch_id từ cinema_id
+            $branch_id = DB::table('cinemas')->where('id', $cinema_id)->value('branch_id');
+
             foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
                 DB::table('rooms')->insert([
+                    'branch_id' => $branch_id, // Thêm branch_id vào đây
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
@@ -158,6 +162,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
 
 
         // Fake data Suất chiếu
@@ -187,12 +192,12 @@ class DatabaseSeeder extends Seeder
                         ->where('room_id', $room_id)
                         ->where(function ($query) use ($start_time, $end_time) {
                             // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
-                            $query->whereBetween('start_time', [$start_time->format('H:i'), $end_time->format('H:i')])
-                                ->orWhereBetween('end_time', [$start_time->format('H:i'), $end_time->format('H:i')])
+                            $query->whereBetween('start_time', [$start_time->format('Y-m-d H:i'), $end_time->format('Y-m-d H:i')])
+                                ->orWhereBetween('end_time', [$start_time->format('Y-m-d H:i'), $end_time->format('Y-m-d H:i')])
                                 ->orWhere(function ($query) use ($start_time, $end_time) {
                                     // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
-                                    $query->where('start_time', '<=', $start_time->format('H:i'))
-                                        ->where('end_time', '>=', $end_time->format('H:i'));
+                                    $query->where('start_time', '<=', $start_time->format('Y-m-d H:i'))
+                                        ->where('end_time', '>=', $end_time->format('Y-m-d H:i'));
                                 });
                         })
                         ->exists();
@@ -204,8 +209,8 @@ class DatabaseSeeder extends Seeder
                             'movie_version_id' => $movie_version_id,
                             'movie_id' => $movie->movie_id, // Thêm movie_id
                             'date' => $start_time->format('Y-m-d'),
-                            'start_time' => $start_time->format('H:i'), // Hiển thị giờ và phút
-                            'end_time' => $end_time->format('H:i'),     // Hiển thị giờ và phút
+                            'start_time' => $start_time->format('Y-m-d H:i'), // Lưu cả ngày và giờ
+                            'end_time' => $end_time->format('Y-m-d H:i'),     // Lưu cả ngày và giờ
                             'is_active' => 1,
                             'created_at' => now(),
                             'updated_at' => now(),
@@ -217,6 +222,7 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
 
 
         //3 bản ghi loại ghế

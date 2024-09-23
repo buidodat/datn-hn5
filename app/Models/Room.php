@@ -9,6 +9,7 @@ class Room extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'branch_id',
         'cinema_id',
         'type_room_id',
         'name',
@@ -31,13 +32,18 @@ class Room extends Model
     public function cinema(){
         return $this->belongsTo(Cinema::class);
     }
-    
+
     public function typeRoom(){
         return $this->belongsTo(TypeRoom::class);
     }
 
-    public function seats()
-    {
+
+
+
+    public function branch(){
+        return $this->belongsTo(Branch::class);
+    }
+    public function seats(){
         return $this->hasMany(Seat::class);
     }
 

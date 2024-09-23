@@ -37,9 +37,49 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Suất chiếu</h5>
-                    <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                <div class="card-header ">
+                    {{-- d-flex justify-content-between --}}
+                    <div class="row mb-3">
+                        <h5 class="card-title mb-0">Danh sách Suất chiếu</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form action="{{ route('admin.showtimes.index') }}" method="GET">
+
+                                <div class="row">
+
+                                    <div class="col-md-3">
+                                        {{-- <label for="">Rạp:</label> --}}
+                                        <select name="cinema_id" id="" class="form-select">
+                                            <option value="">Chọn Rạp</option>
+                                            @foreach ($cinemas as $cinema)
+                                                <option value="{{ $cinema->id }}"
+                                                    {{ request('cinema_id') == $cinema->id ? 'selected' : '' }}>
+                                                    {{ $cinema->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        {{-- <label for="">Ngày chiếu:</label> --}}
+                                        <input type="date" name="date" id="" class="form-control"
+                                            value="{{ request('date', now()->format('Y-m-d')) }}">
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="col-md-4" align="right">
+                            <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a>
+                            <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                        </div>
+                    </div>
+
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -47,34 +87,40 @@
                     </div>
                 @endif
 
-                <div class="card-body">
+                {{-- <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Thời gian</th>
                                 <th>Tên phim</th>
                                 <th>Tên phòng</th>
-                                <th>Phiên bản phim</th>
                                 <th>Ngày chiếu</th>
-                                <th>Giờ chiếu</th>
-                                <th>Giờ kết thúc</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            @php
+                                $lastRoomName = null;
+                            @endphp
                             @foreach ($showtimes as $i => $showtime)
                                 <tr>
-                                    <td>{{ $i + 1 }}</td>
-                                    <td>{{ $showtime->movie_version->movie->name }}</td>
-                                    <td>{{ $showtime->room->cinema->branch->name }} - {{ $showtime->room->cinema->name }} -
-                                        {{ $showtime->room->name }}</td>
-                                    <td>{{ $showtime->movie_version->name }}</td>
+                                    <td>{{ $showtime->id }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
+                                    </td>
+                                    <td>{{ $showtime->movieVersion->movie->name }}</td>
+                                    <td>
+                                        <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
+                                    </td>
+
                                     <td>{{ $showtime->date }}</td>
-                                    <td>{{ $showtime->start_time }}</td>
-                                    <td>{{ $showtime->end_time }}</td>
+
+
                                     <td>
                                         {!! $showtime->is_active == 1
                                             ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
@@ -99,8 +145,83 @@
                             @endforeach
                         </tbody>
 
+
+                    </table>
+                </div> --}}
+                <div class="card-body">
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                        style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Thời gian</th>
+                                <th>Tên phim</th>
+                                <th>Tên phòng</th>
+                                <th>Ngày chiếu</th>
+                                <th>Hoạt động</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                // Nhóm suất chiếu theo tên phòng và ngày chiếu
+                                $groupedShowtimes = $showtimes->groupBy(function ($showtime) {
+                                    return $showtime->room->name . '_' . $showtime->date;
+                                });
+                            @endphp
+
+                            @foreach ($groupedShowtimes as $key => $times)
+                                @php
+                                    $rowCount = $times->count(); // Số suất chiếu trong nhóm phòng + ngày chiếu
+                                @endphp
+
+                                @foreach ($times as $i => $showtime)
+                                    <tr>
+                                        <td>{{ $showtime->id }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
+                                        <td>{{ $showtime->movieVersion->movie->name }}</td>
+
+                                        @if ($i == 0)
+                                            <!-- Nếu là hàng đầu tiên của nhóm, hiển thị tên phòng và ngày chiếu -->
+                                            <td rowspan="{{ $rowCount }}">
+                                                <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
+                                            </td>
+                                            <td rowspan="{{ $rowCount }}">
+                                                {{ \Carbon\Carbon::parse($showtime->date)->format('Y-m-d') }}
+                                            </td>
+                                        @endif
+
+                                        <td>
+                                            {!! $showtime->is_active == 1
+                                                ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm" type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+
+                                            <form action="{{ route('admin.showtimes.destroy', $showtime) }}" method="post"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+
+                        </tbody>
                     </table>
                 </div>
+
+
             </div>
         </div><!--end col-->
     </div><!--end row-->

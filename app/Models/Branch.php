@@ -15,4 +15,8 @@ class Branch extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
+
+    public function cinemas(){
+        return $this->hasMany(Cinema::class);
+    }
 }

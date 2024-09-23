@@ -58,7 +58,7 @@
                                             <option value="">Chọn</option>
                                             @foreach ($movies as $item)
                                                 <option value="{{ $item->id }}"
-                                                    @if ($item->id == $showtime->movie_version->movie->id) selected @endif>{{ $item->name }}
+                                                    @if ($item->id == $showtime->movieVersion->movie->id) selected @endif>{{ $item->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -76,8 +76,8 @@
                                             <option value="">Chọn</option>
 
                                         
-                                            <option value="{{ $showtime->movie_version->id }}" selected>
-                                                {{ $showtime->movie_version->name }}</option>
+                                            <option value="{{ $showtime->movieVersion->id }}" selected>
+                                                {{ $showtime->movieVersion->name }}</option>
                                         </select>
                                         @error('movie_version_id')
                                             <div class='mt-1'>

@@ -15,8 +15,14 @@
                 <div class="prs_upcom_movie_img_overlay"></div>
                 <div class="prs_upcom_movie_img_btn_wrapper">
                     <ul>
-                        <li>    <a class="buy-ticket-btn"
-                            data-movie-id="{{ $movie->id }}">Mua vé</a></li>
+                        <li>
+                            @if ($movie->showtimes->count() > 0)
+                                <a class="buy-ticket-btn" data-movie-id="{{ $movie->id }}">Mua vé</a>
+                            @else
+                                <a>Không suất chiếu</a>
+                            @endif
+
+                        </li>
                         <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a></li>
                     </ul>
                 </div>

@@ -25,12 +25,13 @@ class Movie extends Model
         'is_hot'
     ];
 
-    protected $casts =[
-        'is_active'=>'boolean',
-        'is_hot'=>'boolean',
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_hot' => 'boolean',
     ];
 
-    public function movieVersions(){
+    public function movieVersions()
+    {
         return $this->hasMany(MovieVersion::class);
     }
 
@@ -50,7 +51,11 @@ class Movie extends Model
 
     public function movieReview()
     {
-        return $this->hasMany(MovieReview::class,'movie_id');
+        return $this->hasMany(MovieReview::class, 'movie_id');
     }
 
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
+    }
 }

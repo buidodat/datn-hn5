@@ -158,24 +158,9 @@
                     <div class="card-body mb-4 ">
 
 
-                        <style>
-                            .light-orange {
-                                background-color: #fcf5e6;
-                                /* Màu cam nhạt */
-                            }
 
-                            .light-blue {
-                                background-color: #fcfdff;
-                                /* Màu xanh da trời nhạt */
-                            }
-
-                            .light-pink {
-                                background-color: #f9d0d0;
-                                /* Màu hồng nhạt */
-                            }
-                        </style>
                         @php
-                            $capacity = 0;
+
                             $maxCol = App\Models\Room::MAX_COL;
                             $maxRow = App\Models\Room::MAX_ROW;
                             $rowSeatRegular = App\Models\Room::ROW_SEAT_REGULAR;
@@ -209,9 +194,6 @@
                                                             width="100%">
                                                         <input type="hidden" name="seatJsons[]"
                                                             value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
-                                                            @php
-                                                                $capacity ++;
-                                                            @endphp
                                                     </div>
                                                 </td>
                                                 {{-- kết thúchàng ghế thường --}}
@@ -223,9 +205,6 @@
                                                             width="100%">
                                                         <input type="hidden" name="seatJsons[]"
                                                             value='{"coordinates_x": {{ $col + 1 }}, "coordinates_y": "{{ chr(65 + $row) }}"}'>
-                                                            @php
-                                                                $capacity ++;
-                                                            @endphp
                                                     </div>
                                                 </td>
                                                 {{-- kết thúc hàng ghế vip --}}
@@ -237,7 +216,7 @@
                                         </td>
                                     </tr>
                                 @endfor
-                                <input type="hidden" name="capacity" value="{{ $capacity }}">
+                                
                             </tbody>
                         </table>
 
