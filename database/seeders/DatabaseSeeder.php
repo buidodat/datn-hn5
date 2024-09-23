@@ -192,12 +192,12 @@ class DatabaseSeeder extends Seeder
                         ->where('room_id', $room_id)
                         ->where(function ($query) use ($start_time, $end_time) {
                             // Kiểm tra xem start_time hoặc end_time có nằm trong khoảng thời gian của suất chiếu nào không
-                            $query->whereBetween('start_time', [$start_time->format('Y-m-d H:i:s'), $end_time->format('Y-m-d H:i:s')])
-                                ->orWhereBetween('end_time', [$start_time->format('Y-m-d H:i:s'), $end_time->format('Y-m-d H:i:s')])
+                            $query->whereBetween('start_time', [$start_time->format('Y-m-d H:i'), $end_time->format('Y-m-d H:i')])
+                                ->orWhereBetween('end_time', [$start_time->format('Y-m-d H:i'), $end_time->format('Y-m-d H:i')])
                                 ->orWhere(function ($query) use ($start_time, $end_time) {
                                     // Kiểm tra nếu suất chiếu khác bao trùm toàn bộ khoảng thời gian
-                                    $query->where('start_time', '<=', $start_time->format('Y-m-d H:i:s'))
-                                        ->where('end_time', '>=', $end_time->format('Y-m-d H:i:s'));
+                                    $query->where('start_time', '<=', $start_time->format('Y-m-d H:i'))
+                                        ->where('end_time', '>=', $end_time->format('Y-m-d H:i'));
                                 });
                         })
                         ->exists();
@@ -209,8 +209,8 @@ class DatabaseSeeder extends Seeder
                             'movie_version_id' => $movie_version_id,
                             'movie_id' => $movie->movie_id, // Thêm movie_id
                             'date' => $start_time->format('Y-m-d'),
-                            'start_time' => $start_time->format('Y-m-d H:i:s'), // Lưu cả ngày và giờ
-                            'end_time' => $end_time->format('Y-m-d H:i:s'),     // Lưu cả ngày và giờ
+                            'start_time' => $start_time->format('Y-m-d H:i'), // Lưu cả ngày và giờ
+                            'end_time' => $end_time->format('Y-m-d H:i'),     // Lưu cả ngày và giờ
                             'is_active' => 1,
                             'created_at' => now(),
                             'updated_at' => now(),
