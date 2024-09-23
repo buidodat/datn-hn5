@@ -4,10 +4,6 @@
     Trang Chủ
 @endsection
 
-@section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}" />
-@endsection
-
 @section('content')
     @include('client.layouts.slideshow')
 
@@ -65,7 +61,8 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a id="openModalMovieScrening" class="buy-ticket-btn">Mua vé</a>
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -147,7 +144,8 @@
 
 
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                <a id="openModalMovieScrening" class="buy-ticket-btn" >Mua vé</a>
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -229,7 +227,8 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a class="buy-ticket-btn" id="openModalMovieScrening">Mua vé</a>
+                                                                    <a class="buy-ticket-btn"
+                                                                        data-movie-id="{{ $movie->id }}">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -665,11 +664,8 @@
     @include('client.showtime')
 @endsection
 
-@section('scripts')
-    <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
-@endsection
 
-@section('style-libs')
+@section('scripts')
     {{-- <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}"> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -766,43 +762,43 @@
 
             //HÀM ADD SỰ KIỆN MUA VÉ VÀ HIỂN THỊ MODAL SUẤT CHIẾU THEO PHIM_ID
 
-            // function attachBuyTicketEvent() {
-            //     const modal = document.getElementById("showtime-modal");
-            //     const closeBtn = document.getElementsByClassName("close-btn")[0];
+            function attachBuyTicketEvent() {
+                const modal = document.getElementById("showtime-modal");
+                const closeBtn = document.getElementsByClassName("close-btn")[0];
 
-            //     const buyTicketButtons = document.querySelectorAll(".buy-ticket-btn");
+                const buyTicketButtons = document.querySelectorAll(".buy-ticket-btn");
 
-            //     buyTicketButtons.forEach(function(btn) {
-            //         btn.onclick = function() {
-            //             const movieId = this.getAttribute("data-movie-id");
-            //             console.log(movieId);
+                buyTicketButtons.forEach(function(btn) {
+                    btn.onclick = function() {
+                        const movieId = this.getAttribute("data-movie-id");
+                        console.log(movieId);
 
 
-            //             fetch(`/movie/${movieId}/showtimes`)
-            //                 .then(response => response.json())
-            //                 .then(data => {
-            //                     console.log("Showtimes data: ", data);
-            //                     populateShowtimes(
-            //                         data); // Bắt đầu từ đây là Sai, là code lỏ, ko chạy đc
-            //                 })
-            //                 .catch(error => {
-            //                     console.error("Lỗi fetch showtime api: ", error);
-            //                 });
+                        fetch(`/movie/${movieId}/showtimes`)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Showtimes data: ", data);
+                                populateShowtimes(
+                                    data); // Bắt đầu từ đây là Sai, là code lỏ, ko chạy đc
+                            })
+                            .catch(error => {
+                                console.error("Lỗi fetch showtime api: ", error);
+                            });
 
-            //             modal.style.display = "block";
-            //         };
-            //     });
+                        modal.style.display = "block";
+                    };
+                });
 
-            //     closeBtn.onclick = function() {
-            //         modal.style.display = "none";
-            //     };
+                closeBtn.onclick = function() {
+                    modal.style.display = "none";
+                };
 
-            //     window.onclick = function(event) {
-            //         if (event.target == modal) {
-            //             modal.style.display = "none";
-            //         }
-            //     };
-            // }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                };
+            }
 
             function populateShowtimes(data) {
                 const showtimeContainer = document.querySelector(".showtimes");

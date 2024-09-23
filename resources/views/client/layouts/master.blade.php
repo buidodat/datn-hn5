@@ -56,6 +56,7 @@
     <!--main js file end-->
 
     @yield('scripts')
+    @yield('script-libs')
 </body>
 
 </html>
