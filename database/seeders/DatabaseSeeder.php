@@ -238,8 +238,9 @@ class DatabaseSeeder extends Seeder
 
         // Tạo dữ liệu cho bảng seats
         for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
-            for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
-                for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+            for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+                for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
+                    // for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
 
                     // Xác định loại ghế dựa trên hàng (y)
                     if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
@@ -266,14 +267,15 @@ class DatabaseSeeder extends Seeder
         $seatCount = DB::table('seats')->count();
         $showtimeCount = DB::table('showtimes')->count();
 
-        for ($seat_id = 1; $seat_id <= $seatCount; $seat_id++) {
-            for ($showtime_id = 1; $showtime_id <= $showtimeCount; $showtime_id++) {
+        for ($showtime_id = 1; $showtime_id <= $showtimeCount; $showtime_id++) {
+            for ($seat_id = 1; $seat_id <= $seatCount; $seat_id++) {
+                // for ($showtime_id = 1; $showtime_id <= $showtimeCount; $showtime_id++) {
 
                 // Thêm mới dữ liệu vào bảng seat_showtimes
                 DB::table('seat_showtimes')->insert([
                     'seat_id' => $seat_id,
                     'showtime_id' => $showtime_id,
-                    'status' => 'Trống',
+                    'status' => 'available',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
