@@ -18,7 +18,10 @@ class GoogleAuthController extends Controller
     {
         try {
             $userGoogle = Socialite::driver('google')->user();
-            $user = User::where('service_id', $userGoogle->id)->first();
+            $user = User::where('service_id', $userGoogle->id)
+                ->where('service_name', 'google')
+                ->first();
+
 
             if ($user) {
                 Auth::login($user);
@@ -27,15 +30,15 @@ class GoogleAuthController extends Controller
                 $existUser = User::where('email', $userGoogle->email)->first();
                 if ($existUser) {
                     $existUser->update([
-                        'name' => $userGoogle->name,
                         'service_id' => $userGoogle->id,
                         'service_name' => 'google',
                     ]);
                     Auth::login($existUser);
                 } else {
-                    $newUser = User::updateOrCreate(['email' => $userGoogle->email],[
+                    $newUser =  User::create([
                         'name' => $userGoogle->name,
-                        'service_id'=> $userGoogle->id,
+                        'email' => $userGoogle->email,
+                        'service_id' => $userGoogle->id,
                         'service_name' => 'google',
                     ]);
                     Auth::login($newUser);
