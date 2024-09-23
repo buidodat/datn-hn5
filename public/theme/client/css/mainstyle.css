@@ -153,12 +153,14 @@
     /* Internet Explorer/Edge */
     user-select: none;
     /* Non-prefixed version, hiện đại hơn */
+    overflow: auto
 }
 
 .container-screen .seat-selection {
     /* display: flex; */
     justify-content: center;
     flex-wrap: wrap;
+    overflow: auto;
 }
 
 .row-seat {
@@ -225,28 +227,33 @@
 
 }
 
+.container-screen .seat.available {
+    background-color: #d1d1d1;
+}
+
+.container-screen .seat.selected{
+    background-color: #32a9ef;
+}
+
+.container-screen .seat.sold {
+    background-color: #ff4d4d;
+}
+
+.container-screen .seat.hold {
+    background-color: rgb(0, 0, 195);
+}
+
+.container-screen .seat.selected .seat-label,
+.container-screen .seat.sold .seat-label,
+.container-screen .seat.hold .seat-label {
+    color: white;
+}
+
 .ghe-thuong,
 .ghe-vip,
 .ghe-doi {
     margin-bottom: 5px;
 
-}
-
-
-.container-screen .seat.available {
-    background-color: #d1d1d1;
-}
-
-.container-screen .seat.selected {
-    background-color: #32a9ef;
-}
-
-.container-screen .seat.reserved {
-    background-color: #ff4d4d;
-}
-
-.container-screen .seat.pre-booked {
-    background-color: #ffcc00;
 }
 
 .container-screen .legend {

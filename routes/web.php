@@ -37,22 +37,7 @@ Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-
 Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
-
-
-Route::get('choose-seat/', [ChooseSeatController::class, 'show'])->name('choose-seat');
-
-
-Route::get('show-time/{id}', [ChooseSeatController::class, 'show'])->name('show-time');
-// Route::get('show-time/{id}',  function ($id) {
-//     $showtime = Showtime::findOrFail($id);
-
-//     // $d = $showtime->room;
-//     $showtime->room->seats;
-//     dd($showtime->toArray());
-// });
-
-
-
+Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
 
 Route::get('login', function () {
     return view('client.login');
