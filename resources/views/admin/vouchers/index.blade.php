@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Danh sách vouchers </h5>
-                    <a href="{{ route('admin.vouchers.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -95,12 +95,20 @@
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Kết thúc:</span> {{ $item->end_date_time }}</li>
                                 </td>--}}
-                                <td class="nav nav-sm flex-column">
+                                {{-- <td class="nav nav-sm flex-column">
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Bắt đầu:</span> {{ $item->start_date_time }}</li>
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Kết thúc:</span> {{ $item->end_date_time }}</li>
-                                    </td>
+                                    </td> --}}
+                                    <td class="nav nav-sm flex-column">
+                                        <li class="nav-item mb-2">
+                                            <span class="fw-semibold">Bắt đầu:</span> {{ \Carbon\Carbon::parse($item->start_date_time)->format('d/m/Y') }}
+                                        </li>
+                                        <li class="nav-item mb-2">
+                                            <span class="fw-semibold">Kết thúc:</span> {{ \Carbon\Carbon::parse($item->end_date_time)->format('d/m/Y') }}
+                                        </li>
+                                    </td>                                    
                                 <td>{{ $item->discount }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ $item->limit }}</td>
@@ -119,6 +127,14 @@
                                         <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                 class="fas fa-edit"></i></button>
                                     </a>
+
+                                     {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form> --}}
                                 </td>
                             </tr>
                         @endforeach

@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Quản lý chi nhánh</h5>
-                    <a href="{{route('admin.branches.create')}}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{route('admin.branches.create')}}" class="btn btn-primary">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -55,8 +55,6 @@
                                 <th>#</th>
                                 <th>Tên chi nhánh</th>
                                 <th>Trạng thái</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -65,13 +63,14 @@
                                 <tr>
                                     <td>{{ $branch->id }}</td>
                                     <td>{{ $branch->name }}</td>
-                                    <td>{!! $branch->is_active ? '<span class="badge bg-primary">Yes</span>' : '<span class="badge bg-danger">No</span>' !!}</td>
-                                    <td>{{ $branch->created_at }}</td>
-                                    <td>{{ $branch->updated_at }}</td>
+                                    <td>{!! $branch->is_active
+                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    </td>
                                     <td>
-                                        <a href="">
+                                        {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
+                                                    class="fas fa-eye"></i></button></a> --}}
 
                                         <a href="{{ route('admin.branches.edit', $branch) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
@@ -80,7 +79,9 @@
                                         <form action="{{route('admin.branches.destroy', $branch)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

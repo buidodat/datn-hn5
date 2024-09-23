@@ -114,16 +114,21 @@
                                         : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                     </td>
                                     <td>
-                                        <a href="#" class="text-primary d-inline-block">
-                                            <i class="ri-eye-fill fs-16"></i>
+
+                                        <a href="{{ route('admin.combos.show',$item) }}">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a>
+                                        <a href="{{ route('admin.combos.edit',$item) }}">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
                                         </a>
-                                        <a href="{{ route('admin.combos.edit', $item) }}"
-                                            class="text-primary d-inline-block edit-item-btn mx-2">
-                                            <i class="ri-pencil-fill fs-16"></i>
-                                        </a>
-                                        <a href="#" class="text-danger d-inline-block remove-item-btn">
-                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                        </a>
+                                        {{-- <form action="{{route('admin.combos.destroy', $item)}}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
