@@ -16,7 +16,7 @@ class ChooseSeatController extends Controller
 
         // $showtime->room->seats;
         // $showtime->movie;
-        // $showtime->movie_version;
+        // $showtime->movieVersion;
         // $showtime->room->cinema;
         // dd($showtime->toArray());
 

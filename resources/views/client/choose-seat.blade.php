@@ -228,7 +228,7 @@
                                             <div>
                                                 <h3>{{ $showtime->movie->name }}</h3>
                                                 <br>
-                                                <p>{{ $showtime->movie_version->name }}</p>
+                                                <p>{{ $showtime->movieVersion->name }}</p>
                                             </div>
 
                                         </li>
