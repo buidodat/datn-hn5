@@ -21,5 +21,6 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 - đối với chạy trên hosting thì queue:listen
 
 3. Đăng nhập bằng google 
-- php artisan ser
+- Laragon -> setting -> general -> hostname template: {name}.me
+![img.png](img.png)
 
