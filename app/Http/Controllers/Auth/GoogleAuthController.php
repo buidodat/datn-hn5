@@ -17,30 +17,32 @@ class GoogleAuthController extends Controller
     public function callBackGoogle()
     {
         try {
-
             $userGoogle = Socialite::driver('google')->user();
+            $user = User::where('service_id', $userGoogle->id)->first();
 
-            $finduser = User::where('service_id', $userGoogle->id)->first();
-
-            if($finduser){
-
-                Auth::login($finduser);
-
+            if ($user) {
+                Auth::login($user);
                 return redirect()->intended('/');
-
-            }else{
-                $newUser = User::updateOrCreate(['email' => $userGoogle->email],[
-                    'name' => $userGoogle->name,
-                    'service_id'=> $userGoogle->id,
-                    'password' => encrypt('123456789'),
-                    'service_name' => 'google',
-                ]);
-
-                Auth::login($newUser);
+            } else {
+                $existUser = User::where('email', $userGoogle->email)->first();
+                if ($existUser) {
+                    $existUser->update([
+                        'name' => $userGoogle->name,
+                        'service_id' => $userGoogle->id,
+                        'service_name' => 'google',
+                    ]);
+                    Auth::login($existUser);
+                } else {
+                    $newUser = User::updateOrCreate(['email' => $userGoogle->email],[
+                        'name' => $userGoogle->name,
+                        'service_id'=> $userGoogle->id,
+                        'service_name' => 'google',
+                    ]);
+                    Auth::login($newUser);
+                }
 
                 return redirect()->intended('/');
             }
-
         } catch (Exception $e) {
             dd($e->getMessage());
             // return redirect()->intended('http://datn-hn5.test');
