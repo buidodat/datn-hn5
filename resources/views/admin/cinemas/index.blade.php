@@ -83,12 +83,12 @@
                                         <button title="xem" class="btn btn-warning btn-sm " type="button">
                                             <i class="fas fa-edit"></i></button>
                                     </a>
-                                    {{-- <form action="{{ route('admin.combos.destroy', $item) }}" method="post" class="mt-2">
+                                        {{-- <form action="{{route('admin.combos.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
-                                            @method('delete')
-
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Có muốn xóa không?')">Xóa</button>
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
                                         </form> --}}
                                 </td>
                             </tr>

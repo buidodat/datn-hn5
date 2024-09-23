@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách liên hệ</h5>
-                    <a href="{{ route('admin.contacts.create') }}" class="btn btn-success mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -77,18 +77,20 @@
                                         '<span class="badge bg-success-subtle text-success text-uppercase">Đã xử lý</span>'
                                         : '<span class="badge bg-danger-subtle text-danger text-uppercase">Chưa xử lí</span>' !!}</td>
                                     <td>
-                                        {{-- <a href="">
-                                            <button title="Xem chi tiết" class="btn btn-success btn-sm " type="button"><i
+                                        {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
 
                                         <a href="{{ route('admin.contacts.edit', $contact)}}">
                                             <button title="Sửa" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        {{-- <form action="{{route('admin.contacts.destroy', $contact)}}" method="post" class="d-inline-block">
+                                        {{-- <form action="{{route('admin.contacts.destroy', $contact)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">Xóa</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
                                         </form> --}}
                                     </td>
                                 </tr>

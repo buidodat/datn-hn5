@@ -66,17 +66,20 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>
-                                        <a href="{{ route('admin.type_seats.show', $item) }}" class="btn btn-success btn-sm" title="Xem">
-                                            <i class="fas fa-eye"></i>
+                                        {{-- <a href="{{ route('admin.type_seats.show',$item) }}">
+                                            <button title="Xem chi tiết" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a> --}}
+                                        <a href="{{ route('admin.type_seats.edit',$item) }}">
+                                            <button title="Sửa" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
                                         </a>
-                                        <a href="{{ route('admin.type_seats.edit', $item) }}" class="btn btn-warning btn-sm" title="Sửa">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        {{-- <form action="{{ route('admin.type_seats.destroy', $item) }}" method="post" class="d-inline-block">
+                                        <form action="{{route('admin.type_seats.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Có muốn xóa không?')">Xóa</button>
-                                        </form> --}}
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

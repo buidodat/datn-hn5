@@ -84,7 +84,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.rooms.show', $room) }}">
-                                                <button title="xem" class="btn btn-primary btn-sm " type="button"><i
+                                                <button title="xem" class="btn btn-success btn-sm" type="button"><i
                                                         class="fas fa-eye"></i></button>
                                             </a>
                                             <a href="{{ route('admin.rooms.edit', $room) }}">
