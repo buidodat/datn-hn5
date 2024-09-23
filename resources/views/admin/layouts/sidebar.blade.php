@@ -3,21 +3,21 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
+        <a href="#" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
+                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px" height="40px">
             </span>
             <span class="logo-lg">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt="" height="17">
+                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="#" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
+                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px" height="40px">
             </span>
             <span class="logo-lg">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-light.png" alt="" height="17">
+                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
