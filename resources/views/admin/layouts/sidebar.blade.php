@@ -8,19 +8,16 @@
                 <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt=""
-                    height="17">
+                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-dark.png" alt="" height="17">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt=""
-                    height="22">
+                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-sm.png" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-light.png" alt=""
-                    height="17">
+                <img src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/logo-light.png" alt="" height="17">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -37,360 +34,159 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-0" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-0">
-                        <i class="ri-ancient-gate-fill"></i> <span data-key="t-layouts">Quản lý chi nhánh</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-0">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.branches.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.branches.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCinemas" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarCinemas">
-                        <i class=" ri-store-3-fill"></i> <span data-key="t-layouts">Quản lý Rạp</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarCinemas">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.cinemas.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.cinemas.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm
-                                    mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                {{-- loại phòng --}}
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-loaiPhong" data-bs-toggle="collapse"
-                        role="button" aria-expanded="false" aria-controls="sidebarLayouts-loaiPhong">
-                        <i class=" ri-layout-grid-line"></i> <span data-key="t-layouts">Quản lý Loại phòng</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-loaiPhong">
-                        {{-- <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Loại phòng</a>
-                            </li>
-                        </ul> --}}
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type-rooms.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-phong" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-phong">
-                        <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-phong">
-                        {{-- <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type-rooms.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Loại phòng</a>
-                            </li>
-                        </ul> --}}
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.rooms.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.rooms.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarMovie" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarMovie">
-                        <i class="mdi mdi-movie-open-outline"></i> <span data-key="t-layouts">Quản lý Phim</span>
-
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarMovie">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.movies.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.movies.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarShowtime" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarShowtime">
-                        <i class=" ri-slideshow-3-fill"></i> <span data-key="t-layouts">Quản lý Suất
-                            chiếu</span>
-
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarShowtime">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.showtimes.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.showtimes.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-4">
-                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Thanh Toán</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-4">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.payments.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.payments.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-15" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-15">
-                        <i class=" ri-coupon-3-line "></i> <span data-key="t-layouts">Vouchers</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-15">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.vouchers.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.vouchers.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-2" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-2">
-                        <i class="ri-file-list-3-line"></i> <span data-key="t-layouts">Quản lý bài viết</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-2">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.posts.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.posts.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarFood" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarFood">
-                        <i class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarFood">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.food.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.food.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm
-                                    mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCombos1" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarCombos1">
-                        <i class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý
-                            Combo</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarCombos1">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.combos.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh
-                                    sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.combos.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm
-                                    mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-5" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-5">
-                        <i class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-5">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.slideshows.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.slideshows.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-3">
-                        <i class="ri-contacts-book-2-line"></i> <span data-key="t-layouts">Liên hệ</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarLayouts-3">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.contacts.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.contacts.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-
-
+                {{-- Thống kê --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Thống Kê</span>
+                        <a href="" class="nav-link" data-key="t-horizontal"> <i class="ri-dashboard-2-line"></i> <span
+                                data-key="t-dashboards">Thống Kê</span></a>
                     </a>
-
                 </li>
 
-
+                {{-- Quản lí chi nhánh --}}
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarTypeSeat" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarTypeSeat">
-                        <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span>
+                    <a class="" href="#sidebarLayouts-0" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-0">
+                        <a href="{{ route('admin.branches.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-ancient-gate-fill"></i><span data-key="t-layouts">Quản lý chi nhánh</span></a>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarTypeSeat">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type_seats.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.type_seats.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
 
+                {{-- Quản lí Rạp --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarCinemas" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarCinemas">
+                        <a href="{{ route('admin.cinemas.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                                class=" ri-store-3-fill"></i> <span data-key="t-layouts">Quản lý Rạp</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Loại phòng --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-loaiPhong" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarLayouts-loaiPhong">
+                        <a href="{{ route('admin.type-rooms.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class=" ri-layout-grid-line"></i> <span data-key="t-layouts">Quản lý Loại
+                                phòng</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Phòng --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-phong" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarLayouts-phong">
+                        <a href="{{ route('admin.rooms.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                                class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Phim --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarMovie" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarMovie">
+
+                        <a href="{{ route('admin.movies.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="mdi mdi-movie-open-outline"></i> <span data-key="t-layouts">Quản lý
+                                Phim</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Suất chiếu --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarShowtime" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarShowtime">
+                        <a href="{{ route('admin.showtimes.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class=" ri-slideshow-3-fill"></i> <span data-key="t-layouts">Quản lý Suất
+                                chiếu</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí thanh toán --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-4" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-4">
+                        <a href="{{ route('admin.payments.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Thanh Toán</span></a>
+                    </a>
+                </li>
+
+                {{-- Vouchers --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-15" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-15">
+                        <a href="{{ route('admin.vouchers.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class=" ri-coupon-3-line "></i> <span data-key="t-layouts">Vouchers</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí bài viết --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-2" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-2">
+                        <a href="{{ route('admin.posts.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-file-list-3-line"></i> <span data-key="t-layouts">Quản lý bài viết</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí đồ ăn --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarFood" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarFood">
+                        <a href="{{ route('admin.food.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Combo --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarCombos1" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarCombos1">
+                        <a href="{{ route('admin.combos.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                                class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý
+                                Combo</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Slideshows --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-5" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-5">
+                        <a href="{{ route('admin.slideshows.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                                class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí Liên hệ --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarLayouts-3">
+                        <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-contacts-book-2-line"></i> <span data-key="t-layouts">Liên hệ</span></a>
+                    </a>
+                </li>
+
+                {{-- Quản lí loại ghế --}}
+                <li class="nav-item">
+                    <a class="" href="#sidebarTypeSeat" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarTypeSeat">
+                        <a href="{{ route('admin.type_seats.index') }}" class="nav-link" data-key="t-horizontal"><i
+                                class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span></a>
+                    </a>
+                </li>
+
+                {{-- Giá vé --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('admin.price-ticket') }}">
                         <i class=" ri-ticket-2-line"></i> <span data-key="t-dashboards">Giá vé</span>
                     </a>
                 </li>
+
+                {{-- Tài khoản --}}
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccount" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarAccount">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Tài khoản</span>
+                    <a class="" href="#sidebarAccount" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sidebarAccount">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                                class="ri-account-circle-line"></i> <span data-key="t-layouts">Tài khoản</span></a>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccount">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.users.index') }}" class="nav-link"
-                                    data-key="t-horizontal">Danh sách</a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.users.create') }}" class="nav-link"
-                                    data-key="t-horizontal">Thêm mới</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
 
             </ul>
