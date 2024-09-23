@@ -8,7 +8,7 @@
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
                 <a href="/">
-                    <img src="{{ asset('theme/client/images/header/logo6.png') }}" alt="logo" />
+                    <img style="width: 184px; height: 40px" src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="logo" />
                 </a>
             </div>
             <div class="prs_menu_main_wrapper">

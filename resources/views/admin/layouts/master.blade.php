@@ -13,7 +13,7 @@
     <!-- App favicon -->
     @yield('style-libs')
 
-    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('theme/client/images/header/poly2.svg') }}">
 
     <!-- jsvectormap css -->
     <link href="{{ asset('theme/admin/assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet"
