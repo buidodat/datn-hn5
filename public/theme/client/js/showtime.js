@@ -1,9 +1,6 @@
-const modalMovieScrening = document.getElementById("modalMovieScrening");
-const openModalMovieScrening = document.getElementById("openModalMovieScrening");
-
-const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
-
-openModalMovieScrening.onclick = function() {
+// Hàm mở modal
+function openModalMovieScrening() {
+    const modalMovieScrening = document.getElementById("modalMovieScrening");
     modalMovieScrening.style.display = "block";
 
     // Hiển thị dữ liệu cho ngày đầu tiên
@@ -13,13 +10,16 @@ openModalMovieScrening.onclick = function() {
     }
 }
 
-
+// Modal functionality
+const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
 
 spanClose.onclick = function() {
+    const modalMovieScrening = document.getElementById("modalMovieScrening");
     modalMovieScrening.style.display = "none";
 }
 
 window.onclick = function(event) {
+    const modalMovieScrening = document.getElementById("modalMovieScrening");
     if (event.target == modalMovieScrening) {
         modalMovieScrening.style.display = "none";
     }

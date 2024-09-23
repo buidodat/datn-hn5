@@ -65,7 +65,7 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a id="openModalMovieScrening" class="buy-ticket-btn">Mua vé</a>
+                                                                    <a  onclick="openModalMovieScrening()"  class="buy-ticket-btn">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -147,7 +147,7 @@
 
 
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                <a id="openModalMovieScrening" class="buy-ticket-btn" >Mua vé</a>
+                                                                <a  onclick="openModalMovieScrening()"  class="buy-ticket-btn" >Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -229,7 +229,7 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a class="buy-ticket-btn" id="openModalMovieScrening">Mua vé</a>
+                                                                    <a class="buy-ticket-btn"  onclick="openModalMovieScrening()" >Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
