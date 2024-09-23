@@ -68,10 +68,10 @@
                             @foreach ($showtimes as $i => $showtime)
                                 <tr>
                                     <td>{{ $i + 1 }}</td>
-                                    <td>{{ $showtime->movie_version->movie->name }}</td>
+                                    <td>{{ $showtime->movieVersion->movie->name }}</td>
                                     <td>{{ $showtime->room->cinema->branch->name }} - {{ $showtime->room->cinema->name }} -
                                         {{ $showtime->room->name }}</td>
-                                    <td>{{ $showtime->movie_version->name }}</td>
+                                    <td>{{ $showtime->movieVersion->name }}</td>
                                     <td>{{ $showtime->date }}</td>
                                     <td>{{ $showtime->start_time }}</td>
                                     <td>{{ $showtime->end_time }}</td>

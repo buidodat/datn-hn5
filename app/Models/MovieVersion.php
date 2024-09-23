@@ -13,7 +13,12 @@ class MovieVersion extends Model
         'movie_id',
         'name'
     ];
-    public function movie(){
+    public function movie()
+    {
         return $this->belongsTo(Movie::class);
+    }
+    public function showtime()
+    {
+        return $this->hasOne(Showtime::class);
     }
 }
