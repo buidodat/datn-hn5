@@ -23,7 +23,8 @@ class ShowtimeController extends Controller
     public function index(Request $request)
     {
         //
-        $cinemas = Cinema::all();
+        // $cinemas = Cinema::all();
+        $branches = Branch::all();
 
         $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie']);
 
@@ -40,7 +41,7 @@ class ShowtimeController extends Controller
 
         $showtimes = $showtimes->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'cinemas'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches'));
     }
 
     /**
