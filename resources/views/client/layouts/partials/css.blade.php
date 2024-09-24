@@ -44,7 +44,8 @@
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/color/style.css') }}" /> --}}
 
 <!-- favicon links -->
-<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />
+{{--<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />--}}
+<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/poly2.svg') }}" />
 
 <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 

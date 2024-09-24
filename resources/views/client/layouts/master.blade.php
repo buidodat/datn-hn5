@@ -12,8 +12,8 @@
     </title>
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta name="description" content="Movie Pro" />
-    <meta name="keywords" content="Movie Pro" />
+    <meta name="description" content="Poly Cenimas" />
+    <meta name="keywords" content="Poly Cenimas" />
     <meta name="author" content="" />
     <meta name="MobileOptimized" content="320" />
 
@@ -56,6 +56,7 @@
     <!--main js file end-->
 
     @yield('scripts')
+    @yield('script-libs')
 </body>
 
 </html>

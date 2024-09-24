@@ -1,0 +1,257 @@
+
+
+.modalMovieScrening-header {
+    border-bottom: none;
+    padding: 15px;
+    background-color: #f2f2f2;
+}
+
+.modalMovieScrening-title {
+    font-size: 23px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.modalMovieScrening-content {
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 70%;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    animation: fadeIn 0.3s;
+    max-height: 80vh;
+    /* Giới hạn chiều cao tối đa */
+}
+
+.modalMovieScrening-body {
+    padding: 0 20px;
+    overflow-y: auto;
+    /* Thêm cuộn dọc */
+    max-height: 70vh;
+    /* Chiều cao tối đa cho nội dung modal */
+    margin-bottom: 30px;
+    min-height: 50vh;
+}
+/* Modal Styles */
+.modalMovieScrening {
+    font-family: 'Arial', sans-serif;
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 100px;
+    margin-bottom: 100px;
+}
+
+.modalMovieScrening-content {
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 70%;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Close Button */
+.closeModalMovieScrening {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: -7px;
+}
+
+.closeModalMovieScrening:hover,
+.closeModalMovieScrening:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.cinema-title {
+    font-size: 23px;
+    font-weight: bold;
+    margin: 25px 0;
+    text-align: center;
+}
+
+/* Date Picker Styles */
+.listMovieScrening-date {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+
+}
+
+.listMovieScrening-date div {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: normal;
+    color: #666;
+    padding: 10px 8px;
+    margin: 5px 0;
+
+
+}
+
+.listMovieScrening-date div.active {
+    color: #000;
+    font-weight: bold;
+    border-bottom: 3px solid #007bff;
+}
+
+.listMovieScrening-date div:hover {
+    color: #007bff;
+}
+
+
+
+
+
+/* Button */
+.btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Styles for Tablets and Small Screens */
+@media (max-width: 1200px) {
+    .modalMovieScrening-content {
+        width: 60%;
+    }
+
+
+}
+
+/* Responsive Styles for Tablets */
+@media (max-width: 992px) {
+    .modalMovieScrening-content {
+        width: 70%;
+    }
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+    .modalMovieScrening-content {
+        width: 85%;
+    }
+
+
+    .listMovieScrening-date div {
+        width: 15%;
+        font-size: 16px;
+        padding: 5px 5px;
+    }
+
+    .listMovieScrening-date {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .listMovieScrening-date {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .modalMovieScrening-content {
+        width: 90%;
+    }
+
+
+    .modalMovieScrening-header {
+        padding: 8px;
+    }
+
+    .modalMovieScrening-title {
+        font-size: 13px;
+    }
+
+    .listMovieScrening-date {
+        flex-wrap: wrap;
+    }
+
+
+    .listMovieScrening-date {
+        display: flex;
+        font-size: 16px;
+        justify-content: flex-start;
+    }
+
+}
+.version-movie{
+    margin: 20px 0 ;
+}
+
+.list-showtimes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.showtime-item-start-time {
+    width: 102px;
+    text-align: center;
+    padding: 8px 18px;
+    border: 1px solid #ccc;
+    font-size: 1.1em;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.showtime-item-start-time:hover {
+    background-color: #f0f0f0;
+}
+
+.showtime-room-version {
+    margin-top: 35px;
+}
+
+.empty-seat-showtime {
+    font-size: 13.5px;
+    text-align: center;
+    margin: 5px;
+
+}
+
+.movieScrening-list-showtime-day {
+    display: none;
+    /* Ẩn các lịch chiếu theo ngày */
+    margin-bottom: 30px;
+}
+

@@ -10,6 +10,7 @@ class Branch extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'slug',
         'is_active'
     ];
     protected $cast = [

@@ -98,8 +98,11 @@
                                             <li class="nav-item mb-2"><span class="fw-semibold">Đạo diễn:</span> {{ $movie->director }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Diễn viên:</span> {{ $movie->cast }}</li>
                                             <li class="nav-item mb-2"><span class="fw-semibold">Thể loại:</span> {{ $movie->category }}</li>
-                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày khởi chiếu:</span> {{ $movie->release_date }}</li>
-                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ $movie->end_date }}</li>
+                                            {{-- <li class="nav-item mb-2"><span class="fw-semibold">Ngày khởi chiếu:</span> {{ $movie->release_date }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ $movie->end_date }}</li> --}}
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày khởi chiếu:</span> {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}</li>
+                                            <li class="nav-item mb-2"><span class="fw-semibold">Ngày kết thúc:</span> {{ \Carbon\Carbon::parse($movie->end_date)->format('d/m/Y') }}</li>
+
                                             <li class="nav-item mb-2"><span class="fw-semibold">Phân loại:</span> {{ $movie->rating }}</li>
                                             <li class="nav-item mb-2">
                                                 <span class="fw-semibold">Phiên bản:</span>
@@ -132,6 +135,13 @@
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+                                        {{-- <form action="{{route('admin.movies.destroy', $movie)}}" method="POST" class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach
