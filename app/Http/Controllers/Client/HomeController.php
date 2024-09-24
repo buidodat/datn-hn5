@@ -19,7 +19,7 @@ class HomeController extends Controller
 
         $slideShow = Slideshow::query()->where('is_active', 1)->get();
 
-        $listBranch = Branch::query()->where('is_active',1)->get();
+
 
         $currentNow = now()->format('Y-m-d');
 
@@ -60,7 +60,7 @@ class HomeController extends Controller
 
 
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow','listBranch'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow'));
     }
 
     public function policy()
