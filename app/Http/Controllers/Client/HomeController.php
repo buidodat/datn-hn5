@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Slideshow;
@@ -17,6 +18,8 @@ class HomeController extends Controller
     {
 
         $slideShow = Slideshow::query()->where('is_active', 1)->get();
+
+        $listBranch = Branch::query()->where('is_active',1)->get();
 
         $currentNow = now()->format('Y-m-d');
 
@@ -57,7 +60,7 @@ class HomeController extends Controller
 
 
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow','listBranch'));
     }
 
     public function policy()
