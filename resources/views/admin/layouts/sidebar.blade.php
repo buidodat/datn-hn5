@@ -13,7 +13,7 @@
             </span>
         </a>
         <!-- Light Logo-->
-        <a href="#" class="logo logo-light">
+        <a href="#" class="logo logo-light mt-3">
             <span class="logo-sm">
                 <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px"
                     height="40px">
@@ -103,48 +103,33 @@
 
                 {{-- Quản lí đồ ăn --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarFood" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarFood">
-                        <a href="{{ route('admin.food.index') }}" class="nav-link" data-key="t-horizontal"><i
-                                class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span></a>
-                    </a>
+                    <a href="{{ route('admin.food.index') }}" class="nav-link" data-key="t-horizontal"><i
+                            class="ri-cake-3-fill"></i> <span data-key="t-layouts">Quản lý Đồ Ăn</span></a>
                 </li>
 
                 {{-- Quản lí Combo --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarCombos1" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarCombos1">
-                        <a href="{{ route('admin.combos.index') }}" class="nav-link" data-key="t-horizontal"> <i
-                                class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý
-                                Combo</span></a>
-                    </a>
+                    <a href="{{ route('admin.combos.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                            class="ri-shopping-basket-2-line"></i> <span data-key="t-layouts">Quản lý
+                            Combo</span></a>
                 </li>
 
                 {{-- Quản lí Slideshows --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarLayouts-5" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-5">
-                        <a href="{{ route('admin.slideshows.index') }}" class="nav-link" data-key="t-horizontal"> <i
-                                class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span></a>
-                    </a>
+                    <a href="{{ route('admin.slideshows.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                            class="ri-slideshow-3-line"></i> <span data-key="t-layouts">Slideshows</span></a>
                 </li>
 
                 {{-- Quản lí Liên hệ --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarLayouts-3" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarLayouts-3">
-                        <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal"><i
-                                class="ri-contacts-book-2-line"></i> <span data-key="t-layouts">Liên hệ</span></a>
-                    </a>
+                    <a href="{{ route('admin.contacts.index') }}" class="nav-link" data-key="t-horizontal"><i
+                            class="ri-contacts-book-2-line"></i> <span data-key="t-layouts">Liên hệ</span></a>
                 </li>
 
                 {{-- Quản lí loại ghế --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarTypeSeat" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarTypeSeat">
-                        <a href="{{ route('admin.type_seats.index') }}" class="nav-link" data-key="t-horizontal"><i
-                                class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span></a>
-                    </a>
+                    <a href="{{ route('admin.type_seats.index') }}" class="nav-link" data-key="t-horizontal"><i
+                            class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span></a>
                 </li>
 
                 {{-- Giá vé --}}
@@ -156,11 +141,8 @@
 
                 {{-- Tài khoản --}}
                 <li class="nav-item">
-                    <a class="" href="#sidebarAccount" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="sidebarAccount">
-                        <a href="{{ route('admin.users.index') }}" class="nav-link" data-key="t-horizontal"> <i
-                                class="ri-account-circle-line"></i> <span data-key="t-layouts">Tài khoản</span></a>
-                    </a>
+                    <a href="{{ route('admin.users.index') }}" class="nav-link" data-key="t-horizontal"> <i
+                            class="ri-account-circle-line"></i> <span data-key="t-layouts">Tài khoản</span></a>
                 </li>
 
             </ul>
