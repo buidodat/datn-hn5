@@ -16,7 +16,7 @@
     <meta name="keywords" content="Poly Cenimas" />
     <meta name="author" content="" />
     <meta name="MobileOptimized" content="320" />
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     @yield('style-libs')
 
     <!--Template style -->

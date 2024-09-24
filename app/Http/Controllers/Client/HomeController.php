@@ -16,7 +16,6 @@ class HomeController extends Controller
     // const PATH_UPLOAD = 'home';
     public function home()
     {
-
         $slideShow = Slideshow::query()->where('is_active', 1)->get();
 
         $listBranch = Branch::query()->where('is_active',1)->get();

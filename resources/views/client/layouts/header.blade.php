@@ -8,7 +8,8 @@
         <div class="prs_navi_left_main_wrapper">
             <div class="prs_logo_main_wrapper">
                 <a href="/">
-                    <img style="width: 184px; height: 40px" src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="logo" />
+                    <img style="width: 184px; height: 40px" src="{{ asset('theme/client/images/header/logo6.svg') }}"
+                        alt="logo" />
                 </a>
             </div>
             <div class="prs_menu_main_wrapper">
@@ -21,14 +22,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <ul class="dl-menu">
-                            {{-- <li class="parent"><a href="{{ route('home') }}">Trang chủ</a>
-                                <ul class="lg-submenu">
-                                    <li><a href="{{ route('home') }}">Index-I</a></li>
-                                    <li><a href="index2.html">Index-II</a></li>
-                                    <li><a href="index3.html">Index-III</a></li>
-                                    <li><a href="index4.html">Index-IV</a></li>
-                                </ul>
-                            </li> --}}
+
                             <li class="parent"><a href="#">Trang</a>
                                 <ul class="lg-submenu ">
 
@@ -57,10 +51,22 @@
                             </li>
                             <li class="parent"><a href="#">Liên hệ</a>
                             </li>
+                            <li>
+
+                            </li>
                             {{-- <li class="parent"><a href="#">Thành viên</a>
                             </li> --}}
                         </ul>
                     </div>
+                    @php
+                        $cinemas = App\Models\Cinema::all();
+                    @endphp
+                    <select id="cinemaSelect" onchange="fetchData()">
+                        <option value="">Chọn cơ sở</option>
+                        @foreach ($cinemas as $cinema)
+                            <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
+                        @endforeach
+                    </select>
                     <!-- /dl-menuwrapper -->
                 </nav>
             </div>
@@ -91,7 +97,7 @@
                                             document.getElementById('logout-form').submit();">
                                         {{ __('Đăng Xuất') }}
                                     </a>
-                                    <a href="{{route('my-account.edit')}}">Tài khoản của tôi</a>
+                                    <a href="{{ route('my-account.edit') }}">Tài khoản của tôi</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
