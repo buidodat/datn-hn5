@@ -103,7 +103,7 @@
                                                     Trailer
                                                 </button>
 
-                                                <button class="buy-ticket" onclick="openModalMovieScrening()" >Mua Vé Ngay</button>
+                                                <button class="buy-ticket" onclick="openModalMovieScrening({{ $movie->id }})" >Mua Vé Ngay</button>
                                             </div>
                                         </div>
 
