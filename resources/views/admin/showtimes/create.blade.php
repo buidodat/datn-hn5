@@ -164,6 +164,10 @@
                                         </div>
                                     @enderror
                                 </div>
+                                {{-- <input type="checkbox" > --}}
+                                {{-- <div class="col-md-4">
+                                    <button type="button">Thêm mới</button>
+                                </div> --}}
                                 <div class="col-md-4">
                                     <span class='text-danger'>*</span>
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
@@ -347,7 +351,8 @@
         });
 
 
-        const cleaningTime = {{ $cleaningTime }} //Thời gian dọn phòng: $cleaningTime = 15 phút
+        const cleaningTime = {{ $cleaningTime }} //Thời gian dọn phòng = 15 phút
+
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
         $(document).ready(function() {
             let movieDuration = 0;

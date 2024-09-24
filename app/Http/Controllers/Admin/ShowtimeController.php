@@ -70,7 +70,7 @@ class ShowtimeController extends Controller
         try {
             $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time)->format('Y-m-d H:i');
             $endTime = \Carbon\Carbon::parse($request->date . ' ' . $request->end_time)->format('Y-m-d H:i');
-
+            
 
             $dataShowtimes = [
                 'room_id' => $request->room_id,

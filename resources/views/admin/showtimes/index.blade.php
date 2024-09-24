@@ -149,7 +149,7 @@
                     </table>
                 </div> --}}
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead>
                             <tr>
