@@ -12,7 +12,7 @@
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
                             <a href="/" class="d-inline-block auth-logo">
-                                <img src="{{ asset('theme/client/images/header/logo6.png') }}" alt="" height="40">
+                                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" height="60">
                             </a>
                         </div>
                     </div>
