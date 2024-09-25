@@ -1,89 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Chiếu</title>
+    <title>Lịch Chiếu - Modal</title>
     <style>
-
-        h3 {
-            font-size: 1.1em; /* Kích thước nhỏ cho tiêu đề */
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .list-showtimes {
-            display: flex;
-
-            gap: 10px;
-        }
-
-        .showtime-item {
-            width: 120px; /* Độ dài cố định */
-            text-align: center; /* Căn giữa nội dung */
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1.2em;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .showtime-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Responsive */
-        @media (max-width: 576px) {
-            .showtime-item {
-                font-size: 1em; /* Kích thước nhỏ hơn cho màn hình nhỏ */
-                width: 100px; /* Chiều dài nhỏ hơn cho màn hình nhỏ */
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="showtime-room-version">
-    <h3>Lịch Chiếu Hôm Nay</h3>
-    <div class="list-showtimes">
-        <div class="showtime-item">11:30 AM</div>
-        <div class="showtime-item">02:45 PM</div>
-        <div class="showtime-item">06:30 PM</div>
-    </div>
-</div>
-
-</body>
-</html>
-<style>
         /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
         }
 
-        .modal-header {
+        .modalMovieScrening-header {
             border-bottom: none;
             padding: 15px;
             background-color: #f2f2f2;
         }
 
-        .modal-title {
+        .modalMovieScrening-title {
             font-size: 23px;
             font-weight: bold;
             text-transform: uppercase;
         }
 
-        .modal-body {
-            padding: 0 20px;
+        .modalMovieScrening-content {
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 70%;
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            animation: fadeIn 0.3s;
+            max-height: 80vh;
+            /* Giới hạn chiều cao tối đa */
         }
 
-        .modal-footer {
-            border-top: none;
-            padding: 15px;
-            text-align: right;
+        .modalMovieScrening-body {
+            padding: 0 20px;
+            overflow-y: auto;
+            /* Thêm cuộn dọc */
+            max-height: 70vh;
+            /* Chiều cao tối đa cho nội dung modal */
+            margin-bottom: 30px;
+            min-height: 50vh;
         }
+
 
         .cinema-title {
             font-size: 23px;
@@ -93,7 +55,7 @@
         }
 
         /* Date Picker Styles */
-        .list-date {
+        .listMovieScrening-date {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -103,7 +65,7 @@
 
         }
 
-        .list-date div {
+        .listMovieScrening-date div {
             cursor: pointer;
             font-size: 18px;
             font-weight: normal;
@@ -114,46 +76,14 @@
 
         }
 
-        .list-date div.active {
+        .listMovieScrening-date div.active {
             color: #000;
             font-weight: bold;
             border-bottom: 3px solid #007bff;
         }
 
-        .list-date div:hover {
+        .listMovieScrening-date div:hover {
             color: #007bff;
-        }
-
-        /* Showtime Section */
-        .showtime-section {
-            display: flex;
-
-            flex-wrap: wrap;
-            padding: 0 15px;
-        }
-
-        .showtime {
-            text-align: center;
-            background-color: #f8f9fa;
-            padding: 10px;
-            margin: 10px 0;
-            width: 30%;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .showtime p {
-            margin: 0;
-        }
-
-        .showtime p:first-child {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .showtime p:last-child {
-            font-size: 12px;
-            color: #777;
         }
 
         .hidden {
@@ -161,7 +91,7 @@
         }
 
         /* Modal Styles */
-        .modal {
+        .modalMovieScrening {
             display: none;
             position: fixed;
             z-index: 1;
@@ -175,7 +105,7 @@
             margin-bottom: 100px;
         }
 
-        .modal-content {
+        .modalMovieScrening-content {
             margin: auto;
             padding: 0;
             border: 1px solid #888;
@@ -197,7 +127,7 @@
         }
 
         /* Close Button */
-        .close {
+        .closeModalMovieScrening {
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -206,8 +136,8 @@
             margin-top: -7px;
         }
 
-        .close:hover,
-        .close:focus {
+        .closeModalMovieScrening:hover,
+        .closeModalMovieScrening:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -223,9 +153,7 @@
             cursor: pointer;
         }
 
-        .btn-danger {
-            background-color: #dc3545;
-        }
+
 
         .btn:hover {
             background-color: #0056b3;
@@ -233,29 +161,23 @@
 
         /* Responsive Styles for Tablets and Small Screens */
         @media (max-width: 1200px) {
-            .modal-content {
+            .modalMovieScrening-content {
                 width: 60%;
             }
 
-            .showtime {
-                width: 18%;
-            }
+
         }
 
         /* Responsive Styles for Tablets */
         @media (max-width: 992px) {
-            .modal-content {
+            .modalMovieScrening-content {
                 width: 70%;
-            }
-
-            .showtime {
-                width: 22%;
             }
         }
 
         /* Responsive Styles for Mobile */
         @media (max-width: 768px) {
-            .modal-content {
+            .modalMovieScrening-content {
                 width: 85%;
             }
 
@@ -263,20 +185,24 @@
                 width: 30%;
             }
 
-            .list-date div {
-                width: 18%;
-                font-size: 13px;
+            .listMovieScrening-date div {
+                width: 15%;
+                font-size: 16px;
                 padding: 5px 5px;
             }
 
-            .list-date {
+            .listMovieScrening-date {
                 display: flex;
                 justify-content: flex-start;
+            }
+
+            .listMovieScrening-date {
+                flex-wrap: wrap;
             }
         }
 
         @media (max-width: 576px) {
-            .modal-content {
+            .modalMovieScrening-content {
                 width: 90%;
             }
 
@@ -287,30 +213,22 @@
 
             }
 
-            .modal-header {
+            .modalMovieScrening-header {
                 padding: 8px;
             }
 
-            .modal-title {
+            .modalMovieScrening-title {
                 font-size: 13px;
             }
 
-            .list-date {
+            .listMovieScrening-date {
                 flex-wrap: wrap;
             }
 
-            .list-date div {
-                width: 15%;
-                font-size: 9px;
-            }
 
-            .btn {
-                padding: 5px 8px;
-                font-size: 15px;
-            }
-
-            .list-date {
+            .listMovieScrening-date {
                 display: flex;
+                font-size: 16px;
                 justify-content: flex-start;
             }
 
@@ -325,7 +243,7 @@
         .showtime-item-start-time {
             width: 80px;
             text-align: center;
-            padding: 8px 19px;
+            padding: 8px 18px;
             border: 1px solid #ccc;
             font-size: 1.1em;
             color: #333;
@@ -342,10 +260,173 @@
         }
 
         .empty-seat-showtime {
-            font-size: 14px;
+            font-size: 13.5px;
             text-align: center;
             margin: 5px;
 
         }
 
+        .movieScrening-list-showtime-day {
+            display: none;
+            /* Ẩn các lịch chiếu theo ngày */
+            margin-bottom: 30px;
+        }
     </style>
+</head>
+
+<body>
+
+    <!-- Button to Open the Modal -->
+    <button class="btn" id="openModalMovieScrening">Mở Lịch Chiếu</button>
+
+    <!-- The Modal -->
+    <div id="modalMovieScrening" class="modalMovieScrening">
+        <div class="modalMovieScrening-content">
+
+            <!-- Modal Header -->
+            <div class="modalMovieScrening-header">
+                <span class="modalMovieScrening-title">LỊCH CHIẾU - Cám</span>
+                <span class="closeModalMovieScrening">&times;</span>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modalMovieScrening-body">
+                <h2 class="cinema-title">Rạp Poly Mỹ Đình</h2>
+
+                <!-- Date Picker -->
+                <div class="listMovieScrening-date">
+                    <div data-day="day250" class="movieScrening-date-item active">23/09 - T2</div>
+                    <div data-day="day251" class="movieScrening-date-item">24/09 - T3</div>
+                    <div data-day="day252" class="movieScrening-date-item">25/09 - T4</div>
+                    <div data-day="day253" class="movieScrening-date-item">26/09 - T5</div>
+                    <div data-day="day254" class="movieScrening-date-item">27/09 - T6</div>
+                    <div data-day="day255" class="movieScrening-date-item">28/09 - T7</div>
+                    <div data-day="day256" class="movieScrening-date-item">29/09 - CN</div>
+                </div>
+
+
+                <div class="movieScrening-list-showtime-day" id="day250">
+                    <div class="movieScrening-showtime-version">
+                        <h3 class="version-movie">2D phụ đề </h3>
+                        <div class="list-showtimes">
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="showtime-room-version">
+                        <h3 class="version-movie">2D vietsub </h3>
+                        <div class="list-showtimes">
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                            <div class="showtime-item">
+                                <div class="showtime-item-start-time">02:45</div>
+                                <div class="empty-seat-showtime">135 ghế trống</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modalMovieScrening = document.getElementById("modalMovieScrening");
+        const openModalMovieScrening = document.getElementById("openModalMovieScrening");
+
+        const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
+
+        openModalMovieScrening.onclick = function() {
+            modalMovieScrening.style.display = "block";
+
+            // Hiển thị dữ liệu cho ngày đầu tiên
+            const firstDateItem = document.querySelector('.movieScrening-date-item');
+            if (firstDateItem) {
+                firstDateItem.click(); // Mô phỏng click vào ngày đầu tiên
+            }
+        }
+
+
+
+        spanClose.onclick = function() {
+            modalMovieScrening.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modalMovieScrening) {
+                modalMovieScrening.style.display = "none";
+            }
+        }
+
+        // Date selection functionality
+        const dateItems = document.querySelectorAll('.movieScrening-date-item');
+        const showtimeDays = document.querySelectorAll('.movieScrening-list-showtime-day');
+
+        dateItems.forEach(dateItem => {
+            dateItem.onclick = function() {
+                // Remove active class from all date items
+                dateItems.forEach(item => item.classList.remove('active'));
+
+                // Add active class to the selected date item
+                this.classList.add('active');
+
+                // Hide all showtime days
+                showtimeDays.forEach(showtime => showtime.style.display = 'none');
+
+                // Show the selected show's time
+                const dayId = this.getAttribute('data-day');
+                document.getElementById(dayId).style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

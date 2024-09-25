@@ -277,7 +277,7 @@
 <body>
 
     <!-- Button to Open the Modal -->
-    <button class="btn" id="openModalMovieScrening">Mở Lịch Chiếu</button>
+    <button class="btn" id="openModalMovieScrening" onclick="openModalMovieScrening()">Mở Lịch Chiếu</button>
 
     <!-- The Modal -->
     <div id="modalMovieScrening" class="modalMovieScrening">
@@ -366,214 +366,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="movieScrening-list-showtime-day" id="day251">
-                    <div class="movieScrening-showtime-version">
-                        <h3 class="version-movie">2D phụ đề </h3>
-                        <div class="list-showtimes">
 
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="showtime-room-version">
-                        <h3 class="version-movie">2D vietsub </h3>
-                        <div class="list-showtimes">
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                            <div class="showtime-item">
-                                <div class="showtime-item-start-time">02:45</div>
-                                <div class="empty-seat-showtime">135 ghế trống</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
 
@@ -584,52 +377,64 @@
     </div>
 
     <script>
-        // Modal functionality
-        const modalMovieScrening = document.getElementById("modalMovieScrening");
-        const openModalMovieScrening = document.getElementById("openModalMovieScrening");
-
-        const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
-
-        openModalMovieScrening.onclick = function() {
-            modalMovieScrening.style.display = "block";
+        // Hàm mở modal
+        function openModalMovieScrening() {
+            const modalMovieScrening = document.getElementById("modalMovieScrening");
+            modalMovieScrening.style.display = "block"; // Mở modal
 
             // Hiển thị dữ liệu cho ngày đầu tiên
             const firstDateItem = document.querySelector('.movieScrening-date-item');
             if (firstDateItem) {
-                firstDateItem.click(); // Mô phỏng click vào ngày đầu tiên
+                // Thêm class active cho ngày đầu tiên
+                firstDateItem.classList.add('active');
+
+                // Mô phỏng click vào ngày đầu tiên để hiển thị suất chiếu
+                firstDateItem.click();
             }
         }
 
-
-
+        // Đóng modal khi nhấn nút đóng
+        const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
         spanClose.onclick = function() {
-            modalMovieScrening.style.display = "none";
+            const modalMovieScrening = document.getElementById("modalMovieScrening");
+            modalMovieScrening.style.display = "none"; // Đóng modal
         }
 
+        // Đóng modal khi nhấn bên ngoài modal
         window.onclick = function(event) {
+            const modalMovieScrening = document.getElementById("modalMovieScrening");
             if (event.target == modalMovieScrening) {
-                modalMovieScrening.style.display = "none";
+                modalMovieScrening.style.display = "none"; // Đóng modal
             }
         }
 
-        // Date selection functionality
+        // Lấy tất cả các phần tử ngày chiếu
         const dateItems = document.querySelectorAll('.movieScrening-date-item');
+
+        // Lấy tất cả các phần tử suất chiếu
         const showtimeDays = document.querySelectorAll('.movieScrening-list-showtime-day');
 
+        // Duyệt qua từng phần tử ngày chiếu
         dateItems.forEach(dateItem => {
+            // Gắn sự kiện click cho từng ngày chiếu
             dateItem.onclick = function() {
-                // Remove active class from all date items
+                // Xóa class 'active' khỏi tất cả các ngày chiếu
                 dateItems.forEach(item => item.classList.remove('active'));
 
-                // Add active class to the selected date item
+                // Thêm class 'active' cho ngày chiếu đang được chọn
                 this.classList.add('active');
 
-                // Hide all showtime days
+                // Ẩn tất cả các suất chiếu
                 showtimeDays.forEach(showtime => showtime.style.display = 'none');
 
-                // Show the selected show's time
+                // Lấy ID của ngày được chọn từ thuộc tính 'data-day'
                 const dayId = this.getAttribute('data-day');
-                document.getElementById(dayId).style.display = 'block';
+
+                // Hiển thị suất chiếu tương ứng với ngày đã chọn
+                const selectedShowtime = document.getElementById(dayId);
+                if (selectedShowtime) {
+                    selectedShowtime.style.display = 'block'; // Hiển thị suất chiếu cho ngày đã chọn
+                }
             }
         });
     </script>
