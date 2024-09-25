@@ -1,4 +1,7 @@
-    .my-account-container {
+   
+   /* Thông tin tài khoản */
+   /* ========================================================= */
+   .my-account-container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
@@ -216,3 +219,79 @@
         flex: 1;
         min-width: 200px;
     }
+
+    
+    /* Hành trình điện ảnh */
+    /* ========================================================= */
+    .cinema-journey-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    
+    .cinema-journey-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    .cinema-journey-thead {
+        background-color: #f8f8f8;
+    }
+    
+    .cinema-journey-th,
+    .cinema-journey-td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    
+    .cinema-journey-th {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+    
+    .cinema-journey-td {
+        font-size: 14px;
+    }
+    
+    .cinema-journey-movie-poster {
+        width: 100px;
+        height: auto;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .cinema-journey-movie-title {
+        font-weight: bold;
+    }
+    
+    .cinema-journey-td p {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .cinema-journey-td:nth-child(2) {
+        text-align: center;
+    }
+    
+    .cinema-journey-td:nth-child(5),
+    .cinema-journey-td:nth-child(6) {
+        text-align: center;
+    }
+    
+    .cinema-journey-td:nth-child(7),
+    .cinema-journey-td:nth-child(8) {
+        text-align: center;
+    }
+    
+    .cinema-journey-tbody tr {
+        background-color: #fff;
+    }
+    
+    .cinema-journey-tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
