@@ -32,7 +32,7 @@
     max-height: 70vh;
     /* Chiều cao tối đa cho nội dung modal */
     margin-bottom: 30px;
-    min-height: 50vh;
+    min-height: 55vh;
 }
 /* Modal Styles */
 .modalMovieScrening {
@@ -46,7 +46,7 @@
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    padding-top: 100px;
+    padding-top: 110px;
     margin-bottom: 100px;
 }
 
@@ -54,7 +54,7 @@
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 70%;
+    width: 1050x;
     background-color: white;
     border-radius: 5px;
     overflow: hidden;

@@ -50,8 +50,8 @@ class MovieController extends Controller
             // Cộng thêm 1 ngày
             $currentDate->add(new \DateInterval('P1D'));
         }
+// dd( $dates);
 
-
-        return response()->json(['dates' => $dates]);
+        return response()->json(['dates' => $dates,'movie'=>$movie]);
     }
 }

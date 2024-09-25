@@ -52,9 +52,11 @@
 
     <!-- st login wrapper End -->
     <!--main js file start-->
+    <script>
+        const APP_URL = "{{ env('APP_URL') }}";
+    </script>
     @include('client.layouts.partials.js')
     <!--main js file end-->
-
     @yield('scripts')
     @yield('script-libs')
 </body>
