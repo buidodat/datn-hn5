@@ -252,7 +252,7 @@
 
 
 
-    @include('client.showtime')
+    @include('client.modal-movie-screning')
     <!-- st slider sidebar wrapper End -->
 @endsection
 

@@ -1,4 +1,4 @@
-// Hàm mở modal
+
 function openModalMovieScrening(movieId) {
     const modalMovieScrening = document.getElementById("modalMovieScrening");
     modalMovieScrening.style.display = "block"; // Mở modal
@@ -6,12 +6,14 @@ function openModalMovieScrening(movieId) {
     modalMovieScrening.setAttribute('data-movie-id', movieId);
 
     // Gửi AJAX để lấy dữ liệu xuất chiếu của phim
-    const routeApi = `/api/movie/${movieId}/showtimes`;
+    const routeApi = `${APP_URL}/api/movie/${movieId}/showtimes`;
     fetch(routeApi)
         .then(response => response.json())
         .then(data => {
+            // Cập nhật tiêu đề modal với tên phim từ dữ liệu
+            document.getElementById("modalMovieTitle").textContent = `LỊCH CHIẾU - ${data.movie.name}`; // Giả sử bạn có thuộc tính movie_title trong data
+
             // Cập nhật nội dung modal với lịch chiếu nhận được
-            console.log(data);
             updateModalContent(data);
         })
         .catch(error => {
@@ -35,40 +37,16 @@ window.onclick = function (event) {
 }
 
 function updateModalContent(data) {
-    const modalContent = document.querySelector('.modalMovieScrening-content'); // Lấy modal content
-
-    // Xóa toàn bộ nội dung trong modalContent
-    modalContent.innerHTML = '';
-
-    // Thêm tiêu đề modal
-    const modalHeader = document.createElement('div');
-    modalHeader.classList.add('modalMovieScrening-header');
-
-    const modalTitle = document.createElement('span');
-    modalTitle.classList.add('modalMovieScrening-title');
-    modalTitle.textContent = 'LỊCH CHIẾU - Cám'; // Bạn có thể thay đổi tiêu đề tùy theo dữ liệu
-
-    const closeModalButton = document.createElement('span');
-    closeModalButton.classList.add('closeModalMovieScrening');
-    closeModalButton.innerHTML = '&times;';
-
-    // Gắn sự kiện đóng modal
-    closeModalButton.onclick = function () {
-        const modalMovieScrening = document.getElementById("modalMovieScrening");
-        modalMovieScrening.style.display = "none"; // Đóng modal
-    };
-
-    modalHeader.appendChild(modalTitle);
-    modalHeader.appendChild(closeModalButton);
-    modalContent.appendChild(modalHeader); // Thêm header vào modalContent
+    const modalBody = document.querySelector('.modalMovieScrening-body');
+    modalBody.innerHTML = ''; // Xóa nội dung cũ
 
     // Thêm tiêu đề rạp chiếu (cinema-title)
     const cinemaTitle = document.createElement('h2');
     cinemaTitle.classList.add('cinema-title');
     cinemaTitle.textContent = 'Rạp Poly Hà Đông'; // Bạn có thể thay đổi tên rạp tùy theo dữ liệu thực tế
 
-    // Thêm tiêu đề rạp vào modalContent
-    modalContent.appendChild(cinemaTitle);
+    // Thêm tiêu đề rạp vào modal
+    modalBody.appendChild(cinemaTitle);
 
     // Tạo phần Date Picker (listMovieScrening-date)
     const datePickerDiv = document.createElement('div');
@@ -97,8 +75,8 @@ function updateModalContent(data) {
         datePickerDiv.appendChild(dateItemDiv);
     });
 
-    // Thêm Date Picker vào modalContent
-    modalContent.appendChild(datePickerDiv);
+    // Thêm Date Picker vào modal
+    modalBody.appendChild(datePickerDiv);
 
     // Tạo nội dung suất chiếu
     data.dates.forEach((date, index) => {
@@ -131,6 +109,14 @@ function updateModalContent(data) {
             startTime.classList.add('showtime-item-start-time');
             startTime.textContent = showtime.start_time; // Format lại nếu cần
 
+            // // Gắn sự kiện click vào startTime để hiển thị showtime_id
+            startTime.onclick = function () {
+                alert(`Showtime ID: ${showtime.id}`); // Thay đổi showtime_id thành tên trường thực tế từ dữ liệu của bạn
+            };
+            //startTime.onclick = function () {
+            //     window.location.href = `${APP_URL}/showtimes/${showtime.id}`; // Chuyển hướng đến trang chi tiết suất chiếu
+            // };
+
             const emptySeat = document.createElement('div');
             emptySeat.classList.add('empty-seat-showtime');
             emptySeat.textContent = '150 ghế trống'; // Hoặc cập nhật số ghế trống từ dữ liệu
@@ -143,6 +129,6 @@ function updateModalContent(data) {
         showtimeVersion.appendChild(versionMovie);
         showtimeVersion.appendChild(listShowtimes);
         dateDiv.appendChild(showtimeVersion);
-        modalContent.appendChild(dateDiv);
+        modalBody.appendChild(dateDiv);
     });
 }
