@@ -17,11 +17,17 @@ class APIController extends Controller
         return response()->json($cinemas);
     }
 
-    public function getRooms($movieId)
+    // 
+    
+
+
+    // 
+    public function getRooms($cinemaId)
     {
-        $rooms = Room::where('cinema_id', $movieId)->get();
+        $rooms = Room::where('cinema_id', $cinemaId)->get();
         return response()->json($rooms);
     }
+
 
     public function getMovieVersion($movieId)
     {
@@ -37,7 +43,9 @@ class APIController extends Controller
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
 
-
-   
-   
+    // public function getTypeRooms($typeRoomId)
+    // {
+    //     $rooms = Room::where('type_room_id', $typeRoomId)->get();
+    //     return response()->json($rooms);
+    // }
 }

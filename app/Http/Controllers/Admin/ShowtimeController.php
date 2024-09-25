@@ -11,6 +11,7 @@ use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
 use App\Models\Showtime;
+use App\Models\TypeRoom;
 use Illuminate\Http\Request;
 
 class ShowtimeController extends Controller
@@ -26,8 +27,7 @@ class ShowtimeController extends Controller
         // $cinemas = Cinema::all();
         $branches = Branch::all();
 
-        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie']);
-
+        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
 
         if ($request->input('cinema_id')) {
             $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
@@ -52,43 +52,42 @@ class ShowtimeController extends Controller
         //
 
         $movies = Movie::where('is_active', '1')->get();
-        $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
-
-        $movieVersions = MovieVersion::all();
-        $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
+        $typeRooms = TypeRoom::all();
         $branches = Branch::where('is_active', '1')->get();
 
         $cleaningTime = Showtime::CLEANINGTIME;
-        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreShowtimeRequest $request)
     {
-        //
         try {
-            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time)->format('Y-m-d H:i');
-            $endTime = \Carbon\Carbon::parse($request->date . ' ' . $request->end_time)->format('Y-m-d H:i');
-            
+           
+            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
 
+            $movie = Movie::find($request->movie_id); 
+            $movieDuration = $movie ? $movie->duration : 0; 
+
+            $cleaningTime = Showtime::CLEANINGTIME;
+
+            // Tính end_time: cộng thời lượng phim và thời gian dọn phòng vào start_time
+            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+
+            // Lưu dữ liệu Suất chiếu
             $dataShowtimes = [
+                'cinema_id' => $request->cinema_id,
                 'room_id' => $request->room_id,
+                'format' => '2D Phụ đề việt',
                 'movie_version_id' => $request->movie_version_id,
                 'movie_id' => $request->movie_id,
-                'date' => $request->date,
-                'start_time' => $startTime,
-                'end_time' => $endTime,
+                'date' => $request->date, // Ngày chiếu giữ nguyên
+                'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
+                'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
-
-            // dd($request->all());
-
             Showtime::create($dataShowtimes);
-
-
 
             return redirect()
                 ->route('admin.showtimes.index')
@@ -97,6 +96,8 @@ class ShowtimeController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
+
 
     /**
      * Display the specified resource.

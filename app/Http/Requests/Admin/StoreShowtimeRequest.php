@@ -37,10 +37,10 @@ class StoreShowtimeRequest extends FormRequest
             'branch_id' => 'required',
             'movie_version_id' => 'required|exists:movie_versions,id',
             'date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required|before:end_time',
-            'end_time' => 'required|after:start_time',
-            // 'start_time' => 'required',
-            // 'end_time' => 'required',
+            // 'start_time' => 'required|before:end_time',
+            // 'end_time' => 'required|after:start_time',
+            'start_time' => 'required',
+            'end_time' => 'required',
 
         ];
     }

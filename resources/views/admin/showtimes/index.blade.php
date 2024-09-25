@@ -58,15 +58,6 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-
-                                        {{-- <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn Rạp</option>
-                                            @foreach ($cinemas as $cinema)
-                                                <option value="{{ $cinema->id }}"
-                                                    {{ request('cinema_id') == $cinema->id ? 'selected' : '' }}>
-                                                    {{ $cinema->name }}</option>
-                                            @endforeach
-                                        </select> --}}
                                         <select name="cinema_id" id="cinema" class="form-select">
                                             <option value="">Chọn Rạp</option>
 

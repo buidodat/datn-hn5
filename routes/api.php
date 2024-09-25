@@ -25,5 +25,6 @@ Route::get('cinemas/{branchId}', [APIController::class, 'getCinemas']);
 Route::get('rooms/{movieId}', [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
+Route::get('typeRooms/{typeRoomId}', [APIController::class, 'getTypeRooms']);
 
  
