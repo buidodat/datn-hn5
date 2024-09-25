@@ -4,7 +4,9 @@
     Chi tiết phim
 @endsection
 
+
 @section('styles')
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}" />
     <style>
         .content-cmt {
             display: flex;
@@ -101,7 +103,7 @@
                                                     Trailer
                                                 </button>
 
-                                                <button class="buy-ticket" id="buy-ticket-btn">Mua Vé Ngay</button>
+                                                <button class="buy-ticket" onclick="openModalMovieScrening({{ $movie->id }})" >Mua Vé Ngay</button>
                                             </div>
                                         </div>
 
@@ -250,12 +252,12 @@
 
 
 
-    @include('client.showtime')
+    @include('client.modal-movie-screning')
     <!-- st slider sidebar wrapper End -->
 @endsection
 
 @section('scripts')
-
+<script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script>
         let comments = [];
         let currentPage = 0;
