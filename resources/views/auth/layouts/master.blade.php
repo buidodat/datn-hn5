@@ -17,7 +17,7 @@
     @yield('style-libs')
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('theme/admin/assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('theme/client/images/header/poly2.svg') }}">
 
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
