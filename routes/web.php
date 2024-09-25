@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
+use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
 use App\Models\Room;
 use App\Models\Seat;
@@ -61,6 +62,10 @@ route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVouche
 Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
+
+// lịch chiếu theo rạp
+Route::get('showtimes', [ShowtimeController::class, 'showWeekDays'])->name('showtimes');
+
 
 Route::get('showtime', function () {
     return view('client.showtime');
