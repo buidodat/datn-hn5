@@ -13,7 +13,7 @@ class TypeRoom extends Model
         'surcharge'
     ];
 
-    public function rooms()
+    public function room()
     {
         return $this->hasMany(Room::class);
     }

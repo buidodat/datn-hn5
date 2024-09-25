@@ -96,12 +96,12 @@
                         style="width:100%;">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                {{-- <th>#</th> --}}
                                 <th>Thời gian</th>
                                 <th>Tên phim</th>
                                 <th>Tên phòng</th>
                                 <th>Định dạng</th>
-                                {{-- <th>Số ghế</th> --}}
+                                <th>Số ghế</th>
                                 <th>Ngày chiếu</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
@@ -122,7 +122,7 @@
 
                                 @foreach ($times as $i => $showtime)
                                     <tr>
-                                        <td>{{ $i + 1 }}</td>
+                                        {{-- <td>{{ $i + 1 }}</td> --}}
                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
                                         <td>{{ $showtime->movieVersion->movie->name }}</td>
@@ -134,6 +134,9 @@
                                             </td>
                                             <td rowspan="{{ $rowCount }}">
                                                 {{ $showtime->format }}
+                                            </td>
+                                            <td rowspan="{{ $rowCount }}">
+                                                {{ $showtime->room->capacity }} ghế
                                             </td>
 
                                             <td rowspan="{{ $rowCount }}">

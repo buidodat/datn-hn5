@@ -17,14 +17,14 @@ class APIController extends Controller
         return response()->json($cinemas);
     }
 
-    // 
-    
 
-
-    // 
     public function getRooms($cinemaId)
     {
-        $rooms = Room::where('cinema_id', $cinemaId)->get();
+        $rooms = Room::where('cinema_id', $cinemaId)
+            ->join('type_rooms', 'type_rooms.id', '=', 'rooms.type_room_id') // Join bảng type_rooms
+            ->select('rooms.*', 'type_rooms.name as type_room_name') // Lấy cột name từ bảng type_rooms
+            ->get();
+
         return response()->json($rooms);
     }
 
