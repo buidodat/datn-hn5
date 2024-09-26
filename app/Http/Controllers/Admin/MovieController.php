@@ -86,9 +86,15 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Movie $movie)
     {
-        //
+//        dd(123);
+        $movieVersions = $movie->movieVersions()->pluck('name')->all();
+        $ratings = Movie::RATINGS;
+        $versions = Movie::VERSIONS;
+        $movieReviews = $movie->movieReview()->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions','movieReviews']));
+
     }
 
     /**

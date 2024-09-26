@@ -22,25 +22,21 @@ class Movie extends Model
         'end_date',
         'trailer_url',
         'is_active',
-        'is_hot'
+        'is_hot',
+        /*Thiếu nè*/
+        /*'is_show_home',
+        'is_special'*/
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot' => 'boolean',
     ];
-
-    public function movieVersions()
-    {
-        return $this->hasMany(MovieVersion::class);
-    }
-
     const VERSIONS = [
         'Vietsub',
         'Lồng Tiếng',
         'Thuyết Minh'
     ];
-
     const RATINGS = [
         'P',
         'C13',
@@ -48,7 +44,10 @@ class Movie extends Model
         'C18',
         'K'
     ];
-
+    public function movieVersions()
+    {
+        return $this->hasMany(MovieVersion::class);
+    }
     public function movieReview()
     {
         return $this->hasMany(MovieReview::class, 'movie_id');
