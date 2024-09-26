@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-    <div class="st_slider_index_sidebar_main_wrapper st_slider_index_sidebar_main_wrapper_md">
+    
         <div class="container">
             <div class="">
                 <!-- Tabs hiển thị các ngày trong tuần -->
-                <div class="modalMovieScrening-body">
+                <div class="top-bot">
                     <!-- Date Picker -->
                     <div class="listMovieScrening-date">
                         <div data-day="day250" class="movieScrening-date-item active">23/09 - T2</div>
@@ -82,121 +82,13 @@
                         </div>
                     </div>
                 </div>
+                <hr>
             </div>
         </div>
-    </div>
 @endsection
 
 @section('styles')
-    <style>
-        hr {
-            border: 0;
-            /* Loại bỏ đường viền mặc định */
-            border-top: 3px solid rgb(214, 213, 213);
-            /* Đặt màu và độ dày của đường */
-            margin: 30px 0;
-            /* Tùy chỉnh khoảng cách trên và dưới */
-            width: 100%;
-            /* Chiều rộng của hr */
-        }
-
-        /* Style cho các tab ngày */
-        .listMovieScrening-date {
-            display: flex;
-            flex-wrap: wrap;
-            /* Đảm bảo các phần tử tự động xuống dòng */
-            justify-content: flex-start;
-            /* Sắp xếp từ trái qua phải */
-            padding: 0 20px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .listMovieScrening-date div {
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: normal;
-            color: rgb(46, 46, 46);
-            padding: 10px 10px;
-            margin: 17px 16px;
-            flex: 0 1 auto;
-            /* Cho phép các phần tử co giãn */
-            font-size: 21px;
-            font-weight: 600;
-        }
-
-        .listMovieScrening-date div.active {
-            color: #fb1d1d;
-            font-weight: bold;
-            border-bottom: 3px solid #fb1d1d;
-        }
-
-        /* Style cho phần chi tiết phim */
-        .image-movie-detail {
-            text-align: center;
-            width: 360px;
-        }
-
-        .movie-poster {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .movie-title {
-            font-size: 30px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .movie-info {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-
-        .movie-info li {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        /* Style cho phần lịch chiếu */
-        .showtime-section {
-            margin-top: 30px;
-        }
-
-        .showtime-title {
-            font-size: 19px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .showtime-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .showtime-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #f1f1f1;
-            position: relative;
-            font-weight: 600;
-        }
-
-        .showtime-btn:hover {
-            color: red;
-        }
-
-        /* Khi button được chọn */
-        .showtime-btn.selected {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtimes-cenima.css') }}" />
 @endsection
 
 @section('scripts')
