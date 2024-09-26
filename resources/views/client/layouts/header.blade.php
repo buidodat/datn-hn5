@@ -58,22 +58,31 @@
                                 <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
                             @endforeach
                         </select> --}}
+                        @php
+                            $branches = App\Models\Branch::where('is_active', '1')->get();
+                        @endphp
 
                         <ul class="dropdown">
                             <li class="default-base">
                                 <a href="#">Poly Thanh Xuân <i class="fa-solid fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
+                                    @foreach ($branches as $branch)
+                                        <li class="li-branch">
+                                            <a href="">{{ $branch->name }}</a>
+                                            <span><i class="fa-solid fa-chevron-right"></i></span>
+                                            <ul class="menu-cinema">
+                                                @if ($branch->cinemas->isEmpty())
+                                                    <li><a href="#">Không có rạp nào</a></li>
+                                                @else
+                                                    @foreach ($branch->cinemas as $cinema)
+                                                        <li><a href="#">Poly {{ $cinema->name }}</a></li>
+                                                    @endforeach
+                                                @endif
+
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                    {{-- <li class="li-branch">
                                         <a href="">Hồ Chí Minh</a>
                                         <span><i class="fa-solid fa-chevron-right"></i></span>
                                         <ul class="menu-cinema">
@@ -92,55 +101,8 @@
                                             <li><a href="">Poly Hà Đông</a></li>
                                             <li><a href="">Poly Thanh Xuân</a></li>
                                         </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
+                                    </li> --}}
+
                                 </ul>
                             </li>
 
@@ -180,4 +142,3 @@
     </div>
 
 </div>
-
