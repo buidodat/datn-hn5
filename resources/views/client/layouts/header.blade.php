@@ -12,8 +12,8 @@
                         <a class="a-dndk" href="{{ route('register') }}">{{ __('Đăng Ký') }}</a>
                     @endif
                 @else
-                    <div class="div-dndk">
-                        {{ Auth::user()->name }}
+                    {{-- <div class="div-dndk">
+                       Xin chào: {{ Auth::user()->name }} <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <ul class="lg-submenu ul-dndk">
                         <li>
@@ -26,6 +26,41 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
+                        </li>
+                    </ul> --}}
+                    <ul class="menu-account">
+                        <li class="hello-account">
+                            <a href="#"> Xin chào: {{ Auth::user()->name }} <i
+                                    class="fa-solid fa-chevron-down"></i></a>
+                            <ul class="sub-menu-account">
+                                <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
+                                        tài khoản</a></li>
+                                <li><a href=""><i class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
+                                <li><a href=""><i class="fa-regular fa-paper-plane"></i> Hành trình điện ảnh</a></li>
+                                <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li>
+                                <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
+                                <li>
+                                    {{-- <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </a> --}}
+
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                                        <i class="fa-solid fa-arrow-right-from-bracket"></i> {{ __('Đăng Xuất') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+
+
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 @endguest
