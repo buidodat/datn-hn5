@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="row gy-4">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
                                         <label for="title" class="form-label ">Tên Chi nhánh:</label>
@@ -105,7 +105,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
                                         <label for="title" class="form-label ">Tên Rạp:</label>
@@ -121,28 +121,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Loại phòng:</label>
-                                        <select name="type_room_id" id="type_room" class="form-select">
-                                            <option value="">Chọn</option>
 
-                                            @foreach ($typeRooms as $typeRoom)
-                                                <option value="{{ $typeRoom->id }}">
-                                                    {{ $typeRoom->name }}
-                                                </option>
-                                            @endforeach
-
-                                        </select>
-                                        @error('type_room_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
@@ -160,6 +139,7 @@
                                     </div>
 
                                 </div>
+                                {{-- <input type="text" name="type_room_id" id="type_room_id" value=""> --}}
 
 
 
@@ -204,7 +184,6 @@
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -298,7 +277,6 @@
 
         // Ajax select Phòng theo tên Rạp
         $(document).ready(function() {
-
             var selectedCinemaId = "{{ old('cinema_id', '') }}";
             var selectedRoomId = "{{ old('room_id', '') }}";
             // Xử lý sự kiện thay đổi chi nhánh
@@ -308,15 +286,20 @@
                 roomSelect.empty();
                 roomSelect.append('<option value="">Chọn phòng</option>');
 
+
                 if (cinemaId) {
                     $.ajax({
                         url: "{{ env('APP_URL') }}/api/rooms/" + cinemaId,
                         method: 'GET',
                         success: function(data) {
+                            // console.log(data);
                             $.each(data, function(index, room) {
                                 roomSelect.append('<option value="' + room.id +
-                                    '" >' + room.name + ' - ' + room.capacity +
+                                    '" >' + room.name + ' - ' + room
+                                    .type_room_name + ' - ' + room.capacity +
                                     ' ghế </option>');
+
+
                             });
 
                             if (selectedRoomId) {
@@ -327,52 +310,16 @@
                     });
                 }
 
-
             });
+
+          
+
             if (selectedCinemaId) {
                 $('#cinema').val(selectedCinemaId).trigger('change');
-
             }
         });
 
-        // Ajax hiển thị Phòng theo Loại phòng
-        // $(document).ready(function() {
 
-        //     // var selectedCinemaId = "{{ old('cinema_id', '') }}";
-        //     // var selectedRoomId = "{{ old('room_id', '') }}";
-        //     // Xử lý sự kiện thay đổi chi nhánh
-        //     $('#type_room').on('change', function() {
-        //         var typeRoomId = $(this).val();
-        //         var roomSelect = $('#room');
-        //         roomSelect.empty();
-        //         roomSelect.append('<option value="">Chọn phòng</option>');
-
-        //         if (typeRoomId) {
-        //             $.ajax({
-        //                 url: "{{ env('APP_URL') }}/api/typeRooms/" + typeRoomId,
-        //                 method: 'GET',
-        //                 success: function(data) {
-        //                     $.each(data, function(index, room) {
-        //                         roomSelect.append('<option  value="' + room.id +
-        //                             '" >' + room.name + ' - ' + room.capacity +
-        //                             ' </option>');
-        //                     });
-
-        //                     // if (selectedRoomId) {
-        //                     //     roomSelect.val(selectedRoomId);
-        //                     //     selectedRoomId = false;
-        //                     // }
-        //                 }
-
-        //             });
-        //         }
-
-        //     });
-        //     // if (selectedtypeRoomId) {
-        //     //     $('#cinema').val(selectedtypeRoomId).trigger('change');
-
-        //     // }
-        // });
 
 
 

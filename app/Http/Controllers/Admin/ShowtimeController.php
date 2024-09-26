@@ -62,11 +62,8 @@ class ShowtimeController extends Controller
 
     public function store(StoreShowtimeRequest $request)
     {
-        // $movieVersion = MovieVersion::find($request->movie_version_id);
-        // $room = Room::where('type_room_id', $request->type_room_id)->get();
-        // dd($room->type_room_id->name);
         try {
-
+            //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
             $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
 
             $movie = Movie::find($request->movie_id);
@@ -79,11 +76,14 @@ class ShowtimeController extends Controller
 
 
             $movieVersion = MovieVersion::find($request->movie_version_id);
+            $room = Room::find($request->room_id);
+            $typeRoom = TypeRoom::find($room->type_room_id);
+
             // Lưu dữ liệu Suất chiếu
             $dataShowtimes = [
                 'cinema_id' => $request->cinema_id,
                 'room_id' => $request->room_id,
-                'format' => '2D ' . $movieVersion->name,           //đang fix cứng type Room
+                'format' => $typeRoom->name . ' ' . $movieVersion->name,       
                 'movie_version_id' => $request->movie_version_id,
                 'movie_id' => $request->movie_id,
                 'date' => $request->date,
@@ -93,6 +93,8 @@ class ShowtimeController extends Controller
             ];
 
             Showtime::create($dataShowtimes);
+
+
 
             return redirect()
                 ->route('admin.showtimes.index')
