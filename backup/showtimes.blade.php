@@ -7,20 +7,37 @@
 @section('content')
     <div class="st_slider_index_sidebar_main_wrapper st_slider_index_sidebar_main_wrapper_md">
         <div class="container">
+            <!-- Nội dung chi tiết lịch chiếu -->
             <div class="">
                 <!-- Tabs hiển thị các ngày trong tuần -->
-                <div class="modalMovieScrening-body">
-                    <!-- Date Picker -->
-                    <div class="listMovieScrening-date">
-                        <div data-day="day250" class="movieScrening-date-item active">23/09 - T2</div>
-                        <div data-day="day251" class="movieScrening-date-item">24/09 - T3</div>
-                        <div data-day="day252" class="movieScrening-date-item">25/09 - T4</div>
-                        <div data-day="day253" class="movieScrening-date-item">26/09 - T5</div>
-                        <div data-day="day254" class="movieScrening-date-item">27/09 - T6</div>
-                        <div data-day="day255" class="movieScrening-date-item">28/09 - T7</div>
-                        <div data-day="day256" class="movieScrening-date-item">29/09 - CN</div>
-                    </div>
-                </div>
+                <ul class="nav nav-tabs " id="date-tabs" style="margin-bottom: 30px">
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">26</span>/09 - T5</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">27</span>/09 - T6</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">28</span>/09 - T7</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">29</span>/09 - CN</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">30</span>/09 - T2</a>
+                    </li>
+
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">01</span>/10 - T5</a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="font-38 font-s-35">02</span>/10 - T6</a>
+                    </li>
+                </ul>
                 <div class="row">
                     <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8">
                         <div class="col-md-4 image-movie-detail">
@@ -48,14 +65,28 @@
                                     <button class="showtime-btn">23:10</button>
                                 </div>
                             </div>
+                            <div class="showtime-section">
+                                <h2 class="showtime-title">2D phụ đề</h2>
+                                <div class="showtime-list">
+                                    <button class="showtime-btn">09:30</button>
+                                    <button class="showtime-btn">11:45</button>
+                                    <button class="showtime-btn">12:45</button>
+                                    <button class="showtime-btn">14:00</button>
+                                    <button class="showtime-btn">16:15</button>
+                                    <button class="showtime-btn">18:45</button>
+                                    <button class="showtime-btn">20:00</button>
+                                    <button class="showtime-btn">22:15</button>
+                                    <button class="showtime-btn">23:10</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <hr>
+                <hr style="margin: 30px;">
                 <div class="row">
                     <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8">
                         <div class="col-md-4 image-movie-detail">
-                            <img src="https://files.betacorp.vn/media%2fimages%2f2024%2f09%2f19%2f482wx722h%2D162630%2D190924%2D83.jpg"
+                            <img src="https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f27%2f400x633%2D13%2D093512%2D270824%2D67.jpg"
                                 class="movie-poster">
                         </div>
                         <div class="movie-detail-content">
@@ -67,6 +98,20 @@
                             <!-- Lịch chiếu phim -->
                             <div class="showtime-section">
                                 <h4 class="showtime-title">2D phụ đề</h4>
+                                <div class="showtime-list">
+                                    <button class="showtime-btn">09:30</button>
+                                    <button class="showtime-btn">11:45</button>
+                                    <button class="showtime-btn">12:45</button>
+                                    <button class="showtime-btn">14:00</button>
+                                    <button class="showtime-btn">16:15</button>
+                                    <button class="showtime-btn">18:45</button>
+                                    <button class="showtime-btn">20:00</button>
+                                    <button class="showtime-btn">22:15</button>
+                                    <button class="showtime-btn">23:10</button>
+                                </div>
+                            </div>
+                            <div class="showtime-section">
+                                <h2 class="showtime-title">2D phụ đề</h2>
                                 <div class="showtime-list">
                                     <button class="showtime-btn">09:30</button>
                                     <button class="showtime-btn">11:45</button>
@@ -89,47 +134,30 @@
 
 @section('styles')
     <style>
-        hr {
-            border: 0;
-            /* Loại bỏ đường viền mặc định */
-            border-top: 3px solid rgb(214, 213, 213);
-            /* Đặt màu và độ dày của đường */
-            margin: 30px 0;
-            /* Tùy chỉnh khoảng cách trên và dưới */
-            width: 100%;
-            /* Chiều rộng của hr */
-        }
-
         /* Style cho các tab ngày */
-        .listMovieScrening-date {
-            display: flex;
-            flex-wrap: wrap;
-            /* Đảm bảo các phần tử tự động xuống dòng */
-            justify-content: flex-start;
-            /* Sắp xếp từ trái qua phải */
-            padding: 0 20px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .listMovieScrening-date div {
-            cursor: pointer;
+        .nav-tabs li a {
+            padding: 20px 38px;
+            border: none;
             font-size: 18px;
-            font-weight: normal;
-            color: rgb(46, 46, 46);
-            padding: 10px 10px;
-            margin: 17px 16px;
-            flex: 0 1 auto;
-            /* Cho phép các phần tử co giãn */
-            font-size: 21px;
-            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        .listMovieScrening-date div.active {
-            color: #fb1d1d;
-            font-weight: bold;
-            border-bottom: 3px solid #fb1d1d;
+        .nav-tabs li a.selected {
+            color: red;
+            border-bottom: 2px solid red;
         }
+
+        /* .nav-tabs li a.selected::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                height: 2px;
+                width: 100%;
+            } */
 
         /* Style cho phần chi tiết phim */
         .image-movie-detail {
@@ -147,6 +175,12 @@
             font-size: 30px;
             font-weight: bold;
             margin-top: 10px;
+        }
+
+        .movie-description {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
         }
 
         .movie-info {
@@ -195,7 +229,19 @@
         /* Khi button được chọn */
         .showtime-btn.selected {
             color: red;
+            /* border-bottom: 2px solid red; */
         }
+
+        /* Thêm hiệu ứng gạch chân */
+        /* .showtime-btn.selected::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 100%;
+            background-color: red;
+        } */
     </style>
 @endsection
 
@@ -210,11 +256,12 @@
         });
 
         // Xử lý cho các tab ngày
-        document.querySelectorAll('.movieScrening-date-item').forEach(tab => {
+        document.querySelectorAll('#date-tabs li a').forEach(tab => {
             tab.addEventListener('click', function(event) {
-                document.querySelectorAll('.movieScrening-date-item').forEach(btn => btn.classList.remove(
-                    'active'));
-                this.classList.add('active');
+                event.preventDefault(); // Ngăn việc chuyển hướng
+                document.querySelectorAll('#date-tabs li a').forEach(link => link.classList.remove(
+                    'selected'));
+                this.classList.add('selected');
             });
         });
     </script>
