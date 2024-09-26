@@ -121,6 +121,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <span class='text-danger'>*</span>
@@ -138,6 +139,8 @@
                                     </div>
 
                                 </div>
+                                {{-- <input type="text" name="type_room_id" id="type_room_id" value=""> --}}
+
 
 
                             </div>
@@ -164,6 +167,10 @@
                                         </div>
                                     @enderror
                                 </div>
+                                {{-- <input type="checkbox" > --}}
+                                {{-- <div class="col-md-4">
+                                    <button type="button">Thêm mới</button>
+                                </div> --}}
                                 <div class="col-md-4">
                                     <span class='text-danger'>*</span>
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
@@ -177,7 +184,6 @@
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -271,7 +277,6 @@
 
         // Ajax select Phòng theo tên Rạp
         $(document).ready(function() {
-
             var selectedCinemaId = "{{ old('cinema_id', '') }}";
             var selectedRoomId = "{{ old('room_id', '') }}";
             // Xử lý sự kiện thay đổi chi nhánh
@@ -281,14 +286,20 @@
                 roomSelect.empty();
                 roomSelect.append('<option value="">Chọn phòng</option>');
 
+
                 if (cinemaId) {
                     $.ajax({
                         url: "{{ env('APP_URL') }}/api/rooms/" + cinemaId,
                         method: 'GET',
                         success: function(data) {
+                            // console.log(data);
                             $.each(data, function(index, room) {
-                                roomSelect.append('<option  value="' + room.id +
-                                    '" >' + room.name + '</option>');
+                                roomSelect.append('<option value="' + room.id +
+                                    '" >' + room.name + ' - ' + room
+                                    .type_room_name + ' - ' + room.capacity +
+                                    ' ghế </option>');
+
+
                             });
 
                             if (selectedRoomId) {
@@ -296,16 +307,20 @@
                                 selectedRoomId = false;
                             }
                         }
-
                     });
                 }
 
             });
+
+          
+
             if (selectedCinemaId) {
                 $('#cinema').val(selectedCinemaId).trigger('change');
-
             }
         });
+
+
+
 
 
         // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
@@ -347,7 +362,7 @@
         });
 
 
-        const cleaningTime = {{ $cleaningTime }} //Thời gian dọn phòng: $cleaningTime = 15 phút
+        const cleaningTime = {{ $cleaningTime }} //Thời gian dọn phòng = 15 phút
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
         $(document).ready(function() {
             let movieDuration = 0;
@@ -397,8 +412,6 @@
                     document.getElementById('end_time').value = endTime;
                 }
             }
-            
-
 
         });
     </script>
