@@ -28,7 +28,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_hot')->default(false);
             $table->boolean('is_show_home')->default(true);
-            $table->boolean('is_special')->default(false);    //Suất chiếu Đặc biệt
+            $table->boolean('is_special')->default(false);
 
             $table->timestamps();
         });

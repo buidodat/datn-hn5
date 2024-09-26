@@ -65,6 +65,10 @@
                 <div class="prs_footer_cont1_wrapper prs_footer_cont1_wrapper_2">
                     <h2>chi nhánh</h2>
                     <ul>
+                        @php
+                            $listBranch = App\Models\Branch::query()->where('is_active',1)->get();
+                        @endphp
+
                         @foreach($listBranch as $branch)
                             <li><i class="fa fa-circle"></i> &nbsp;&nbsp;<a href="#">{{ $branch->name }}</a>
                             </li>
