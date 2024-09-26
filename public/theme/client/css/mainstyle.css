@@ -1408,8 +1408,8 @@
 
 .header-buttom {
 
-    /* background-color: rgb(61, 61, 61); */
-    background-color: rgb(233, 5, 5);
+    background-color: rgb(61, 61, 61);
+    /* background-color: rgb(233, 5, 5); */
 }
 
 .container-header-buttom {
@@ -1451,9 +1451,10 @@
     padding: 24px 15px;
     font-family: sans-serif;
 }
+
 .container-header-buttom .main-menu li:hover a {
     color: black;
-} 
+}
 
 .container-header-buttom .img-logo {
     margin-top: 3px;
@@ -1463,6 +1464,7 @@
 ul.dropdown {
     position: relative;
 }
+
 .choose-cinemas ul.dropdown:not(ul.sub-menu) {
     margin: 0px;
     padding: 0px;
@@ -1487,9 +1489,11 @@ ul.dropdown {
 
     text-align: center;
 }
+
 .choose-cinemas .dropdown {
     background-color: rgb(237, 237, 237);
 }
+
 .choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
     color: black;
     display: block;
@@ -1498,14 +1502,16 @@ ul.dropdown {
     font-size: 15px;
     border-radius: 15px;
 }
+
 .choose-cinemas .dropdown li.default-base:hover a:not(.sub-menu li a) {
     color: red;
 }
+
 .choose-cinemas .default-base:hover .sub-menu {
     display: block;
 }
 
-.sub-menu{
+.sub-menu {
     display: none;
     border-top: 2px solid rgb(255, 77, 0);
     position: absolute;
@@ -1514,6 +1520,7 @@ ul.dropdown {
     background-color: white;
     box-shadow: 0 0 5px;
 }
+
 .sub-menu li {
     display: flex;
     border-bottom: 1px solid #d4cfcf;
@@ -1522,7 +1529,8 @@ ul.dropdown {
     justify-content: space-between;
     padding: 13px 15px;
     cursor: pointer;
-} 
+}
+
 .sub-menu li a {
     font-size: 14px;
 }
@@ -1530,16 +1538,19 @@ ul.dropdown {
 .sub-menu li:hover {
     background-color: rgb(239, 3, 3);
 }
-.sub-menu li:hover a:not(.menu-cinema li a){
+
+.sub-menu li:hover a:not(.menu-cinema li a) {
     color: white;
 }
 
 .sub-menu li.li-branch {
     position: relative;
 }
+
 .sub-menu li.li-branch:hover .menu-cinema {
     display: block;
 }
+
 .menu-cinema {
     display: none;
     box-shadow: 0 0 5px;
@@ -1549,6 +1560,17 @@ ul.dropdown {
     top: 0px;
     right: -186px;
 }
+
 .menu-cinema li:hover a {
     color: white;
+}
+
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.3s;
+    /* Thêm hiệu ứng mượt khi thay đổi vị trí */
 }

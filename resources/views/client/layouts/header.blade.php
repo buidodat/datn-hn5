@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    <div class="header-buttom">
+    <div class="header-buttom ">
         <div class="container-header-buttom">
             <div class="logo">
                 <div class="img-logo">
@@ -180,3 +180,4 @@
     </div>
 
 </div>
+
