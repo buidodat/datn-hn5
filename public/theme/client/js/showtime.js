@@ -113,9 +113,9 @@ function updateModalContent(data) {
             startTime.onclick = function () {
                 alert(`Showtime ID: ${showtime.id}`); // Thay đổi showtime_id thành tên trường thực tế từ dữ liệu của bạn
             };
-            //startTime.onclick = function () {
-            //     window.location.href = `${APP_URL}/showtimes/${showtime.id}`; // Chuyển hướng đến trang chi tiết suất chiếu
-            // };
+            startTime.onclick = function () {
+                window.location.href = `${APP_URL}/choose-seat/${showtime.id}`; // Chuyển hướng đến trang chi tiết suất chiếu
+            };
 
             const emptySeat = document.createElement('div');
             emptySeat.classList.add('empty-seat-showtime');

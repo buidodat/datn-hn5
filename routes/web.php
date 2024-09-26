@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
+use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
 use App\Models\Room;
 use App\Models\Seat;
@@ -66,9 +67,8 @@ Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
 
-Route::get('showtime', function () {
-    return view('client.showtime');
-})->name('showtime');
+// lịch chiếu theo rạp
+Route::get('showtimes', [ShowtimeController::class, 'showWeekDays'])->name('showtimes');
 
 // Contact
 Route::get('contact', function () {
