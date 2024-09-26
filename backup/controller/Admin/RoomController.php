@@ -25,14 +25,12 @@ class RoomController extends Controller
     //     return response()->json($cinemas);
     // }
 
-
+    
     public function index()
     {
         $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
-        $branches = Branch::all();
-        $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        $cinemas = Cinema::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms','cinemas','branches','typeRooms'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms'));
     }
 
     /**x
@@ -111,13 +109,10 @@ class RoomController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Room $room) {
-        $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
-        $matrixSeat = Room::MATRIXS[$matrixKey];
         $seats = Seat::where(['room_id' => $room->id])->get();
-        $branches = Branch::all();
-        $cinemas = Cinema::where('branch_id',$room->branch->id)->get();
+        $capacities = Room::CAPACITIESS;
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'branches', 'room','cinemas','seats','matrixSeat']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
     }
 
     /**

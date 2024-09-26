@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Cập nhập phòng chiếu
+    Cập nhật phòng chiếu
 @endsection
 
 @section('content')
@@ -14,174 +14,153 @@
             </ul>
         </div>
     @endif --}}
-    <form action="{{ route('admin.rooms.edit',$room)  }}" method="post" enctype="multipart/form-data">
-        @csrf
 
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Cập nhập phòng chiếu</h4>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">Quản lý phòng chiếu</h4>
 
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.rooms.index') }}">Danh sách</a></li>
-                            <li class="breadcrumb-item active">Cập nhập</li>
-                        </ol>
-                    </div>
-
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.rooms.index') }}">Phòng chiếu</a></li>
+                        <li class="breadcrumb-item active">Cập nhật</li>
+                    </ol>
                 </div>
+
             </div>
         </div>
-
-        <!-- thông tin -->
-        <div class="row">
-            <div class="col-md-12">
-                @if (session()->has('error'))
-                    <div class="alert alert-danger m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
-            </div>
-            <div class="col-lg-9">
-                <div class="card card-left">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thông tin phòng chiếu</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row gy-4">
-                                <div class="col-md-12">
-                                    <div class="row ">
-                                        <div class="col-md-12 mb-3">
-                                            <span class='text-danger'>*</span>
-                                            <label for="name" class="form-label ">Tên phòng chiếu:</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Poly Cinema 01">
-                                            @error('name')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-3 mb-2">
-                                            <span class='text-danger'>*</span>
-                                            <label for="branch" class="form-label">Chi nhánh:</label>
-                                            <input type="text" class="form-control"
-                                                value="{{ $room->cinema->branch->name }}" disabled>
-                                        </div>
-
-                                        <div class="col-md-3 mb-2">
-                                            <span class='text-danger'>*</span>
-                                            <label for="cinema" class="form-label">Rạp chiếu:</label>
-                                            <input type="text" class="form-control" value="{{ $room->cinema->name }}"
-                                                disabled>
-
-                                        </div>
-                                        <div class="col-md-3 mb-2">
-                                            <span class='text-danger'>*</span>
-                                            <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
-
-                                            <input type="text" class="form-control" value="{{ $room->typeRoom->name }}" disabled>
-
-                                        </div>
-                                        <div class="col-md-3 mb-2">
-                                            <span class='text-danger'>*</span>
-                                            <label for="surcharge" class="form-label ">Sức chứa:</label>
-
-                                            <input type="text" class="form-control" value="{{ $room->capacity}} chỗ ngồi" disabled>
-
-                                        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card ">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Thông tin phòng chiếu</h4>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div class="live-preview">
+                        <div class="row gy-4">
+                            <div class="col-md-12">
+                                <div class="row ">
+                                    <div class="col-md-12 mb-2">
+                                        <label for="name" class="form-label "><span class="text-danger">*</span> Tên
+                                            phòng chiếu:</label>
+                                        <input type="text" class="form-control" value="{{ $room->name }}">
                                     </div>
-                                </div>
-                            </div>
-
-                            <!--end row-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked disabled>
-                                            </div>
-                                        </div>
-
+                                    <div class="col-md-6 mb-2">
+                                        <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
+                                            Nhánh</label>
+                                        <select class="form-select" id="branchId" name="branch_id"
+                                            onchange="loadCinemas()">
+                                            <option value="" disabled selected>Chọn chi nhánh</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}" @selected($room->branch->id == $branch->id)>
+                                                    {{ $branch->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="cinemaId" class="form-label"><span class="text-danger">*</span> Rạp
+                                            Chiếu</label>
+                                        <select class="form-select" id="cinemaId" name="cinema_id" required>
+                                            @foreach ($cinemas as $cinema)
+                                                <option value="{{ $cinema->id }}" @selected($room->cinema->id == $cinema->id)>
+                                                    {{ $cinema->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="surcharge" class="form-label "><span class="text-danger">*</span> Loại
+                                            phòng chiếu:</label>
+                                        <select class="form-select" id="type_room_id" name="type_room_id" required>
+                                            @foreach ($typeRooms as $id => $name)
+                                                <option value="{{ $id }}">{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="matrix_id" class="form-label "><span class="text-danger">*</span> Ma
+                                            trận ghế:</label>
+                                        <select name="" id="" class='form-select' disabled>
+                                            @foreach (App\Models\Room::MATRIXS as $matrix)
+                                                <option value="{{ $matrix['name'] }}">
+                                                    {{ $matrix['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                        <!--end row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-seat ">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Xuất bản</h4>
+                </div><!-- end card header -->
+                <div class="card-body ">
+                    <table class="table table-borderless   align-middle mb-0">
+                        <tbody>
+                            <tr>
+                                <td>Ghế thường</td>
+                                <td class="text-center"> <img src="{{ asset('svg/seat-regular.svg') }}" height="30px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ghế vip</td>
+                                <td class="text-center"> <img src="{{ asset('svg/seat-vip.svg') }}" height="30px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ghế đôi</td>
+                                <td class="text-center"> <img src="{{ asset('svg/seat-double.svg') }}" height="30px"></td>
+                            <tr class="table-active">
+                                <th colspan='2' class="text-center">Tổng {{ $seats->count() }} chỗ ngồi</th>
+
+                            </tr>
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
-
         </div>
-
-
+    </div>
         <div class="row">
+
             <div class="col-lg-9">
                 <div class="card card-left">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
                     </div><!-- end card header -->
-                    <div class="card-body ">
+                    <div class="card-body mb-3">
 
-
-                        <style>
-                            .light-orange {
-                                background-color: #fcf5e6;
-                                /* Màu cam nhạt */
-                            }
-
-                            .light-blue {
-                                background-color: #fcfdff;
-                                /* Màu xanh da trời nhạt */
-                            }
-
-                            .light-pink {
-                                background-color: #f9d0d0;
-                                /* Màu hồng nhạt */
-                            }
-                        </style>
-                        @php
-                            $maxCol = App\Models\Room::MAX_COL;
-                            $maxRow = App\Models\Room::MAX_ROW;
-                            $rowSeatRegular = App\Models\Room::ROW_SEAT_REGULAR;
-                        @endphp
-                        <table class="table-chart-chair table-none align-middle mx-auto text-center">
+                        <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
                             <thead>
                                 <tr>
                                     <th></th> <!-- Ô trống góc trên bên trái -->
-                                    @for ($col = 0; $col < $maxCol; $col++)
+                                    @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
                                         <th class="box-item">
                                             {{-- thao tác 1 loạt trên 1 cột --}}
-                                            <input type="checkbox" name="col_checkbox_{{ $col + 1 }}"
-                                                value="{{ $col + 1 }}">
+                                            {{-- <i class="fas fa-edit primary"></i> --}}
                                         </th>
                                     @endfor
                                     <th></th> <!-- Ô trống góc trên bên trái -->
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($row = 0; $row < $maxRow; $row++)
+                                @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                     <tr>
                                         {{-- cột hàng ghế A,B,C --}}
                                         <td class="box-item">
                                             {{ chr(65 + $row) }}
                                         </td>
-                                        @for ($col = 0; $col < $maxCol; $col++)
-                                            @if ($row < $rowSeatRegular)
+                                        @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
+                                            @if ($row <  4)
                                                 {{-- bắt đầu hàng ghế thường --}}
                                                 <td class="box-item-seat border-1 light-orange">
                                                     <div class="box-item-seat-selected">
@@ -207,148 +186,126 @@
                                         @endfor
                                         <td class="box-item">
                                             {{-- thao tác 1 loạt trên 1 hàng --}}
-                                            <input type="checkbox" name="row_checkbox_{{ $row + 1 }}"
-                                                value="{{ chr(65 + $row) }}">
+                                            <i class="fas fa-edit primary"></i>
                                         </td>
                                     </tr>
                                 @endfor
+
                             </tbody>
                         </table>
-
-                        <script>
-                            document.querySelectorAll('.box-item-seat').forEach(function(seat) {
-                                // Lưu trữ nội dung ban đầu của .box-item-seat-selected
-                                let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
-
-                                seat.addEventListener('click', function() {
-                                    let seatSelected = seat.querySelector('.box-item-seat-selected');
-
-                                    // Kiểm tra nếu div đang chứa nội dung ban đầu
-                                    if (seatSelected.innerHTML.trim() === originalContent.trim()) {
-                                        // Nếu là nội dung ban đầu, thay đổi thành hình ảnh mới
-                                        seatSelected.innerHTML =
-                                            `<img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="70%" >`;
-                                    } else {
-                                        // Nếu không phải nội dung ban đầu, khôi phục lại nội dung ban đầu
-                                        seatSelected.innerHTML = originalContent;
-                                    }
-                                });
-                            });
-                        </script>
-
-
-
-
-
-
-
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="card ">
+                <div class="card card-seat ">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Chú thích</h4>
                     </div><!-- end card header -->
                     <div class="card-body ">
+                        <table class="table table-borderless   align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Hàng ghế thường</td>
+                                    <td class="text-center">
+                                        <div class='box-item border light-orange'></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hàng ghế vip</td>
+                                    <td class="text-center">
+                                        <div class='box-item border light-blue'></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hàng ghế đôi</td>
+                                    <td class="text-center">
+                                        <div class='box-item border light-pink'></div>
+                                    </td>
+                                <tr class="table-active">
+                                    <th colspan='2' class="text-center">Tổng {{ $seats->count() }} chỗ ngồi</th>
 
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế thường</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4 ">
-                                <div class='box-item border light-orange'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế vip</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4">
-                                <div class='box-item border  light-blue'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-8 col-md-8 col-8">
-                                <label class="form-label">Hàng ghế đôi</label>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-4">
-                                <div class='box-item border  light-pink'>
-                                </div>
-                            </div>
-                        </div>
+                                </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.rooms.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
-                    </div>
+            <div class="col-lg-9 mb-5 text-end">
+
+                <div class="">
+                    <a href="{{ route('admin.rooms.index') }}" class="btn btn-info">Danh sách</a>
+                    <a href="{{ route('admin.rooms.index') }}" class="btn btn-primary mx-2">Cập nhật</a>
                 </div>
+
             </div>
             <!--end col-->
         </div>
-    </form>
-@endsection
 
-@section('style-libs')
-    <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
-@endsection
+    @endsection
+
+    @section('style-libs')
+        <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
+    @endsection
 
 
-@section('script-libs')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Lấy giá trị branchId và cinemaId từ Laravel
-            var selectedBranchId = "{{ old('branch_id', '') }}";
-            var selectedCinemaId = "{{ old('cinema_id', '') }}";
-
-            // Xử lý sự kiện thay đổi chi nhánh
-            $('#branch').on('change', function() {
-                var branchId = $(this).val();
-                var cinemaSelect = $('#cinema');
-                cinemaSelect.empty();
-                cinemaSelect.append('<option value="">Chọn rạp chiếu</option>');
+    @section('script-libs')
+        <script>
+            function loadCinemas() {
+                const branchId = document.getElementById('branchId').value;
+                const cinemaSelect = document.getElementById('cinemaId');
+                cinemaSelect.innerHTML = '<option value="" disabled selected>Chọn rạp chiếu</option>'; // Reset options
 
                 if (branchId) {
-                    $.ajax({
-                        url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
-                        method: 'GET',
-                        success: function(data) {
-                            $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option value="' + cinema.id +
-                                    '">' + cinema.name + '</option>');
-                            });
+                    console.log();
 
-                            // Chọn lại cinema nếu có selectedCinemaId
-                            if (selectedCinemaId) {
-                                cinemaSelect.val(selectedCinemaId);
-                                selectedCinemaId = false;
+                    fetch(`http://datn-hn5.me/api/cinemas/${branchId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
                             }
-                        }
-                    });
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data && data.length > 0) {
+                                data.forEach(cinema => {
+                                    const option = document.createElement('option');
+                                    option.value = cinema.id;
+                                    option.textContent = cinema.name;
+                                    cinemaSelect.appendChild(option);
+                                });
+                            } else {
+                                cinemaSelect.innerHTML +=
+                                    '<option value="" disabled selected>Không có rạp chiếu nào</option>';
+                            }
+                        })
+                        .catch(error => console.error('Error loading cinemas:', error));
+                } else {
+                    cinemaSelect.innerHTML = '<option value="" disabled selected>Chọn rạp chiếu</option>';
                 }
-            });
-
-            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
-            if (selectedBranchId) {
-                $('#branch').val(selectedBranchId).trigger('change');
-
             }
-        });
-    </script>
 
-@endsection
+        </script>
+         <script>
+            document.querySelectorAll('.box-item-seat').forEach(function(seat) {
+                // Lưu trữ nội dung ban đầu của .box-item-seat-selected
+                let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
+
+                seat.addEventListener('click', function() {
+                    let seatSelected = seat.querySelector('.box-item-seat-selected');
+
+                    // Kiểm tra nếu div đang chứa nội dung ban đầu
+                    if (seatSelected.innerHTML.trim() === originalContent.trim()) {
+                        // Nếu là nội dung ban đầu, thay đổi thành hình ảnh mới
+                        seatSelected.innerHTML =
+                            `<img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="60%" >`;
+                    } else {
+                        // Nếu không phải nội dung ban đầu, khôi phục lại nội dung ban đầu
+                        seatSelected.innerHTML = originalContent;
+                    }
+                });
+            });
+        </script>
+    @endsection

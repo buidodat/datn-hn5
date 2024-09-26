@@ -6,11 +6,23 @@
 
 
 @section('content')
+<style>
+    .profile-setting-img2{
+    position: relative;
+    height: 260px;
+}
+.profile-wid-bg2 .profile-wid-img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+</style>
     <div class="container-fluid">
 
         <div class="position-relative mx-n4 mt-n4">
-            <div class="profile-wid-bg profile-setting-img">
-                <img src="{{ asset('theme/admin/assets/images/profile-bg.jpg') }}" class="profile-wid-img" alt="">
+            <div class="profile-wid-bg2 profile-setting-img2">
+                <img src="{{ asset('theme/admin/assets/images/bg-my-account.jpg') }}" class="profile-wid-img" alt="">
             </div>
         </div>
 

@@ -157,7 +157,7 @@ class DatabaseSeeder extends Seeder
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
-                    'capacity' => fake()->randomElement([130, 150, 170]), // Sức chứa ngẫu nhiên
+                    'matrix_id' => 1, // Sức chứa ngẫu nhiên
                     'is_active' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),

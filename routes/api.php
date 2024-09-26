@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\API\MovieController;
+use App\Http\Controllers\API\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -27,5 +28,6 @@ Route::get('rooms/{movieId}', [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
 Route::get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
+Route::resource('rooms', RoomController::class);
 
 

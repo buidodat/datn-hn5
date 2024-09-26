@@ -66,7 +66,6 @@ Route::resource('food', FoodController::class);
 Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
-Route::resource('rooms', RoomController::class);
 //user
 Route::resource('users', UserController::class);
 Route::put('users/reset-password/{user}',[UserController::class,'resetPassword'])->name('users.password.reset');
