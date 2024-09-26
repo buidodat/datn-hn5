@@ -23,9 +23,9 @@ class Movie extends Model
         'trailer_url',
         'is_active',
         'is_hot',
-        /*Thiếu nè*/
-        /*'is_show_home',
-        'is_special'*/
+        /*Thêm 2 cái còn thiếu ở trong migration*/
+        'is_show_home',
+        'is_special'
     ];
 
     protected $casts = [

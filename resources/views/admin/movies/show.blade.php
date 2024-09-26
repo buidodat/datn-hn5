@@ -31,7 +31,7 @@
                     <div class="sticky-side-div" style="width: 90%;">
                         <div class="card ribbon-box border shadow-none right">
                             <div class="ribbon-two ribbon-two-danger">
-                                <span>{{ $movie->is_hot == 1 ? 'HOT' : '' }}</span>
+                                <span>{{ $movie->is_hot == 1 ? 'HOT' : 'Special' }}</span>
                             </div>
                             @php
                                 $url = $movie->img_thumbnail;
@@ -87,28 +87,28 @@
                 <div class="col-lg-8">
                     <div>
 
-                        <span class="badge bg-info-subtle text-info mb-3 fs-12"><i
-                                class="ri-eye-line me-1 align-bottom"></i> Hiển thị lượt view</span>
+                        <span class="badge bg-info-subtle text-info mb-3 fs-12">{{ $movie->is_hot == 1 ? 'HOT' : '' }}</span>
+                        <span class="badge bg-info-subtle text-info mb-3 fs-12">{{ $movie->is_special == 1 ? 'Đặc biệt' : '' }}</span>
                         <h4>{{ $movie->name }}</h4>
                         <div class="hstack gap-3 flex-wrap">
                             {{--<div class="text-muted">Seller : <span class="text-body fw-medium">Rickey Teran</span></div>
                             <div class="vr"></div>--}}
                             <div class="text-muted">Ngày bắt đầu : <span
-                                    class="text-body fw-medium">{{ $movie->release_date }}</span>
+                                        class="text-body fw-medium">{{ $movie->release_date }}</span>
                             </div>
                             <div class="text-muted">Ngày kết thúc : <span
-                                    class="text-body fw-medium">{{ $movie->end_date }}</span>
+                                        class="text-body fw-medium">{{ $movie->end_date }}</span>
                             </div>
                         </div>
+
                         <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
                             <div class="text-muted fs-16">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <span class="mdi mdi-star {{ $averageRating >= $i ? 'text-warning' : '' }}"></span>
+                                @endfor
                             </div>
-                            <div class="text-muted">( 5.50k Customer Review )</div>
+                            <div class="text-muted">({{ number_format($totalReviews, 0, ',', '.') }} lượt đánh giá)
+                            </div>
                         </div>
 
                         <div class="mt-4 text-muted">
@@ -145,9 +145,21 @@
                                         <tr>
                                             <th scope="row">Ngôn ngữ</th>
                                             <td>
-                                            @foreach ( $movie->movieVersions as $version)
-                                                <span class="badge bg-info">{{ $version->name }}</span>
-                                            @endforeach
+                                                @foreach ( $movie->movieVersions as $version)
+                                                    <span class="badge bg-info">{{ $version->name }}</span>
+                                                @endforeach
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trạng thái</th>
+                                            <td>
+                                                <span class="badge {{ $movie->is_active == 1 ? 'bg-primary' : 'bg-danger' }}">{{ $movie->is_active == 1 ? 'Hoạt động' : 'Đã dừng' }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Hiển thị trang chủ</th>
+                                            <td>
+                                                <span class="badge {{ $movie->is_show_home == 1 ? 'bg-primary' : 'bg-danger' }}">{{ $movie->is_show_home == 1 ? 'Hiển thị' : 'Không hiển thị' }}</span>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -165,150 +177,65 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1">
                                                         <div class="fs-16 align-middle text-warning">
-                                                            <i class="ri-star-fill"></i>
-                                                            <i class="ri-star-fill"></i>
-                                                            <i class="ri-star-fill"></i>
-                                                            <i class="ri-star-fill"></i>
-                                                            <i class="ri-star-half-fill"></i>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <i class="ri-star{{ $averageRating >= $i ? '-fill' : '-line' }}"></i>
+                                                            @endfor
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <h6 class="mb-0">4.8 out of 5</h6>
+                                                        <h6 class="mb-0">{{ number_format($averageRating, 1) }} trên
+                                                            5</h6>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="text-center">
-                                                <div class="text-muted">Total <span class="fw-medium">7.32k</span>
-                                                    reviews
+                                                <div class="text-muted">Tổng: <span
+                                                            class="fw-medium">{{ number_format($totalReviews, 0, ',', '.') }}</span>
+                                                    đánh giá
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="mt-3">
-                                            <div class="row align-items-center g-2">
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0">5 star</h6>
+                                            @foreach ($starCounts as $stars => $count)
+                                                <div class="row align-items-center g-2">
+                                                    <div class="col-auto">
+                                                        <div class="p-2">
+                                                            <h6 class="mb-0">{{ $stars }} sao</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="p-2">
-                                                        <div class="progress animated-progress progress-sm">
-                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                 style="width: 50.16%" aria-valuenow="50.16"
-                                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="col">
+                                                        <div class="p-2">
+                                                            <div class="progress animated-progress progress-sm">
+                                                                @php
+                                                                    $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
+                                                                @endphp
+                                                                <div class="progress-bar {{ $stars >= 4 ? 'bg-success' : ($stars == 3 ? 'bg-warning' : 'bg-danger') }}"
+                                                                     role="progressbar"
+                                                                     style="width: {{ $percentage }}%"
+                                                                     aria-valuenow="{{ $percentage }}"
+                                                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <div class="p-2">
+                                                            <h6 class="mb-0 text-muted">{{ $count }}</h6>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0 text-muted">2758</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end row -->
-
-                                            <div class="row align-items-center g-2">
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0">4 star</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="p-2">
-                                                        <div class="progress animated-progress progress-sm">
-                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                 style="width: 19.32%" aria-valuenow="19.32"
-                                                                 aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0 text-muted">1063</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end row -->
-
-                                            <div class="row align-items-center g-2">
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0">3 star</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="p-2">
-                                                        <div class="progress animated-progress progress-sm">
-                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                 style="width: 18.12%" aria-valuenow="18.12"
-                                                                 aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0 text-muted">997</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end row -->
-
-                                            <div class="row align-items-center g-2">
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0">2 star</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="p-2">
-                                                        <div class="progress animated-progress progress-sm">
-                                                            <div class="progress-bar bg-warning" role="progressbar"
-                                                                 style="width: 7.42%" aria-valuenow="7.42"
-                                                                 aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0 text-muted">408</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end row -->
-
-                                            <div class="row align-items-center g-2">
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0">1 star</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="p-2">
-                                                        <div class="progress animated-progress progress-sm">
-                                                            <div class="progress-bar bg-danger" role="progressbar"
-                                                                 style="width: 4.98%" aria-valuenow="4.98"
-                                                                 aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="p-2">
-                                                        <h6 class="mb-0 text-muted">274</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end row -->
+                                                <!-- end row -->
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- end col -->
 
                                 <div class="col-lg-8">
                                     <div class="ps-lg-4">
                                         <div class="d-flex flex-wrap align-items-start gap-3">
-                                            <h5 class="fs-14">Reviews: </h5>
+                                            <h5 class="fs-14">Đánh giá của khách hàng: </h5>
                                         </div>
 
                                         <div class="me-lg-n3 pe-lg-4 simplebar-scrollable-y" data-simplebar="init"
@@ -325,141 +252,140 @@
                                                             <div class="simplebar-content"
                                                                  style="padding: 0px 24px 0px 0px;">
                                                                 <ul class="list-unstyled mb-0">
-                                                                    <li class="py-2">
-                                                                        <div class="border border-dashed rounded p-3">
-                                                                            <div class="d-flex align-items-start mb-3">
-                                                                                <div class="hstack gap-3">
-                                                                                    <div class="text-warning">
-                                                                                        <i class="mdi mdi-star"></i>
-                                                                                        <i class="mdi mdi-star"></i>
-                                                                                        <i class="mdi mdi-star"></i>
-                                                                                        <i class="mdi mdi-star"></i>
-                                                                                        <i class="mdi mdi-star"></i>
+                                                                    @foreach ($movieReviews as $review)
+                                                                        <li class="py-2">
+                                                                            <div class="border border-dashed rounded p-3">
+                                                                                <div class="d-flex align-items-start mb-3">
+                                                                                    <div class="hstack gap-3">
+                                                                                        <div class="text-warning">
+                                                                                            <i class="mdi mdi-star"></i> {{ number_format($review->rating, 1) }}
+                                                                                        </div>
+                                                                                        <div class="vr"></div>
+                                                                                        <div class="flex-grow-1">
+                                                                                            <h6 class="mb-0"> {{ $review->user->name }}</h6>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div class="vr"></div>
+                                                                                </div>
+
+                                                                                {{--<div class="d-flex flex-grow-1 gap-2 mb-3">
+                                                                                    <a href="#" class="d-block">
+                                                                                        <img
+                                                                                                src="assets/images/small/img-12.jpg"
+                                                                                                alt=""
+                                                                                                class="avatar-sm rounded object-fit-cover">
+                                                                                    </a>
+                                                                                    <a href="#" class="d-block">
+                                                                                        <img
+                                                                                                src="assets/images/small/img-11.jpg"
+                                                                                                alt=""
+                                                                                                class="avatar-sm rounded object-fit-cover">
+                                                                                    </a>
+                                                                                    <a href="#" class="d-block">
+                                                                                        <img
+                                                                                                src="assets/images/small/img-10.jpg"
+                                                                                                alt=""
+                                                                                                class="avatar-sm rounded object-fit-cover">
+                                                                                    </a>
+                                                                                </div>--}}
+
+                                                                                <div class="d-flex align-items-end">
                                                                                     <div class="flex-grow-1">
-                                                                                        <h6 class="mb-0"> Superb
-                                                                                            Artwork</h6>
+                                                                                        <h5 class="fs-14 mb-0">
+                                                                                            {{ $review->description }}</h5>
+                                                                                    </div>
+
+                                                                                    <div class="flex-shrink-0">
+                                                                                        <p class="text-muted fs-13 mb-0">
+                                                                                            {{ $review->created_at->format('d/m/Y') }}
+                                                                                        </p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <div class="d-flex flex-grow-1 gap-2 mb-3">
-                                                                                <a href="#" class="d-block">
-                                                                                    <img
-                                                                                        src="assets/images/small/img-12.jpg"
-                                                                                        alt=""
-                                                                                        class="avatar-sm rounded object-fit-cover">
-                                                                                </a>
-                                                                                <a href="#" class="d-block">
-                                                                                    <img
-                                                                                        src="assets/images/small/img-11.jpg"
-                                                                                        alt=""
-                                                                                        class="avatar-sm rounded object-fit-cover">
-                                                                                </a>
-                                                                                <a href="#" class="d-block">
-                                                                                    <img
-                                                                                        src="assets/images/small/img-10.jpg"
-                                                                                        alt=""
-                                                                                        class="avatar-sm rounded object-fit-cover">
-                                                                                </a>
-                                                                            </div>
-
-                                                                            <div class="d-flex align-items-end">
-                                                                                <div class="flex-grow-1">
-                                                                                    <h5 class="fs-14 mb-0">Henry</h5>
-                                                                                </div>
-
-                                                                                <div class="flex-shrink-0">
-                                                                                    <p class="text-muted fs-13 mb-0">12
-                                                                                        Jul, 21</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="py-2">
-                                                                        <div class="border border-dashed rounded p-3">
-                                                                            <div class="d-flex align-items-start mb-3">
-                                                                                <div class="hstack gap-3">
-                                                                                    <div
-                                                                                        class="badge rounded-pill bg-success mb-0">
-                                                                                        <i class="mdi mdi-star"></i> 4.0
+                                                                        </li>
+                                                                    @endforeach
+                                                                        {{--<li class="py-2">
+                                                                            <div class="border border-dashed rounded p-3">
+                                                                                <div class="d-flex align-items-start mb-3">
+                                                                                    <div class="hstack gap-3">
+                                                                                        <div
+                                                                                            class="badge rounded-pill bg-success mb-0">
+                                                                                            <i class="mdi mdi-star"></i> 4.0
+                                                                                        </div>
+                                                                                        <div class="vr"></div>
+                                                                                        <div class="flex-grow-1">
+                                                                                            <p class="text-muted mb-0">
+                                                                                                Great at this price, Product
+                                                                                                quality and look is
+                                                                                                awesome.</p>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div class="vr"></div>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-end">
                                                                                     <div class="flex-grow-1">
-                                                                                        <p class="text-muted mb-0">
-                                                                                            Great at this price, Product
-                                                                                            quality and look is
-                                                                                            awesome.</p>
+                                                                                        <h5 class="fs-14 mb-0">Nancy</h5>
                                                                                     </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="d-flex align-items-end">
-                                                                                <div class="flex-grow-1">
-                                                                                    <h5 class="fs-14 mb-0">Nancy</h5>
-                                                                                </div>
 
-                                                                                <div class="flex-shrink-0">
-                                                                                    <p class="text-muted fs-13 mb-0">06
-                                                                                        Jul, 21</p>
+                                                                                    <div class="flex-shrink-0">
+                                                                                        <p class="text-muted fs-13 mb-0">06
+                                                                                            Jul, 21</p>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="py-2">
-                                                                        <div class="border border-dashed rounded p-3">
-                                                                            <div class="d-flex align-items-start mb-3">
-                                                                                <div class="hstack gap-3">
-                                                                                    <div
-                                                                                        class="badge rounded-pill bg-success mb-0">
-                                                                                        <i class="mdi mdi-star"></i> 4.2
+                                                                        </li>
+                                                                        <li class="py-2">
+                                                                            <div class="border border-dashed rounded p-3">
+                                                                                <div class="d-flex align-items-start mb-3">
+                                                                                    <div class="hstack gap-3">
+                                                                                        <div
+                                                                                            class="badge rounded-pill bg-success mb-0">
+                                                                                            <i class="mdi mdi-star"></i> 4.2
+                                                                                        </div>
+                                                                                        <div class="vr"></div>
+                                                                                        <div class="flex-grow-1">
+                                                                                            <p class="text-muted mb-0">Good
+                                                                                                product. I am so happy.</p>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div class="vr"></div>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-end">
                                                                                     <div class="flex-grow-1">
-                                                                                        <p class="text-muted mb-0">Good
-                                                                                            product. I am so happy.</p>
+                                                                                        <h5 class="fs-14 mb-0">Joseph</h5>
                                                                                     </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="d-flex align-items-end">
-                                                                                <div class="flex-grow-1">
-                                                                                    <h5 class="fs-14 mb-0">Joseph</h5>
-                                                                                </div>
 
-                                                                                <div class="flex-shrink-0">
-                                                                                    <p class="text-muted fs-13 mb-0">06
-                                                                                        Jul, 21</p>
+                                                                                    <div class="flex-shrink-0">
+                                                                                        <p class="text-muted fs-13 mb-0">06
+                                                                                            Jul, 21</p>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="py-2">
-                                                                        <div class="border border-dashed rounded p-3">
-                                                                            <div class="d-flex align-items-start mb-3">
-                                                                                <div class="hstack gap-3">
-                                                                                    <div
-                                                                                        class="badge rounded-pill bg-success mb-0">
-                                                                                        <i class="mdi mdi-star"></i> 4.1
+                                                                        </li>
+                                                                        <li class="py-2">
+                                                                            <div class="border border-dashed rounded p-3">
+                                                                                <div class="d-flex align-items-start mb-3">
+                                                                                    <div class="hstack gap-3">
+                                                                                        <div
+                                                                                            class="badge rounded-pill bg-success mb-0">
+                                                                                            <i class="mdi mdi-star"></i> 4.1
+                                                                                        </div>
+                                                                                        <div class="vr"></div>
+                                                                                        <div class="flex-grow-1">
+                                                                                            <p class="text-muted mb-0">Nice
+                                                                                                Product, Good Quality.</p>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <div class="vr"></div>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-end">
                                                                                     <div class="flex-grow-1">
-                                                                                        <p class="text-muted mb-0">Nice
-                                                                                            Product, Good Quality.</p>
+                                                                                        <h5 class="fs-14 mb-0">Jimmy</h5>
+                                                                                    </div>
+
+                                                                                    <div class="flex-shrink-0">
+                                                                                        <p class="text-muted fs-13 mb-0">24
+                                                                                            Jun, 21</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="d-flex align-items-end">
-                                                                                <div class="flex-grow-1">
-                                                                                    <h5 class="fs-14 mb-0">Jimmy</h5>
-                                                                                </div>
-
-                                                                                <div class="flex-shrink-0">
-                                                                                    <p class="text-muted fs-13 mb-0">24
-                                                                                        Jun, 21</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
+                                                                        </li>--}}
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -499,7 +425,7 @@
                 <div class="card-header align-items-center d-flex">
                     <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
                     <a href="{{ route('admin.movies.edit',$movie) }}">
-                        <button type="submit" class="btn btn-primary mx-1">Chỉnh sửa</button>
+                        <button type="submit" class="btn btn-warning mx-1">Chỉnh sửa</button>
                     </a>
 
                 </div>

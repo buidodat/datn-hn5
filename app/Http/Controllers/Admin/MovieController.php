@@ -88,12 +88,21 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-//        dd(123);
         $movieVersions = $movie->movieVersions()->pluck('name')->all();
         $ratings = Movie::RATINGS;
         $versions = Movie::VERSIONS;
         $movieReviews = $movie->movieReview()->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions','movieReviews']));
+        $totalReviews = $movieReviews->count();
+        $averageRating = $totalReviews > 0 ? $movieReviews->avg('rating') : 0;
+        $starCounts = [
+            5 => $movieReviews->where('rating', 5)->count(),
+            4 => $movieReviews->where('rating', 4)->count(),
+            3 => $movieReviews->where('rating', 3)->count(),
+            2 => $movieReviews->where('rating', 2)->count(),
+            1 => $movieReviews->where('rating', 1)->count(),
+        ];
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions','movieReviews','totalReviews','averageRating','starCounts']));
 
     }
 
