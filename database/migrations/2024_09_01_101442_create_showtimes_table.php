@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
@@ -16,7 +17,10 @@ return new class extends Migration
     {
         Schema::create('showtimes', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(Room::class);
+            $table->string('format');       //Format = type_room + movie_version; Ví dụ: Format = 2D + Lồng tiếng = 2D Lồng tiếng
             $table->foreignIdFor(MovieVersion::class);
             $table->foreignIdFor(Movie::class);
             $table->date('date');

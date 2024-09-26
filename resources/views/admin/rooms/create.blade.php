@@ -216,7 +216,7 @@
                                         </td>
                                     </tr>
                                 @endfor
-                                
+
                             </tbody>
                         </table>
 
@@ -286,8 +286,8 @@
 
 
 @section('script-libs')
-<script>
-     document.querySelectorAll('.box-item-seat').forEach(function(seat) {
+    <script>
+        document.querySelectorAll('.box-item-seat').forEach(function(seat) {
             // Lưu trữ nội dung ban đầu của .box-item-seat-selected
             let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
 
@@ -305,7 +305,7 @@
                 }
             });
         });
-</script>
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -346,7 +346,5 @@
 
             }
         });
-
-
     </script>
 @endsection

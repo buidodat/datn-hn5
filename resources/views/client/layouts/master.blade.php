@@ -16,7 +16,7 @@
     <meta name="keywords" content="Poly Cenimas" />
     <meta name="author" content="" />
     <meta name="MobileOptimized" content="320" />
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     @yield('style-libs')
 
     <!--Template style -->
@@ -52,9 +52,11 @@
 
     <!-- st login wrapper End -->
     <!--main js file start-->
+    <script>
+        const APP_URL = "{{ env('APP_URL') }}";
+    </script>
     @include('client.layouts.partials.js')
     <!--main js file end-->
-
     @yield('scripts')
     @yield('script-libs')
 </body>

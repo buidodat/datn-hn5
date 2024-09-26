@@ -185,7 +185,29 @@ class DatabaseSeeder extends Seeder
                     ->select('movies.id as movie_id', 'movies.duration')
                     ->first();
 
-                if ($movie) {
+                // Lấy cinema_id từ room
+                $cinema = DB::table('rooms')
+                    ->where('id', $room_id)
+                    ->select('cinema_id')
+                    ->first();
+
+                // Lấy type_room dựa trên room_id
+                $type_room = DB::table('type_rooms')
+                    ->join('rooms', 'type_rooms.id', '=', 'rooms.type_room_id')
+                    ->where('rooms.id', $room_id)
+                    ->select('type_rooms.name')
+                    ->first();
+
+                // Lấy thông tin movie_version
+                $movie_version = DB::table('movie_versions')
+                    ->where('id', $movie_version_id)
+                    ->select('name')
+                    ->first();
+
+                // Tạo format kết hợp giữa type_room và movie_version
+                $format = $type_room->name . ' ' . $movie_version->name;
+
+                if ($movie && $cinema) {
                     $duration = $movie->duration; // Thời lượng phim (phút)
                     $end_time = (clone $start_time)->modify("+{$duration} minutes")->modify('+15 minutes'); // Cộng thêm thời lượng phim và 15 phút vệ sinh
 
@@ -207,12 +229,14 @@ class DatabaseSeeder extends Seeder
                     if (!$existingShowtime) {
                         // Không có suất chiếu trùng, thêm mới suất chiếu
                         DB::table('showtimes')->insert([
+                            'cinema_id' => $cinema->cinema_id,  // Lưu cinema_id
                             'room_id' => $room_id,
+                            'format' => $format, // Format kết hợp type_room và movie_version
                             'movie_version_id' => $movie_version_id,
-                            'movie_id' => $movie->movie_id, // Thêm movie_id
+                            'movie_id' => $movie->movie_id,
                             'date' => $start_time->format('Y-m-d'),
-                            'start_time' => $start_time->format('Y-m-d H:i'), // Lưu cả ngày và giờ
-                            'end_time' => $end_time->format('Y-m-d H:i'),     // Lưu cả ngày và giờ
+                            'start_time' => $start_time->format('Y-m-d H:i'),
+                            'end_time' => $end_time->format('Y-m-d H:i'),
                             'is_active' => 1,
                             'created_at' => now(),
                             'updated_at' => now(),
@@ -224,6 +248,9 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+
+
 
 
 

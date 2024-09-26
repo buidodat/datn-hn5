@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ChooseSeatController;
@@ -47,9 +48,13 @@ Route::get('register', function () {
     return view('client.register');
 })->name('register');
 
+// User - Thông tin tài khoản
 Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class,'update'])->name('my-account.update');
 Route::put('my-account/changePassword', [UserController::class,'changePassword'])->name('my-account.changePassword');
+
+// User - Hành trình điện ảnh
+Route::get('cinema-journey', [UserController::class, 'showCinemaJourney'])->name('cinema-journey.showCinemaJourney');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
@@ -92,5 +97,6 @@ Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 
 Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
 Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
-Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+// Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+
 

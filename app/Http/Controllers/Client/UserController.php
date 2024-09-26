@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Notification;
 
 class UserController extends Controller
 {
+    // Thông tin tài khoản
     const PATH_UPLOAD = 'my-account';
     public function edit(){
         $userID = Auth::user()->id;
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
-        return view('client.my-account', compact('user','genders'));
+        return view('client.users.my-account', compact('user','genders'));
     }
 
     public function update(UpdateUserRequest $request)
@@ -82,5 +83,14 @@ class UserController extends Controller
 
     return redirect()->back()->with('success', 'Đổi mật khẩu thành công!');
 }
+    // Thẻ thành viên
+
+    // ...
+
+    // Hành trình điện ảnh
+    
+    public function showCinemaJourney(){
+        return view('client.users.cinema-journey');
+    }      
 
 }

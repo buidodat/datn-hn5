@@ -32,7 +32,7 @@
     max-height: 70vh;
     /* Chiều cao tối đa cho nội dung modal */
     margin-bottom: 30px;
-    min-height: 50vh;
+    min-height: 55vh;
 }
 /* Modal Styles */
 .modalMovieScrening {
@@ -46,7 +46,7 @@
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    padding-top: 100px;
+    padding-top: 110px;
     margin-bottom: 100px;
 }
 
@@ -54,7 +54,7 @@
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 70%;
+    width: 1050x;
     background-color: white;
     border-radius: 5px;
     overflow: hidden;
@@ -100,7 +100,7 @@
 .listMovieScrening-date {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+
     padding: 0 20px;
     margin-bottom: 10px;
     border-bottom: 1px solid #ddd;
@@ -108,12 +108,16 @@
 }
 
 .listMovieScrening-date div {
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none;
     cursor: pointer;
     font-size: 18px;
     font-weight: normal;
     color: #666;
     padding: 10px 8px;
-    margin: 5px 0;
+    margin: 5px 20px;
 
 
 }
@@ -172,9 +176,10 @@
 
 
     .listMovieScrening-date div {
-        width: 15%;
+        width: 22%;
         font-size: 16px;
         padding: 5px 5px;
+        margin: 10px;
     }
 
     .listMovieScrening-date {
@@ -190,6 +195,13 @@
 @media (max-width: 576px) {
     .modalMovieScrening-content {
         width: 90%;
+    }
+
+    .listMovieScrening-date div {
+        width: 30%;
+        font-size: 16px;
+        padding: 5px 5px;
+        margin: 5px;
     }
 
 
@@ -224,6 +236,7 @@
 }
 
 .showtime-item-start-time {
+
     width: 102px;
     text-align: center;
     padding: 8px 18px;
