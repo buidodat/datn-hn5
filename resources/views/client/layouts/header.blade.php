@@ -12,8 +12,8 @@
                         <a class="a-dndk" href="{{ route('register') }}">{{ __('Đăng Ký') }}</a>
                     @endif
                 @else
-                    <div class="div-dndk">
-                        {{ Auth::user()->name }}
+                    {{-- <div class="div-dndk">
+                       Xin chào: {{ Auth::user()->name }} <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <ul class="lg-submenu ul-dndk">
                         <li>
@@ -27,6 +27,41 @@
                                 @csrf
                             </form>
                         </li>
+                    </ul> --}}
+                    <ul class="menu-account">
+                        <li class="hello-account">
+                            <a href="#"> Xin chào: {{ Auth::user()->name }} <i
+                                    class="fa-solid fa-chevron-down"></i></a>
+                            <ul class="sub-menu-account">
+                                <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
+                                        tài khoản</a></li>
+                                <li><a href=""><i class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
+                                <li><a href=""><i class="fa-regular fa-paper-plane"></i> Hành trình điện ảnh</a></li>
+                                <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li>
+                                <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
+                                <li>
+                                    {{-- <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </a> --}}
+
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                                        <i class="fa-solid fa-arrow-right-from-bracket"></i> {{ __('Đăng Xuất') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+
+
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 @endguest
             </div>
@@ -38,7 +73,7 @@
             </div>
         </div>
     </div>
-    <div class="header-buttom">
+    <div class="header-buttom ">
         <div class="container-header-buttom">
             <div class="logo">
                 <div class="img-logo">
@@ -58,22 +93,31 @@
                                 <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
                             @endforeach
                         </select> --}}
+                        @php
+                            $branches = App\Models\Branch::where('is_active', '1')->get();
+                        @endphp
 
                         <ul class="dropdown">
                             <li class="default-base">
                                 <a href="#">Poly Thanh Xuân <i class="fa-solid fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
+                                    @foreach ($branches as $branch)
+                                        <li class="li-branch">
+                                            <a href="">{{ $branch->name }}</a>
+                                            <span><i class="fa-solid fa-chevron-right"></i></span>
+                                            <ul class="menu-cinema">
+                                                @if ($branch->cinemas->isEmpty())
+                                                    <li><a href="#">Không có rạp nào</a></li>
+                                                @else
+                                                    @foreach ($branch->cinemas as $cinema)
+                                                        <li><a href="#">Poly {{ $cinema->name }}</a></li>
+                                                    @endforeach
+                                                @endif
+
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                    {{-- <li class="li-branch">
                                         <a href="">Hồ Chí Minh</a>
                                         <span><i class="fa-solid fa-chevron-right"></i></span>
                                         <ul class="menu-cinema">
@@ -92,55 +136,8 @@
                                             <li><a href="">Poly Hà Đông</a></li>
                                             <li><a href="">Poly Thanh Xuân</a></li>
                                         </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Đà Nẵng</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Hà Nội</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
+                                    </li> --}}
+
                                 </ul>
                             </li>
 

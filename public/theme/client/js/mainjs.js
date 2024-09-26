@@ -48,10 +48,25 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// Code Js Fixed thanh header 
+window.onscroll = function () {
+    var headerTop = document.querySelector('.header-top');
+    var headerButtom = document.querySelector('.header-buttom');
+
+    // Lấy độ cao đã cuộn
+    var scrollPosition = window.scrollY || window.pageYOffset;
+
+    // Khi người dùng cuộn xuống qua 100px, ẩn header-top
+    if (scrollPosition > 100) {
+        headerTop.style.display = 'none'; // Ẩn header-top
+        headerButtom.classList.add('fixed-header'); // Cố định header-buttom
+    } else {
+        headerTop.style.display = 'block'; // Hiện lại header-top
+        headerButtom.classList.remove('fixed-header'); // Bỏ cố định header-buttom
+    }
+};
+
 // Js cho tăng giảm số lượng trang thanh toán
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease');   //dấu trừ
     const increaseBtns = document.querySelectorAll('.quantity-btn.increase');   //dấu cộng
