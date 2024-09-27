@@ -88,7 +88,7 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtimes-cenima.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtimes-cinema.css') }}" />
 @endsection
 
 @section('scripts')

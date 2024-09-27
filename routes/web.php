@@ -68,7 +68,7 @@ Route::get('forgot-password', function () {
 })->name('forgot-password');
 
 // lịch chiếu theo rạp
-Route::get('showtimes', [ShowtimeController::class, 'showWeekDays'])->name('showtimes');
+Route::get('{slug}/showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
 // Contact
 Route::get('contact', function () {

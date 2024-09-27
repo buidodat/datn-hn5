@@ -151,7 +151,7 @@
             <div class="main-menu">
                 <ul>
                     <li>
-                        <a href="{{ route('showtimes') }}">Lịch chiếu theo rạp</a>
+                        <a href="#">Lịch chiếu theo rạp</a>
                     </li>
                     <li>
                         <a href="#">Phim</a>

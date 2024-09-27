@@ -39,9 +39,6 @@ class Room extends Model
         return $this->belongsTo(TypeRoom::class);
     }
 
-
-
-
     public function branch()
     {
         return $this->belongsTo(Branch::class);
