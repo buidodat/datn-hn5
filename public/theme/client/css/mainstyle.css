@@ -1288,6 +1288,9 @@
 
 
 /* Css trang home */
+
+
+
 .movie-name-home {
     max-width: 225px;
     max-height: 33px;
@@ -1376,17 +1379,26 @@
 
 
 /* css cho header trang chủ home */
+ 
+.header .img-logo img {
+    
+    width: 184px;
+    height: 40px;
+}
 
 .header-top {
     background-color: rgb(46, 46, 46);
     font-family: sans-serif;
 }
+
 .header-top .menu-account {
     position: relative;
 }
+
 .header-top .menu-account li:hover .sub-menu-account {
     display: block;
 }
+
 .header-top .sub-menu-account {
     display: none;
     position: absolute;
@@ -1396,6 +1408,7 @@
     text-align: left;
     box-shadow: 0 0 10px;
 }
+
 .header-top .sub-menu-account li a {
     display: block;
     padding: 12px 15px;
@@ -1403,6 +1416,7 @@
     font-size: 14px;
     border-bottom: 1px solid rgb(89, 89, 89);
 }
+
 .header-top .sub-menu-account li i {
     margin-right: 3px;
 }
@@ -1411,6 +1425,7 @@
 .header-top .sub-menu-account li:hover a {
     color: red;
 }
+
 .header-top .container-header-top {
     max-width: 1200px;
     margin: 0px auto;
@@ -1488,6 +1503,7 @@
 .container-header-buttom .img-logo {
     margin-top: 3px;
 }
+
 .fa-chevron-down:before {
     content: "\f078";
     font-size: 13px;
@@ -1605,7 +1621,9 @@ ul.dropdown {
     width: 100%;
     z-index: 1000;
     transition: top 0.3s;
-    
+
 }
 
-
+.menu-responsive {
+    display: none;
+}
