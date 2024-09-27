@@ -113,7 +113,7 @@ class RoomController extends Controller
     public function edit(Room $room) {
         $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
         $matrixSeat = Room::MATRIXS[$matrixKey];
-        $seats = Seat::where(['room_id' => $room->id])->get();
+        $seats = Seat::withTrashed()->where(['room_id' => $room->id])->get();
         $branches = Branch::all();
         $cinemas = Cinema::where('branch_id',$room->branch->id)->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();

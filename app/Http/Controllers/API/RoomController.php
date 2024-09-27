@@ -56,7 +56,7 @@ class RoomController extends Controller
 
                 for ($row=0; $row <$matrix['max_row']  ; $row++) {
                     for ($col=0; $col <$matrix['max_col'] ; $col++) {
-                        if($row <= $rowSeatRegular){
+                        if($row < $rowSeatRegular){
                             $typeSeatId = 1;
                         }else{
                             $typeSeatId = 2;
