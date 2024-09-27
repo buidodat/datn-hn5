@@ -1,54 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const stars = document.querySelectorAll('.star');
-    const ratingInput = document.getElementById('rating');
-    const ratingScore = document.querySelector('.rating-score');
-    let selectedRating = 0;
 
-    stars.forEach(star => {
-        star.addEventListener('mouseover', function () {
-            resetStars();
-            const value = parseInt(this.getAttribute('data-value'));
-            highlightStars(value);
-            ratingScore.textContent = `${value} điểm`;
-        });
-
-        // Handle mouseout event
-        star.addEventListener('mouseout', function () {
-            resetStars();
-            let currentRating = selectedRating > 0 ? selectedRating : 0;
-            highlightStars(currentRating);
-            ratingScore.textContent = `${currentRating} điểm`;
-        });
-
-        star.addEventListener('click', function () {
-            selectedRating = parseInt(this.getAttribute('data-value'));
-            ratingInput.value = selectedRating;
-            resetStars();
-            highlightStars(selectedRating);
-            ratingScore.textContent = `${selectedRating} điểm`;
-        });
-    });
-
-    function highlightStars(rating) {
-        stars.forEach(star => {
-            if (parseInt(star.getAttribute('data-value')) <= rating) {
-                star.classList.add('hover');
-                star.classList.add('highlighted');
-            } else {
-                star.classList.remove('highlighted');
-            }
-        });
-    }
-
-    function resetStars() {
-        stars.forEach(star => {
-            star.classList.remove('hover');
-        });
-    }
-});
-
-
-// Code Js Fixed thanh header 
+// Code Js Fixed thanh header
 window.onscroll = function () {
     var headerTop = document.querySelector('.header-top');
     var headerButtom = document.querySelector('.header-buttom');

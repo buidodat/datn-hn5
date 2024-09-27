@@ -434,25 +434,30 @@
     margin-top: 20px;
 }
 
-.stars {
+/*.stars {
     display: flex;
     cursor: pointer;
 }
-
 .stars .star {
     font-size: 24px;
     color: #ddd;
-    /* Màu sao mặc định */
+    !* Màu sao mặc định *!
     margin-right: 5px;
     transition: color 0.2s;
-    /* Hiệu ứng chuyển màu khi hover */
+    !* Hiệu ứng chuyển màu khi hover *!
 }
-
 .stars .star.hover,
 .stars .star.selected {
     color: #ffcc00;
-    /* Màu vàng cho các sao khi hover hoặc được chọn */
 }
+.review-rating .star {
+    color: #ffcc00;
+    font-size: 16px;
+}
+.review-rating .star.empty {
+    color: #ddd;
+}*/
+
 
 
 .rating-score {
@@ -497,15 +502,6 @@
     display: flex;
     align-items: center;
     gap: 5px;
-}
-
-.review-rating .star {
-    color: #ffcc00;
-    font-size: 16px;
-}
-
-.review-rating .star.empty {
-    color: #ddd;
 }
 
 .review-score {
@@ -1605,7 +1601,7 @@ ul.dropdown {
     width: 100%;
     z-index: 1000;
     transition: top 0.3s;
-    
+
 }
 
 

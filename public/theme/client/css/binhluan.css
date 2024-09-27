@@ -1,0 +1,29 @@
+.content-cmt {
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 20px 0;
+}
+
+.content-cmt button {
+padding: 8px 17px;
+margin: 0 5px;
+font-size: 16px;
+background-color: #f0f0f0;
+border: 1px solid #ccc;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.content-cmt button:disabled {
+background-color: #e0e0e0;
+border-color: #bbb;
+cursor: not-allowed;
+}
+
+.content-cmt button:hover:enabled {
+background-color: #f1761d;
+color: #fff;
+border-color: #f1761d;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
