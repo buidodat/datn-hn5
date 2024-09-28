@@ -21,8 +21,11 @@ return new class extends Migration
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
             $table->string('name');
-            $table->unsignedSmallInteger('capacity');
-            $table->boolean('is_active')->default(true);
+            $table->string('matrix_id');
+            $table->unsignedSmallInteger('row_seat_regular')->default(4);
+            $table->unsignedSmallInteger('row_seat_double')->default(0);
+            $table->boolean('is_active')->default(false);
+            $table->boolean('is_publish')->default(false);
             $table->timestamps();
             $table->unique(['name','cinema_id'],'name_cinema');
         });

@@ -43,9 +43,11 @@ class APIController extends Controller
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
 
-    // public function getTypeRooms($typeRoomId)
+
+ // public function getTypeRooms($typeRoomId)
     // {
     //     $rooms = Room::where('type_room_id', $typeRoomId)->get();
     //     return response()->json($rooms);
     // }
+
 }
