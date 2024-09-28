@@ -28,12 +28,13 @@ class RoomController extends Controller
 
 
     public function index()
-    {
-        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->paginate(5);
+    {   $roomPublishs = Room::query()->with(['typeRoom', 'cinema'])->where('is_publish',true)->latest('id')->get();
+        $roomDrafts = Room::query()->with(['typeRoom', 'cinema'])->where('is_publish',false)->latest('id')->get();
+        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('cinema_id')->get();
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $cinemas = Cinema::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms','cinemas','branches','typeRooms'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms','branches','typeRooms','roomPublishs','roomDrafts','cinemas'));
     }
 
     /**x

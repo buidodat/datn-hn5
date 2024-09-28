@@ -40,8 +40,7 @@
                 </div><!-- end card header -->
                 <div class="card-body mb-3">
                     @php
-                        $rowSeatRegular = $room->row_seat_regular ;
-                        $rowStartSeatDouble = $matrixSeat['max_col']-$room->row_seatDouble;
+                        $scopeRegular = App\Models\Room::SCOPE_REGULAR;
                     @endphp
                     <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
                         <thead>
@@ -49,6 +48,11 @@
                         </thead>
                         <tbody>
                             @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
+                                @php
+                                    $isAllVip = true;
+                                    $isAllRegular = true;
+                                    $isAllDouble = true;
+                                @endphp
                                 <tr>
                                     {{-- cột hàng ghế A,B,C --}}
                                     <td class="box-item">
@@ -76,6 +80,17 @@
                                                         @endif
                                                     </div>
                                                 </td>
+                                                @php
+                                                    if ($seat->type_seat_id != 1) {
+                                                        $isAllRegular = false;
+                                                    }
+                                                    if ($seat->type_seat_id != 2) {
+                                                        $isAllVip = false;
+                                                    }
+                                                    if ($seat->type_seat_id != 3) {
+                                                        $isAllDouble = false;
+                                                    }
+                                                @endphp
                                             @endif
                                         @endforeach
                                     @endfor
@@ -95,37 +110,27 @@
                                                 <div class="row">
                                                     <!-- Custom Radio Color -->
                                                     <div class="col-md-12 mb-3">
-                                                        {{-- @foreach ($typeSeats as $id => $name)
-                                                            <div class="form-check form-radio-primary mb-3">
-                                                                <input class="form-check-input" type="radio" name="typeSeatRow{{ chr(65 + $row) }}"
-                                                                    value="{{ $id }}"
-                                                                    {{ ($row < 4 && $id == 1) ? 'checked' : ($row >= 4 && $id == 2 ? 'checked' : '') }}>
-                                                                <label class="form-check-label">{{ $name }}</label>
-                                                            </div>
-                                                        @endforeach --}}
-                                                        @if ($row < $rowSeatRegular + 1) {{--hiển thị input ghế thường ở 1 hàng ghế kế tiếp--}}
+                                                        @if ($row < $scopeRegular['max'])
+                                                            {{-- hiển thị input ghế thường ở 1 hàng ghế kế tiếp --}}
                                                             <div class="form-check form-radio-primary mb-3">
                                                                 <input class="form-check-input" type="radio"
                                                                     name="typeSeatRow{{ chr(65 + $row) }}" value="1"
-                                                                    @checked($row < $rowSeatRegular)
-                                                                    data-row="{{ chr(65 + $row) }}" @disabled($row < $rowSeatRegular -1)>
+                                                                    @checked($isAllRegular)
+                                                                    data-row="{{ chr(65 + $row) }}"
+                                                                    @disabled($row < $scopeRegular['min'])>
                                                                 <label class="form-check-label">Ghế thường</label>
                                                             </div>
                                                         @endif
-                                                        @if ($row >= $rowSeatRegular -1)
+                                                        @if ($row >= $scopeRegular['min'])
                                                             <div class="form-check form-radio-primary mb-3">
                                                                 <input class="form-check-input" type="radio"
                                                                     name="typeSeatRow{{ chr(65 + $row) }}" value="2"
-                                                                    @checked($row >= $rowSeatRegular && $row <= $rowStartSeatDouble)
-                                                                    data-row="{{ chr(65 + $row) }}" @disabled($row >= $rowSeatRegular+1)>
+                                                                    @checked($isAllVip)
+                                                                    data-row="{{ chr(65 + $row) }}"
+                                                                    @disabled($row >= $scopeRegular['max'])>
                                                                 <label class="form-check-label">Ghế vip</label>
                                                             </div>
                                                         @endif
-
-                                                        {{-- <div class="form-check form-radio-primary mb-3">
-                                                            <input class="form-check-input" type="radio" name="typeSeatRow{{ chr(65 + $row) }}" value="3">
-                                                            <label class="form-check-label">Ghế đôi</label>
-                                                        </div> --}}
                                                     </div>
                                                     <div class="col-md-12 text-center">
                                                         <button class="btn btn-danger btn-remove-all mx-1"
@@ -152,7 +157,7 @@
         <div class="col-lg-3">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="{{ route('admin.rooms.update',$room) }}" method="post">
+                    <form action="{{ route('admin.rooms.update', $room) }}" method="post">
                         @csrf
                         @method('put')
                         <div class="card card-seat ">
@@ -163,11 +168,13 @@
                                 <div class="row ">
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label">Trạng thái:</label>
-                                        <span class="text-muted">{{ $room->is_publish == true  ? 'Đã xuất bản' : 'Bản nháp' }}</span>
+                                        <span
+                                            class="text-muted">{{ $room->is_publish == true ? 'Đã xuất bản' : 'Bản nháp' }}</span>
                                     </div>
                                     <div class="col-md-12 mb-3 ">
                                         <label class="form-label">Hoạt động:</label>
-                                        <span class="text-muted">{{ $room->is_active == true  ? 'Đang hoạt động' : 'Chưa hoạt động' }}</span>
+                                        <span
+                                            class="text-muted">{{ $room->is_active == true ? 'Đang hoạt động' : 'Chưa hoạt động' }}</span>
                                     </div>
                                 </div>
                                 <div class='text-end'>
@@ -206,7 +213,7 @@
                                     <td class="text-center">
                                         <div class='box-item border light-pink'></div>
                                     </td>
-                               
+
                             </tbody>
                         </table>
 

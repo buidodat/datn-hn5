@@ -54,7 +54,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body border border-dashed border-end-0 border-start-0">
+                {{-- giao diện bộ lọc, bộ tìm kiếm  --}}
+                {{-- <div class="card-body border border-dashed border-end-0 border-start-0">
                     <form>
                         <div class="row g-3">
                             <div class="col-xxl-5 col-sm-6">
@@ -115,7 +116,7 @@
                         </div>
                         <!--end row-->
                     </form>
-                </div>
+                </div> --}}
 
                 <div class="card-body pt-0">
 
@@ -123,63 +124,231 @@
                         <li class="nav-item">
                             <a class="nav-link active All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
                                 aria-selected="true">
-                                <i class="ri-store-2-fill me-1 align-bottom"></i> Tất cả
+                                Tất cả
+                                <span class="badge bg-dark align-middle ms-1">{{ $rooms->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link py-3 isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
                                 aria-selected="false">
-                                <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Đã xuất bản
+                                Đã xuất bản
+                                <span class="badge bg-success align-middle ms-1">{{ $roomPublishs->count() }}</span>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                                    <a class="nav-link py-3 Pickups" data-bs-toggle="tab" id="Pickups" href="#pickups"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-truck-line me-1 align-bottom"></i> Pickups <span
-                                            class="badge bg-danger align-middle ms-1">2</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-3 Returns" data-bs-toggle="tab" id="Returns" href="#returns"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-arrow-left-right-fill me-1 align-bottom"></i> Returns
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-3 Cancelled" data-bs-toggle="tab" id="Cancelled" href="#cancelled"
-                                        role="tab" aria-selected="false">
-                                        <i class="ri-close-circle-line me-1 align-bottom"></i> Cancelled
-                                    </a>
-                                </li> --}}
+                        <li class="nav-item">
+                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
+                                aria-selected="false">
+                                Bản nháp<span class="badge bg-warning align-middle ms-1">{{ $roomDrafts->count() }}</span>
+                            </a>
+                        </li>
+                        @foreach ($cinemas as $cinema)
+                            <li class="nav-item">
+                                <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#cinemaID{{ $cinema->id }}"
+                                    role="tab" aria-selected="false">
+                                    {{ $cinema->name }}
+                                    {{-- <span class="badge bg-warning align-middle ms-1">{{ $cinema->rooms->count() }}</span> --}}
+                                </a>
+                            </li>
+                        @endforeach
+
                     </ul>
                     <div class="card-body tab-content ">
                         <div class="tab-pane active" id="allRoom" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
-                                <table class="table  dt-responsive nowrap  align-middle">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllRoom">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Phòng chiếu</th>
+                                        <th>Rạp chiếu</th>
+                                        <th>Loại Phòng</th>
+                                        <th>Sức chứa</th>
+                                        <th>Xuất bản</th>
+                                        <th>Hoạt động</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rooms as $index => $room)
+                                        <tr>
+                                            <td>{{ $room->id }}</td>
+                                            <td>{{ $room->name }}</td>
+                                            <td>{{ $room->cinema->name }}</td>
+                                            <td>{{ $room->typeRoom->name }}</td>
+                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>
+                                                {!! $room->is_publish == 1
+                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
+                                                        @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <a href="{{ route('admin.rooms.show', $room) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm"
+                                                        type="button"><i class="fas fa-eye"></i></button>
+                                                </a>
+                                                <a href="{{ route('admin.rooms.edit', $room) }}">
+                                                    <button title="xem" class="btn btn-warning btn-sm "
+                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="tab-pane " id="isPublish" role="tabpanel">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                id="tableIsPublish">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Phòng chiếu</th>
+                                        <th>Rạp chiếu</th>
+                                        <th>Loại Phòng</th>
+                                        <th>Sức chứa</th>
+                                        <th>Xuất bản</th>
+                                        <th>Hoạt động</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($roomPublishs as $index => $room)
+                                        <tr>
+                                            <td>{{ $room->id }}</td>
+                                            <td>{{ $room->name }}</td>
+                                            <td>{{ $room->cinema->name }}</td>
+                                            <td>{{ $room->typeRoom->name }}</td>
+                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>
+                                                {!! $room->is_publish == 1
+                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
+                                                        @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <a href="{{ route('admin.rooms.show', $room) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm"
+                                                        type="button"><i class="fas fa-eye"></i></button>
+                                                </a>
+                                                <a href="{{ route('admin.rooms.edit', $room) }}">
+                                                    <button title="xem" class="btn btn-warning btn-sm "
+                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane " id="isDraft" role="tabpanel">
+
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Phòng chiếu</th>
+                                        <th>Rạp chiếu</th>
+                                        <th>Loại Phòng</th>
+                                        <th>Sức chứa</th>
+                                        <th>Xuất bản</th>
+                                        <th>Hoạt động</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($roomDrafts as $index => $room)
+                                        <tr>
+                                            <td>{{ $room->id }}</td>
+                                            <td>{{ $room->name }}</td>
+                                            <td>{{ $room->cinema->name }}</td>
+                                            <td>{{ $room->typeRoom->name }}</td>
+                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>
+                                                {!! $room->is_publish == 1
+                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                        type="checkbox" role="switch"
+                                                        @checked($room->is_active)
+                                                        disabled>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <a href="{{ route('admin.rooms.show', $room) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm"
+                                                        type="button"><i class="fas fa-eye"></i></button>
+                                                </a>
+                                                <a href="{{ route('admin.rooms.edit', $room) }}">
+                                                    <button title="xem" class="btn btn-warning btn-sm "
+                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                        @foreach ($cinemas as $cinema)
+                            <div class="tab-pane " id="cinemaID{{ $cinema->id }}" role="tabpanel">
+                                <table class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                    id="tableCinemaID{{ $cinema->id }}">
                                     <thead class='table-light'>
                                         <tr>
                                             <th>#</th>
-                                            <th>Tên phòng chiếu</th>
-                                            <th>Rạp chiếu</th>
-                                            <th>Loại phòng chiếu</th>
+                                            <th>Phòng chiếu</th>
+                                            <th>Loại Phòng</th>
                                             <th>Sức chứa</th>
+                                            <th>Xuất bản</th>
                                             <th>Hoạt động</th>
                                             <th>Chức năng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($rooms as $room)
+                                        @foreach ($cinema->rooms as $index => $room)
                                             <tr>
                                                 <td>{{ $room->id }}</td>
                                                 <td>{{ $room->name }}</td>
-                                                <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
                                                 <td>{{ $room->seats->count() }} chỗ ngồi</td>
                                                 <td>
-                                                    {!! $room->is_active == 1
+                                                    {!! $room->is_publish == 1
                                                         ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
                                                         : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
                                                 </td>
+                                                <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
+                                                        @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
+                                                </div>
+                                            </td>
+
                                                 <td>
                                                     <a href="{{ route('admin.rooms.show', $room) }}">
                                                         <button title="xem" class="btn btn-success btn-sm"
@@ -189,200 +358,16 @@
                                                         <button title="xem" class="btn btn-warning btn-sm "
                                                             type="button"><i class="fas fa-edit"></i></button>
                                                     </a>
-
-                                                    {{-- <a href="{{ route('admin.rooms.destroy', $room) }}">
-                                                                    <button title="xem" class="btn btn-danger btn-sm " type="button"><i
-                                                                            class="ri-delete-bin-7-fill"></i></button>
-                                                                </a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
 
                                     </tbody>
                                 </table>
-                                {{ $rooms->links() }}
-                                {{-- <div class="noresult" style="display: none">
-                                            <div class="text-center">
-                                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                                    colors="primary:#405189,secondary:#0ab39c"
-                                                    style="width:75px;height:75px"></lord-icon>
-                                                <h5 class="mt-2">Sorry! No Result Found</h5>
-                                                <p class="text-muted">We've searched more than 150+ Orders We did not find any
-                                                    orders
-                                                    for you search.</p>
-                                            </div>
-                                        </div> --}}
+
+
                             </div>
-                        </div>
-                        <div class="tab-pane " id="isPublish" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
-                                <table class="table table-nowrap align-middle">
-                                    <thead class="text-muted table-light">
-                                        <tr class="text-uppercase">
-                                            <th scope="col" style="width: 25px;">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </th>
-                                            <th class="sort" data-sort="id">Order ID</th>
-                                            <th class="sort" data-sort="customer_name">Customer</th>
-                                            <th class="sort" data-sort="product_name">Product</th>
-                                            <th class="sort" data-sort="date">Order Date</th>
-                                            <th class="sort" data-sort="amount">Amount</th>
-                                            <th class="sort" data-sort="payment">Payment Method</th>
-                                            <th class="sort" data-sort="status">Delivery Status</th>
-                                            <th class="sort" data-sort="city">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="list form-check-all">
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="checkAll"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id"><a href="apps-ecommerce-order-details.html"
-                                                    class="fw-medium link-primary">#VZ2101</a></td>
-                                            <td class="customer_name">Frank Hook</td>
-                                            <td class="product_name">Puma Tshirt</td>
-                                            <td class="date">20 Dec, 2021, <small class="text-muted">02:21
-                                                    AM</small></td>
-                                            <td class="amount">$654</td>
-                                            <td class="payment">Mastercard</td>
-                                            <td class="status"><span
-                                                    class="badge bg-warning-subtle text-warning text-uppercase">Pending</span>
-                                            </td>
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="apps-ecommerce-order-details.html"
-                                                            class="text-primary d-inline-block">
-                                                            <i class="ri-eye-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item edit" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                        <a href="#showModal" data-bs-toggle="modal"
-                                                            class="text-primary d-inline-block edit-item-btn">
-                                                            <i class="ri-pencil-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn"
-                                                            data-bs-toggle="modal" href="#deleteOrder">
-                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="checkAll"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id"><a href="apps-ecommerce-order-details.html"
-                                                    class="fw-medium link-primary">#VZ2101</a></td>
-                                            <td class="customer_name">Frank Hook</td>
-                                            <td class="product_name">Puma Tshirt</td>
-                                            <td class="date">20 Dec, 2021, <small class="text-muted">02:21
-                                                    AM</small></td>
-                                            <td class="amount">$654</td>
-                                            <td class="payment">Mastercard</td>
-                                            <td class="status"><span
-                                                    class="badge bg-warning-subtle text-warning text-uppercase">Pending</span>
-                                            </td>
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="apps-ecommerce-order-details.html"
-                                                            class="text-primary d-inline-block">
-                                                            <i class="ri-eye-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item edit" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                        <a href="#showModal" data-bs-toggle="modal"
-                                                            class="text-primary d-inline-block edit-item-btn">
-                                                            <i class="ri-pencil-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn"
-                                                            data-bs-toggle="modal" href="#deleteOrder">
-                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="checkAll"
-                                                        value="option1">
-                                                </div>
-                                            </th>
-                                            <td class="id"><a href="apps-ecommerce-order-details.html"
-                                                    class="fw-medium link-primary">#VZ2101</a></td>
-                                            <td class="customer_name">Frank Hook</td>
-                                            <td class="product_name">Puma Tshirt</td>
-                                            <td class="date">20 Dec, 2021, <small class="text-muted">02:21
-                                                    AM</small></td>
-                                            <td class="amount">$654</td>
-                                            <td class="payment">Mastercard</td>
-                                            <td class="status"><span
-                                                    class="badge bg-warning-subtle text-warning text-uppercase">Pending</span>
-                                            </td>
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="apps-ecommerce-order-details.html"
-                                                            class="text-primary d-inline-block">
-                                                            <i class="ri-eye-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item edit" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                        <a href="#showModal" data-bs-toggle="modal"
-                                                            class="text-primary d-inline-block edit-item-btn">
-                                                            <i class="ri-pencil-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn"
-                                                            data-bs-toggle="modal" href="#deleteOrder">
-                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                {{-- <div class="noresult" style="display: none">
-                                    <div class="text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                            colors="primary:#405189,secondary:#0ab39c"
-                                            style="width:75px;height:75px"></lord-icon>
-                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                        <p class="text-muted">We've searched more than 150+ Orders We did not find any
-                                            orders
-                                            for you search.</p>
-                                    </div>
-                                </div> --}}
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
                 </div>
@@ -564,6 +549,41 @@
             // Thêm các trường khác nếu cần
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Lắng nghe sự kiện thay đổi của tất cả các checkbox có lớp 'switch-is-active'
+            $('.switch-is-active').on('change', function() {
+                // Lấy ID của room từ thuộc tính 'data-id'
+                let roomId = $(this).data('id');
+                // Lấy trạng thái hiện tại của checkbox
+                let isActive = $(this).is(':checked') ? 1 : 0;
+
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('admin.rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // Bảo vệ CSRF
+                        id: roomId,
+                        is_active: isActive
+                    },
+                    success: function(response) {
+                        // Hiển thị thông báo thành công
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Xử lý lỗi khi yêu cầu không thành công
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -579,10 +599,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#example", {
+        new DataTable("#tableAllRoom", {
             order: [
                 [0, 'desc']
             ]
         });
+        new DataTable("#tableIsPublish", {
+            order: [
+                [0, 'desc']
+            ]
+        });
+        new DataTable("#tableIsDraft", {
+            order: [
+                [0, 'desc']
+            ]
+        });
+        @foreach ($cinemas as $cinema)
+            new DataTable("#tableCinemaID{{ $cinema->id }}", {
+                order: [
+                [0, 'desc']
+            ]
+            });
+        @endforeach
     </script>
 @endsection
