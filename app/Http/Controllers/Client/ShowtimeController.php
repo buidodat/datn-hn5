@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class ShowtimeController extends Controller
 {    
-    public function show($slug)
+    public function show()
     {
-        $cinema = Cinema::where('slug', $slug)->firstOrFail();
+        $cinema = Cinema::where('id', session('cinema_id'))->firstOrFail();
     
         // Lấy tất cả các showtimes có cinema_id bằng với ID của cinema
         $showtimes = Showtime::with('movie', 'room')
@@ -26,25 +26,33 @@ class ShowtimeController extends Controller
         $dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
         $currentDate = now(); // Sử dụng Carbon để làm việc với ngày giờ
     
-        // Thiết lập thời gian tối thiểu cho suất chiếu (20:00)
-        $minShowtime = now()->setTime(20, 0); // 20:00 hôm nay
+        // Thời gian thực tế khi truy cập vào trang
+        $now = now();
     
         for ($i = 0; $i < 7; $i++) {
             // Định dạng ngày
             $formattedDate = $currentDate->format('d/m') . ' - ' . $dayNames[$currentDate->dayOfWeek];
     
             // Nhóm showtimes theo ngày và phim
-            $filteredShowtimes = $showtimes->filter(function ($showtime) use ($currentDate, $minShowtime) {
-                return $showtime->date == $currentDate->format('Y-m-d') 
-                    && $showtime->start_time > $minShowtime; // Chỉ lấy suất chiếu sau 20:00
+            $filteredShowtimes = $showtimes->filter(function ($showtime) use ($currentDate) {
+                // Điều kiện lọc suất chiếu theo ngày
+                return $showtime->date == $currentDate->format('Y-m-d');
             })->groupBy('movie.id'); // Nhóm theo phim
     
-            // Sắp xếp suất chiếu theo giờ từ bé đến lớn
+            // Chỉ lấy các suất chiếu có start_time sau thời gian thực tế
             foreach ($filteredShowtimes as $movieId => $showtimesGroup) {
-                $filteredShowtimes[$movieId] = $showtimesGroup->sortBy('start_time'); // Sắp xếp theo start_time
+                // Lọc ra những suất chiếu sau thời gian hiện tại
+                $filteredShowtimes[$movieId] = $showtimesGroup->filter(function ($showtime) use ($now) {
+                    // Kết hợp `date` và `start_time` để tạo một đối tượng Carbon đầy đủ
+                    $showtimeDateTime = Carbon::createFromFormat('Y-m-d H:i:s',  $showtime->start_time);
+    
+                    // Chỉ lấy các suất chiếu có thời gian sau thời gian hiện tại
+                    return $showtimeDateTime->gt($now);
+                })->sortBy('start_time'); // Sắp xếp suất chiếu theo thời gian
             }
     
-            if (!$filteredShowtimes->isEmpty()) {
+            // Kiểm tra nếu vẫn còn suất chiếu thì thêm vào mảng ngày
+            if ($filteredShowtimes->flatten()->isNotEmpty()) {
                 $dates[] = [
                     'day_id' => 'day' . $currentDate->format('z'),
                     'date_label' => $formattedDate,
@@ -58,6 +66,9 @@ class ShowtimeController extends Controller
     
         return view('client.showtimes', compact('dates', 'cinema')); // Truyền thêm thông tin cinema nếu cần
     }
+    
+
+    
     
     
     

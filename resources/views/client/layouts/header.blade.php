@@ -118,7 +118,7 @@
             <div class="main-menu">
                 <ul>
                     <li>
-                        <a href="#">Lịch chiếu theo rạp</a>
+                        <a href="{{ route('showtimes') }}">Lịch chiếu theo rạp</a>
                     </li>
                     <li>
                         <a href="#">Phim</a>
@@ -146,7 +146,7 @@
                         <a><i class="fa-solid fa-bars"></i></a>
                         <ul class="sub-menu-respon">
                             <li>
-                                <a href="#"><i class="fa-solid fa-calendar-days"></i> Lịch chiếu theo rạp</a>
+                                <a href="{{ route('showtimes') }}"><i class="fa-solid fa-calendar-days"></i> Lịch chiếu theo rạp</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa-solid fa-film"></i> Phim</a>

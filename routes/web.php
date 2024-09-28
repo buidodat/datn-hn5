@@ -39,6 +39,9 @@ Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-
 Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
+// lịch chiếu theo rạp
+Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
+
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
 
 Route::get('login', function () {
@@ -67,8 +70,6 @@ Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
 
-// lịch chiếu theo rạp
-Route::get('{slug}/showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
 // Contact
 Route::get('contact', function () {
