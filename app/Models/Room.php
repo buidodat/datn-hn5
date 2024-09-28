@@ -14,14 +14,14 @@ class Room extends Model
         'type_room_id',
         'name',
         'matrix_id',
-        'row_seat',
+        'row_seat_regular',
+        'row_seat_double',
         'is_active',
         'is_publish'
     ];
     protected $cast = [
         'is_active'=>'boolean',
         'is_publish'=>'boolean',
-        'row_seat'=>'array'
     ];
 
     const CAPACITIESS =[ // Sức chứa

@@ -33,5 +33,10 @@ Route::resource('rooms', RoomController::class);
 
 Route::post('seats/soft-delete', [SeatController::class, 'softDelete'])->name('seats.soft-delete');
 Route::post('seats/restore', [SeatController::class, 'restore'])->name('seats.restore');
+Route::post('seats/soft-delete-row', [SeatController::class, 'softDeleteRow'])->name('seats.soft-delete-row');
+Route::post('seats/restore-row', [SeatController::class, 'restoreRow'])->name('seats.restore-row');
+Route::post('seats/update-type', [SeatController::class, 'updateSeatType'])->name('seats.update-type');
+
+
 
 
