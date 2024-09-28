@@ -12,4 +12,9 @@ class TypeRoom extends Model
         'name',
         'surcharge'
     ];
+
+    public function room()
+    {
+        return $this->hasMany(Room::class);
+    }
 }

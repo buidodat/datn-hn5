@@ -9,7 +9,9 @@ class Showtime extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'cinema_id',
         'room_id',
+        'format',
         'movie_version_id',
         'movie_id',
         'date',

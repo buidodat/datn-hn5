@@ -11,10 +11,11 @@ Tài khoản của tôi
         <div class="my-account-tabs">
             <div class="my-account-tab my-account-active">THÔNG TIN TÀI KHOẢN</div>
             <div class="my-account-tab">THẺ THÀNH VIÊN</div>
-            <div class="my-account-tab">HÀNH TRÌNH ĐIỆN ẢNH</div>
+            <a href="cinema-journey"><div class="my-account-tab">HÀNH TRÌNH ĐIỆN ẢNH</div></a>
             <div class="my-account-tab">ĐIỂM BETA</div>
             <div class="my-account-tab">VOUCHER</div>
         </div>
+        <div id="tab-content"></div>
 
         <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data">
             @csrf

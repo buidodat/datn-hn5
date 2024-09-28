@@ -21,11 +21,12 @@
 
 }
 
-.table-seat{
+.table-seat {
     margin: auto;
 }
-.span-seat{
-    margin: 0 5px; 
+
+.span-seat {
+    margin: 0 5px;
 }
 
 /* Ghế vip */
@@ -231,7 +232,7 @@
     background-color: #d1d1d1;
 }
 
-.container-screen .seat.selected{
+.container-screen .seat.selected {
     background-color: #32a9ef;
 }
 
@@ -1287,6 +1288,9 @@
 
 
 /* Css trang home */
+
+
+
 .movie-name-home {
     max-width: 225px;
     max-height: 33px;
@@ -1366,6 +1370,260 @@
     border: 1px solid #ff9344;
     margin-left: 0px;
 }
-.pagination-wrapper .pagination>li >a:hover {
+
+.pagination-wrapper .pagination>li>a:hover {
     background: #ff9344;
+}
+
+
+
+
+/* css cho header trang chủ home */
+ 
+.header .img-logo img {
+    
+    width: 184px;
+    height: 40px;
+}
+
+.header-top {
+    background-color: rgb(46, 46, 46);
+    font-family: sans-serif;
+}
+
+.header-top .menu-account {
+    position: relative;
+}
+
+.header-top .menu-account li:hover .sub-menu-account {
+    display: block;
+}
+
+.header-top .sub-menu-account {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 200px;
+    z-index: 7;
+    text-align: left;
+    box-shadow: 0 0 10px;
+}
+
+.header-top .sub-menu-account li a {
+    display: block;
+    padding: 12px 15px;
+    color: rgb(65, 65, 65);
+    font-size: 14px;
+    border-bottom: 1px solid rgb(89, 89, 89);
+}
+
+.header-top .sub-menu-account li i {
+    margin-right: 3px;
+}
+
+
+.header-top .sub-menu-account li:hover a {
+    color: red;
+}
+
+.header-top .container-header-top {
+    max-width: 1200px;
+    margin: 0px auto;
+    padding: 0px;
+    /* background-color: #555; */
+    display: flex;
+    text-align: end;
+    justify-content: end;
+}
+
+.header-top .container-header-top a {
+    /* color: rgb(204, 204, 204); */
+    color: rgb(174, 174, 174);
+}
+
+.header-top .container-header-top a:hover {
+    color: white;
+}
+
+.header-top .container-header-top .login {
+    /* margin-left: 0px 10px; */
+    margin-right: 10px;
+}
+
+.header-buttom {
+
+    background-color: rgb(61, 61, 61);
+    /* background-color: rgb(233, 5, 5); */
+}
+
+.container-header-buttom {
+
+    max-width: 1200px;
+    margin: 0px auto;
+    padding: 0px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container-header-buttom .logo {
+    display: flex;
+}
+
+.container-header-buttom .choose-cinemas {
+    margin-left: 35px;
+}
+
+.container-header-buttom .main-menu {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container-header-buttom .main-menu li {
+    display: inline-block;
+}
+
+.container-header-buttom .main-menu li a {
+    color: white;
+}
+
+.container-header-buttom .main-menu li a {
+    color: white;
+    display: block;
+    font-weight: 500;
+    padding: 24px 15px;
+    font-family: sans-serif;
+}
+
+.container-header-buttom .main-menu li:hover a {
+    color: rgb(208, 0, 0);
+}
+
+.container-header-buttom .img-logo {
+    margin-top: 3px;
+}
+
+.fa-chevron-down:before {
+    content: "\f078";
+    font-size: 13px;
+}
+
+/* Code chọn Cơ sở rạp */
+ul.dropdown {
+    position: relative;
+}
+
+.choose-cinemas ul.dropdown:not(ul.sub-menu) {
+    margin: 0px;
+    padding: 0px;
+    border-radius: 15px;
+}
+
+.mingcute--down-line {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z'/%3E%3Cpath fill='%23000' d='M12.707 15.707a1 1 0 0 1-1.414 0L5.636 10.05A1 1 0 1 1 7.05 8.636l4.95 4.95l4.95-4.95a1 1 0 0 1 1.414 1.414z'/%3E%3C/g%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.choose-cinemas .default-base {
+
+    text-align: center;
+}
+
+.choose-cinemas .dropdown {
+    background-color: rgb(237, 237, 237);
+}
+
+.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
+    color: black;
+    display: block;
+    padding: 8px 12px;
+    border: 2px solid #989898;
+    font-size: 15px;
+    border-radius: 15px;
+}
+
+.choose-cinemas .dropdown li.default-base:hover a:not(.sub-menu li a) {
+    color: red;
+}
+
+.choose-cinemas .default-base:hover .sub-menu {
+    display: block;
+}
+
+.sub-menu {
+    display: none;
+    border-top: 2px solid rgb(255, 77, 0);
+    position: absolute;
+    z-index: 5;
+    width: 185px;
+    background-color: white;
+    box-shadow: 0 0 5px;
+}
+
+.sub-menu li {
+    display: flex;
+    border-bottom: 1px solid #d4cfcf;
+    align-items: center;
+    padding-right: 10px;
+    justify-content: space-between;
+    padding: 13px 15px;
+    cursor: pointer;
+}
+
+.sub-menu li a {
+    font-size: 14px;
+}
+
+.sub-menu li:hover {
+    background-color: rgb(239, 3, 3);
+}
+
+.sub-menu li:hover a:not(.menu-cinema li a) {
+    color: white;
+}
+
+.sub-menu li.li-branch {
+    position: relative;
+}
+
+.sub-menu li.li-branch:hover .menu-cinema {
+    display: block;
+}
+
+.menu-cinema {
+    display: none;
+    box-shadow: 0 0 5px;
+    position: absolute;
+    background-color: white;
+    width: 185px;
+    top: 0px;
+    right: -186px;
+}
+
+.menu-cinema li:hover a {
+    color: white;
+}
+
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.3s;
+
+}
+
+.menu-responsive {
+    display: none;
 }

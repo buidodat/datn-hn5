@@ -24,8 +24,8 @@ class Room extends Model
         'is_publish'=>'boolean',
     ];
 
-    const CAPACITIESS =[ // Sức chứa
-        130 ,
+    const CAPACITIESS = [ // Sức chứa
+        130,
         150,
         170
     ];
@@ -40,21 +40,25 @@ class Room extends Model
     const MAX_ROW = 15;
     const MAX_COL = 15;
 
-    public function cinema(){
+    public function cinema()
+    {
         return $this->belongsTo(Cinema::class);
     }
 
-    public function typeRoom(){
+    public function typeRoom()
+    {
         return $this->belongsTo(TypeRoom::class);
     }
 
 
 
 
-    public function branch(){
+    public function branch()
+    {
         return $this->belongsTo(Branch::class);
     }
-    public function seats(){
+    public function seats()
+    {
         return $this->hasMany(Seat::class);
     }
 

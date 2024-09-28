@@ -48,16 +48,19 @@
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
 
                                 <div class="row">
-
                                     <div class="col-md-3">
-                                        {{-- <label for="">Rạp:</label> --}}
-                                        <select name="cinema_id" id="" class="form-select">
-                                            <option value="">Chọn Rạp</option>
-                                            @foreach ($cinemas as $cinema)
-                                                <option value="{{ $cinema->id }}"
-                                                    {{ request('cinema_id') == $cinema->id ? 'selected' : '' }}>
-                                                    {{ $cinema->name }}</option>
+                                        <select name="branch_id" id="branch" class="form-select">
+                                            <option value="">Chi nhánh</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                                    {{ $branch->name }}</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select name="cinema_id" id="cinema" class="form-select">
+                                            <option value="">Chọn Rạp</option>
+
                                         </select>
                                     </div>
 
@@ -87,76 +90,18 @@
                     </div>
                 @endif
 
-                {{-- <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Thời gian</th>
-                                <th>Tên phim</th>
-                                <th>Tên phòng</th>
-                                <th>Ngày chiếu</th>
-                                <th>Hoạt động</th>
-                                <th>Chức năng</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            @php
-                                $lastRoomName = null;
-                            @endphp
-                            @foreach ($showtimes as $i => $showtime)
-                                <tr>
-                                    <td>{{ $showtime->id }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
-                                        -
-                                        {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
-                                    </td>
-                                    <td>{{ $showtime->movieVersion->movie->name }}</td>
-                                    <td>
-                                        <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
-                                    </td>
-
-                                    <td>{{ $showtime->date }}</td>
-
-
-                                    <td>
-                                        {!! $showtime->is_active == 1
-                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                        <form action="{{ route('admin.showtimes.destroy', $showtime) }}" method="post"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-
-                    </table>
-                </div> --}}
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                {{-- <th>#</th> --}}
                                 <th>Thời gian</th>
                                 <th>Tên phim</th>
                                 <th>Tên phòng</th>
+                                <th>Định dạng</th>
+                                <th>Số ghế</th>
                                 <th>Ngày chiếu</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
@@ -165,19 +110,19 @@
                         <tbody>
                             @php
                                 // Nhóm suất chiếu theo tên phòng và ngày chiếu
-                                $groupedShowtimes = $showtimes->groupBy(function ($showtime) {
+                                $groupByShowtimes = $showtimes->groupBy(function ($showtime) {
                                     return $showtime->room->name . '_' . $showtime->date;
                                 });
                             @endphp
 
-                            @foreach ($groupedShowtimes as $key => $times)
+                            @foreach ($groupByShowtimes as $key => $times)
                                 @php
                                     $rowCount = $times->count(); // Số suất chiếu trong nhóm phòng + ngày chiếu
                                 @endphp
 
                                 @foreach ($times as $i => $showtime)
                                     <tr>
-                                        <td>{{ $showtime->id }}</td>
+                                        {{-- <td>{{ $i + 1 }}</td> --}}
                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
                                         <td>{{ $showtime->movieVersion->movie->name }}</td>
@@ -187,6 +132,13 @@
                                             <td rowspan="{{ $rowCount }}">
                                                 <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
                                             </td>
+                                            <td rowspan="{{ $rowCount }}">
+                                                {{ $showtime->format }}
+                                            </td>
+                                            <td rowspan="{{ $rowCount }}">
+                                                {{ $showtime->room->capacity }} ghế
+                                            </td>
+
                                             <td rowspan="{{ $rowCount }}">
                                                 {{ \Carbon\Carbon::parse($showtime->date)->format('d-m-Y') }}
                                             </td>
@@ -251,6 +203,49 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Lấy giá trị branchId và cinemaId từ Laravel
+            var selectedBranchId = "{{ old('branch_id', '') }}";
+            var selectedCinemaId = "{{ old('cinema_id', '') }}";
+
+            // Xử lý sự kiện thay đổi chi nhánh
+            $('#branch').on('change', function() {
+                var branchId = $(this).val();
+                var cinemaSelect = $('#cinema');
+                cinemaSelect.empty();
+                cinemaSelect.append('<option value="">Chọn Rạp</option>');
+
+                if (branchId) {
+                    $.ajax({
+                        url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
+                        method: 'GET',
+                        success: function(data) {
+                            $.each(data, function(index, cinema) {
+                                cinemaSelect.append('<option value="' + cinema.id +
+                                    '">' + cinema.name + '</option>');
+                            });
+
+                            // Chọn lại cinema nếu có selectedCinemaId
+                            if (selectedCinemaId) {
+                                cinemaSelect.val(selectedCinemaId);
+                                selectedCinemaId = false;
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
+
+            }
         });
     </script>
 @endsection
