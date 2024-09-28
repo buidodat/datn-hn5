@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\MovieController;
+use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ChooseSeatController;
@@ -98,5 +98,8 @@ Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
 Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 // Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+
+Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
+
 
 

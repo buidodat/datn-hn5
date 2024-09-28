@@ -75,29 +75,39 @@
 
                         <ul class="dropdown">
                             <li class="default-base">
-                                <a href="#">Poly Thanh Xuân <i class="fa-solid fa-chevron-down"></i></a>
+                                @php
+                                    $selectedCinema = App\Models\Cinema::find(session('cinema_id'));
+                                @endphp
+                                <a href="#">Poly {{ $selectedCinema->name }} <i class="fa-solid fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
                                     @foreach ($branches as $branch)
                                         <li class="li-branch">
-                                            <a href="">{{ $branch->name }}</a>
+                                            <a href="#">{{ $branch->name }}</a>
                                             <span><i class="fa-solid fa-chevron-right"></i></span>
                                             <ul class="menu-cinema">
                                                 @if ($branch->cinemas->isEmpty())
                                                     <li><a href="#">Không có rạp nào</a></li>
                                                 @else
                                                     @foreach ($branch->cinemas as $cinema)
-                                                        <li><a href="#">Poly {{ $cinema->name }}</a></li>
+                                                        <li>
+                                                            <form action="{{ route('change-cinema') }}" method="POST"
+                                                                style="display:inline;">
+                                                                @csrf
+                                                                <input type="hidden" name="cinema_id"
+                                                                    value="{{ $cinema->id }}">
+                                                                <button type="submit"
+                                                                    style="background:none;border:none;color:#000;text-align:left;cursor:pointer;">
+                                                                    Poly {{ $cinema->name }}
+                                                                </button>
+                                                            </form>
+                                                        </li>
                                                     @endforeach
                                                 @endif
-
                                             </ul>
                                         </li>
                                     @endforeach
-
-
                                 </ul>
                             </li>
-
                         </ul>
 
                     </div>
@@ -142,7 +152,8 @@
                                 <a href="#"><i class="fa-solid fa-film"></i> Phim</a>
                             </li>
                             <li>
-                                <a href="{{ route('policy') }}"><i class="fa-solid fa-building-shield"></i> Chính sách</a>
+                                <a href="{{ route('policy') }}"><i class="fa-solid fa-building-shield"></i> Chính
+                                    sách</a>
                             </li>
                             <li>
                                 <a href=""><i class="fa-solid fa-money-bill"></i> Giá vé</a>
