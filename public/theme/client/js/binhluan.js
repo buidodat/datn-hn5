@@ -35,34 +35,34 @@ function showComments() {
                             <h5>Xếp hạng: <b>${comment.rating} Điểm</b> </h5>
 
                             <input type="radio" id="star5_${comment.id}" name="rating_${comment.id}" value="10" ${comment.rating === 10 ? 'checked' : ''}/>
-                            <label for="star5_${comment.id}" class="full" title="5 stars"></label>
+                            <label for="star5_${comment.id}" class="full" id="ratingDisable"></label>
 
                             <input type="radio" id="star4half_${comment.id}" name="rating_${comment.id}" value="9" ${comment.rating === 9 ? 'checked' : ''}/>
-                            <label for="star4half_${comment.id}" class="half" title="4.5 stars"></label>
+                            <label for="star4half_${comment.id}" class="half" id="ratingDisable"></label>
 
                             <input type="radio" id="star4_${comment.id}" name="rating_${comment.id}" value="8" ${comment.rating === 8 ? 'checked' : ''}/>
-                            <label for="star4_${comment.id}" class="full" title="4 stars"></label>
+                            <label for="star4_${comment.id}" class="full" id="ratingDisable"></label>
 
                             <input type="radio" id="star3half_${comment.id}" name="rating_${comment.id}" value="7" ${comment.rating === 7 ? 'checked' : ''}/>
-                            <label for="star3half_${comment.id}" class="half" title="3.5 stars"></label>
+                            <label for="star3half_${comment.id}" class="half" id="ratingDisable"></label>
 
                             <input type="radio" id="star3_${comment.id}" name="rating_${comment.id}" value="6" ${comment.rating === 6 ? 'checked' : ''}/>
-                            <label for="star3_${comment.id}" class="full" title="3 stars"></label>
+                            <label for="star3_${comment.id}" class="full" id="ratingDisable"></label>
 
                             <input type="radio" id="star2half_${comment.id}" name="rating_${comment.id}" value="5" ${comment.rating === 5 ? 'checked' : ''}/>
-                            <label for="star2half_${comment.id}" class="half" title="2.5 stars"></label>
+                            <label for="star2half_${comment.id}" class="half" id="ratingDisable"></label>
 
                             <input type="radio" id="star2_${comment.id}" name="rating_${comment.id}" value="4" ${comment.rating === 4 ? 'checked' : ''}/>
-                            <label for="star2_${comment.id}" class="full" title="2 stars"></label>
+                            <label for="star2_${comment.id}" class="full" id="ratingDisable"></label>
 
                             <input type="radio" id="star1half_${comment.id}" name="rating_${comment.id}" value="3" ${comment.rating === 3 ? 'checked' : ''}/>
-                            <label for="star1half_${comment.id}" class="half" title="1.5 stars"></label>
+                            <label for="star1half_${comment.id}" class="half" id="ratingDisable"></label>
 
                             <input type="radio" id="star1_${comment.id}" name="rating_${comment.id}" value="2" ${comment.rating === 2 ? 'checked' : ''}/>
-                            <label for="star1_${comment.id}" class="full" title="1 star"></label>
+                            <label for="star1_${comment.id}" class="full" id="ratingDisable" ></label>
 
                             <input type="radio" id="starhalf_${comment.id}" name="rating_${comment.id}" value="1" ${comment.rating === 1 ? 'checked' : ''}/>
-                            <label for="starhalf_${comment.id}" class="half" title="0.5 stars"></label>
+                            <label for="starhalf_${comment.id}" class="half" id="ratingDisable"></label>
                         </fieldset>
                     </div>
                 </div>
@@ -78,6 +78,7 @@ function showComments() {
 
     document.getElementById('prev').disabled = currentPage === 0;
     document.getElementById('next').disabled = (currentPage + 1) * perPage >= comments.length;
+
 }
 
 function nextComments() {

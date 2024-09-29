@@ -79,6 +79,22 @@
 }
 
 
+/* Vô hiệu hóa hiệu ứng hover cho sao*/
+#ratingDisable {
+    pointer-events: none; /* Ngăn chặn mọi tương tác chuột */
+    cursor: default;      /* Hiển thị con trỏ mặc định */
+}
+
+#ratingDisable:hover {
+    /* Không làm gì khi hover vào nhãn */
+    background-color: transparent; /* Loại bỏ màu nền khi hover */
+    color: inherit;                /* Giữ nguyên màu sắc */
+    border: none;                  /* Loại bỏ viền */
+    box-shadow: none;              /* Loại bỏ hiệu ứng đổ bóng */
+    transform: none;               /* Không có hiệu ứng dịch chuyển */
+}
+
+
 
 
 

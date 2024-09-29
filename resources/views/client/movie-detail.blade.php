@@ -135,56 +135,56 @@
                                                                                        name="rating"
                                                                                        value="10"/>
                                                                                 <label for="star5" class="full"
-                                                                                       title="5 stars"></label>
+                                                                                       title="10 stars"></label>
 
                                                                                 <input type="radio" id="star4half"
                                                                                        name="rating" value="9"/>
                                                                                 <label for="star4half" class="half"
-                                                                                       title="4.5 stars"></label>
+                                                                                       title="9 stars"></label>
 
                                                                                 <input type="radio" id="star4"
                                                                                        name="rating"
                                                                                        value="8"/>
                                                                                 <label for="star4" class="full"
-                                                                                       title="4 stars"></label>
+                                                                                       title="8 stars"></label>
 
                                                                                 <input type="radio" id="star3half"
                                                                                        name="rating" value="7"/>
                                                                                 <label for="star3half" class="half"
-                                                                                       title="3.5 stars"></label>
+                                                                                       title="7 stars"></label>
 
                                                                                 <input type="radio" id="star3"
                                                                                        name="rating"
                                                                                        value="6"/>
                                                                                 <label for="star3" class="full"
-                                                                                       title="3 stars"></label>
+                                                                                       title="6 stars"></label>
 
                                                                                 <input type="radio" id="star2half"
                                                                                        name="rating" value="5"/>
                                                                                 <label for="star2half" class="half"
-                                                                                       title="2.5 stars"></label>
+                                                                                       title="5 stars"></label>
 
                                                                                 <input type="radio" id="star2"
                                                                                        name="rating"
                                                                                        value="4"/>
                                                                                 <label for="star2" class="full"
-                                                                                       title="2 stars"></label>
+                                                                                       title="4 stars"></label>
 
                                                                                 <input type="radio" id="star1half"
                                                                                        name="rating" value="3"/>
                                                                                 <label for="star1half" class="half"
-                                                                                       title="1.5 stars"></label>
+                                                                                       title="3 stars"></label>
 
                                                                                 <input type="radio" id="star1"
                                                                                        name="rating"
                                                                                        value="2"/>
                                                                                 <label for="star1" class="full"
-                                                                                       title="1 star"></label>
+                                                                                       title="2 star"></label>
 
                                                                                 <input type="radio" id="starhalf"
                                                                                        name="rating" value="1"/>
                                                                                 <label for="starhalf" class="half"
-                                                                                       title="0.5 stars"></label>
+                                                                                       title="1 stars"></label>
                                                                                 <p>0 điểm</p>
                                                                             </fieldset>
 
