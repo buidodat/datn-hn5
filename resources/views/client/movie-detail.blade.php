@@ -6,38 +6,8 @@
 
 
 @section('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}" />
-    <style>
-        .content-cmt {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        .content-cmt button {
-            padding: 8px 17px;
-            margin: 0 5px;
-            font-size: 16px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .content-cmt button:disabled {
-            background-color: #e0e0e0;
-            border-color: #bbb;
-            cursor: not-allowed;
-        }
-
-        .content-cmt button:hover:enabled {
-            background-color: #f1761d;
-            color: #fff;
-            border-color: #f1761d;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/binhluan.css') }}"/>
 @endsection
 
 @section('content')
@@ -103,7 +73,9 @@
                                                     Trailer
                                                 </button>
 
-                                                <button class="buy-ticket" onclick="openModalMovieScrening({{ $movie->id }})" >Mua Vé Ngay</button>
+                                                <button class="buy-ticket"
+                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
+                                                </button>
                                             </div>
                                         </div>
 
@@ -155,18 +127,68 @@
                                                                   action="{{ route('movie.addReview', ['slug' => $movie->slug]) }}">
                                                                 @csrf
                                                                 @if(!$userReviewed)
-                                                                    <div class="rating-input">
-                                                                        <div class="stars" id="stars">
-                                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                                <span class="star" data-value="{{ $i }}"
-                                                                                      style="cursor: pointer;">&#9733;</span>
-                                                                            @endfor
-                                                                        </div>
-                                                                        <input type="hidden" id="rating" name="rating"
-                                                                               value="0">
-                                                                        <span class="rating-score">0 điểm</span>
-                                                                    </div>
                                                                     <div class="form-comment">
+                                                                        <div class="st_rating_box">
+                                                                            <fieldset class="rating">
+                                                                                <h5>Xếp hạng</h5>
+                                                                                <input type="radio" id="star5"
+                                                                                       name="rating"
+                                                                                       value="10"/>
+                                                                                <label for="star5" class="full"
+                                                                                       title="10 stars"></label>
+
+                                                                                <input type="radio" id="star4half"
+                                                                                       name="rating" value="9"/>
+                                                                                <label for="star4half" class="half"
+                                                                                       title="9 stars"></label>
+
+                                                                                <input type="radio" id="star4"
+                                                                                       name="rating"
+                                                                                       value="8"/>
+                                                                                <label for="star4" class="full"
+                                                                                       title="8 stars"></label>
+
+                                                                                <input type="radio" id="star3half"
+                                                                                       name="rating" value="7"/>
+                                                                                <label for="star3half" class="half"
+                                                                                       title="7 stars"></label>
+
+                                                                                <input type="radio" id="star3"
+                                                                                       name="rating"
+                                                                                       value="6"/>
+                                                                                <label for="star3" class="full"
+                                                                                       title="6 stars"></label>
+
+                                                                                <input type="radio" id="star2half"
+                                                                                       name="rating" value="5"/>
+                                                                                <label for="star2half" class="half"
+                                                                                       title="5 stars"></label>
+
+                                                                                <input type="radio" id="star2"
+                                                                                       name="rating"
+                                                                                       value="4"/>
+                                                                                <label for="star2" class="full"
+                                                                                       title="4 stars"></label>
+
+                                                                                <input type="radio" id="star1half"
+                                                                                       name="rating" value="3"/>
+                                                                                <label for="star1half" class="half"
+                                                                                       title="3 stars"></label>
+
+                                                                                <input type="radio" id="star1"
+                                                                                       name="rating"
+                                                                                       value="2"/>
+                                                                                <label for="star1" class="full"
+                                                                                       title="2 star"></label>
+
+                                                                                <input type="radio" id="starhalf"
+                                                                                       name="rating" value="1"/>
+                                                                                <label for="starhalf" class="half"
+                                                                                       title="1 stars"></label>
+                                                                                <p>0 điểm</p>
+                                                                            </fieldset>
+
+                                                                        </div>
                                                                         <div class="form-textarea">
                                                                             <textarea class="textarea-comment"
                                                                                       name="description"
@@ -257,85 +279,9 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('theme/client/js/showtime.js') }}"></script>
+    <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script>
-        let comments = [];
-        let currentPage = 0;
-        const perPage = 3;
-        const movieId = {{ $movie->id }};
-
-        function fetchComments() {
-            fetch(`/movie/${movieId}/comments`)
-                .then(response => response.json())
-                .then(data => {
-                    comments = data;
-                    if (comments.length > perPage) {
-                        document.getElementById('prev').style.visibility = 'visible';
-                        document.getElementById('next').style.visibility = 'visible';
-                    } else {
-                        document.getElementById('prev').style.visibility = 'hidden';
-                        document.getElementById('next').style.visibility = 'hidden';
-                    }
-                    showComments();
-                })
-                .catch(error => console.error('Lỗi khi tải bình luận:', error));
-        }
-
-        function showComments() {
-            const start = currentPage * perPage;
-            const selectedComments = comments.slice(start, start + perPage);
-
-            let html = '';
-
-            selectedComments.forEach(comment => {
-                html += `
-        <div class="review">
-            <div class="review-header">
-                <span class="reviewer-name">${comment.user.name}</span>
-                <div class="review-rating">
-        `;
-
-                for (let i = 1; i <= 5; i++) {
-                    if (i <= comment.rating) {
-                        html += `<span class="star">&#9733;</span>`;
-                    } else {
-                        html += `<span class="star empty">&#9733;</span>`;
-                    }
-                }
-
-                html += `
-                <span class="review-score">${comment.rating}</span>
-                </div>
-            </div>
-            <p class="review-content">${comment.description}</p>
-            <div class="review-footer">
-                <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
-            </div>
-        </div>
-        `;
-            });
-
-            document.getElementById('comments').innerHTML = html;
-
-            document.getElementById('prev').disabled = currentPage === 0;
-            document.getElementById('next').disabled = (currentPage + 1) * perPage >= comments.length;
-        }
-
-        function nextComments() {
-            if ((currentPage + 1) * perPage < comments.length) {
-                currentPage++;
-                showComments();
-            }
-        }
-
-        function previousComments() {
-            if (currentPage > 0) {
-                currentPage--;
-                showComments();
-            }
-        }
-
-        fetchComments();
+        var movieId = {{ $movie->id }};
     </script>
-
+    <script src="{{ asset('theme/client/js/binhluan.js') }}"></script>
 @endsection
