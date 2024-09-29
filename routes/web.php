@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
 use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -102,5 +103,7 @@ Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 
 Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
 
-
+// Cổng thanh toán
+//1 VNPAY
+Route::post('vnpay-payment', [PaymentController::class, 'vnpayPayment']);
 
