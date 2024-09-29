@@ -18,7 +18,7 @@ class ShowtimeController extends Controller
     
         // Lấy tất cả các showtimes có cinema_id bằng với ID của cinema
         $showtimes = Showtime::with('movie', 'room')
-            ->where('cinema_id', $cinema->id)
+            ->where([['cinema_id', $cinema->id], ['is_active', '1']])
             ->get();
     
         // Truy vấn lịch chiếu
