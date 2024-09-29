@@ -25,13 +25,17 @@ class MovieController extends Controller
             $dayOfWeek = $currentDate->format('w');
             $formattedDate = $currentDate->format('d/m') . ' - ' . $dayNames[$dayOfWeek];
             $showtimes = DB::table('showtimes')
-                ->where('movie_id', $movie->id)
-                ->whereDate('date', $currentDate)
-                ->where('start_time', '>', now())
-                ->orderBy('start_time', 'asc')
+                ->join('rooms', 'showtimes.room_id', '=', 'rooms.id') // Join với bảng rooms
+                ->where('showtimes.movie_id', $movie->id)
+                ->where('rooms.cinema_id', session('cinema_id')) // Lọc theo cinema_id trong bảng rooms
+                ->whereDate('showtimes.date', $currentDate)
+                ->where('showtimes.start_time', '>', now())
+                ->orderBy('showtimes.start_time', 'asc')
+                ->select('showtimes.*') // Lấy tất cả các trường từ bảng showtimes
                 ->get();
 
-             if (!$showtimes->isEmpty()) {
+
+            if (!$showtimes->isEmpty()) {
             $formattedShowtimes = $showtimes->map(function ($showtime) {
                 // Chuyển đổi start_time thành đối tượng DateTime và định dạng
                 $time = new \DateTime($showtime->start_time);
@@ -46,11 +50,9 @@ class MovieController extends Controller
                 'showtimes' => $formattedShowtimes,
             ];
         }
-
             // Cộng thêm 1 ngày
             $currentDate->add(new \DateInterval('P1D'));
         }
-// dd( $dates);
 
         return response()->json(['dates' => $dates,'movie'=>$movie]);
     }

@@ -40,7 +40,7 @@ class SeatController extends Controller
         $row = $request->row;
 
         // Xóa mềm tất cả ghế trong hàng
-        Seat::where('coordinates_y', $row)->delete();
+        Seat::where('coordinates_y', $row)->where('room_id',$request->room_id)->delete();
 
         return response()->json(['success' => true, 'message' => 'Ghế đã được xóa mềm.']);
     }
@@ -50,7 +50,7 @@ class SeatController extends Controller
         $row = $request->row;
 
         // Khôi phục tất cả ghế đã xóa mềm trong hàng
-        Seat::withTrashed()->where('coordinates_y', $row)->restore();
+        Seat::withTrashed()->where('coordinates_y', $row)->where('room_id',$request->room_id)->restore();
 
         return response()->json(['success' => true, 'message' => 'Ghế đã được khôi phục.']);
     }
