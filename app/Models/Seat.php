@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Seat extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'room_id',
         'type_seat_id',
@@ -20,6 +22,8 @@ class Seat extends Model
         'is_active' => 'boolean'
     ];
 
+
+    protected $dates = ['deleted_at'];
     // Quan hệ với phòng (Room)
     public function room()
     {

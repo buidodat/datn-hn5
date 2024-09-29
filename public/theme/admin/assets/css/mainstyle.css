@@ -71,8 +71,8 @@
     height: 35px;
   }
 
- 
-.box-item-seat-selected img {
+
+.box-item img {
     -webkit-user-drag: none; /* Ngăn người dùng kéo hình ảnh trong trình duyệt WebKit (Chrome, Safari) */
     -webkit-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên trình duyệt WebKit (Chrome, Safari) */
     -moz-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên Firefox */
@@ -80,7 +80,7 @@
     user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên các trình duyệt hỗ trợ chuẩn */
 }
 
-.box-item-seat-selected {
+.box-item {
     cursor: pointer; /* Hiển thị con trỏ dạng tay khi hover */
 }
 .light-orange {

@@ -13,11 +13,15 @@ class Room extends Model
         'cinema_id',
         'type_room_id',
         'name',
-        'capacity',
+        'matrix_id',
+        'row_seat_regular',
+        'row_seat_double',
         'is_active',
+        'is_publish'
     ];
     protected $cast = [
-        'is_active' => 'boolean'
+        'is_active'=>'boolean',
+        'is_publish'=>'boolean',
     ];
 
     const CAPACITIESS = [ // Sức chứa
@@ -25,7 +29,14 @@ class Room extends Model
         150,
         170
     ];
+    const MATRIXS = [
+        ['id'=>1,'name'=>'12x12','max_row'=>12,'max_col'=>12],
+        ['id'=>2,'name'=>'13x13','max_row'=>13,'max_col'=>13],
+        ['id'=>3,'name'=>'14x14','max_row'=>14,'max_col'=>14],
+        ['id'=>4,'name'=>'15x15','max_row'=>15,'max_col'=>15]
+    ];
     const ROW_SEAT_REGULAR = 4;
+    const ROW_SEAT_DOUBLE = 0;
     const MAX_ROW = 15;
     const MAX_COL = 15;
 

@@ -9,6 +9,7 @@ use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Food;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CinemaController extends Controller
 {
@@ -87,11 +88,17 @@ class CinemaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function changeCinema(Request $request)
     {
-        //
+        // Kiểm tra xem cinema_id gửi lên có hợp lệ không
+        $cinema = Cinema::find($request->cinema_id);
+
+        if ($cinema) {
+            // Lưu cinema_id vào session
+            Session::put('cinema_id', $cinema->id);
+        }
+
+        // Điều hướng lại hoặc trả về kết quả phù hợp
+        return redirect()->back(); 
     }
 }

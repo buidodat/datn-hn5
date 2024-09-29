@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header ">
     <div class="header-top">
         <div class="container-header-top">
             <div class="login">
@@ -12,22 +12,6 @@
                         <a class="a-dndk" href="{{ route('register') }}">{{ __('Đăng Ký') }}</a>
                     @endif
                 @else
-                    {{-- <div class="div-dndk">
-                       Xin chào: {{ Auth::user()->name }} <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                    <ul class="lg-submenu ul-dndk">
-                        <li>
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                                {{ __('Đăng Xuất') }}
-                            </a>
-                            <a href="{{ route('my-account.edit') }}">Tài khoản của tôi</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul> --}}
                     <ul class="menu-account">
                         <li class="hello-account">
                             <a href="#"> Xin chào: {{ Auth::user()->name }} <i
@@ -40,14 +24,7 @@
                                 <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li>
                                 <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
                                 <li>
-                                    {{-- <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </a> --}}
+
 
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -78,8 +55,7 @@
             <div class="logo">
                 <div class="img-logo">
                     <a href="/">
-                        <img style="width: 184px; height: 40px"
-                            src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="logo" />
+                        <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="logo" />
                     </a>
                 </div>
                 <div class="choose-cinemas">
@@ -99,48 +75,39 @@
 
                         <ul class="dropdown">
                             <li class="default-base">
-                                <a href="#">Poly Thanh Xuân <i class="fa-solid fa-chevron-down"></i></a>
+                                @php
+                                    $selectedCinema = App\Models\Cinema::find(session('cinema_id'));
+                                @endphp
+                                <a href="#">Poly {{ $selectedCinema->name }} <i class="fa-solid fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
                                     @foreach ($branches as $branch)
                                         <li class="li-branch">
-                                            <a href="">{{ $branch->name }}</a>
+                                            <a href="#">{{ $branch->name }}</a>
                                             <span><i class="fa-solid fa-chevron-right"></i></span>
                                             <ul class="menu-cinema">
                                                 @if ($branch->cinemas->isEmpty())
                                                     <li><a href="#">Không có rạp nào</a></li>
                                                 @else
                                                     @foreach ($branch->cinemas as $cinema)
-                                                        <li><a href="#">Poly {{ $cinema->name }}</a></li>
+                                                        <li>
+                                                            <form action="{{ route('change-cinema') }}" method="POST"
+                                                                style="display:inline;">
+                                                                @csrf
+                                                                <input type="hidden" name="cinema_id"
+                                                                    value="{{ $cinema->id }}">
+                                                                <button type="submit"
+                                                                    style="background:none;border:none;color:#000;text-align:left;cursor:pointer;">
+                                                                    Poly {{ $cinema->name }}
+                                                                </button>
+                                                            </form>
+                                                        </li>
                                                     @endforeach
                                                 @endif
-
                                             </ul>
                                         </li>
                                     @endforeach
-                                    {{-- <li class="li-branch">
-                                        <a href="">Hồ Chí Minh</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="li-branch">
-                                        <a href="">Huế</a>
-                                        <span><i class="fa-solid fa-chevron-right"></i></span>
-                                        <ul class="menu-cinema">
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                            <li><a href="">Poly Mỹ Đình</a></li>
-                                            <li><a href="">Poly Hà Đông</a></li>
-                                            <li><a href="">Poly Thanh Xuân</a></li>
-                                        </ul>
-                                    </li> --}}
-
                                 </ul>
                             </li>
-
                         </ul>
 
                     </div>
@@ -170,6 +137,37 @@
                     </li>
                     <li>
                         <a href="">Thành viên</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="menu-responsive">
+                <ul class="menu-respon">
+                    <li>
+                        <a><i class="fa-solid fa-bars"></i></a>
+                        <ul class="sub-menu-respon">
+                            <li>
+                                <a href="#"><i class="fa-solid fa-calendar-days"></i> Lịch chiếu theo rạp</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-solid fa-film"></i> Phim</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('policy') }}"><i class="fa-solid fa-building-shield"></i> Chính
+                                    sách</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="fa-solid fa-money-bill"></i> Giá vé</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-regular fa-newspaper"></i> Tin tức</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-regular fa-address-card"></i> Liên hệ</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="fa-regular fa-user"></i> Thành viên</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
