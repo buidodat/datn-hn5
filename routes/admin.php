@@ -52,7 +52,18 @@ Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 
 Route::resource('type-rooms', TypeRoomController::class);
-Route::resource('rooms', RoomController::class);
+
+// Quản lý phòng chiếu
+Route::prefix('rooms')
+    ->as('rooms.')
+    ->group(function () {
+        Route::get('/',                   [RoomController::class,'index'])->name('index');
+        Route::get('seat-diagram/{room}', [RoomController::class,'seatDiagram'])->name('seat-diagram');
+        Route::put('publish/{room}',     [RoomController::class,'publish'])->name('publish');
+        Route::get('{room}',     [RoomController::class,'show'])->name('show');
+    });
+// Route::resource('rooms', RoomController::class);
+
 Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
@@ -68,12 +79,9 @@ Route::resource('combos', ComboController::class);
 Route::resource('type_seats', TypeSeatController::class);
 //user
 Route::resource('users', UserController::class);
-Route::put('users/reset-password/{user}',[UserController::class,'resetPassword'])->name('users.password.reset');
+Route::put('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.password.reset');
 //my-account
-Route::get('my-account', [MyAccountController::class,'show'])->name('my-account');
-Route::get('my-account/edit', [MyAccountController::class,'edit'])->name('my-account.edit');
-Route::put('my-account/update', [MyAccountController::class,'update'])->name('my-account.update');
-Route::post('my-account/change-password', [MyAccountController::class,'changePassword'])->name('my-account.change-password');
-
-
-
+Route::get('my-account', [MyAccountController::class, 'show'])->name('my-account');
+Route::get('my-account/edit', [MyAccountController::class, 'edit'])->name('my-account.edit');
+Route::put('my-account/update', [MyAccountController::class, 'update'])->name('my-account.update');
+Route::post('my-account/change-password', [MyAccountController::class, 'changePassword'])->name('my-account.change-password');

@@ -6,11 +6,16 @@
             <span class="modalMovieScrening-title" id="modalMovieTitle">LỊCH CHIẾU</span>
             <span class="closeModalMovieScrening">&times;</span>
         </div>
-
+        <div>
+            @php
+                $cinema = App\Models\Cinema::findOrFail(session('cinema_id'));
+            @endphp
+            <h2 class="cinema-title">Rạp Poly {{ $cinema->name }}</h2>
+        </div>
         <div class="modalMovieScrening-body">
 
-        </div>
+            <div class="listMovieScrening-date"></div>
 
+        </div>
     </div>
 </div>
-
