@@ -13,7 +13,9 @@ class APIController extends Controller
 {
     public function getCinemas($branchId)
     {
-        $cinemas = Cinema::where('branch_id', $branchId)->get();
+        $cinemas = Cinema::where('branch_id', $branchId)
+            ->where('is_active', '1')
+            ->get();
         return response()->json($cinemas);
     }
 
@@ -21,6 +23,7 @@ class APIController extends Controller
     public function getRooms($cinemaId)
     {
         $rooms = Room::where('cinema_id', $cinemaId)
+            ->where('is_active', '1')
             ->join('type_rooms', 'type_rooms.id', '=', 'rooms.type_room_id') // Join bảng type_rooms
             ->select('rooms.*', 'type_rooms.name as type_room_name') // Lấy cột name từ bảng type_rooms
             ->get();
@@ -44,7 +47,7 @@ class APIController extends Controller
     }
 
 
- // public function getTypeRooms($typeRoomId)
+    // public function getTypeRooms($typeRoomId)
     // {
     //     $rooms = Room::where('type_room_id', $typeRoomId)->get();
     //     return response()->json($rooms);

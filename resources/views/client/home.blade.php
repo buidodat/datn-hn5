@@ -674,58 +674,34 @@
 
     <script>
         // Ajax load xem thêm 3 tab
-        // document.addEventListener('DOMContentLoaded', function() {
-
-        //     document.getElementById('load-more2').addEventListener('click', function() {
-        //         const button = this;
-        //         const page = button.getAttribute('data-page');
-
-        //         fetch(`/movies2?page=${page}`, {
-        //                 method: 'GET',
-
-        //             })
-        //             .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
-        //             .then(data => {
-        //                 const movieList2 = document.getElementById('movie-list2');
-        //                 // console.log(data);
-
-        //                 if (data.trim().length > 0) {
-        //                     movieList2.innerHTML += data;
-
-        //                 } else {
-        //                     // Nếu không có phim để thêm, ẩn nút "Xem thêm"
-        //                     button.style.display = 'none';
-        //                 }
-
-        //                 button.setAttribute('data-page', parseInt(page) + 1);
-        //             })
-        //             .catch(error => console.error('Error:', error));
-        //     });
-
-        // });
         document.addEventListener('DOMContentLoaded', function() {
+
             document.getElementById('load-more2').addEventListener('click', function() {
                 const button = this;
                 const page = button.getAttribute('data-page');
 
                 fetch(`/movies2?page=${page}`, {
                         method: 'GET',
+
                     })
-                    .then(response => response.text())
+                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
                     .then(data => {
                         const movieList2 = document.getElementById('movie-list2');
-                        const trimmedData = data.trim();
+                        // console.log(data);
 
-                        if (trimmedData.length > 0) {
-                            movieList2.innerHTML += trimmedData;
-                            button.setAttribute('data-page', parseInt(page) + 1);
+                        if (data.trim().length > 0) {
+                            movieList2.innerHTML += data;
+
                         } else {
-                            // Không có dữ liệu mới, ẩn nút "Xem thêm"
+                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
                             button.style.display = 'none';
                         }
+
+                        button.setAttribute('data-page', parseInt(page) + 1);
                     })
                     .catch(error => console.error('Error:', error));
             });
+
         });
 
 
