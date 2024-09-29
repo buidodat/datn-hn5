@@ -65,7 +65,8 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a  onclick="openModalMovieScrening({{ $movie->id }})"  class="buy-ticket-btn">Mua vé</a>
+                                                                    <a onclick="openModalMovieScrening({{ $movie->id }})"
+                                                                        class="buy-ticket-btn">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -147,7 +148,8 @@
 
 
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                <a  onclick="openModalMovieScrening({{ $movie->id }})"  class="buy-ticket-btn" >Mua vé</a>
+                                                                    <a onclick="openModalMovieScrening({{ $movie->id }})"
+                                                                        class="buy-ticket-btn">Mua vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -175,13 +177,9 @@
                                             </div>
                                         </div>
                                     @endforeach
-
-
                                 </div>
 
-
                             </div>
-
                         </div>
                         @if ($moviesShowing->total() > 8)
                             <div class="row">
@@ -229,7 +227,9 @@
                                                         <ul>
                                                             <li>
                                                                 @if ($movie->showtimes->count() > 0)
-                                                                    <a class="buy-ticket-btn"  onclick="openModalMovieScrening({{ $movie->id }})" >Mua vé</a>
+                                                                    <a class="buy-ticket-btn"
+                                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua
+                                                                        vé</a>
                                                                 @else
                                                                     <a>Không suất chiếu</a>
                                                                 @endif
@@ -658,8 +658,7 @@
             </div>
         </div>
     </div>
-    <!-- prs videos&photos slider End -->
-    <!-- prs patner slider Start -->
+
 
 
     @include('client.modal-movie-screning')
@@ -675,38 +674,62 @@
 
     <script>
         // Ajax load xem thêm 3 tab
-        document.addEventListener('DOMContentLoaded', function() {
-            attachBuyTicketEvent
-                (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
+        // document.addEventListener('DOMContentLoaded', function() {
 
+        //     document.getElementById('load-more2').addEventListener('click', function() {
+        //         const button = this;
+        //         const page = button.getAttribute('data-page');
+
+        //         fetch(`/movies2?page=${page}`, {
+        //                 method: 'GET',
+
+        //             })
+        //             .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+        //             .then(data => {
+        //                 const movieList2 = document.getElementById('movie-list2');
+        //                 // console.log(data);
+
+        //                 if (data.trim().length > 0) {
+        //                     movieList2.innerHTML += data;
+
+        //                 } else {
+        //                     // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+        //                     button.style.display = 'none';
+        //                 }
+
+        //                 button.setAttribute('data-page', parseInt(page) + 1);
+        //             })
+        //             .catch(error => console.error('Error:', error));
+        //     });
+
+        // });
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('load-more2').addEventListener('click', function() {
                 const button = this;
                 const page = button.getAttribute('data-page');
 
                 fetch(`/movies2?page=${page}`, {
                         method: 'GET',
-
                     })
-                    .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
+                    .then(response => response.text())
                     .then(data => {
-                        const movieList = document.getElementById('movie-list2');
-                        // console.log(data);
+                        const movieList2 = document.getElementById('movie-list2');
+                        const trimmedData = data.trim();
 
-                        if (data.trim().length > 0) {
-                            movieList.innerHTML += data;
-                            attachBuyTicketEvent();
+                        if (trimmedData.length > 0) {
+                            movieList2.innerHTML += trimmedData;
+                            button.setAttribute('data-page', parseInt(page) + 1);
                         } else {
-                            // Nếu không có phim để thêm, ẩn nút "Xem thêm"
+                            // Không có dữ liệu mới, ẩn nút "Xem thêm"
                             button.style.display = 'none';
                         }
-
-                        button.setAttribute('data-page', parseInt(page) + 1);
                     })
                     .catch(error => console.error('Error:', error));
-
             });
+        });
 
-            //"Xem thêm" ở movie 1 và movie 3 ko chạy được vì code Js nó đứng sau load-more2 (chỉ thằng đứng trên cùng mới chạy được Xem thêm thôi) => Fix sau
+
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('load-more1').addEventListener('click', function() {
                 const button = this;
                 const page = button.getAttribute('data-page');
@@ -717,12 +740,12 @@
                     })
                     .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
                     .then(data => {
-                        const movieList = document.getElementById('movie-list1');
-                        console.log(data);
+                        const movieList1 = document.getElementById('movie-list1');
+                        // console.log(data);
 
                         if (data.trim().length > 0) {
-                            movieList.innerHTML += data;
-                            attachBuyTicketEvent();
+                            movieList1.innerHTML += data;
+
                         } else {
                             // Nếu không có phim để thêm, ẩn nút "Xem thêm"
                             button.style.display = 'none';
@@ -733,10 +756,14 @@
                     .catch(error => console.error('Error:', error));
 
             });
+        });
 
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('load-more3').addEventListener('click', function() {
+                // console.log('lcik odasjkf');
                 const button = this;
                 const page = button.getAttribute('data-page');
+
 
                 fetch(`/movies3?page=${page}`, {
                         method: 'GET',
@@ -744,12 +771,12 @@
                     })
                     .then(response => response.text()) // Đảm bảo nhận về dữ liệu dạng text (HTML)
                     .then(data => {
-                        const movieList = document.getElementById('movie-list3');
-                        // console.log(data);
+                        const movieList3 = document.getElementById('movie-list3');
+                        console.log(data);
 
                         if (data.trim().length > 0) {
-                            movieList.innerHTML += data;
-                            attachBuyTicketEvent();
+                            movieList3.innerHTML += data;
+
                         } else {
                             // Nếu không có phim để thêm, ẩn nút "Xem thêm"
                             button.style.display = 'none';
@@ -758,97 +785,7 @@
                         button.setAttribute('data-page', parseInt(page) + 1);
                     })
                     .catch(error => console.error('Error:', error));
-
-
             })
-
-
-
-            //HÀM ADD SỰ KIỆN MUA VÉ VÀ HIỂN THỊ MODAL SUẤT CHIẾU THEO PHIM_ID
-
-            // function attachBuyTicketEvent() {
-            //     const modal = document.getElementById("showtime-modal");
-            //     const closeBtn = document.getElementsByClassName("close-btn")[0];
-
-            //     const buyTicketButtons = document.querySelectorAll(".buy-ticket-btn");
-
-            //     buyTicketButtons.forEach(function(btn) {
-            //         btn.onclick = function() {
-            //             const movieId = this.getAttribute("data-movie-id");
-            //             console.log(movieId);
-
-
-            //             fetch(`/movie/${movieId}/showtimes`)
-            //                 .then(response => response.json())
-            //                 .then(data => {
-            //                     console.log("Showtimes data: ", data);
-            //                     populateShowtimes(
-            //                         data); // Bắt đầu từ đây là Sai, là code lỏ, ko chạy đc
-            //                 })
-            //                 .catch(error => {
-            //                     console.error("Lỗi fetch showtime api: ", error);
-            //                 });
-
-            //             modal.style.display = "block";
-            //         };
-            //     });
-
-            //     closeBtn.onclick = function() {
-            //         modal.style.display = "none";
-            //     };
-
-            //     window.onclick = function(event) {
-            //         if (event.target == modal) {
-            //             modal.style.display = "none";
-            //         }
-            //     };
-            // }
-
-            function populateShowtimes(data) {
-                const showtimeContainer = document.querySelector(".showtimes");
-                // const locationSelectionBtn = document.querySelector(".location-selection");
-                showtimeContainer.innerHTML = '';
-                // locationSelectionBtn.innerHTML = '';
-
-                data.forEach(showtime => {
-                    const cinemaName = showtime.room && showtime.room.cinema ? showtime.room.cinema.name :
-                        'Không xác định';
-                    const roomName = showtime.room ? showtime.room.name : 'Không xác định';
-                    // const typeRoomName = showtime.room && showtime.room.typeRoom ? showtime.room.typeRoom : 'Không xác định';
-
-                    const movieVersion = showtime.movie_version ? showtime.movie_version.name :
-                        'Không xác định';
-                    const startTime = showtime.start_time;
-                    const endTime = showtime.end_time;
-                    // const branch = showtime.room.cinema.branch.name;
-
-                    console.log(showtime); // Kiểm tra dữ liệu suất chiếu
-
-                    // Tạo HTML cho mỗi suất chiếu
-                    const showtimeItem = `
-            <div class="showtime-item">
-                <h3>${cinemaName}</h3>
-                <p>Rạp: ${roomName}, Phiên bản: ${movieVersion}</p>
-                <button class="time-btn">${startTime}</button>
-            </div>`;
-                    // const locationSelectionItem = `<button class="location-btn">${ branch }</button>`;
-
-                    // locationSelectionBtn.innerHTML += locationSelectionItem;
-
-                    showtimeContainer.innerHTML += showtimeItem;
-                });
-            }
-
-
-
-
-            attachBuyTicketEvent
-                (); //Hàm gọi lại để dùng đc nút Mua ngay khi bấm Xem thêm (ko liên quan đến đổ dữ liệu modal)
-
-
-
         });
     </script>
-
-
 @endsection
