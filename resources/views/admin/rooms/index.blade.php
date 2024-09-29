@@ -175,8 +175,8 @@
                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -227,8 +227,8 @@
                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -277,8 +277,8 @@
                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -329,8 +329,8 @@
                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -508,7 +508,7 @@
                         $('#createRoomModal').modal('hide');
                         form.reset();
                         window.location.href =
-                            `http://datn-hn5.me/admin/rooms/${data.room.id}/edit`; // Sử dụng room.id vừa thêm
+                            `http://datn-hn5.me/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
                     }
                 })
                 .catch(error => console.error('Error adding room:', error));
