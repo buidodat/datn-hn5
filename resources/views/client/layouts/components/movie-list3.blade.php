@@ -18,7 +18,8 @@
                         <li>
 
                             @if ($movie->showtimes->count() > 0)
-                                <a class="buy-ticket-btn" data-movie-id="{{ $movie->id }}">Mua vé</a>
+                                <a onclick="openModalMovieScrening({{ $movie->id }})" class="buy-ticket-btn">Mua
+                                    vé</a>
                             @else
                                 <a>Không suất chiếu</a>
                             @endif
