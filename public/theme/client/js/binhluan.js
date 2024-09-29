@@ -2,8 +2,6 @@
 let comments = [];
 let currentPage = 0;
 const perPage = 3;
-// const movieId = {{ $movie->id }};
-
 function fetchComments() {
     fetch(`/movie/${movieId}/comments`)
         .then(response => response.json())
@@ -29,29 +27,50 @@ function showComments() {
 
     selectedComments.forEach(comment => {
         html += `
-        <div class="review">
-            <div class="review-header">
-                <span class="reviewer-name">${comment.user.name}</span>
-                <div class="review-rating">
-        `;
+            <div class="review">
+                <div class="review-header">
+                    <span class="reviewer-name">${comment.user.name}</span>
+                    <div class="review-rating">
+                        <fieldset class="rating">
+                            <h5>Xếp hạng: <b>${comment.rating} Điểm</b> </h5>
 
-        for (let i = 1; i <= 5; i++) {
-            if (i <= comment.rating) {
-                html += `<span class="star">&#9733;</span>`;
-            } else {
-                html += `<span class="star empty">&#9733;</span>`;
-            }
-        }
+                            <input type="radio" id="star5_${comment.id}" name="rating_${comment.id}" value="10" ${comment.rating === 10 ? 'checked' : ''}/>
+                            <label for="star5_${comment.id}" class="full" title="5 stars"></label>
 
-        html += `
-                <span class="review-score">${comment.rating}</span>
+                            <input type="radio" id="star4half_${comment.id}" name="rating_${comment.id}" value="9" ${comment.rating === 9 ? 'checked' : ''}/>
+                            <label for="star4half_${comment.id}" class="half" title="4.5 stars"></label>
+
+                            <input type="radio" id="star4_${comment.id}" name="rating_${comment.id}" value="8" ${comment.rating === 8 ? 'checked' : ''}/>
+                            <label for="star4_${comment.id}" class="full" title="4 stars"></label>
+
+                            <input type="radio" id="star3half_${comment.id}" name="rating_${comment.id}" value="7" ${comment.rating === 7 ? 'checked' : ''}/>
+                            <label for="star3half_${comment.id}" class="half" title="3.5 stars"></label>
+
+                            <input type="radio" id="star3_${comment.id}" name="rating_${comment.id}" value="6" ${comment.rating === 6 ? 'checked' : ''}/>
+                            <label for="star3_${comment.id}" class="full" title="3 stars"></label>
+
+                            <input type="radio" id="star2half_${comment.id}" name="rating_${comment.id}" value="5" ${comment.rating === 5 ? 'checked' : ''}/>
+                            <label for="star2half_${comment.id}" class="half" title="2.5 stars"></label>
+
+                            <input type="radio" id="star2_${comment.id}" name="rating_${comment.id}" value="4" ${comment.rating === 4 ? 'checked' : ''}/>
+                            <label for="star2_${comment.id}" class="full" title="2 stars"></label>
+
+                            <input type="radio" id="star1half_${comment.id}" name="rating_${comment.id}" value="3" ${comment.rating === 3 ? 'checked' : ''}/>
+                            <label for="star1half_${comment.id}" class="half" title="1.5 stars"></label>
+
+                            <input type="radio" id="star1_${comment.id}" name="rating_${comment.id}" value="2" ${comment.rating === 2 ? 'checked' : ''}/>
+                            <label for="star1_${comment.id}" class="full" title="1 star"></label>
+
+                            <input type="radio" id="starhalf_${comment.id}" name="rating_${comment.id}" value="1" ${comment.rating === 1 ? 'checked' : ''}/>
+                            <label for="starhalf_${comment.id}" class="half" title="0.5 stars"></label>
+                        </fieldset>
+                    </div>
+                </div>
+                <p class="review-content">${comment.description}</p>
+                <div class="review-footer">
+                    <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
                 </div>
             </div>
-            <p class="review-content">${comment.description}</p>
-            <div class="review-footer">
-                <span class="review-date">${new Date(comment.created_at).toLocaleDateString()}</span>
-            </div>
-        </div>
         `;
     });
 
@@ -78,59 +97,11 @@ function previousComments() {
 fetchComments();
 
 //them binh luan
-/*document.addEventListener('DOMContentLoaded', function () {
-    const stars = document.querySelectorAll('.star');
-    const ratingInput = document.getElementById('rating');
-    const ratingScore = document.querySelector('.rating-score');
-    let selectedRating = 0;
-
-    stars.forEach(star => {
-        star.addEventListener('mouseover', function () {
-            resetStars();
-            const value = parseInt(this.getAttribute('data-value'));
-            highlightStars(value);
-            ratingScore.textContent = `${value} điểm`;
-        });
-
-        // Handle mouseout event
-        star.addEventListener('mouseout', function () {
-            resetStars();
-            let currentRating = selectedRating > 0 ? selectedRating : 0;
-            highlightStars(currentRating);
-            ratingScore.textContent = `${currentRating} điểm`;
-        });
-
-        star.addEventListener('click', function () {
-            selectedRating = parseInt(this.getAttribute('data-value'));
-            ratingInput.value = selectedRating;
-            resetStars();
-            highlightStars(selectedRating);
-            ratingScore.textContent = `${selectedRating} điểm`;
-        });
-    });
-
-    function highlightStars(rating) {
-        stars.forEach(star => {
-            if (parseInt(star.getAttribute('data-value')) <= rating) {
-                star.classList.add('hover');
-                star.classList.add('highlighted');
-            } else {
-                star.classList.remove('highlighted');
-            }
-        });
-    }
-
-    function resetStars() {
-        stars.forEach(star => {
-            star.classList.remove('hover');
-        });
-    }
-});*/
 
 document.addEventListener('DOMContentLoaded', function () {
     const starInputs = document.querySelectorAll('.rating input[type="radio"]');
-    const ratingScoreDisplay = document.querySelector('.rating h3'); // Nơi hiển thị điểm
-    let selectedRating = 0; // Lưu giá trị đã chọn
+    const scoreDisplay = document.querySelector('.rating p');
+    let selectedRating = 0;
 
     starInputs.forEach(input => {
         const label = input.nextElementSibling;
@@ -138,19 +109,19 @@ document.addEventListener('DOMContentLoaded', function () {
         label.addEventListener('mouseover', function () {
             resetStars();
             highlightStars(input.value);
-            ratingScoreDisplay.textContent = `${input.value} điểm`;
+            scoreDisplay.textContent = `${input.value} điểm`;
         });
 
         label.addEventListener('mouseout', function () {
             resetStars();
             highlightStars(selectedRating);
-            ratingScoreDisplay.textContent = `${selectedRating} điểm`;
+            scoreDisplay.textContent = `${selectedRating} điểm`;
         });
 
         label.addEventListener('click', function () {
             selectedRating = input.value;
             highlightStars(selectedRating);
-            ratingScoreDisplay.textContent = `${selectedRating} điểm`;
+            scoreDisplay.textContent = `${selectedRating} điểm`;
         });
     });
 
@@ -173,5 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
             label.classList.remove('highlighted');
         });
     }
+
 });
 

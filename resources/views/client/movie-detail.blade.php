@@ -6,8 +6,8 @@
 
 
 @section('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/binhluan.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/binhluan.css') }}"/>
 @endsection
 
 @section('content')
@@ -73,7 +73,9 @@
                                                     Trailer
                                                 </button>
 
-                                                <button class="buy-ticket" onclick="openModalMovieScrening({{ $movie->id }})" >Mua Vé Ngay</button>
+                                                <button class="buy-ticket"
+                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
+                                                </button>
                                             </div>
                                         </div>
 
@@ -125,65 +127,68 @@
                                                                   action="{{ route('movie.addReview', ['slug' => $movie->slug]) }}">
                                                                 @csrf
                                                                 @if(!$userReviewed)
-
-                                                                        {{--<div class="stars" id="stars">
-                                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                                <span class="star" data-value="{{ $i }}"
-                                                                                      style="cursor: pointer;">&#9733;</span>
-                                                                            @endfor
-                                                                        </div>--}}
-                                                                        <div class="st_slider_rating_main_wrapper float_left" style="margin-top: 0px">
-                                                                            <div class="container">
-                                                                                <div class="st_slider_rating_left">
-                                                                                    <div class="st_rating_box">
-                                                                                        <fieldset class="rating">
-                                                                                            <h3>0</h3>
-                                                                                            <input type="radio" id="star5" name="rating" value="10" />
-                                                                                            <label for="star5" class="full" title="5 stars"></label>
-
-                                                                                            <input type="radio" id="star4half" name="rating" value="9" />
-                                                                                            <label for="star4half" class="half" title="4.5 stars"></label>
-
-                                                                                            <input type="radio" id="star4" name="rating" value="8" />
-                                                                                            <label for="star4" class="full" title="4 stars"></label>
-
-                                                                                            <input type="radio" id="star3half" name="rating" value="7" />
-                                                                                            <label for="star3half" class="half" title="3.5 stars"></label>
-
-                                                                                            <input type="radio" id="star3" name="rating" value="6" />
-                                                                                            <label for="star3" class="full" title="3 stars"></label>
-
-                                                                                            <input type="radio" id="star2half" name="rating" value="5" />
-                                                                                            <label for="star2half" class="half" title="2.5 stars"></label>
-
-                                                                                            <input type="radio" id="star2" name="rating" value="4" />
-                                                                                            <label for="star2" class="full" title="2 stars"></label>
-
-                                                                                            <input type="radio" id="star1half" name="rating" value="3" />
-                                                                                            <label for="star1half" class="half" title="1.5 stars"></label>
-
-                                                                                            <input type="radio" id="star1" name="rating" value="2" />
-                                                                                            <label for="star1" class="full" title="1 star"></label>
-
-                                                                                            <input type="radio" id="starhalf" name="rating" value="1" />
-                                                                                            <label for="starhalf" class="half" title="0.5 stars"></label>
-                                                                                        </fieldset>
-
-                                                                                    </div>
-
-                                                                                </div>
-                                                                                <div class="st_slider_rating_right">
-
-                                                                                    <div class="st_slider_rating_btn_heart">
-                                                                                        <h5><i class="fa fa-heart"></i> 85%</h5>
-                                                                                        <h4>52,291 votes</h4>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-
                                                                     <div class="form-comment">
+                                                                        <div class="st_rating_box">
+                                                                            <fieldset class="rating">
+                                                                                <h5>Xếp hạng</h5>
+                                                                                <input type="radio" id="star5"
+                                                                                       name="rating"
+                                                                                       value="10"/>
+                                                                                <label for="star5" class="full"
+                                                                                       title="5 stars"></label>
+
+                                                                                <input type="radio" id="star4half"
+                                                                                       name="rating" value="9"/>
+                                                                                <label for="star4half" class="half"
+                                                                                       title="4.5 stars"></label>
+
+                                                                                <input type="radio" id="star4"
+                                                                                       name="rating"
+                                                                                       value="8"/>
+                                                                                <label for="star4" class="full"
+                                                                                       title="4 stars"></label>
+
+                                                                                <input type="radio" id="star3half"
+                                                                                       name="rating" value="7"/>
+                                                                                <label for="star3half" class="half"
+                                                                                       title="3.5 stars"></label>
+
+                                                                                <input type="radio" id="star3"
+                                                                                       name="rating"
+                                                                                       value="6"/>
+                                                                                <label for="star3" class="full"
+                                                                                       title="3 stars"></label>
+
+                                                                                <input type="radio" id="star2half"
+                                                                                       name="rating" value="5"/>
+                                                                                <label for="star2half" class="half"
+                                                                                       title="2.5 stars"></label>
+
+                                                                                <input type="radio" id="star2"
+                                                                                       name="rating"
+                                                                                       value="4"/>
+                                                                                <label for="star2" class="full"
+                                                                                       title="2 stars"></label>
+
+                                                                                <input type="radio" id="star1half"
+                                                                                       name="rating" value="3"/>
+                                                                                <label for="star1half" class="half"
+                                                                                       title="1.5 stars"></label>
+
+                                                                                <input type="radio" id="star1"
+                                                                                       name="rating"
+                                                                                       value="2"/>
+                                                                                <label for="star1" class="full"
+                                                                                       title="1 star"></label>
+
+                                                                                <input type="radio" id="starhalf"
+                                                                                       name="rating" value="1"/>
+                                                                                <label for="starhalf" class="half"
+                                                                                       title="0.5 stars"></label>
+                                                                                <p>0 điểm</p>
+                                                                            </fieldset>
+
+                                                                        </div>
                                                                         <div class="form-textarea">
                                                                             <textarea class="textarea-comment"
                                                                                       name="description"
@@ -274,9 +279,9 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('theme/client/js/showtime.js') }}"></script>
+    <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script>
         var movieId = {{ $movie->id }};
     </script>
-<script src="{{ asset('theme/client/js/binhluan.js') }}"></script>
+    <script src="{{ asset('theme/client/js/binhluan.js') }}"></script>
 @endsection

@@ -399,32 +399,7 @@
 
 }
 
-@media (max-width: 768px) {
-    .form-textarea {
-        width: 50%;
-        height: 60px;
-    }
 
-    .button-submit-comment {
-        display: flex;
-        width: 50%;
-        height: 60px;
-        /* Ensures both have the same height */
-        text-align: center;
-        /* Match the parent height */
-        margin: 0;
-        /* Remove margin to avoid extra space */
-    }
-
-    .form-comment {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
-        width: 100%;
-        margin-top: 20px;
-    }
-}
 
 .rating-input {
     display: flex;
@@ -465,14 +440,7 @@
     margin-left: 10px;
 }
 
-.textarea-comment {
-    width: 100%;
-    height: 60px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: none;
-}
+
 
 
 
@@ -541,74 +509,12 @@
 
 
 
-.form-comment {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    width: 100%;
-    margin-top: 20px;
-}
 
-.form-textarea {
-    width: 80%;
-    height: 60px;
-}
-
-.button-submit-comment {
-    display: flex;
-    width: 20%;
-    height: 60px;
-    /* Ensures both have the same height */
-    text-align: center;
-    /* Match the parent height */
-    margin: 0;
-    /* Remove margin to avoid extra space */
-}
-
-.form-textarea textarea {
-    width: 100%;
-    height: 100%;
-    /* Match the parent height */
-    font-size: 16px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    /* Rounded corners on the left side */
-    resize: none;
-    box-sizing: border-box;
-    /* Ensure padding is included in width */
-    margin: 0;
-    /* Remove margin to avoid extra space */
-}
 
 .title-movie-detail {
     margin: 20px auto 10px auto;
 }
 
-
-.submit-review {
-    background-color: #2e2e2e;
-    color: #d9d097;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    /* Rounded corners on the right side */
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    /* Ensure the button matches the height of the container */
-    box-sizing: border-box;
-    /* Ensure padding is included in width */
-    margin: 0;
-    /* Remove margin to avoid extra space */
-}
-
-.submit-review:hover {
-    background-color: #252525;
-}
 
 
 /* Css trang thanh toán checkout */
@@ -1375,9 +1281,9 @@
 
 
 /* css cho header trang chủ home */
- 
+
 .header .img-logo img {
-    
+
     width: 184px;
     height: 40px;
 }
