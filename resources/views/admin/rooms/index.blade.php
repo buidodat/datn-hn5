@@ -122,14 +122,14 @@
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
+                            <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
                                 aria-selected="true">
                                 Tất cả
                                 <span class="badge bg-dark align-middle ms-1">{{ $rooms->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
+                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
                                 aria-selected="false">
                                 Đã xuất bản
                                 <span class="badge bg-success align-middle ms-1">{{ $roomPublishs->count() }}</span>
@@ -153,7 +153,7 @@
 
                     </ul>
                     <div class="card-body tab-content ">
-                        <div class="tab-pane active" id="allRoom" role="tabpanel">
+                        <div class="tab-pane " id="allRoom" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllRoom">
                                 <thead class='table-light'>
                                     <tr>
@@ -162,23 +162,31 @@
                                         <th>Rạp chiếu</th>
                                         <th>Loại Phòng</th>
                                         <th>Sức chứa</th>
-                                        <th>Xuất bản</th>
+                                        <th>Trạng thái</th>
                                         <th>Hoạt động</th>
-                                        <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($rooms as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
-                                            <td>{{ $room->name }}</td>
+                                            <td>
+                                                <div class='room-name'>
+                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
-                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                                    ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
@@ -188,17 +196,6 @@
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
                                                 </div>
                                             </td>
-
-                                            <td>
-                                                <a href="{{ route('admin.rooms.show', $room) }}">
-                                                    <button title="xem" class="btn btn-success btn-sm"
-                                                        type="button"><i class="fas fa-eye"></i></button>
-                                                </a>
-                                                <a href="{{ route('admin.rooms.edit', $room) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm "
-                                                        type="button"><i class="fas fa-edit"></i></button>
-                                                </a>
-                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -207,7 +204,7 @@
                         </div>
 
 
-                        <div class="tab-pane " id="isPublish" role="tabpanel">
+                        <div class="tab-pane active " id="isPublish" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100"
                                 id="tableIsPublish">
                                 <thead class='table-light'>
@@ -217,23 +214,31 @@
                                         <th>Rạp chiếu</th>
                                         <th>Loại Phòng</th>
                                         <th>Sức chứa</th>
-                                        <th>Xuất bản</th>
+                                        <th>Trạng thái</th>
                                         <th>Hoạt động</th>
-                                        <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($roomPublishs as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
-                                            <td>{{ $room->name }}</td>
+                                            <td>
+                                                <div class='room-name'>
+                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
-                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                                    ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
@@ -242,17 +247,6 @@
                                                         @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
                                                 </div>
-                                            </td>
-
-                                            <td>
-                                                <a href="{{ route('admin.rooms.show', $room) }}">
-                                                    <button title="xem" class="btn btn-success btn-sm"
-                                                        type="button"><i class="fas fa-eye"></i></button>
-                                                </a>
-                                                <a href="{{ route('admin.rooms.edit', $room) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm "
-                                                        type="button"><i class="fas fa-edit"></i></button>
-                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -270,23 +264,31 @@
                                         <th>Rạp chiếu</th>
                                         <th>Loại Phòng</th>
                                         <th>Sức chứa</th>
-                                        <th>Xuất bản</th>
+                                        <th>Trạng thái</th>
                                         <th>Hoạt động</th>
-                                        <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($roomDrafts as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
-                                            <td>{{ $room->name }}</td>
+                                            <td>
+                                                <div class='room-name'>
+                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
-                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                                    ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
@@ -295,17 +297,6 @@
                                                         @checked($room->is_active)
                                                         disabled>
                                                 </div>
-                                            </td>
-
-                                            <td>
-                                                <a href="{{ route('admin.rooms.show', $room) }}">
-                                                    <button title="xem" class="btn btn-success btn-sm"
-                                                        type="button"><i class="fas fa-eye"></i></button>
-                                                </a>
-                                                <a href="{{ route('admin.rooms.edit', $room) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm "
-                                                        type="button"><i class="fas fa-edit"></i></button>
-                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -321,24 +312,35 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Phòng chiếu</th>
+                                            <th>Rạp chiếu</th>
                                             <th>Loại Phòng</th>
                                             <th>Sức chứa</th>
-                                            <th>Xuất bản</th>
+                                            <th>Trạng thái</th>
                                             <th>Hoạt động</th>
-                                            <th>Chức năng</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($cinema->rooms as $index => $room)
                                             <tr>
                                                 <td>{{ $room->id }}</td>
-                                                <td>{{ $room->name }}</td>
+                                                <td>
+                                                <div class='room-name'>
+                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1" href="{{ route('admin.rooms.edit',$room) }}">Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.edit',$room) }}">Sơ đồ ghế</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
-                                                <td>{{ $room->seats->count() }} chỗ ngồi</td>
+                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                                 <td>
                                                     {!! $room->is_publish == 1
-                                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                                        ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                        : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                                 </td>
                                                 <td>
                                                 <div class="form-check form-switch form-switch-success">
@@ -349,16 +351,6 @@
                                                 </div>
                                             </td>
 
-                                                <td>
-                                                    <a href="{{ route('admin.rooms.show', $room) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm"
-                                                            type="button"><i class="fas fa-eye"></i></button>
-                                                    </a>
-                                                    <a href="{{ route('admin.rooms.edit', $room) }}">
-                                                        <button title="xem" class="btn btn-warning btn-sm "
-                                                            type="button"><i class="fas fa-edit"></i></button>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         @endforeach
 
