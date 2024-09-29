@@ -422,8 +422,12 @@
                                 </div>
 
                                 <div class="total-price-choose-seat float_left">
-                                    <form action="">
+                                    {{-- <form action="">
                                         <button type="submit">Tiếp tục</button>
+                                    </form> --}}
+                                    <form action="{{url('vnpay-payment')}}" method="POST">
+                                        @csrf
+                                        <button type="submit" name="redirect" >Thanh toán VNPAY</button>
                                     </form>
                                 </div>
 
