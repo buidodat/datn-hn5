@@ -66,13 +66,23 @@
   .resset-password:hover{
     color:rgb(231, 2, 2)
   }
+  
   .box-item {
     width: 35px;
     height: 35px;
   }
+  .seat-item{
+    cursor: pointer;
+  }
+  .seat-item img{
+    -webkit-user-drag: none; /* Ngăn người dùng kéo hình ảnh trong trình duyệt WebKit (Chrome, Safari) */
+    -webkit-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên trình duyệt WebKit (Chrome, Safari) */
+    -moz-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên Firefox */
+    -ms-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên trình duyệt Internet Explorer và Edge */
+    user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên các trình duyệt hỗ trợ chuẩn */
+  }
 
-
-.box-item img {
+.box-item-seat img {
     -webkit-user-drag: none; /* Ngăn người dùng kéo hình ảnh trong trình duyệt WebKit (Chrome, Safari) */
     -webkit-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên trình duyệt WebKit (Chrome, Safari) */
     -moz-user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên Firefox */
@@ -80,7 +90,7 @@
     user-select: none; /* Ngăn người dùng chọn và sao chép hình ảnh trên các trình duyệt hỗ trợ chuẩn */
 }
 
-.box-item {
+.box-item-seat {
     cursor: pointer; /* Hiển thị con trỏ dạng tay khi hover */
 }
 .light-orange {

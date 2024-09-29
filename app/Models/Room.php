@@ -35,6 +35,8 @@ class Room extends Model
         ['id'=>3,'name'=>'14x14','max_row'=>14,'max_col'=>14],
         ['id'=>4,'name'=>'15x15','max_row'=>15,'max_col'=>15]
     ];
+    const SCOPE_REGULAR = ['min'=>3,'default'=>4,'max'=>5];
+    const SCOPE_DOUBLE = ['min'=>0,'default'=>0,'max'=>2];
     const ROW_SEAT_REGULAR = 4;
     const ROW_SEAT_DOUBLE = 0;
     const MAX_ROW = 15;

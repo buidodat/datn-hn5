@@ -20,13 +20,13 @@ class RoomController extends Controller
             'type_room_id' => 'required|exists:type_rooms,id',
             'name' => 'required|string|max:255',
             'matrix_id' => 'required|integer',
-        ],[
+        ], [
             'name.required' => 'Vui lòng nhập tên phòng chiếu.',
             'name.unique' => 'Tên phòng đã tồn tại trong rạp.',
             'branch_id.required' => "Vui lòng chọn chi nhánh.",
             'cinema_id.required' => "Vui lòng chọn rạp chiếu.",
             'type_room_id.required' => "Vui lòng chọn loại phòng.",
-            'matrix_id.required' =>"Vui lòng chọn ma trận ghế"
+            'matrix_id.required' => "Vui lòng chọn ma trận ghế"
         ]);
 
         if ($validator->fails()) {
@@ -36,7 +36,7 @@ class RoomController extends Controller
         }
 
         try {
-            $room = DB::transaction(function () use($request) {
+            $room = DB::transaction(function () use ($request) {
                 $dataRoom = [
                     'branch_id' => $request->branch_id,
                     'cinema_id' => $request->cinema_id,
@@ -54,11 +54,11 @@ class RoomController extends Controller
                 $rowSeatDouble =  Room::ROW_SEAT_DOUBLE;
 
 
-                for ($row=0; $row <$matrix['max_row']  ; $row++) {
-                    for ($col=0; $col <$matrix['max_col'] ; $col++) {
-                        if($row < $rowSeatRegular){
+                for ($row = 0; $row < $matrix['max_row']; $row++) {
+                    for ($col = 0; $col < $matrix['max_col']; $col++) {
+                        if ($row < $rowSeatRegular) {
                             $typeSeatId = 1;
-                        }else{
+                        } else {
                             $typeSeatId = 2;
                         }
                         $dataSeats[] = [
@@ -73,7 +73,6 @@ class RoomController extends Controller
                 Seat::insert($dataSeats);
 
                 return $room;
-
             });
 
 
@@ -97,5 +96,18 @@ class RoomController extends Controller
         }
 
         return $letters;
+    }
+    public function updateStatus(Request $request)
+    {
+        try {
+            $room = Room::findOrFail($request->id);
+
+            $room->is_active = $request->is_active;
+            $room->save();
+
+            return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
+        }
     }
 }
