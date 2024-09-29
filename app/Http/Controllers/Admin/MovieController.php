@@ -94,13 +94,10 @@ class MovieController extends Controller
         $movieReviews = $movie->movieReview()->get();
         $totalReviews = $movieReviews->count();
         $averageRating = $totalReviews > 0 ? $movieReviews->avg('rating') : 0;
-        $starCounts = [
-            5 => $movieReviews->where('rating', 5)->count(),
-            4 => $movieReviews->where('rating', 4)->count(),
-            3 => $movieReviews->where('rating', 3)->count(),
-            2 => $movieReviews->where('rating', 2)->count(),
-            1 => $movieReviews->where('rating', 1)->count(),
-        ];
+        $starCounts = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $starCounts[$i] = $movieReviews->where('rating', $i)->count();
+        }
 
         return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions','movieReviews','totalReviews','averageRating','starCounts']));
 

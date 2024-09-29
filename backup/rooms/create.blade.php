@@ -52,12 +52,28 @@
                             <div class="row gy-4">
                                 <div class="col-md-12">
                                     <div class="row ">
-                                        <div class="col-md-12 mb-3">
+                                        <div class="col-md-8 mb-3">
                                             <span class='text-danger'>*</span>
                                             <label for="name" class="form-label ">Tên phòng chiếu:</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Poly Cinema 01">
                                             @error('name')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
+                                            <select name="type_room_id" id="" class="form-select">
+
+                                                @foreach ($typeRooms as $id => $name)
+                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id)>
+                                                        {{ $name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('type_room_id')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
@@ -95,15 +111,14 @@
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <span class='text-danger'>*</span>
-                                            <label for="surcharge" class="form-label ">Loại phòng chiếu:</label>
-                                            <select name="type_room_id" id="" class="form-select">
-                                                <option value="">Chọn loại phòng chiếu</option>
-                                                @foreach ($typeRooms as $id => $name)
-                                                    <option value="{{ $id }}" @selected(old('type_room_id') == $id)>
-                                                        {{ $name }}</option>
+                                            <label for="surcharge" class="form-label ">Ma trận ghế:</label>
+                                            <select name="matrix_id" id="" class="form-select">
+                                                @foreach (App\Models\Room::MATRIXS as $matrix)
+                                                    <option value="{{ $matrix['id'] }}" @selected(old('matrix_id') == $matrix['id'])>
+                                                        {{ $matrix['name'] }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('type_room_id')
+                                            @error('matrix_id')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
@@ -216,7 +231,7 @@
                                         </td>
                                     </tr>
                                 @endfor
-                                
+
                             </tbody>
                         </table>
 
@@ -286,8 +301,9 @@
 
 
 @section('script-libs')
-<script>
-     document.querySelectorAll('.box-item-seat').forEach(function(seat) {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.querySelectorAll('.box-item-seat').forEach(function(seat) {
             // Lưu trữ nội dung ban đầu của .box-item-seat-selected
             let originalContent = seat.querySelector('.box-item-seat-selected').innerHTML;
 
@@ -305,8 +321,8 @@
                 }
             });
         });
-</script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </script>
+
     <script>
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ Laravel
@@ -346,7 +362,6 @@
 
             }
         });
-
-
     </script>
+
 @endsection

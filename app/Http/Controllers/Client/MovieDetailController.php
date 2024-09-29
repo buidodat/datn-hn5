@@ -34,10 +34,8 @@ class MovieDetailController extends Controller
     }
     public function addReview(Request $request, string $slug)
     {
-        //dd($request->all());
-
         $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
+            'rating' => 'required|integer|min:1|max:10',
             'description' => 'required|string|max:220',
         ]);
 
