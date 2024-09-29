@@ -11,7 +11,7 @@
                     Bản quyền ©
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> của Poly Cenimas
+                    </script> của Poly Cinemas
                 </div>
             </div>
         </div>
