@@ -126,9 +126,9 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>Sơn gà</td>
+                                            <td>An gà</td>
                                             {{-- <td>0987654321</td> --}}
-                                            <td>songa123@fpt.edu.vn</td>
+                                            <td>anga123@fpt.edu.vn</td>
                                         </tr>
                                         </tbody>
                                     </table>

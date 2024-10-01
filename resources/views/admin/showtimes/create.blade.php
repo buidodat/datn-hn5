@@ -137,51 +137,58 @@
                                             </div>
                                         @enderror
                                     </div>
-
                                 </div>
-                                {{-- <input type="text" name="type_room_id" id="type_room_id" value=""> --}}
-
 
 
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <span class='text-danger'>*</span>
-                                    <label for="date" class="form-label ">Ngày chiếu:</label>
-                                    <input type="date" class="form-control" name="date" id="date"
-                                        value="{{ old('date') }}">
-                                    @error('date')
-                                        <div class='mt-1'>
-                                            <span class="text-danger">{{ $message }}</span>
-                                        </div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4">
-                                    <span class='text-danger'>*</span>
-                                    <label for="start_time" class="form-label ">Giờ chiếu:</label>
-                                    <input type="time" class="form-control" name="start_time" id="start_time"
-                                        value="{{ old('start_time') }}">
-                                    @error('start_time')
-                                        <div class='mt-1'>
-                                            <span class="text-danger">{{ $message }}</span>
-                                        </div>
-                                    @enderror
-                                </div>
-                                {{-- <input type="checkbox" > --}}
-                                {{-- <div class="col-md-4">
-                                    <button type="button">Thêm mới</button>
-                                </div> --}}
-                                <div class="col-md-4">
-                                    <span class='text-danger'>*</span>
-                                    <label for="end_time" class="form-label ">Giờ kết thúc:</label>
-                                    <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ old('end_time') }}" readonly>
-                                    @error('end_time')
-                                        <div class='mt-1'>
-                                            <span class="text-danger">{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                            <div class="row mb-3">
+                                <div class="col-md-12 d-flex justify-content-between">
+                                    <label for="" class="form-label"></label>
+                                    <button type="button" class="btn btn-primary" onclick="addShowtime()">Thêm giờ
+                                        chiếu</button>
 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="showtime-container">
+                                    <div class="row showtime-row">
+                                        <div class="col-md-4">
+                                            <span class='text-danger'>*</span>
+                                            <label for="date" class="form-label ">Ngày chiếu:</label>
+                                            <input type="date" class="form-control" name="date" id="date"
+                                                value="{{ old('date') }}">
+                                            @error('date')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="start_time" class="form-label ">Giờ chiếu:</label>
+                                            <input type="time" class="form-control" name="start_time[]"
+                                                id="start_time" value="{{ old('start_time') }}">
+                                            @error('start_time')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        {{-- <input type="checkbox" > --}}
+
+                                        <div class="col-md-4">
+                                            <label for="end_time" class="form-label ">Giờ kết thúc:</label>
+                                            <input type="time" class="form-control" name="end_time[]" id="end_time"
+                                                value="{{ old('end_time') }}" readonly>
+                                            @error('end_time')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -190,9 +197,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="row">
-                    <div class="col-md-12">
 
-                    </div>
 
                     <div class="col-md-12">
                         <div class="card">
@@ -209,9 +214,30 @@
                                     </div>
 
                                 </div>
+                                <div class="row">
+                                    <label for="">Giờ chiếu đang có:</label>
+                                    <table class=" table table-bordered dt-responsive nowrap align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Thời gian</th>
+                                                <th>Phòng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <tr>
+                                                    <td>12:00 - 14:00</td>
+                                                    <td>Poly 01</td>
+                                                </tr>
+                                            @endfor
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -312,14 +338,12 @@
 
             });
 
-          
+
 
             if (selectedCinemaId) {
                 $('#cinema').val(selectedCinemaId).trigger('change');
             }
         });
-
-
 
 
 
@@ -392,6 +416,7 @@
 
 
             // Chức năng cập nhật thời gian kết thúc dựa trên thời lượng phim và thời gian bắt đầu
+   
             function updateEndTime(duration) {
                 const startTime = document.getElementById('start_time').value;
                 if (startTime && duration) {
@@ -399,20 +424,53 @@
                     let startTimeDate = new Date();
                     startTimeDate.setHours(parseInt(hours), parseInt(minutes));
 
-                    // Thêm thời lg phim và thời gian dọn dẹp (15 phút)
+                    // Thêm thời lượng phim và thời gian dọn phòng (15 phút)
                     let totalMinutes = duration + cleaningTime;
                     startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
 
-                    // Lấy thời gian kết thúc được định dạng
-                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');
-                    let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
-                    const endTime = `${endHours}:${endMinutes}`;
+                    // Làm tròn phút tới bội số của 5
+                    let endMinutes = startTimeDate.getMinutes();
+                    let roundedMinutes = Math.ceil(endMinutes / 5) * 5; // Làm tròn lên tới bội số của 5
+                    startTimeDate.setMinutes(roundedMinutes);
 
-                    // Gán vào ô thời gian kết thúc
+                    // Lấy thời gian kết thúc đã được làm tròn
+                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');
+                    let endMinutesFinal = String(startTimeDate.getMinutes()).padStart(2, '0');
+                    const endTime = `${endHours}:${endMinutesFinal}`;
+
+                    // Gán giá trị end_time đã làm tròn vào ô input
                     document.getElementById('end_time').value = endTime;
                 }
             }
-
         });
+
+
+        function addShowtime() {
+            // Tạo phần tử HTML mới cho row giờ chiếu
+            var newRow = document.createElement('div');
+            newRow.classList.add('row', 'showtime-row');
+
+            newRow.innerHTML = `
+                <div class="col-md-4 mt-4" align='right'>
+                    <button type="button" class="btn btn-danger remove-btn delete-showtime">
+                        <span class="bx bx-trash"></span>
+                    </button>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <span class='text-danger'>*</span>
+                    <label for="start_time" class="form-label">Giờ chiếu:</label>
+                    <input type="time" class="form-control" name="start_time[]" value="">
+                </div>
+                <div class="col-md-4">
+                    <span class='text-danger'>*</span>
+                    <label for="end_time" class="form-label">Giờ kết thúc:</label>
+                    <input type="time" class="form-control" name="end_time[]" readonly value="">
+                </div>
+            `;
+
+            // Thêm row mới vào container
+            document.getElementById('showtime-container').appendChild(newRow);
+        }
     </script>
 @endsection
