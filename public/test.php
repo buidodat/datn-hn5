@@ -294,7 +294,7 @@
                 <h2 class="cinema-title">Rạp Poly Mỹ Đình</h2>
 
                 <!-- Date Picker -->
-                <div class="listMovieScrening-date">
+                <div class="listMovieScrening-date" id="listMovieScrening-date">
                     <div data-day="day250" class="movieScrening-date-item active">23/09 - T2</div>
                     <div data-day="day251" class="movieScrening-date-item">24/09 - T3</div>
                     <div data-day="day252" class="movieScrening-date-item">25/09 - T4</div>
