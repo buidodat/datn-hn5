@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Choose Seat
+    Chọn ghế
 @endsection
 
 @section('content')
@@ -228,7 +228,7 @@
                                             <div>
                                                 <h3>{{ $showtime->movie->name }}</h3>
                                                 <br>
-                                                <p>{{ $showtime->movieVersion->name }}</p>
+                                                <p>{{ $showtime->format }}</p>
                                             </div>
 
                                         </li>
@@ -238,9 +238,9 @@
                                         <hr>
                                         <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                         </li>
-                                        <li> Ngày chiếu: <span class="bold">{{ $showtime->movie->release_date }}</span>
+                                        <li> Ngày chiếu: <span class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
                                         </li>
-                                        <li> Giờ chiếu: <span class="bold">{{ $showtime->start_time }}</span></li>
+                                        <li> Giờ chiếu: <span class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span></li>
                                         <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span></li>
                                         <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
                                         {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
