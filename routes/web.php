@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
 use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
+use App\Http\Controllers\Client\PaymentController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -39,6 +40,9 @@ Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-
 Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
 Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
 
+// lịch chiếu theo rạp
+Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
+
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
 
 Route::get('login', function () {
@@ -54,8 +58,8 @@ Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit
 Route::put('/my-account/update', [UserController::class,'update'])->name('my-account.update');
 Route::put('my-account/changePassword', [UserController::class,'changePassword'])->name('my-account.changePassword');
 
-// User - Hành trình điện ảnh
-Route::get('cinema-journey', [UserController::class, 'showCinemaJourney'])->name('cinema-journey.showCinemaJourney');
+// // User - Hành trình điện ảnh
+// Route::get('cinema-journey', [UserController::class, 'showCinemaJourney'])->name('cinema-journey.showCinemaJourney');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
@@ -67,8 +71,6 @@ Route::get('forgot-password', function () {
     return view('client.forgot-password');
 })->name('forgot-password');
 
-// lịch chiếu theo rạp
-Route::get('showtimes', [ShowtimeController::class, 'showWeekDays'])->name('showtimes');
 
 // Contact
 Route::get('contact', function () {
@@ -101,5 +103,7 @@ Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 
 Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
 
-
+// Cổng thanh toán
+//1 VNPAY
+Route::post('vnpay-payment', [PaymentController::class, 'vnpayPayment']);
 

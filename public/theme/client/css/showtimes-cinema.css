@@ -9,7 +9,7 @@ hr {
     /* Chiều rộng của hr */
 }
 
-.top-bot{
+.top-bot {
     margin-bottom: 30px;
     margin-top: 17px;
 }
@@ -109,4 +109,17 @@ hr {
 /* Khi button được chọn */
 .showtime-btn.selected {
     color: red;
+}
+
+.showtime-bot {
+    margin-bottom: 20px
+}
+
+.div-1 {
+    margin: 130px 0px 170px 0px;
+}
+
+.p-1 {
+    text-align: center;
+    font-size: 30px;
 }
