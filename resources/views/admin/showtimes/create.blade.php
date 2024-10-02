@@ -197,66 +197,65 @@
                 </div>
             </div>
             <div class="col-lg-3">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="form-check-label" for="is_active">Is Active</label>
+                            <div class="form-check form-switch form-switch-default">
+                                <input class="form-check-input" type="checkbox" role="" name="is_active" checked>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
-
-
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
-                                <div class="row">
-                                    <label for="">Giờ chiếu đang có:</label>
-                                    <table class=" table table-bordered dt-responsive nowrap align-middle">
-                                        <thead>
+                                <label for="">Giờ chiếu đang có:</label>
+                                <table class="table table-bordered dt-responsive nowrap align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Phòng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for ($i = 0; $i < 3; $i++)
                                             <tr>
-                                                <th>Thời gian</th>
-                                                <th>Phòng</th>
+                                                <td>12:00 - 14:00</td>
+                                                <td>Poly 01</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for ($i = 0; $i < 3; $i++)
-                                                <tr>
-                                                    <td>12:00 - 14:00</td>
-                                                    <td>Poly 01</td>
-                                                </tr>
-                                            @endfor
+                                        @endfor
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
 
 
+
                 </div>
+
+                <!--end col-->
             </div>
-            <!--end col-->
-        </div>
 
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header align-items-center d-flex">
+                            <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
+                            <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                        </div>
                     </div>
                 </div>
+                <!--end col-->
             </div>
-            <!--end col-->
-        </div>
     </form>
 @endsection
 
