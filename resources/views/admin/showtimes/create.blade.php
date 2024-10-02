@@ -321,14 +321,18 @@
                         success: function(data) {
                             // console.log(data);
                             $.each(data, function(index, room) {
+
+                                console.log(room);
+                                const roomCapacity = room.total_seats;
+
                                 roomSelect.append('<option value="' + room.id +
                                     '" >' + room.name + ' - ' + room
-                                    .type_room_name + ' - ' + room.capacity +
+                                    .type_room_name + ' - ' + roomCapacity +
                                     ' ghế </option>');
 
 
                             });
-
+                            //
                             if (selectedRoomId) {
                                 roomSelect.val(selectedRoomId);
                                 selectedRoomId = false;
@@ -401,7 +405,7 @@
                                 movieDuration = parseInt(data.duration); // Lưu lại thời lượng
                                 updateAllEndTimes(
                                     movieDuration
-                                    ); // Cập nhật tất cả giờ kết thúc
+                                ); // Cập nhật tất cả giờ kết thúc
                             }
                         }
                     });
@@ -412,26 +416,28 @@
             $(document).on('change', 'input[name="start_time[]"]', function() {
                 const row = $(this).closest('.showtime-row'); // Lấy hàng hiện tại
                 const startTime = $(this).val();
-                updateEndTimeForRow(row, movieDuration, startTime); // Cập nhật lại end-time cho hàng hiện tại
+                updateEndTimeForRow(row, movieDuration,
+                    startTime); // Cập nhật lại end-time cho hàng hiện tại
             });
 
             // Hàm cập nhật end-time dựa trên thời lượng phim và thời gian bắt đầu cho hàng đấy
             function updateEndTimeForRow(row, duration, startTime) {
                 if (startTime && duration) {
-                    let [hours, minutes] = startTime.split(':');            //cắt dạng giờ : phút
+                    let [hours, minutes] = startTime.split(':'); //cắt dạng giờ : phút
                     let startTimeDate = new Date();
-                    startTimeDate.setHours(parseInt(hours), parseInt(minutes));             //parseInt: địh dạng số nguyên
+                    startTimeDate.setHours(parseInt(hours), parseInt(minutes)); //parseInt: địh dạng số nguyên
 
                     let totalMinutes = duration + cleaningTime;
                     startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
 
                     // Lấy thời gian kết thúc được định dạng
-                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');       //padStart: nếu chuỗi ngắn hơn 2 ký tự, vd: 9:2 => 09:02
+                    let endHours = String(startTimeDate.getHours()).padStart(2,
+                        '0'); //padStart: nếu chuỗi ngắn hơn 2 ký tự, vd: 9:2 => 09:02
                     let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
                     const endTime = `${endHours}:${endMinutes}`;
 
                     // Gán giá trị end_time vào ô input
-                    row.find('input[name="end_time[]"]').val(endTime);          //tìm đến hàng hiện tại để cập nhật end-time
+                    row.find('input[name="end_time[]"]').val(endTime); //tìm đến hàng hiện tại để cập nhật end-time
                 }
             }
 
@@ -468,7 +474,7 @@
             $('#showtime-container').append(newRow); // Thêm suất chiếu vào giao diện
         }
 
-      
+
         $(document).on('click', '.delete-showtime', function() {
             $(this).closest('.showtime-row').remove();
         });

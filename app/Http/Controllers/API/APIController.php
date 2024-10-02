@@ -8,6 +8,8 @@ use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class APIController extends Controller
 {
@@ -23,9 +25,11 @@ class APIController extends Controller
     public function getRooms($cinemaId)
     {
         $rooms = Room::where('cinema_id', $cinemaId)
-            ->where('is_active', '1')
+            ->where('rooms.is_active', '1')
             ->join('type_rooms', 'type_rooms.id', '=', 'rooms.type_room_id') // Join bảng type_rooms
-            ->select('rooms.*', 'type_rooms.name as type_room_name') // Lấy cột name từ bảng type_rooms
+            ->leftJoin('seats', 'seats.room_id', '=', 'rooms.id') // Join bảng seats để đếm số lượng ghế
+            ->select('rooms.*', 'type_rooms.name as type_room_name', DB::raw('COUNT(seats.id) as total_seats')) // Đếm số ghế
+            ->groupBy('rooms.id') // Nhóm theo id của rooms để đếm chính xác
             ->get();
 
         return response()->json($rooms);
