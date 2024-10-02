@@ -181,7 +181,7 @@
                                                 </div>
                                                 <div>
                                                     <p>Thời gian còn lại:</p>
-                                                    <p class="bold">9:55</p>
+                                                    <p id="timer" class="bold">10:00</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,6 +255,9 @@
 
                                 <div class="total-price-choose-seat float_left">
                                     <form action="{{ route('checkout') }}">
+                                        {{-- @csrf --}}
+                                        {{-- <input type="hidden" name="selected_seats" id="hidden-selected-seats"> --}}
+                                        {{-- <input type="hidden" name="total_price" value="190000">  <!-- Ví dụ --> --}}
                                         <button type="submit">Tiếp tục</button>
                                     </form>
                                 </div>
@@ -270,48 +273,104 @@
 @endsection
 
 @section('scripts')
-    {{-- <script>
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
+        //     const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
+        //     let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
+
+        //     seats.forEach(seat => {
+        //         seat.addEventListener('click', () => {
+        //             const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
+
+        //             // Kiểm tra ghế có phải đã được đặt hoặc giữ trước không
+        //             if (!seat.classList.contains('reserved') && !seat.classList.contains(
+        //                     'pre-booked')) {
+        //                 seat.classList.toggle('selected'); // Thêm hoặc xóa lớp 'selected'
+
+        //                 if (seat.classList.contains('selected')) {
+        //                     // Thêm tên ghế vào mảng selectedSeats
+        //                     selectedSeats.push(seatLabel);
+        //                 } else {
+        //                     // Xóa tên ghế khỏi mảng selectedSeats
+        //                     selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+        //                 }
+
+        //                 // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
+        //                 selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+        //             }
+        //         });
+        //     });
+        // });
+
         document.addEventListener('DOMContentLoaded', () => {
-            const seats = document.querySelectorAll('.seat');
+            const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
+            const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
+            const submitButton = document.querySelector('form button[type="submit"]'); // Nút "Tiếp tục"
+            let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
 
             seats.forEach(seat => {
                 seat.addEventListener('click', () => {
+                    const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
+
+                    // Kiểm tra ghế có phải đã được đặt hoặc giữ trước không
                     if (!seat.classList.contains('reserved') && !seat.classList.contains(
                             'pre-booked')) {
-                        seat.classList.toggle('selected');
-                    }
-                });
-            });
-        });
-    </script> --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const seats = document.querySelectorAll('.seat');  // Lấy tất cả các ghế
-            const selectedSeatsDisplay = document.getElementById('selected-seats');  // Vị trí hiển thị ghế đã chọn
-            let selectedSeats = [];  // Mảng lưu trữ tên các ghế đã chọn
-    
-            seats.forEach(seat => {
-                seat.addEventListener('click', () => {
-                    const seatLabel = seat.querySelector('.seat-label').textContent;  // Lấy tên ghế
-    
-                    // Kiểm tra ghế có phải đã được đặt hoặc giữ trước không
-                    if (!seat.classList.contains('reserved') && !seat.classList.contains('pre-booked')) {
-                        seat.classList.toggle('selected');  // Thêm hoặc xóa lớp 'selected'
-    
+                        seat.classList.toggle('selected'); // Thêm hoặc xóa lớp 'selected'
+
                         if (seat.classList.contains('selected')) {
-                            // Thêm tên ghế vào mảng selectedSeats
-                            selectedSeats.push(seatLabel);
+                            if (selectedSeats.length < 8) {
+                                // Thêm tên ghế vào mảng selectedSeats nếu số ghế đã chọn dưới 8
+                                selectedSeats.push(seatLabel);
+                            } else {
+                                // Nếu đã chọn 8 ghế, không cho chọn thêm và hiện cảnh báo
+                                seat.classList.remove('selected');
+                                alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                            }
                         } else {
                             // Xóa tên ghế khỏi mảng selectedSeats
                             selectedSeats = selectedSeats.filter(s => s !== seatLabel);
                         }
-    
+
                         // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
                         selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                     }
                 });
             });
+
+            // Kiểm tra khi người dùng bấm nút "Tiếp tục"
+            submitButton.addEventListener('click', (event) => {
+                if (selectedSeats.length > 8) {
+                    event.preventDefault(); // Ngăn không cho form gửi đi
+                    alert('Bạn chỉ được chọn tối đa 8 ghế!'); // Hiển thị thông báo
+                }
+            });
         });
+
+        // Thời gian đếm ngược (10 phút = 600 giây)
+        let timeLeft = 600; // 600 giây tương đương 10 phút
+        const timerElement = document.getElementById('timer');
+
+        // Hàm đếm ngược thời gian
+        const countdown = setInterval(() => {
+            // Tính số phút và giây còn lại
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            // Hiển thị thời gian còn lại ở định dạng mm:ss
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+            // Giảm thời gian còn lại
+            timeLeft--;
+
+            // Khi thời gian kết thúc (hết 0 giây)
+            if (timeLeft < 0) {
+                clearInterval(countdown); // Dừng đếm ngược
+
+                // Hiển thị thông báo và quay về trang chủ
+                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                window.location.href = '/'; // Điều hướng về trang chủ ("/")
+            }
+        }, 1000); // Cập nhật mỗi giây
     </script>
-    
 @endsection
