@@ -60,46 +60,37 @@ class ShowtimeController extends Controller
     }
 
 
-     //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
+    //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
     public function store(StoreShowtimeRequest $request)
     {
         try {
-           
-            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
-
-            $movie = Movie::find($request->movie_id);
-            $movieDuration = $movie ? $movie->duration : 0;
-
-            $cleaningTime = Showtime::CLEANINGTIME;
-
-            // Tính end_time: cộng thời lượng phim và thời gian dọn phòng vào start_time
-            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
-
-
             $movieVersion = MovieVersion::find($request->movie_version_id);
             $room = Room::find($request->room_id);
             $typeRoom = TypeRoom::find($room->type_room_id);
+            $movie = Movie::find($request->movie_id);
+            $movieDuration = $movie ? $movie->duration : 0;
+            $cleaningTime = Showtime::CLEANINGTIME;
 
-            $dates = $request->date; // Mảng chứa các ngày chiếu
-            $startTimes = $request->start_time; // Mảng chứa các giờ chiếu
-            $endTimes = $request->end_time; 
+            //Lặp qua tất cả start-time
+            foreach ($request->start_time as $i => $startTimeChild) {
 
-            // Lưu dữ liệu Suất chiếu
-            $dataShowtimes = [
-                'cinema_id' => $request->cinema_id,
-                'room_id' => $request->room_id,
-                'format' => $typeRoom->name . ' ' . $movieVersion->name,       
-                'movie_version_id' => $request->movie_version_id,
-                'movie_id' => $request->movie_id,
-                'date' => $request->date,
-                'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
-                'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
-                'is_active' => isset($request->is_active) ? 1 : 0,
-            ];
+                $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
+                $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-            Showtime::create($dataShowtimes);
+                $dataShowtimes = [
+                    'cinema_id' => $request->cinema_id,
+                    'room_id' => $request->room_id,
+                    'format' => $typeRoom->name . ' ' . $movieVersion->name,
+                    'movie_version_id' => $request->movie_version_id,
+                    'movie_id' => $request->movie_id,
+                    'date' => $request->date,
+                    'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
+                    'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
+                    'is_active' => isset($request->is_active) ? 1 : 0,
+                ];
 
-
+                Showtime::create($dataShowtimes);
+            }
 
             return redirect()
                 ->route('admin.showtimes.index')
