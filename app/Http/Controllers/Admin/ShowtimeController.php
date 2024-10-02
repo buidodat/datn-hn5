@@ -14,6 +14,7 @@ use App\Models\Showtime;
 use App\Models\TypeRoom;
 use Illuminate\Http\Request;
 
+
 class ShowtimeController extends Controller
 {
     /**
@@ -83,7 +84,7 @@ class ShowtimeController extends Controller
             $dataShowtimes = [
                 'cinema_id' => $request->cinema_id,
                 'room_id' => $request->room_id,
-                'format' => $typeRoom->name . ' ' . $movieVersion->name,       
+                'format' => $typeRoom->name . ' ' . $movieVersion->name,
                 'movie_version_id' => $request->movie_version_id,
                 'movie_id' => $request->movie_id,
                 'date' => $request->date,
@@ -111,7 +112,9 @@ class ShowtimeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $showtimes = Showtime::with(['room.cinema','room','movieVersion','movie','seats'])->findOrFail($id);
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes'));
     }
 
     /**
