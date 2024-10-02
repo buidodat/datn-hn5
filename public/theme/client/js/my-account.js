@@ -20,3 +20,12 @@ $(document).ready(function () {
         $("#overlay, #changePasswordForm").hide();
     });
 });
+    $(document).ready(function () {
+        $('.my-account-tab').click(function () {
+            // Xóa class 'my-account-active' khỏi tất cả các tab
+            $('.my-account-tab').removeClass('my-account-active');
+            
+            // Thêm class 'my-account-active' vào tab được nhấn
+            $(this).addClass('my-account-active');
+        });
+    });

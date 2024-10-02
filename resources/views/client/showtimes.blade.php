@@ -61,7 +61,7 @@
                 @endforeach --}}
 
                 @foreach ($dates as $date)
-                    <div class="row" data-day="{{ $date['day_id'] }}" style="{{ $loop->first ? '' : 'display:none;' }}">
+                    <div class="row_content" data-day="{{ $date['day_id'] }}" style="{{ $loop->first ? '' : 'display:none;' }}">
                         <!-- Chỉ hiển thị hàng đầu tiên -->
                         @foreach ($date['showtimes'] as $movieId => $showtimes)
                             @php
@@ -151,13 +151,13 @@
                 const dayId = this.getAttribute('data-day');
 
                 // Ẩn tất cả các hàng lịch chiếu
-                document.querySelectorAll('.row').forEach(row => {
+                document.querySelectorAll('.row_content').forEach(row_content => {
                     // Ẩn tất cả các hàng
-                    row.style.display = 'none';
+                    row_content.style.display = 'none';
                 });
 
                 // Hiển thị lịch chiếu cho ngày đã chọn
-                const selectedRow = document.querySelector(`.row[data-day="${dayId}"]`);
+                const selectedRow = document.querySelector(`.row_content[data-day="${dayId}"]`);
                 if (selectedRow) {
                     selectedRow.style.display = 'block'; // Hiện hàng cho ngày đã chọn
                 }

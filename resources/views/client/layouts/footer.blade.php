@@ -22,8 +22,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="prs_footer_cont1_wrapper prs_footer_cont1_wrapper_1">
-                    <h2>Poly Cenimas</h2>
-
+                    <h2>Poly Cinemas</h2>
                     <ul>
                         <li style="margin-top: 0">
                             <a href="#">
@@ -114,11 +113,10 @@
                         Bản quyền ©
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> của Poly Cenimas
+                        </script> của Poly Cinemas
                     </p>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

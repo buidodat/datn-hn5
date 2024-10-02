@@ -1,7 +1,7 @@
    
    /* Thông tin tài khoản */
    /* ========================================================= */
-   .my-account-container {
+   /* .my-account-container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
@@ -10,7 +10,7 @@
         background-color: white;
         border: 3px solid #ddd;
         border-radius: 8px;
-    }
+    } */
 
     .my-account-tabs {
         display: flex;
@@ -25,6 +25,8 @@
         text-align: center;
         font-weight: bold;
         transition: background-color 0.3s ease;
+        color: black; /* Màu mặc định */
+        background-color: white; /* Nền mặc định */
     }
 
     .my-account-tab.my-account-active {
