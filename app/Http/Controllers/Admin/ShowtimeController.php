@@ -10,9 +10,12 @@ use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
+use App\Models\Seat;
+use App\Models\SeatShowtime;
 use App\Models\Showtime;
 use App\Models\TypeRoom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShowtimeController extends Controller
 {
@@ -60,41 +63,52 @@ class ShowtimeController extends Controller
     }
 
 
+    //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
     public function store(StoreShowtimeRequest $request)
     {
         try {
-            //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
-            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
 
-            $movie = Movie::find($request->movie_id);
-            $movieDuration = $movie ? $movie->duration : 0;
+            DB::transaction(function () use ($request) {
+                $movieVersion = MovieVersion::find($request->movie_version_id);
+                $room = Room::find($request->room_id);
+                $typeRoom = TypeRoom::find($room->type_room_id);
+                $movie = Movie::find($request->movie_id);
+                $movieDuration = $movie ? $movie->duration : 0;
+                $cleaningTime = Showtime::CLEANINGTIME;
 
-            $cleaningTime = Showtime::CLEANINGTIME;
+                //Lặp qua tất cả start-time
+                foreach ($request->start_time as $i => $startTimeChild) {
+                    $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
+                    $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-            // Tính end_time: cộng thời lượng phim và thời gian dọn phòng vào start_time
-            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+                    $dataShowtimes = [
+                        'cinema_id' => $request->cinema_id,
+                        'room_id' => $request->room_id,
+                        'format' => $typeRoom->name . ' ' . $movieVersion->name,
+                        'movie_version_id' => $request->movie_version_id,
+                        'movie_id' => $request->movie_id,
+                        'date' => $request->date,
+                        'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
+                        'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
+                        'is_active' => isset($request->is_active) ? 1 : 0,
+                    ];
 
+                    $showtime = Showtime::create($dataShowtimes);
 
-            $movieVersion = MovieVersion::find($request->movie_version_id);
-            $room = Room::find($request->room_id);
-            $typeRoom = TypeRoom::find($room->type_room_id);
+                    $seats = Seat::where('room_id', $room->id)->get(); // Lấy tất cả ghế trong phòng
 
-            // Lưu dữ liệu Suất chiếu
-            $dataShowtimes = [
-                'cinema_id' => $request->cinema_id,
-                'room_id' => $request->room_id,
-                'format' => $typeRoom->name . ' ' . $movieVersion->name,       
-                'movie_version_id' => $request->movie_version_id,
-                'movie_id' => $request->movie_id,
-                'date' => $request->date,
-                'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
-                'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
-                'is_active' => isset($request->is_active) ? 1 : 0,
-            ];
+                    foreach ($seats as $seat) {
 
-            Showtime::create($dataShowtimes);
+                        $dataSeatShowtime = [
+                            'showtime_id' => $showtime->id,
+                            'seat_id' => $seat->id,
+                            'status' => 'available'
+                        ];
 
-
+                        SeatShowtime::create($dataSeatShowtime);
+                    }
+                }
+            });
 
             return redirect()
                 ->route('admin.showtimes.index')

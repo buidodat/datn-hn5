@@ -453,11 +453,9 @@
             const branchId = document.getElementById('branchId').value;
             const cinemaSelect = document.getElementById('cinemaId');
             cinemaSelect.innerHTML = '<option value="" disabled selected>Chọn rạp chiếu</option>'; // Reset options
-
             if (branchId) {
-                console.log();
-
-                fetch(`http://datn-hn5.me/api/cinemas/${branchId}`)
+                const url = APP_URL + `/api/cinemas/${branchId}`
+                fetch(url)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -487,8 +485,8 @@
             const form = document.getElementById('createRoomForm');
             const formData = new FormData(form);
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
-
-            fetch('http://datn-hn5.me/api/rooms', {
+            const url = APP_URL + `/api/rooms`
+            fetch(url, {
                     method: 'POST',
                     body: formData,
                 })
@@ -508,7 +506,7 @@
                         $('#createRoomModal').modal('hide');
                         form.reset();
                         window.location.href =
-                            `http://datn-hn5.me/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
+                            `${APP_URL}/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
                     }
                 })
                 .catch(error => console.error('Error adding room:', error));
