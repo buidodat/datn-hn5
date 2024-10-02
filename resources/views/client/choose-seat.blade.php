@@ -67,19 +67,22 @@
                                                                                     @if ($seat->type_seat_id == 1)
                                                                                         <span
                                                                                             class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}">
-                                                                                            <span class="seat-label">{{ $seat->name }}</span>
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
                                                                                     @if ($seat->type_seat_id == 2)
                                                                                         <span
                                                                                             class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}">
-                                                                                            <span class="seat-label">{{ $seat->name }}</span>
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
                                                                                     @if ($seat->type_seat_id == 3)
                                                                                         <span
                                                                                             class="game-icons--sofa seat span-seat {{ $seatStatus }}">
-                                                                                            <span class="seat-label">{{ $seat->name }}</span>
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
                                                                                     @endif
                                                                                 @endif
@@ -238,11 +241,14 @@
                                         <hr>
                                         <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                         </li>
-                                        <li> Ngày chiếu: <span class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
+                                        <li> Ngày chiếu: <span
+                                                class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
                                         </li>
-                                        <li> Giờ chiếu: <span class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span></li>
+                                        <li> Giờ chiếu: <span
+                                                class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
+                                        </li>
                                         <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span></li>
-                                        <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
+                                        <li>Ghế ngồi: <span id="selected-seats" class="bold"></span></li>
                                         {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
                                     </ul>
                                 </div>
@@ -260,7 +266,11 @@
             </div>
         </div>
     </div>
-    <script>
+
+@endsection
+
+@section('scripts')
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', () => {
             const seats = document.querySelectorAll('.seat');
 
@@ -273,21 +283,35 @@
                 });
             });
         });
+    </script> --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const seats = document.querySelectorAll('.seat');  // Lấy tất cả các ghế
+            const selectedSeatsDisplay = document.getElementById('selected-seats');  // Vị trí hiển thị ghế đã chọn
+            let selectedSeats = [];  // Mảng lưu trữ tên các ghế đã chọn
+    
+            seats.forEach(seat => {
+                seat.addEventListener('click', () => {
+                    const seatLabel = seat.querySelector('.seat-label').textContent;  // Lấy tên ghế
+    
+                    // Kiểm tra ghế có phải đã được đặt hoặc giữ trước không
+                    if (!seat.classList.contains('reserved') && !seat.classList.contains('pre-booked')) {
+                        seat.classList.toggle('selected');  // Thêm hoặc xóa lớp 'selected'
+    
+                        if (seat.classList.contains('selected')) {
+                            // Thêm tên ghế vào mảng selectedSeats
+                            selectedSeats.push(seatLabel);
+                        } else {
+                            // Xóa tên ghế khỏi mảng selectedSeats
+                            selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+                        }
+    
+                        // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
+                        selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+                    }
+                });
+            });
+        });
     </script>
-@endsection
-
-@section('styles')
-    <style>
-        .available {
-            background-color: green;
-        }
-
-        .reserved {
-            background-color: yellow;
-        }
-
-        .sold {
-            background-color: red;
-        }
-    </style>
+    
 @endsection
