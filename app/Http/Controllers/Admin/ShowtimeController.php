@@ -127,10 +127,11 @@ class ShowtimeController extends Controller
     {
         $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
 
-        $room = $showtime->room;
-        $seats = Seat::withTrashed()->where('room_id', $room->id)->get();
-        $matrix = collect($room::MATRIXS)->firstWhere('id', $room->matrix_id);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix','seats'));
+        $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
+        $matrixSeat = Room::MATRIXS[$matrixKey];
+        $seats = Seat::withTrashed()->where('room_id', $showtime->room->id)->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrixSeat','seats'));
     }
 
     /**

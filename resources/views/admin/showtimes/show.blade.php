@@ -77,18 +77,17 @@
                                             <div class="seat-selection">
                                                 <table class="table-seat">
                                                     <tbody>
-                                                    @for ($row = 0; $row < $matrix['max_row']; $row++)
+                                                    @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                                         <tr>
                                                             {{-- <td class="box-item">
                                                                 {{ chr(65 + $row) }}
                                                             </td> --}}
-                                                            @for ($col = 0; $col < $matrix['max_col']; $col++)
+                                                            @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
                                                                 <td class="row-seat">
                                                                     @foreach ($seats as $seat)
                                                                         @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                                             @php
-                                                                                $seatShowtime = $seat->showtimes->where('id', $showtime->id)->first();
-                                                                                $seatStatus = $seatShowtime ? $seatShowtime->pivot->status : 'lỗi';
+                                                                            $seatStatus = $seat->showtimes->where('id', $showtime->id)->first()->pivot->status;
                                                                             @endphp
 
                                                                             @if ($seat->type_seat_id == 1)
