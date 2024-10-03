@@ -125,7 +125,13 @@ class ShowtimeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
+
+        $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
+        $matrixSeat = Room::MATRIXS[$matrixKey];
+        $seats = Seat::withTrashed()->where('room_id', $showtime->room->id)->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrixSeat','seats'));
     }
 
     /**
