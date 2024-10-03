@@ -41,3 +41,40 @@ CÁC CỔNG THANH TOÁN
     Tên chủ thẻ: NGUYEN VAN A
     Ngày phát hành: 03/07
     Mã OTP: OTP
+3. ZALOPAY
+    1. Thông tin thẻ Visa, Master, JCB
+    Số thẻ:	        4111111111111111
+    Tên:	        NGUYEN VAN A
+    Ngày hết hạn:	01/25
+    Mã CVV:	        123
+    2. Danh sách thẻ ATM (test với bank SBI)
+
+    2.1. Thẻ hợp lệ
+    STT	Số thẻ	            Tên chủ thẻ	    Ngày phát hành
+    1	9704540000000062	NGUYEN VAN A	1018
+    2	9704540000000070	NGUYEN VAN A	1018
+    3	9704540000000088	NGUYEN VAN A	1018
+    4	9704540000000096	NGUYEN VAN A	1018
+    5	9704541000000094	NGUYEN VAN A	1018
+    6	9704541000000078	NGUYEN VAN A	1018
+
+    2.2. Thẻ bị mất/đánh cắp
+    STT	Số thẻ	            Tên chủ thẻ	    Ngày phát hành
+    1	9704540000000013	NGUYEN VAN A	1018
+    2	9704540000000021	NGUYEN VAN A	1018
+    3	9704541000000029	NGUYEN VAN A	1018
+    4	9704541000000052	NGUYEN VAN A	1018
+    5	9704541000000060	NGUYEN VAN A	1018
+    6	9704541000000086	NGUYEN VAN A	1018
+
+    2.3. Thẻ bị timeout
+    STT	Số thẻ	            Tên chủ thẻ	    Ngày phát hành
+    1	9704540000000039	NGUYEN VAN A	1018
+    2	9704541000000037	NGUYEN VAN A	1018
+    3	9704540000000054	NGUYEN VAN A	1018
+
+    2.4. Thẻ hết tiền
+    STT	Số thẻ	            Tên chủ thẻ	    Ngày phát hành
+    1	9704540000000047	NGUYEN VAN A	1018
+    2	9704541000000011	NGUYEN VAN A	1018
+    3	9704541000000045	NGUYEN VAN A	1018
