@@ -264,10 +264,10 @@
                             <div class="card-body ">
 
                                 <div class="row ">
-                                    <div class="col-md-12 mb-3">
+                                    {{-- <div class="col-md-12 mb-3">
                                         <label class="form-label">Trạng thái:</label>
                                         <span class="text-muted">Đã xuất bản</span>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-12 mb-3 d-flex ">
                                         <label class="form-label">Hoạt động:</label>
                                         <span class="text-muted mx-2">
