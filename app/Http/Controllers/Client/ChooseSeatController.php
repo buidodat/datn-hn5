@@ -35,13 +35,13 @@ class ChooseSeatController extends Controller
     {
         // dd($request->all());
 
-         // Lưu thông tin vào session
-    session([
-        'showtime_id' => $request->input('showtimeId'),
-        'seat_ids' => explode(',', $request->input('seatId')), // Chuyển chuỗi ghế thành mảng
-        'selected_seats' => explode(', ', $request->input('selected_seats')), // Chuyển tên ghế thành mảng
-        'total_price_seat' => $request->input('total_price_seat'),
-    ]);
+        // Lưu thông tin vào session
+        session([
+            'showtime_id' => $request->input('showtimeId'),
+            'seat_ids' => explode(',', $request->input('seatId')), // Chuyển chuỗi ghế thành mảng
+            'selected_seats' => explode(', ', $request->input('selected_seats')), // Chuyển tên ghế thành mảng
+            'total_price_seat' => $request->input('total_price_seat'),
+        ]);
 
         return redirect()->route('checkout');
     }

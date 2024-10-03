@@ -19,9 +19,9 @@ class CheckoutController extends Controller
     {
         // Lấy suất chiếu theo ID từ session
         $showtime = Showtime::where('id', session('showtime_id'))->firstOrFail();
-        $seatIds = session('seat_ids');
-        $selectedSeats = session('selected_seats');
-        $totalPrice = session('total_price_seat');
+        // $seatIds = session('seat_ids');
+        // $selectedSeats = session('selected_seats');
+        // $totalPrice = session('total_price_seat');
 
         // In ra dữ liệu để kiểm tra
         // dd($showtime->toArray(), $seatIds, $selectedSeats, $totalPrice);
