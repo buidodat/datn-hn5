@@ -344,201 +344,203 @@
 
 @section('script-libs')
     @if ($room->is_publish == false)
-        {{-- xóa mềm và khôi phục trên 1 ghế --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.box-item-seat').forEach(function(seatElement) {
-                seatElement.addEventListener('click', function() {
-                    const seatId = seatElement.getAttribute('data-seat-id');
-                    const seatType = seatElement.getAttribute('data-seat-type-id');
-                    const seatImg = seatElement.querySelector('img.seat');
+            {{-- xóa mềm và khôi phục trên 1 ghế --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.box-item-seat').forEach(function(seatElement) {
+                    seatElement.addEventListener('click', function() {
+                        const seatId = seatElement.getAttribute('data-seat-id');
+                        const seatType = seatElement.getAttribute('data-seat-type-id');
+                        const seatImg = seatElement.querySelector('img.seat');
 
-                    // Kiểm tra xem ghế đang ở trạng thái xóa mềm hay không
-                    if (seatImg.src.includes('seat-add.svg')) {
-                        // Gửi yêu cầu khôi phục ghế
-                        fetch('{{ route('seats.restore') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    seat_id: seatId
+                        // Kiểm tra xem ghế đang ở trạng thái xóa mềm hay không
+                        if (seatImg.src.includes('seat-add.svg')) {
+                            // Gửi yêu cầu khôi phục ghế
+                            fetch('{{ route('seats.restore') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        seat_id: seatId
+                                    })
                                 })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    // Khôi phục ghế (cập nhật lại hình ảnh)
-                                    if (seatType == 1) {
-                                        seatImg.src = "{{ asset('svg/seat-regular.svg') }}";
-                                    } else {
-                                        seatImg.src = "{{ asset('svg/seat-vip.svg') }}";
-                                    }
-                                    seatImg.style.width = "100%";
-                                } else {
-                                    alert('Thao tác quá nhanh.');
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                    } else {
-                        // Gửi yêu cầu xóa mềm ghế
-                        fetch('{{ route('seats.soft-delete') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    seat_id: seatId
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    // Xóa mềm ghế (hiển thị hình ảnh xóa mềm)
-                                    seatImg.src = "{{ asset('svg/seat-add.svg') }}";
-                                    seatImg.style.width = "60%";
-                                } else {
-                                    alert('Thao tác quá nhanh.');
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                    }
-                });
-            });
-        });
-    </script>
-
-    {{-- xóa mềm và khôi phục trên 1 hàng ghế --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý khi nhấn "Bỏ tất cả"
-            document.querySelectorAll('.btn-remove-all').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const row = button.getAttribute('data-row');
-
-                    fetch('{{ route('seats.soft-delete-row') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                row: row,
-                                room_id: {{ $room->id }}
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Tìm tất cả ghế trong hàng và thay đổi trạng thái
-                                document.querySelectorAll(`[data-seat-row='${row}'] img.seat`)
-                                    .forEach(function(seatImg) {
-                                        seatImg.src = "{{ asset('svg/seat-add.svg') }}";
-                                        seatImg.style.width = "60%";
-                                    });
-                            } else {
-                                alert('Lỗi: ' + data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
-
-            // Xử lý khi nhấn "Chọn tất cả"
-            document.querySelectorAll('.btn-restore-all').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const row = button.getAttribute('data-row');
-
-                    fetch('{{ route('seats.restore-row') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                row: row,
-                                room_id: {{ $room->id }}
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Tìm tất cả ghế trong hàng và khôi phục trạng thái
-                                document.querySelectorAll(`[data-seat-row='${row}'] img.seat`)
-                                    .forEach(function(seatImg) {
-                                        const seatType = seatImg.closest('.box-item-seat')
-                                            .getAttribute('data-seat-type-id');
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Khôi phục ghế (cập nhật lại hình ảnh)
                                         if (seatType == 1) {
-                                            seatImg.src =
-                                                "{{ asset('svg/seat-regular.svg') }}";
+                                            seatImg.src = "{{ asset('svg/seat-regular.svg') }}";
                                         } else {
-                                            seatImg.src =
-                                                "{{ asset('svg/seat-vip.svg') }}";
+                                            seatImg.src = "{{ asset('svg/seat-vip.svg') }}";
                                         }
                                         seatImg.style.width = "100%";
-                                    });
+                                    } else {
+                                        alert('Thao tác quá nhanh.');
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        } else {
+                            // Gửi yêu cầu xóa mềm ghế
+                            fetch('{{ route('seats.soft-delete') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        seat_id: seatId
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Xóa mềm ghế (hiển thị hình ảnh xóa mềm)
+                                        seatImg.src = "{{ asset('svg/seat-add.svg') }}";
+                                        seatImg.style.width = "60%";
+                                    } else {
+                                        alert('Thao tác quá nhanh.');
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    });
+                });
+            });
+        </script>
+
+        {{-- xóa mềm và khôi phục trên 1 hàng ghế --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Xử lý khi nhấn "Bỏ tất cả"
+                document.querySelectorAll('.btn-remove-all').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        const row = button.getAttribute('data-row');
+
+                        fetch('{{ route('seats.soft-delete-row') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    row: row,
+                                    room_id: {{ $room->id }}
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Tìm tất cả ghế trong hàng và thay đổi trạng thái
+                                    document.querySelectorAll(`[data-seat-row='${row}'] img.seat`)
+                                        .forEach(function(seatImg) {
+                                            seatImg.src = "{{ asset('svg/seat-add.svg') }}";
+                                            seatImg.style.width = "60%";
+                                        });
+                                } else {
+                                    alert('Lỗi: ' + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                });
+
+                // Xử lý khi nhấn "Chọn tất cả"
+                document.querySelectorAll('.btn-restore-all').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        const row = button.getAttribute('data-row');
+
+                        fetch('{{ route('seats.restore-row') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    row: row,
+                                    room_id: {{ $room->id }}
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Tìm tất cả ghế trong hàng và khôi phục trạng thái
+                                    document.querySelectorAll(`[data-seat-row='${row}'] img.seat`)
+                                        .forEach(function(seatImg) {
+                                            const seatType = seatImg.closest('.box-item-seat')
+                                                .getAttribute('data-seat-type-id');
+                                            if (seatType == 1) {
+                                                seatImg.src =
+                                                    "{{ asset('svg/seat-regular.svg') }}";
+                                            } else {
+                                                seatImg.src =
+                                                    "{{ asset('svg/seat-vip.svg') }}";
+                                            }
+                                            seatImg.style.width = "100%";
+                                        });
+                                } else {
+                                    alert('Lỗi: ' + data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                });
+            });
+        </script>
+        {{-- thay đổi loại ghế trên 1 hàng ghế --}}
+        <script>
+            document.querySelectorAll('input[name^="typeSeatRow"]').forEach(function(radio) {
+                radio.addEventListener('click', function() {
+                    const selectedRow = this.getAttribute('data-row'); // Lấy hàng ghế (A, B, C...)
+                    const roomId = {{ $room->id }}; // ID của phòng chiếu
+                    const typeSeatId = this.value; // Lấy giá trị loại ghế (1: Ghế thường, 2: Ghế VIP)
+
+                    // Gửi yêu cầu AJAX để cập nhật loại ghế trong database
+                    fetch("{{ route('seats.update-type') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                row: selectedRow,
+                                type_seat_id: typeSeatId,
+                                room_id: roomId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Cập nhật giao diện ghế sau khi nhận được phản hồi thành công từ server
+                                const seatsInRow = document.querySelectorAll(
+                                    `.box-item-seat[data-seat-row="${selectedRow}"]`);
+                                seatsInRow.forEach(function(seat) {
+                                    seat.setAttribute('data-seat-type-id', typeSeatId);
+
+                                    // Cập nhật hình ảnh và màu sắc ghế
+                                    const seatImage = seat.querySelector('img.seat');
+                                    seatImage.style.width = '100%'
+                                    if (typeSeatId == 2) {
+                                        seatImage.src = "{{ asset('svg/seat-vip.svg') }}";
+                                        seat.closest('td').classList.remove('light-orange');
+                                        seat.closest('td').classList.add('light-blue');
+                                    } else {
+                                        seatImage.src = "{{ asset('svg/seat-regular.svg') }}";
+                                        seat.closest('td').classList.remove('light-blue');
+                                        seat.closest('td').classList.add('light-orange');
+                                    }
+                                });
                             } else {
-                                alert('Lỗi: ' + data.message);
+                                alert('Cập nhật thất bại');
                             }
                         })
                         .catch(error => console.error('Error:', error));
                 });
             });
-        });
-    </script>
-    {{-- thay đổi loại ghế trên 1 hàng ghế --}}
-    <script>
-        document.querySelectorAll('input[name^="typeSeatRow"]').forEach(function(radio) {
-            radio.addEventListener('click', function() {
-                const selectedRow = this.getAttribute('data-row'); // Lấy hàng ghế (A, B, C...)
-                const roomId = {{ $room->id }}; // ID của phòng chiếu
-                const typeSeatId = this.value; // Lấy giá trị loại ghế (1: Ghế thường, 2: Ghế VIP)
-
-                // Gửi yêu cầu AJAX để cập nhật loại ghế trong database
-                fetch("{{ route('seats.update-type') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            row: selectedRow,
-                            type_seat_id: typeSeatId,
-                            room_id: roomId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Cập nhật giao diện ghế sau khi nhận được phản hồi thành công từ server
-                            const seatsInRow = document.querySelectorAll(
-                                `.box-item-seat[data-seat-row="${selectedRow}"]`);
-                            seatsInRow.forEach(function(seat) {
-                                seat.setAttribute('data-seat-type-id', typeSeatId);
-
-                                // Cập nhật hình ảnh và màu sắc ghế
-                                const seatImage = seat.querySelector('img.seat');
-                                seatImage.style.width = '100%'
-                                if (typeSeatId == 2) {
-                                    seatImage.src = "{{ asset('svg/seat-vip.svg') }}";
-                                    seat.closest('td').classList.remove('light-orange');
-                                    seat.closest('td').classList.add('light-blue');
-                                } else {
-                                    seatImage.src = "{{ asset('svg/seat-regular.svg') }}";
-                                    seat.closest('td').classList.remove('light-blue');
-                                    seat.closest('td').classList.add('light-orange');
-                                }
-                            });
-                        } else {
-                            alert('Cập nhật thất bại');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
-        });
-    </script>
+        </script>
+    @else
+    
     @endif
 @endsection
