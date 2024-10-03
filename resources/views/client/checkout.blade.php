@@ -425,12 +425,20 @@
                                     {{-- <form action="">
                                         <button type="submit">Tiếp tục</button>
                                     </form> --}}
-                                    <form action="{{url('vnpay-payment')}}" method="POST">
+                                    {{-- Thanh toán vnpay --}}
+                                    <form action="{{url('/vnpay-payment')}}" method="POST">
                                         @csrf
-                                        <button type="submit" name="redirect" >Thanh toán VNPAY</button>
+                                        <button type="submit" name="redirect">Thanh toán VNPAY</button>
+                                    </form>
+                                </div> 
+
+                                <div class="total-price-choose-seat float_left">
+                                    {{-- Form thanh toán Momo --}}
+                                    <form action="{{ route('momo.payment') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" name="payUrl">Thanh toán MOMO</button>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
