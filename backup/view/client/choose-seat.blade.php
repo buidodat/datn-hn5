@@ -44,12 +44,12 @@
                                                     <div class="seat-selection">
                                                         <table class="table-seat">
                                                             <tbody>
-                                                                @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
+                                                                @for ($row = 0; $row < $maxRow; $row++)
                                                                     <tr>
                                                                         {{-- <td class="box-item">
                                                                             {{ chr(65 + $row) }}
                                                                         </td> --}}
-                                                                        @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
+                                                                        @for ($col = 0; $col < $maxCol; $col++)
                                                                             <td class="row-seat">
                                                                                 @foreach ($showtime->room->seats as $seat)
                                                                                     @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
@@ -65,24 +65,21 @@
                                                                                         @endphp
 
                                                                                         @if ($seat->type_seat_id == 1)
-                                                                                            <span
-                                                                                                data-seat-id="{{ $seat->id }}"
+                                                                                            <span data-seat-id="{{ $seat->id }}"
                                                                                                 class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 2)
-                                                                                            <span
-                                                                                                data-seat-id="{{ $seat->id }}"
+                                                                                            <span data-seat-id="{{ $seat->id }}"
                                                                                                 class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 3)
-                                                                                            <span
-                                                                                                data-seat-id="{{ $seat->id }}"
+                                                                                            <span data-seat-id="{{ $seat->id }}"
                                                                                                 class="game-icons--sofa seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
@@ -172,11 +169,11 @@
                                     <div class="total-price-choose-seat float_left">
                                         <form action="{{ route('choose-seat-test', $showtime->id) }}" method="POST">
                                             @csrf
-                                            {{-- <input type="hidden" name="showtime_id" value="{{ $showtime->id }}"> --}}
+                                            <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
                                             <input type="hidden" name="showtimeId" value="{{ $showtime->id }}">
                                             <input type="hidden" name="seatId" id="hidden-seat-ids">
                                             <input type="hidden" name="selected_seats" id="hidden-selected-seats">
-                                            <input type="hidden" name="total_price_seat" value="190000">
+                                            <input type="hidden" name="total_price" value="190000">
                                             <button type="submit">Tiếp tục</button>
                                         </form>
                                     </div>
@@ -193,14 +190,104 @@
 
     @section('scripts')
         <script>
+            // document.addEventListener('DOMContentLoaded', () => {
+            //     const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
+            //     const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
+            //     const submitButton = document.querySelector('form button[type="submit"]'); // Nút "Tiếp tục"
+            //     let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
+
+            //     seats.forEach(seat => {
+            //         seat.addEventListener('click', () => {
+            //             const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
+
+            //             // Kiểm tra ghế có phải đã được đặt hoặc giữ trước không
+            //             if (!seat.classList.contains('reserved') && !seat.classList.contains(
+            //                     'pre-booked')) {
+            //                 seat.classList.toggle('selected'); // Thêm hoặc xóa lớp 'selected'
+
+            //                 if (seat.classList.contains('selected')) {
+            //                     if (selectedSeats.length < 8) {
+            //                         // Thêm tên ghế vào mảng selectedSeats nếu số ghế đã chọn dưới 8
+            //                         selectedSeats.push(seatLabel);
+            //                     } else {
+            //                         // Nếu đã chọn 8 ghế, không cho chọn thêm và hiện cảnh báo
+            //                         seat.classList.remove('selected');
+            //                         alert('Bạn chỉ được chọn tối đa 8 ghế!');
+            //                     }
+            //                 } else {
+            //                     // Xóa tên ghế khỏi mảng selectedSeats
+            //                     selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+            //                 }
+
+            //                 // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
+            //                 selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+            //             }
+            //         });
+            //     });
+
+            //     // Kiểm tra khi người dùng bấm nút "Tiếp tục"
+            //     submitButton.addEventListener('click', (event) => {
+            //         if (selectedSeats.length > 8) {
+            //             event.preventDefault(); // Ngăn không cho form gửi đi
+            //             alert('Bạn chỉ được chọn tối đa 8 ghế!'); // Hiển thị thông báo
+            //         }
+            //     });
+            // });
+
+            // document.addEventListener('DOMContentLoaded', () => {
+            //     const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
+            //     const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
+            //     const submitButton = document.querySelector('form button[type="submit"]'); // Nút "Tiếp tục"
+            //     const hiddenSelectedSeats = document.getElementById(
+            //     'hidden-selected-seats'); // Input ẩn cho ghế đã chọn
+            //     let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
+
+            //     seats.forEach(seat => {
+            //         seat.addEventListener('click', () => {
+            //             const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
+
+            //             // Kiểm tra ghế đã được đặt hoặc giữ chưa
+            //             if (!seat.classList.contains('reserved') && !seat.classList.contains(
+            //                     'pre-booked')) {
+            //                 seat.classList.toggle('selected'); // Thêm hoặc xóa lớp 'selected'
+
+            //                 if (seat.classList.contains('selected')) {
+            //                     if (selectedSeats.length < 8) {
+            //                         // Thêm tên ghế vào mảng selectedSeats nếu số ghế đã chọn dưới 8
+            //                         selectedSeats.push(seatLabel);
+            //                     } else {
+            //                         // Nếu đã chọn 8 ghế, không cho chọn thêm và hiện cảnh báo
+            //                         seat.classList.remove('selected');
+            //                         alert('Bạn chỉ được chọn tối đa 8 ghế!');
+            //                     }
+            //                 } else {
+            //                     // Xóa tên ghế khỏi mảng selectedSeats
+            //                     selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+            //                 }
+
+            //                 // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
+            //                 selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+            //                 hiddenSelectedSeats.value = selectedSeats.join(
+            //                 ', '); // Cập nhật input ẩn với ghế đã chọn
+            //             }
+            //         });
+            //     });
+
+            //     // Kiểm tra khi người dùng bấm nút "Tiếp tục"
+            //     submitButton.addEventListener('click', (event) => {
+            //         if (selectedSeats.length > 8) {
+            //             event.preventDefault(); // Ngăn không cho form gửi đi
+            //             alert('Bạn chỉ được chọn tối đa 8 ghế!'); // Hiển thị thông báo
+            //         }
+            //     });
+            // });
+
             document.addEventListener('DOMContentLoaded', () => {
                 const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
                 const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
                 const hiddenSelectedSeats = document.getElementById(
-                    'hidden-selected-seats'); // Input ẩn cho ghế đã chọn
+                'hidden-selected-seats'); // Input ẩn cho ghế đã chọn
                 const hiddenSeatIds = document.getElementById('hidden-seat-ids'); // Input ẩn cho ID ghế
-                const submitButton = document.querySelector('button[type="submit"]'); // Nút "Tiếp tục"
-
                 let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
                 let selectedSeatIds = []; // Mảng lưu trữ ID các ghế đã chọn
 
@@ -208,7 +295,7 @@
                     seat.addEventListener('click', () => {
                         const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
                         const seatId = seat.getAttribute(
-                            'data-seat-id'); // Lấy ID ghế từ thuộc tính data
+                        'data-seat-id'); // Lấy ID ghế từ thuộc tính data
 
                         // Kiểm tra ghế đã được đặt hoặc giữ chưa
                         if (!seat.classList.contains('reserved') && !seat.classList.contains(
@@ -234,27 +321,23 @@
                             // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
                             selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                             hiddenSelectedSeats.value = selectedSeats.join(
-                                ', '); // Cập nhật input ẩn với ghế đã chọn
+                            ', '); // Cập nhật input ẩn với ghế đã chọn
                             hiddenSeatIds.value = JSON.stringify(
-                                selectedSeatIds); // Cập nhật input ẩn với ID ghế đã chọn
+                            selectedSeatIds); // Cập nhật input ẩn với ID ghế đã chọn
                         }
                     });
                 });
 
                 // Kiểm tra khi người dùng bấm nút "Tiếp tục"
                 submitButton.addEventListener('click', (event) => {
-                    if (selectedSeats.length === 0) {
-                        event.preventDefault(); // Ngăn không cho form gửi đi
-                        alert(
-                            'Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.'
-                            ); // Hiển thị thông báo
-                        return false; // Ngăn chặn hành động tiếp theo
-                    } else if (selectedSeats.length > 8) {
+                    if (selectedSeats.length > 8) {
                         event.preventDefault(); // Ngăn không cho form gửi đi
                         alert('Bạn chỉ được chọn tối đa 8 ghế!'); // Hiển thị thông báo
                     }
                 });
             });
+
+
 
             // Thời gian đếm ngược (10 phút = 600 giây)
             let timeLeft = 600; // 600 giây tương đương 10 phút

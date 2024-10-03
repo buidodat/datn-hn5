@@ -99,8 +99,7 @@
             <div class="row">
                 <div class="mb-3 title-choose-seat">
 
-                    <a href="">Trang chủ ></a> <a href="">Đặt vé ></a> <a href="">Phim Shin Cậu Bé Bút
-                        Chì: Nhật Ký Khủng Long Của Chúng Mình</a>
+                    <a href="/">Trang chủ ></a> <a href="#">Đặt vé ></a> <a href="">{{$showtime->movie->name}}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 box-checkout">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -126,9 +125,9 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>An gà</td>
+                                            <td>{{ Auth::user()->name }}</td>
                                             {{-- <td>0987654321</td> --}}
-                                            <td>anga123@fpt.edu.vn</td>
+                                            <td>{{ Auth::user()->email }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
