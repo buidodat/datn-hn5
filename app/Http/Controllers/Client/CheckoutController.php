@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Combo;
 use App\Models\Food;
+use App\Models\Showtime;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -16,11 +17,23 @@ class CheckoutController extends Controller
     //
     public function checkout()
     {
+        // Lấy suất chiếu theo ID từ session
+        $showtime = Showtime::where('id', session('showtime_id'))->firstOrFail();
+        // $seatIds = session('seat_ids');
+        // $selectedSeats = session('selected_seats');
+        // $totalPrice = session('total_price_seat');
+
+        // In ra dữ liệu để kiểm tra
+        // dd($showtime->toArray(), $seatIds, $selectedSeats, $totalPrice);
+
+        // Lấy danh sách combo và thực phẩm liên quan
         $data = Combo::query()->where('is_active', '1')->with('comboFood')->latest('id')->get();
         $foods = Food::query()->select('id', 'name', 'type')->get();
 
-        return view('client.checkout', compact('data', 'foods'));
+        // Trả về view với dữ liệu
+        return view('client.checkout', compact('data', 'foods', 'showtime'));
     }
+
 
 
     public function applyVoucher(Request $request)
@@ -70,34 +83,34 @@ class CheckoutController extends Controller
         ]);
     }
 
-//    public function cancelVoucher(Request $request)
-//    {
-//        $userVoucher = UserVoucher::where('user_id', auth()->id())
-//            ->where('voucher_id', $request->voucher_id)
-//            ->first();
-//
-//        if (!$userVoucher) {
-//            return response()->json(['error' => 'Voucher không tồn tại hoặc chưa được áp dụng.'], 400);
-//        }
-//
-//        $voucher = Voucher::find($userVoucher->voucher_id);
-//        if ($voucher) {
-//            $voucher->increment('quantity');
-//        }
-//
-//        $userVoucher->delete();
-//
-//        DB::transaction(function() use ($userVoucher) {
-//            $voucher = Voucher::find($userVoucher->voucher_id);
-//            if ($voucher) {
-//                $voucher->increment('quantity');
-//            }
-//
-//            $userVoucher->delete();
-//        });
-//
-//        return response()->json(['success' => 'Hủy voucher thành công!']);
-//    }
+    //    public function cancelVoucher(Request $request)
+    //    {
+    //        $userVoucher = UserVoucher::where('user_id', auth()->id())
+    //            ->where('voucher_id', $request->voucher_id)
+    //            ->first();
+    //
+    //        if (!$userVoucher) {
+    //            return response()->json(['error' => 'Voucher không tồn tại hoặc chưa được áp dụng.'], 400);
+    //        }
+    //
+    //        $voucher = Voucher::find($userVoucher->voucher_id);
+    //        if ($voucher) {
+    //            $voucher->increment('quantity');
+    //        }
+    //
+    //        $userVoucher->delete();
+    //
+    //        DB::transaction(function() use ($userVoucher) {
+    //            $voucher = Voucher::find($userVoucher->voucher_id);
+    //            if ($voucher) {
+    //                $voucher->increment('quantity');
+    //            }
+    //
+    //            $userVoucher->delete();
+    //        });
+    //
+    //        return response()->json(['success' => 'Hủy voucher thành công!']);
+    //    }
 
 
 

@@ -45,6 +45,7 @@ Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
+Route::post('choose-seat/{id}/test', [ChooseSeatController::class, 'test'])->name('choose-seat-test');
 
 Route::get('login', function () {
     return view('client.login');

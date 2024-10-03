@@ -87,7 +87,7 @@
                                                                     @foreach ($seats as $seat)
                                                                         @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                                             @php
-                                                                            $seatStatus = $seat->showtimes->where('id', $showtime->id)->first()->pivot->status;
+                                                                                $seatStatus = $seat->showtimes->where('id', $showtime->id)->first()->pivot->status;
                                                                             @endphp
 
                                                                             @if ($seat->type_seat_id == 1)
