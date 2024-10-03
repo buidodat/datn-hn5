@@ -21,6 +21,7 @@ class Movie extends Model
         'release_date',
         'end_date',
         'trailer_url',
+        'movie_prices',
         'is_active',
         'is_hot',
         /*Thêm 2 cái còn thiếu ở trong migration*/
@@ -31,18 +32,28 @@ class Movie extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot' => 'boolean',
+         'is_show_home' => 'boolean',
+        'is_special' => 'boolean',
+        'movie_prices'=>'array'
     ];
     const VERSIONS = [
-        'Vietsub',
-        'Lồng Tiếng',
-        'Thuyết Minh'
+       ['id'=>1,'name'=>'Vietsub'],
+       ['id'=>2,'name'=>'Lồng Tiếng'],
+       ['id'=>3,'name'=>'Thuyết Minh'],
     ];
+    // const RATINGS = [
+    //     'P',
+    //     'C13',
+    //     'C16',
+    //     'C18',
+    //     'K'
+    // ];
     const RATINGS = [
-        'P',
-        'C13',
-        'C16',
-        'C18',
-        'K'
+       ['id'=>1,'name'=>'P','description'=>'Phim được phép phổ biến đến người xem ở mọi độ tuổi.'],
+       ['id'=>2,'name'=>'T13','description'=>'Phim được phổ biến đến người xem dưới 13 tuổi và có người bảo hộ đi kèm.'],
+       ['id'=>3,'name'=>'T16','description'=>'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên (13+).'],
+       ['id'=>4,'name'=>'T18','description'=>'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên (16+).'],
+       ['id'=>5,'name'=>'K','description'=>'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên (18+).'],
     ];
     public function movieVersions()
     {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Movie;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMovieRequest extends FormRequest
 {
@@ -29,11 +31,18 @@ class UpdateMovieRequest extends FormRequest
             'description'=>'nullable',
             'director'=>'required',
             'cast'=>'nullable',
-            'duration'=>'required|integer|min:50',
-            'release_date'=>'required|date',
-            'end_date'=>'required|date',
+            'duration'=>'required|integer|min:30|max:180',
+            'end_date'=>'required|after:release_date',
             'trailer_url'=>'nullable',
-            'versions'=>'required|array',
+            'versions'=>'nullable|array',
+            'versions.*' => [
+                'nullable',
+                Rule::in(array_column(Movie::VERSIONS, 'name')),
+            ],
+            'seat_prices'=>'required|array',
+            'seat_prices.*' =>'required|integer|min:10000|max:500000',
+            'room_surcharges'=>'required|array',
+            'room_surcharges.*' =>'required|integer|min:0|max:500000',
         ];
     }
     public function messages()
@@ -46,11 +55,22 @@ class UpdateMovieRequest extends FormRequest
             'director.required'=> 'Vui lòng nhập dạo diễn.',
             'duration.required'=> 'Vui lòng nhập thời lượng.',
             'duration.integer'=> 'Thời lượng phải là số.',
-            'duration.min'=> 'Thời lượng tối thiểu phải lớn hơn 50 phút.',
-            'release_date.required'=> 'Vui lòng nhập ngày khởi chiếu.',
+            'duration.min'=> 'Thời lượng tối thiểu phải là 30 phút.',
+            'duration.max'=> 'Thời lượng tối đa không quá 180 phút.',
             'end_date.required'=> 'Vui lòng nhập ngày kết thúc.',
-            'versions.required' =>'Vui lòng chọn ít nhất một ngôn ngữ.',
-            'versions.array' =>'Ngôn ngữ phải là một mảng.',
+            'end_date.after' => 'Ngày kết thúc phải sau ngày khởi chiếu.',
+            'versions.required' =>'Vui lòng chọn ít nhất một phiên bản.',
+            'versions.array' =>'Phiên bản phải là một mảng.',
+            'versions.*.in' => 'Giá trị không hợp lệ trong phiên bản',
+            'seat_prices.*.required' => 'Vui lòng nhập giá.',
+            'seat_prices.*.integer' => 'Giá phải là kiểu số.',
+            'seat_prices.*.min' => 'Giá tối thiểu phải là 10.000 VNĐ.',
+            'seat_prices.*.max' => 'Giá tối đa không quá 500.000 VNĐ',
+            'room_surcharges.*.required' => 'Vui lòng nhập giá.',
+            'room_surcharges.*.integer' => 'Giá phải là kiểu số.',
+            'room_surcharges.*.min' => 'Giá phải là số dương',
+            'room_surcharges.*.max' => 'Giá tối đa không quá 500.000 VNĐ',
+
         ];
     }
 }
