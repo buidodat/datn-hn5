@@ -204,7 +204,7 @@
                                         <tbody>
                                             @foreach ($typeSeats as $seat)
                                                 <tr>
-                                                    <td>{{ $seat->name }}</td>
+                                                    <td><span class='text-danger'>*</span> {{ $seat->name }}</td>
                                                     <td>
                                                         <input type="number" name="seat_prices[{{ $seat->id }}]"
                                                             class="form-control"
@@ -228,7 +228,7 @@
                                             @foreach ($typeRooms as $room)
                                                 @if ($room->surcharge > 0)
                                                     <tr>
-                                                        <td>{{ $room->name }}</td>
+                                                        <td><span class='text-danger'>*</span> {{ $room->name }}</td>
                                                         <td>
                                                             <input type="number" name="room_surcharges[{{ $room->id }}]"
                                                                 class="form-control" value="{{ old("room_surcharges.$room->id", $room->surcharge) }}"

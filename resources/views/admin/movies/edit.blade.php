@@ -53,7 +53,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
-                                            <label for="name" class="form-label ">Tên phim:</label>
+                                            <label for="name" class="form-label "><span class='text-danger'>*</span> Tên phim:</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ $movie->name }}" placeholder="Nhập tên phim">
                                             @error('name')
@@ -64,7 +64,7 @@
                                         </div>
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="director" class="form-label ">Đạo diễn:</label>
+                                            <label for="director" class="form-label "><span class='text-danger'>*</span> Đạo diễn:</label>
                                             <input type="text" class="form-control" id="director" name="director"
                                                 value="{{ $movie->director }}" placeholder="Eiichiro Oda">
                                             @error('director')
@@ -86,7 +86,7 @@
 
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="release_date" class="form-label ">Ngày khởi chiếu:</label>
+                                            <label for="release_date" class="form-label "><span class='text-danger'>*</span> Ngày khởi chiếu:</label>
                                             <input type="date" class="form-control" id="release_date" name="release_date"
                                                 value="{{ $movie->release_date }}" disabled>
                                             @error('release_date')
@@ -96,7 +96,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="end_date" class="form-label ">Ngày kết thúc:</label>
+                                            <label for="end_date" class="form-label "><span class='text-danger'>*</span> Ngày kết thúc:</label>
                                             <input type="date" class="form-control" id="end_date" name="end_date"
                                                 value="{{ $movie->end_date }}">
                                             @error('end_date')
@@ -106,7 +106,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="duration" class="form-label ">Thời lượng:</label>
+                                            <label for="duration" class="form-label "><span class='text-danger'>*</span> Thời lượng:</label>
                                             <input type="number" class="form-control" id="duration" name="duration"
                                                 value="{{ $movie->duration }}" placeholder="127 (phút)">
                                             @error('duration')
@@ -116,7 +116,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="category" class="form-label ">Thể loại:</label>
+                                            <label for="category" class="form-label "><span class='text-danger'>*</span> Thể loại:</label>
                                             <input type="text" class="form-control" id="category" name="category"
                                                 value="{{ $movie->category }}" placeholder="Hoạt hình, Khám phá">
                                             @error('category')
@@ -126,7 +126,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
+                                            <label for="rating" class="form-label "><span class='text-danger'>*</span> Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
                                                     <option value="{{ $rating['name'] }}" @selected($movie->rating == $rating['name'])>
@@ -141,7 +141,7 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class='versionOld'>
-                                                <label class="form-check-label mb-2" for="is_active">Phiên bản:</label>
+                                                <label class="form-check-label mb-2" for="is_active"><span class='text-danger'>*</span> Phiên bản:</label>
                                                 <select class="js-example-basic-multiple" disabled multiple="multiple">
 
                                                     @foreach ($versions as $version)
@@ -220,7 +220,7 @@
                                         <tbody>
                                             @foreach ($seatPrices as $item)
                                                 <tr>
-                                                    <td>{{$item['name'] }}</td>
+                                                    <td><span class='text-danger'>*</span> {{$item['name'] }}</td>
                                                     <td>
                                                         <input type="number" name="seat_prices[{{$item['id'] }}]"
                                                             class="form-control"
@@ -244,7 +244,7 @@
                                             @foreach ($roomSurcharges as $item)
                                                 @if ($item['surcharge'] > 0)
                                                     <tr>
-                                                        <td>{{ $item['name'] }}</td>
+                                                        <td><span class='text-danger'>*</span> {{ $item['name'] }}</td>
                                                         <td>
                                                             <input type="number" name="room_surcharges[{{ $item["id"] }}]"
                                                                 class="form-control" value="{{ old("room_surcharges.".$item["id"], $item['surcharge'])  }}"
