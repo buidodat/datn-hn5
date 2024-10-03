@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMovieRequest;
 use App\Http\Requests\Admin\UpdateMovieRequest;
+
 use App\Models\Movie;
 use App\Models\MovieVersion;
+use App\Models\TypeRoom;
+use App\Models\TypeSeat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -14,9 +17,7 @@ use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     const PATH_VIEW = 'admin.movies.';
     const PATH_UPLOAD = 'movies';
     public function index()
@@ -25,23 +26,24 @@ class MovieController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $ratings = Movie::RATINGS;
         $versions = Movie::VERSIONS;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions']));
+        $typeSeats = TypeSeat::all();
+        $typeRooms = TypeRoom::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'typeSeats', 'typeRooms']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreMovieRequest $request)
     {
         try {
-
+            // dd([
+            //     'seat' => $request->seat_prices,
+            //     'room' => $request->room_surcharges
+            // ]);
             DB::transaction(function () use ($request) {
 
                 $dataMovie = [
@@ -56,6 +58,10 @@ class MovieController extends Controller
                     'release_date' => $request->release_date,
                     'end_date' => $request->end_date,
                     'trailer_url' => $request->trailer_url,
+                    'movie_prices' =>  [
+                        'seat' => $request->seat_prices,
+                        'room' => $request->room_surcharges
+                    ],
                     'is_active' => isset($request->is_active) ? 1 : 0,
                     'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
@@ -83,9 +89,7 @@ class MovieController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Movie $movie)
     {
         $movieVersions = $movie->movieVersions()->pluck('name')->all();
@@ -99,28 +103,40 @@ class MovieController extends Controller
             $starCounts[$i] = $movieReviews->where('rating', $i)->count();
         }
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions','movieReviews','totalReviews','averageRating','starCounts']));
-
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions', 'movieReviews', 'totalReviews', 'averageRating', 'starCounts']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Movie $movie)
     {
+
         $movieVersions = $movie->movieVersions()->pluck('name')->all();
         $ratings = Movie::RATINGS;
         $versions = Movie::VERSIONS;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'movie', 'movieVersions']));
-    }
+        $typeSeats = TypeSeat::all();
+        $typeRooms = TypeRoom::all();
+        $seatPrices = [];
+        $roomSurcharges = [];
+    
+        foreach ($typeSeats as $item) {
+            $seatPrices[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'price' => $movie->movie_prices['seat'][$item->id] ?? $item->price
+            ];
+        }
+        foreach ($typeRooms as $item) {
+            $roomSurcharges[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'surcharge' => $movie->movie_prices['room'][$item->id] ?? $item->surcharge
+            ];
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ratings', 'versions', 'movie', 'movieVersions', 'seatPrices', 'roomSurcharges'));
+    }
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         try {
-
             DB::transaction(function () use ($request, $movie) {
                 $dataMovie = [
                     'name' => $request->name,
@@ -131,9 +147,12 @@ class MovieController extends Controller
                     'cast' => $request->cast,
                     'rating' => $request->rating,
                     'duration' => $request->duration,
-                    'release_date' => $request->release_date,
                     'end_date' => $request->end_date,
                     'trailer_url' => $request->trailer_url,
+                    'movie_prices' =>  [
+                        'seat' => $request->seat_prices,
+                        'room' => $request->room_surcharges
+                    ],
                     'is_active' => isset($request->is_active) ? 1 : 0,
                     'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
@@ -157,7 +176,7 @@ class MovieController extends Controller
 
                 $movieVersions = $movie->movieVersions()->pluck('name')->all();
 
-                foreach ($request->versions as $version) {
+                foreach ($request->versions ?? [] as $version ) {
                     if (!in_array($version, $movieVersions)) {
                         MovieVersion::create([
                             'movie_id' => $movie->id,
@@ -175,11 +194,4 @@ class MovieController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

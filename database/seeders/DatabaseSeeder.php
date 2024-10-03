@@ -60,11 +60,19 @@ class DatabaseSeeder extends Seeder
             true,
             false,
             false,
-            false
+            false,
+            false,
+            false,
+            false,
+            false,
         ];
 
-        $ratings = Movie::RATINGS;
-        for ($i = 0; $i < 20; $i++) {
+        $ratings = array_column(Movie::VERSIONS, 'name');
+
+
+        for ($i = 0; $i < 35; $i++) {
+            $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
+            $endDate = fake()->dateTimeBetween($releaseDate, now()->addMonths(5));
             $movie = DB::table('movies')->insertGetId([
                 'name' => $name = fake()->unique()->name(),
                 'slug' => Str::slug($name),
@@ -73,14 +81,14 @@ class DatabaseSeeder extends Seeder
                 'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
-                'rating' => $ratings[rand(0, 3)],
+                'rating' => $ratings[rand(0, 2)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-05-05', '2024-11-09'),
-                'end_date' => fake()->dateTimeBetween('2024-11-15', '2024-12-29'),
+                'release_date' => $releaseDate,
+                'end_date' => $endDate,
                 'trailer_url' => $url_youtubes[rand(0, 2)],
-                'is_active' => true,
-                'is_hot' => $booleans[rand(0, 3)],
-                'is_special' => $booleans[rand(0, 3)],
+                'is_active' => rand(true, false),
+                'is_hot' => $booleans[rand(0, 7)],
+                'is_special' => $booleans[rand(0, 7)],
 
             ]);
             DB::table('movie_versions')->insert([

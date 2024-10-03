@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{-- @if ($errors->any())
+    @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -13,8 +13,8 @@
                 @endforeach
             </ul>
         </div>
-    @endif --}}
-    <form action="{{ route('admin.movies.update',$movie) }}" method="post" enctype="multipart/form-data">
+    @endif
+    <form action="{{ route('admin.movies.update', $movie) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -43,7 +43,7 @@
                 @endif
             </div>
             <div class="col-lg-9 col-md-9 ">
-                <div class="card card-left">
+                <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thông tin phim</h4>
                     </div><!-- end card header -->
@@ -53,7 +53,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
-                                            <label for="name" class="form-label ">Tên phim:</label>
+                                            <label for="name" class="form-label "><span class='text-danger'>*</span> Tên phim:</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ $movie->name }}" placeholder="Nhập tên phim">
                                             @error('name')
@@ -64,7 +64,7 @@
                                         </div>
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="director" class="form-label ">Đạo diễn:</label>
+                                            <label for="director" class="form-label "><span class='text-danger'>*</span> Đạo diễn:</label>
                                             <input type="text" class="form-control" id="director" name="director"
                                                 value="{{ $movie->director }}" placeholder="Eiichiro Oda">
                                             @error('director')
@@ -86,9 +86,9 @@
 
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="release_date" class="form-label ">Ngày khởi chiếu:</label>
+                                            <label for="release_date" class="form-label "><span class='text-danger'>*</span> Ngày khởi chiếu:</label>
                                             <input type="date" class="form-control" id="release_date" name="release_date"
-                                                value="{{ $movie->release_date }}">
+                                                value="{{ $movie->release_date }}" disabled>
                                             @error('release_date')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -96,7 +96,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="end_date" class="form-label ">Ngày kết thúc:</label>
+                                            <label for="end_date" class="form-label "><span class='text-danger'>*</span> Ngày kết thúc:</label>
                                             <input type="date" class="form-control" id="end_date" name="end_date"
                                                 value="{{ $movie->end_date }}">
                                             @error('end_date')
@@ -106,7 +106,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="duration" class="form-label ">Thời lượng:</label>
+                                            <label for="duration" class="form-label "><span class='text-danger'>*</span> Thời lượng:</label>
                                             <input type="number" class="form-control" id="duration" name="duration"
                                                 value="{{ $movie->duration }}" placeholder="127 (phút)">
                                             @error('duration')
@@ -116,7 +116,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="category" class="form-label ">Thể loại:</label>
+                                            <label for="category" class="form-label "><span class='text-danger'>*</span> Thể loại:</label>
                                             <input type="text" class="form-control" id="category" name="category"
                                                 value="{{ $movie->category }}" placeholder="Hoạt hình, Khám phá">
                                             @error('category')
@@ -126,10 +126,11 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="rating" class="form-label ">Giới hạn độ tuổi:</label>
+                                            <label for="rating" class="form-label "><span class='text-danger'>*</span> Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
-                                                    <option value="{{ $rating }}" @selected($movie->rating == $rating )>{{ $rating }}</option>
+                                                    <option value="{{ $rating['name'] }}" @selected($movie->rating == $rating['name'])>
+                                                        {{ $rating['name'] }}</option>
                                                 @endforeach
                                             </select>
                                             @error('rating')
@@ -139,16 +140,41 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-check-label mb-2" for="is_active">Ngôn ngữ:</label>
-                                            <select class="js-example-basic-multiple" name="versions[]"
-                                                multiple="multiple">
+                                            <div class='versionOld'>
+                                                <label class="form-check-label mb-2" for="is_active"><span class='text-danger'>*</span> Phiên bản:</label>
+                                                <select class="js-example-basic-multiple" disabled multiple="multiple">
 
-                                                @foreach ($versions as $version)
-                                                    <option value="{{ $version }}" @selected(in_array($version, $movieVersions ) )>{{ $version }}
-                                                    </option>
-                                                @endforeach
+                                                    @foreach ($versions as $version)
+                                                        <option @selected(in_array($version['name'], $movieVersions))>{{ $version['name'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class='mt-2' id='versionNew'>
+                                                <div class="text-end text-primary" id="toggleDiv" onclick="toggleInput()"
+                                                    style="cursor: pointer;">
+                                                    Thêm mới ?
+                                                </div>
+                                                <div id="inputContainer" style="display: none;">
+                                                    <div class="text-end text-danger mb-1" id="cancelDiv"
+                                                        onclick="cancelInput()" style="cursor: pointer;">
+                                                        Hủy
+                                                    </div>
+                                                    <select class="js-example-basic-multiple" name="versions[]"
+                                                        multiple="multiple" id="versionsSelect">
+                                                        @foreach ($versions as $version)
+                                                            @if (!in_array($version['name'], $movieVersions))
+                                                                <option value="{{ $version['name'] }}">
+                                                                    {{ $version['name'] }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                            </select>
+
+
+
 
                                             @error('versions')
                                                 <div class='mt-1'>
@@ -174,9 +200,120 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header align-items-center d-flex">
+                        <h4 class="card-title mb-0 flex-grow-1">Giá vé</h4>
+                        <div class="text-end">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="live-preview">
+                            <div class="row gy-4">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered rounded align-middle " style="width:100%">
+                                        <thead>
+                                            <tr class='table-light'>
+                                                <th colspan='2' class="text-center">Loại ghế</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($seatPrices as $item)
+                                                <tr>
+                                                    <td><span class='text-danger'>*</span> {{$item['name'] }}</td>
+                                                    <td>
+                                                        <input type="number" name="seat_prices[{{$item['id'] }}]"
+                                                            class="form-control"
+                                                            value="{{ old("seat_prices.".$item["id"] ,$item['price']) }}"
+                                                            onwheel="return false;" placeholder="50.000đ">
+                                                        @error('seat_prices.' .$item["id"])
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <thead>
+                                            <tr class='table-light'>
+                                                <th colspan='2' class="text-center">PHỤ THU</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($roomSurcharges as $item)
+                                                @if ($item['surcharge'] > 0)
+                                                    <tr>
+                                                        <td><span class='text-danger'>*</span> {{ $item['name'] }}</td>
+                                                        <td>
+                                                            <input type="number" name="room_surcharges[{{ $item["id"] }}]"
+                                                                class="form-control" value="{{ old("room_surcharges.".$item["id"], $item['surcharge'])  }}"
+                                                                onwheel="return false;" placeholder="30.000đ">
+                                                            @error('room_surcharges.' . $item["id"])
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!--end row-->
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-3 col-md-3 ">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-seat ">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Cập nhật</h4>
+                            </div><!-- end card header -->
+                            <div class="card-body ">
+
+                                <div class="row ">
+                                    {{-- <div class="col-md-12 mb-3">
+                                        <label class="form-label">Trạng thái:</label>
+                                        <span class="text-muted">Đã xuất bản</span>
+                                    </div> --}}
+                                    <div class="col-md-12 mb-3 d-flex ">
+                                        <label class="form-label">Hoạt động:</label>
+                                        <span class="text-muted mx-2">
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active" name="is_active"
+                                                    type="checkbox" role="switch" @checked($movie->is_active)>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-12 mb-3 d-flex ">
+                                        <label class="form-label">Tag hot:</label>
+                                        <span class="text-muted mx-2">
+                                            <div class="form-check form-switch form-switch-danger">
+                                                <input class="form-check-input switch-is-active" name="is_hot"
+                                                    type="checkbox" role="switch" @checked($movie->is_hot)>
+                                            </div>
+                                        </span>
+                                    </div>
+
+
+                                </div>
+                                <div class="text-end">
+                                    <a href="{{ route('admin.movies.index') }}" class="btn btn-light mx-1">Quay
+                                        lại</a>
+                                    <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -200,9 +337,9 @@
                                         }
 
                                     @endphp
-                                    @if(!empty($movie->img_thumbnail))
+                                    @if (!empty($movie->img_thumbnail))
                                         <div class="text-center mt-2">
-                                            <img src="{{ $url }}" alt="" width="35%">
+                                            <img src="{{ $url }}" alt="" width="70%">
                                         </div>
                                     @else
                                         No image !
@@ -227,13 +364,14 @@
                                     <label for="trailer_url" class="form-label">Code Youtube:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
                                         value="{{ $movie->trailer_url }}" placeholder="ZQkU_oI2NOU">
-                                        @if ($movie->trailer_url )
+                                    @if ($movie->trailer_url)
                                         <div class="text-center">
-                                            <iframe class="w-100 mt-2" src="https://www.youtube.com/embed/{{ $movie->trailer_url  }}"
-                                                title="YouTube video player"  allowfullscreen>
+                                            <iframe class="w-100 mt-2"
+                                                src="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                title="YouTube video player" allowfullscreen>
                                             </iframe>
-                                            </div>
-                                        @endif
+                                        </div>
+                                    @endif
                                     @error('trailer_url')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -243,36 +381,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" @checked($movie->is_active == 1) >
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Hot</label>
-                                            <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input" type="checkbox" role="" name="is_hot" @checked($movie->is_hot == 1)>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
             <!--end col-->
@@ -284,8 +392,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
+                        <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Danh sách</a>
+                        <button type="submit" class="btn btn-primary mx-2">Cập nhật</button>
                     </div>
                 </div>
             </div>
@@ -326,5 +434,31 @@
             width: "100%",
             height: "750px"
         });
+    </script>
+    <script>
+        function toggleInput() {
+            const toggleDiv = document.getElementById('toggleDiv');
+            const inputContainer = document.getElementById('inputContainer');
+
+            if (inputContainer.style.display === 'none') {
+                inputContainer.style.display = 'block';
+                toggleDiv.style.display = 'none'; // Hide "Thêm mới ?"
+            } else {
+                inputContainer.style.display = 'none';
+                toggleDiv.style.display = 'block'; // Show "Thêm mới ?"
+            }
+        }
+
+        function cancelInput() {
+            const inputContainer = document.getElementById('inputContainer');
+            const toggleDiv = document.getElementById('toggleDiv');
+            const versionsSelect = document.getElementById('versionsSelect');
+
+            // Clear selected options
+            $(versionsSelect).val([]).trigger('change'); // Sử dụng jQuery để xóa select
+
+            inputContainer.style.display = 'none';
+            toggleDiv.style.display = 'block'; // Show "Thêm mới ?"
+        }
     </script>
 @endsection
