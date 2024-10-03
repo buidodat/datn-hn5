@@ -439,6 +439,15 @@
                                         <button type="submit" name="payUrl">Thanh toán MOMO</button>
                                     </form>
                                 </div>
+
+                                <div class="total-price-choose-seat float_left">
+                                    {{-- Form thanh toán ZaloPay --}}
+                                    <form action="{{ url('/zalopay-payment') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" name="redirect">Thanh toán ZaloPay</button>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                     </div>
