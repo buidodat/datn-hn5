@@ -45,6 +45,7 @@ Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
+Route::post('choose-seat/{id}/test', [ChooseSeatController::class, 'test'])->name('choose-seat-test');
 
 Route::get('login', function () {
     return view('client.login');
@@ -111,3 +112,5 @@ Route::post('vnpay-payment', [PaymentController::class, 'vnPayPayment']);
 Route::post('momo-payment', [PaymentController::class, 'moMoPayment'])->name('momo.payment');
 Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('momo.return');
 Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('momo.notify');
+//3 ZALOPAY
+Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
