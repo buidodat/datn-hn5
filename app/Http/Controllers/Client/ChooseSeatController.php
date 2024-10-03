@@ -22,4 +22,20 @@ class ChooseSeatController extends Controller
 
         return view('client.choose-seat', compact('showtime'));
     }
+
+    public function test(Request $request)
+    {
+        dd($request->all());
+
+        // $showtime = Showtime::findOrFail($id);
+        // // $showtime = Showtime::with(['seats'])->findOrFail($id);
+
+        // // $showtime->room->seats;
+        // // $showtime->movie;
+        // // $showtime->movieVersion;
+        // // $showtime->room->cinema;
+        // // dd($showtime->toArray());
+
+        // return view('client.choose-seat', compact('showtime'));
+    }
 }
