@@ -137,15 +137,12 @@
                                             </div>
                                         @enderror
                                     </div>
-
                                 </div>
-                                {{-- <input type="text" name="type_room_id" id="type_room_id" value=""> --}}
-
 
 
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
+                            <div class="row mb-3">
+                                <div class="col-md-8">
                                     <span class='text-danger'>*</span>
                                     <label for="date" class="form-label ">Ngày chiếu:</label>
                                     <input type="date" class="form-control" name="date" id="date"
@@ -157,31 +154,42 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <span class='text-danger'>*</span>
-                                    <label for="start_time" class="form-label ">Giờ chiếu:</label>
-                                    <input type="time" class="form-control" name="start_time" id="start_time"
-                                        value="{{ old('start_time') }}">
-                                    @error('start_time')
-                                        <div class='mt-1'>
-                                            <span class="text-danger">{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                                    <label for="" class="form-label"></label>
+                                    <button type="button" class="btn btn-primary btn-start-time"
+                                        onclick="addShowtime()">Thêm giờ
+                                        chiếu</button>
                                 </div>
-                                {{-- <input type="checkbox" > --}}
-                                {{-- <div class="col-md-4">
-                                    <button type="button">Thêm mới</button>
-                                </div> --}}
-                                <div class="col-md-4">
-                                    <span class='text-danger'>*</span>
-                                    <label for="end_time" class="form-label ">Giờ kết thúc:</label>
-                                    <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ old('end_time') }}" readonly>
-                                    @error('end_time')
-                                        <div class='mt-1'>
-                                            <span class="text-danger">{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                            </div>
+                            <div class="row">
+                                <div id="showtime-container">
+                                    <div class="row showtime-row">
 
+                                        <div class="col-md-4 mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="start_time" class="form-label ">Giờ chiếu:</label>
+                                            <input type="time" class="form-control" name="start_time[]"
+                                                id="start_time" value="{{ old('start_time') }}">
+                                            @error('start_time')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        {{-- <input type="checkbox" > --}}
+
+                                        <div class="col-md-4">
+                                            <label for="end_time" class="form-label ">Giờ kết thúc:</label>
+                                            <input type="time" class="form-control" name="end_time[]" id="end_time"
+                                                value="{{ old('end_time') }}" readonly>
+                                            @error('end_time')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,47 +197,65 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-md-12">
 
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="form-check-label" for="is_active">Is Active</label>
+                            <div class="form-check form-switch form-switch-default">
+                                <input class="form-check-input" type="checkbox" role="" name="is_active" checked>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" checked>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
+                                <label for="">Giờ chiếu đang có:</label>
+                                <table class="table table-bordered dt-responsive nowrap align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Phòng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for ($i = 0; $i < 3; $i++)
+                                            <tr>
+                                                <td>12:00 - 14:00</td>
+                                                <td>Poly 01</td>
+                                            </tr>
+                                        @endfor
+
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
 
+
+
                 </div>
+
+                <!--end col-->
             </div>
-            <!--end col-->
-        </div>
 
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header align-items-center d-flex">
+                            <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
+                            <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                        </div>
                     </div>
                 </div>
+                <!--end col-->
             </div>
-            <!--end col-->
-        </div>
     </form>
 @endsection
 
@@ -294,14 +320,18 @@
                         success: function(data) {
                             // console.log(data);
                             $.each(data, function(index, room) {
+
+                                console.log(room);
+                                const roomCapacity = room.total_seats;
+
                                 roomSelect.append('<option value="' + room.id +
                                     '" >' + room.name + ' - ' + room
-                                    .type_room_name + ' - ' + room.capacity +
+                                    .type_room_name + ' - ' + roomCapacity +
                                     ' ghế </option>');
 
 
                             });
-
+                            //
                             if (selectedRoomId) {
                                 roomSelect.val(selectedRoomId);
                                 selectedRoomId = false;
@@ -312,16 +342,12 @@
 
             });
 
-          
+
 
             if (selectedCinemaId) {
                 $('#cinema').val(selectedCinemaId).trigger('change');
             }
         });
-
-
-
-
 
         // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
         $(document).ready(function() {
@@ -362,7 +388,7 @@
         });
 
 
-        const cleaningTime = {{ $cleaningTime }} //Thời gian dọn phòng = 15 phút
+        const cleaningTime = {{ $cleaningTime }}; // Thời gian dọn phòng = 15 phút
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
         $(document).ready(function() {
             let movieDuration = 0;
@@ -375,44 +401,81 @@
                         method: 'GET',
                         success: function(data) {
                             if (data.duration) {
-                                movieDuration = parseInt(data.duration); // Lưu lại thời lg
-                                updateEndTime(
+                                movieDuration = parseInt(data.duration); // Lưu lại thời lượng
+                                updateAllEndTimes(
                                     movieDuration
-                                ); //Gán vào hàm update end time
+                                ); // Cập nhật tất cả giờ kết thúc
                             }
                         }
                     });
                 }
             });
 
-            //Cập nhật lại thời gian kết thúc khi start_time thay đổi
-            $('#start_time').on('change', function() {
-                updateEndTime(movieDuration); //Truyền thời lg phim 
+            // Cập nhật lại thời gian kết thúc khi start_time thay đổi cho hàng cụ thể
+            $(document).on('change', 'input[name="start_time[]"]', function() {
+                const row = $(this).closest('.showtime-row'); // Lấy hàng hiện tại
+                const startTime = $(this).val();
+                updateEndTimeForRow(row, movieDuration,
+                    startTime); // Cập nhật lại end-time cho hàng hiện tại
             });
 
-
-            // Chức năng cập nhật thời gian kết thúc dựa trên thời lượng phim và thời gian bắt đầu
-            function updateEndTime(duration) {
-                const startTime = document.getElementById('start_time').value;
+            // Hàm cập nhật end-time dựa trên thời lượng phim và thời gian bắt đầu cho hàng đấy
+            function updateEndTimeForRow(row, duration, startTime) {
                 if (startTime && duration) {
-                    let [hours, minutes] = startTime.split(':');
+                    let [hours, minutes] = startTime.split(':'); //cắt dạng giờ : phút
                     let startTimeDate = new Date();
-                    startTimeDate.setHours(parseInt(hours), parseInt(minutes));
+                    startTimeDate.setHours(parseInt(hours), parseInt(minutes)); //parseInt: địh dạng số nguyên
 
-                    // Thêm thời lg phim và thời gian dọn dẹp (15 phút)
                     let totalMinutes = duration + cleaningTime;
                     startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
 
                     // Lấy thời gian kết thúc được định dạng
-                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');
+                    let endHours = String(startTimeDate.getHours()).padStart(2,
+                        '0'); //padStart: nếu chuỗi ngắn hơn 2 ký tự, vd: 9:2 => 09:02
                     let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
                     const endTime = `${endHours}:${endMinutes}`;
 
-                    // Gán vào ô thời gian kết thúc
-                    document.getElementById('end_time').value = endTime;
+                    // Gán giá trị end_time vào ô input
+                    row.find('input[name="end_time[]"]').val(endTime); //tìm đến hàng hiện tại để cập nhật end-time
                 }
             }
 
+            // Hàm cập nhật thời gian kết thúc cho tất cả các hàng khi thay đổi thời lượng phim
+            function updateAllEndTimes(duration) {
+                $('input[name="start_time[]"]').each(function() {
+                    const row = $(this).closest('.showtime-row');
+                    const startTime = $(this).val();
+                    updateEndTimeForRow(row, duration, startTime); // Cập nhật end_time cho từng hàng
+                });
+            }
+        });
+
+        // Thêm giao diện hàng mới cho suất chiếu
+        function addShowtime() {
+            var newRow = `
+                <div class="row showtime-row">
+                    <div class="col-md-4 mb-3">
+                        <span class='text-danger'>*</span>
+                        <label for="start_time" class="form-label">Giờ chiếu:</label>
+                        <input type="time" class="form-control" name="start_time[]">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="end_time" class="form-label">Giờ kết thúc:</label>
+                        <input type="time" class="form-control" name="end_time[]" readonly>
+                    </div>
+                    <div class="col-md-4 mt-4" align='left'>
+                        <button type="button" class="btn btn-danger remove-btn delete-showtime">
+                            <span class="bx bx-trash"></span>
+                        </button>
+                    </div>
+                </div>`;
+
+            $('#showtime-container').append(newRow); // Thêm suất chiếu vào giao diện
+        }
+
+
+        $(document).on('click', '.delete-showtime', function() {
+            $(this).closest('.showtime-row').remove();
         });
     </script>
 @endsection

@@ -52,7 +52,8 @@
                                         <select name="branch_id" id="branch" class="form-select">
                                             <option value="">Chi nhánh</option>
                                             @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                                <option value="{{ $branch->id }}"
+                                                    {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
                                                     {{ $branch->name }}</option>
                                             @endforeach
                                         </select>
@@ -136,7 +137,10 @@
                                                 {{ $showtime->format }}
                                             </td>
                                             <td rowspan="{{ $rowCount }}">
-                                                {{ $showtime->room->capacity }} ghế
+                                                {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
+                                                {{-- {{ $showtime->room->capacity }}  --}}
+                                                ghế
                                             </td>
 
                                             <td rowspan="{{ $rowCount }}">

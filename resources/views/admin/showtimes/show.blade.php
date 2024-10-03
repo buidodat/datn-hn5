@@ -45,9 +45,7 @@
     <div class="row">
         {{--Ghế--}}
         <div class="col-xl-9">
-            <div class="card" style="
-    padding: 17px 70px 62px 70px;
-">
+            <div class="card" style="padding: 17px 70px 62px 70px;">
                 <div class="st_dtts_left_main_wrapper float_left">
                     <div class="row">
                         <div class="col-md-12 box-list-status-seat">
@@ -73,29 +71,24 @@
                             <div class="">
                                 <div>
                                     <div class="container-screen">
-                                        @php
-                                            $maxCol = App\Models\Room::MAX_COL;
-                                            $maxRow = App\Models\Room::MAX_ROW;
-                                        @endphp
+
                                         <div class="container-detail-seat">
                                             <div class="screen">Màn Hình Chiếu</div>
                                             <div class="seat-selection">
                                                 <table class="table-seat">
                                                     <tbody>
-                                                    @for ($row = 0; $row < $maxRow; $row++)
+                                                    @for ($row = 0; $row < $matrix['max_row']; $row++)
                                                         <tr>
                                                             {{-- <td class="box-item">
                                                                 {{ chr(65 + $row) }}
                                                             </td> --}}
-                                                            @for ($col = 0; $col < $maxCol; $col++)
+                                                            @for ($col = 0; $col < $matrix['max_col']; $col++)
                                                                 <td class="row-seat">
-                                                                    @foreach ($showtimes->room->seats as $seat)
+                                                                    @foreach ($seats as $seat)
                                                                         @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                                             @php
-                                                                                // Lấy status từ bảng seat_showtimes thông qua pivot
-                                                                                $seatStatus = $seat->showtimes
-                                                                                    ->where('id', $showtimes->id)
-                                                                                    ->first()->pivot->status;
+                                                                                $seatShowtime = $seat->showtimes->where('id', $showtime->id)->first();
+                                                                                $seatStatus = $seatShowtime ? $seatShowtime->pivot->status : 'lỗi';
                                                                             @endphp
 
                                                                             @if ($seat->type_seat_id == 1)
@@ -389,24 +382,24 @@
                 <div class="card-header">
                     <div class="d-flex">
                         <h5 class="card-title flex-grow-1 mb-0"><i
-                                class=" ri-film-line align-middle me-1 text-muted"></i>{{ $showtimes->movie->name}}</h5>
+                                class=" ri-film-line align-middle me-1 text-muted"></i>{{ $showtime->movie->name}}</h5>
                         <div class="flex-shrink-0">
                             <a href="javascript:void(0);"
-                               class="badge bg-primary-subtle text-primary fs-11">{{ $showtimes->movieVersion->name}}</a>
+                               class="badge bg-primary-subtle text-primary fs-11">{{ $showtime->movieVersion->name}}</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
 
                     @php
-                        $url = $showtimes->movie->img_thumbnail;
+                        $url = $showtime->movie->img_thumbnail;
 
                         if (!\Str::contains($url, 'http')) {
                             $url = Storage::url($url);
                         }
 
                     @endphp
-                    @if($showtimes->movie->img_thumbnail)
+                    @if($showtime->movie->img_thumbnail)
                         <div class="text-center mt-2">
                             <img src="{{ $url }}" alt="" width="50%">
                         </div>
@@ -426,13 +419,13 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled mb-0 vstack gap-3">
-                        <li><b>Thể loại</b>: {{ $showtimes->movie->category}}</li>
-                        <li><b>Thời lượng</b>: {{$showtimes->movie->duration}} phút</li>
-                        <li><b>Định dạng</b>: {{ $showtimes->format}}</li>
-                        <li><b>Độ tuổi</b>: {{ $showtimes->movie->rating}}</li>
-                        <li><b>Thời gian khởi chiếu</b>: {{ \Carbon\Carbon::parse($showtimes->start_time)->format('H:i, d/m/Y') }}</li>
-                        <li><b>Thời gian kết thúc</b>: {{ \Carbon\Carbon::parse($showtimes->end_time)->format('H:i, d/m/Y') }}</li>
-                        <li><b>Trạng thái</b>: {{ $showtimes->movie->is_active==1 ? 'Đang bán' : 'Đã dừng'}}</li>
+                        <li><b>Thể loại</b>: {{ $showtime->movie->category}}</li>
+                        <li><b>Thời lượng</b>: {{$showtime->movie->duration}} phút</li>
+                        <li><b>Định dạng</b>: {{ $showtime->format}}</li>
+                        <li><b>Độ tuổi</b>: {{ $showtime->movie->rating}}</li>
+                        <li><b>Thời gian khởi chiếu</b>: {{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i, d/m/Y') }}</li>
+                        <li><b>Thời gian kết thúc</b>: {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i, d/m/Y') }}</li>
+                        <li><b>Trạng thái</b>: {{ $showtime->movie->is_active==1 ? 'Đang bán' : 'Đã dừng'}}</li>
                     </ul>
                 </div>
             </div>
@@ -446,10 +439,10 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled mb-0 vstack gap-3">
-                        <li><b>Phòng</b>: {{ $showtimes->room->name}}</li>
-                        <li><b>Rạp</b>: {{$showtimes->room->cinema->name}} </li>
-                        <li><b>Publish</b>: {{ $showtimes->room->is_publish==1 ? 'Đã publish' : 'Đang chờ'}}</li>
-                        <li><b>Trạng thái</b>: {{ $showtimes->room->is_active==1 ? 'Hoạt động' : 'Tạm dừng'}}</li>
+                        <li><b>Phòng</b>: {{ $showtime->room->name}}</li>
+                        <li><b>Rạp</b>: {{$showtime->room->cinema->name}} </li>
+                        <li><b>Publish</b>: {{ $showtime->room->is_publish==1 ? 'Đã publish' : 'Đang chờ'}}</li>
+                        <li><b>Trạng thái</b>: {{ $showtime->room->is_active==1 ? 'Hoạt động' : 'Tạm dừng'}}</li>
                         <li style="color: red;"><b>Ghế đã bán</b>: 10/150 (not work)</li>
                         <li style="color: red;"><b>Ghế hỏng</b>: 0/150 (not work)</li>
                     </ul>
@@ -466,7 +459,7 @@
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
-                    <a href="{{ route('admin.movies.edit', $showtimes) }}">
+                    <a href="{{ route('admin.movies.edit', $showtime) }}">
                         <button type="submit" class="btn btn-warning mx-1">Chỉnh sửa</button>
                     </a>
 

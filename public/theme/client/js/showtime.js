@@ -40,28 +40,101 @@ function updateModalContent(data) {
     const modalBody = document.querySelector('.modalMovieScrening-body');
     modalBody.innerHTML = ''; // Xóa nội dung cũ
 
-    // Tạo phần Date Picker (listMovieScrening-date)
-    const datePickerDiv = document.createElement('div');
-    datePickerDiv.classList.add('listMovieScrening-date');
+    // Tạo HTML cho phần Date Picker
+    let dateShowtimes = '<div class="listMovieScrening-date">';
+    data.dates.forEach((date, index) => {
+        dateShowtimes += `
+            <div class="movieScrening-date-item ${index === 0 ? 'active' : ''}" data-day="${date.day_id}">
+                ${date.date_label}
+            </div>`;
+    });
+    dateShowtimes += '</div>';
+    modalBody.innerHTML += dateShowtimes;
+
+    // Tạo HTML cho nội dung suất chiếu
+    // let showtimesHTML = '';
+    // let hasShowtimes = false; // Biến kiểm tra xem có suất chiếu không
+
+    // data.dates.forEach((date, index) => {
+    //     showtimesHTML += `
+    //         <div class="movieScrening-list-showtime-day" id="${date.day_id}" style="display: ${index === 0 ? 'block' : 'none'};">`;
+
+    //     date.showtimes.forEach((showtimeFormats) => {
+    //         showtimesHTML += `
+    //             <div class="movieScrening-showtime-version">
+    //                 <h4 class="version-movie">2D phụ đề</h4>
+    //                 <div class="list-showtimes">`;
+    //         showtimeFormats.forEach(showtime => {
+    //             showtimesHTML += `
+    //                     <div class="showtime-item">
+    //                         <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.id}'">
+    //                             ${showtime.start_time}
+    //                         </div>
+    //                         <div class="empty-seat-showtime">150 ghế trống</div>
+    //                     </div>`;
+    //         });
+    //     });
+
+    //     showtimesHTML += `
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>`;
+    // });
+
+    let showtimesHTML = ''; // Khởi tạo biến chứa HTML
 
     data.dates.forEach((date, index) => {
-        const dateItemDiv = document.createElement('div');
-        dateItemDiv.classList.add('movieScrening-date-item');
-        if (index === 0) dateItemDiv.classList.add('active'); // Set ngày đầu tiên là active
-        dateItemDiv.setAttribute('data-day', date.day_id);
-        dateItemDiv.textContent = date.date_label;
 
-        // Gắn sự kiện chọn ngày
-        dateItemDiv.onclick = function () {
-            // Xóa class 'active' khỏi tất cả các ngày chiếu
-            document.querySelectorAll('.movieScrening-date-item').forEach(item => item.classList.remove('active'));
-            // Thêm class 'active' cho ngày chiếu đang được chọn
-            dateItemDiv.classList.add('active');
+        showtimesHTML += `
+        <div class="movieScrening-list-showtime-day" id="${date.day_id}" style="display: ${index === 0 ? 'block' : 'none'};">`;
+
+        // Lặp qua các định dạng suất chiếu
+        for (const format in date.showtimes) {
+
+            showtimesHTML += `
+            <div class="movieScrening-showtime-version">
+                <h4 class="version-movie">${format}</h4>
+                <div class="list-showtimes">`;
+
+            date.showtimes[format].forEach(showtime => {
+                showtimesHTML += `
+                    <div class="showtime-item">
+                        <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.id}'">
+                            ${new Date(showtime.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                        <div class="empty-seat-showtime">150 ghế trống</div> <!-- Giả định số ghế trống -->
+                    </div>`;
+            });
+
+            showtimesHTML += `
+                </div>
+            </div>`;
+        }
+
+        showtimesHTML += `
+        </div>
+    </div>`;
+    });
+    // Thêm HTML nội dung suất chiếu vào modal
+    modalBody.innerHTML += showtimesHTML;
+
+    // Nếu không có suất chiếu nào
+    
+
+    // Gắn sự kiện cho việc chọn ngày
+    const dateItems = document.querySelectorAll('.movieScrening-date-item');
+    dateItems.forEach(item => {
+        item.onclick = function () {
+            // Xóa class 'active' khỏi tất cả các ngày
+            dateItems.forEach(i => i.classList.remove('active'));
+            // Thêm class 'active' cho ngày đang được chọn
+            item.classList.add('active');
 
             // Ẩn tất cả các suất chiếu
             document.querySelectorAll('.movieScrening-list-showtime-day').forEach(showtime => showtime.style.display = 'none');
             // Hiển thị suất chiếu tương ứng với ngày được chọn
-            const selectedShowtimeDiv = document.getElementById(date.day_id);
+            const selectedShowtimeDiv = document.getElementById(item.getAttribute('data-day'));
             selectedShowtimeDiv.style.display = 'block';
 
             // Kiểm tra nếu không có suất chiếu
@@ -70,83 +143,8 @@ function updateModalContent(data) {
                 noShowtimeMessage.style.display = selectedShowtimeDiv.querySelectorAll('.showtime-item').length === 0 ? 'block' : 'none';
             }
         };
-
-        datePickerDiv.appendChild(dateItemDiv);
     });
-
-    // Thêm Date Picker vào modal
-    modalBody.appendChild(datePickerDiv);
-
-    // Tạo nội dung suất chiếu
-    let hasShowtimes = false; // Biến kiểm tra xem có suất chiếu không
-    data.dates.forEach((date, index) => {
-        const dateDiv = document.createElement('div');
-        dateDiv.classList.add('movieScrening-list-showtime-day');
-        dateDiv.id = date.day_id;
-
-        // Hiển thị ngày đầu tiên, ẩn các ngày khác
-        if (index === 0) {
-            dateDiv.style.display = 'block';
-        } else {
-            dateDiv.style.display = 'none';
-        }
-
-        const showtimeVersion = document.createElement('div');
-        showtimeVersion.classList.add('movieScrening-showtime-version');
-
-        const versionMovie = document.createElement('h4');
-        versionMovie.classList.add('version-movie');
-        versionMovie.textContent = '2D phụ đề'; // Bạn có thể điều chỉnh theo định dạng suất chiếu
-
-        const listShowtimes = document.createElement('div');
-        listShowtimes.classList.add('list-showtimes');
-
-        // Kiểm tra nếu có suất chiếu
-        if (date.showtimes.length === 0) {
-            const noShowtimeMessage = document.createElement('div');
-            noShowtimeMessage.classList.add('no-showtime-message');
-            noShowtimeMessage.textContent = 'Hiện tại không có suất chiếu nào'; // Thông báo khi không có suất chiếu
-            noShowtimeMessage.style.display = 'block'; // Hiển thị thông báo
-            dateDiv.appendChild(noShowtimeMessage);
-        } else {
-            hasShowtimes = true; // Có suất chiếu
-            date.showtimes.forEach(showtime => {
-                const showtimeItem = document.createElement('div');
-                showtimeItem.classList.add('showtime-item');
-
-                const startTime = document.createElement('div');
-                startTime.classList.add('showtime-item-start-time');
-                startTime.textContent = showtime.start_time; // Format lại nếu cần
-
-                // Gắn sự kiện click vào startTime để hiển thị showtime_id
-                startTime.onclick = function () {
-                    window.location.href = `${APP_URL}/choose-seat/${showtime.id}`; // Chuyển hướng đến trang chi tiết suất chiếu
-                };
-
-                const emptySeat = document.createElement('div');
-                emptySeat.classList.add('empty-seat-showtime');
-                emptySeat.textContent = '150 ghế trống'; // Hoặc cập nhật số ghế trống từ dữ liệu
-
-                showtimeItem.appendChild(startTime);
-                showtimeItem.appendChild(emptySeat);
-                listShowtimes.appendChild(showtimeItem);
-            });
-        }
-
-        showtimeVersion.appendChild(versionMovie);
-        showtimeVersion.appendChild(listShowtimes);
-        dateDiv.appendChild(showtimeVersion);
-        modalBody.appendChild(dateDiv);
-    });
-
-    // Nếu không có suất chiếu nào trong tất cả các ngày
-    if (!hasShowtimes) {
-        const noShowtimeMessage = document.createElement('div');
-        noShowtimeMessage.classList.add('no-showtime-message');
-        noShowtimeMessage.textContent = 'Hiện tại không có suất chiếu nào cho phim này.';
-        noShowtimeMessage.style.display = 'block';
-        modalBody.appendChild(noShowtimeMessage);
-    }
 }
+
 
 
