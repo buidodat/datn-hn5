@@ -31,13 +31,16 @@ Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuratio
 Route::get('typeRooms/{typeRoomId}', [APIController::class, 'getTypeRooms']);
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 Route::resource('rooms', RoomController::class);
-Route::post('rooms/update-active', [RoomController::class, 'updateStatus'])->name('admin.rooms.update-active');;
+Route::post('rooms/update-active', [RoomController::class, 'updateActive'])->name('rooms.update-active');
 
 Route::post('seats/soft-delete', [SeatController::class, 'softDelete'])->name('seats.soft-delete');
 Route::post('seats/restore', [SeatController::class, 'restore'])->name('seats.restore');
 Route::post('seats/soft-delete-row', [SeatController::class, 'softDeleteRow'])->name('seats.soft-delete-row');
 Route::post('seats/restore-row', [SeatController::class, 'restoreRow'])->name('seats.restore-row');
 Route::post('seats/update-type', [SeatController::class, 'updateSeatType'])->name('seats.update-type');
+
+Route::post('movies/update-active', [MovieController::class, 'updateActive'])->name('movies.update-active');
+Route::post('movies/update-hot', [MovieController::class, 'updateHot'])->name('movies.update-hot');
 
 
 
