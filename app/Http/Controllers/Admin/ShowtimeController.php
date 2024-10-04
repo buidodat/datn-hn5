@@ -160,23 +160,53 @@ class ShowtimeController extends Controller
     public function update(UpdateShowtimeRequest $request, Showtime $showtime)
     {
         //
+
         try {
+
+            $movieVersion = MovieVersion::find($request->movie_version_id);
+            $room = Room::find($request->room_id);
+            $typeRoom = TypeRoom::find($room->type_room_id);
+            $movie = Movie::find($request->movie_id);
+            $movieDuration = $movie ? $movie->duration : 0;
+            $cleaningTime = Showtime::CLEANINGTIME;
+
+
+            $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
+            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+
             $dataShowtimes = [
+                'cinema_id' => $request->cinema_id,
                 'room_id' => $request->room_id,
+                'format' => $typeRoom->name . ' ' . $movieVersion->name,
                 'movie_version_id' => $request->movie_version_id,
                 'movie_id' => $request->movie_id,
                 'date' => $request->date,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
+                'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
+                'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
-            // dd($request->all());
+
 
             $showtime->update($dataShowtimes);
 
+
+            // $seats = Seat::where('room_id', $room->id)->get(); // Lấy tất cả ghế trong phòng
+
+            // foreach ($seats as $seat) {
+
+            //     $dataSeatShowtime = [
+            //         'showtime_id' => $showtime->id,
+            //         'seat_id' => $seat->id,
+            //         'status' => 'available'
+            //     ];
+
+            //     SeatShowtime::where('id', $seat->id)->update($dataSeatShowtime);
+            // }
+
+
             return redirect()
-                ->back()
+                ->route('admin.showtimes.index')
                 ->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
