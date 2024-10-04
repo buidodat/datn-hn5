@@ -44,44 +44,39 @@
                         <div class="srceen w-75 mx-auto mb-4">
                             Màn Hình Chiếu
                         </div>
-                        <table class="table-chart-chair table-none align-middle mx-auto text-center">
-
-                            <tbody>
-                                @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
-                                    <tr>
-                                        {{-- cột hàng ghế A,B,C --}}
-                                        <td class="box-item">
-                                            {{ chr(65 + $row) }}
-                                        </td>
-                                        @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
+                        <form id="seatForm" action="{{ route('admin.rooms.seat-diagram.update', $room) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <table class="table-chart-chair table-none align-middle mx-auto text-center">
+                                <tbody>
+                                    @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
+                                        <tr>
+                                            {{-- cột hàng ghế A,B,C --}}
                                             <td class="box-item">
-
-                                                @foreach ($seats->whereNull('deleted_at') as $seat)
-                                                    @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
-                                                        @if ($seat->type_seat_id == 1)
-                                                            <div class="seat-item change-active">
-                                                                <img src="{{ $seat->is_active == true ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
-                                                                    class='seat' width="100%">
-                                                                <span class="seat-label">{{ $seat->name }}</span>
-                                                            </div>
-
-                                                        @else
-                                                            <div class="seat-item change-active">
-                                                                <img src="{{ $seat->is_active == true ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}" class='seat'
-                                                                    width="100%">
-                                                                <span class="seat-label">{{ $seat->name }}</span>
-                                                            </div>
-
-                                                        @endif
-                                                    @endif
-                                                @endforeach
+                                                {{ chr(65 + $row) }}
                                             </td>
-                                        @endfor
+                                            @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
+                                                <td class="box-item">
+                                                    @foreach ($seats->whereNull('deleted_at') as $seat)
+                                                        @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                            <div class="seat-item change-active">
+                                                                <img src="{{ $seat->is_active ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
+                                                                    class="seat" width="100%">
+                                                                <span class="seat-label">{{ $seat->name }}</span>
 
-                                    </tr>
-                                @endfor
-                            </tbody>
-                        </table>
+                                                                <input type="hidden" class='seat-active'
+                                                                    name="seats[{{ $seat->id }}]"
+                                                                    value="{{ $seat->is_active }}">
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </td>
+                                            @endfor
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </form>
                     @else
                         @php
                             $scopeRegular = App\Models\Room::SCOPE_REGULAR;
@@ -211,9 +206,6 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Cập nhật</h4>
                             </div><!-- end card header -->
                             <div class="card-body ">
-                                {{-- <form action="{{ route('admin.rooms.update', $room) }}" method="post">
-                                    @csrf
-                                    @method('put') --}}
                                 <div class="row ">
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label">Trạng thái:</label>
@@ -223,8 +215,10 @@
                                         <label class="form-label">Hoạt động:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input switch-is-active" name="is_active"
-                                                    type="checkbox" role="switch" @checked($room->is_active)>
+                                                <input class="form-check-input switch-is-active channge-is-active-room"
+                                                    type="checkbox" role="switch" data-id="{{ $room->id }}"
+                                                    @checked($room->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái hoạt động ?')">
                                             </div>
                                         </span>
                                     </div>
@@ -232,9 +226,9 @@
                                 <div class='text-end'>
                                     <a href="{{ route('admin.rooms.index') }}" class='btn btn-light mx-1'>Quay
                                         lại</a>
-                                    <button type="submit" class='btn btn-primary mx-1'>Cập nhật</button>
+                                    <button type="button" id="submitFormSeatDiagram" class='btn btn-primary mx-1'>Cập
+                                        nhật</button>
                                 </div>
-                                {{-- </form> --}}
                             </div>
                         </div>
                     @else
@@ -278,6 +272,11 @@
                             @if ($room->is_publish == true)
                                 <tbody>
                                     <tr>
+                                        <td class="text-muted m-0 p-0" colspan='2'>
+                                            **Khi thay đổi trạng thái ghế sẽ không ảnh hưởng đến suất chiếu trước đó.
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>Ghế hỏng</td>
                                         <td class="text-center"> <img src="{{ asset('svg/seat-regular-broken.svg') }}"
                                                 height="30px">
@@ -300,6 +299,8 @@
                                         <td class="text-center"> <img src="{{ asset('svg/seat-double.svg') }}"
                                                 height="30px">
                                         </td>
+                                    </tr>
+
                                     <tr class="table-active">
                                         <th colspan='2' class="text-center">Tổng
                                             {{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
@@ -307,6 +308,7 @@
                                             {{ $seats->whereNull('deleted_at')->count() }} chỗ ngồi</th>
 
                                     </tr>
+
                                 </tbody>
                             @else
                                 <tbody>
@@ -346,45 +348,85 @@
 
 
 @section('script-libs')
-    <script>
-        document.querySelectorAll('.seat-item').forEach(function(item) {
-            item.addEventListener('click', function() {
-                // Lấy ID ghế và loại ghế từ thuộc tính data
-                var seatId = this.getAttribute('data-seat-id');
-                var typeSeat = this.getAttribute('data-type-seat');
+    @if ($room->is_publish)
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.channge-is-active-room ').on('change', function() {
+                    // Lấy ID của room từ thuộc tính 'data-id'
+                    let roomId = $(this).data('id');
+                    // Lấy trạng thái hiện tại của checkbox
+                    let isActive = $(this).is(':checked') ? 1 : 0;
 
-                // Lấy phần tử hình ảnh ghế
-                var img = this.querySelector('.seat');
-
-                // Kiểm tra nếu ghế đã được chọn hay chưa thông qua class 'selected'
-                if (this.classList.contains('selected')) {
-                    // Nếu ghế đang được chọn, khôi phục lại ảnh ban đầu
-                    if (typeSeat == 1) {
-                        img.src = "{{ asset('svg/seat-regular.svg') }}"; // Ảnh ghế loại thường
-                    } else if (typeSeat == 2) {
-                        img.src = "{{ asset('svg/seat-vip.svg') }}"; // Ảnh ghế loại VIP
-                    }
-                    // Xóa class 'selected' để đánh dấu là ghế chưa được chọn
-                    this.classList.remove('selected');
-                } else {
-                    // Nếu ghế chưa được chọn, đổi sang ảnh ghế hỏng hoặc được chọn
-                    if (typeSeat == 1) {
-                        img.src = "{{ asset('svg/seat-regular-broken.svg') }}"; // Ghế loại thường bị hỏng
-                    } else if (typeSeat == 2) {
-                        img.src = "{{ asset('svg/seat-vip-broken.svg') }}"; // Ghế loại VIP bị hỏng
-                    } else {
-                        img.src = "{{ asset('svg/seat-selected.svg') }}"; // Mặc định ảnh ghế được chọn
-                    }
-                    // Thêm class 'selected' để đánh dấu là ghế đã được chọn
-                    this.classList.add('selected');
-                }
-
-                // Xử lý ID ghế và loại ghế (có thể gửi qua AJAX, lưu vào biến, v.v.)
-                console.log("Ghế được chọn có ID: " + seatId + ", loại ghế: " + typeSeat);
+                    // Gửi yêu cầu AJAX
+                    $.ajax({
+                        url: '{{ route('rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}', // Bảo vệ CSRF
+                            id: roomId,
+                            is_active: isActive
+                        },
+                        success: function(response) {
+                            // Hiển thị thông báo thành công
+                            if (!response.success) {
+                                alert('Có lỗi xảy ra, vui lòng thử lại.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Xử lý lỗi khi yêu cầu không thành công
+                            alert('Lỗi kết nối hoặc server không phản hồi.');
+                            console.error(error);
+                        }
+                    });
+                });
             });
-        });
-    </script>
-    @if ($room->is_publish == false)
+        </script>
+
+        <script>
+            document.getElementById('submitFormSeatDiagram').addEventListener('click', function() {
+                document.getElementById('seatForm').submit();
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Lắng nghe sự kiện click vào các phần tử có class "change-active"
+                document.querySelectorAll('.change-active').forEach(function(seatElement) {
+                    seatElement.addEventListener('click', function() {
+                        // Tìm phần tử img bên trong .change-active
+                        var seatImage = seatElement.querySelector('img');
+                        var seatInput = seatElement.querySelector('.seat-active');
+
+                        // Đặt biến chứa đường dẫn của ảnh hiện tại
+                        var currentImage = seatImage.src;
+                        var regularSeat = "{{ asset('svg/seat-regular.svg') }}";
+                        var brokenSeat = "{{ asset('svg/seat-regular-broken.svg') }}";
+                        var vipSeat = "{{ asset('svg/seat-vip.svg') }}";
+                        var vipBrokenSeat = "{{ asset('svg/seat-vip-broken.svg') }}";
+
+                        // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế thường
+                        if (currentImage.includes('seat-regular.svg')) {
+                            seatImage.src = brokenSeat;
+                            seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
+                        } else if (currentImage.includes('seat-regular-broken.svg')) {
+                            seatImage.src = regularSeat;
+                            seatInput.value = 1; // Cập nhật trạng thái là hoạt động
+                        }
+
+                        // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế VIP
+                        if (currentImage.includes('seat-vip.svg')) {
+                            seatImage.src = vipBrokenSeat;
+                            seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
+                        } else if (currentImage.includes('seat-vip-broken.svg')) {
+                            seatImage.src = vipSeat;
+                            seatInput.value = 1; // Cập nhật trạng thái là hoạt động
+                        }
+                    });
+                });
+            });
+        </script>
+    @else
         {{-- xóa mềm và khôi phục trên 1 ghế --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -581,6 +623,5 @@
                 });
             });
         </script>
-    @else
     @endif
 @endsection

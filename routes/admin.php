@@ -60,6 +60,7 @@ Route::prefix('rooms')
     ->group(function () {
         Route::get('/',                   [RoomController::class,'index'])->name('index');
         Route::get('seat-diagram/{room}', [RoomController::class,'seatDiagram'])->name('seat-diagram');
+        Route::put('seat-diagram/{room}/update', [RoomController::class,'updateSeatDiagram'])->name('seat-diagram.update');
         Route::put('publish/{room}',     [RoomController::class,'publish'])->name('publish');
         Route::get('{room}',     [RoomController::class,'show'])->name('show');
     });

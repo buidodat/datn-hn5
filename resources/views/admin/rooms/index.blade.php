@@ -172,17 +172,23 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a
+                                                            class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -190,10 +196,11 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-id="{{ $room->id }}" @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                        @disabled(!$room->is_publish)>
                                                 </div>
                                             </td>
                                         </tr>
@@ -205,8 +212,7 @@
 
 
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
-                                id="tableIsPublish">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
@@ -224,17 +230,23 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a
+                                                            class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -242,10 +254,10 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-id="{{ $room->id }}" @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                                 </div>
                                             </td>
                                         </tr>
@@ -274,17 +286,23 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a
+                                                            class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -292,10 +310,9 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch"
-                                                        @checked($room->is_active)
-                                                        disabled>
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        @checked($room->is_active) disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -325,31 +342,38 @@
                                             <tr>
                                                 <td>{{ $room->id }}</td>
                                                 <td>
-                                                <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
-                                                    <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                    <div class='room-name'>
+                                                        <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                        <div>
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                            <a
+                                                                class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                                sửa</a>
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                                ghế</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>{{ $room->cinema->name }}</td>
+                                                </td>
+                                                <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
-                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                    / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                                 <td>
                                                     {!! $room->is_publish == 1
                                                         ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
                                                         : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                                 </td>
                                                 <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
-                                                </div>
-                                            </td>
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active channge-is-active"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $room->id }}" @checked($room->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                            @disabled(!$room->is_publish)>
+                                                    </div>
+                                                </td>
 
                                             </tr>
                                         @endforeach
@@ -542,7 +566,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Lắng nghe sự kiện thay đổi của tất cả các checkbox có lớp 'channge-is-active'
             $('.channge-is-active ').on('change', function() {
                 // Lấy ID của room từ thuộc tính 'data-id'
                 let roomId = $(this).data('id');
@@ -607,8 +630,8 @@
         @foreach ($cinemas as $cinema)
             new DataTable("#tableCinemaID{{ $cinema->id }}", {
                 order: [
-                [0, 'desc']
-            ]
+                    [0, 'desc']
+                ]
             });
         @endforeach
     </script>
