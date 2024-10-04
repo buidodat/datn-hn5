@@ -21,7 +21,7 @@ class Movie extends Model
         'release_date',
         'end_date',
         'trailer_url',
-        'movie_prices',
+        'surcharge',
         'is_active',
         'is_hot',
         /*Thêm 2 cái còn thiếu ở trong migration*/
@@ -34,7 +34,6 @@ class Movie extends Model
         'is_hot' => 'boolean',
          'is_show_home' => 'boolean',
         'is_special' => 'boolean',
-        'movie_prices'=>'array'
     ];
     const VERSIONS = [
        ['id'=>1,'name'=>'Vietsub'],

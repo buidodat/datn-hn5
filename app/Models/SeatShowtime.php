@@ -12,5 +12,6 @@ class SeatShowtime extends Model
         'seat_id',
         'showtime_id',
         'status',
+        'price'
     ];
 }

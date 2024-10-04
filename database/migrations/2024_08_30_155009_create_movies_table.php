@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('release_date');
             $table->date('end_date');
             $table->string('trailer_url')->nullable();
-            $table->json('movie_prices')->nullable();
+            $table->unsignedInteger('surcharge')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_hot')->default(false);
             $table->boolean('is_show_home')->default(true);
