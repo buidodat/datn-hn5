@@ -39,7 +39,7 @@ class Seat extends Model
     public function showtimes()
     {
         return $this->belongsToMany(Showtime::class, 'seat_showtimes', 'seat_id', 'showtime_id')
-                    ->withPivot('status')
+                    ->withPivot('status','price')
                     ->withTimestamps();
     }
 }

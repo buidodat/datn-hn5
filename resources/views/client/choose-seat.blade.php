@@ -54,14 +54,21 @@
                                                                                 @foreach ($showtime->room->seats as $seat)
                                                                                     @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                                                         @php
-                                                                                            // Lấy status từ bảng seat_showtimes thông qua pivot
-                                                                                            $seatStatus = $seat->showtimes
-                                                                                                ->where(
-                                                                                                    'id',
-                                                                                                    $showtime->id,
-                                                                                                )
-                                                                                                ->first()->pivot
-                                                                                                ->status;
+                                                                                            // // Lấy status từ bảng seat_showtimes thông qua pivot
+                                                                                            // $seatStatus = $seat->showtimes
+                                                                                            //     ->where(
+                                                                                            //         'id',
+                                                                                            //         $showtime->id,
+                                                                                            //     )
+                                                                                            //     ->first()->pivot
+                                                                                            //     ->status;
+                                                                                            // Lấy status và price từ bảng seat_showtimes thông qua pivot
+                                                                                            $seatData = $seat->showtimes
+                                                                                                ->where('id', $showtime->id)
+                                                                                                ->first()
+                                                                                                ->pivot;
+                                                                                            $seatStatus = $seatData->status;
+                                                                                            $seatPrice = $seatData->price;
                                                                                         @endphp
 
                                                                                         @if ($seat->type_seat_id == 1)
@@ -71,6 +78,7 @@
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
+                                                                                            <p style="font-size: 13px; font-weight: 600">{{ $seatPrice }}</p>
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 2)
                                                                                             <span
@@ -79,6 +87,7 @@
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
+                                                                                            <p style="font-size: 13px; font-weight: 600">{{ $seatPrice }}</p>
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 3)
                                                                                             <span
