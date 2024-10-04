@@ -18,5 +18,6 @@ class Ticket extends Model
         'total_price',
         'status',
         'expiry',
+        'staff'
     ];
 }

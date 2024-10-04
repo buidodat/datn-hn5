@@ -108,6 +108,7 @@
     <!-- JAVASCRIPT -->
     <script>
         const PATH_ROOT = "{{ env('APP_URL') . '/theme/admin' }}";
+        const APP_URL = "{{ env('APP_URL') }}";
     </script>
 
     <script src="{{ asset('theme/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

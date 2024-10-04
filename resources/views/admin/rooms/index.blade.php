@@ -190,7 +190,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
                                                         type="checkbox" role="switch" data-id="{{ $room->id }}"
                                                         @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
@@ -242,7 +242,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
                                                         type="checkbox" role="switch" data-id="{{ $room->id }}"
                                                         @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
@@ -292,7 +292,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
                                                         type="checkbox" role="switch"
                                                         @checked($room->is_active)
                                                         disabled>
@@ -344,7 +344,7 @@
                                                 </td>
                                                 <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active" name="is_active"
+                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
                                                         type="checkbox" role="switch" data-id="{{ $room->id }}"
                                                         @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
@@ -453,11 +453,9 @@
             const branchId = document.getElementById('branchId').value;
             const cinemaSelect = document.getElementById('cinemaId');
             cinemaSelect.innerHTML = '<option value="" disabled selected>Chọn rạp chiếu</option>'; // Reset options
-
             if (branchId) {
-                console.log();
-
-                fetch(`http://datn-hn5.me/api/cinemas/${branchId}`)
+                const url = APP_URL + `/api/cinemas/${branchId}`
+                fetch(url)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -487,8 +485,8 @@
             const form = document.getElementById('createRoomForm');
             const formData = new FormData(form);
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
-
-            fetch('http://datn-hn5.me/api/rooms', {
+            const url = APP_URL + `/api/rooms`
+            fetch(url, {
                     method: 'POST',
                     body: formData,
                 })
@@ -508,7 +506,7 @@
                         $('#createRoomModal').modal('hide');
                         form.reset();
                         window.location.href =
-                            `http://datn-hn5.me/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
+                            `${APP_URL}/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
                     }
                 })
                 .catch(error => console.error('Error adding room:', error));
@@ -544,8 +542,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Lắng nghe sự kiện thay đổi của tất cả các checkbox có lớp 'switch-is-active'
-            $('.switch-is-active').on('change', function() {
+            // Lắng nghe sự kiện thay đổi của tất cả các checkbox có lớp 'channge-is-active'
+            $('.channge-is-active ').on('change', function() {
                 // Lấy ID của room từ thuộc tính 'data-id'
                 let roomId = $(this).data('id');
                 // Lấy trạng thái hiện tại của checkbox
@@ -553,7 +551,7 @@
 
                 // Gửi yêu cầu AJAX
                 $.ajax({
-                    url: '{{ route('admin.rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
+                    url: '{{ route('rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}', // Bảo vệ CSRF

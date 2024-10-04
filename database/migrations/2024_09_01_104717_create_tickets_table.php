@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('voucher_code')->nullable();
             $table->unsignedInteger('voucher_discount')->nullable();
             $table->string('code')->unique()->comment('Mã quét Qr hoặc mã vạch');
-            $table->unsignedBigInteger('total_price');
+            $table->unsignedBigInteger('total_price')->comment('giá cuối khi đã trừ point và voucher');
             $table->string('status');
+            $table->string('staff')->comment('lấy theo type của user');
             $table->dateTime('expiry')->comment('hạn sử dụng');
             $table->timestamps();
         });

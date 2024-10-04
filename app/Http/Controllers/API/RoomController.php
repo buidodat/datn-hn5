@@ -97,7 +97,7 @@ class RoomController extends Controller
 
         return $letters;
     }
-    public function updateStatus(Request $request)
+    public function updateActive(Request $request)
     {
         try {
             $room = Room::findOrFail($request->id);

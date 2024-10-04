@@ -60,11 +60,19 @@ class DatabaseSeeder extends Seeder
             true,
             false,
             false,
-            false
+            false,
+            false,
+            false,
+            false,
+            false,
         ];
 
-        $ratings = Movie::RATINGS;
-        for ($i = 0; $i < 20; $i++) {
+        $ratings = array_column(Movie::VERSIONS, 'name');
+
+
+        for ($i = 0; $i < 35; $i++) {
+            $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
+            $endDate = fake()->dateTimeBetween($releaseDate, now()->addMonths(5));
             $movie = DB::table('movies')->insertGetId([
                 'name' => $name = fake()->unique()->name(),
                 'slug' => Str::slug($name),
@@ -73,14 +81,14 @@ class DatabaseSeeder extends Seeder
                 'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
-                'rating' => $ratings[rand(0, 3)],
+                'rating' => $ratings[rand(0, 2)],
                 'duration' => fake()->numberBetween(60, 180),
-                'release_date' => fake()->dateTimeBetween('2024-05-05', '2024-11-09'),
-                'end_date' => fake()->dateTimeBetween('2024-11-15', '2024-12-29'),
+                'release_date' => $releaseDate,
+                'end_date' => $endDate,
                 'trailer_url' => $url_youtubes[rand(0, 2)],
-                'is_active' => true,
-                'is_hot' => $booleans[rand(0, 3)],
-                'is_special' => $booleans[rand(0, 3)],
+                'is_active' => rand(true, false),
+                'is_hot' => $booleans[rand(0, 7)],
+                'is_special' => $booleans[rand(0, 7)],
 
             ]);
             DB::table('movie_versions')->insert([
@@ -437,5 +445,73 @@ class DatabaseSeeder extends Seeder
 
             ]);
         }
+
+        //payment
+        $paymentMethods = [
+            ['name' => 'vnpay'],
+            ['name' => 'momo'],
+            ['name' => 'zalopay'],
+            ['name' => 'tiền mặt'],
+        ];
+
+        foreach ($paymentMethods as $payment) {
+            DB::table('payments')->insert([
+                'name' => $payment['name'],
+                'description' => fake()->text(50),
+                'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        $paymentIds = DB::table('payments')->pluck('id')->toArray();
+        $userIds = range(1, 6);
+
+        for ($i = 0; $i < 10; $i++) {
+            //fake giới hạn trong 1 tháng
+            $expiryDate = Carbon::now()->addMonth();
+
+            DB::table('tickets')->insert([
+                'user_id' => fake()->randomElement($userIds),
+                'payment_id' => fake()->randomElement($paymentIds),
+                'voucher_id' => null,
+                'voucher_code' => null,
+                'voucher_discount' => null,
+                'code' => fake()->regexify('[A-Za-z0-9]{10}'), //qr
+                'total_price' => fake()->numberBetween(50, 200) * 1000,
+                'status' => fake()->randomElement(['pending', 'completed', 'cancelled']),
+                'expiry' => $expiryDate,
+                'staff' => fake()->randomElement(['admin', 'member']),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+
+        $ticketIds = DB::table('tickets')->pluck('id')->toArray();
+        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
+
+        for ($i = 0; $i < 20; $i++) {
+            $showtime_id = fake()->randomElement($showtimeIds);
+
+            // phòng theo suất chiếu
+            $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+
+            // ghế theo phòng chiếu
+            $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
+
+            if (!empty($seatIds)) {
+                DB::table('ticket_movies')->insert([
+                    'ticket_id' => fake()->randomElement($ticketIds),
+                    'showtime_id' => $showtime_id,
+                    'seat_id' => fake()->randomElement($seatIds),
+                    'room_id' => $room_id,
+                    'price' => fake()->numberBetween(50, 200) * 1000,
+                ]);
+            }
+
+        }
+
+
     }
 }
