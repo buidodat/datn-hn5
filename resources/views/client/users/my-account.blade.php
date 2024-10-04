@@ -182,7 +182,7 @@
                                         <td class="cinema-journey-td">
                                             <a href="#detail-ticket" aria-controls="trand" role="tab"
                                                 data-toggle="tab">
-                                               Chi tiết
+                                                Chi tiết
                                             </a>
                                         </td>
                                     </tr>
@@ -191,82 +191,126 @@
                         </div>
                     </div>
 
+                    {{-- Chi tiết giao dịch --}}
                     <div id="detail-ticket" class="tab-pane fade">
-                        <div>
+                        <div class="row mb-3 title-detail">
                             <h3>Chi tiết giao dịch #4811201174585152</h3>
                         </div>
                         <div class="content-detail">
-                            <div class="code-qr">
-                                <img src="" alt="">
-                                <p class="text-img">Mã quét</p>
-                                <p>Ngày mua hàng</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="code-qr">
+                                        <p class="text-img bold">Mã quét</p>
+
+                                        <p><b>Ngày mua hàng:</b> 09/09/2024</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
+                                        alt="">
+                                </div>
                             </div>
+
                             <div class="box-address">
-                                <div class="address-detail">
-                                    <b>Địa chỉ thanh toán</b>
-                                    <p>NGuyễn Viết Sơn</p>
-                                    <p>Xã Tiên Phương, huyện Chương Mỹ, Hà Nội</p>
-                                    <p>sonnvph33874@fpt.edu.vn</p>
-                                    <p>0987654321</p>
-                                </div>
-                                <div class="payment-checkout-detail">
-                                    <b>Phương thức thanh toán</b>
-                                    <p>MOMO - 65k/vé</p>
-                                </div>
-                            </div>
-                            <div class="info-detail">
-                                <div>
-                                    Thông tin giao dịch
-                                </div>
-                                <div>
-                                    In hóa đơn
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="address-detail">
+                                            <b>Địa chỉ thanh toán</b>
+                                            <p>NGuyễn Viết Sơn</p>
+                                            <p>Xã Tiên Phương, huyện Chương Mỹ, Hà Nội</p>
+                                            <p>sonnvph33874@fpt.edu.vn</p>
+                                            <p>0987654321</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="payment-checkout-detail">
+                                            <b>Phương thức thanh toán</b>
+                                            <p>MOMO - 65k/vé</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="box-detail-history">
-                                CHI TIẾT GIAO DỊCH
+
+
+
+                            <div class="row info-detail">
+
+                                <div class="col-md-12">
+                                    <div>
+                                        <b> Thông tin giao dịch</b>
+                                    </div>
+                                    <div>
+                                        <button>In hóa đơn</button>
+                                    </div>
+
+                                </div>
+                               
+
+
+
                             </div>
+
+                            <div class="row box-detail-history">
+                                <div class="row">
+                                    <div class="col-md-12" align='center'>
+                                        CHI TIẾT GIAO DỊCH
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <div class="table-history">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Phim</th>
-                                            <th>Suất chiếu</th>
-                                            <th>Vé</th>
-                                            <th>Combo</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Vây hãm trên không</td>
-                                            <td>
-                                                <b>Poly Mỹ đình</b> <br>
-                                                <p>Poly Room 01</p>
-                                                <p>09/09/2024</p>
-                                                <p>20:50 - 22:33</p>
-                                            </td>
-                                            <td>
-                                                <b>VIP</b>
-                                                <p>E1, E2</p>
-                                                <p>130.000đ</p> {{-- 65k x 2 --}}
-                                            </td>
-                                            <td>
-                                                <b>Combo Poly 49k x 3</b>
-                                                <p>147.000đ</p> {{-- 49k x 3 --}}
-                                            </td>
-                                            <td>
-                                                <p>277.000đ</p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Tổng cộng: 277.000đ</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <a href="#cinema-journey" aria-controls="trand" role="tab" data-toggle="tab">
-                                    << Trở về</a>
+                                <div class="row">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Phim</th>
+                                                <th>Suất chiếu</th>
+                                                <th>Vé</th>
+                                                <th>Combo</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Vây hãm trên không</td>
+                                                <td>
+                                                    <b>Poly Mỹ đình</b> <br>
+                                                    <p>Poly Room 01</p>
+                                                    <p>09/09/2024</p>
+                                                    <p>20:50 - 22:33</p>
+                                                </td>
+                                                <td>
+                                                    <b>VIP</b>
+                                                    <p>E1, E2</p>
+                                                    <p>130.000đ</p> {{-- 65k x 2 --}}
+                                                </td>
+                                                <td>
+                                                    <b>Combo Poly 49k x 3</b>
+                                                    <p>147.000đ</p> {{-- 49k x 3 --}}
+                                                </td>
+                                                <td>
+                                                    <p>277.000đ</p>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <th colspan="5" class="total-detail" align="right">Tổng cộng: 277.000đ</th>
+                                            </tr>
+                                        </tbody>
+                                        {{-- <tfoot>
+
+                                        </tfoot> --}}
+                                    </table>
+                                    <div class="back-list-history">
+                                        <a href="#cinema-journey" aria-controls="trand" role="tab"
+                                            data-toggle="tab">
+                                            << Trở về</a>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
 
