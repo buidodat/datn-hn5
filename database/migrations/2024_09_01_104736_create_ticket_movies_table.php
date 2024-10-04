@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
 use App\Models\Ticket;
@@ -19,8 +20,9 @@ return new class extends Migration
             $table->foreignIdFor(Ticket::class);
             $table->foreignIdFor(Showtime::class);
             $table->foreignIdFor(Seat::class);
-            $table->string('code')->comment('Mã từ bảng Vé tickets');
-            $table->unsignedInteger('price');
+            $table->foreignIdFor(Room::class);
+            /*$table->string('code')->comment('Mã từ bảng Vé tickets');*/
+            $table->unsignedInteger('price')->comment('Giá vé gốc  tại thời điểm mua chưa trừ point và voucher');
             $table->timestamps();
         });
     }
