@@ -99,8 +99,8 @@
             <div class="row">
                 <div class="mb-3 title-choose-seat">
 
-                    <a href="">Trang chủ ></a> <a href="">Đặt vé ></a> <a href="">Phim Shin Cậu Bé Bút
-                        Chì: Nhật Ký Khủng Long Của Chúng Mình</a>
+                    <a href="/">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
+                        href="">{{ $showtime->movie->name }}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 box-checkout">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -114,22 +114,22 @@
                                         <h4>Thông tin thanh toán</h4>
                                     </div>
                                 </div>
-                                {{--thong tin--}}
+                                {{-- thong tin --}}
                                 <div class="">
                                     <table>
                                         <thead>
-                                        <tr>
-                                            <th>Họ tên:</th>
-                                            {{-- <th>Số điện thoại</th> --}}
-                                            <th>Email</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Họ tên:</th>
+                                                {{-- <th>Số điện thoại</th> --}}
+                                                <th>Email</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>An gà</td>
-                                            {{-- <td>0987654321</td> --}}
-                                            <td>anga123@fpt.edu.vn</td>
-                                        </tr>
+                                            <tr>
+                                                <td>{{ Auth::user()->name }}</td>
+                                                {{-- <td>0987654321</td> --}}
+                                                <td>{{ Auth::user()->email }}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
@@ -143,7 +143,7 @@
                                         <span>2 x 45.000</span> <span> = 90.000 Vnđ</span>
                                     </div>
                                 </div>
-                                {{--combo, voucher, diem--}}
+                                {{-- combo, voucher, diem --}}
                                 <div class="box-combo-uu-dai">
                                     <div class="text-info-checkout">
                                         <div>
@@ -157,65 +157,64 @@
                                     <div class="combo-uu-dai">
                                         <table>
                                             <thead>
-                                            <tr>
-                                                <th>Ảnh minh họa</th>
-                                                <th>Tên combo</th>
-                                                <th>Mô tả</th>
-                                                <th>Số lượng</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>Ảnh minh họa</th>
+                                                    <th>Tên combo</th>
+                                                    <th>Mô tả</th>
+                                                    <th>Số lượng</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($data as $item)
-                                                <tr>
-                                                    <td>
-                                                        @php
-                                                            $url = $item->img_thumbnail;
+                                                @foreach ($data as $item)
+                                                    <tr>
+                                                        <td>
+                                                            @php
+                                                                $url = $item->img_thumbnail;
 
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-                                                        @endphp
-                                                        @if (!empty($item->img_thumbnail))
-                                                            <img src="{{ $url }}" alt="" width="100px"
-                                                                 height="60px">
-                                                        @endif
-                                                    </td>
-                                                    {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
+                                                                if (!\Str::contains($url, 'http')) {
+                                                                    $url = Storage::url($url);
+                                                                }
+                                                            @endphp
+                                                            @if (!empty($item->img_thumbnail))
+                                                                <img src="{{ $url }}" alt="" width="100px"
+                                                                    height="60px">
+                                                            @endif
+                                                        </td>
+                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
                                                     </td> --}}
-                                                    <td>{{ $item->name }} - <span class="combo-price"
-                                                                                  data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>VNĐ
-                                                    </td>
+                                                        <td>{{ $item->name }} - <span class="combo-price"
+                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>VNĐ
+                                                        </td>
 
-                                                    <td>
-                                                        @foreach ($item->comboFood as $value)
-                                                            @foreach ($foods as $food)
-                                                                @if ($value->food_id == $food->id)
-                                                                    <ul class="nav nav-sm flex-column">
-                                                                        <li class="nav-item mb-2">
+                                                        <td>
+                                                            @foreach ($item->comboFood as $value)
+                                                                @foreach ($foods as $food)
+                                                                    @if ($value->food_id == $food->id)
+                                                                        <ul class="nav nav-sm flex-column">
+                                                                            <li class="nav-item mb-2">
                                                                                 <span
                                                                                     class="fw-semibold">{{ $food->type }}:
                                                                                 </span>
-                                                                            {{ $food->name }} x
-                                                                            ({{ $value->quantity }})
-                                                                        </li>
-                                                                    </ul>
-                                                                @endif
+                                                                                {{ $food->name }} x
+                                                                                ({{ $value->quantity }})
+                                                                            </li>
+                                                                        </ul>
+                                                                    @endif
+                                                                @endforeach
                                                             @endforeach
-                                                        @endforeach
-                                                    </td>
+                                                        </td>
 
-                                                    <td>
-                                                        <div class="quantity-container">
-                                                            <button class="quantity-btn decrease">-</button>
-                                                            <input type="text" class="quantity-input"
-                                                                   name="combo" value="0"
-                                                                   min="1" max="10" readonly>
-                                                            <button class="quantity-btn increase">+</button>
-                                                        </div>
-                                                    </td>
+                                                        <td>
+                                                            <div class="quantity-container">
+                                                                <button class="quantity-btn decrease">-</button>
+                                                                <input type="text" class="quantity-input" name="combo"
+                                                                    value="0" min="1" max="10" readonly>
+                                                                <button class="quantity-btn increase">+</button>
+                                                            </div>
+                                                        </td>
 
-                                                </tr>
-                                            @endforeach
+                                                    </tr>
+                                                @endforeach
 
                                             </tbody>
                                         </table>
@@ -232,7 +231,7 @@
                                         </div>
                                         <div class="info-voucher-checkout">
 
-                                            {{--<div class="voucher-section">
+                                            {{-- <div class="voucher-section">
                                                 <div class="voucher-title">Poly Voucher</div>
                                                 <form class="voucher-form" id="voucher-form" method="POST"  action="{{ route('applyVoucher') }}">
                                                     @csrf
@@ -243,7 +242,7 @@
                                                         <button type="submit">Xác nhận</button>
                                                     </div>
                                                 </form>
-                                            </div>--}}
+                                            </div> --}}
 
                                             <div class="voucher-section">
                                                 <div class="voucher-title">Poly Voucher</div>
@@ -253,10 +252,10 @@
                                                         dưới để được giảm giá!</label> <br>
                                                     <div class="form-row">
                                                         <input type="text" name="code" id="voucher_code" required
-                                                               placeholder="Nhập mã voucher" @guest disabled @endguest>
+                                                            placeholder="Nhập mã voucher" @guest disabled @endguest>
 
                                                         <button type="submit" id="apply-voucher-btn"
-                                                                @guest disabled @endguest>Xác nhận
+                                                            @guest disabled @endguest>Xác nhận
                                                         </button>
                                                     </div>
 
@@ -265,29 +264,29 @@
                                             </div>
 
 
-                                            {{--diem--}}
+                                            {{-- diem --}}
                                             <div class="points-section">
                                                 <div class="points-title">Điểm Poly</div>
                                                 <form class="points-form" action="">
                                                     <table class="points-table">
                                                         <thead>
-                                                        <tr>
-                                                            <th>Điểm hiện có</th>
-                                                            <th>Nhập điểm</th>
-                                                            <th>Số tiền được giảm</th>
-                                                            <th></th>
-                                                        </tr>
+                                                            <tr>
+                                                                <th>Điểm hiện có</th>
+                                                                <th>Nhập điểm</th>
+                                                                <th>Số tiền được giảm</th>
+                                                                <th></th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr>
-                                                            <td>1900</td>
-                                                            <td><input type="text" name="point_use"
-                                                                       placeholder="Nhập điểm"></td>
-                                                            <td>= 0 VNĐ</td>
-                                                            <td>
-                                                                <button type="submit">Đổi điểm</button>
-                                                            </td>
-                                                        </tr>
+                                                            <tr>
+                                                                <td>1900</td>
+                                                                <td><input type="text" name="point_use"
+                                                                        placeholder="Nhập điểm"></td>
+                                                                <td>= 0 VNĐ</td>
+                                                                <td>
+                                                                    <button type="submit">Đổi điểm</button>
+                                                                </td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </form>
@@ -296,25 +295,26 @@
 
                                     </div>
                                 </div>
-                                {{--tong tien--}}
+                                {{-- tong tien --}}
                                 <div class="total-price-checkout">
                                     <div>
                                         <p>Tổng tiền:</p>
                                         <p class="text-danger total-price-checkout">
-                                            0 VNĐ
+                                            {{ number_format(session('total_price_seat', 0), 0, ',', '.') }} VNĐ
                                         </p>
-                                        <input type="text" name="total-price" id="total-price" value="" hidden readonly>
+                                        <input type="text" name="total-price" id="total-price" value="" hidden
+                                            readonly>
                                     </div>
                                     <div>
                                         <p>Số tiền được giảm:</p>
-                                        <p class="text-danger total-discount" >0 VNĐ</p>
+                                        <p class="text-danger total-discount">0 VNĐ</p>
                                     </div>
                                     <div>
                                         <p>Số tiền cần thanh toán:</p>
                                         <p class="text-danger total-price-payment">0 VNĐ</p>
                                     </div>
                                 </div>
-                                {{--phuong thuc thanh toan--}}
+                                {{-- phuong thuc thanh toan --}}
                                 <div class="box-payment-checkout">
                                     <div class="text-info-checkout">
                                         <div>
@@ -334,35 +334,32 @@
                                             <form action="">
                                                 <div>
                                                     <input type="radio" name="payment-checkout" id="payment-checkout-1">
-                                                    <img
-                                                        src="{{ asset('theme/client/images/index_III/the-noi-dia.png') }}"
+                                                    <img src="{{ asset('theme/client/images/index_III/the-noi-dia.png') }}"
                                                         alt="">
                                                     <label for="payment-checkout-1">Thẻ nội địa</label>
                                                 </div>
                                                 <div>
                                                     <input type="radio" name="payment-checkout" id="payment-checkout-2">
-                                                    <img
-                                                        src="{{ asset('theme/client/images/index_III/the-quoc-te.png') }}"
+                                                    <img src="{{ asset('theme/client/images/index_III/the-quoc-te.png') }}"
                                                         alt="">
                                                     <label for="payment-checkout-2">Thẻ quốc tế</label>
                                                 </div>
                                                 <div>
                                                     <input type="radio" name="payment-checkout" id="payment-checkout-3">
-                                                    <img
-                                                        src="{{ asset('theme/client/images/index_III/vi-shopee-pay.png') }}"
+                                                    <img src="{{ asset('theme/client/images/index_III/vi-shopee-pay.png') }}"
                                                         alt="">
                                                     <label for="payment-checkout-3">Ví Shoppe Pay</label>
                                                 </div>
                                                 <div>
                                                     <input type="radio" name="payment-checkout" id="payment-checkout-4">
                                                     <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
-                                                         alt="">
+                                                        alt="">
                                                     <label for="payment-checkout-4">Ví MoMo</label>
                                                 </div>
                                                 <div>
-                                                    <input type="radio" name="payment-checkout" id="payment-checkout-5">
-                                                    <img
-                                                        src="{{ asset('theme/client/images/index_III/vi-zalo-pay.png') }}"
+                                                    <input type="radio" name="payment-checkout"
+                                                        id="payment-checkout-5">
+                                                    <img src="{{ asset('theme/client/images/index_III/vi-zalo-pay.png') }}"
                                                         alt="">
                                                     <label for="payment-checkout-5">Ví ZaloPay</label>
                                                 </div>
@@ -370,14 +367,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--realtime 10p--}}
+                                {{-- realtime 10p --}}
                                 <div class="giu-cho-checkout">
                                     <div>
                                         <p>Vui lòng kiểm tra thông tin đầy đủ trước khi qua bước tiếp theo. <br>
                                             *Vé mua rồi không hoàn trả lại dưới mọi hình thức.</p>
                                     </div>
                                     <div>
-                                        <p>Thời gian còn lại: 9:50</p>
+                                        <p>Thời gian còn lại:</p>
+                                        <p id="timer" class="bold">10:00</p>
                                     </div>
 
                                 </div>
@@ -398,26 +396,39 @@
                                     <ul>
                                         <li>
                                             <div>
-                                                <img width="150px"
-                                                     src="{{ asset('theme/client/images/index_III/img_phim_chon_ghe.png') }}"
-                                                     alt="">
+                                                @php
+                                                    $url = $showtime->movie->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+                                                @endphp
+                                                <img width="150px" src="{{ $url }}" alt="">
                                             </div>
                                             <div>
-                                                <h3>Phim Shin Cậu Bé Bút Chì: Nhật Ký Khủng Long Của Chúng Mình</h3>
+                                                <h3>{{ $showtime->movie->name }}</h3>
                                                 <br>
-                                                <p>2D Lồng tiếng</p>
+                                                <p>{{ $showtime->format }}</p>
                                             </div>
 
                                         </li>
-                                        <li>Thể loại: <span class="bold">Gia đình, Hoạt hình</span></li>
-                                        <li> Thời lượng: <span class="bold">105 phút</span></li>
+                                        <li>Thể loại: <span class="bold">{{ $showtime->movie->category }}</span></li>
+                                        <li> Thời lượng: <span class="bold">{{ $showtime->movie->duration }}
+                                                phút</span>
+                                        </li>
                                         <hr>
-                                        <li> Rạp chiếu: <span class="bold">Beta Thái Nguyên</span></li>
-                                        <li> Ngày chiếu: <span class="bold">31/08/2024</span></li>
-                                        <li> Giờ chiếu: <span class="bold">18:10</span></li>
-                                        <li> Phòng chiếu: <span class="bold">P1</span></li>
-                                        <li> Ghế ngồi: <span class="bold">A1,A2</span></li>
-                                        {{-- <li class="bold"> Tổng tiền: <span class="bold">190.000đ</span></li> --}}
+                                        <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
+                                        </li>
+                                        <li> Ngày chiếu: <span
+                                                class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
+                                        </li>
+                                        <li> Giờ chiếu: <span
+                                                class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
+                                        </li>
+                                        <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span></li>
+                                        <li>Ghế ngồi: <span id="selected-seats"
+                                                class="bold">{{ implode(', ', session('selected_seats', [])) }}</span>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -426,11 +437,11 @@
                                         <button type="submit">Tiếp tục</button>
                                     </form> --}}
                                     {{-- Thanh toán vnpay --}}
-                                    <form action="{{url('/vnpay-payment')}}" method="POST">
+                                    <form action="{{ url('/vnpay-payment') }}" method="POST">
                                         @csrf
                                         <button type="submit" name="redirect">Thanh toán VNPAY</button>
                                     </form>
-                                </div> 
+                                </div>
 
                                 <div class="total-price-choose-seat float_left">
                                     {{-- Form thanh toán Momo --}}
@@ -439,6 +450,15 @@
                                         <button type="submit" name="payUrl">Thanh toán MOMO</button>
                                     </form>
                                 </div>
+
+                                <div class="total-price-choose-seat float_left">
+                                    {{-- Form thanh toán ZaloPay --}}
+                                    <form action="{{ url('/zalopay-payment') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" name="redirect">Thanh toán ZaloPay</button>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -450,6 +470,32 @@
     <script>
         var routeUrl = "{{ route('applyVoucher') }}";
         var csrfToken = "{{ csrf_token() }}";
-    </script>
 
+        
+        // Thời gian đếm ngược (10 phút = 600 giây)
+        let timeLeft = 600; // 600 giây tương đương 10 phút
+            const timerElement = document.getElementById('timer');
+
+            // Hàm đếm ngược thời gian
+            const countdown = setInterval(() => {
+                // Tính số phút và giây còn lại
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+
+                // Hiển thị thời gian còn lại ở định dạng mm:ss
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+                // Giảm thời gian còn lại
+                timeLeft--;
+
+                // Khi thời gian kết thúc (hết 0 giây)
+                if (timeLeft < 0) {
+                    clearInterval(countdown); // Dừng đếm ngược
+
+                    // Hiển thị thông báo và quay về trang chủ
+                    alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                    window.location.href = '/'; // Điều hướng về trang chủ ("/")
+                }
+            }, 1000); // Cập nhật mỗi giây
+    </script>
 @endsection

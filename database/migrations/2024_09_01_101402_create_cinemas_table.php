@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Branch::class)->constrained();
             $table->string('name');
             $table->string('slug');
+            $table->unsignedInteger('surcharge')->nullable();
             $table->string('address');
             $table->string('description')->nullable();
             $table->boolean('is_active')->default(true);

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Seat::class);
             $table->foreignIdFor(Showtime::class);
             $table->string('status');
+            $table->unsignedInteger('price')->nullable();
             $table->timestamps();
             $table->unique(['seat_id','showtime_id'],'seat_showtime');
         });

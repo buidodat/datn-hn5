@@ -13,6 +13,7 @@ class Cinema extends Model
         'branch_id',
         'name',
         'slug',
+        'surcharge',
         'address',
         'description',
         'is_active'

@@ -6,8 +6,9 @@
 
 @section('content')
     <form action="{{ route('admin.showtimes.update', $showtime) }}" method="post" enctype="multipart/form-data">
-        @csrf
         @method('PUT')
+        @csrf
+
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -32,7 +33,7 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -41,7 +42,7 @@
                         </ul>
 
                     </div>
-                @endif
+                @endif --}}
             </div>
             <div class="col-lg-9">
                 <div class="card">
@@ -75,7 +76,7 @@
                                         <select name="movie_version_id" id="movie_version" class="form-select">
                                             <option value="">Chọn</option>
 
-                                        
+
                                             <option value="{{ $showtime->movieVersion->id }}" selected>
                                                 {{ $showtime->movieVersion->name }}</option>
                                         </select>
@@ -130,8 +131,10 @@
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach --}}
                                             <option value="{{ $showtime->room->id }}" selected>
-                                                {{ $showtime->room->name }}</option>
-                                            
+                                                {{ $showtime->room->name }} - {{ $showtime->room->typeRoom->name }} -
+                                                {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }} ghế
+                                            </option>
+
                                         </select>
                                         @error('room_id')
                                             <div class='mt-1'>
@@ -161,7 +164,7 @@
                                 <div class="col-md-4">
                                     <label for="start_time" class="form-label ">Giờ chiếu:</label>
                                     <input type="time" class="form-control" name="start_time" id="start_time"
-                                        value="{{ $showtime->start_time }}">
+                                        value="{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}">
                                     @error('start_time')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -172,7 +175,7 @@
                                 <div class="col-md-4">
                                     <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                     <input type="time" class="form-control" name="end_time" id="end_time"
-                                        value="{{ $showtime->end_time }}">
+                                        value="{{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}">
                                     @error('end_time')
                                         <div class='mt-1'>
                                             <span class="text-danger">{{ $message }}</span>
@@ -275,8 +278,16 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, room) {
-                                roomSelect.append('<option  value="' + room.id +
-                                    '">' + room.name + '</option>');
+                                // roomSelect.append('<option  value="' + room.id +
+                                //     '">' + room.name + '</option>');
+
+
+                                const roomCapacity = room.total_seats;
+
+                                roomSelect.append('<option value="' + room.id +
+                                    '" >' + room.name + ' - ' + room
+                                    .type_room_name + ' - ' + roomCapacity +
+                                    ' ghế </option>');
                             });
                         }
                     });
@@ -284,7 +295,6 @@
 
             });
         });
-
 
 
         // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
@@ -362,6 +372,8 @@
                     let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
                     const endTime = `${endHours}:${endMinutes}`;
 
+                    console.log(endTime);
+                    
                     // Gán vào ô thời gian kết thúc
                     document.getElementById('end_time').value = endTime;
                 }
