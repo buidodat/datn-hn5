@@ -184,7 +184,7 @@
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="description" class="form-label">Mô tả phim:</label>
-                                            <textarea class="form-control " rows="3" name="description"
+                                            <textarea class="form-control " rows="5" name="description"
                                                 placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '>{{ $movie->description }}</textarea>
                                             @error('description')
                                                 <div class='mt-1'>
@@ -212,25 +212,20 @@
                             <div class="row gy-4">
                                 <div class="col-md-12">
                                     <table class="table table-bordered rounded align-middle " style="width:100%">
-                                        <thead>
+                                        {{-- <thead>
                                             <tr class='table-light'>
                                                 <th colspan='2' class="text-center">Loại ghế</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($seatPrices as $item)
+                                            @foreach ($typeSeats as $seat)
                                                 <tr>
-                                                    <td><span class='text-danger'>*</span> {{$item['name'] }}</td>
+                                                    <td>{{ $seat->name }}</td>
                                                     <td>
-                                                        <input type="number" name="seat_prices[{{$item['id'] }}]"
+                                                        <input type="number"
                                                             class="form-control"
-                                                            value="{{ old("seat_prices.".$item["id"] ,$item['price']) }}"
-                                                            onwheel="return false;" placeholder="50.000đ">
-                                                        @error('seat_prices.' .$item["id"])
-                                                            <div class='mt-1'>
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            </div>
-                                                        @enderror
+                                                            value="{{  $seat->price}}" disabled>
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -239,25 +234,36 @@
                                             <tr class='table-light'>
                                                 <th colspan='2' class="text-center">PHỤ THU</th>
                                             </tr>
-                                        </thead>
+                                        </thead> --}}
                                         <tbody>
-                                            @foreach ($roomSurcharges as $item)
-                                                @if ($item['surcharge'] > 0)
+                                            {{-- @foreach ($typeRooms as $room)
+                                                @if ($room->surcharge > 0)
                                                     <tr>
-                                                        <td><span class='text-danger'>*</span> {{ $item['name'] }}</td>
+                                                        <td>{{ $room->name }}</td>
                                                         <td>
-                                                            <input type="number" name="room_surcharges[{{ $item["id"] }}]"
-                                                                class="form-control" value="{{ old("room_surcharges.".$item["id"], $item['surcharge'])  }}"
-                                                                onwheel="return false;" placeholder="30.000đ">
-                                                            @error('room_surcharges.' . $item["id"])
-                                                                <div class='mt-1'>
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                </div>
-                                                            @enderror
+                                                            <input type="number"
+                                                                class="form-control" value="{{ $room->surcharge }}" disabled>
+
                                                         </td>
                                                     </tr>
                                                 @endif
-                                            @endforeach
+
+                                            @endforeach --}}
+                                            <tr>
+                                                <td><span class='text-danger'></span> Thu thêm theo phim</td>
+                                                <td>
+                                                    <input type="number" name="surcharge"
+                                                        class="form-control"
+                                                        onwheel="return false;" placeholder="0đ" value="{{ $movie->surcharge }}">
+
+                                                    @error('surcharge')
+                                                        <div class='mt-1'>
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        </div>
+                                                    @enderror
+                                                </td>
+
+                                            </tr>
                                         </tbody>
 
                                     </table>
@@ -265,6 +271,16 @@
                             </div>
 
                             <!--end row-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-end">
+
+                                <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Danh sách</a>
+                                <button type="submit" class="btn btn-primary mx-2">Cập nhật</button>
+
                         </div>
                     </div>
                 </div>
@@ -386,19 +402,6 @@
             <!--end col-->
         </div>
 
-
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-2">Cập nhật</button>
-                    </div>
-                </div>
-            </div>
-            <!--end col-->
-        </div>
     </form>
 @endsection
 
