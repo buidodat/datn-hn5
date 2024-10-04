@@ -118,31 +118,22 @@
                                             <li class="nav-item mb-1"><span class="fw-semibold">Code Youtube:</span> <input
                                                     type="text" disabled value="{{ $movie->trailer_url }}2121"></li>
                                         </ul>
-
-
                                     </td>
                                     <td>
-
                                         <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active change-is-active" name="is_active"
-                                                type="checkbox" role="switch" data-id="{{ $movie->id }}"
-                                                @checked($movie->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
+                                            <input class="form-check-input switch-is-active change-is-active"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
-
-
-
                                     </td>
                                     <td>
-
                                         <div class="form-check form-switch form-switch-danger">
                                             <input class="form-check-input switch-is-active change-is-hot" name="is_hot"
                                                 type="checkbox" role="switch" data-id="{{ $movie->id }}"
                                                 @checked($movie->is_hot)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
-
-
                                     <td>
                                         <a href="{{ route('admin.movies.show', $movie) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
@@ -214,7 +205,7 @@
             });
         });
     </script>
-     <script>
+    <script>
         $(document).ready(function() {
             $('.change-is-hot').on('change', function() {
                 let Movie = $(this).data('id');
