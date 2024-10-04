@@ -47,7 +47,7 @@
                         <table class="table-chart-chair table-none align-middle mx-auto text-center">
 
                             <tbody>
-                                @for ($row = 0; $row <  $matrixSeat['max_row']; $row++)
+                                @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                     <tr>
                                         {{-- cột hàng ghế A,B,C --}}
                                         <td class="box-item">
@@ -59,17 +59,19 @@
                                                 @foreach ($seats->whereNull('deleted_at') as $seat)
                                                     @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
                                                         @if ($seat->type_seat_id == 1)
-                                                            <div class="seat-item">
-                                                                <img src="{{ asset('svg/seat-regular.svg') }}"
+                                                            <div class="seat-item change-active">
+                                                                <img src="{{ $seat->is_active == true ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
                                                                     class='seat' width="100%">
                                                                 <span class="seat-label">{{ $seat->name }}</span>
                                                             </div>
+
                                                         @else
-                                                            <div class="seat-item">
-                                                                <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
+                                                            <div class="seat-item change-active">
+                                                                <img src="{{ $seat->is_active == true ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}" class='seat'
                                                                     width="100%">
                                                                 <span class="seat-label">{{ $seat->name }}</span>
                                                             </div>
+
                                                         @endif
                                                     @endif
                                                 @endforeach
@@ -199,6 +201,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-lg-3">
             <div class="row">
                 <div class="col-md-12">
@@ -211,26 +214,26 @@
                                 {{-- <form action="{{ route('admin.rooms.update', $room) }}" method="post">
                                     @csrf
                                     @method('put') --}}
-                                    <div class="row ">
-                                        <div class="col-md-12 mb-3">
-                                            <label class="form-label">Trạng thái:</label>
-                                            <span class="text-muted">Đã xuất bản</span>
-                                        </div>
-                                        <div class="col-md-12 mb-3 d-flex ">
-                                            <label class="form-label">Hoạt động:</label>
-                                            <span class="text-muted mx-2">
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active" name="is_active"
-                                                        type="checkbox" role="switch" @checked($room->is_active)>
-                                                </div>
-                                            </span>
-                                        </div>
+                                <div class="row ">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Trạng thái:</label>
+                                        <span class="text-muted">Đã xuất bản</span>
                                     </div>
-                                    <div class='text-end'>
-                                        <a href="{{ route('admin.rooms.index') }}" class='btn btn-light mx-1'>Quay
-                                            lại</a>
-                                        <button type="submit" class='btn btn-primary mx-1'>Cập nhật</button>
+                                    <div class="col-md-12 mb-3 d-flex ">
+                                        <label class="form-label">Hoạt động:</label>
+                                        <span class="text-muted mx-2">
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active" name="is_active"
+                                                    type="checkbox" role="switch" @checked($room->is_active)>
+                                            </div>
+                                        </span>
                                     </div>
+                                </div>
+                                <div class='text-end'>
+                                    <a href="{{ route('admin.rooms.index') }}" class='btn btn-light mx-1'>Quay
+                                        lại</a>
+                                    <button type="submit" class='btn btn-primary mx-1'>Cập nhật</button>
+                                </div>
                                 {{-- </form> --}}
                             </div>
                         </div>
@@ -246,13 +249,11 @@
                                     <div class="row ">
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label">Trạng thái:</label>
-                                            <span
-                                                class="text-muted">Bản nháp</span>
+                                            <span class="text-muted">Bản nháp</span>
                                         </div>
                                         <div class="col-md-12 mb-3 ">
                                             <label class="form-label">Hoạt động:</label>
-                                            <span
-                                                class="text-muted">Chưa hoạt động</span>
+                                            <span class="text-muted">Chưa hoạt động</span>
                                         </div>
                                     </div>
                                     <div class='text-end'>
@@ -300,7 +301,9 @@
                                                 height="30px">
                                         </td>
                                     <tr class="table-active">
-                                        <th colspan='2' class="text-center">Tổng {{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} /
+                                        <th colspan='2' class="text-center">Tổng
+                                            {{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                            /
                                             {{ $seats->whereNull('deleted_at')->count() }} chỗ ngồi</th>
 
                                     </tr>
@@ -343,8 +346,46 @@
 
 
 @section('script-libs')
+    <script>
+        document.querySelectorAll('.seat-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                // Lấy ID ghế và loại ghế từ thuộc tính data
+                var seatId = this.getAttribute('data-seat-id');
+                var typeSeat = this.getAttribute('data-type-seat');
+
+                // Lấy phần tử hình ảnh ghế
+                var img = this.querySelector('.seat');
+
+                // Kiểm tra nếu ghế đã được chọn hay chưa thông qua class 'selected'
+                if (this.classList.contains('selected')) {
+                    // Nếu ghế đang được chọn, khôi phục lại ảnh ban đầu
+                    if (typeSeat == 1) {
+                        img.src = "{{ asset('svg/seat-regular.svg') }}"; // Ảnh ghế loại thường
+                    } else if (typeSeat == 2) {
+                        img.src = "{{ asset('svg/seat-vip.svg') }}"; // Ảnh ghế loại VIP
+                    }
+                    // Xóa class 'selected' để đánh dấu là ghế chưa được chọn
+                    this.classList.remove('selected');
+                } else {
+                    // Nếu ghế chưa được chọn, đổi sang ảnh ghế hỏng hoặc được chọn
+                    if (typeSeat == 1) {
+                        img.src = "{{ asset('svg/seat-regular-broken.svg') }}"; // Ghế loại thường bị hỏng
+                    } else if (typeSeat == 2) {
+                        img.src = "{{ asset('svg/seat-vip-broken.svg') }}"; // Ghế loại VIP bị hỏng
+                    } else {
+                        img.src = "{{ asset('svg/seat-selected.svg') }}"; // Mặc định ảnh ghế được chọn
+                    }
+                    // Thêm class 'selected' để đánh dấu là ghế đã được chọn
+                    this.classList.add('selected');
+                }
+
+                // Xử lý ID ghế và loại ghế (có thể gửi qua AJAX, lưu vào biến, v.v.)
+                console.log("Ghế được chọn có ID: " + seatId + ", loại ghế: " + typeSeat);
+            });
+        });
+    </script>
     @if ($room->is_publish == false)
-            {{-- xóa mềm và khôi phục trên 1 ghế --}}
+        {{-- xóa mềm và khôi phục trên 1 ghế --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.box-item-seat').forEach(function(seatElement) {
@@ -541,6 +582,5 @@
             });
         </script>
     @else
-    
     @endif
 @endsection
