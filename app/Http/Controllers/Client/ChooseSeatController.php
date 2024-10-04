@@ -34,13 +34,19 @@ class ChooseSeatController extends Controller
     public function test(Request $request, $showtimeId)
     {
         // dd($request->all());
-
+        // Xác thực dữ liệu đầu vào
+        // $request->validate([
+        //     'showtimeId' => 'required|integer|exists:showtimes,id',
+        //     'seatId' => 'required|string', // Chuỗi chứa các ID ghế
+        //     'selected_seats' => 'required|string', // Chuỗi chứa các tên ghế đã chọn
+        //     'total_price_seat' => 'required|numeric', // Tổng giá tiền cho các ghế đã chọn
+        // ]);
         // Lưu thông tin vào session
         session([
             'showtime_id' => $request->input('showtimeId'),
             'seat_ids' => explode(',', $request->input('seatId')), // Chuyển chuỗi ghế thành mảng
             'selected_seats' => explode(', ', $request->input('selected_seats')), // Chuyển tên ghế thành mảng
-            'total_price_seat' => $request->input('total_price_seat'),
+            'total_price' => $request->input('total_price'),
         ]);
 
         return redirect()->route('checkout');

@@ -300,7 +300,7 @@
                                     <div>
                                         <p>Tổng tiền:</p>
                                         <p class="text-danger total-price-checkout">
-                                            {{ number_format(session('total_price_seat', 0), 0, ',', '.') }} VNĐ
+                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} VNĐ
                                         </p>
                                         <input type="text" name="total-price" id="total-price" value="" hidden
                                             readonly>
