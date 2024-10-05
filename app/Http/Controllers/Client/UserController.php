@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateUserRequest;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,8 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        
-        return view('client.users.my-account', compact('user', 'genders'));
+        $tickets = Ticket::query()->with('ticket_movies')->where('user_id', $userID)->paginate(5);
+        return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
 
     public function update(UpdateUserRequest $request)

@@ -13,7 +13,8 @@ class TicketMovie extends Model
         'showtime_id',
         'seat_id',
         'room_id',
-        /*'code',*/ //mã từ bảng vé -> lấy từ ticket sang đi
+        /*'code',*/ //mã từ bảng vé -> lấy từ ticket sang đi , ok 
         'price',
     ];
+
 }

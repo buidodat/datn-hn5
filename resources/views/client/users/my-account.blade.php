@@ -141,53 +141,54 @@
                                     <tr>
                                         <th class="cinema-journey-th">Mã Đặt vé</th>
                                         <th class="cinema-journey-th">Phim</th>
-
                                         <th class="cinema-journey-th">Giờ Chiếu</th> {{-- Ngày - Giờ chiếu -> giờ kết thúc --}}
                                         <th class="cinema-journey-th">Rạp </th> {{-- Tên Rạp - Tên phòng --}}
-
-
                                         <th class="cinema-journey-th">Ghế</th>
-
-
-                                        {{-- <th class="cinema-journey-th">Combo</th> --}} {{-- Combo hiển thị trang chi tiết gd --}}
                                         <th class="cinema-journey-th">Trạng Thái</th>
-                                        {{-- <th class="cinema-journey-th">Điểm</th> --}} {{-- Điểm ở trang chi tiết gd --}}
                                         <th class="cinema-journey-th">Tổng tiền</th>
                                         <th class="cinema-journey-th">Thao tác</th>
 
                                     </tr>
                                 </thead>
                                 <tbody class="cinema-journey-tbody">
-                                    <tr>
-                                        <td class="cinema-journey-td">4811201174585152</td>
-                                        <td class="cinema-journey-td">
-                                            <img src="{{ asset('theme/client/images/image.png') }}" alt="Movie Poster"
-                                                class="cinema-journey-movie-poster" />
-                                            <p class="cinema-journey-movie-title">Ma Da</p>
-                                        </td>
-                                        <td class="cinema-journey-td">27/08/2024 <br /> 16:00 - 18:25</td>
-                                        <td class="cinema-journey-td">Poly Mỹ Đình - P101 </td>
+                                    @if ($tickets->count() > 0)
+                                        @foreach ($tickets as $ticket)
+                                            <tr>
+                                                <td class="cinema-journey-td">{{ $ticket->code }}</td>
+                                                <td class="cinema-journey-td">
+                                                    <img src="{{ asset('theme/client/images/image.png') }}"
+                                                        alt="Movie Poster" class="cinema-journey-movie-poster" />
+                                                    <p class="cinema-journey-movie-title" align='left'>Ma Da</p>
+                                                </td>
+                                                <td class="cinema-journey-td">27/08/2024 <br /> 16:00 - 18:25</td>
+                                                <td class="cinema-journey-td">Poly Mỹ Đình - P101 </td>
 
 
-                                        <td class="cinema-journey-td">E1, E2</td>
+                                                <td class="cinema-journey-td">E1, E2</td>
 
-                                        {{-- <td class="cinema-journey-td">
-                                            Sweet Combo 69oz<br />Số lượng: 2<br />Tổng tiền: 176.000 đ
-                                        </td> --}}
 
-                                        <td class="cinema-journey-td">Chờ xác nhận</td>
-                                        <td class="cinema-journey-td">
-                                            190.000đ
-                                        </td>
-                                        <td class="cinema-journey-td">
-                                            <a href="#detail-ticket" aria-controls="trand" role="tab"
-                                                data-toggle="tab">
-                                                Chi tiết
-                                            </a>
-                                        </td>
-                                    </tr>
+
+                                                <td class="cinema-journey-td">Chờ xác nhận</td>
+                                                <td class="cinema-journey-td">
+                                                    190.000đ
+                                                </td>
+                                                <td class="cinema-journey-td">
+                                                    <a href="#detail-ticket" aria-controls="trand" role="tab"
+                                                        data-toggle="tab">
+                                                        Chi tiết
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td class="cinema-journey-td" colspan="8">Bạn chưa có giao dịch nào !</td>
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
+
+                            {{ $tickets->links() }}
                         </div>
                     </div>
 
@@ -244,7 +245,7 @@
                                     </div>
 
                                 </div>
-                               
+
 
 
 
@@ -296,7 +297,8 @@
 
 
                                             <tr>
-                                                <th colspan="5" class="total-detail" align="right">Tổng cộng: 277.000đ</th>
+                                                <th colspan="5" class="total-detail" align="right">Tổng cộng:
+                                                    277.000đ</th>
                                             </tr>
                                         </tbody>
                                         {{-- <tfoot>

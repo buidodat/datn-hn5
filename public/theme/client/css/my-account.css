@@ -388,3 +388,85 @@
     .table-history table th.total-detail {
         text-align: right;
     }
+
+    /* Css paginate trang lịch sử giao dịch */
+
+
+    .cinema-journey-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .cinema-journey-container .d-flex.justify-content-between.flex-fill.d-sm-none {
+        display: none;
+    }
+
+    .cinema-journey-container p.small.text-muted {
+        display: none;
+    }
+
+    .cinema-journey-container .pagination {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .cinema-journey-container .page-link {
+   
+     
+        border-color: hsl(0, 0%, 87%);
+        margin: 0px;
+        color: #000000;
+        background: #ffffff;
+        font-size: 16px;
+        border: 1px solid #e7e7e7;
+        text-transform: uppercase;
+        transition: all 0.5s;
+        width: 30px;
+        height: 30px;
+        line-height: 20px;
+        border-radius: 0px !important;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        text-align: center;
+        margin-right: 10px;
+        margin-top: 0px !important;
+        padding-left: 10px;
+    }
+
+
+    /* .cinema-journey-container .page-link:hover {
+    background-color: #ff9344 !important;
+} */
+
+    .cinema-journey-container .pagination>li:first-child>a {
+        /* border-radius: 10px !important; */
+        background: white;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+        color: black;
+        line-height: 17px;
+    }
+
+    .cinema-journey-container .pagination>li:last-child>a {
+        background: white;
+        border: 1px solid #ccc;
+        margin-left: 0px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 15px;
+        margin-left: 0px !important;
+        /* margin-left: 10px; */
+
+        color: black;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    .cinema-journey-container .pagination>li>a:hover {
+        background: #ccc;
+    }
