@@ -143,7 +143,7 @@
 
                 {{-- Giá vé --}}
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.price-ticket') }}">
+                    <a class="nav-link menu-link" href="{{ route('admin.ticket-price') }}">
                         <i class=" ri-ticket-2-line"></i> <span data-key="t-dashboards">Giá vé</span>
                     </a>
                 </li>
