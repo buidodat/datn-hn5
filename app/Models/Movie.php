@@ -62,9 +62,9 @@ class Movie extends Model
     {
         return $this->hasMany(MovieReview::class, 'movie_id');
     }
-    public function ticketMovies()
+    public function ticketSeats()
     {
-        return $this->hasMany(TicketMovie::class);
+        return $this->hasMany(TicketSeat::class);
     }
     public function showtimes()
     {
