@@ -172,17 +172,29 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            sửa</a>
+
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -190,10 +202,11 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-id="{{ $room->id }}" @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                        @disabled(!$room->is_publish)>
                                                 </div>
                                             </td>
                                         </tr>
@@ -202,11 +215,8 @@
                                 </tbody>
                             </table>
                         </div>
-
-
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
-                                id="tableIsPublish">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
@@ -224,17 +234,28 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -242,10 +263,10 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" >
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-id="{{ $room->id }}" @checked($room->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                                 </div>
                                             </td>
                                         </tr>
@@ -274,17 +295,28 @@
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -292,10 +324,9 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch"
-                                                        @checked($room->is_active)
-                                                        disabled>
+                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        @checked($room->is_active) disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -325,31 +356,39 @@
                                             <tr>
                                                 <td>{{ $room->id }}</td>
                                                 <td>
-                                                <div class='room-name'>
-                                                   <div class='mb-1 fs-6'> {{ $room->name }}</div>
-                                                    <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.show',$room) }}">Chi tiết</a>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 " href="{{ route('admin.rooms.seat-diagram',$room) }}">Sơ đồ ghế</a>
+                                                    <div class='room-name'>
+                                                        <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                        <div>
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                            <a
+                                                                class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                                sửa</a>
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ
+                                                                đồ
+                                                                ghế</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>{{ $room->cinema->name }}</td>
+                                                </td>
+                                                <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
-                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active',true)->count() }} / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                    / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
                                                 <td>
                                                     {!! $room->is_publish == 1
                                                         ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
                                                         : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                                 </td>
                                                 <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active" name="is_active"
-                                                        type="checkbox" role="switch" data-id="{{ $room->id }}"
-                                                        @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')" @disabled(!$room->is_publish)>
-                                                </div>
-                                            </td>
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active channge-is-active"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $room->id }}" @checked($room->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                            @disabled(!$room->is_publish)>
+                                                    </div>
+                                                </td>
 
                                             </tr>
                                         @endforeach
@@ -386,19 +425,19 @@
                                     Phòng</label>
                                 <input type="text" class="form-control" id="name" name="name" required
                                     placeholder="Poly 202">
-                                <span class="text-danger mt-3" id="nameError"></span> <!-- Thêm thông báo lỗi -->
+                                <span class="text-danger mt-3" id="createNameError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
                             <div class="col-md-5 mb-3">
                                 <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
                                     Nhánh</label>
-                                <select class="form-select" id="branchId" name="branch_id" onchange="loadCinemas()"
-                                    required>
+                                <select class="form-select" id="branchId" name="branch_id"
+                                    onchange="loadCinemas('branchId', 'cinemaId')" required>
                                     <option value="" disabled selected>Chọn chi nhánh</option>
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="branchError"></span> <!-- Thêm thông báo lỗi -->
+                                <span class="text-danger mt-3" id="createBranchError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
 
                             <!-- Chọn Rạp Chiếu -->
@@ -408,7 +447,7 @@
                                 <select class="form-select" id="cinemaId" name="cinema_id" required>
                                     <option value="" disabled selected>Chọn rạp chiếu</option>
                                 </select>
-                                <span class="text-danger mt-3" id="cinemaError"></span>
+                                <span class="text-danger mt-3" id="createCinemaError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="type_room_id" class="form-label"><span class="text-danger">*</span> Loại
@@ -418,7 +457,7 @@
                                         <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="typeRoomError"></span>
+                                <span class="text-danger mt-3" id="createTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận
@@ -428,7 +467,7 @@
                                         <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="matrixSeatError"></span>
+                                <span class="text-danger mt-3" id="createMatrixSeatError"></span>
                             </div>
                             <!-- Chọn Chi Nhánh -->
 
@@ -438,7 +477,82 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="saveRoomBtn">Thêm mới</button>
+                    <button type="button" class="btn btn-primary" id="createRoomBtn">Thêm mới</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal cập nhật phòng chiếu -->
+    <div class="modal fade" id="updateRoomModal" tabindex="-1" aria-labelledby="updateRoomModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateRoomModalLabel">Cập Nhật Phòng Chiếu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateRoomForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <input type="hidden" id="updateRoomId" name="room_id">
+                            <div class="col-md-12 mb-3">
+                                <label for="updateName" class="form-label"><span class="text-danger">*</span> Tên
+                                    Phòng</label>
+                                <input type="text" class="form-control" id="updateName" name="name" required
+                                 placeholder="Poly 202">
+                                <span class="text-danger mt-3" id="updateNameError"></span>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="updateBranchId" class="form-label"><span class="text-danger">*</span> Chi
+                                    Nhánh</label>
+                                <select class="form-select" id="updateBranchId" name="branch_id"
+                                    onchange="loadCinemas('updateBranchId', 'updateCinemaId')" required>
+                                    <option value="" disabled selected>Chọn chi nhánh</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger mt-3" id="updateBranchError"></span>
+                            </div>
+
+                            <div class="col-md-7 mb-3">
+                                <label for="updateCinemaId" class="form-label"><span class="text-danger">*</span> Rạp
+                                    Chiếu</label>
+                                <select class="form-select" id="updateCinemaId" name="cinema_id" required>
+                                    <option value="" disabled selected>Chọn rạp chiếu</option>
+                                </select>
+                                <span class="text-danger mt-3" id="updateCinemaError"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="updateTypeRoomId" class="form-label"><span class="text-danger">*</span> Loại
+                                    phòng chiếu</label>
+                                <select class="form-select" id="updateTypeRoomId" name="type_room_id" required>
+                                    @foreach ($typeRooms as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger mt-3" id="updateTypeRoomError"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="updateMatrixId" class="form-label"><span class="text-danger">*</span> Ma trận
+                                    ghế</label>
+                                <select class="form-select" id="updateMatrixId" name="matrix_id" required>
+                                    @foreach (App\Models\Room::MATRIXS as $matrix)
+                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger mt-3" id="updateMatrixSeatError"></span>
+                            </div>
+
+                            <input type="hidden" name="capacity" value='5'> <!-- Giá trị cố định cho capacity -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="updateRoomBtn">Cập nhật</button>
                 </div>
             </div>
         </div>
@@ -447,14 +561,15 @@
 
 
 @section('script-libs')
+    {{-- Hàm load các rạp chiếu khi chọn chi nhánh & modal create rạp chiếu --}}
     <script>
-        // Hàm load các rạp chiếu khi chọn chi nhánh
-        function loadCinemas() {
-            const branchId = document.getElementById('branchId').value;
-            const cinemaSelect = document.getElementById('cinemaId');
+        function loadCinemas(branchIdElementId, cinemaSelectElementId, selectedCinemaId = null) {
+            const branchId = document.getElementById(branchIdElementId).value;
+            const cinemaSelect = document.getElementById(cinemaSelectElementId);
             cinemaSelect.innerHTML = '<option value="" disabled selected>Chọn rạp chiếu</option>'; // Reset options
+
             if (branchId) {
-                const url = APP_URL + `/api/cinemas/${branchId}`
+                const url = APP_URL + `/api/cinemas/${branchId}`;
                 fetch(url)
                     .then(response => {
                         if (!response.ok) {
@@ -470,6 +585,11 @@
                                 option.textContent = cinema.name;
                                 cinemaSelect.appendChild(option);
                             });
+
+                            // Nếu có cinemaId đã chọn, chọn nó trong danh sách
+                            if (selectedCinemaId) {
+                                cinemaSelect.value = selectedCinemaId;
+                            }
                         } else {
                             cinemaSelect.innerHTML +=
                                 '<option value="" disabled selected>Không có rạp chiếu nào</option>';
@@ -481,7 +601,7 @@
             }
         }
 
-        document.getElementById('saveRoomBtn').addEventListener('click', function(event) {
+        document.getElementById('createRoomBtn').addEventListener('click', function(event) {
             const form = document.getElementById('createRoomForm');
             const formData = new FormData(form);
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
@@ -494,7 +614,7 @@
                     if (!response.ok) {
                         // Nếu có lỗi (400, 422, 500, ...), chuyển đến phần xử lý lỗi
                         return response.json().then(errorData => {
-                            handleErrors(errorData.error); // Gọi hàm xử lý lỗi
+                            handleErrors(errorData.error, 'create'); // Gọi hàm xử lý lỗi
                             hasErrors = true; // Đánh dấu có lỗi
                         });
                     }
@@ -511,38 +631,118 @@
                 })
                 .catch(error => console.error('Error adding room:', error));
         });
+        // Hàm để mở modal phòng chiếu
+        document.querySelectorAll('.openUpdateRoomModal').forEach(button => {
+            button.addEventListener('click', function() {
+                const roomId = this.getAttribute('data-room-id'); // Lấy roomId từ data attribute
+                const roomName = this.getAttribute('data-room-name');
+                const branchId = this.getAttribute('data-branch-id');
+                const cinemaId = this.getAttribute('data-cinema-id');
+                const typeRoomId = this.getAttribute('data-type-room-id');
+                const matrixId = this.getAttribute('data-matrix-id');
+                const isPublish = this.getAttribute('data-is-publish');
+
+                // Điền dữ liệu vào modal
+                document.getElementById('updateRoomId').value = roomId; // Gán giá trị roomId
+                document.getElementById('updateName').value = roomName;
+                document.getElementById('updateBranchId').value = branchId;
+
+                // Tải danh sách rạp chiếu và chọn rạp đã chọn
+                loadCinemas('updateBranchId', 'updateCinemaId', cinemaId);
+
+                document.getElementById('updateTypeRoomId').value = typeRoomId;
+                document.getElementById('updateMatrixId').value = matrixId;
+                if (isPublish == 1) {
+                    // Chỉ cho phép nhập tên, các trường khác disabled
+                    document.getElementById('updateBranchId').disabled = true;
+                    document.getElementById('updateCinemaId').disabled = true;
+                    document.getElementById('updateTypeRoomId').disabled = true;
+                    document.getElementById('updateMatrixId').disabled = true;
+                } else {
+                    // Nếu chưa publish, cho phép chỉnh sửa tất cả
+                    document.getElementById('updateBranchId').disabled = false;
+                    document.getElementById('updateCinemaId').disabled = false;
+                    document.getElementById('updateTypeRoomId').disabled = false;
+                    document.getElementById('updateMatrixId').disabled = false;
+                }
+
+                // Mở modal
+                console.log(roomId, roomName, branchId, cinemaId, typeRoomId, matrixId);
+                $('#updateRoomModal').modal('show');
+            });
+        });
+
+        // Hàm để cập nhật thông tin phòng chiếu
+        document.getElementById('updateRoomBtn').addEventListener('click', function(event) {
+            const form = document.getElementById('updateRoomForm');
+            const formData = new FormData(form);
+            console.log([...formData]);
+            const roomId = document.getElementById('updateRoomId').value; // Lấy ID phòng từ hidden input
+            let hasErrors = false; // Biến để theo dõi có lỗi hay không
+            const url = APP_URL + `/api/rooms/${roomId}`; // URL cập nhật phòng chiếu
+
+            fetch(url, {
+                    method: 'POST',
+                    body: formData,
+
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            handleErrors(errorData.error, 'update'); // Gọi hàm xử lý lỗi
+                            hasErrors = true; // Đánh dấu có lỗi
+                        });
+                    }
+                    return response.json(); // Chuyển đổi phản hồi thành JSON
+                })
+                .then(data => {
+                    if (!hasErrors) {
+                        console.log(data);
+                        $('#updateRoomModal').modal('hide');
+                        form.reset();
+
+                        alert('Thao tác thành công!'); // Hiển thị thông báo trước khi reload trang
+                        location.reload();
+
+                    }
+
+                })
+                .catch(error => console.error('Error updating room:', error));
+        });
+
 
         // Hàm để hiển thị lỗi xác thực
-        function handleErrors(errors) {
+        function handleErrors(errors, prefix) {
             // Reset thông báo lỗi trước đó
-            document.getElementById('nameError').innerText = '';
-            document.getElementById('branchError').innerText = '';
-            document.getElementById('cinemaError').innerText = '';
-            document.getElementById('matrixSeatError').innerText = '';
-            document.getElementById('typeRoomError').innerText = '';
+            document.getElementById(`${prefix}NameError`).innerText = '';
+            document.getElementById(`${prefix}BranchError`).innerText = '';
+            document.getElementById(`${prefix}CinemaError`).innerText = '';
+            document.getElementById(`${prefix}MatrixSeatError`).innerText = '';
+            document.getElementById(`${prefix}TypeRoomError`).innerText = '';
+
             // Kiểm tra và hiển thị lỗi cho từng trường
             if (errors.name) {
-                document.getElementById('nameError').innerText = errors.name.join(', ');
+                document.getElementById(`${prefix}NameError`).innerText = errors.name.join(', ');
             }
             if (errors.branch_id) {
-                document.getElementById('branchError').innerText = errors.branch_id.join(', ');
+                document.getElementById(`${prefix}BranchError`).innerText = errors.branch_id.join(', ');
             }
             if (errors.cinema_id) {
-                document.getElementById('cinemaError').innerText = errors.cinema_id.join(', ');
+                document.getElementById(`${prefix}CinemaError`).innerText = errors.cinema_id.join(', ');
             }
             if (errors.matrix_id) {
-                document.getElementById('matrixSeatError').innerText = errors.matrix_id.join(', ');
+                document.getElementById(`${prefix}MatrixSeatError`).innerText = errors.matrix_id.join(', ');
             }
             if (errors.type_room_id) {
-                document.getElementById('typeRoomError').innerText = errors.type_room_id.join(', ');
+                document.getElementById(`${prefix}TypeRoomError`).innerText = errors.type_room_id.join(', ');
             }
-            // Thêm các trường khác nếu cần
         }
     </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- cập nhật active phòng chiếu --}}
     <script>
         $(document).ready(function() {
-            // Lắng nghe sự kiện thay đổi của tất cả các checkbox có lớp 'channge-is-active'
             $('.channge-is-active ').on('change', function() {
                 // Lấy ID của room từ thuộc tính 'data-id'
                 let roomId = $(this).data('id');
@@ -607,8 +807,8 @@
         @foreach ($cinemas as $cinema)
             new DataTable("#tableCinemaID{{ $cinema->id }}", {
                 order: [
-                [0, 'desc']
-            ]
+                    [0, 'desc']
+                ]
             });
         @endforeach
     </script>

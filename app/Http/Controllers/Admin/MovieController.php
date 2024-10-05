@@ -31,19 +31,15 @@ class MovieController extends Controller
     {
         $ratings = Movie::RATINGS;
         $versions = Movie::VERSIONS;
-        $typeSeats = TypeSeat::all();
-        $typeRooms = TypeRoom::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', 'typeSeats', 'typeRooms']));
+        // $typeSeats = TypeSeat::all();
+        // $typeRooms = TypeRoom::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', ]));
     }
 
 
     public function store(StoreMovieRequest $request)
     {
         try {
-            // dd([
-            //     'seat' => $request->seat_prices,
-            //     'room' => $request->room_surcharges
-            // ]);
             DB::transaction(function () use ($request) {
 
                 $dataMovie = [
@@ -58,10 +54,7 @@ class MovieController extends Controller
                     'release_date' => $request->release_date,
                     'end_date' => $request->end_date,
                     'trailer_url' => $request->trailer_url,
-                    'movie_prices' =>  [
-                        'seat' => $request->seat_prices,
-                        'room' => $request->room_surcharges
-                    ],
+                    'surcharge' => $request->surcharge,
                     'is_active' => isset($request->is_active) ? 1 : 0,
                     'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
@@ -112,27 +105,11 @@ class MovieController extends Controller
         $movieVersions = $movie->movieVersions()->pluck('name')->all();
         $ratings = Movie::RATINGS;
         $versions = Movie::VERSIONS;
-        $typeSeats = TypeSeat::all();
-        $typeRooms = TypeRoom::all();
-        $seatPrices = [];
-        $roomSurcharges = [];
-    
-        foreach ($typeSeats as $item) {
-            $seatPrices[] = [
-                'id' => $item->id,
-                'name' => $item->name,
-                'price' => $movie->movie_prices['seat'][$item->id] ?? $item->price
-            ];
-        }
-        foreach ($typeRooms as $item) {
-            $roomSurcharges[] = [
-                'id' => $item->id,
-                'name' => $item->name,
-                'surcharge' => $movie->movie_prices['room'][$item->id] ?? $item->surcharge
-            ];
-        }
+        // $typeSeats = TypeSeat::all();
+        // $typeRooms = TypeRoom::all();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ratings', 'versions', 'movie', 'movieVersions', 'seatPrices', 'roomSurcharges'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ratings', 'versions', 'movie', 'movieVersions'));
     }
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
@@ -149,10 +126,7 @@ class MovieController extends Controller
                     'duration' => $request->duration,
                     'end_date' => $request->end_date,
                     'trailer_url' => $request->trailer_url,
-                    'movie_prices' =>  [
-                        'seat' => $request->seat_prices,
-                        'room' => $request->room_surcharges
-                    ],
+                    'surcharge' => $request->surcharge,
                     'is_active' => isset($request->is_active) ? 1 : 0,
                     'is_hot' => isset($request->is_hot) ? 1 : 0,
                 ];
@@ -176,7 +150,7 @@ class MovieController extends Controller
 
                 $movieVersions = $movie->movieVersions()->pluck('name')->all();
 
-                foreach ($request->versions ?? [] as $version ) {
+                foreach ($request->versions ?? [] as $version) {
                     if (!in_array($version, $movieVersions)) {
                         MovieVersion::create([
                             'movie_id' => $movie->id,
@@ -193,5 +167,4 @@ class MovieController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
 }
