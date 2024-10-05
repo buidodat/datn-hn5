@@ -10,7 +10,7 @@ class Ticket extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'payment_id',
+        'payment_method',
         'voucher_id',
         'voucher_code',
         'voucher_discount',

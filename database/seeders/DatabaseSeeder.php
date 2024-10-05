@@ -533,24 +533,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        //payment
-        $paymentMethods = [
-            ['name' => 'vnpay'],
-            ['name' => 'momo'],
-            ['name' => 'zalopay'],
-            ['name' => 'tiền mặt'],
-        ];
-
-        foreach ($paymentMethods as $payment) {
-            DB::table('payments')->insert([
-                'name' => $payment['name'],
-                'description' => fake()->text(50),
-                'is_active' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
+        //tickets
+        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
+        $movieIds = DB::table('movies')->pluck('id')->toArray();
         $paymentIds = DB::table('payments')->pluck('id')->toArray();
         $userIds = range(1, 6);
 
@@ -558,75 +543,53 @@ class DatabaseSeeder extends Seeder
             //fake giới hạn trong 1 tháng
             $expiryDate = Carbon::now()->addMonth();
 
-            DB::table('tickets')->insert([
-                'user_id' => $userId,
-                'payment_id' => fake()->randomElement($paymentIds),
-                'voucher_id' => null,
-                'voucher_code' => null,
-                'voucher_discount' => null,
-                'code' => fake()->regexify('[A-Za-z0-9]{10}'), //qr
-                'total_price' => fake()->numberBetween(50, 200) * 1000,
-                'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Hủy']),
-                'expiry' => $expiryDate,
-                'staff' => fake()->randomElement(['admin', 'member']),
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+            for ($i = 0; $i < 2; $i++) {
+                $ticketId = DB::table('tickets')->insertGetId([
+                    'user_id' => $userId,
+                    'payment_method' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
+                    'voucher_id' => null,
+                    'voucher_code' => null,
+                    'voucher_discount' => null,
+                    'code' => fake()->regexify('[A-Za-z0-9]{10}'),
+                    'total_price' => fake()->numberBetween(50, 200) * 1000,
+                    'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Hủy']),
+                    'expiry' => $expiryDate,
+                    'staff' => fake()->randomElement(['admin', 'member']),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
 
-
-        $ticketIds = DB::table('tickets')->pluck('id')->toArray();
-        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
-        $movieIds = DB::table('movies')->pluck('id')->toArray();
-
-        foreach ($ticketIds as $ticket_id) {
-            //1 ticket_seat ngau nhien
-            for ($i = 0; $i < 1; $i++) {
+                // Lấy showtime ngẫu nhiên
                 $showtime_id = fake()->randomElement($showtimeIds);
-                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-                $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
 
-                if (!empty($seatIds)) {
+                // phòng theo suaats chiếu
+                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+
+                // ghế theo phòng
+                $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
+
+                $seatCount = ($i == 0) ? 3 : 1;
+
+                // Sắp xếp ghế liên tục cạnh nhau
+                $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
+                $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
+
+                $price = fake()->numberBetween(50, 200) * 1000;
+
+                foreach ($selectedSeats as $seatId) {
                     DB::table('ticket_seats')->insert([
-                        'ticket_id' => $ticket_id,
+                        'ticket_id' => $ticketId,
                         'showtime_id' => $showtime_id,
-                        'seat_id' => fake()->randomElement($seatIds),
+                        'seat_id' => $seatId,
                         'room_id' => $room_id,
                         'movie_id' => fake()->randomElement($movieIds),
-                        'price' => fake()->numberBetween(50, 200) * 1000,
+                        'price' => $price,
+                        'created_at' => now(),
+                        'updated_at' => now()
                     ]);
                 }
             }
-
-            $showtime_id = fake()->randomElement($showtimeIds);
-            $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-            $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
-            $movie_id = fake()->randomElement($movieIds);
-            $price = fake()->numberBetween(50, 200) * 1000;
-
-            // 3 ticket_seat co ticket_id trung nhau (3 ghe ngoi khac nhau)
-            if (count($seatIds) >= 3) {
-                sort($seatIds);
-                for ($i = 0; $i < count($seatIds) - 2; $i++) {
-                    // Lấy 3 seat IDs liên tục
-                    $selectedSeatIds = array_slice($seatIds, $i, 3);
-                    if (count($selectedSeatIds) == 3) {
-                        foreach ($selectedSeatIds as $seat_id) {
-                            DB::table('ticket_seats')->insert([
-                                'ticket_id' => $ticket_id,
-                                'showtime_id' => $showtime_id,
-                                'seat_id' => $seat_id,
-                                'room_id' => $room_id,
-                                'movie_id' => $movie_id,
-                                'price' => $price,
-                            ]);
-                        }
-                        break;
-                    }
-                }
-            }
         }
-
 
     }
 }
