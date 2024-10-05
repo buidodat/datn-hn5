@@ -63,6 +63,7 @@ Route::prefix('rooms')
         Route::put('seat-diagram/{room}/update', [RoomController::class,'updateSeatDiagram'])->name('seat-diagram.update');
         Route::put('publish/{room}',     [RoomController::class,'publish'])->name('publish');
         Route::get('{room}',     [RoomController::class,'show'])->name('show');
+        Route::get('{room}/destroy',     [RoomController::class,'destroy'])->name('destroy');
     });
 // Route::resource('rooms', RoomController::class);
 

@@ -80,6 +80,23 @@ class RoomController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    public function destroy(Room $room){
+        try {
+            if ($room->is_publish) {
+                return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
+            }
+            DB::transaction(function () use ($room) {
+
+                Seat::where('room_id', $room->id)->delete();
+                $room->delete();
+
+            });
+
+            return redirect()->back()->with('success', 'Thao tác thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
 
 
     // public function convertNumberToLetters($number = Room::ROW_SEAT_REGULAR)
