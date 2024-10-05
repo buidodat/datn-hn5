@@ -25,7 +25,7 @@ class RoomController extends Controller
     //     return response()->json($cinemas);
     // }
 
-    
+
     public function index()
     {
         $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('id')->get();
@@ -100,9 +100,8 @@ class RoomController extends Controller
     public function show(Room $room)
     {
         $seats = Seat::where(['room_id' => $room->id])->get();
-        $capacities = Room::CAPACITIESS;
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'room','seats']));
     }
 
     /**
@@ -110,9 +109,8 @@ class RoomController extends Controller
      */
     public function edit(Room $room) {
         $seats = Seat::where(['room_id' => $room->id])->get();
-        $capacities = Room::CAPACITIESS;
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'capacities', 'room','seats']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'room','seats']));
     }
 
     /**

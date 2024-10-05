@@ -414,7 +414,7 @@
                                     Phòng</label>
                                 <input type="text" class="form-control" id="name" name="name" required
                                     placeholder="Poly 202">
-                                <span class="text-danger mt-3" id="nameError"></span> <!-- Thêm thông báo lỗi -->
+                                <span class="text-danger mt-3" id="createNameError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
                             <div class="col-md-5 mb-3">
                                 <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
@@ -426,7 +426,7 @@
                                         <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="branchError"></span> <!-- Thêm thông báo lỗi -->
+                                <span class="text-danger mt-3" id="createBranchError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
 
                             <!-- Chọn Rạp Chiếu -->
@@ -436,7 +436,7 @@
                                 <select class="form-select" id="cinemaId" name="cinema_id" required>
                                     <option value="" disabled selected>Chọn rạp chiếu</option>
                                 </select>
-                                <span class="text-danger mt-3" id="cinemaError"></span>
+                                <span class="text-danger mt-3" id="createCinemaError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="type_room_id" class="form-label"><span class="text-danger">*</span> Loại
@@ -446,7 +446,7 @@
                                         <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="typeRoomError"></span>
+                                <span class="text-danger mt-3" id="createTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận
@@ -456,7 +456,7 @@
                                         <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="matrixSeatError"></span>
+                                <span class="text-danger mt-3" id="createMatrixSeatError"></span>
                             </div>
                             <!-- Chọn Chi Nhánh -->
 
@@ -483,13 +483,14 @@
                 <div class="modal-body">
                     <form id="updateRoomForm">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <input type="hidden" id="updateRoomId" name="room_id">
                             <div class="col-md-12 mb-3">
                                 <label for="updateName" class="form-label"><span class="text-danger">*</span> Tên
                                     Phòng</label>
                                 <input type="text" class="form-control" id="updateName" name="name" required
-                                    placeholder="Poly 202">
+                                    value="hihi" placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="updateNameError"></span>
                             </div>
                             <div class="col-md-5 mb-3">
@@ -602,7 +603,7 @@
                     if (!response.ok) {
                         // Nếu có lỗi (400, 422, 500, ...), chuyển đến phần xử lý lỗi
                         return response.json().then(errorData => {
-                            handleErrors(errorData.error); // Gọi hàm xử lý lỗi
+                            handleErrors(errorData.error, 'create'); // Gọi hàm xử lý lỗi
                             hasErrors = true; // Đánh dấu có lỗi
                         });
                     }
@@ -641,6 +642,7 @@
                 document.getElementById('updateMatrixId').value = matrixId;
 
                 // Mở modal
+                console.log(roomId, roomName, branchId, cinemaId, typeRoomId, matrixId);
                 $('#updateRoomModal').modal('show');
             });
         });
@@ -649,18 +651,20 @@
         document.getElementById('updateRoomBtn').addEventListener('click', function(event) {
             const form = document.getElementById('updateRoomForm');
             const formData = new FormData(form);
+            console.log([...formData]);
             const roomId = document.getElementById('updateRoomId').value; // Lấy ID phòng từ hidden input
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
             const url = APP_URL + `/api/rooms/${roomId}`; // URL cập nhật phòng chiếu
 
             fetch(url, {
-                    method: 'PUT', // Sử dụng phương thức PUT để cập nhật
+                    method: 'POST',
                     body: formData,
+
                 })
                 .then(response => {
                     if (!response.ok) {
                         return response.json().then(errorData => {
-                            handleErrors(errorData.error); // Gọi hàm xử lý lỗi
+                            handleErrors(errorData.error, 'update'); // Gọi hàm xử lý lỗi
                             hasErrors = true; // Đánh dấu có lỗi
                         });
                     }
@@ -671,38 +675,41 @@
                         console.log(data);
                         $('#updateRoomModal').modal('hide');
                         form.reset();
-                        alert('Cập nhật phòng thành công!');
+                    //  
+                        location.reload();
+
                     }
+
                 })
                 .catch(error => console.error('Error updating room:', error));
         });
 
 
         // Hàm để hiển thị lỗi xác thực
-        function handleErrors(errors) {
+        function handleErrors(errors, prefix) {
             // Reset thông báo lỗi trước đó
-            document.getElementById('nameError').innerText = '';
-            document.getElementById('branchError').innerText = '';
-            document.getElementById('cinemaError').innerText = '';
-            document.getElementById('matrixSeatError').innerText = '';
-            document.getElementById('typeRoomError').innerText = '';
+            document.getElementById(`${prefix}NameError`).innerText = '';
+            document.getElementById(`${prefix}BranchError`).innerText = '';
+            document.getElementById(`${prefix}CinemaError`).innerText = '';
+            document.getElementById(`${prefix}MatrixSeatError`).innerText = '';
+            document.getElementById(`${prefix}TypeRoomError`).innerText = '';
+
             // Kiểm tra và hiển thị lỗi cho từng trường
             if (errors.name) {
-                document.getElementById('nameError').innerText = errors.name.join(', ');
+                document.getElementById(`${prefix}NameError`).innerText = errors.name.join(', ');
             }
             if (errors.branch_id) {
-                document.getElementById('branchError').innerText = errors.branch_id.join(', ');
+                document.getElementById(`${prefix}BranchError`).innerText = errors.branch_id.join(', ');
             }
             if (errors.cinema_id) {
-                document.getElementById('cinemaError').innerText = errors.cinema_id.join(', ');
+                document.getElementById(`${prefix}CinemaError`).innerText = errors.cinema_id.join(', ');
             }
             if (errors.matrix_id) {
-                document.getElementById('matrixSeatError').innerText = errors.matrix_id.join(', ');
+                document.getElementById(`${prefix}MatrixSeatError`).innerText = errors.matrix_id.join(', ');
             }
             if (errors.type_room_id) {
-                document.getElementById('typeRoomError').innerText = errors.type_room_id.join(', ');
+                document.getElementById(`${prefix}TypeRoomError`).innerText = errors.type_room_id.join(', ');
             }
-            // Thêm các trường khác nếu cần
         }
     </script>
 
