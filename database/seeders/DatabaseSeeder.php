@@ -570,7 +570,7 @@ class DatabaseSeeder extends Seeder
                 'voucher_discount' => null,
                 'code' => fake()->regexify('[A-Za-z0-9]{10}'), //qr
                 'total_price' => fake()->numberBetween(50, 200) * 1000,
-                'status' => fake()->randomElement(['pending', 'completed', 'cancelled']),
+                'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Hủy']),
                 'expiry' => $expiryDate,
                 'staff' => fake()->randomElement(['admin', 'member']),
                 'created_at' => now(),
@@ -581,7 +581,7 @@ class DatabaseSeeder extends Seeder
 
         $ticketIds = DB::table('tickets')->pluck('id')->toArray();
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
-
+        $movieIds = DB::table('movies')->pluck('id')->toArray();
         for ($i = 0; $i < 20; $i++) {
             $showtime_id = fake()->randomElement($showtimeIds);
 
@@ -597,6 +597,7 @@ class DatabaseSeeder extends Seeder
                     'showtime_id' => $showtime_id,
                     'seat_id' => fake()->randomElement($seatIds),
                     'room_id' => $room_id,
+                    'movie_id' => fake()->randomElement($movieIds),
                     'price' => fake()->numberBetween(50, 200) * 1000,
                 ]);
             }
