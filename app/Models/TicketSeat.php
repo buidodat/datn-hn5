@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TicketMovie extends Model
+class TicketSeat extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,7 +14,6 @@ class TicketMovie extends Model
         'seat_id',
         'room_id',
         'movie_id',
-        /*'code',*/ //mã từ bảng vé -> lấy từ ticket sang đi
         'price',
     ];
     public function ticket()
@@ -29,10 +28,14 @@ class TicketMovie extends Model
     {
         return $this->belongsTo(Showtime::class);
     }
-    public function room(){
+
+    public function room()
+    {
         return $this->belongsTo(Room::class);
     }
-    public function seat(){
+    public function seat()
+    {
+
         return $this->belongsTo(Seat::class);
     }
 }

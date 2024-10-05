@@ -39,9 +39,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(Voucher::class);
     }
-    public function ticketMovie()
+    public function ticketSeat()
     {
-        return $this->hasMany(TicketMovie::class);
+        return $this->hasMany(TicketSeat::class);
     }
 
 

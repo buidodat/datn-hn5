@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
 
 use App\Http\Controllers\Admin\TypeSeatController;
@@ -59,6 +60,7 @@ Route::prefix('rooms')
     ->group(function () {
         Route::get('/',                   [RoomController::class,'index'])->name('index');
         Route::get('seat-diagram/{room}', [RoomController::class,'seatDiagram'])->name('seat-diagram');
+        Route::put('seat-diagram/{room}/update', [RoomController::class,'updateSeatDiagram'])->name('seat-diagram.update');
         Route::put('publish/{room}',     [RoomController::class,'publish'])->name('publish');
         Route::get('{room}',     [RoomController::class,'show'])->name('show');
     });
@@ -67,9 +69,8 @@ Route::prefix('rooms')
 Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
-Route::get('price-ticket', function () {
-    return view('admin.price-ticket');
-})->name('price-ticket');
+Route::get('ticket-price',[TicketPriceController::class,'index'])->name('ticket-price');
+
 
 // food
 Route::resource('food', FoodController::class);

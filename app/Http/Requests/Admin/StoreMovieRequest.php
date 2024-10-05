@@ -39,10 +39,7 @@ class StoreMovieRequest extends FormRequest
                 'nullable',
                 Rule::in(array_column(Movie::VERSIONS, 'name')),
             ],
-            'seat_prices'=>'required|array',
-            'seat_prices.*' =>'required|integer|min:10000|max:500000',
-            'room_surcharges'=>'required|array',
-            'room_surcharges.*' =>'required|integer|min:0|max:500000',
+            'surcharge'=>'nullable|integer|min:0'
         ];
     }
     public function messages()
@@ -64,14 +61,8 @@ class StoreMovieRequest extends FormRequest
             'versions.required' =>'Vui lòng chọn ít nhất một phiên bản.',
             'versions.*.in' => 'Giá trị không hợp lệ trong phiên bản',
             'versions.array' =>'Phiên bản phải là một mảng.',
-            'seat_prices.*.required' => 'Vui lòng nhập giá.',
-            'seat_prices.*.integer' => 'Giá phải là kiểu số.',
-            'seat_prices.*.min' => 'Giá tối thiểu phải là 10.000 VNĐ.',
-            'seat_prices.*.max' => 'Giá tối đa không quá 500.000 VNĐ',
-            'room_surcharges.*.required' => 'Vui lòng nhập giá.',
-            'room_surcharges.*.integer' => 'Giá phải là kiểu số.',
-            'room_surcharges.*.min' => 'Giá phải là số dương',
-            'room_surcharges.*.max' => 'Giá tối đa không quá 500.000 VNĐ',
+            'surcharge.integer'=>'Giá thu thêm phải là số',
+            'surcharge.min'=>'Giá thu thêm phải là số nguyên dương',
 
         ];
     }
