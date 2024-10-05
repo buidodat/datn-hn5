@@ -16,4 +16,8 @@ class Payment extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
