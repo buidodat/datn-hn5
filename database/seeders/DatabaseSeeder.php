@@ -177,7 +177,6 @@ class DatabaseSeeder extends Seeder
         }
 
 
-
         // Fake data Suất chiếu
         // branch , cinema , phòng, ngày, giờ
         // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
@@ -409,9 +408,6 @@ class DatabaseSeeder extends Seeder
         }
 
 
-
-
-
         //tạo 5 bản ghỉ user type admin
         $users = [
             [
@@ -558,12 +554,12 @@ class DatabaseSeeder extends Seeder
         $paymentIds = DB::table('payments')->pluck('id')->toArray();
         $userIds = range(1, 6);
 
-        for ($i = 0; $i < 10; $i++) {
+        foreach ($userIds as $userId) {
             //fake giới hạn trong 1 tháng
             $expiryDate = Carbon::now()->addMonth();
 
             DB::table('tickets')->insert([
-                'user_id' => fake()->randomElement($userIds),
+                'user_id' => $userId,
                 'payment_id' => fake()->randomElement($paymentIds),
                 'voucher_id' => null,
                 'voucher_code' => null,
@@ -582,26 +578,53 @@ class DatabaseSeeder extends Seeder
         $ticketIds = DB::table('tickets')->pluck('id')->toArray();
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
         $movieIds = DB::table('movies')->pluck('id')->toArray();
-        for ($i = 0; $i < 20; $i++) {
-            $showtime_id = fake()->randomElement($showtimeIds);
 
-            // phòng theo suất chiếu
-            $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+        foreach ($ticketIds as $ticket_id) {
+            //1 ticket_seat ngau nhien
+            for ($i = 0; $i < 1; $i++) {
+                $showtime_id = fake()->randomElement($showtimeIds);
+                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+                $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
 
-            // ghế theo phòng chiếu
-            $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
-
-            if (!empty($seatIds)) {
-                DB::table('ticket_movies')->insert([
-                    'ticket_id' => fake()->randomElement($ticketIds),
-                    'showtime_id' => $showtime_id,
-                    'seat_id' => fake()->randomElement($seatIds),
-                    'room_id' => $room_id,
-                    'movie_id' => fake()->randomElement($movieIds),
-                    'price' => fake()->numberBetween(50, 200) * 1000,
-                ]);
+                if (!empty($seatIds)) {
+                    DB::table('ticket_seats')->insert([
+                        'ticket_id' => $ticket_id,
+                        'showtime_id' => $showtime_id,
+                        'seat_id' => fake()->randomElement($seatIds),
+                        'room_id' => $room_id,
+                        'movie_id' => fake()->randomElement($movieIds),
+                        'price' => fake()->numberBetween(50, 200) * 1000,
+                    ]);
+                }
             }
 
+            $showtime_id = fake()->randomElement($showtimeIds);
+            $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+            $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
+            $movie_id = fake()->randomElement($movieIds);
+            $price = fake()->numberBetween(50, 200) * 1000;
+
+            // 3 ticket_seat co ticket_id trung nhau (3 ghe ngoi khac nhau)
+            if (count($seatIds) >= 3) {
+                sort($seatIds);
+                for ($i = 0; $i < count($seatIds) - 2; $i++) {
+                    // Lấy 3 seat IDs liên tục
+                    $selectedSeatIds = array_slice($seatIds, $i, 3);
+                    if (count($selectedSeatIds) == 3) {
+                        foreach ($selectedSeatIds as $seat_id) {
+                            DB::table('ticket_seats')->insert([
+                                'ticket_id' => $ticket_id,
+                                'showtime_id' => $showtime_id,
+                                'seat_id' => $seat_id,
+                                'room_id' => $room_id,
+                                'movie_id' => $movie_id,
+                                'price' => $price,
+                            ]);
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
 
