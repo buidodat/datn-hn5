@@ -91,10 +91,10 @@
                                                                     height="60px">
                                                             @endif
                                                         </td>
-                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
+                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} Vnđ
                                                     </td> --}}
                                                         <td>{{ $item->name }} - <span class="combo-price"
-                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>VNĐ
+                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>Vnđ
                                                         </td>
 
                                                         <td>
@@ -193,7 +193,7 @@
                                                                 <td>1900</td>
                                                                 <td><input type="text" name="point_use"
                                                                         placeholder="Nhập điểm"></td>
-                                                                <td>= 0 VNĐ</td>
+                                                                <td>= 0 Vnđ</td>
                                                                 <td>
                                                                     <button type="submit">Đổi điểm</button>
                                                                 </td>
@@ -211,18 +211,19 @@
                                     <div>
                                         <p>Tổng tiền:</p>
                                         <p class="text-danger total-price-checkout">
-                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} VNĐ
+                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} Vnđ
                                         </p>
                                         <input type="text" name="total-price" id="total-price" value="" hidden
                                             readonly>
                                     </div>
                                     <div>
                                         <p>Số tiền được giảm:</p>
-                                        <p class="text-danger total-discount">0 VNĐ</p>
+                                        <p class="text-danger total-discount">0 Vnđ</p>
                                     </div>
                                     <div>
                                         <p>Số tiền cần thanh toán:</p>
-                                        <p class="text-danger total-price-payment">0 VNĐ</p>
+                                        <p class="text-danger total-price-payment">
+                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} Vnđ</p>
                                     </div>
                                 </div>
                                 {{-- phuong thuc thanh toan --}}
@@ -380,91 +381,174 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('theme/client/css/checkout.css')}}">
+    <link rel="stylesheet" href="{{ asset('theme/client/css/checkout.css') }}">
 @endsection
 
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var routeUrl = "{{ route('applyVoucher') }}";
-    var csrfToken = "{{ csrf_token() }}";
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var routeUrl = "{{ route('applyVoucher') }}";
+        var csrfToken = "{{ csrf_token() }}";
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease'); //dấu trừ
-        const increaseBtns = document.querySelectorAll('.quantity-btn.increase'); //dấu cộng
-        const quantityInputs = document.querySelectorAll('.quantity-input');
-        const totalPriceElement = document.querySelector('.total-price-checkout .total-price-checkout');
-        const totalPriceInput = document.getElementById('total-price');
+        document.addEventListener('DOMContentLoaded', function() {
+            const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease'); // dấu trừ
+            const increaseBtns = document.querySelectorAll('.quantity-btn.increase'); // dấu cộng
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const totalPriceElement = document.querySelector('.total-price-checkout .total-price-checkout');
+            const totalPriceInput = document.getElementById('total-price');
+            const totalDiscountElement = document.querySelector('.total-discount');
+            const totalPaymentElement = document.querySelector('.total-price-payment');
 
-        // Hàm tính tổng tiền
-        function calculateTotal() {
-            let totalPrice = 0;
+            let sessionTotalPrice = parseInt("{{ session('total_price', 0) }}");
+            let discountAmount = 0; // Số tiền được giảm
 
-            quantityInputs.forEach(input => {
-                const quantity = parseInt(input.value); //parseInt: chuyển thành số nguyên
-                const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset
-                    .price);
-                totalPrice += quantity * pricePerCombo;
+            // Hàm tính tổng tiền
+            function calculateTotal() {
+                let totalPrice = sessionTotalPrice; // Bắt đầu từ tổng tiền trong session
+
+                quantityInputs.forEach(input => {
+                    const quantity = parseInt(input.value); // chuyển giá trị thành số nguyên
+                    const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset
+                        .price);
+                    totalPrice += quantity * pricePerCombo;
+                });
+
+                // Cập nhật tổng tiền và số tiền thanh toán
+                totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
+                totalPriceInput.value = totalPrice; // Cập nhật giá trị cho ô input ẩn
+
+                // Tính số tiền cần thanh toán
+                let totalPayment = totalPrice - discountAmount;
+                totalPayment = Math.max(totalPayment, 0); // Đảm bảo không âm
+
+                // Cập nhật giao diện
+                totalPaymentElement.textContent = totalPayment.toLocaleString() + ' Vnđ';
+            }
+
+            // Sự kiện khi bấm nút tăng số lượng
+            increaseBtns.forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.closest('.quantity-container').querySelector(
+                        '.quantity-input');
+                    let currentValue = parseInt(input.value);
+                    const max = parseInt(input.getAttribute('max'));
+                    if (currentValue < max) { // Chỉ tăng nếu giá trị nhỏ hơn max
+                        input.value = currentValue + 1;
+                        calculateTotal(); // Cập nhật tổng tiền
+                    }
+                });
             });
 
-            totalPriceElement.textContent = totalPrice.toLocaleString() + ' VNĐ';
-
-            // Cập nhật tổng tiền trong ô input
-            totalPriceInput.value = totalPrice;
-        }
-
-        // Sự kiện bấm nút tăng số lượng
-        increaseBtns.forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.closest('.quantity-container').querySelector(
-                    '.quantity-input');
-                let currentValue = parseInt(input.value);
-                const max = parseInt(input.getAttribute('max'));
-                if (currentValue < max) { // Chỉ tăng nếu giá trị hiện tại nhỏ hơn max
-                    input.value = currentValue + 1;
-                    calculateTotal(); // Cập nhật tổng tiền
-                }
+            // Sự kiện khi bấm nút giảm số lượng
+            decreaseBtns.forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.closest('.quantity-container').querySelector(
+                        '.quantity-input');
+                    let currentValue = parseInt(input.value);
+                    if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
+                        input.value = currentValue - 1;
+                        calculateTotal(); // Cập nhật tổng tiền
+                    }
+                });
             });
+
+            function attachCancelVoucherEvent() {
+                $('#cancel-voucher-btn').on('click', function() {
+                    // Phục hồi giá trị và nút bấm về trạng thái ban đầu
+                    $('#voucher-form')[0].reset();
+                    $('#voucher-response').html('');
+
+                    // Lấy giá trị tổng tiền ban đầu và định dạng lại
+                    var originalTotalPrice = parseInt($('#total-price').val());
+                    $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' Vnđ');
+                    $('.total-discount').text('0 Vnđ');
+
+                    // Cập nhật lại trạng thái nút
+                    $('#apply-voucher-btn').attr('disabled', false);
+
+                    // Cập nhật lại discountAmount về 0
+                    discountAmount = 0;
+                    calculateTotal(); // Tính lại tổng tiền thanh toán sau khi hủy voucher
+                });
+            }
+
+            // Code xử lý chính
+            $('#voucher-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $('#apply-voucher-btn').attr('disabled', true);
+
+                var formData = {
+                    code: $('#voucher_code').val(),
+                    _token: csrfToken
+                };
+
+                $.ajax({
+                    url: routeUrl,
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        var discountAmountReceived = response.discount;
+                        discountAmount = discountAmountReceived; // Cập nhật discountAmount
+                        var discountAmountFormatted = discountAmountReceived.toLocaleString();
+
+                        $('#voucher-response').html(`
+                    <div class="t-success">${response.success}</div>
+                    <div class="show-text">
+                        <span>Voucher: <b>${response.voucher_code}</b></span>
+                        <span>Giảm giá: <b>${discountAmountFormatted}</b> Vnđ</span>
+                        <button id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
+                    </div>
+                `);
+
+                        var totalPrice = parseInt($('#total-price').val());
+                        var totalPricePayment = totalPrice - discountAmount;
+
+                        $('.total-price-payment').text(totalPricePayment.toLocaleString() +
+                            ' Vnđ');
+                        $('.total-discount').text(discountAmountFormatted);
+
+                        $('#apply-voucher-btn').attr('disabled', false);
+                        attachCancelVoucherEvent();
+                    },
+                    error: function(xhr) {
+                        var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
+                        showModalError(error);
+                        $('#apply-voucher-btn').attr('disabled', false);
+                    }
+                });
+            });
+
+            // Tính toán ban đầu khi trang được tải
+            calculateTotal();
         });
 
-        // Sự kiện bấm nút giảm số lượng
-        decreaseBtns.forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.closest('.quantity-container').querySelector(
-                    '.quantity-input');
-                let currentValue = parseInt(input.value);
-                if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
-                    input.value = currentValue - 1;
-                    calculateTotal(); // Cập nhật tổng tiền
-                }
-            });
-        });
-    });
 
-    // Thời gian đếm ngược (10 phút = 600 giây)
-    let timeLeft = 600; // 600 giây tương đương 10 phút
-    const timerElement = document.getElementById('timer');
 
-    // Hàm đếm ngược thời gian
-    const countdown = setInterval(() => {
-        // Tính số phút và giây còn lại
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
+        // Thời gian đếm ngược (10 phút = 600 giây)
+        let timeLeft = 600; // 600 giây tương đương 10 phút
+        const timerElement = document.getElementById('timer');
 
-        // Hiển thị thời gian còn lại ở định dạng mm:ss
-        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        // Hàm đếm ngược thời gian
+        const countdown = setInterval(() => {
+            // Tính số phút và giây còn lại
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
 
-        // Giảm thời gian còn lại
-        timeLeft--;
+            // Hiển thị thời gian còn lại ở định dạng mm:ss
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        // Khi thời gian kết thúc (hết 0 giây)
-        if (timeLeft < 0) {
-            clearInterval(countdown); // Dừng đếm ngược
+            // Giảm thời gian còn lại
+            timeLeft--;
 
-            // Hiển thị thông báo và quay về trang chủ
-            alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-            window.location.href = '/'; // Điều hướng về trang chủ ("/")
-        }
-    }, 1000); // Cập nhật mỗi giây
-</script>
+            // Khi thời gian kết thúc (hết 0 giây)
+            if (timeLeft < 0) {
+                clearInterval(countdown); // Dừng đếm ngược
+
+                // Hiển thị thông báo và quay về trang chủ
+                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                window.location.href = '/'; // Điều hướng về trang chủ ("/")
+            }
+        }, 1000); // Cập nhật mỗi giây
+    </script>
 @endsection
