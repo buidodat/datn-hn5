@@ -13,8 +13,16 @@ class TicketMovie extends Model
         'showtime_id',
         'seat_id',
         'room_id',
-        /*'code',*/ //mã từ bảng vé -> lấy từ ticket sang đi , ok 
+        'movie_id',
+        /*'code',*/ //mã từ bảng vé -> lấy từ ticket sang đi
         'price',
     ];
-
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class);
+    }
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }
