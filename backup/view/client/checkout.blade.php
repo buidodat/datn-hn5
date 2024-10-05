@@ -4,6 +4,95 @@
     Checkout
 @endsection
 
+@section('styles')
+    <style>
+        .modal {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: block;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 22% auto;
+            padding: 10px;
+            border: 1px solid #888;
+            width: 30%;
+            text-align: center;
+        }
+
+        .text-error {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f1761d;
+            margin-bottom: 20px;
+            margin: 5% auto;
+        }
+
+        .button-error {
+            cursor: pointer;
+            margin-bottom: 5%;
+            background-color: #f1761d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #voucher-response .show-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #voucher-response .t-success {
+            color: #02af02;
+            margin: 1% auto;
+            font-weight: bold;
+        }
+
+        #voucher-response .show-text span b {
+            color: #f1761d;
+        }
+
+        #voucher-response .show-text button {
+            padding: 3px 20px;
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #f1761d;
+
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #voucher-response .show-text button:hover {
+            background-color: #f1761d;
+            color: white;
+            border-color: #f1761d;
+        }
+
+        #voucher-response .show-text button:active {
+            background-color: #d6d6d6;
+            border-color: #888;
+        }
+    </style>
+@endsection
+
+
 @section('content')
     <div class="st_dtts_wrapper float_left">
         <div class="container container-choose-seat">
@@ -377,94 +466,36 @@
             </div>
         </div>
     </div>
-@endsection
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var routeUrl = "{{ route('applyVoucher') }}";
+        var csrfToken = "{{ csrf_token() }}";
 
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('theme/client/css/checkout.css')}}">
-@endsection
+        
+        // Thời gian đếm ngược (10 phút = 600 giây)
+        let timeLeft = 600; // 600 giây tương đương 10 phút
+            const timerElement = document.getElementById('timer');
 
-@section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var routeUrl = "{{ route('applyVoucher') }}";
-    var csrfToken = "{{ csrf_token() }}";
+            // Hàm đếm ngược thời gian
+            const countdown = setInterval(() => {
+                // Tính số phút và giây còn lại
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease'); //dấu trừ
-        const increaseBtns = document.querySelectorAll('.quantity-btn.increase'); //dấu cộng
-        const quantityInputs = document.querySelectorAll('.quantity-input');
-        const totalPriceElement = document.querySelector('.total-price-checkout .total-price-checkout');
-        const totalPriceInput = document.getElementById('total-price');
+                // Hiển thị thời gian còn lại ở định dạng mm:ss
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        // Hàm tính tổng tiền
-        function calculateTotal() {
-            let totalPrice = 0;
+                // Giảm thời gian còn lại
+                timeLeft--;
 
-            quantityInputs.forEach(input => {
-                const quantity = parseInt(input.value); //parseInt: chuyển thành số nguyên
-                const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset
-                    .price);
-                totalPrice += quantity * pricePerCombo;
-            });
+                // Khi thời gian kết thúc (hết 0 giây)
+                if (timeLeft < 0) {
+                    clearInterval(countdown); // Dừng đếm ngược
 
-            totalPriceElement.textContent = totalPrice.toLocaleString() + ' VNĐ';
-
-            // Cập nhật tổng tiền trong ô input
-            totalPriceInput.value = totalPrice;
-        }
-
-        // Sự kiện bấm nút tăng số lượng
-        increaseBtns.forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.closest('.quantity-container').querySelector(
-                    '.quantity-input');
-                let currentValue = parseInt(input.value);
-                const max = parseInt(input.getAttribute('max'));
-                if (currentValue < max) { // Chỉ tăng nếu giá trị hiện tại nhỏ hơn max
-                    input.value = currentValue + 1;
-                    calculateTotal(); // Cập nhật tổng tiền
+                    // Hiển thị thông báo và quay về trang chủ
+                    alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                    window.location.href = '/'; // Điều hướng về trang chủ ("/")
                 }
-            });
-        });
-
-        // Sự kiện bấm nút giảm số lượng
-        decreaseBtns.forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.closest('.quantity-container').querySelector(
-                    '.quantity-input');
-                let currentValue = parseInt(input.value);
-                if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
-                    input.value = currentValue - 1;
-                    calculateTotal(); // Cập nhật tổng tiền
-                }
-            });
-        });
-    });
-
-    // Thời gian đếm ngược (10 phút = 600 giây)
-    let timeLeft = 600; // 600 giây tương đương 10 phút
-    const timerElement = document.getElementById('timer');
-
-    // Hàm đếm ngược thời gian
-    const countdown = setInterval(() => {
-        // Tính số phút và giây còn lại
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-
-        // Hiển thị thời gian còn lại ở định dạng mm:ss
-        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
-        // Giảm thời gian còn lại
-        timeLeft--;
-
-        // Khi thời gian kết thúc (hết 0 giây)
-        if (timeLeft < 0) {
-            clearInterval(countdown); // Dừng đếm ngược
-
-            // Hiển thị thông báo và quay về trang chủ
-            alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-            window.location.href = '/'; // Điều hướng về trang chủ ("/")
-        }
-    }, 1000); // Cập nhật mỗi giây
-</script>
+            }, 1000); // Cập nhật mỗi giây
+    </script>
 @endsection
