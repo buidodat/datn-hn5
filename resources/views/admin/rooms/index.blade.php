@@ -176,9 +176,15 @@
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                        <a
-                                                            class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
+
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
                                                             ghế</a>
@@ -238,7 +244,7 @@
                                                             data-branch-id="{{ $room->branch_id }}"
                                                             data-cinema-id="{{ $room->cinema_id }}"
                                                             data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}">Chỉnh
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
@@ -293,8 +299,13 @@
                                                     <div>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                        <a
-                                                            class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
@@ -490,7 +501,7 @@
                                 <label for="updateName" class="form-label"><span class="text-danger">*</span> Tên
                                     Phòng</label>
                                 <input type="text" class="form-control" id="updateName" name="name" required
-                                    value="hihi" placeholder="Poly 202">
+                                 placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="updateNameError"></span>
                             </div>
                             <div class="col-md-5 mb-3">
@@ -629,6 +640,7 @@
                 const cinemaId = this.getAttribute('data-cinema-id');
                 const typeRoomId = this.getAttribute('data-type-room-id');
                 const matrixId = this.getAttribute('data-matrix-id');
+                const isPublish = this.getAttribute('data-is-publish');
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateRoomId').value = roomId; // Gán giá trị roomId
@@ -640,6 +652,19 @@
 
                 document.getElementById('updateTypeRoomId').value = typeRoomId;
                 document.getElementById('updateMatrixId').value = matrixId;
+                if (isPublish == 1) {
+                    // Chỉ cho phép nhập tên, các trường khác disabled
+                    document.getElementById('updateBranchId').disabled = true;
+                    document.getElementById('updateCinemaId').disabled = true;
+                    document.getElementById('updateTypeRoomId').disabled = true;
+                    document.getElementById('updateMatrixId').disabled = true;
+                } else {
+                    // Nếu chưa publish, cho phép chỉnh sửa tất cả
+                    document.getElementById('updateBranchId').disabled = false;
+                    document.getElementById('updateCinemaId').disabled = false;
+                    document.getElementById('updateTypeRoomId').disabled = false;
+                    document.getElementById('updateMatrixId').disabled = false;
+                }
 
                 // Mở modal
                 console.log(roomId, roomName, branchId, cinemaId, typeRoomId, matrixId);
@@ -675,7 +700,8 @@
                         console.log(data);
                         $('#updateRoomModal').modal('hide');
                         form.reset();
-                    //  
+
+                        alert('Thao tác thành công!'); // Hiển thị thông báo trước khi reload trang
                         location.reload();
 
                     }
