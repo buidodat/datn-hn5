@@ -59,15 +59,25 @@
                                                 <td class="box-item">
                                                     @foreach ($seats->whereNull('deleted_at') as $seat)
                                                         @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
-                                                            <div class="seat-item change-active">
-                                                                <img src="{{ $seat->is_active ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
-                                                                    class="seat" width="100%">
-                                                                <span class="seat-label">{{ $seat->name }}</span>
-
-                                                                <input type="hidden" class='seat-active'
-                                                                    name="seats[{{ $seat->id }}]"
-                                                                    value="{{ $seat->is_active }}">
-                                                            </div>
+                                                            @if ($seat->type_seat_id == 1)
+                                                                <div class="seat-item change-active">
+                                                                    <img src="{{ $seat->is_active ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
+                                                                        class="seat" width="100%">
+                                                                    <span class="seat-label">{{ $seat->name }}</span>
+                                                                    <input type="hidden" class='seat-active'
+                                                                        name="seats[{{ $seat->id }}]"
+                                                                        value="{{ $seat->is_active }}">
+                                                                </div>
+                                                            @else
+                                                                <div class="seat-item change-active">
+                                                                    <img src="{{ $seat->is_active ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}"
+                                                                        class="seat" width="100%">
+                                                                    <span class="seat-label">{{ $seat->name }}</span>
+                                                                    <input type="hidden" class='seat-active'
+                                                                        name="seats[{{ $seat->id }}]"
+                                                                        value="{{ $seat->is_active }}">
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 </td>

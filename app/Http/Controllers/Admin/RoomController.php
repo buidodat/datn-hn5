@@ -33,9 +33,11 @@ class RoomController extends Controller
 
     public function show(Room $room)
     {
+        $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
+        $matrixSeat = Room::MATRIXS[$matrixKey];
         $seats = Seat::where(['room_id' => $room->id])->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'room', 'seats']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seats','matrixSeat'));
     }
 
     public function seatDiagram(Room $room)

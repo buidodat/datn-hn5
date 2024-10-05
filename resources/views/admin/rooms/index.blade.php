@@ -174,8 +174,19 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+
+                                                          @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
+
+
+
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
@@ -189,12 +200,7 @@
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
                                                             ghế</a>
-                                                        @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50 mx-1"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
-                                                        @endif
+
 
                                                     </div>
                                                 </div>
@@ -244,8 +250,15 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                         @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
@@ -258,12 +271,7 @@
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
                                                             ghế</a>
-                                                        @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50 mx-1"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
-                                                        @endif
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -312,8 +320,15 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                         @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
@@ -326,12 +341,7 @@
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
                                                             href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
                                                             ghế</a>
-                                                        @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50 mx-1"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
-                                                        @endif
+
                                                     </div>
                                                 </div>
                                             </td>
