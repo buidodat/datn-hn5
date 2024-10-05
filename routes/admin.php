@@ -40,12 +40,10 @@ Route::resource('branches', BranchController::class);
 Route::resource('cinemas', CinemaController::class);
 // Payment
 Route::resource('payments', PaymentController::class);
-// Payment
-Route::resource('payments', PaymentController::class);
 
 Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
 Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
-
+Route::resource('tickets',\App\Http\Controllers\Admin\TicketController::class);
 
 
 Route::resource('contacts', ContactController::class);
