@@ -184,7 +184,7 @@
 
                                     <div class="total-price-choose-seat float_left">
                                         <div class="total-price-choose-seat float_left">
-                                            <form action="{{ route('choose-seat-test', $showtime->id) }}" method="POST">
+                                            <form action="{{ route('save-information', $showtime->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="showtimeId" value="{{ $showtime->id }}">
                                                 <input type="hidden" name="seatId" id="hidden-seat-ids">

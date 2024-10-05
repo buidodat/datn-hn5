@@ -31,7 +31,7 @@ class ChooseSeatController extends Controller
         return view('client.choose-seat', compact('showtime', 'matrixSeat'));
     }
 
-    public function test(Request $request, $showtimeId)
+    public function saveInformation(Request $request, $showtimeId)
     {
         // dd($request->all());
         // Xác thực dữ liệu đầu vào
