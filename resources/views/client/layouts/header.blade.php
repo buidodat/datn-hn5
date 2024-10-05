@@ -90,16 +90,19 @@
                                                 @else
                                                     @foreach ($branch->cinemas as $cinema)
                                                         <li>
-                                                            <form action="{{ route('change-cinema') }}" method="POST"
+                                                            <a>
+                                                                <form action="{{ route('change-cinema') }}" method="POST"
                                                                 style="display:inline;">
                                                                 @csrf
                                                                 <input type="hidden" name="cinema_id"
                                                                     value="{{ $cinema->id }}">
                                                                 <button type="submit"
-                                                                    style="background:none;border:none;color:#000;text-align:left;cursor:pointer;">
+                                                                    style="background:none;border:none;text-align:left;cursor:pointer;">
                                                                     Poly {{ $cinema->name }}
                                                                 </button>
                                                             </form>
+                                                            </a>
+
                                                         </li>
                                                     @endforeach
                                                 @endif
