@@ -1,7 +1,6 @@
-   
-   /* Thông tin tài khoản */
-   /* ========================================================= */
-   /* .my-account-container {
+    /* Thông tin tài khoản */
+    /* ========================================================= */
+    /* .my-account-container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 20px;
@@ -25,8 +24,10 @@
         text-align: center;
         font-weight: bold;
         transition: background-color 0.3s ease;
-        color: black; /* Màu mặc định */
-        background-color: white; /* Nền mặc định */
+        color: black;
+        /* Màu mặc định */
+        background-color: white;
+        /* Nền mặc định */
     }
 
     .my-account-tab.my-account-active {
@@ -134,22 +135,25 @@
         padding: 10px 20px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        border-radius: 8px; /* Bo tròn 4 góc */
+        border-radius: 8px;
+        /* Bo tròn 4 góc */
         background-color: #48b4b8;
     }
 
     .my-account-btn:hover {
-        background-color: #72c8ca; /* Màu nền nhạt hơn khi hover */
+        background-color: #72c8ca;
+        /* Màu nền nhạt hơn khi hover */
     }
 
     .my-account-d-block {
         display: block;
         margin-top: 40px;
-        color:red;
+        color: red;
     }
-    .my-account-d-block:hover{
-        color:red;
-        text-decoration: underline; 
+
+    .my-account-d-block:hover {
+        color: red;
+        text-decoration: underline;
     }
 
     .my-account-modal {
@@ -179,13 +183,13 @@
     .my-account-upload-container {
         display: flex;
         align-items: center;
-        gap: 20px; 
+        gap: 20px;
         padding: 20px;
         margin-bottom: 20px;
     }
-    
+
     .my-account-image-upload-container {
-        border: 2px solid #ccc; 
+        border: 2px solid #ccc;
         width: 200px;
         height: 200px;
         display: flex;
@@ -195,19 +199,19 @@
         overflow: hidden;
         background-color: #f0f0f0;
     }
-    
+
     /* Căn chỉnh ảnh bên trong khung */
     .my-account-image-upload-container img {
         /* width: 100%; 
         height: 100%; */
         max-width: 100%;
         max-height: 100%;
-        object-fit: cover; 
+        object-fit: cover;
         display: block;
     }
 
     input[type="file"] {
-        display: none; 
+        display: none;
     }
 
     .my-account-form-row {
@@ -222,7 +226,7 @@
         min-width: 200px;
     }
 
-    
+
     /* Hành trình điện ảnh */
     /* ========================================================= */
     .cinema-journey-container {
@@ -231,69 +235,238 @@
         padding: 20px;
         font-family: Arial, sans-serif;
     }
-    
+
     .cinema-journey-table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px;
     }
-    
+
     .cinema-journey-thead {
         background-color: #f8f8f8;
     }
-    
+
     .cinema-journey-th,
     .cinema-journey-td {
         padding: 10px;
         text-align: left;
         border: 1px solid #ddd;
     }
-    
+
     .cinema-journey-th {
         font-weight: bold;
         text-transform: uppercase;
         font-size: 14px;
     }
-    
+
     .cinema-journey-td {
         font-size: 14px;
     }
-    
+
     .cinema-journey-movie-poster {
         width: 100px;
         height: auto;
         display: block;
         margin-bottom: 10px;
     }
-    
+
     .cinema-journey-movie-title {
         font-weight: bold;
     }
-    
+
     .cinema-journey-td p {
         margin: 0;
         padding: 0;
     }
-    
+
     .cinema-journey-td:nth-child(2) {
         text-align: center;
     }
-    
+
     .cinema-journey-td:nth-child(5),
     .cinema-journey-td:nth-child(6) {
         text-align: center;
     }
-    
+
     .cinema-journey-td:nth-child(7),
     .cinema-journey-td:nth-child(8) {
         text-align: center;
     }
-    
+
     .cinema-journey-tbody tr {
         background-color: #fff;
     }
-    
+
     .cinema-journey-tbody tr:nth-child(even) {
         background-color: #f9f9f9;
     }
-    
+
+    /* Css lịch sử giao dịch */
+
+    .row.mb-3.title-detail {
+        margin: 10px 0px 20px 0px;
+    }
+
+    div#detail-ticket {
+        margin-left: 15px;
+    }
+
+    b,
+    strong {
+        font-weight: bold;
+        color: black;
+    }
+
+    .content-detail {
+        margin-top: 6px;
+        padding-left: 10px;
+        margin-right: 15px;
+
+    }
+
+    .box-address {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .info-detail .col-md-12 {
+        margin-bottom: 10px;
+        margin-top: 15px;
+        display: flex;
+        justify-content: left;
+    }
+
+    .info-detail div {
+        margin-right: 15px;
+    }
+
+    .info-detail button {
+        background-color: #333;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .box-detail-history {
+        background-color: #333;
+        color: white;
+        height: 50px;
+        margin-left: 0px;
+        line-height: 50px;
+        margin-bottom: 10px;
+    }
+
+    .table-history {
+        margin-left: 15px;
+    }
+
+    .table-history table {
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        box-shadow: 0 0 3px;
+    }
+
+    .table-history table thead {
+        background: #333;
+        height: 40px;
+        color: white;
+        /* padding: 6px; */
+    }
+
+    .table-history table th {
+        padding: 10px;
+    }
+
+    .table-history table td {
+        border: 1px solid #ccc;
+        padding: 7px;
+    }
+
+    .back-list-history {
+        margin-top: 15px;
+    }
+
+    .table-history table th.total-detail {
+        text-align: right;
+    }
+
+    /* Css paginate trang lịch sử giao dịch */
+
+
+    .cinema-journey-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .cinema-journey-container .d-flex.justify-content-between.flex-fill.d-sm-none {
+        display: none;
+    }
+
+    .cinema-journey-container p.small.text-muted {
+        display: none;
+    }
+
+    .cinema-journey-container .pagination {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .cinema-journey-container .page-link {
+   
+     
+        border-color: hsl(0, 0%, 87%);
+        margin: 0px;
+        color: #000000;
+        background: #ffffff;
+        font-size: 16px;
+        border: 1px solid #e7e7e7;
+        text-transform: uppercase;
+        transition: all 0.5s;
+        width: 30px;
+        height: 30px;
+        line-height: 20px;
+        border-radius: 0px !important;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        text-align: center;
+        margin-right: 10px;
+        margin-top: 0px !important;
+        padding-left: 10px;
+    }
+
+
+    /* .cinema-journey-container .page-link:hover {
+    background-color: #ff9344 !important;
+} */
+
+    .cinema-journey-container .pagination>li:first-child>a {
+        /* border-radius: 10px !important; */
+        background: white;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+        color: black;
+        line-height: 17px;
+    }
+
+    .cinema-journey-container .pagination>li:last-child>a {
+        background: white;
+        border: 1px solid #ccc;
+        margin-left: 0px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 15px;
+        margin-left: 0px !important;
+        /* margin-left: 10px; */
+
+        color: black;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    .cinema-journey-container .pagination>li>a:hover {
+        background: #ccc;
+    }
