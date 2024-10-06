@@ -155,11 +155,16 @@
                                                                 );
                                                             @endphp
 
-                                                            <b>{{ $ticketCombo->combo->name }} x
-                                                                {{ $ticketCombo->quantity }}
+                                                            <b>
+                                                                {{-- {{ $ticketCombo->combo->name }} x
+                                                                    {{ $ticketCombo->quantity }} --}}
+                                                                Poly Combo 49k x 3
                                                             </b>
 
-                                                            <p>{{ number_format($ticketCombo->price, 0, ',', '.') }}đ</p>
+                                                            <p>
+                                                                {{-- {{ number_format($ticketCombo->price, 0, ',', '.') }}đ --}}
+                                                                147.000đ
+                                                            </p>
                                                             {{-- 49k x 3 --}}
                                                         </td>
                                                         <td>

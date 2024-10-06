@@ -108,6 +108,7 @@ class UserController extends Controller
         $ticketSeat = Ticket::query()->with('ticketSeat')
             ->where('user_id', $userID)
             ->where('id', $ticketId)
+        
             ->get();
         // dd($ticketSeat);
         return view('client.users.ticket-detail', compact('ticketSeat'));
