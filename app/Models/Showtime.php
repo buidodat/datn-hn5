@@ -43,14 +43,19 @@ class Showtime extends Model
             ->withPivot('status', 'price')
             ->withTimestamps();
     }
-    public function ticketMovie()
+    public function ticketSeat()
     {
-        return $this->hasMany(TicketMovie::class);
+        return $this->hasMany(TicketSeat::class);
     }
 
     public function cinema()
     {
         return $this->belongsTo(Cinema::class);
+    }
+
+    public function seatShowTime()
+    {
+        return $this->hasMany(SeatShowtime::class);
     }
 
     // Thời gian dọn phòng: 15p

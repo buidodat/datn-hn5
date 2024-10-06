@@ -155,18 +155,18 @@
                                         @foreach ($tickets as $ticket)
                                             @php
                                                 // Nhóm các ticketMovie theo movie_id
-                                                $ticketMoviesByMovie = $ticket->ticketMovie->groupBy('movie_id');
+                                                $ticketSeatsByMovie = $ticket->ticketSeat->groupBy('movie_id');
                                             @endphp
 
-                                            @foreach ($ticketMoviesByMovie as $ticketMovies)
+                                            @foreach ($ticketSeatsByMovie as $ticketSeats)
                                                 <tr>
                                                     <td class="cinema-journey-td">{{ $ticket->code }}</td>
                                                     <td class="cinema-journey-td">
 
                                                         @php
-                                                            // Lấy thông tin movie từ ticketMovie đầu tiên trong nhóm
+                                                            // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
 
-                                                            $url = $ticketMovies->first()->movie->img_thumbnail;
+                                                            $url = $ticketSeats->first()->movie->img_thumbnail;
 
                                                             if (!\Str::contains($url, 'http')) {
                                                                 $url = Storage::url($url);
@@ -177,32 +177,28 @@
                                                         <img class="cinema-journey-movie-poster"
                                                             src="{{ $url }}" alt="movie_img" />
                                                         <p class="cinema-journey-movie-title" align='left'>
-                                                            {{ $ticketMovies->first()->movie->name }}
+                                                            {{ $ticketSeats->first()->movie->name }}
                                                         </p>
 
-                                                        <!-- Nếu cần hiển thị thêm thông tin liên quan đến ghế cho mỗi ticketMovie trong nhóm -->
-                                                        {{-- @foreach ($ticketMovies as $ticketMovie)
-                                                            <p>Ghế: {{ $ticketMovie->seat_id }} - Giá:
-                                                                {{ $ticketMovie->price }}</p>
-                                                        @endforeach --}}
+
 
                                                     </td>
                                                     <td class="cinema-journey-td">
-                                                        {{ \Carbon\Carbon::parse($ticketMovies->first()->showtime->date)->format('d-m-Y') }}
+                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d-m-Y') }}
                                                         <br />
-                                                        {{ \Carbon\Carbon::parse($ticketMovies->first()->showtime->start_time)->format('H:i') }}
+                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                                         -
-                                                        {{ \Carbon\Carbon::parse($ticketMovies->first()->showtime->end_time)->format('H:i') }}
+                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
                                                     </td>
                                                     <td class="cinema-journey-td">
-                                                        {{ $ticketMovies->first()->showtime->cinema->name }} -
-                                                        {{ $ticketMovies->first()->room->name }} 
+                                                        {{ $ticketSeats->first()->showtime->cinema->name }} -
+                                                        {{ $ticketSeats->first()->room->name }}
                                                     </td>
 
 
                                                     <td class="cinema-journey-td">
 
-                                                        @foreach ($ticketMovies as $item)
+                                                        @foreach ($ticketSeats as $item)
                                                             {{ $item->seat->name }}
                                                         @endforeach
                                                     </td>
@@ -212,8 +208,8 @@
                                                         {{ number_format($ticket->total_price, 0, ',', '.') }}đ
                                                     </td>
                                                     <td class="cinema-journey-td">
-                                                        <a href="#detail-ticket/{{ $ticketMovies->first()->id }}"
-                                                            aria-controls="trand" role="tab" data-toggle="tab">
+                                                        {{-- href="detail-ticket/{{ $ticket->id }}"  --}}
+                                                        <a href="{{ route('ticketDetail', $ticket->id) }}">
                                                             Chi tiết
                                                         </a>
                                                     </td>
@@ -233,7 +229,7 @@
                     </div>
 
                     {{-- Chi tiết giao dịch --}}
-                    
+
                     <div id="detail-ticket" class="tab-pane fade">
                         <div class="row mb-3 title-detail">
                             <h3>Chi tiết giao dịch #4811201174585152</h3>
@@ -402,7 +398,8 @@
         </div>
     </div>
 
-    {{--
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> --}}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     </body>
 @endsection

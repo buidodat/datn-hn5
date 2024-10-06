@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateUserRequest;
 use App\Models\Ticket;
 use App\Models\TicketMovie;
+use App\Models\TicketSeat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,7 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        $tickets = Ticket::query()->with('ticketMovie')->where('user_id', $userID)->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeat')->where('user_id', $userID)->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
@@ -98,5 +99,17 @@ class UserController extends Controller
     public function showCinemaJourney()
     {
         return view('client.users.cinema-journey');
+    }
+
+    function ticketDetail($ticketId)
+    {
+        $userID = Auth::user()->id;
+        // $ticketSeat = TicketSeat::findOrFail($ticketId);
+        $ticketSeat = Ticket::query()->with('ticketSeat')
+            ->where('user_id', $userID)
+            ->where('id', $ticketId)
+            ->get();
+        // dd($ticketSeat);
+        return view('client.users.ticket-detail', compact('ticketSeat'));
     }
 }

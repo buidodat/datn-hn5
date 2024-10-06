@@ -43,8 +43,8 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketSeat::class);
     }
-
-
-
-
+    public function ticketCombo()
+    {
+        return $this->hasMany(TicketCombo::class);
+    }
 }
