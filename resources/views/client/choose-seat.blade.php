@@ -74,28 +74,31 @@
                                                                                         @if ($seat->type_seat_id == 1)
                                                                                             <span
                                                                                                 data-seat-id="{{ $seat->id }}"
+                                                                                                data-seat-price="{{ $seatPrice }}"
                                                                                                 class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
-                                                                                            <p
+                                                                                            {{-- <p
                                                                                                 style="font-size: 13px; font-weight: 600">
-                                                                                                {{ $seatPrice }}</p>
+                                                                                                {{ $seatPrice }}</p> --}}
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 2)
                                                                                             <span
                                                                                                 data-seat-id="{{ $seat->id }}"
+                                                                                                data-seat-price="{{ $seatPrice }}"
                                                                                                 class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
                                                                                             </span>
-                                                                                            <p
+                                                                                            {{-- <p
                                                                                                 style="font-size: 13px; font-weight: 600">
-                                                                                                {{ $seatPrice }}</p>
+                                                                                                {{ $seatPrice }}</p> --}}
                                                                                         @endif
                                                                                         @if ($seat->type_seat_id == 3)
                                                                                             <span
                                                                                                 data-seat-id="{{ $seat->id }}"
+                                                                                                data-seat-price="{{ $seatPrice }}"
                                                                                                 class="game-icons--sofa seat span-seat {{ $seatStatus }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
@@ -121,7 +124,7 @@
                                                     <div><span class="game-icons--sofa text-muted"></span> Ghế Đôi</div>
                                                     <div>
                                                         <p>Tổng tiền:</p>
-                                                        <p id="total-price" class="bold">0 đ</p>
+                                                        <p id="total-price" class="bold">0 Vnđ</p>
                                                     </div>
                                                     <div>
                                                         <p>Thời gian còn lại:</p>
@@ -189,8 +192,9 @@
                                                 <input type="hidden" name="showtimeId" value="{{ $showtime->id }}">
                                                 <input type="hidden" name="seatId" id="hidden-seat-ids">
                                                 <input type="hidden" name="selected_seats" id="hidden-selected-seats">
-                                                <input type="hidden" name="total_price" id="hidden-total-price"> <!-- Thay đổi ở đây -->
-                                                <button type="submit">Tiếp tục</button>
+                                                <input type="hidden" name="total_price" id="hidden-total-price">
+                                                <!-- Thay đổi ở đây -->
+                                                <button id="submit-button" type="submit">Tiếp tục</button>
                                             </form>
                                         </div>
                                     </div>
@@ -206,107 +210,6 @@
     @endsection
 
     @section('scripts')
-        {{-- <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const seats = document.querySelectorAll('.seat'); // Lấy tất cả các ghế
-                const selectedSeatsDisplay = document.getElementById('selected-seats'); // Vị trí hiển thị ghế đã chọn
-                const hiddenSelectedSeats = document.getElementById(
-                'hidden-selected-seats'); // Input ẩn cho ghế đã chọn
-                const hiddenSeatIds = document.getElementById('hidden-seat-ids'); // Input ẩn cho ID ghế
-                const totalPriceElement = document.getElementById('total-price'); // Phần tử hiển thị tổng tiền
-                const submitButton = document.querySelector('button[type="submit"]'); // Nút "Tiếp tục"
-
-                let selectedSeats = []; // Mảng lưu trữ tên các ghế đã chọn
-                let selectedSeatIds = []; // Mảng lưu trữ ID các ghế đã chọn
-                let totalPrice = 0; // Biến lưu trữ tổng tiền
-
-                seats.forEach(seat => {
-                    seat.addEventListener('click', () => {
-                        const seatLabel = seat.querySelector('.seat-label').textContent; // Lấy tên ghế
-                        const seatId = seat.getAttribute(
-                        'data-seat-id'); // Lấy ID ghế từ thuộc tính data
-                        const seatPrice = parseInt(seat.nextElementSibling.textContent.replace(
-                            /[^0-9]/g, '')); // Lấy giá ghế
-
-                        // Kiểm tra ghế đã được đặt hoặc giữ chưa
-                        if (!seat.classList.contains('reserved') && !seat.classList.contains(
-                                'pre-booked')) {
-                            seat.classList.toggle('selected'); // Thêm hoặc xóa lớp 'selected'
-
-                            if (seat.classList.contains('selected')) {
-                                if (selectedSeats.length < 8) {
-                                    // Thêm tên ghế và ID vào mảng nếu số ghế đã chọn dưới 8
-                                    selectedSeats.push(seatLabel);
-                                    selectedSeatIds.push(seatId); // Thêm ID vào mảng ID ghế
-
-                                    totalPrice += seatPrice; // Cộng giá ghế vào tổng tiền
-                                } else {
-                                    // Nếu đã chọn 8 ghế, không cho chọn thêm và hiện cảnh báo
-                                    seat.classList.remove('selected');
-                                    alert('Bạn chỉ được chọn tối đa 8 ghế!');
-                                }
-                            } else {
-                                // Xóa tên ghế và ID khỏi mảng
-                                selectedSeats = selectedSeats.filter(s => s !== seatLabel);
-                                selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
-
-                                totalPrice -= seatPrice; // Trừ giá ghế khỏi tổng tiền
-                            }
-
-                            // Cập nhật danh sách ghế đã chọn hiển thị trên giao diện
-                            selectedSeatsDisplay.textContent = selectedSeats.join(', ');
-                            hiddenSelectedSeats.value = selectedSeats.join(
-                            ', '); // Cập nhật input ẩn với ghế đã chọn
-                            hiddenSeatIds.value = JSON.stringify(
-                            selectedSeatIds); // Cập nhật input ẩn với ID ghế đã chọn
-
-                            // Cập nhật tổng tiền hiển thị
-                            totalPriceElement.textContent = totalPrice.toLocaleString() +
-                            ' đ'; // Cập nhật tổng tiền
-                        }
-                    });
-                });
-
-                // Kiểm tra khi người dùng bấm nút "Tiếp tục"
-                submitButton.addEventListener('click', (event) => {
-                    if (selectedSeats.length === 0) {
-                        event.preventDefault(); // Ngăn không cho form gửi đi
-                        alert(
-                        'Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.'); // Hiển thị thông báo
-                        return false; // Ngăn chặn hành động tiếp theo
-                    } else if (selectedSeats.length > 8) {
-                        event.preventDefault(); // Ngăn không cho form gửi đi
-                        alert('Bạn chỉ được chọn tối đa 8 ghế!'); // Hiển thị thông báo
-                    }
-                });
-            });
-
-            // Thời gian đếm ngược (10 phút = 600 giây)
-            let timeLeft = 600; // 600 giây tương đương 10 phút
-            const timerElement = document.getElementById('timer');
-
-            // Hàm đếm ngược thời gian
-            const countdown = setInterval(() => {
-                // Tính số phút và giây còn lại
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-
-                // Hiển thị thời gian còn lại ở định dạng mm:ss
-                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
-                // Giảm thời gian còn lại
-                timeLeft--;
-
-                // Khi thời gian kết thúc (hết 0 giây)
-                if (timeLeft < 0) {
-                    clearInterval(countdown); // Dừng đếm ngược
-
-                    // Hiển thị thông báo và quay về trang chủ
-                    alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-                    window.location.href = '/'; // Điều hướng về trang chủ ("/")
-                }
-            }, 1000); // Cập nhật mỗi giây
-        </script> --}}
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const seats = document.querySelectorAll('.seat');
@@ -314,27 +217,29 @@
                 const hiddenSelectedSeats = document.getElementById('hidden-selected-seats');
                 const hiddenSeatIds = document.getElementById('hidden-seat-ids');
                 const totalPriceElement = document.getElementById('total-price');
-                const hiddenTotalPrice = document.getElementById('hidden-total-price'); // Thay đổi ở đây
-                const submitButton = document.querySelector('button[type="submit"]');
-        
+                const hiddenTotalPrice = document.getElementById('hidden-total-price');
+                const submitButton = document.getElementById('submit-button');
+
                 let selectedSeats = [];
                 let selectedSeatIds = [];
                 let totalPrice = 0;
-        
+
                 seats.forEach(seat => {
                     seat.addEventListener('click', () => {
                         const seatLabel = seat.querySelector('.seat-label').textContent;
                         const seatId = seat.getAttribute('data-seat-id');
-                        const seatPrice = parseInt(seat.nextElementSibling.textContent.replace(/[^0-9]/g, ''));
-        
-                        if (!seat.classList.contains('reserved') && !seat.classList.contains('pre-booked')) {
+                        const seatPrice = parseInt(seat.getAttribute(
+                            'data-seat-price')); // Lấy giá ghế từ thuộc tính data-seat-price
+
+                        if (!seat.classList.contains('reserved') && !seat.classList.contains(
+                                'pre-booked')) {
                             seat.classList.toggle('selected');
-        
+
                             if (seat.classList.contains('selected')) {
                                 if (selectedSeats.length < 8) {
                                     selectedSeats.push(seatLabel);
                                     selectedSeatIds.push(seatId);
-                                    totalPrice += seatPrice;
+                                    totalPrice += seatPrice; // Cộng giá ghế vào tổng tiền
                                 } else {
                                     seat.classList.remove('selected');
                                     alert('Bạn chỉ được chọn tối đa 8 ghế!');
@@ -342,19 +247,21 @@
                             } else {
                                 selectedSeats = selectedSeats.filter(s => s !== seatLabel);
                                 selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
-                                totalPrice -= seatPrice;
+                                totalPrice -= seatPrice; // Trừ giá ghế khi bỏ chọn
                             }
-        
+
                             selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                             hiddenSelectedSeats.value = selectedSeats.join(',');
                             hiddenSeatIds.value = JSON.stringify(selectedSeatIds);
-                            totalPriceElement.textContent = totalPrice.toLocaleString() + ' đ';
+                            totalPriceElement.textContent = totalPrice.toLocaleString() +
+                                ' Vnđ'; // Hiển thị tổng tiền
                             hiddenTotalPrice.value = totalPrice; // Cập nhật tổng tiền vào input ẩn
                         }
                     });
                 });
-        
+
                 submitButton.addEventListener('click', (event) => {
+                    console.log("Selected seats:", selectedSeats); // Kiểm tra số lượng ghế đã chọn
                     if (selectedSeats.length === 0) {
                         event.preventDefault();
                         alert('Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.');
@@ -365,23 +272,5 @@
                     }
                 });
             });
-        
-            // Thời gian đếm ngược
-            let timeLeft = 600;
-            const timerElement = document.getElementById('timer');
-        
-            const countdown = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-                timeLeft--;
-        
-                if (timeLeft < 0) {
-                    clearInterval(countdown);
-                    alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-                    window.location.href = '/';
-                }
-            }, 1000);
         </script>
-        
     @endsection
