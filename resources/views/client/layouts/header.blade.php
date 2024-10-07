@@ -82,7 +82,7 @@
                                 <ul class="sub-menu">
                                     @foreach ($branches as $branch)
                                         <li class="li-branch">
-                                            <a href="#">{{ $branch->name }}</a>
+                                            <a href="#">{{ $branch->name }}</a>       {{--   Hà Nội, HCM --}}
                                             <span><i class="fa-solid fa-chevron-right"></i></span>
                                             <ul class="menu-cinema">
                                                 @if ($branch->cinemas->isEmpty())
@@ -97,7 +97,7 @@
                                                                     value="{{ $cinema->id }}">
                                                                 <button type="submit"
                                                                     style="background:none;border:none;color:#000;text-align:left;cursor:pointer;">
-                                                                    Poly {{ $cinema->name }}
+                                                                    Poly {{ $cinema->name }}    {{--    Hà Đông , Mỹ Đình --}}
                                                                 </button>
                                                             </form>
                                                         </li>

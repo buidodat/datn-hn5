@@ -32,6 +32,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/layers.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/navigation.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/js/plugin/rs_slider/settings.css') }}" />
+
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/style.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/policy.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/responsive.css') }}" />
@@ -39,13 +40,12 @@
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" /> --}}
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/my-account.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/trailler.css') }}" />
-<link rel="stylesheet" id="theme-color" type="text/css" href="#"/>
-
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/color/style.css') }}" /> --}}
+<link rel="stylesheet" id="theme-color" type="text/css" href="#" />
+{{-- #f7941d: màu text , #f37022: màu logo, #fe6f01: màu background đậm, #ff7307: màu bg cam vừa --}}
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/color/style4.css') }}" /> --}}
 
 <!-- favicon links -->
-{{--<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" />--}}
+{{-- <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" /> --}}
 <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/poly2.svg') }}" />
 
 <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-

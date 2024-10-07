@@ -84,16 +84,16 @@
                     <h2>Thông tin website</h2>
                     <ul>
                         <li>
-                            <span style="color: rgba(255, 255, 255, 0.57);">Email:</span> &nbsp;&nbsp;
-                            <span style="color: #ff4444;">Polycenimas@gmail.com</span>
+                            <span>Email:</span> &nbsp;&nbsp;
+                            <span >Polycenimas@gmail.com</span>
                         </li>
                         <li>
-                            <span style="color: rgba(255, 255, 255, 0.57);">Hotline:</span> &nbsp;&nbsp;
-                            <span style="color: #ff4444">1900.2004</span>
+                            <span>Hotline:</span> &nbsp;&nbsp;
+                            <span>1900.2004</span>
                         </li>
                         <li>
-                            <span style="color: rgba(255, 255, 255, 0.57);">Giờ làm việc:</span> &nbsp;&nbsp;
-                            <span style="color: #ff4444">9h - 24h (Tất cả các ngày bao gồm cả Lễ, Tết)</span>
+                            <span>Giờ làm việc:</span> &nbsp;&nbsp;
+                            <span>9h - 24h (Tất cả các ngày bao gồm cả Lễ, Tết)</span>
                         </li>
 
                     </ul>
