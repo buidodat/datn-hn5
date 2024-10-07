@@ -26,4 +26,8 @@ class Voucher extends Model
     {
         return $this->belongsToMany(User::class, 'user_vouchers')->withTimestamps();
     }
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'voucher_id');
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Slideshow;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -57,9 +58,10 @@ class HomeController extends Controller
             ->latest('id')
             ->paginate(8);
 
+        // $post = Post::latest()->take(5)->get();
+        $post = Post::orderBy('created_at', 'desc')->take(5)->get();
 
-
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'post'));
     }
 
     public function policy()

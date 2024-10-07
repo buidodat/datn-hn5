@@ -26,4 +26,8 @@ class Combo extends Model
     {
         return $this->hasMany(ComboFood::class);
     }
+    public function ticketCombo()
+    {
+        return $this->hasMany(TicketCombo::class);
+    }
 }

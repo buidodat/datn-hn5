@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Movie;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -15,12 +16,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_movies', function (Blueprint $table) {
+        Schema::create('ticket_seats', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Ticket::class);
-            $table->foreignIdFor(Showtime::class);
-            $table->foreignIdFor(Seat::class);
             $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Showtime::class);
+            $table->foreignIdFor(Movie::class);
+            $table->foreignIdFor(Seat::class);
             /*$table->string('code')->comment('Mã từ bảng Vé tickets');*/
             $table->unsignedInteger('price')->comment('Giá vé gốc  tại thời điểm mua chưa trừ point và voucher');
             $table->timestamps();
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_movies');
+        Schema::dropIfExists('ticket_seats');
     }
 };

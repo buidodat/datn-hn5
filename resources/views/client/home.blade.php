@@ -371,7 +371,8 @@
     </div>
     <!-- prs letest news End -->
     <!-- prs feature slider Start -->
-    <div class="prs_feature_slider_main_wrapper">
+
+    {{-- <div class="prs_feature_slider_main_wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -474,7 +475,53 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+    <div class="prs_feature_slider_main_wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="prs_heading_section_wrapper">
+                        <h2>Các bài viết nổi bật</h2>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="prs_feature_slider_wrapper" id="post-content">
+                        <div class="owl-carousel owl-theme show-post">
+                            @foreach ($post as $postItem)
+                                <div class="item prs_feature_slider_item_wrapper">
+                                    <div class="prs_feature_img_box_wrapper">
+                                        <div class="prs_feature_img" style="position: relative; overflow: hidden; width: 100%; height: 200px;">
+                                            @php
+                                                $url = $postItem->img_post;
+    
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+                                            @endphp
+                                            <img src="{{ $url }}" alt="Chưa có ảnh" style="width: 100%; height: 100%; object-fit: cover;" />
+                                            <div class="prs_ft_btn_wrapper">
+                                                <ul>
+                                                    <li><a href="post/{{ $postItem->slug }}">Xem chi tiết</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="prs_feature_img_cont">
+                                            <h2>{!! Str::limit($postItem->title, 30) !!}</h2>
+                                            <br>
+                                            <div class="prs_ft_small_cont_center">
+                                                {!! Str::limit($postItem->description, 100) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
     <!-- prs feature slider End -->
     <!-- prs videos&photos slider Start -->
     <div class="prs_vp_main_section_wrapper">

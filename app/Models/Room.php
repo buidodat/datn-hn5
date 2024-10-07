@@ -32,8 +32,6 @@ class Room extends Model
     const SCOPE_DOUBLE = ['min'=>0,'default'=>0,'max'=>2];
     const ROW_SEAT_REGULAR = 4;
     const ROW_SEAT_DOUBLE = 0;
-    const MAX_ROW = 15;
-    const MAX_COL = 15;
 
     public function cinema()
     {
