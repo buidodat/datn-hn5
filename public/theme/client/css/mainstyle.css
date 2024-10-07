@@ -304,8 +304,11 @@
 
 .info-movie div ul li h3 {
     margin-left: 15px;
-    color: #192041;
-    font-family: serif;
+    color: #434f89;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: -0.5px;
 }
 
 
