@@ -45,7 +45,11 @@ Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
-Route::post('choose-seat/{id}/test', [ChooseSeatController::class, 'test'])->name('choose-seat-test');
+Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
+
+Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
+route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
 Route::get('login', function () {
     return view('client.login');
@@ -63,12 +67,6 @@ Route::put('my-account/changePassword', [UserController::class, 'changePassword'
 // // User - Hành trình điện ảnh
 // Route::get('cinema-journey', [UserController::class, 'showCinemaJourney'])->name('cinema-journey.showCinemaJourney');
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');
-
-Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
-route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
-
-
 
 Route::get('forgot-password', function () {
     return view('client.forgot-password');
