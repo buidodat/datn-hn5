@@ -14,4 +14,8 @@ class SeatShowtime extends Model
         'status',
         'price'
     ];
+    public function showtime()
+    {
+        return $this->belongsTo(Showtime::class);
+    }
 }
