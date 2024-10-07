@@ -24,20 +24,23 @@
         text-align: center;
         font-weight: bold;
         transition: background-color 0.3s ease;
-        color: black;
+        color: #1e264f;
         /* Màu mặc định */
         background-color: white;
         /* Nền mặc định */
     }
+    .my-account-tab:hover {
+        color: #fff;
+    }
 
     .my-account-tab.my-account-active {
-        background-color: #48b4b8;
+        background-color: #ff7307;
         color: white;
     }
 
     .my-account-tab:not(.my-account-active):hover {
         /* background-color: #e2e6ea; */
-        background-color: #48b4b8;
+        background-color: #ff7307;
     }
 
     .my-account-upload-container {
@@ -70,7 +73,7 @@
 
     .my-account-upload-btn,
     .my-account-save-btn {
-        background-color: #48b4b8;
+        background-color: #ff7307;
         border: none;
         color: white;
         padding: 10px;
@@ -129,7 +132,7 @@
     }
 
     .my-account-btn {
-        background-color: #333;
+        background-color: #192041;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -137,7 +140,7 @@
         transition: background-color 0.3s ease;
         border-radius: 8px;
         /* Bo tròn 4 góc */
-        background-color: #48b4b8;
+        background-color: #ff7307;
     }
 
     .my-account-btn:hover {
@@ -148,11 +151,11 @@
     .my-account-d-block {
         display: block;
         margin-top: 40px;
-        color: red;
+        color: #ff7307;
     }
 
     .my-account-d-block:hover {
-        color: red;
+        color: #ff7307;
         text-decoration: underline;
     }
 
@@ -314,7 +317,7 @@
     b,
     strong {
         font-weight: bold;
-        color: black;
+        color: #192041;
     }
 
     .content-detail {
@@ -341,13 +344,13 @@
     }
 
     .info-detail button {
-        background-color: #333;
+        background-color: #192041;
         color: white;
         padding: 5px 10px;
     }
 
     .box-detail-history {
-        background-color: #333;
+        background-color: #192041;
         color: white;
         height: 50px;
         margin-left: 0px;
@@ -366,7 +369,7 @@
     }
 
     .table-history table thead {
-        background: #333;
+        background: #192041;
         height: 40px;
         color: white;
         /* padding: 6px; */
@@ -446,7 +449,7 @@
         margin-right: 10px;
         width: 30px;
         height: 30px;
-        color: black;
+        color: #192041;
         line-height: 17px;
     }
 
@@ -461,7 +464,7 @@
         margin-left: 0px !important;
         /* margin-left: 10px; */
 
-        color: black;
+        color: #192041;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         border-radius: 10px;
@@ -469,4 +472,22 @@
 
     .cinema-journey-container .pagination>li>a:hover {
         background: #ccc;
+    }
+
+    .cinema-journey-container th {
+        color: #192041;
+    }
+    .cinema-journey-container td {
+        color: #192041;
+    }
+
+    .cinema-journey-container .btn-detail-ticket {
+        color: #1e264f;
+    }
+    .cinema-journey-container .btn-detail-ticket:hover {
+        color: #ff7307;
+    }
+
+    .xanh-fpt {
+        color: #192041;
     }
