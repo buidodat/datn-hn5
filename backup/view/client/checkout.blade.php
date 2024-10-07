@@ -4,6 +4,95 @@
     Checkout
 @endsection
 
+@section('styles')
+    <style>
+        .modal {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: block;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 22% auto;
+            padding: 10px;
+            border: 1px solid #888;
+            width: 30%;
+            text-align: center;
+        }
+
+        .text-error {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f1761d;
+            margin-bottom: 20px;
+            margin: 5% auto;
+        }
+
+        .button-error {
+            cursor: pointer;
+            margin-bottom: 5%;
+            background-color: #f1761d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #voucher-response .show-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #voucher-response .t-success {
+            color: #02af02;
+            margin: 1% auto;
+            font-weight: bold;
+        }
+
+        #voucher-response .show-text span b {
+            color: #f1761d;
+        }
+
+        #voucher-response .show-text button {
+            padding: 3px 20px;
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #f1761d;
+
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #voucher-response .show-text button:hover {
+            background-color: #f1761d;
+            color: white;
+            border-color: #f1761d;
+        }
+
+        #voucher-response .show-text button:active {
+            background-color: #d6d6d6;
+            border-color: #888;
+        }
+    </style>
+@endsection
+
+
 @section('content')
     <div class="st_dtts_wrapper float_left">
         <div class="container container-choose-seat">
@@ -91,10 +180,10 @@
                                                                     height="60px">
                                                             @endif
                                                         </td>
-                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} Vnđ
+                                                        {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} VNĐ
                                                     </td> --}}
                                                         <td>{{ $item->name }} - <span class="combo-price"
-                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>Vnđ
+                                                                data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>VNĐ
                                                         </td>
 
                                                         <td>
@@ -193,7 +282,7 @@
                                                                 <td>1900</td>
                                                                 <td><input type="text" name="point_use"
                                                                         placeholder="Nhập điểm"></td>
-                                                                <td>= 0 Vnđ</td>
+                                                                <td>= 0 VNĐ</td>
                                                                 <td>
                                                                     <button type="submit">Đổi điểm</button>
                                                                 </td>
@@ -211,19 +300,18 @@
                                     <div>
                                         <p>Tổng tiền:</p>
                                         <p class="text-danger total-price-checkout">
-                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} Vnđ
+                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} VNĐ
                                         </p>
                                         <input type="text" name="total-price" id="total-price" value="" hidden
                                             readonly>
                                     </div>
                                     <div>
                                         <p>Số tiền được giảm:</p>
-                                        <p class="text-danger total-discount">0 Vnđ</p>
+                                        <p class="text-danger total-discount">0 VNĐ</p>
                                     </div>
                                     <div>
                                         <p>Số tiền cần thanh toán:</p>
-                                        <p class="text-danger total-price-payment">
-                                            {{ number_format(session('total_price', 0), 0, ',', '.') }} Vnđ</p>
+                                        <p class="text-danger total-price-payment">0 VNĐ</p>
                                     </div>
                                 </div>
                                 {{-- phuong thuc thanh toan --}}
@@ -378,203 +466,36 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('theme/client/css/checkout.css') }}">
-@endsection
-
-@section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var routeUrl = "{{ route('applyVoucher') }}";
         var csrfToken = "{{ csrf_token() }}";
 
-        let sessionTotalPrice = parseInt("{{ session('total_price', 0) }}");
-        let discountAmount = 0; // Số tiền được giảm
-
-        const totalDiscountElement = document.querySelector('.total-discount');
-
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease'); // dấu trừ
-        //     const increaseBtns = document.querySelectorAll('.quantity-btn.increase'); // dấu cộng
-        //     const quantityInputs = document.querySelectorAll('.quantity-input');
-        //     const totalPriceElement = document.querySelector('.total-price-checkout .total-price-checkout');
-        //     const totalPriceInput = document.getElementById('total-price');
-        //     const totalDiscountElement = document.querySelector('.total-discount');
-        //     const totalPaymentElement = document.querySelector('.total-price-payment');
-
-        //     let sessionTotalPrice = parseInt("{{ session('total_price', 0) }}");
-        //     let discountAmount = 0; // Số tiền được giảm
-
-        //     // Hàm tính tổng tiền
-        //     function calculateTotal() {
-        //         let totalPrice = sessionTotalPrice; // Bắt đầu từ tổng tiền trong session
-
-        //         quantityInputs.forEach(input => {
-        //             const quantity = parseInt(input.value); // chuyển giá trị thành số nguyên
-        //             const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset
-        //                 .price);
-        //             totalPrice += quantity * pricePerCombo;
-        //         });
-
-        //         // Cập nhật tổng tiền và số tiền thanh toán
-        //         totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
-        //         totalPriceInput.value = totalPrice; // Cập nhật giá trị cho ô input ẩn
-
-        //         // Tính số tiền cần thanh toán
-        //         let totalPayment = totalPrice - discountAmount;
-        //         totalPayment = Math.max(totalPayment, 0); // Đảm bảo không âm
-
-        //         // Cập nhật giao diện
-        //         totalPaymentElement.textContent = totalPayment.toLocaleString() + ' Vnđ';
-        //     }
-
-        //     // Sự kiện khi bấm nút tăng số lượng
-        //     increaseBtns.forEach(button => {
-        //         button.addEventListener('click', function() {
-        //             const input = this.closest('.quantity-container').querySelector(
-        //                 '.quantity-input');
-        //             let currentValue = parseInt(input.value);
-        //             const max = parseInt(input.getAttribute('max'));
-        //             if (currentValue < max) { // Chỉ tăng nếu giá trị nhỏ hơn max
-        //                 input.value = currentValue + 1;
-        //                 calculateTotal(); // Cập nhật tổng tiền
-        //             }
-        //         });
-        //     });
-
-        //     // Sự kiện khi bấm nút giảm số lượng
-        //     decreaseBtns.forEach(button => {
-        //         button.addEventListener('click', function() {
-        //             const input = this.closest('.quantity-container').querySelector(
-        //                 '.quantity-input');
-        //             let currentValue = parseInt(input.value);
-        //             if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
-        //                 input.value = currentValue - 1;
-        //                 calculateTotal(); // Cập nhật tổng tiền
-        //             }
-        //         });
-        //     });
-
-        //     function attachCancelVoucherEvent() {
-        //         $('#cancel-voucher-btn').on('click', function() {
-        //             // Phục hồi giá trị và nút bấm về trạng thái ban đầu
-        //             $('#voucher-form')[0].reset();
-        //             $('#voucher-response').html('');
-
-        //             // Lấy giá trị tổng tiền ban đầu và định dạng lại
-        //             var originalTotalPrice = parseInt($('#total-price').val());
-        //             $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' Vnđ');
-        //             $('.total-discount').text('0 Vnđ');
-
-        //             // Cập nhật lại trạng thái nút
-        //             $('#apply-voucher-btn').attr('disabled', false);
-
-        //             // Cập nhật lại discountAmount về 0
-        //             discountAmount = 0;
-        //             calculateTotal(); // Tính lại tổng tiền thanh toán sau khi hủy voucher
-        //         });
-        //     }
-
-        //     // Code xử lý chính
-        //     $('#voucher-form').on('submit', function(e) {
-        //         e.preventDefault();
-
-        //         $('#apply-voucher-btn').attr('disabled', true);
-
-        //         var formData = {
-        //             code: $('#voucher_code').val(),
-        //             _token: csrfToken
-        //         };
-
-        //         $.ajax({
-        //             url: routeUrl,
-        //             type: "POST",
-        //             data: formData,
-        //             success: function(response) {
-        //                 var discountAmountReceived = response.discount;
-        //                 discountAmount = discountAmountReceived; // Cập nhật discountAmount
-        //                 var discountAmountFormatted = discountAmountReceived.toLocaleString();
-
-        //                 $('#voucher-response').html(`
-        //                     <div class="t-success">${response.success}</div>
-        //                     <div class="show-text">
-        //                         <span>Voucher: <b>${response.voucher_code}</b></span>
-        //                         <span>Giảm giá: <b>${discountAmountFormatted}</b> Vnđ</span>
-        //                         <button id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
-        //                     </div>
-        //                 `);
-
-        //                 var totalPrice = parseInt($('#total-price').val());
-        //                 var totalPricePayment = totalPrice - discountAmount;
-
-        //                 $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' Vnđ');
-        //                 $('.total-discount').text(discountAmountFormatted.toLocaleString() + ' Vnđ');
-
-        //                 $('#apply-voucher-btn').attr('disabled', false);
-        //                 attachCancelVoucherEvent();
-        //             },
-        //             error: function(xhr) {
-        //                 var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
-        //                 showModalError(error);
-        //                 $('#apply-voucher-btn').attr('disabled', false);
-        //             }
-        //         });
-        //     });
-
-        //     function showModalError(errorMessage) {
-        //         const modalHTML = `
-        //             <div id="error-modal" class="modal">
-        //                 <div class="modal-content" >
-        //                     <p class="text-error">${errorMessage}</p>
-        //                     <span class="close-modal button-error">Hủy</span>
-        //                 </div>
-        //             </div>
-        //         `;
-
-        //         $('body').append(modalHTML);
-        //         $('#error-modal').css('display', 'block');
-        //         $('.close-modal').on('click', function() {
-        //             $('#error-modal').remove();
-        //         });
-
-        //         $(window).on('click', function(event) {
-        //             if ($(event.target).is('#error-modal')) {
-        //                 $('#error-modal').remove();
-        //             }
-        //         });
-        //     }
-
-        //     // Tính toán ban đầu khi trang được tải
-        //     calculateTotal();
-        // });
-
+        
         // Thời gian đếm ngược (10 phút = 600 giây)
-        // let timeLeft = 600; // 600 giây tương đương 10 phút
-        // const timerElement = document.getElementById('timer');
+        let timeLeft = 600; // 600 giây tương đương 10 phút
+            const timerElement = document.getElementById('timer');
 
-        // // Hàm đếm ngược thời gian
-        // const countdown = setInterval(() => {
-        //     // Tính số phút và giây còn lại
-        //     const minutes = Math.floor(timeLeft / 60);
-        //     const seconds = timeLeft % 60;
+            // Hàm đếm ngược thời gian
+            const countdown = setInterval(() => {
+                // Tính số phút và giây còn lại
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
 
-        //     // Hiển thị thời gian còn lại ở định dạng mm:ss
-        //     timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                // Hiển thị thời gian còn lại ở định dạng mm:ss
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        //     // Giảm thời gian còn lại
-        //     timeLeft--;
+                // Giảm thời gian còn lại
+                timeLeft--;
 
-        //     // Khi thời gian kết thúc (hết 0 giây)
-        //     if (timeLeft < 0) {
-        //         clearInterval(countdown); // Dừng đếm ngược
+                // Khi thời gian kết thúc (hết 0 giây)
+                if (timeLeft < 0) {
+                    clearInterval(countdown); // Dừng đếm ngược
 
-        //         // Hiển thị thông báo và quay về trang chủ
-        //         alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-        //         window.location.href = '/'; // Điều hướng về trang chủ ("/")
-        //     }
-        // }, 1000); // Cập nhật mỗi giây
+                    // Hiển thị thông báo và quay về trang chủ
+                    alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                    window.location.href = '/'; // Điều hướng về trang chủ ("/")
+                }
+            }, 1000); // Cập nhật mỗi giây
     </script>
 @endsection
