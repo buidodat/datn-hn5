@@ -58,6 +58,7 @@
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-3">
                                         <select name="cinema_id" id="cinema" class="form-select">
                                             <option value="">Chọn Rạp</option>
@@ -97,7 +98,6 @@
                         style="width:100%;">
                         <thead>
                             <tr>
-                                {{-- <th>#</th> --}}
                                 <th>Thời gian</th>
                                 <th>Tên phim</th>
                                 <th>Tên phòng</th>
@@ -109,76 +109,138 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                // Nhóm suất chiếu theo tên phòng và ngày chiếu
-                                $groupByShowtimes = $showtimes->groupBy(function ($showtime) {
-                                    return $showtime->room->name . '_' . $showtime->date;
-                                });
-                            @endphp
-
-                            @foreach ($groupByShowtimes as $key => $times)
+                            @foreach ($rooms as $room)
                                 @php
-                                    $rowCount = $times->count(); // Số suất chiếu trong nhóm phòng + ngày chiếu
+                                    // Nhóm suất chiếu theo ngày chiếu
+                                    $groupByDate = $room->showtimes->groupBy('date');
                                 @endphp
 
-                                @foreach ($times as $i => $showtime)
-                                    <tr>
-                                        {{-- <td>{{ $i + 1 }}</td> --}}
-                                        <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
-                                            {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
-                                        <td>{{ $showtime->movieVersion->movie->name }}</td>
+                                @foreach ($groupByDate as $date => $showtimes)
+                                    @php
+                                        $rowCount = $showtimes->count(); // Số suất chiếu trong ngày này
+                                    @endphp
 
-                                        @if ($i == 0)
-                                            <!-- Nếu là hàng đầu tiên của nhóm, hiển thị tên phòng và ngày chiếu -->
-                                            <td rowspan="{{ $rowCount }}">
-                                                <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
+                                    @foreach ($showtimes as $i => $showtime)
+                                        @php
+                                            $startTime = \Carbon\Carbon::parse($showtime->start_time);
+                                            $endTime = \Carbon\Carbon::parse($showtime->end_time);
+
+                                            //sắp chiếu
+                                            $upComing = $timeNow < $startTime->format('d-m-Y H:i:s');
+
+                                            //đang chiếu
+                                            $showing =
+                                                $timeNow >= $startTime->format('d-m-Y H:i:s') &&
+                                                $timeNow < $endTime->format('d-m-Y H:i:s');
+                                            //đã chiếu
+                                            $ended =
+                                                $timeNow > $startTime->format('d-m-Y H:i:s') &&
+                                                $timeNow > $endTime->format('d-m-Y H:i:s');
+
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $startTime->format('H:i') }} -
+                                                {{ $endTime->format('H:i') }}</td>
+                                            <td>
+                                                @if ($showtime->movie->is_special == 1)
+                                                    <p class="text-danger mb-0">
+                                                        {!! Str::limit($showtime->movie->name, 40) !!}
+                                                    </p>
+                                                @else
+                                                    <p class="mb-0">{!! Str::limit($showtime->movie->name, 40) !!}</p>
+                                                @endif
+
+
                                             </td>
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ $showtime->format }}
+
+                                            @if ($i == 0)
+                                                <!-- Nếu là suất chiếu đầu tiên của ngày, hiển thị tên phòng và ngày chiếu -->
+                                                <td rowspan="{{ $rowCount }}">
+                                                    <b>{{ $room->cinema->name }} - {{ $room->name }}</b>
+                                                </td>
+                                                <td rowspan="{{ $rowCount }}">
+                                                    {{ $showtime->format }}
+                                                </td>
+                                                <td rowspan="{{ $rowCount }}">
+                                                    {{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                    /
+                                                    {{ $room->seats->whereNull('deleted_at')->count() }} ghế
+                                                </td>
+                                                <td rowspan="{{ $rowCount }}">
+                                                    {{ \Carbon\Carbon::parse($showtime->date)->format('d-m-Y') }}
+                                                </td>
+                                            @endif
+
+                                            <td>
+                                                {!! $showtime->is_active == 1
+                                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+
+                                                @if ($showtime->is_active == 1)
+                                                    @if ($showing)
+                                                        <span class="badge bg-danger-subtle text-danger text-uppercase">Đang
+                                                            chiếu
+                                                        </span>
+                                                    @elseif($ended)
+                                                        <span class="badge bg-primary-subtle text-primary text-uppercase">Đã
+                                                            chiếu
+                                                        </span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-warning-subtle text-warning text-uppercase">Sắp
+                                                            chiếu
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                                {{-- @if ($showtime->movie->is_special == 1)
+                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
+                                                    </span>
+                                                @endif --}}
                                             </td>
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
-                                                {{-- {{ $showtime->room->capacity }}  --}}
-                                                ghế
+                                            <td>
+
+                                                <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                            class="fas fa-eye"></i></button></a>
+
+                                                {{-- Nếu ko nằm trog khoảng TG chiếu phim thì sửa, xóa được --}}
+                                                @if ($upComing)
+                                                    <a href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                        <button title="xem" class="btn btn-warning btn-sm"
+                                                            type="button"><i class="fas fa-edit"></i></button>
+                                                    </a>
+
+                                                    <form action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                        method="post" class="d-inline-block">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                            <i class="ri-delete-bin-7-fill"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
-
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ \Carbon\Carbon::parse($showtime->date)->format('d-m-Y') }}
-                                            </td>
-                                        @endif
-
-                                        <td>
-                                            {!! $showtime->is_active == 1
-                                                ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                        </td>
-                                        <td>
-                                             <a href="{{ route('admin.showtimes.show',$showtime) }}">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a>
-
-                                            <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                <button title="xem" class="btn btn-warning btn-sm" type="button"><i
-                                                        class="fas fa-edit"></i></button>
-                                            </a>
-
-                                            <form action="{{ route('admin.showtimes.destroy', $showtime) }}" method="post"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                    <i class="ri-delete-bin-7-fill"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             @endforeach
-
                         </tbody>
                     </table>
+                    <div class="row">
+                        <div class="col-md-8 mt-2">
+                            <p><b>Chú thích:</b> Tên phim màu đỏ là suất chiếu đặc biệt; Những suất chiếu có cùng rạp, cùng
+                                phòng, cùng ngày
+                                sẽ được gộp vào cùng 1 hàng </p>
+                        </div>
+                        <div class="col-md-4">
+                            {{ $rooms->links() }}
+                        </div>
+                    </div>
+
+                    <!-- Phân trang -->
+
+
                 </div>
 
 
@@ -215,8 +277,8 @@
     <script>
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ Laravel
-            var selectedBranchId = "{{ old('branch_id', '') }}";
-            var selectedCinemaId = "{{ old('cinema_id', '') }}";
+            // var selectedBranchId = "{{ old('branch_id', '') }}";
+            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
             // Xử lý sự kiện thay đổi chi nhánh
             $('#branch').on('change', function() {
@@ -232,13 +294,13 @@
                         success: function(data) {
                             $.each(data, function(index, cinema) {
                                 cinemaSelect.append('<option value="' + cinema.id +
-                                    '">' + cinema.name + '</option>');
+                                    '" >' + cinema.name + '</option>');
                             });
 
                             // Chọn lại cinema nếu có selectedCinemaId
                             if (selectedCinemaId) {
                                 cinemaSelect.val(selectedCinemaId);
-                                selectedCinemaId = false;
+                                // selectedCinemaId = false;
                             }
                         }
                     });
@@ -246,10 +308,10 @@
             });
 
             // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
-            if (selectedBranchId) {
-                $('#branch').val(selectedBranchId).trigger('change');
+            // if (selectedBranchId) {
+            //     $('#branch').val(selectedBranchId).trigger('change');
 
-            }
+            // }
         });
     </script>
 @endsection
