@@ -16,6 +16,7 @@ use App\Models\Showtime;
 use App\Models\TypeRoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ShowtimeController extends Controller
 {
@@ -78,7 +79,10 @@ class ShowtimeController extends Controller
             'date' => $request->date
         ]);
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches'));
+        $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+        // dd();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'timeNow'));
     }
 
 

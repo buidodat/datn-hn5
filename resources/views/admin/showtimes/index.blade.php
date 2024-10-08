@@ -121,10 +121,37 @@
                                     @endphp
 
                                     @foreach ($showtimes as $i => $showtime)
+                                        @php
+                                            $startTime = \Carbon\Carbon::parse($showtime->start_time);
+                                            $endTime = \Carbon\Carbon::parse($showtime->end_time);
+
+                                            //sắp chiếu
+                                            $upComing = $timeNow < $startTime->format('d-m-Y H:i:s');
+
+                                            //đang chiếu
+                                            $showing =
+                                                $timeNow >= $startTime->format('d-m-Y H:i:s') &&
+                                                $timeNow < $endTime->format('d-m-Y H:i:s');
+                                            //đã chiếu
+                                            $ended =
+                                                $timeNow > $startTime->format('d-m-Y H:i:s') &&
+                                                $timeNow > $endTime->format('d-m-Y H:i:s');
+
+                                        @endphp
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
-                                                {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
-                                            <td>{{ $showtime->movieVersion->movie->name }}</td>
+                                            <td>{{ $startTime->format('H:i') }} -
+                                                {{ $endTime->format('H:i') }}</td>
+                                            <td>
+                                                @if ($showtime->movie->is_special == 1)
+                                                    <p class="text-danger mb-0">
+                                                        {!! Str::limit($showtime->movie->name, 40) !!}
+                                                    </p>
+                                                @else
+                                                    <p class="mb-0">{!! Str::limit($showtime->movie->name, 40) !!}</p>
+                                                @endif
+
+
+                                            </td>
 
                                             @if ($i == 0)
                                                 <!-- Nếu là suất chiếu đầu tiên của ngày, hiển thị tên phòng và ngày chiếu -->
@@ -148,13 +175,36 @@
                                                 {!! $showtime->is_active == 1
                                                     ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
                                                     : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+
+                                                @if ($showtime->is_active == 1)
+                                                    @if ($showing)
+                                                        <span class="badge bg-danger-subtle text-danger text-uppercase">Đang
+                                                            chiếu
+                                                        </span>
+                                                    @elseif($ended)
+                                                        <span class="badge bg-primary-subtle text-primary text-uppercase">Đã
+                                                            chiếu
+                                                        </span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-warning-subtle text-warning text-uppercase">Sắp
+                                                            chiếu
+                                                        </span>
+                                                    @endif
+                                                @endif
+                                                {{-- @if ($showtime->movie->is_special == 1)
+                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
+                                                    </span>
+                                                @endif --}}
                                             </td>
                                             <td>
-                                            
-                                                    <a href="{{ route('admin.showtimes.show', $showtime) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
 
+                                                <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                            class="fas fa-eye"></i></button></a>
+
+                                                {{-- Nếu ko nằm trog khoảng TG chiếu phim thì sửa, xóa được --}}
+                                                @if ($upComing)
                                                     <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                                                         <button title="xem" class="btn btn-warning btn-sm"
                                                             type="button"><i class="fas fa-edit"></i></button>
@@ -169,7 +219,7 @@
                                                             <i class="ri-delete-bin-7-fill"></i>
                                                         </button>
                                                     </form>
-                                              
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -177,9 +227,19 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="row">
+                        <div class="col-md-8 mt-2">
+                            <p><b>Chú thích:</b> Tên phim màu đỏ là suất chiếu đặc biệt; Những suất chiếu có cùng rạp, cùng
+                                phòng, cùng ngày
+                                sẽ được gộp vào cùng 1 hàng </p>
+                        </div>
+                        <div class="col-md-4">
+                            {{ $rooms->links() }}
+                        </div>
+                    </div>
 
                     <!-- Phân trang -->
-                    {{ $rooms->links() }}
+
 
                 </div>
 
