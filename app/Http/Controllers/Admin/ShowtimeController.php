@@ -24,32 +24,66 @@ class ShowtimeController extends Controller
      */
     const PATH_VIEW = 'admin.showtimes.';
     const PATH_UPLOAD = 'showtimes';
+
+    // public function index(Request $request)
+    // {
+    //     //
+    //     // $cinemas = Cinema::all();
+    //     $branches = Branch::all();
+
+    //     $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
+
+    //     if ($request->input('cinema_id')) {
+    //         $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
+    //             $query->where('id', $request->cinema_id);
+    //         });
+
+    //     }
+
+    //     if ($request->input('date')) {
+    //         $showtimes = $showtimes->where('date', $request->date);
+    //     }
+
+    //     $showtimes = $showtimes->get();
+
+    //     return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches'));
+    // }
+
     public function index(Request $request)
     {
-        //
-        // $cinemas = Cinema::all();
+        // Lấy ds chi nhánh
         $branches = Branch::all();
 
-        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
+        // Lấy ds các phòng
+        $rooms = Room::whereHas('showtimes', function ($query) use ($request) {
 
-        if ($request->input('cinema_id')) {
-            $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
-                $query->where('id', $request->cinema_id);
-            });
-        }
+            if ($request->input('cinema_id')) {
+                // Lọc theo rạp 
+                $query->whereHas('cinema', function ($cinemaQuery) use ($request) {
+                    $cinemaQuery->where('id', $request->cinema_id);
+                });
+            }
 
-        if ($request->input('date')) {
-            $showtimes = $showtimes->where('date', $request->date);
-        }
+            if ($request->input('date')) {
+                // Lọc theo ngày chiếu 
+                $query->where('date', $request->date);
+            }
+        })->with(['cinema', 'showtimes.movieVersion.movie'])
+            ->latest('id')
+            ->paginate(1); //mỗi trang hiển thị 1 phòng
 
-        $showtimes = $showtimes->get();
+        //Lưu đường dẫn url khi lọc để đến đc trang 2
+        $rooms->appends([
+            'cinema_id' => $request->cinema_id,
+            'date' => $request->date
+        ]);
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
+
+
     public function create()
     {
         //
@@ -131,7 +165,7 @@ class ShowtimeController extends Controller
         $matrixSeat = Room::MATRIXS[$matrixKey];
         $seats = Seat::withTrashed()->where('room_id', $showtime->room->id)->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrixSeat','seats'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrixSeat', 'seats'));
     }
 
     /**
