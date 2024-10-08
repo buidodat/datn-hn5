@@ -175,7 +175,7 @@
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
 
-                                                          @if (!$room->is_publish)
+                                                        @if (!$room->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $room) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
@@ -230,7 +230,8 @@
                             </table>
                         </div>
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
@@ -250,7 +251,7 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                         @if (!$room->is_publish)
+                                                        @if (!$room->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $room) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
@@ -320,7 +321,7 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                         @if (!$room->is_publish)
+                                                        @if (!$room->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $room) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa

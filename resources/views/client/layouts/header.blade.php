@@ -60,15 +60,6 @@
                 </div>
                 <div class="choose-cinemas">
                     <div>
-                        {{-- @php
-                            $cinemas = App\Models\Cinema::all();
-                        @endphp
-                        <select id="cinemaSelect" onchange="fetchData()">
-                            <option value="">Chọn cơ sở</option>
-                            @foreach ($cinemas as $cinema)
-                                <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
-                            @endforeach
-                        </select> --}}
                         @php
                             $branches = App\Models\Branch::where('is_active', '1')->get();
                         @endphp
