@@ -6,7 +6,9 @@
 .xanh-fpt {
     color: #192041;
 }
-
+.cam-fpt {
+    color: #ff7307;
+}
 .text-warning {
     color: rgb(228, 228, 5);
 }
@@ -381,7 +383,20 @@
     color: #fff;
     /* Màu chữ */
 }
-
+.btn-buy-ticket {
+    background-color: #ff7307;
+    color: #fff;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.button-buy{
+    margin: 5px auto;
+}
 .buy-ticket:hover {
     background-color: #e74c3c;
     /* Màu nền khi hover nút 'Mua Vé Ngay' */
@@ -1199,18 +1214,34 @@
 
 
 
-.movie-name-home {
+.movie-name-home  {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    letter-spacing: -0.7px;
+    font-weight: 500;
+    font-size: 22px;
     max-width: 225px;
-    max-height: 33px;
+    height: 27px;
     overflow: hidden;
 }
 
+.movie-name-home a
+{
+    color: #434f89;
+}
+.movie-name-home a:hover {
+    text-decoration: underline;
+
+}
 .tab-content .is_hot {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 65px !important;
     height: auto !important;
+}
+.text-bold{
+    font-weight: 500;
 }
 
 /* Vẫn là trang home, nhưng css paginate */

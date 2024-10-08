@@ -71,7 +71,8 @@ Route::prefix('rooms')
 Route::prefix('seat-templates')
     ->as('seat-templates.')
     ->group(function () {
-        Route::get('/',    [SeatTemplateController::class, 'index'])->name('index');
+        Route::get('/',                     [SeatTemplateController::class, 'index'])->name('index');
+        Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
     });
 // Route::resource('rooms', RoomController::class);
 

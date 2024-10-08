@@ -93,11 +93,11 @@
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
 
-                                        <a href="{{ route('admin.branches.edit', $item) }}">
+                                        <a href="{{ route('admin.seat-templates.edit', $item) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        <form action="{{ route('admin.branches.destroy', $item) }}" method="POST"
+                                        {{-- <form action="{{ route('admin.seat-templates.destroy', $item) }}" method="POST"
                                             class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
@@ -105,7 +105,7 @@
                                                 onclick="return confirm('Bạn có muốn xóa không')">
                                                 <i class="ri-delete-bin-7-fill"></i>
                                             </button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
                             @endforeach

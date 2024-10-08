@@ -54,11 +54,11 @@ class SeatTemplateController extends Controller
     // /**
     //  * Show the form for editing the specified resource.
     //  */
-    // public function edit(Cinema $cinema)
-    // {
-    //     $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
-    //     return view(self::PATH_VIEW . __FUNCTION__, compact('branches', 'cinema'));
-    // }
+    public function edit(SeatTemplate $seatTemplate)
+    {
+        $matrix = SeatTemplate::getMatrixById($seatTemplate->id);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('matrix','seatTemplate' ));
+    }
 
     // /**
     //  * Update the specified resource in storage.
