@@ -40,9 +40,9 @@ hr {
 }
 
 .listMovieScrening-date div.active {
-    color: #fb1d1d;
+    color: #ff7307;
     font-weight: bold;
-    border-bottom: 3px solid #fb1d1d;
+    border-bottom: 3px solid #ff7307;
 }
 
 /* Style cho phần chi tiết phim */
@@ -103,12 +103,12 @@ hr {
 }
 
 .showtime-btn:hover {
-    color: red;
+    color: #ff7307;
 }
 
 /* Khi button được chọn */
 .showtime-btn.selected {
-    color: red;
+    color: #ff7307;
 }
 
 .showtime-bot {

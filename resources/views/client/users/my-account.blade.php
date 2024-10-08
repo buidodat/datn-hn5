@@ -209,7 +209,7 @@
                                                     </td>
                                                     <td class="cinema-journey-td">
                                                         {{-- href="detail-ticket/{{ $ticket->id }}"  --}}
-                                                        <a href="{{ route('ticketDetail', $ticket->id) }}">
+                                                        <a href="{{ route('ticketDetail', $ticket->id) }}" class="bold btn-detail-ticket">
                                                             Chi tiết
                                                         </a>
                                                     </td>

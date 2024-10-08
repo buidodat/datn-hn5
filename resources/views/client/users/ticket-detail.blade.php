@@ -175,7 +175,7 @@
 
 
                                                     <tr>
-                                                        <th colspan="5" class="total-detail" align="right">Tổng cộng:
+                                                        <th colspan="5" class="total-detail xanh-fpt" align="right">Tổng cộng:
                                                             {{ number_format($ticket->total_price, 0, ',', '.') }}đ</th>
                                                     </tr>
                                                 @endforeach
