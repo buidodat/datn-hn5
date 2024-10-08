@@ -34,6 +34,8 @@ class ChooseSeatController extends Controller
     public function saveInformation(Request $request, $showtimeId)
     {
         // dd($request->all());
+        // dd(session()->all());
+
         // Xác thực dữ liệu đầu vào
         // $request->validate([
         //     'showtimeId' => 'required|integer|exists:showtimes,id',
@@ -48,6 +50,7 @@ class ChooseSeatController extends Controller
             'selected_seats' => explode(', ', $request->input('selected_seats')), // Chuyển tên ghế thành mảng
             'total_price' => $request->input('total_price'),
         ]);
+        // dd(session()->all());
 
         return redirect()->route('checkout');
     }
