@@ -60,15 +60,6 @@
                 </div>
                 <div class="choose-cinemas">
                     <div>
-                        {{-- @php
-                            $cinemas = App\Models\Cinema::all();
-                        @endphp
-                        <select id="cinemaSelect" onchange="fetchData()">
-                            <option value="">Chọn cơ sở</option>
-                            @foreach ($cinemas as $cinema)
-                                <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
-                            @endforeach
-                        </select> --}}
                         @php
                             $branches = App\Models\Branch::where('is_active', '1')->get();
                         @endphp
@@ -90,16 +81,19 @@
                                                 @else
                                                     @foreach ($branch->cinemas as $cinema)
                                                         <li>
-                                                            <form action="{{ route('change-cinema') }}" method="POST"
+                                                            <a>
+                                                                <form action="{{ route('change-cinema') }}" method="POST"
                                                                 style="display:inline;">
                                                                 @csrf
                                                                 <input type="hidden" name="cinema_id"
                                                                     value="{{ $cinema->id }}">
                                                                 <button type="submit"
-                                                                    style="background:none;border:none;color:#000;text-align:left;cursor:pointer;">
-                                                                    Poly {{ $cinema->name }}    {{--    Hà Đông , Mỹ Đình --}}
+                                                                    style="background:none;border:none;text-align:left;cursor:pointer;">
+                                                                    Poly {{ $cinema->name }}
                                                                 </button>
                                                             </form>
+                                                            </a>
+
                                                         </li>
                                                     @endforeach
                                                 @endif
