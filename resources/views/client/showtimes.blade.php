@@ -115,7 +115,7 @@
 
                             @if ($validMoviesForDate->isNotEmpty())
                                 <div data-day="{{ $date['day_id'] }}"
-                                    class="movieScrening-date-item {{ !$firstActiveSet ? 'active' : '' }}">
+                                    class="xanh-fpt movieScrening-date-item {{ !$firstActiveSet ? 'active' : '' }} ">
                                     {{ $date['date_label'] }}
                                 </div>
                                 @php
@@ -167,7 +167,7 @@
                                                 class="movie-poster">
                                         </div>
                                         <div class="movie-detail-content">
-                                            <h1 class="movie-title">{{ $validShowtimes->first()->movie->name }}</h1>
+                                            <h1 class="movie-title xanh-fpt">{{ $validShowtimes->first()->movie->name }}</h1>
                                             <ul class="movie-info">
                                                 <li><strong>Thể loại:</strong>
                                                     {{ $validShowtimes->first()->movie->category }}</li>
