@@ -73,7 +73,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td >{{ $item->description }}</td>
                                     <td>
                                         {!! $item->is_publish == 1
                                             ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -117,7 +117,7 @@
         </div>
     </div>
 
-    <!--Modal thêm mới phòng chiếu-->
+    <!--Modal thêm mới mẫu sơ đồ ghế-->
     <div class="modal fade" id="createSeatTemplate" tabindex="-1" aria-labelledby="createSeatTemplateLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -129,7 +129,6 @@
                     <form id="createSeatTemplateForm">
                         @csrf
                         <div class="row">
-                            <!-- Tên phòng chiếu -->
                             <div class="col-md-12 mb-3">
                                 <label for="name" class="form-label"><span class="text-danger">*</span> Tên mẫu</label>
                                 <input type="text" class="form-control" id="name" name="name" required
@@ -151,9 +150,6 @@
                                 <textarea name="description" class='form-control' rows="3" placeholder="Mẫu sơ đồ ghế tiêu chuẩn: 4 hàng hế thường, 8 hàng ghế vip."></textarea>
                                 <span class="text-danger mt-3" id="createDescriptionError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
-                            <!-- Chọn Chi Nhánh -->
-
-                            <input type="hidden" name="capacity" value='5'> <!-- Giá trị cố định cho capacity -->
                         </div>
                     </form>
                 </div>
@@ -173,7 +169,7 @@
                 const form = document.getElementById('createSeatTemplateForm');
                 const formData = new FormData(form);
                 let hasErrors = false; // Biến để theo dõi có lỗi hay không
-                const url = APP_URL + `/api/seat-templates`
+                const url = APP_URL + `/api/seat-templates/store`
                 fetch(url, {
                         method: 'POST',
                         body: formData,
@@ -182,7 +178,7 @@
                         if (!response.ok) {
                             // Nếu có lỗi (400, 422, 500, ...), chuyển đến phần xử lý lỗi
                             return response.json().then(errorData => {
-                                handleErrors(errorData.error, 'create'); // Gọi hàm xử lý lỗi
+                                handleErrors(errorData.errors, 'create'); // Gọi hàm xử lý lỗi
                                 hasErrors = true; // Đánh dấu có lỗi
                             });
                         }
@@ -194,7 +190,7 @@
                             $('#createSeatTemplateModal').modal('hide');
                             form.reset();
                             alert('thêm mới thành công');
-                            window.reload();
+                            window.location.reload();
                             // window.location.href =
                             //     `${APP_URL}/admin/rooms/seat-diagram/${data.room.id}`;
                         }
@@ -205,23 +201,18 @@
             function handleErrors(errors, prefix) {
             // Reset thông báo lỗi trước đó
             document.getElementById(`${prefix}NameError`).innerText = '';
-            document.getElementById(`${prefix}BranchError`).innerText = '';
-            document.getElementById(`${prefix}CinemaError`).innerText = '';
             document.getElementById(`${prefix}MatrixSeatError`).innerText = '';
-            document.getElementById(`${prefix}TypeRoomError`).innerText = '';
+            document.getElementById(`${prefix}DescriptionError`).innerText = '';
 
             // Kiểm tra và hiển thị lỗi cho từng trường
             if (errors.name) {
                 document.getElementById(`${prefix}NameError`).innerText = errors.name.join(', ');
             }
-            if (errors.cinema_id) {
-                document.getElementById(`${prefix}DescriptionError`).innerText = errors.cinema_id.join(', ');
+            if (errors.description) {
+                document.getElementById(`${prefix}DescriptionError`).innerText = errors.description.join(', ');
             }
             if (errors.matrix_id) {
                 document.getElementById(`${prefix}MatrixSeatError`).innerText = errors.matrix_id.join(', ');
-            }
-            if (errors.type_room_id) {
-                document.getElementById(`${prefix}TypeRoomError`).innerText = errors.type_room_id.join(', ');
             }
         }
     </script>

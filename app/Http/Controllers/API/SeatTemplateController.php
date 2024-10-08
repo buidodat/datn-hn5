@@ -16,12 +16,13 @@ class SeatTemplateController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:seat_templates',
             'matrix_id' => ['required', Rule::in($matrixIds)],
-            'description' => 'nullable|string|max:255'
+            'description' => 'required|string|max:255'
         ], [
             'name.required' => 'Vui lòng nhập tên mẫu.',
             'name.unique' => 'Tên mẫu đã tồn tại.',
             'name.string' => 'Tên mẫu phải là kiểu chuỗi.',
             'name.max' => 'Độ dài tên mẫu không được vượt quá 255 ký tự.',
+            'description.required' => 'Vui lòng nhập mô tả.',
             'description.string' => 'Mô tả phải là kiểu chuỗi.',
             'description.max' => 'Độ dài mô tả không được vượt quá 255 ký tự.',
             'matrix_id.required' => "Vui lòng chọn ma trận ghế",
@@ -30,7 +31,7 @@ class SeatTemplateController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                'errors' => $validator->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
         }
 
@@ -49,7 +50,7 @@ class SeatTemplateController extends Controller
 
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => $th->getMessage(),
+                'errors' => $th->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
         }
     }
