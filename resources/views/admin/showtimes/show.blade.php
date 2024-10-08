@@ -457,8 +457,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
-                    <a href="{{ route('admin.movies.edit', $showtime) }}">
+                    <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
+                    <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                         <button type="submit" class="btn btn-warning mx-1">Chỉnh sửa</button>
                     </a>
 

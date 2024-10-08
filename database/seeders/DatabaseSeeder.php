@@ -518,11 +518,11 @@ class DatabaseSeeder extends Seeder
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             DB::table('vouchers')->insert([
                 'code' => strtoupper(Str::random(6)),
-                'title' => fake()->sentence(5),
-                'description' => fake()->text(255),
+                'title' => fake()->sentence(3),
+                'description' => fake()->text(50),
                 'start_date_time' => Carbon::now()->subDays(rand(0, 30)),
                 'end_date_time' => Carbon::now()->addDays(rand(30, 60)),
                 'discount' => fake()->numberBetween(1000, 100000),
@@ -535,8 +535,8 @@ class DatabaseSeeder extends Seeder
 
         //tickets
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
+        $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
         $movieIds = DB::table('movies')->pluck('id')->toArray();
-        $paymentIds = DB::table('payments')->pluck('id')->toArray();
         $userIds = range(1, 6);
 
         foreach ($userIds as $userId) {
@@ -552,15 +552,16 @@ class DatabaseSeeder extends Seeder
                     'voucher_discount' => null,
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Hủy']),
+                    'status' => fake()->randomElement(['Chờ xác nhận','Hoàn thành', 'Đã hết hạn']),
                     'expiry' => $expiryDate,
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
 
-                // Lấy showtime ngẫu nhiên
+                // Lấy showtime và cinema ngẫu nhiên
                 $showtime_id = fake()->randomElement($showtimeIds);
+                $cinema_id = fake()->randomElement($cinemaIds);
 
                 // phòng theo suaats chiếu
                 $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
@@ -575,6 +576,7 @@ class DatabaseSeeder extends Seeder
                 $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
 
                 $price = fake()->numberBetween(50, 200) * 1000;
+                $movie_id = fake()->randomElement($movieIds);
 
                 foreach ($selectedSeats as $seatId) {
                     DB::table('ticket_seats')->insert([
@@ -582,7 +584,8 @@ class DatabaseSeeder extends Seeder
                         'showtime_id' => $showtime_id,
                         'seat_id' => $seatId,
                         'room_id' => $room_id,
-                        'movie_id' => fake()->randomElement($movieIds),
+                        'movie_id' => $movie_id,
+                        'cinema_id' => $cinema_id,
                         'price' => $price,
                         'created_at' => now(),
                         'updated_at' => now()
