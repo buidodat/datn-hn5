@@ -33,9 +33,11 @@ class RoomController extends Controller
 
     public function show(Room $room)
     {
+        $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
+        $matrixSeat = Room::MATRIXS[$matrixKey];
         $seats = Seat::where(['room_id' => $room->id])->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeRooms', 'room', 'seats']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seats','matrixSeat'));
     }
 
     public function seatDiagram(Room $room)
@@ -74,6 +76,23 @@ class RoomController extends Controller
                     ]);
                 }
             }
+
+            return redirect()->back()->with('success', 'Thao tác thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    public function destroy(Room $room){
+        try {
+            if ($room->is_publish) {
+                return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
+            }
+            DB::transaction(function () use ($room) {
+
+                Seat::where('room_id', $room->id)->delete();
+                $room->delete();
+
+            });
 
             return redirect()->back()->with('success', 'Thao tác thành công!');
         } catch (\Throwable $th) {

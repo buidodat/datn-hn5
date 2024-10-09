@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
@@ -56,18 +57,27 @@ Route::resource('type-rooms', TypeRoomController::class);
 Route::prefix('rooms')
     ->as('rooms.')
     ->group(function () {
-        Route::get('/',                   [RoomController::class,'index'])->name('index');
-        Route::get('seat-diagram/{room}', [RoomController::class,'seatDiagram'])->name('seat-diagram');
-        Route::put('seat-diagram/{room}/update', [RoomController::class,'updateSeatDiagram'])->name('seat-diagram.update');
-        Route::put('publish/{room}',     [RoomController::class,'publish'])->name('publish');
-        Route::get('{room}',     [RoomController::class,'show'])->name('show');
+        Route::get('/',                   [RoomController::class, 'index'])->name('index');
+        Route::get('seat-diagram/{room}', [RoomController::class, 'seatDiagram'])->name('seat-diagram');
+        Route::put('seat-diagram/{room}/update', [RoomController::class, 'updateSeatDiagram'])->name('seat-diagram.update');
+        Route::put('publish/{room}',     [RoomController::class, 'publish'])->name('publish');
+        Route::get('{room}',     [RoomController::class, 'show'])->name('show');
+        Route::get('{room}/destroy',     [RoomController::class, 'destroy'])->name('destroy');
+        Route::get('{room}/destroy',     [RoomController::class, 'destroy'])->name('destroy');
+    });
+
+Route::prefix('seat-templates')
+    ->as('seat-templates.')
+    ->group(function () {
+        Route::get('/',                     [SeatTemplateController::class, 'index'])->name('index');
+        Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
     });
 // Route::resource('rooms', RoomController::class);
 
 Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
-Route::get('ticket-price',[TicketPriceController::class,'index'])->name('ticket-price');
+Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 
 
 // food

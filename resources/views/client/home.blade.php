@@ -42,59 +42,48 @@
                             <div class="item">
                                 <div class="row" id="movie-list1">
                                     @foreach ($moviesUpcoming as $movie)
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
-                                                    @if ($movie->is_hot == '1')
-                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
-                                                            alt="">
-                                                    @endif
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                        <div class="prs_upcom_movie_box_wrapper">
+                                            <div class="prs_upcom_movie_img_box">
+                                                @if ($movie->is_hot == '1')
+                                                    <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                        alt="">
+                                                @endif
 
-                                                    @php
-                                                        $url = $movie->img_thumbnail;
+                                                @php
+                                                    $url = $movie->img_thumbnail;
 
-                                                        if (!\Str::contains($url, 'http')) {
-                                                            $url = Storage::url($url);
-                                                        }
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
 
-                                                    @endphp
+                                                @endphp
 
+                                                <div class='img_thumbnail_movie'>
                                                     <img src="{{ $url }}" alt="movie_img" />
-                                                    <div class="prs_upcom_movie_img_overlay"></div>
-                                                    <div class="prs_upcom_movie_img_btn_wrapper">
-                                                        <ul>
-                                                            <li>
-                                                                @if ($movie->showtimes->count() > 0)
-                                                                    <a onclick="openModalMovieScrening({{ $movie->id }})"
-                                                                        class="buy-ticket-btn">Mua vé</a>
-                                                                @else
-                                                                    <a>Không suất chiếu</a>
-                                                                @endif
-
-
-                                                            </li>
-                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
                                                 </div>
-                                                <div class="prs_upcom_movie_content_box">
-                                                    <div class="prs_upcom_movie_content_box_inner">
-                                                        <h2 class="movie-name-home"><a
-                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                        </h2>
-                                                        <p>Thể loại: {{ $movie->category }}</p>
-                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
 
-                                                </div>
                                             </div>
+
+
+                                                <div class="content-movie">
+                                                    <h3 class="movie-name-home">
+                                                        <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                    </h3>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
+
+                                                </div>
+
+
+                                            <div class='buy-ticket-movie'>
+                                                <button onclick="openModalMovieScrening({{ $movie->id }})"
+                                                    class="buy-ticket-btn">MUA VÉ</button>
+                                            </div>
+
+
                                         </div>
+                                    </div>
                                     @endforeach
                                 </div>
 
@@ -140,40 +129,29 @@
 
                                                     @endphp
 
-                                                    <img src="{{ $url }}" alt="movie_img" />
-                                                    <div class="prs_upcom_movie_img_overlay"></div>
-                                                    <div class="prs_upcom_movie_img_btn_wrapper">
-                                                        <ul>
-                                                            <li>
-
-
-                                                                @if ($movie->showtimes->count() > 0)
-                                                                    <a onclick="openModalMovieScrening({{ $movie->id }})"
-                                                                        class="buy-ticket-btn">Mua vé</a>
-                                                                @else
-                                                                    <a>Không suất chiếu</a>
-                                                                @endif
-                                                            </li>
-                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="prs_upcom_movie_content_box">
-                                                    <div class="prs_upcom_movie_content_box_inner">
-                                                        <h2 class="movie-name-home"><a
-                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                        </h2>
-                                                        <p>Thể loại: {{ $movie->category }}</p>
-                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                                    <div class='img_thumbnail_movie'>
+                                                        <img src="{{ $url }}" alt="movie_img" />
                                                     </div>
 
                                                 </div>
+
+
+                                                    <div class="content-movie">
+                                                        <h3 class="movie-name-home">
+                                                            <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                        </h3>
+                                                        <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                        <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
+
+                                                    </div>
+
+
+                                                <div class='buy-ticket-movie'>
+                                                    <button onclick="openModalMovieScrening({{ $movie->id }})"
+                                                        class="buy-ticket-btn">MUA VÉ</button>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     @endforeach
@@ -203,59 +181,48 @@
                             <div class="item">
                                 <div class="row" id="movie-list3">
                                     @foreach ($moviesSpecial as $movie)
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
-                                                    @if ($movie->is_hot == '1')
-                                                        <img class="is_hot"
-                                                            src="{{ asset('theme/client/images/hot.png') }}"
-                                                            alt="">
-                                                    @endif
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                        <div class="prs_upcom_movie_box_wrapper">
+                                            <div class="prs_upcom_movie_img_box">
+                                                @if ($movie->is_hot == '1')
+                                                    <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                        alt="">
+                                                @endif
 
-                                                    @php
-                                                        $url = $movie->img_thumbnail;
+                                                @php
+                                                    $url = $movie->img_thumbnail;
 
-                                                        if (!\Str::contains($url, 'http')) {
-                                                            $url = Storage::url($url);
-                                                        }
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
 
-                                                    @endphp
+                                                @endphp
 
+                                                <div class='img_thumbnail_movie'>
                                                     <img src="{{ $url }}" alt="movie_img" />
-                                                    <div class="prs_upcom_movie_img_overlay"></div>
-                                                    <div class="prs_upcom_movie_img_btn_wrapper">
-                                                        <ul>
-                                                            <li>
-                                                                @if ($movie->showtimes->count() > 0)
-                                                                    <a class="buy-ticket-btn"
-                                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua
-                                                                        vé</a>
-                                                                @else
-                                                                    <a>Không suất chiếu</a>
-                                                                @endif
-                                                            </li>
-                                                            <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
                                                 </div>
-                                                <div class="prs_upcom_movie_content_box">
-                                                    <div class="prs_upcom_movie_content_box_inner">
-                                                        <h2 class="movie-name-home"><a
-                                                                href="movie/{{ $movie->slug }}">{{ $movie->name }}</a>
-                                                        </h2>
-                                                        <p>Thể loại: {{ $movie->category }}</p>
-                                                        <p>Thời lượng: {{ $movie->duration }} phút </p>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
+
+                                            </div>
+
+
+                                                <div class="content-movie">
+                                                    <h3 class="movie-name-home">
+                                                        <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                    </h3>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
 
                                                 </div>
+
+
+                                            <div class='buy-ticket-movie'>
+                                                <button onclick="openModalMovieScrening({{ $movie->id }})"
+                                                    class="buy-ticket-btn">MUA VÉ</button>
                                             </div>
+
+
                                         </div>
+                                    </div>
                                     @endforeach
 
                                 </div>
@@ -493,7 +460,7 @@
                                         <div class="prs_feature_img" style="position: relative; overflow: hidden; width: 100%; height: 200px;">
                                             @php
                                                 $url = $postItem->img_post;
-    
+
                                                 if (!\Str::contains($url, 'http')) {
                                                     $url = Storage::url($url);
                                                 }
@@ -520,7 +487,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <!-- prs feature slider End -->
     <!-- prs videos&photos slider Start -->
