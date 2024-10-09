@@ -19,8 +19,6 @@ class HomeController extends Controller
     {
         $slideShow = Slideshow::query()->where('is_active', 1)->get();
 
-
-
         $currentNow = now()->format('Y-m-d');
 
         // phim sắp chiếu
