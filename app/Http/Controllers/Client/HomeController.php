@@ -32,7 +32,6 @@ class HomeController extends Controller
             ['release_date', '<=', $currentNow],
             ['end_date', '>=', $currentNow]
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
@@ -43,7 +42,6 @@ class HomeController extends Controller
             ['is_show_home', '1'],
             ['release_date', '>', $currentNow]
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
@@ -54,7 +52,6 @@ class HomeController extends Controller
             ['is_show_home', '1'],
             ['is_special', '1']
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->paginate(8);
