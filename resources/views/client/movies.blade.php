@@ -11,7 +11,7 @@
 @section('content')
     <div class="prs_upcom_slider_main_wrapper" style='padding-bottom:80px'>
         <div class="container">
-            <div class="row">
+            <div class="row-pro-max">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="prs_heading_section_wrapper">
                         <h2>DANH SÁCH PHIM</h2>
