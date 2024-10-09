@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\MoMoPaymentController;
+use App\Http\Controllers\Client\MovieController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -35,11 +36,18 @@ use Illuminate\Support\Facades\Route;
 // })->name('home');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
+Route::get('policy', [HomeController::class, 'policy'])->name('policy');
 
-Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
-Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
-Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
+
+Route::prefix('movies')
+    ->as('movies.')
+    ->group(function () {
+        Route::get('/', [MovieController::class, 'index'])->name('index');
+        Route::get('{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
+        Route::get('{id}/comments', [MovieDetailController::class, 'getComments'])->name('comments');
+        Route::post('{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('addReview');
+    });
+
 
 // lịch chiếu theo rạp
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
@@ -78,7 +86,7 @@ Route::get('contact', function () {
     return view('client.contact');
 })->name('contact');
 
-Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+Route::post('contact/store', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('introduce', function () {
     return view('client.introduce');

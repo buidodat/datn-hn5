@@ -68,10 +68,13 @@
 
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
-                                                        <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                        <a href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}  </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
+                                                    <p><span class='text-bold'>Ngày khởi chiếu:</span> {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }} </p>
+
+
 
                                                 </div>
 
@@ -138,7 +141,7 @@
 
                                                     <div class="content-movie">
                                                         <h3 class="movie-name-home">
-                                                            <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                            <a href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
                                                         </h3>
                                                         <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                         <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
@@ -176,7 +179,7 @@
                         @endif
                     </div>
                     {{-- Suất chiếu đặc biệt --}}
-                    <div role="tabpanel" class="tab-pane fade" id="trand">
+                    <div role="tabpanel" class="tab-pane fade"  id="trand">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
                                 <div class="row" id="movie-list3">
@@ -207,11 +210,10 @@
 
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
-                                                        <a href="movie/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
+                                                        <a href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name,20) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}  </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }} phút </p>
-
                                                 </div>
 
 
@@ -224,11 +226,8 @@
                                         </div>
                                     </div>
                                     @endforeach
-
                                 </div>
-                                {{-- <div class="pagination-wrapper">
-                                        {{ $moviesSpecial->links() }}
-                                    </div> --}}
+
                             </div>
                         </div>
                         @if ($moviesSpecial->total() > 8)
@@ -238,7 +237,7 @@
                                         <ul>
                                             <li>
                                                 <button class="button button--tamaya prs_upcom_main_btn text-white"
-                                                    data-text="Xem thêm" id="load-more3" data-page="2">Xem thêm</button>
+                                                    data-text="Xem thêm" id="load-more1" data-page="2">Xem thêm</button>
 
                                             </li>
                                         </ul>
@@ -246,7 +245,6 @@
                                 </div>
                             </div>
                         @endif
-
                     </div>
                 </div>
             </div>

@@ -124,7 +124,7 @@
                                                     <div class="col-md-12">
                                                         <div class="rating-form">
                                                             <form method="POST"
-                                                                  action="{{ route('movie.addReview', ['slug' => $movie->slug]) }}">
+                                                                  action="{{ route('movies.addReview', ['slug' => $movie->slug]) }}">
                                                                 @csrf
                                                                 @if(!$userReviewed)
                                                                     <div class="form-comment">
