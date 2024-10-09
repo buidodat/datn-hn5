@@ -1609,7 +1609,8 @@ pre code {
   margin-left: auto;
 }
 .row {
-
+    display: flex;
+    flex-wrap: wrap;
     margin-right: -5px;
     margin-left: -5px;
     justify-content: start;

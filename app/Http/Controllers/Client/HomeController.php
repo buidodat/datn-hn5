@@ -23,6 +23,7 @@ class HomeController extends Controller
 
 
         $currentNow = now();
+        $endDate = now()->addDays(7);
 
         // phim sắp chiếu
         $moviesShowing = Movie::where([
@@ -31,10 +32,10 @@ class HomeController extends Controller
             ['release_date', '<=', $currentNow],
             ['end_date', '>=', $currentNow]
         ])
-        ->with('showtimes')
-        ->orderBy('is_hot', 'desc')
-        ->latest('id')
-        ->paginate(8);
+            ->with('showtimes')
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->paginate(8);
 
         // Phim sắp chiếu (chưa đến thời gian khởi chiếu)
         $moviesUpcoming = Movie::where([
@@ -42,29 +43,27 @@ class HomeController extends Controller
             ['is_show_home', '1'],
             ['release_date', '>', $currentNow]
         ])
-        ->with('showtimes')
-        ->orderBy('is_hot', 'desc')
-        ->latest('id')
-        ->paginate(8);
+            ->with('showtimes')
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->paginate(8);
 
         // Phim suất chiếu đặc biệt (chưa đến ngày khởi chiếu hoặc đã hết thời gian khởi chiếu)
-        $moviesSpecial = Movie::where(function ($query) use ($currentNow) {
-            $query->where('release_date', '>', $currentNow)
-                ->orWhere('end_date', '<', $currentNow);
-        })
-        ->where([
+        $moviesSpecial = Movie::where([
             ['is_active', '1'],
             ['is_show_home', '1'],
             ['is_special', '1']
         ])
-        ->with('showtimes')
-        ->orderBy('is_hot', 'desc')
-        ->latest('id')
-        ->paginate(8);
+            ->with('showtimes')
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->paginate(8);
+
+
 
         $post = Post::orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'post'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'post', 'currentNow', 'endDate'));
     }
 
     public function policy()
