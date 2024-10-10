@@ -128,12 +128,9 @@
                     </li>
                     <li>
                         <a href="{{ route('contact') }}">Liên hệ</a>
-<<<<<<< HEAD
                     </li>
                     <li>
                         <a href="{{ route('introduce') }}">Giới thiệu</a>
-=======
->>>>>>> fcad8095d38bdbd6373066916e52e975c298a263
                     </li>
                     <li>
                         <a href="">Thành viên</a>
