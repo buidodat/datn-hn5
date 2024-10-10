@@ -11,6 +11,7 @@ use App\Models\Movie;
 use App\Models\Slideshow;
 use App\Models\TypeRoom;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -627,6 +628,17 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-
+        // Tạo 10 bài viết
+        for ($i = 1; $i <= 10; $i++) {
+            Post::create([
+                'title' => 'Bài viết số ' . $i,
+                'slug' => 'bai-viet-so'. $i,
+                'img_post' => 'https://via.placeholder.com/800x400?text=Post+' . $i, // Link ảnh placeholder
+                'description' => 'Đây là phần mô tả cho bài viết số ' . $i . '. Đây là đoạn văn ngắn mô tả nội dung của bài viết.',
+                'content' => 'Nội dung chi tiết của bài viết số ' . $i . '. Đây là phần nội dung đầy đủ của bài viết với các đoạn văn và hình ảnh.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

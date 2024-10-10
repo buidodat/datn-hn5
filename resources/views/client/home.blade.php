@@ -295,7 +295,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="prs_heading_section_wrapper">
-                        <h2>Các bài viết nổi bật</h2>
+                        <h2>Các tin tức nổi bật</h2>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -317,7 +317,7 @@
                                                 style="width: 100%; height: 100%; object-fit: cover;" />
                                             <div class="prs_ft_btn_wrapper">
                                                 <ul>
-                                                    <li><a href="post/{{ $postItem->slug }}">Xem chi tiết</a></li>
+                                                    <li><a href="{{ route('posts.show', $postItem->id) }}">Xem chi tiết</a></li>
                                                 </ul>
                                             </div>
                                         </div>
