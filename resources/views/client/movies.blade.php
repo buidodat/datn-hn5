@@ -88,12 +88,12 @@
                                                         ->exists();
                                                 @endphp
 
-                                                @if ($hasShowtimeInNextWeek)
-                                                    <div class='buy-ticket-movie'>
+                                               <div class='buy-ticket-movie'>
+                                                    @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                </div>
 
                                             </div>
                                         </div>
@@ -156,12 +156,12 @@
                                                         ->exists();
                                                 @endphp
 
-                                                @if ($hasShowtimeInNextWeek)
-                                                    <div class='buy-ticket-movie'>
+                                               <div class='buy-ticket-movie'>
+                                                    @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                </div>
 
                                             </div>
                                         </div>
@@ -224,12 +224,12 @@
                                                         ->exists();
                                                 @endphp
 
-                                                @if ($hasShowtimeInNextWeek)
-                                                    <div class='buy-ticket-movie'>
+                                               <div class='buy-ticket-movie'>
+                                                    @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                </div>
 
                                             </div>
                                         </div>

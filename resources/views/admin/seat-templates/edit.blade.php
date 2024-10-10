@@ -42,7 +42,12 @@
 
                     @php
                         $scopeRegular = App\Models\Room::SCOPE_REGULAR;
+                        $scopeDouble = App\Models\Room::SCOPE_DOUBLE;
+                        $regularRows = range(0, $scopeRegular['default'] - 1); // Các hàng ghế thường
+                        $doubleRows = range($matrix['max_row'] - $scopeDouble['default'], $matrix['max_row'] - 1); // Các hàng ghế đôi
+                        $vipRows = range($scopeRegular['default'], $matrix['max_row'] - $scopeDouble['default'] - 1); // Các hàng ghế VIP
                     @endphp
+
                     <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
                         <thead>
                             <tr></tr>
@@ -50,71 +55,84 @@
                         <tbody>
                             @for ($row = 0; $row < $matrix['max_row']; $row++)
                                 @php
-                                    $isAllVip = true;
-                                    $isAllRegular = true;
-                                    $isAllDouble = true;
+                                    $rowChar = chr(65 + $row);
+                                    $rowClass = '';
+                                    $isAllRegular = $isAllVip = false; // Khởi tạo trạng thái
+
+                                    if (in_array($row, $regularRows)) {
+                                        $rowClass = 'light-orange'; // Ghế thường
+                                        $isAllRegular = true; // Đặt trạng thái là ghế thường
+                                    } elseif (in_array($row, $doubleRows)) {
+                                        $rowClass = 'light-pink'; // Ghế đôi
+                                    } else {
+                                        $rowClass = 'light-blue'; // Ghế VIP
+                                        $isAllVip = true; // Đặt trạng thái là ghế VIP
+                                    }
                                 @endphp
                                 <tr>
                                     {{-- cột hàng ghế A,B,C --}}
                                     <td class="box-item">
-                                        {{ chr(65 + $row) }}
+                                        {{ $rowChar }}
                                     </td>
                                     @for ($col = 0; $col < $matrix['max_col']; $col++)
-                                        <td class="box-item border-1 light-orange">
-                                            <div class="box-item-seat">
+                                        <td class="box-item border-1 {{ $rowClass }}" data-row="{{ $rowChar }}">
+                                            <div class="box-item-seat"
+                                                data-type="{{ in_array($row, $regularRows) ? 'regular' : (in_array($row, $doubleRows) ? 'double' : 'vip') }}">
                                                 <img src="{{ asset('svg/seat-add.svg') }}" class='seat' width="60%">
                                             </div>
                                         </td>
                                     @endfor
                                     <td class='box-item border-1'>
-                                        <span data-bs-toggle="offcanvas" data-bs-target="#rowSeat{{ chr(65 + $row) }}">
-                                            <i class="fas fa-edit "></i>
+                                        <span data-bs-toggle="offcanvas" data-bs-target="#rowSeat{{ $rowChar }}">
+                                            <i class="fas fa-edit"></i>
                                         </span>
 
                                         <div class="offcanvas offcanvas-start" tabindex="-1"
-                                            id="rowSeat{{ chr(65 + $row) }}">
+                                            id="rowSeat{{ $rowChar }}">
                                             <div class="offcanvas-header border-bottom">
-                                                <h5 class="offcanvas-title">Chỉnh sửa hàng ghế {{ chr(65 + $row) }}
-                                                </h5>
-                                                <button type="button"
-                                                    class="btn-close text-reset"data-bs-dismiss="offcanvas"></button>
+                                                <h5 class="offcanvas-title">Chỉnh sửa hàng ghế {{ $rowChar }}</h5>
+                                                <button type="button" class="btn-close text-reset"
+                                                    data-bs-dismiss="offcanvas"></button>
                                             </div>
                                             <div class="offcanvas-body">
                                                 <div class="row">
                                                     <!-- Custom Radio Color -->
                                                     <div class="col-md-12 mb-3">
-                                                        @if ($row < $scopeRegular['max'])
-                                                            <div class="form-check form-radio-primary mb-3">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="typeSeatRow{{ chr(65 + $row) }}" value="1"
-                                                                    @checked($isAllRegular)
-                                                                    data-row="{{ chr(65 + $row) }}"
-                                                                    @disabled($row < $scopeRegular['min'])>
-                                                                <label class="form-check-label">Ghế thường</label>
-                                                            </div>
-                                                        @endif
-                                                        @if ($row >= $scopeRegular['min'])
-                                                            <div class="form-check form-radio-primary mb-3">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="typeSeatRow{{ chr(65 + $row) }}" value="2"
-                                                                    @checked($isAllVip)
-                                                                    data-row="{{ chr(65 + $row) }}"
-                                                                    @disabled($row >= $scopeRegular['max'])>
-                                                                <label class="form-check-label">Ghế vip</label>
-                                                            </div>
-                                                        @endif
+
+                                                        <div class="form-check form-radio-primary mb-3">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="typeSeatRow{{ $rowChar }}" value="1"
+                                                                @checked($isAllRegular)
+                                                                data-row="{{ $rowChar }}">
+                                                            <label class="form-check-label">Ghế thường</label>
+                                                        </div>
+
+                                                        <div class="form-check form-radio-primary mb-3">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="typeSeatRow{{ $rowChar }}" value="2"
+                                                                @checked($isAllVip)
+                                                                data-row="{{ $rowChar }}">
+                                                            <label class="form-check-label">Ghế VIP</label>
+                                                        </div>
+
+                                                        <div class="form-check form-radio-primary mb-3">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="typeSeatRow{{ $rowChar }}" value="3"
+                                                                data-row="{{ $rowChar }}">
+                                                            <label class="form-check-label">Ghế đôi</label>
+                                                        </div>
+
                                                     </div>
                                                     <div class="col-md-12 text-center">
                                                         <button class="btn btn-danger btn-remove-all mx-1"
-                                                            data-row="{{ chr(65 + $row) }}"><i
-                                                                class="mdi mdi-trash-can-outline me-1"></i>Bỏ tất
-                                                            cả</button>
+                                                            data-row="{{ $rowChar }}">
+                                                            <i class="mdi mdi-trash-can-outline me-1"></i>Bỏ tất cả
+                                                        </button>
                                                         <button class="btn btn-info btn-restore-all mx-1"
-                                                            data-row="{{ chr(65 + $row) }}"><i
-                                                                class="ri-add-line align-bottom me-1"></i>Chọn tất
-                                                            cả</button>
+                                                            data-row="{{ $rowChar }}">
+                                                            <i class="ri-add-line align-bottom me-1"></i>Chọn tất cả
+                                                        </button>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -123,6 +141,127 @@
                             @endfor
                         </tbody>
                     </table>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Lắng nghe sự kiện click trên ghế
+                            document.querySelectorAll('.box-item-seat').forEach(function(seat) {
+                                seat.addEventListener('click', function() {
+                                    var img = this.querySelector('img');
+                                    var currentSrc = img.src;
+                                    var seatType = this.dataset.type; // Lấy loại ghế từ data-type
+                                    var tdElement = this.closest('td'); // Thẻ td hiện tại
+
+                                    // Kiểm tra trạng thái hiện tại của ghế
+                                    if (currentSrc.includes('seat-add.svg')) {
+                                        if (seatType === 'double') {
+                                            // Gộp thẻ td bên cạnh
+                                            var nextTd = tdElement.nextElementSibling;
+                                            if (nextTd && nextTd.querySelector('img').src.includes(
+                                                    'seat-add.svg')) {
+                                                tdElement.colSpan = 2; // Gộp 2 cột
+                                                nextTd.style.display = 'none'; // Ẩn thẻ td bên cạnh
+                                                img.src = "{{ asset('svg/seat-double.svg') }}"; // Hiển thị ghế đôi
+                                                img.style.width = "90%"; // Đặt chiều rộng hình ảnh
+                                            }else{
+                                                alert('Bên phải không còn chỗ trống để đặt ghế đôi.')
+                                            }
+                                        } else {
+                                            if (seatType === 'regular') {
+                                                img.src = "{{ asset('svg/seat-regular.svg') }}";
+                                            } else if (seatType === 'vip') {
+                                                img.src = "{{ asset('svg/seat-vip.svg') }}";
+                                            }
+                                            img.style.width = "100%";
+                                        }
+                                    } else {
+                                        // Nếu ghế đã được chọn, trả về hình ảnh mặc định và phục hồi thẻ td
+                                        img.style.width = "60%";
+                                        img.src = "{{ asset('svg/seat-add.svg') }}"; // Không chọn
+
+
+                                        if (seatType === 'double' && tdElement.colSpan == 2) {
+                                            // Phục hồi ghế đôi
+                                            var nextTd = tdElement.nextElementSibling;
+                                            tdElement.colSpan = 1; // Đặt lại thành 1 cột
+                                            nextTd.style.display = ''; // Hiện lại thẻ td bên cạnh
+                                        }
+                                    }
+                                });
+                            });
+
+                            // Lắng nghe sự kiện thay đổi radio button trong Offcanvas
+                            document.querySelectorAll('.form-check-input').forEach(function(radio) {
+                                radio.addEventListener('change', function() {
+                                    var row = this.dataset.row; // Lấy ký hiệu hàng từ thuộc tính data-row
+                                    var seatType = this.value; // Loại ghế đã chọn (1: Thường, 2: VIP, 3: Đôi)
+
+                                    // Xóa class hiện tại của các ghế trong hàng
+                                    var seats = document.querySelectorAll(`td[data-row="${row}"]`);
+                                    seats.forEach(function(seat) {
+                                        seat.classList.remove('light-orange', 'light-blue', 'light-pink');
+                                    });
+
+                                    // Thêm class mới dựa vào loại ghế đã chọn
+                                    var newClass = '';
+                                    if (seatType == 1) {
+                                        newClass = 'light-orange'; // Ghế thường
+                                    } else if (seatType == 2) {
+                                        newClass = 'light-blue'; // Ghế VIP
+                                    } else if (seatType == 3) {
+                                        newClass = 'light-pink'; // Ghế đôi
+                                    }
+
+                                    // Áp dụng class mới cho tất cả các ghế trong hàng
+                                    seats.forEach(function(seat) {
+                                        seat.classList.add(newClass);
+                                    });
+                                });
+                            });
+
+                            // Xử lý nút "Bỏ tất cả" để xóa toàn bộ ghế trong hàng
+                            document.querySelectorAll('.btn-remove-all').forEach(function(btn) {
+                                btn.addEventListener('click', function() {
+                                    var row = this.dataset.row; // Lấy ký hiệu hàng từ thuộc tính data-row
+                                    var seats = document.querySelectorAll(`td[data-row="${row}"]`);
+
+                                    // Xóa toàn bộ class của ghế trong hàng
+                                    seats.forEach(function(seat) {
+                                        seat.classList.remove('light-orange', 'light-blue', 'light-pink');
+                                        // Đặt lại hình ảnh về mặc định
+                                        var img = seat.querySelector('img');
+                                        img.src = "{{ asset('svg/seat-add.svg') }}"; // Không chọn
+                                        img.style.width = "60%";
+                                    });
+                                });
+                            });
+
+                            // Xử lý nút "Chọn tất cả" để chọn toàn bộ ghế trong hàng với một class mặc định
+                            document.querySelectorAll('.btn-restore-all').forEach(function(btn) {
+                                btn.addEventListener('click', function() {
+                                    var row = this.dataset.row; // Lấy ký hiệu hàng từ thuộc tính data-row
+                                    var seats = document.querySelectorAll(`td[data-row="${row}"]`);
+
+                                    // Áp dụng class 'light-orange' (ghế thường) mặc định cho tất cả các ghế trong hàng
+                                    seats.forEach(function(seat) {
+                                        seat.classList.remove('light-blue', 'light-pink');
+                                        seat.classList.add('light-orange');
+
+                                        // Cập nhật hình ảnh về ghế thường
+                                        var img = seat.querySelector('img');
+                                        img.src = "{{ asset('svg/seat-regular.svg') }}"; // Ghế thường
+                                    });
+                                });
+                            });
+                        });
+                    </script>
+
+
+
+
+
+
+
 
                 </div>
             </div>
