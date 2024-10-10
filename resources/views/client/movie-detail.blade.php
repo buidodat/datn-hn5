@@ -67,15 +67,24 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                            @php
+                                            // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
+                                                $hasShowtimeInNextWeek = $movie
+                                                    ->showtimes()
+                                                    ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
+                                                    ->whereBetween('start_time', [$currentNow, $endDate])
+                                                    ->exists();
+                                            @endphp
 
                                             <div class="buttons">
                                                 <button class="watch-trailer" id='openModalBtn-trailer'>Xem
                                                     Trailer
                                                 </button>
-
-                                                <button class="buy-ticket"
-                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
-                                                </button>
+                                                @if ($hasShowtimeInNextWeek)
+                                                    <button class="buy-ticket"
+                                                            onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
+                                                    </button>
+                                                    @endif
                                             </div>
                                         </div>
 

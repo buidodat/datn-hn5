@@ -21,7 +21,6 @@ class MovieController extends Controller
             ['release_date', '<=', $currentNow],
             ['end_date', '>=', $currentNow]
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')->get();
 
@@ -30,7 +29,6 @@ class MovieController extends Controller
             ['is_active', '1'],
             ['release_date', '>', $currentNow]
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')->get();
 
@@ -39,7 +37,6 @@ class MovieController extends Controller
             ['is_active', '1'],
             ['is_special', '1']
         ])
-            ->with('showtimes')
             ->orderBy('is_hot', 'desc')
             ->latest('id')
             ->get();
