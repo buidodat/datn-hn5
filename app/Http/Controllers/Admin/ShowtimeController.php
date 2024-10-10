@@ -117,10 +117,17 @@ class ShowtimeController extends Controller
 
                     $seatShowtimes = [];
                     foreach ($seats as $seat) {
+                        // Kiểm tra trạng thái is_active của mỗi ghế
+                        if ($seat->is_active == 0) {
+                            $status = 'broken';  // Ghế hỏng
+                        } else {
+                            $status = 'available';  // Ghế trống
+                        }
+
                         $seatShowtimes[] = [
                             'showtime_id' => $showtime->id,
                             'seat_id' => $seat->id,
-                            'status' => 'available',
+                            'status' => $status,
                         ];
                     }
 
