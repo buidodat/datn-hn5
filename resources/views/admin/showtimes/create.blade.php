@@ -129,7 +129,6 @@
                                         <select name="room_id" id="room" class="form-select">
                                             <option value="">Chọn</option>
 
-
                                         </select>
                                         @error('room_id')
                                             <div class='mt-1'>
@@ -180,7 +179,7 @@
                                         <div class="col-md-4">
                                             <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                             <input type="time" class="form-control" name="end_time[]" id="end_time"
-                                               readonly>
+                                                readonly>
                                             @error('end_time')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -212,9 +211,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            {{-- <div class="card-body">
+                            <div class="card-body">
 
-                                <label for="">Giờ chiếu đang có:</label>
+                                <label for="">Suất chiếu đang có:</label>
                                 <table class="table table-bordered dt-responsive nowrap align-middle">
                                     <thead>
                                         <tr>
@@ -222,18 +221,20 @@
                                             <th>Phòng</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @for ($i = 0; $i < 3; $i++)
+                                    <tbody id="listShowtimes">
+
+                                        {{-- @for ($i = 0; $i < 4; $i++)
                                             <tr>
                                                 <td>12:00 - 14:00</td>
                                                 <td>Poly 01</td>
                                             </tr>
-                                        @endfor
+                                        @endfor --}}
+
 
                                     </tbody>
                                 </table>
 
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
 
@@ -321,7 +322,7 @@
                             // console.log(data);
                             $.each(data, function(index, room) {
 
-                                console.log(room);
+                                // console.log(room);
                                 const roomCapacity = room.total_seats;
 
                                 roomSelect.append('<option value="' + room.id +
@@ -366,7 +367,7 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, movieVersion) {
-                                movieVersionSelect.append('<option  value="' +
+                                movieVersionSelect.append('<option value="' +
                                     movieVersion
                                     .id +
                                     '">' + movieVersion.name + '</option>');
@@ -387,6 +388,59 @@
             }
         });
 
+        // Ajax đổ Suất chiếu đang có theo Phòng
+        $(document).ready(function() {
+            var roomId, selectedDate;
+
+            // Xử lý sự kiện thay đổi phòng
+            $('#room').on('change', function() {
+                roomId = $(this).val();
+                loadShowtimes();
+            });
+
+            // Xử lý sự kiện thay đổi ngày chiếu
+            $('#date').on('change', function() {
+                selectedDate = $(this).val();
+                loadShowtimes();
+            });
+
+            function loadShowtimes() {
+                if (roomId && selectedDate) {
+                    var listShowtimes = $('#listShowtimes');
+                    listShowtimes.empty();
+
+                    $.ajax({
+                        url: "{{ env('APP_URL') }}/api/getShowtimesByRoom",
+                        method: 'GET',
+                        data: {
+                            room_id: roomId,
+                            date: selectedDate
+                        },
+                        success: function(data) {
+                            if (data.status === 'error') {
+                                // Hiển thị thông báo nếu không có suất chiếu
+                                listShowtimes.append('<tr><td colspan="2">' + data.message +
+                                    '</td></tr>');
+                            } else {
+                                $.each(data, function(index, showtime) {
+                                    var startTime = showtime.start_time;
+                                    var endTime = showtime.end_time;
+                                    var roomName = showtime.room.name;
+
+                                    // Đổ dữ liệu vào bảng
+                                    listShowtimes.append('<tr><td>' + startTime + ' - ' +
+                                        endTime +
+                                        '</td><td>' + roomName + '</td></tr>');
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+
+
 
         const cleaningTime = {{ $cleaningTime }}; // Thời gian dọn phòng = 15 phút
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
@@ -401,7 +455,8 @@
                         method: 'GET',
                         success: function(data) {
                             if (data.duration) {
-                                movieDuration = parseInt(data.duration); // Lưu lại thời lượng
+                                movieDuration = parseInt(data
+                                    .duration); // Lưu lại thời lượng
                                 updateAllEndTimes(
                                     movieDuration); // Cập nhật tất cả giờ kết thúc
                             } else {
@@ -428,7 +483,8 @@
                     return;
                 }
 
-                updateEndTimeForRow(row, movieDuration, startTime); // Cập nhật end_time cho hàng hiện tại
+                updateEndTimeForRow(row, movieDuration,
+                    startTime); // Cập nhật end_time cho hàng hiện tại
             });
 
 
@@ -440,7 +496,8 @@
                     startTimeDate.setHours(parseInt(hours), parseInt(minutes)); // Đặt thời gian bắt đầu
 
                     let totalMinutes = duration + cleaningTime; // Thêm thời lượng phim và thời gian dọn phòng
-                    startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes); // Tính thời gian kết thúc
+                    startTimeDate.setMinutes(startTimeDate.getMinutes() +
+                        totalMinutes); // Tính thời gian kết thúc
 
                     // Định dạng lại thời gian kết thúc
                     let endHours = String(startTimeDate.getHours()).padStart(2, '0');
