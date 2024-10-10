@@ -25,7 +25,7 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        $tickets = Ticket::query()->with('ticketSeat')->where('user_id', $userID)->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
@@ -105,10 +105,10 @@ class UserController extends Controller
     {
         $userID = Auth::user()->id;
         // $ticketSeat = TicketSeat::findOrFail($ticketId);
-        $ticketSeat = Ticket::query()->with('ticketSeat')
+        $ticketSeat = Ticket::query()->with('ticketSeats')
             ->where('user_id', $userID)
             ->where('id', $ticketId)
-        
+
             ->get();
         // dd($ticketSeat);
         return view('client.users.ticket-detail', compact('ticketSeat'));

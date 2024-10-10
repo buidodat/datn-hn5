@@ -39,11 +39,11 @@ class Ticket extends Model
     {
         return $this->belongsTo(Voucher::class);
     }
-    public function ticketSeat()
+    public function ticketSeats()
     {
         return $this->hasMany(TicketSeat::class);
     }
-    public function ticketCombo()
+    public function ticketCombos()
     {
         return $this->hasMany(TicketCombo::class);
     }
