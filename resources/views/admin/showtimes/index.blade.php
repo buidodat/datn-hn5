@@ -146,8 +146,11 @@
                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
                                         <td>
                                             @if ($showtime->movie->is_special == 1)
-                                                <p class="text-danger mb-0">
+                                                <p class="mb-0 ">
                                                     {!! Str::limit($showtime->movie->name, 40) !!}
+                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
+                                                    </span>
+                                                  
                                                 </p>
                                             @else
                                                 <p class="mb-0">{!! Str::limit($showtime->movie->name, 40) !!}</p>
@@ -229,7 +232,7 @@
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-md-6" >
+                        <div class="col-md-6">
                         </div>
                         <div class="col-md-6" align='center'>
                             {{ $showtimes->links() }}

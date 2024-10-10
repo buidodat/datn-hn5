@@ -7,9 +7,11 @@ use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
+use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Carbon\Carbon;
 
 class APIController extends Controller
 {
@@ -51,10 +53,28 @@ class APIController extends Controller
     }
 
 
-    // public function getTypeRooms($typeRoomId)
-    // {
-    //     $rooms = Room::where('type_room_id', $typeRoomId)->get();
-    //     return response()->json($rooms);
-    // }
+    public function getShowtimesByRoom(Request $request)
+    {
+        $roomId = $request->get('room_id');
+        $date = $request->get('date');
 
+        $showtimes = Showtime::with('room')
+            ->where('room_id', $roomId)
+            ->where('date', $date)
+            ->get();
+
+        if ($showtimes->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không có suất chiếu nào cho ngày này.'
+            ]);
+        }
+
+        foreach ($showtimes as $showtime) {
+            $showtime->start_time = Carbon::parse($showtime->start_time)->format('H:i'); // Định dạng HH:mm
+            $showtime->end_time = Carbon::parse($showtime->end_time)->format('H:i'); // Định dạng HH:mm
+        }
+
+        return response()->json($showtimes);
+    }
 }
