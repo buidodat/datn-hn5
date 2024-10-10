@@ -69,7 +69,26 @@
                     <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link" data-key="t-horizontal"> <i
                             class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.seat-templates.index') }}" class="nav-link menu-link" data-key="t-horizontal">  <i class="ri-rocket-line"></i>
+                         <span data-key="t-layouts">Sơ đồ ghế</span></a>
+                </li>
 
+                {{-- <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarRoomScrening" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarRoomScrening">
+                        <i class="ri-rocket-line"></i> <span data-key="t-landing">Sơ đồ ghế</span>
+                    </a>
+                    <div class="menu-dropdown collapse" id="sidebarRoomScrening" style="">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.rooms.index') }}" class="nav-link" data-key="t-one-page"> Danh sách </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="nft-landing.html" class="nav-link" data-key="t-nft-landing"> Sơ đồ ghế</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> --}}
                 {{-- Quản lí Phim --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.movies.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i

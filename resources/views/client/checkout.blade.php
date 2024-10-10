@@ -7,7 +7,7 @@
 @section('content')
     <div class="st_dtts_wrapper float_left">
         <div class="container container-choose-seat">
-            <div class="row">
+            <div class="row-bad">
                 <div class="mb-3 title-choose-seat">
 
                     <a href="/">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 box-checkout">
                     <div class="st_dtts_left_main_wrapper float_left">
-                        <div class="row">
+                        <div class="row-bad">
                             <div class="col-md-12 box-list-status-seat">
                                 <div class="text-info-checkout">
                                     <div>
@@ -297,7 +297,7 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                    <div class="row">
+                    <div class="row-bad">
                         <div class="col-md-12">
                             <div class="st_dtts_bs_wrapper float_left info-movie">
                                 <div class="st_dtts_bs_heading float_left">

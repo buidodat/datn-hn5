@@ -1,12 +1,46 @@
 .image-movie-detail img {
     width: 100%;
     height: 100%;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-top-right-radius: 10px;
+    border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -moz-border-top-left-radius: 10px;
+    border-top-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    object-fit: cover;
+
+}
+.image-movie-detail{
+    margin: 0 auto;
+    justify-content: center;
+    padding: 10px;
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-top-right-radius: 10px;
+    border-top-right-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -moz-border-top-left-radius: 10px;
+    border-top-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    object-fit: cover;
 }
 
 .xanh-fpt {
     color: #192041;
 }
-
+.cam-fpt {
+    color: #ff7307;
+}
 .text-warning {
     color: rgb(228, 228, 5);
 }
@@ -376,14 +410,27 @@
 }
 
 .buy-ticket {
-    background-color: #ff7307;
+    background-image: linear-gradient(90deg, #5e689d, #192041);
     /* Màu nền nút 'Mua Vé Ngay' */
     color: #fff;
     /* Màu chữ */
 }
-
+.btn-buy-ticket {
+    background-color: #ff7307;
+    color: #fff;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.button-buy{
+    margin: 5px auto;
+}
 .buy-ticket:hover {
-    background-color: #e74c3c;
+    background-image: linear-gradient(90deg, #7581b3, #212951);
     /* Màu nền khi hover nút 'Mua Vé Ngay' */
 }
 
@@ -517,8 +564,10 @@
 
 
 
-.title-movie-detail {
+.title-movie-detail h1 {
     margin: 20px auto 10px auto;
+    color:#434f89;
+    font-weight: 600;
 }
 
 
@@ -1197,20 +1246,42 @@
 
 /* Css trang home */
 
+.content-movie p{
+    color:#192041;
+    font-size: 15px;
+}
+.content-movie span{
+    font-weight: 600;
+}
 
-
-.movie-name-home {
+.movie-name-home  {
+    margin-top: 8px;
+    margin-bottom: 5px;
+    letter-spacing: -0.7px;
+    font-weight: 600;
+    font-size: 20px;
     max-width: 225px;
-    max-height: 33px;
+    height: 27px;
     overflow: hidden;
 }
 
+.movie-name-home a
+{
+    color: #434f89;
+}
+.movie-name-home a:hover {
+    text-decoration: underline;
+
+}
 .tab-content .is_hot {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 65px !important;
     height: auto !important;
+}
+.text-bold{
+    font-weight: 500;
 }
 
 /* Vẫn là trang home, nhưng css paginate */

@@ -26,64 +26,72 @@ class ShowtimeController extends Controller
     const PATH_VIEW = 'admin.showtimes.';
     const PATH_UPLOAD = 'showtimes';
 
-    // public function index(Request $request)
-    // {
-    //     //
-    //     // $cinemas = Cinema::all();
-    //     $branches = Branch::all();
-
-    //     $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
-
-    //     if ($request->input('cinema_id')) {
-    //         $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
-    //             $query->where('id', $request->cinema_id);
-    //         });
-
-    //     }
-
-    //     if ($request->input('date')) {
-    //         $showtimes = $showtimes->where('date', $request->date);
-    //     }
-
-    //     $showtimes = $showtimes->get();
-
-    //     return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches'));
-    // }
-
     public function index(Request $request)
     {
-        // Lấy ds chi nhánh
         $branches = Branch::all();
+        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
 
-        // Lấy ds các phòng
-        $rooms = Room::whereHas('showtimes', function ($query) use ($request) {
+        if ($request->input('cinema_id')) {
+            $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
+                $query->where('id', $request->cinema_id);
+            });
+        }
 
-            if ($request->input('cinema_id')) {
-                // Lọc theo rạp 
-                $query->whereHas('cinema', function ($cinemaQuery) use ($request) {
-                    $cinemaQuery->where('id', $request->cinema_id);
-                });
-            }
+        if ($request->input('date')) {
+            $showtimes = $showtimes->where('date', $request->date);
+        }
 
-            if ($request->input('date')) {
-                // Lọc theo ngày chiếu 
-                $query->where('date', $request->date);
-            }
-        })->with(['cinema', 'showtimes.movieVersion.movie'])
-            ->latest('id')
-            ->paginate(1); //mỗi trang hiển thị 1 phòng
+        $showtimes = $showtimes->paginate(15);
 
-        //Lưu đường dẫn url khi lọc để đến đc trang 2
-        $rooms->appends([
+        $showtimes->appends([
             'cinema_id' => $request->cinema_id,
             'date' => $request->date
         ]);
-
         $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-        // dd();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'timeNow'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'timeNow'));
     }
+
+
+
+
+    // public function index(Request $request)
+    // {
+    //     // Lấy ds chi nhánh
+    //     $branches = Branch::all();
+
+    //     $rooms = Room::with(['cinema', 'showtimes.movieVersion.movie'])->latest('id');
+    //     // dd($request->all());
+    //     if ($request->cinema_id) {
+    //         $rooms = $rooms->whereHas('cinema', function ($query) use ($request) {
+    //             $query->where('id', $request->cinema_id);
+    //         });
+    //     }
+
+    //     if ($request->date) {
+    //         $date = Carbon::parse($request->date)->format('Y-m-d');
+
+    //         $rooms = $rooms->whereHas('showtimes', function ($query) use ($date) {
+    //             $query->where('date', $date);
+    //         });
+
+    //         // $rooms = Showtime::where('cinema_id', $request->cinema_id)
+    //         //     ->where('date', $request->date);
+    //     }
+
+
+    //     $rooms = $rooms->paginate(1);
+
+    //     $rooms->appends([
+    //         'cinema_id' => $request->cinema_id,
+    //         'date' => $request->date
+    //     ]);
+
+    //     $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+    //     // dd();
+
+    //     return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'timeNow'));
+    // }
 
 
 
@@ -105,7 +113,6 @@ class ShowtimeController extends Controller
     public function store(StoreShowtimeRequest $request)
     {
         try {
-
             DB::transaction(function () use ($request) {
                 $movieVersion = MovieVersion::find($request->movie_version_id);
                 $room = Room::find($request->room_id);
@@ -114,10 +121,21 @@ class ShowtimeController extends Controller
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
 
-                //Lặp qua tất cả start-time
+                $existingShowtimes = Showtime::where('room_id', $request->room_id)
+                    ->where('date', $request->date)
+                    ->get();
+
+                // Lặp qua tất cả start-time
                 foreach ($request->start_time as $i => $startTimeChild) {
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
                     $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+
+                    // Kiểm tra thời gian chiếu không trùng lặp
+                    foreach ($existingShowtimes as $showtime) {
+                        if ($startTime < $showtime->end_time && $endTime > $showtime->start_time) {
+                            throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
+                        }
+                    }
 
                     $dataShowtimes = [
                         'cinema_id' => $request->cinema_id,
@@ -133,18 +151,20 @@ class ShowtimeController extends Controller
 
                     $showtime = Showtime::create($dataShowtimes);
 
-                    $seats = Seat::where('room_id', $room->id)->get(); // Lấy tất cả ghế trong phòng
+                    // Lấy tất cả ghế trong phòng
+                    $seats = Seat::where('room_id', $room->id)->get();
 
+                    $seatShowtimes = [];
                     foreach ($seats as $seat) {
-
-                        $dataSeatShowtime = [
+                        $seatShowtimes[] = [
                             'showtime_id' => $showtime->id,
                             'seat_id' => $seat->id,
-                            'status' => 'available'
+                            'status' => 'available',
                         ];
-
-                        SeatShowtime::create($dataSeatShowtime);
                     }
+
+                    // Tạo tất cả ghế cho suất chiếu
+                    SeatShowtime::insert($seatShowtimes);
                 }
             });
 
@@ -155,6 +175,7 @@ class ShowtimeController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
 
 
 
