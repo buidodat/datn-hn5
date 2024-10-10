@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\ContactController;
 use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\PaymentController;
+use App\Http\Controllers\Client\PostController;
 use App\Http\Controllers\Client\MoMoPaymentController;
 use App\Models\Room;
 use App\Models\Seat;
@@ -113,3 +114,7 @@ Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('mo
 Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('momo.notify');
 //3 ZALOPAY
 Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
+
+//Trang tin tức
+Route::get('posts', [PostController::class, 'index'])->name('posts');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');

@@ -130,10 +130,13 @@
                         <a href="">Giá vé</a>
                     </li>
                     <li>
-                        <a href="#">Tin tức</a>
+                        <a href="{{ route('posts') }}">Tin tức</a>
                     </li>
                     <li>
-                        <a href="#">Liên hệ</a>
+                        <a href="{{ route('contact') }}">Liên hệ</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('introduce') }}">Giới thiệu</a>
                     </li>
                     <li>
                         <a href="">Thành viên</a>
