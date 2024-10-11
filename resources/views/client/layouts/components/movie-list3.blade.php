@@ -25,13 +25,13 @@
                             @endif
 
                         </li>
-                        <li><a href="movie/{{ $movie->slug }}">Xem chi tiết</a></li>
+                        <li><a href="movies/{{ $movie->slug }}">Xem chi tiết</a></li>
                     </ul>
                 </div>
             </div>
             <div class="prs_upcom_movie_content_box">
                 <div class="prs_upcom_movie_content_box_inner">
-                    <h2 class="movie-name-home"><a href="movie/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
+                    <h2 class="movie-name-home"><a href="movies/{{ $movie->slug }}">{{ $movie->name }}</a></h2>
                     <p>Thể loại: {{ $movie->category }}</p>
                     <p>Thời lượng: {{ $movie->duration }} phút</p>
                     <i class="fa fa-star"></i>

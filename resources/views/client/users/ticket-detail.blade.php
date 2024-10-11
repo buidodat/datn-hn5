@@ -7,8 +7,8 @@
 @section('content')
 
     <body>
-        <div class="container" style="margin-top: 70px; margin-bottom: 100px;">
-            <div class="my-account-tabs">
+        <div class="container" style="margin-top: 40px; margin-bottom: 100px;">
+            {{-- <div class="my-account-tabs">
                 <a href="#my-account" aria-controls="best" role="tab" data-toggle="tab">
                     <div class="my-account-tab" role="presentation">THÔNG TIN TÀI KHOẢN</div>
                 </a>
@@ -24,7 +24,7 @@
                 <a href="#">
                     <div class="my-account-tab">VOUCHER</div>
                 </a>
-            </div>
+            </div> --}}
 
             <div class="col-md-12">
                 <div class="tab-content">
@@ -32,9 +32,7 @@
                     @foreach ($ticketSeat as $ticket)
                         <div id="detail-ticket" class="tab-pane active">
                             <div class="row mb-3 title-detail">
-
-                                <h3>Chi tiết giao dịch # {{ $ticket->code }} </h3>
-
+                                <h3>Chi tiết giao dịch #{{ $ticket->code }} </h3>
 
                             </div>
                             <div class="content-detail">
@@ -43,7 +41,9 @@
                                         <div class="code-qr">
                                             <p class="text-img bold">Mã quét</p>
 
-                                            <p><b>Ngày mua hàng:</b> {{ $ticket->created_at }}</p>
+                                            <p><b>Ngày mua hàng:</b>
+                                                {{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y H:i') }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -79,10 +79,10 @@
                                         <div>
                                             <b> Thông tin giao dịch</b>
                                         </div>
-                                        <div>
-                                            {{-- In hóa đơn lỗi --}}
+                                        {{-- <div>
+                                  
                                             <button onclick="window.print()">In hóa đơn</button>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
@@ -102,7 +102,7 @@
                                                 <tr>
                                                     <th>Phim</th>
                                                     <th>Suất chiếu</th>
-                                                    <th>Vé</th>
+                                                    <th>Ghế</th>
                                                     <th>Combo</th>
                                                     <th>Thành tiền</th>
                                                 </tr>
@@ -121,62 +121,101 @@
                                                             <b> {{ $ticketSeats->first()->showtime->cinema->name }}
                                                             </b> <br>
                                                             <p> {{ $ticketSeats->first()->room->name }}</p>
-                                                            <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d-m-Y') }}
+                                                            <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
                                                             </p>
                                                             <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                                                 -
                                                                 {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
                                                             </p>
                                                         </td>
+
+                                                        {{-- Tên ghế và giá ghế --}}
                                                         <td>
-                                                            <b>{{ $ticketSeats->first()->seat->typeSeat->name }}</b>
                                                             <p>
                                                                 @foreach ($ticketSeats as $item)
-                                                                    {{ $item->seat->name }}
+                                                                    <b>{{ $item->seat->typeSeat->name }}</b>:
+                                                                    {{ $item->seat->name }} <br>
+                                                                    {{-- {{ number_format($item->seat->typeSeat->price, 0, ',', '.') }}đ <br> --}}
                                                                 @endforeach
                                                             </p>
+                                                            {{-- Giá ghế --}}
                                                             <p>
                                                                 @php
-                                                                    $quantitySeats = $ticketSeats->count();
-                                                                    $priceSeat =
-                                                                        $ticketSeats->first()->seat->typeSeat->price *
-                                                                        $quantitySeats;
-                                                                    echo number_format($priceSeat, 0, ',', '.');
+                                                                    // tổng giá trên cột price trong ticketSeat
+                                                                    $totalPriceSeats = $ticketSeats->sum('price');
+                                                                    echo number_format($totalPriceSeats, 0, ',', '.');
                                                                 @endphp
                                                                 đ
                                                             </p>
-                                                            {{-- 65k x 2 --}}
                                                         </td>
+
+
+                                                        {{-- Tên combo và giá --}}
+                                                        @php
+                                                            $totalComboPrice = 0;
+                                                        @endphp
                                                         <td>
-                                                            {{-- Combo đang lỗi , chỉ hiển thị ra đc 1 sp --}}
-                                                            @php
-                                                                $ticketCombo = App\Models\TicketCombo::find(
-                                                                    $ticket->id,
-                                                                );
-                                                            @endphp
+                                                            @foreach ($ticket->ticketCombo as $ticketCombo)
+                                                                <b>{{ $ticketCombo->combo->name }} x
+                                                                    {{ $ticketCombo->quantity }}</b>
 
-                                                            <b>
-                                                                {{-- {{ $ticketCombo->combo->name }} x
-                                                                    {{ $ticketCombo->quantity }} --}}
-                                                                Poly Combo 49k x 3
-                                                            </b>
+                                                                <p>
+                                                                    {{ number_format($ticketCombo->price, 0, ',', '.') }}đ
+                                                                </p>
+                                                                @php
+                                                                    $totalComboPrice +=
+                                                                        $ticketCombo->combo->price *
+                                                                        $ticketCombo->quantity;
+                                                                    // echo number_format($totalComboPrice, 0, ',', '.')
+                                                                @endphp
+                                                            @endforeach
+                                                        </td>
 
+
+                                                        {{-- Thành tiền --}}
+                                                        <td>
+                                                            {{-- Thành tiền: Tổng giá ghế + Tổng giá combo --}}
                                                             <p>
-                                                                {{-- {{ number_format($ticketCombo->price, 0, ',', '.') }}đ --}}
-                                                                147.000đ
+                                                                @php
+                                                                    // Tính tổng giá ghế
+                                                                    $totalPriceSeats = $ticket->ticketSeat->sum(
+                                                                        'price',
+                                                                    );
+
+                                                                    // Tính tổng giá combo (nếu có)
+                                                                    $totalPriceCombos = $ticket->ticketCombo
+                                                                        ? $ticket->ticketCombo->sum('price')
+                                                                        : 0;
+
+                                                                    // Tổng thành tiền
+                                                                    $totalPrice = $totalPriceSeats + $totalPriceCombos;
+
+                                                                    echo number_format($totalPrice, 0, ',', '.');
+                                                                @endphp
+                                                                đ
                                                             </p>
-                                                            {{-- 49k x 3 --}}
                                                         </td>
-                                                        <td>
-                                                            {{-- Thành tiền --}}
-                                                            <p> {{ number_format($ticket->total_price, 0, ',', '.') }}đ</p>
-                                                        </td>
+
+
                                                     </tr>
 
 
                                                     <tr>
-                                                        <th colspan="5" class="total-detail xanh-fpt" align="right">Tổng cộng:
-                                                            {{ number_format($ticket->total_price, 0, ',', '.') }}đ</th>
+
+                                                        <th colspan="5" class="total-detail xanh-fpt" align="right">
+
+                                                            Voucher: -
+                                                            @if ($ticket->voucher_discount != '')
+                                                                {{ number_format($ticket->voucher_discount, 0, ',', '.') }}đ
+                                                                <br>
+                                                                @else 
+                                                                0đ  <br>
+                                                            @endif
+
+                                                            Tổng
+                                                            cộng:
+                                                            {{ number_format($ticket->total_price, 0, ',', '.') }}đ
+                                                        </th>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -184,10 +223,10 @@
 
                                         </tfoot> --}}
                                         </table>
-                                        <div class="back-list-history">
-                                            <a href="" aria-controls="trand" role="tab" data-toggle="tab">
+                                        {{-- <div class="back-list-history">
+                                            <a href="{{ route('transactionHistory') }}" aria-controls="trand" role="tab" data-toggle="tab">
                                                 << Trở về</a>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
 

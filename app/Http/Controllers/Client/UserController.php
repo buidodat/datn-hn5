@@ -101,16 +101,22 @@ class UserController extends Controller
         return view('client.users.cinema-journey');
     }
 
-    function ticketDetail($ticketId)
+    public function ticketDetail($ticketId)
     {
         $userID = Auth::user()->id;
-        // $ticketSeat = TicketSeat::findOrFail($ticketId);
-        $ticketSeat = Ticket::query()->with('ticketSeats')
+
+        $ticketSeat = Ticket::with(['ticketSeat', 'ticketCombo.combo'])
             ->where('user_id', $userID)
             ->where('id', $ticketId)
-
             ->get();
-        // dd($ticketSeat);
-        return view('client.users.ticket-detail', compact('ticketSeat'));
+
+
+
+        return view('client.users.ticket-detail', compact('ticketSeat' ));
+    }
+
+    function transactionHistory()
+    {
+        return back();
     }
 }

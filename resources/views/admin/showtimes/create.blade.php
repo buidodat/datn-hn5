@@ -129,7 +129,6 @@
                                         <select name="room_id" id="room" class="form-select">
                                             <option value="">Chọn</option>
 
-
                                         </select>
                                         @error('room_id')
                                             <div class='mt-1'>
@@ -168,7 +167,7 @@
                                             <span class='text-danger'>*</span>
                                             <label for="start_time" class="form-label ">Giờ chiếu:</label>
                                             <input type="time" class="form-control" name="start_time[]"
-                                                id="start_time" value="{{ old('start_time') }}">
+                                                id="start_time" value="">
                                             @error('start_time')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -180,7 +179,7 @@
                                         <div class="col-md-4">
                                             <label for="end_time" class="form-label ">Giờ kết thúc:</label>
                                             <input type="time" class="form-control" name="end_time[]" id="end_time"
-                                                value="{{ old('end_time') }}" readonly>
+                                                readonly>
                                             @error('end_time')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -214,7 +213,7 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <label for="">Giờ chiếu đang có:</label>
+                                <label for="">Suất chiếu đang có:</label>
                                 <table class="table table-bordered dt-responsive nowrap align-middle">
                                     <thead>
                                         <tr>
@@ -222,13 +221,15 @@
                                             <th>Phòng</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @for ($i = 0; $i < 3; $i++)
+                                    <tbody id="listShowtimes">
+
+                                        {{-- @for ($i = 0; $i < 4; $i++)
                                             <tr>
                                                 <td>12:00 - 14:00</td>
                                                 <td>Poly 01</td>
                                             </tr>
-                                        @endfor
+                                        @endfor --}}
+
 
                                     </tbody>
                                 </table>
@@ -321,7 +322,7 @@
                             // console.log(data);
                             $.each(data, function(index, room) {
 
-                                console.log(room);
+                                // console.log(room);
                                 const roomCapacity = room.total_seats;
 
                                 roomSelect.append('<option value="' + room.id +
@@ -366,7 +367,7 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, movieVersion) {
-                                movieVersionSelect.append('<option  value="' +
+                                movieVersionSelect.append('<option value="' +
                                     movieVersion
                                     .id +
                                     '">' + movieVersion.name + '</option>');
@@ -387,6 +388,59 @@
             }
         });
 
+        // Ajax đổ Suất chiếu đang có theo Phòng
+        $(document).ready(function() {
+            var roomId, selectedDate;
+
+            // Xử lý sự kiện thay đổi phòng
+            $('#room').on('change', function() {
+                roomId = $(this).val();
+                loadShowtimes();
+            });
+
+            // Xử lý sự kiện thay đổi ngày chiếu
+            $('#date').on('change', function() {
+                selectedDate = $(this).val();
+                loadShowtimes();
+            });
+
+            function loadShowtimes() {
+                if (roomId && selectedDate) {
+                    var listShowtimes = $('#listShowtimes');
+                    listShowtimes.empty();
+
+                    $.ajax({
+                        url: "{{ env('APP_URL') }}/api/getShowtimesByRoom",
+                        method: 'GET',
+                        data: {
+                            room_id: roomId,
+                            date: selectedDate
+                        },
+                        success: function(data) {
+                            if (data.status === 'error') {
+                                // Hiển thị thông báo nếu không có suất chiếu
+                                listShowtimes.append('<tr><td colspan="2">' + data.message +
+                                    '</td></tr>');
+                            } else {
+                                $.each(data, function(index, showtime) {
+                                    var startTime = showtime.start_time;
+                                    var endTime = showtime.end_time;
+                                    var roomName = showtime.room.name;
+
+                                    // Đổ dữ liệu vào bảng
+                                    listShowtimes.append('<tr><td>' + startTime + ' - ' +
+                                        endTime +
+                                        '</td><td>' + roomName + '</td></tr>');
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+
+
 
         const cleaningTime = {{ $cleaningTime }}; // Thời gian dọn phòng = 15 phút
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
@@ -401,44 +455,62 @@
                         method: 'GET',
                         success: function(data) {
                             if (data.duration) {
-                                movieDuration = parseInt(data.duration); // Lưu lại thời lượng
+                                movieDuration = parseInt(data
+                                    .duration); // Lưu lại thời lượng
                                 updateAllEndTimes(
-                                    movieDuration
-                                ); // Cập nhật tất cả giờ kết thúc
+                                    movieDuration); // Cập nhật tất cả giờ kết thúc
+                            } else {
+                                alert("Không tìm thấy thời lượng phim!");
                             }
                         }
                     });
                 }
             });
 
+
             // Cập nhật lại thời gian kết thúc khi start_time thay đổi cho hàng cụ thể
             $(document).on('change', 'input[name="start_time[]"]', function() {
                 const row = $(this).closest('.showtime-row'); // Lấy hàng hiện tại
                 const startTime = $(this).val();
+
+                // Lấy giá trị end_time của hàng trước đó
+                const prevRowEndTime = row.prev('.showtime-row').find('input[name="end_time[]"]').val();
+
+                // Kiểm tra nếu start_time mới nhỏ hơn end_time của hàng trước
+                if (prevRowEndTime && startTime < prevRowEndTime) {
+                    alert('Giờ chiếu mới không được nhỏ hơn giờ kết thúc trước đó!');
+                    $(this).val(prevRowEndTime); // Đặt lại start_time bằng end_time của hàng trước
+                    return;
+                }
+
                 updateEndTimeForRow(row, movieDuration,
-                    startTime); // Cập nhật lại end-time cho hàng hiện tại
+                    startTime); // Cập nhật end_time cho hàng hiện tại
             });
+
 
             // Hàm cập nhật end-time dựa trên thời lượng phim và thời gian bắt đầu cho hàng đấy
             function updateEndTimeForRow(row, duration, startTime) {
                 if (startTime && duration) {
-                    let [hours, minutes] = startTime.split(':'); //cắt dạng giờ : phút
+                    let [hours, minutes] = startTime.split(':'); // Tách giờ và phút
                     let startTimeDate = new Date();
-                    startTimeDate.setHours(parseInt(hours), parseInt(minutes)); //parseInt: địh dạng số nguyên
+                    startTimeDate.setHours(parseInt(hours), parseInt(minutes)); // Đặt thời gian bắt đầu
 
-                    let totalMinutes = duration + cleaningTime;
-                    startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
+                    let totalMinutes = duration + cleaningTime; // Thêm thời lượng phim và thời gian dọn phòng
+                    startTimeDate.setMinutes(startTimeDate.getMinutes() +
+                        totalMinutes); // Tính thời gian kết thúc
 
-                    // Lấy thời gian kết thúc được định dạng
-                    let endHours = String(startTimeDate.getHours()).padStart(2,
-                        '0'); //padStart: nếu chuỗi ngắn hơn 2 ký tự, vd: 9:2 => 09:02
+                    // Định dạng lại thời gian kết thúc
+                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');
                     let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
                     const endTime = `${endHours}:${endMinutes}`;
 
-                    // Gán giá trị end_time vào ô input
-                    row.find('input[name="end_time[]"]').val(endTime); //tìm đến hàng hiện tại để cập nhật end-time
+                    // Cập nhật end_time vào ô input
+                    row.find('input[name="end_time[]"]').val(endTime);
+                } else {
+                    console.log("Thiếu thông tin về thời gian bắt đầu hoặc thời lượng phim!");
                 }
             }
+
 
             // Hàm cập nhật thời gian kết thúc cho tất cả các hàng khi thay đổi thời lượng phim
             function updateAllEndTimes(duration) {
@@ -452,12 +524,20 @@
 
         // Thêm giao diện hàng mới cho suất chiếu
         function addShowtime() {
+            // Lấy giá trị end_time của hàng cuối cùng để đặt start_time tiếp theo
+            const lastEndTimeInput = $('#showtime-container .showtime-row').last().find('input[name="end_time[]"]');
+            let nextStartTime = '';
+
+            if (lastEndTimeInput.length > 0 && lastEndTimeInput.val()) {
+                nextStartTime = lastEndTimeInput.val(); // Đặt start_time tiếp theo bằng end_time của hàng cuối
+            }
+
             var newRow = `
                 <div class="row showtime-row">
                     <div class="col-md-4 mb-3">
                         <span class='text-danger'>*</span>
                         <label for="start_time" class="form-label">Giờ chiếu:</label>
-                        <input type="time" class="form-control" name="start_time[]">
+                        <input type="time" class="form-control" name="start_time[]" value="${nextStartTime}">
                     </div>
                     <div class="col-md-4">
                         <label for="end_time" class="form-label">Giờ kết thúc:</label>
@@ -470,12 +550,51 @@
                     </div>
                 </div>`;
 
-            $('#showtime-container').append(newRow); // Thêm suất chiếu vào giao diện
+            $('#showtime-container').append(newRow); // Thêm suất chiếu mới vào giao diện
+
+            // Lấy hàng mới vừa được thêm
+            const newRowElement = $('#showtime-container .showtime-row').last();
+
+            // Cập nhật end_time cho hàng mới
+            if (movieDuration > 0) {
+                updateEndTimeForRow(newRowElement, movieDuration, nextStartTime);
+            } else {
+                alert('Vui lòng chọn phim để tính toán thời gian kết thúc!');
+            }
         }
+
+
 
 
         $(document).on('click', '.delete-showtime', function() {
             $(this).closest('.showtime-row').remove();
+        });
+
+
+        // Hàm kiểm tra nếu thời gian start_time của hàng hiện tại lớn hơn end_time của hàng trước
+        function checkTimeOrder(currentRow) {
+            // Lấy start_time của hàng hiện tại
+            const currentStartTime = currentRow.find('input[name="start_time[]"]').val();
+
+            // Lấy hàng trước đó
+            const prevRow = currentRow.prev('.showtime-row');
+            if (prevRow.length > 0) {
+                const prevEndTime = prevRow.find('input[name="end_time[]"]').val();
+
+                if (currentStartTime && prevEndTime) {
+                    // So sánh thời gian, kiểm tra nếu start_time nhỏ hơn end_time của hàng trước
+                    if (currentStartTime <= prevEndTime) {
+                        alert("Giờ bắt đầu không được nhỏ hơn giờ kết thúc của suất chiếu trước!");
+                        currentRow.find('input[name="start_time[]"]').val(prevEndTime); // Đặt lại thời gian hợp lệ
+                    }
+                }
+            }
+        }
+
+        // Lắng nghe sự kiện thay đổi start_time cho tất cả các suất chiếu
+        $(document).on('change', 'input[name="start_time[]"]', function() {
+            const currentRow = $(this).closest('.showtime-row');
+            checkTimeOrder(currentRow); // Gọi hàm kiểm tra khi có thay đổi
         });
     </script>
 @endsection

@@ -6,8 +6,8 @@
 
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/binhluan.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/showtime.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/binhluan.css') }}" />
 @endsection
 
 @section('content')
@@ -27,8 +27,7 @@
                                                 $url = Storage::url($url);
                                             }
                                         @endphp
-                                        <img src="{{ $url }}"
-                                             alt="" height="">
+                                        <img src="{{ $url }}" alt="" height="">
                                     </div>
                                     <div class="col-md-8 ">
                                         <div class="movie-detail-content">
@@ -67,15 +66,24 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                            @php
+                                                // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
+                                                $hasShowtimeInNextWeek = $movie
+                                                    ->showtimes()
+                                                    ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
+                                                    ->whereBetween('start_time', [$currentNow, $endDate])
+                                                    ->exists();
+                                            @endphp
 
                                             <div class="buttons">
                                                 <button class="watch-trailer" id='openModalBtn-trailer'>Xem
                                                     Trailer
                                                 </button>
-
-                                                <button class="buy-ticket"
+                                                @if ($hasShowtimeInNextWeek)
+                                                    <button class="buy-ticket"
                                                         onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
-                                                </button>
+                                                    </button>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -83,7 +91,7 @@
 
                                     <div class="col-md-12">
                                         <div class="review-section">
-                                            {{--<div class="row">
+                                            {{-- <div class="row">
                                                 <div class="col-md-12">
                                                     <div
                                                         class="ne_recent_heading_main_wrapper ne_recent_heading_main_wrapper_index_II float_left title-rating">
@@ -112,7 +120,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>--}}
+                                            </div> --}}
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div
@@ -124,80 +132,72 @@
                                                     <div class="col-md-12">
                                                         <div class="rating-form">
                                                             <form method="POST"
-                                                                  action="{{ route('movie.addReview', ['slug' => $movie->slug]) }}">
+                                                                action="{{ route('movies.addReview', ['slug' => $movie->slug]) }}">
                                                                 @csrf
-                                                                @if(!$userReviewed)
+                                                                @if (!$userReviewed)
                                                                     <div class="form-comment">
                                                                         <div class="st_rating_box">
                                                                             <fieldset class="rating">
                                                                                 <h5>Xếp hạng</h5>
                                                                                 <input type="radio" id="star5"
-                                                                                       name="rating"
-                                                                                       value="10"/>
+                                                                                    name="rating" value="10" />
                                                                                 <label for="star5" class="full"
-                                                                                       title="10 stars"></label>
+                                                                                    title="10 stars"></label>
 
                                                                                 <input type="radio" id="star4half"
-                                                                                       name="rating" value="9"/>
+                                                                                    name="rating" value="9" />
                                                                                 <label for="star4half" class="half"
-                                                                                       title="9 stars"></label>
+                                                                                    title="9 stars"></label>
 
                                                                                 <input type="radio" id="star4"
-                                                                                       name="rating"
-                                                                                       value="8"/>
+                                                                                    name="rating" value="8" />
                                                                                 <label for="star4" class="full"
-                                                                                       title="8 stars"></label>
+                                                                                    title="8 stars"></label>
 
                                                                                 <input type="radio" id="star3half"
-                                                                                       name="rating" value="7"/>
+                                                                                    name="rating" value="7" />
                                                                                 <label for="star3half" class="half"
-                                                                                       title="7 stars"></label>
+                                                                                    title="7 stars"></label>
 
                                                                                 <input type="radio" id="star3"
-                                                                                       name="rating"
-                                                                                       value="6"/>
+                                                                                    name="rating" value="6" />
                                                                                 <label for="star3" class="full"
-                                                                                       title="6 stars"></label>
+                                                                                    title="6 stars"></label>
 
                                                                                 <input type="radio" id="star2half"
-                                                                                       name="rating" value="5"/>
+                                                                                    name="rating" value="5" />
                                                                                 <label for="star2half" class="half"
-                                                                                       title="5 stars"></label>
+                                                                                    title="5 stars"></label>
 
                                                                                 <input type="radio" id="star2"
-                                                                                       name="rating"
-                                                                                       value="4"/>
+                                                                                    name="rating" value="4" />
                                                                                 <label for="star2" class="full"
-                                                                                       title="4 stars"></label>
+                                                                                    title="4 stars"></label>
 
                                                                                 <input type="radio" id="star1half"
-                                                                                       name="rating" value="3"/>
+                                                                                    name="rating" value="3" />
                                                                                 <label for="star1half" class="half"
-                                                                                       title="3 stars"></label>
+                                                                                    title="3 stars"></label>
 
                                                                                 <input type="radio" id="star1"
-                                                                                       name="rating"
-                                                                                       value="2"/>
+                                                                                    name="rating" value="2" />
                                                                                 <label for="star1" class="full"
-                                                                                       title="2 star"></label>
+                                                                                    title="2 star"></label>
 
                                                                                 <input type="radio" id="starhalf"
-                                                                                       name="rating" value="1"/>
+                                                                                    name="rating" value="1" />
                                                                                 <label for="starhalf" class="half"
-                                                                                       title="1 stars"></label>
+                                                                                    title="1 stars"></label>
                                                                                 <p>0 điểm</p>
                                                                             </fieldset>
 
                                                                         </div>
                                                                         <div class="form-textarea">
-                                                                            <textarea class="textarea-comment"
-                                                                                      name="description"
-                                                                                      placeholder="Vui lòng viết đánh giá phim."
-                                                                                      maxlength="220"></textarea>
+                                                                            <textarea class="textarea-comment" name="description" placeholder="Vui lòng viết đánh giá phim." maxlength="220"></textarea>
                                                                         </div>
                                                                         <div class='button-submit-comment'>
                                                                             <button type="submit" class="submit-review"
-                                                                                    @if(session('userReviewed')) disabled @endif>
+                                                                                @if (session('userReviewed')) disabled @endif>
                                                                                 Đánh giá
                                                                             </button>
                                                                         </div>
@@ -212,14 +212,14 @@
                                                 @else
                                                     <div class="col-md-12">
                                                         <p>Vui lòng <a style="color: #f1761d"
-                                                                       href="{{ route('login') }}">đăng nhập</a> để viết
+                                                                href="{{ route('login') }}">đăng nhập</a> để viết
                                                             đánh giá.</p>
                                                     </div>
                                                 @endauth
                                             </div>
                                             <hr class="hr-black">
                                             <div class="review-list" id="comments">
-                                                {{--@foreach($listBinhLuan as $index => $comment)
+                                                {{-- @foreach ($listBinhLuan as $index => $comment)
                                                     <div class="review">
                                                         <div class="review-header">
                                                             <span class="reviewer-name">{{$comment->user->name}}</span>
@@ -239,10 +239,11 @@
                                                             <span class="review-date">{{$comment->created_at}}</span>
                                                         </div>
                                                     </div>
-                                                @endforeach--}}
+                                                @endforeach --}}
                                             </div>
                                             <div class="content-cmt">
-                                                <button id="prev" onclick="previousComments()" disabled>Trở Lại</button>
+                                                <button id="prev" onclick="previousComments()" disabled>Trở
+                                                    Lại</button>
                                                 <button id="next" onclick="nextComments()">Tiếp Tục</button>
                                             </div>
 
@@ -267,7 +268,7 @@
             <hr>
             <div class="video-container-trailer">
                 <iframe src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video"
-                        allowfullscreen></iframe>
+                    allowfullscreen></iframe>
             </div>
         </div>
     </div>

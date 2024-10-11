@@ -11,7 +11,9 @@ use App\Http\Controllers\Client\ContactController;
 use App\Http\Controllers\Client\ShowtimeController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\PaymentController;
+use App\Http\Controllers\Client\PostController;
 use App\Http\Controllers\Client\MoMoPaymentController;
+use App\Http\Controllers\Client\MovieController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -35,11 +37,18 @@ use Illuminate\Support\Facades\Route;
 // })->name('home');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('policy', [HomeController::class, 'policy'])->name('policy');    //Trang Chính sách
+Route::get('policy', [HomeController::class, 'policy'])->name('policy');
 
-Route::get('movie/{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
-Route::get('movie/{id}/comments', [MovieDetailController::class, 'getComments'])->name('movie.comments');
-Route::post('movie/{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('movie.addReview');
+
+Route::prefix('movies')
+    ->as('movies.')
+    ->group(function () {
+        Route::get('/', [MovieController::class, 'index'])->name('index');
+        Route::get('{slug}', [MovieDetailController::class, 'show'])->name('movie-detail');
+        Route::get('{id}/comments', [MovieDetailController::class, 'getComments'])->name('comments');
+        Route::post('{slug}/add-review', [MovieDetailController::class, 'addReview'])->name('addReview');
+    });
+
 
 // lịch chiếu theo rạp
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
@@ -64,9 +73,10 @@ Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
 Route::put('my-account/changePassword', [UserController::class, 'changePassword'])->name('my-account.changePassword');
 
-// // User - Hành trình điện ảnh
-// Route::get('cinema-journey', [UserController::class, 'showCinemaJourney'])->name('cinema-journey.showCinemaJourney');
+// // User - Lịch sử mua hàng
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');
+Route::get('transactionHistory', [UserController::class, 'transactionHistory'])->name('transactionHistory');
+
 
 Route::get('forgot-password', function () {
     return view('client.forgot-password');
@@ -78,7 +88,7 @@ Route::get('contact', function () {
     return view('client.contact');
 })->name('contact');
 
-Route::post('/contact/store', [ContactController::class, 'store'])->name('contact.store');
+Route::post('contact/store', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('introduce', function () {
     return view('client.introduce');
@@ -113,3 +123,7 @@ Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('mo
 Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('momo.notify');
 //3 ZALOPAY
 Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
+
+//Trang tin tức
+Route::get('posts', [PostController::class, 'index'])->name('posts');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');

@@ -29,7 +29,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     {{-- Thông tin tài khoản --}}
-                    <div id="my-account" class="tab-pane "> {{-- active --}}
+                    <div id="my-account" class="tab-pane active"> {{-- active --}}
                         <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -134,7 +134,7 @@
                     </div>
 
                     {{-- Hành trình điện ảnh --}}
-                    <div id="cinema-journey" class="tab-pane active "> {{-- fade --}}
+                    <div id="cinema-journey" class="tab-pane fade"> {{-- fade --}}
                         <div class="cinema-journey-container">
                             <table class="cinema-journey-table">
                                 <thead class="cinema-journey-thead">
@@ -197,7 +197,6 @@
 
 
                                                     <td class="cinema-journey-td">
-
                                                         @foreach ($ticketSeats as $item)
                                                             {{ $item->seat->name }}
                                                         @endforeach
@@ -209,7 +208,8 @@
                                                     </td>
                                                     <td class="cinema-journey-td">
                                                         {{-- href="detail-ticket/{{ $ticket->id }}"  --}}
-                                                        <a href="{{ route('ticketDetail', $ticket->id) }}" class="bold btn-detail-ticket">
+                                                        <a href="{{ route('ticketDetail', $ticket->id) }}"
+                                                            class="bold btn-detail-ticket">
                                                             Chi tiết
                                                         </a>
                                                     </td>

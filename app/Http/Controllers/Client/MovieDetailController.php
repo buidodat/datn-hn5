@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class MovieDetailController extends Controller
 {
     public function show(string $slug){
+        $currentNow = now();
+        $endDate = now()->addDays(7);
+
         $movie = Movie::where('slug',$slug)->firstOrFail();
 //        $listBinhLuan = $movie->movieReview;
         $userReviewed = false;
@@ -24,7 +27,7 @@ class MovieDetailController extends Controller
                 $userReviewed = true;
             }
         }
-        return view('client.movie-detail' , compact('movie','userReviewed'));
+        return view('client.movie-detail' , compact('movie','userReviewed','currentNow','endDate'));
     }
     public function getComments($movieId)
     {
