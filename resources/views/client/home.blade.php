@@ -83,10 +83,11 @@
                                                 </div>
 
 
-                                                  @php
+                                                @php
                                                     // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
-                                                    $hasShowtimeInNextWeek = $movie->showtimes()
-                                                        ->where('cinema_id', session('cinema_id'))  // Kiểm tra theo cinema_id
+                                                    $hasShowtimeInNextWeek = $movie
+                                                        ->showtimes()
+                                                        ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
                                                         ->whereBetween('start_time', [$currentNow, $endDate])
                                                         ->exists();
                                                 @endphp
@@ -165,10 +166,11 @@
                                                 </div>
 
 
-                                                  @php
+                                                @php
                                                     // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
-                                                    $hasShowtimeInNextWeek = $movie->showtimes()
-                                                        ->where('cinema_id', session('cinema_id'))  // Kiểm tra theo cinema_id
+                                                    $hasShowtimeInNextWeek = $movie
+                                                        ->showtimes()
+                                                        ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
                                                         ->whereBetween('start_time', [$currentNow, $endDate])
                                                         ->exists();
                                                 @endphp
@@ -247,10 +249,11 @@
                                                 </div>
 
 
-                                                  @php
+                                                @php
                                                     // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
-                                                    $hasShowtimeInNextWeek = $movie->showtimes()
-                                                        ->where('cinema_id', session('cinema_id'))  // Kiểm tra theo cinema_id
+                                                    $hasShowtimeInNextWeek = $movie
+                                                        ->showtimes()
+                                                        ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
                                                         ->whereBetween('start_time', [$currentNow, $endDate])
                                                         ->exists();
                                                 @endphp
@@ -338,7 +341,7 @@
         </div>
     </div>
 
-        {{-- <div class="prs_vp_main_section_wrapper">
+    {{-- <div class="prs_vp_main_section_wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
