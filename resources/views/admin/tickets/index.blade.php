@@ -100,41 +100,6 @@
                     </div>
                 @endif
 
-                {{--Thành phố--}}{{--
-                <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link All py-3 active" data-bs-toggle="tab" id="branchAll" href="#" role="tab" aria-selected="true">
-                            <i class="ri-store-2-fill me-1 align-bottom"></i> Tất cả
-                            <span class="badge bg-dark align-middle ms-1">{{ $branches->count() }}</span>
-                        </a>
-                    </li>
-                    @foreach ($branches as $branch)
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link py-3 branch" data-bs-toggle="tab" data-branch-id="{{ $branch->id }}" href="#" role="tab" aria-selected="false"
-                               tabindex="-1">
-                                {{ $branch->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-
-                --}}{{--Khu vực--}}{{--
-                <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist" id="cinema-list">
-                    <li class="nav-item">
-                        <a class="nav-link All py-3" data-bs-toggle="tab" id="cenimaAll" href="#" role="tab" aria-selected="true">
-                            Tất cả
-                            <span class="badge bg-dark align-middle ms-1">{{ $cinemas->count() }}</span>
-                        </a>
-                    </li>
-                    @foreach ($cinemas as $cinema)
-                        <li class="nav-item  cinema-item" data-branch-id="{{ $cinema->branch_id }}">
-                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#" role="tab" aria-selected="false">
-                                {{ $cinema->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>--}}
-
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                            style="width:100%;">
