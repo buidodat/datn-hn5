@@ -46,5 +46,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" />
 @endsection
