@@ -483,7 +483,7 @@
             console.log([...formData]);
             const seatTemplateId = document.getElementById('updateSeatTemplateId').value; // Lấy ID phòng từ hidden input
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
-            const url = APP_URL + `/api/rooms/${roomId}`; // URL cập nhật phòng chiếu
+            const url = APP_URL + `/api/seat-templates/${seatTemplateId}`; // URL cập nhật phòng chiếu
 
             fetch(url, {
                     method: 'POST',

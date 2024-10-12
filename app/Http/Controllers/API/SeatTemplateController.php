@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SeatTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -13,6 +14,7 @@ class SeatTemplateController extends Controller
 {
     public function store(Request $request ){
         $matrixIds = array_column(SeatTemplate::MATRIXS, 'id');
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:seat_templates',
             'matrix_id' => ['required', Rule::in($matrixIds)],
@@ -51,6 +53,74 @@ class SeatTemplateController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'errors' => $th->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
+        }
+    }
+
+
+    public function update(Request $request, SeatTemplate $seatTemplate)
+    {
+        // Lấy danh sách ID ma trận
+        $matrixIds = array_column(SeatTemplate::MATRIXS, 'id');
+
+        // Xác thực dữ liệu đầu vào
+        $rules = [
+            'name' =>'required|string|max:255|unique:seat_templates,name,'.$seatTemplate->id,
+            'description' =>'required|string|max:255'
+        ];
+
+        if (!$seatTemplate->is_publish) {
+            // Chỉ thêm các rule này nếu phòng chưa publish
+            $rules['matrix_id'] = ['required', Rule::in($matrixIds)];
+        }
+
+        // Thông báo lỗi tùy chỉnh
+        $messages = [
+            'name.required' => 'Vui lòng nhập tên mẫu.',
+            'name.unique' => 'Tên mẫu đã tồn tại.',
+            'name.string' => 'Tên mẫu phải là kiểu chuỗi.',
+            'name.max' => 'Độ dài tên mẫu không được vượt quá 255 ký tự.',
+            'description.required' => 'Vui lòng nhập mô tả.',
+            'description.string' => 'Mô tả phải là kiểu chuỗi.',
+            'description.max' => 'Độ dài mô tả không được vượt quá 255 ký tự.',
+            'matrix_id.required' => "Vui lòng chọn ma trận ghế",
+            'matrix_id.in' => 'Ma trận ghế không hợp lệ.'
+        ];
+
+        // Thực hiện validate
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
+        }
+
+        try {
+            DB::transaction(function () use ($request, $seatTemplate) {
+                // Nếu phòng đã publish, chỉ cho phép cập nhật tên
+                if ($seatTemplate->is_publish) {
+                    $seatTemplate->update([
+                        'name' => $request->name,
+                        'description' => $request->description,
+                    ]);
+                } else {
+                    // Cập nhật thông tin phòng và ghế nếu chưa publish
+                    $seatTemplate->update([
+                        'name' => $request->name,
+                        'description' => $request->description,
+                        'matrix_id' => $request->matrix_id,
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'message' => "Cập nhật thành công",
+            ], Response::HTTP_OK); // 200
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
         }
     }
