@@ -47,6 +47,7 @@
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
     color:#6c6c6c
   }
+
   .seat-row {
     -webkit-user-select: none;
     -moz-user-select: none;

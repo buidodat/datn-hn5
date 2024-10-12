@@ -73,6 +73,7 @@ Route::prefix('seat-templates')
     ->group(function () {
         Route::get('/',                     [SeatTemplateController::class, 'index'])->name('index');
         Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
+        Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
 // Route::resource('rooms', RoomController::class);
 
