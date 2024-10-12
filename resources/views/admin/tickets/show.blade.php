@@ -31,7 +31,8 @@
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Order: #{{ $ticket->id }}</h5>
                         <div class="flex-shrink-0">
-                            <a href="apps-invoices-details.html" class="btn btn-success btn-sm" onclick="window.print()"><i
+                            <a href="apps-invoices-details.html" class="btn btn-success btn-sm"
+                               onclick="window.print()"><i
                                     class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
                         </div>
                     </div>
@@ -69,17 +70,14 @@
                                     <p><b> {{ $oneTicket->ticketSeats->first()->showtime->cinema->name }} </b></p>
                                     <p> {{ $oneTicket->ticketSeats->first()->room->name }}</p>
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->date)->format('d-m-Y') }}</p>
-                                    <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }} ~ {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}</p>
+                                    <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
+                                        ~ {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}</p>
                                 </td>
-                                <td>
-                                    <p><b>
-                                            Poly Combo 49k x 3
-                                        </b></p>
-                                    <p>
-                                        147.000đ
-                                    </p>
+                                <td class="align-content-start">
+                                    <p><b>Poly Combo 49k x 3</b></p>
+                                    <p>147.000đ</p>
                                 </td>
-                                <td class="fw-medium">
+                                <td class="fw-medium align-content-start">
                                     @foreach($ticket->ticketSeats as $ticketSeat)
                                         <p class="fs-15">Ghế:
                                             <span class="link-primary">{{ $ticketSeat->seat->name }}</span>
@@ -92,7 +90,8 @@
 
                                 <td class="fw-medium text-end align-content-start">
                                     @foreach($ticket->ticketSeats as $ticketSeat)
-                                        <p class="fs-15">{{ number_format($ticketSeat->seat->typeSeat->price, 0, ',', '.') }} vnđ</p>
+                                        <p class="fs-15">{{ number_format($ticketSeat->seat->typeSeat->price, 0, ',', '.') }}
+                                            vnđ</p>
                                     @endforeach
                                 </td>
                             </tr>
@@ -104,10 +103,13 @@
                                         <tbody>
                                         <tr>
                                             <td>Tổng tiền :</td>
-                                            <td class="text-end">{{ number_format($totalPriceSeat, 0, ',', '.') }} vnđ</td>
+                                            <td class="text-end">{{ number_format($totalPriceSeat, 0, ',', '.') }}vnđ
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>Giảm giá <span class="text-muted">{{ $ticket->voucher_code ? '('.$ticket->voucher_code.')' : '' }}</span>:</td>
+                                            <td>Giảm giá <span
+                                                    class="text-muted">{{ $ticket->voucher_code ? '('.$ticket->voucher_code.')' : '' }}</span>:
+                                            </td>
                                             <td class="text-end">{{ $ticket->voucher_discount > 0 ? '-' . number_format($ticket->voucher_discount, 0, ',', '.') . ' vnđ' : '0' }}</td>
                                         </tr>
                                         <tr>
@@ -117,7 +119,9 @@
 
                                         <tr class="border-top border-top-dashed">
                                             <th scope="row">Thành tiền :</th>
-                                            <th class="text-end">{{ number_format($ticket->total_price, 0, ',', '.') }} vnđ</th>
+                                            <th class="text-end">{{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                vnđ
+                                            </th>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -134,9 +138,11 @@
                     <div class="d-sm-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
                         <div class="flex-shrink-0 mt-2 mt-sm-0">
-                            <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
+                            <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
+                                    class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
                                 tin</a>
-                            <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i class="mdi mdi-archive-remove-outline align-middle me-1"></i>
+                            <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
+                                    class="mdi mdi-archive-remove-outline align-middle me-1"></i>
                                 Hủy</a>
                         </div>
                     </div>
@@ -146,7 +152,8 @@
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item border-0">
                                 <div class="accordion-header" id="headingOne">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseOne" aria-expanded="true"
+                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                                       href="#collapseOne" aria-expanded="true"
                                        aria-controls="collapseOne">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 avatar-xs">
@@ -155,64 +162,84 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-15 mb-0 fw-semibold">Đã thanh toán - <span class="fw-normal">{{ \Carbon\Carbon::parse($ticket->created_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span></h6>
+                                                <h6 class="fs-15 mb-0 fw-semibold">Đã thanh toán - <span
+                                                        class="fw-normal">{{ \Carbon\Carbon::parse($ticket->created_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
+                                                </h6>
                                             </div>
                                         </div>
                                     </a>
                                 </div>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                     aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body ms-2 ps-5 pt-0">
                                         <h6 class="mb-1">Chờ lấy vé</h6>
-                                        <p class="text-muted">Thứ 6, 15 tháng 9 2024 - 05:34PM</p>
 
-                                        <h6 class="mb-1">Đã lấy vé</h6>
-                                        <p class="text-muted mb-0">Thứ 6, 15 tháng 9 2024 - 5:48AM</p>
+                                        @if($ticket->status != 'Chờ xác nhận')
+                                            <p class="text-muted"></p>
+                                            @if($ticket->status == 'Hoàn thành' && new DateTime() < new DateTime($ticket->expiry))
+                                                <h6 class="mb-1">Đã lấy vé</h6>
+                                                <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
+                                            @else
+                                                <h6 class="mb-1">Quá hạn</h6>
+                                                <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
+                                            @endif
+                                        @endif
 
-                                        <h6 class="mb-1">Quá hạn</h6>
-                                        <p class="text-muted mb-0">Thứ 6, 15 tháng 9 2024 - 5:48AM</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingTwo">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseTwo" aria-expanded="false"
-                                       aria-controls="collapseTwo">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-success rounded-circle">
-                                                    <i class=" ri-checkbox-circle-fill"></i>
+                            @if($ticket->status !== 'Chờ xác nhận')
+                                @if($ticket->status == 'Hoàn thành')
+                                    <div class="accordion-item border-0">
+                                        <div class="accordion-header" id="headingTwo">
+                                            <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                                               href="#collapseTwo" aria-expanded="false"
+                                               aria-controls="collapseTwo">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 avatar-xs">
+                                                        <div class="avatar-title bg-success rounded-circle">
+                                                            <i class=" ri-checkbox-circle-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="fs-15 mb-1 fw-semibold">Hoàn thành - <span
+                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span></h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-15 mb-1 fw-semibold">Hoàn thành - <span class="fw-normal">Thứ 6, 16 tháng 9 2024</span></h6>
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingTwo">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseTwo" aria-expanded="false"
-                                       aria-controls="collapseTwo">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-danger rounded-circle">
-                                                    <i class="ri-close-circle-fill"></i>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-15 mb-1 fw-semibold">Hủy - <span class="fw-normal">Thứ 6, 16 tháng 9 2024</span></h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                {{--<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body ms-2 ps-5 pt-0">
-                                        <h6 class="mb-1">Your Item has been picked up by courier partner</h6>
-                                        <p class="text-muted mb-0">Fri, 17 Dec 2021 - 9:45AM</p>
                                     </div>
-                                </div>--}}
-                            </div>
+                                @else
+                                    <div class="accordion-item border-0">
+                                        <div class="accordion-header" id="headingTwo">
+                                            <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                                               href="#collapseTwo" aria-expanded="false"
+                                               aria-controls="collapseTwo">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 avatar-xs">
+                                                        <div class="avatar-title bg-danger rounded-circle">
+                                                            <i class="ri-close-circle-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="fs-15 mb-1 fw-semibold">Hủy - <span class="fw-normal">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {{--<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body ms-2 ps-5 pt-0">
+                                                <h6 class="mb-1">Your Item has been picked up by courier partner</h6>
+                                                <p class="text-muted mb-0">Fri, 17 Dec 2021 - 9:45AM</p>
+                                            </div>
+                                        </div>--}}
+                                    </div>
+                                @endif
+                            @endif
+
+
+
                             {{--<div class="accordion-item border-0">
                                 <div class="accordion-header" id="headingThree">
                                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -282,7 +309,8 @@
                     <div class="d-flex">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
                         <div class="flex-shrink-0">
-                            <span href="javascript:void(0);" class="badge bg-primary-subtle text-primary fs-11">{{ $ticket->status }}</span>
+                            <span href="javascript:void(0);"
+                                  class="badge bg-primary-subtle text-primary fs-11">{{ $ticket->status }}</span>
                         </div>
                     </div>
                 </div>
@@ -302,7 +330,8 @@
                     <div class="d-flex">
                         <h5 class="card-title flex-grow-1 mb-0">Thông tin người đặt</h5>
                         <div class="flex-shrink-0">
-                            <a href="{{ route('admin.users.show', $ticket->user->id) }}" class="link-secondary">Xem chi tiết</a>
+                            <a href="{{ route('admin.users.show', $ticket->user->id) }}" class="link-secondary">Xem chi
+                                tiết</a>
                         </div>
                     </div>
                 </div>
@@ -320,7 +349,8 @@
                                     @endphp
 
                                     @if (!empty($user->img_thumbnail))
-                                        <img src="{{ $url }}" alt="Movie Thumbnail" width="50px" class="avatar-sm rounded">
+                                        <img src="{{ $url }}" alt="Movie Thumbnail" width="50px"
+                                             class="avatar-sm rounded">
                                     @else
                                         No image!
                                     @endif
@@ -332,8 +362,10 @@
                                 </div>
                             </div>
                         </li>
-                        <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>{{ $ticket->user->email }}</li>
-                        <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>{{ $ticket->user->phone }}</li>
+                        <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>{{ $ticket->user->email }}
+                        </li>
+                        <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>{{ $ticket->user->phone }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -371,7 +403,8 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>Thông tin thanh toán</h5>
+                    <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>Thông
+                        tin thanh toán</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
