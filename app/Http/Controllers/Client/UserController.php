@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Notifications\PasswordChanged;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
 class UserController extends Controller
 {
@@ -110,13 +112,15 @@ class UserController extends Controller
             ->where('id', $ticketId)
             ->get();
 
-      
+        $qrCode = QrCode::size(120)->generate($ticketSeat->first()->code);
 
-        return view('client.users.ticket-detail', compact('ticketSeat' ));
+        $barcode = DNS1D::getBarcodeHTML($ticketSeat->first()->code, 'C128', 1.5, 50);       //C39 , C128
+
+        return view('client.users.ticket-detail', compact('ticketSeat', 'qrCode', 'barcode'));
     }
 
-    function transactionHistory()
-    {
-        return back();
-    }
+    // function transactionHistory()
+    // {
+    //     return back();
+    // }
 }
