@@ -73,7 +73,7 @@
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                         ~ {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}</p>
                                 </td>
-                                <td class="align-content-start">
+                                <td>
                                     <p><b>Poly Combo 49k x 3</b></p>
                                     <p>147.000đ</p>
                                 </td>
@@ -450,8 +450,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    {{--<a href="{{ route('admin.movies.index') }}" class="btn btn-info">Danh sách</a>
-                    <a href="{{ route('admin.movies.edit',$movie) }}">
+                    <a href="{{ route('admin.tickets.index') }}" class="btn btn-info">Danh sách</a>
+                    {{--<a href="{{ route('admin.tickets.edit',$ticket) }}">
                         <button type="submit" class="btn btn-warning mx-1">Chỉnh sửa</button>
                     </a>--}}
 
