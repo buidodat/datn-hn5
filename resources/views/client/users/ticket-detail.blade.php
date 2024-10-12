@@ -43,14 +43,17 @@
 
                                             <p><b>Ngày mua hàng:</b>
                                                 {{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y H:i') }}
-                                            </p>
+                                            </p> <br>
+                                            {!! $barcode !!}
                                         </div>
-                                    </div>
+                                    </div> 
                                     <div class="col-md-6">
-                                        <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
-                                            alt="">
+                                        {{-- ảnh mã qr --}}
+                                        {{-- <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
+                                            alt=""> --}}
+                                        {!! $qrCode !!}
                                     </div>
-                                </div>
+                                </div> <br>
 
                                 <div class="box-address">
                                     <div class="row mt-3">
@@ -208,8 +211,8 @@
                                                             @if ($ticket->voucher_discount != '')
                                                                 {{ number_format($ticket->voucher_discount, 0, ',', '.') }}đ
                                                                 <br>
-                                                                @else 
-                                                                0đ  <br>
+                                                            @else
+                                                                0đ <br>
                                                             @endif
 
                                                             Tổng
