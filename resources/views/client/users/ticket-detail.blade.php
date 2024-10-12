@@ -44,7 +44,7 @@
                                             <p><b>Ngày mua hàng:</b>
                                                 {{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y H:i') }}
                                             </p> <br>
-                                            {!! $barcode !!}
+                                            {{-- {!! $barcode !!} --}}
                                         </div>
                                     </div> 
                                     <div class="col-md-6">
@@ -158,7 +158,7 @@
                                                             $totalComboPrice = 0;
                                                         @endphp
                                                         <td>
-                                                            @foreach ($ticket->ticketCombo as $ticketCombo)
+                                                            @foreach ($ticket->ticketCombos as $ticketCombo)
                                                                 <b>{{ $ticketCombo->combo->name }} x
                                                                     {{ $ticketCombo->quantity }}</b>
 
@@ -181,13 +181,13 @@
                                                             <p>
                                                                 @php
                                                                     // Tính tổng giá ghế
-                                                                    $totalPriceSeats = $ticket->ticketSeat->sum(
+                                                                    $totalPriceSeats = $ticket->ticketSeats->sum(
                                                                         'price',
                                                                     );
 
                                                                     // Tính tổng giá combo (nếu có)
-                                                                    $totalPriceCombos = $ticket->ticketCombo
-                                                                        ? $ticket->ticketCombo->sum('price')
+                                                                    $totalPriceCombos = $ticket->ticketCombos
+                                                                        ? $ticket->ticketCombos->sum('price')
                                                                         : 0;
 
                                                                     // Tổng thành tiền
@@ -198,13 +198,10 @@
                                                                 đ
                                                             </p>
                                                         </td>
-
-
                                                     </tr>
 
 
                                                     <tr>
-
                                                         <th colspan="5" class="total-detail xanh-fpt" align="right">
 
                                                             Voucher: -

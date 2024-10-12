@@ -107,7 +107,7 @@ class UserController extends Controller
     {
         $userID = Auth::user()->id;
 
-        $ticketSeat = Ticket::with(['ticketSeat', 'ticketCombo.combo'])
+        $ticketSeat = Ticket::with(['ticketSeats', 'ticketCombos.combo'])
             ->where('user_id', $userID)
             ->where('id', $ticketId)
             ->get();
