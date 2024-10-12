@@ -55,4 +55,4 @@ Route::post('movies/update-hot', [MovieController::class, 'updateHot'])->name('m
 
 
 
-
+Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);

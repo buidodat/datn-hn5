@@ -54,48 +54,6 @@ class ShowtimeController extends Controller
 
 
 
-
-    // public function index(Request $request)
-    // {
-    //     // Lấy ds chi nhánh
-    //     $branches = Branch::all();
-
-    //     $rooms = Room::with(['cinema', 'showtimes.movieVersion.movie'])->latest('id');
-    //     // dd($request->all());
-    //     if ($request->cinema_id) {
-    //         $rooms = $rooms->whereHas('cinema', function ($query) use ($request) {
-    //             $query->where('id', $request->cinema_id);
-    //         });
-    //     }
-
-    //     if ($request->date) {
-    //         $date = Carbon::parse($request->date)->format('Y-m-d');
-
-    //         $rooms = $rooms->whereHas('showtimes', function ($query) use ($date) {
-    //             $query->where('date', $date);
-    //         });
-
-    //         // $rooms = Showtime::where('cinema_id', $request->cinema_id)
-    //         //     ->where('date', $request->date);
-    //     }
-
-
-    //     $rooms = $rooms->paginate(1);
-
-    //     $rooms->appends([
-    //         'cinema_id' => $request->cinema_id,
-    //         'date' => $request->date
-    //     ]);
-
-    //     $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-    //     // dd();
-
-    //     return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'timeNow'));
-    // }
-
-
-
-
     public function create()
     {
         //
@@ -121,6 +79,7 @@ class ShowtimeController extends Controller
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
 
+                //lấy suất chiếu đang có theo room, date
                 $existingShowtimes = Showtime::where('room_id', $request->room_id)
                     ->where('date', $request->date)
                     ->get();
@@ -130,10 +89,12 @@ class ShowtimeController extends Controller
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
                     $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-                    // Kiểm tra thời gian chiếu không trùng lặp
+                    // Kiểm tra tg chiếu đag có với tg chuẩn bị thêm
                     foreach ($existingShowtimes as $showtime) {
                         if ($startTime < $showtime->end_time && $endTime > $showtime->start_time) {
                             throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
+
+                            // return back()->with('error', 'Thời gian chiếu bị trùng lặp với các suất chiếu khác');
                         }
                     }
 
@@ -156,10 +117,17 @@ class ShowtimeController extends Controller
 
                     $seatShowtimes = [];
                     foreach ($seats as $seat) {
+                        // Kiểm tra trạng thái is_active của mỗi ghế
+                        if ($seat->is_active == 0) {
+                            $status = 'broken';  // Ghế hỏng
+                        } else {
+                            $status = 'available';  // Ghế trống
+                        }
+
                         $seatShowtimes[] = [
                             'showtime_id' => $showtime->id,
                             'seat_id' => $seat->id,
-                            'status' => 'available',
+                            'status' => $status,
                         ];
                     }
 

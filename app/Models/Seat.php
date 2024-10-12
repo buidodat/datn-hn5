@@ -27,7 +27,10 @@ class Seat extends Model
     {
         return $this->belongsTo(Room::class);
     }
-
+    public function ticketSeats()
+    {
+        return $this->hasMany(TicketSeat::class);
+    }
     // Quan hệ với loại ghế (TypeSeat)
     public function typeSeat()
     {

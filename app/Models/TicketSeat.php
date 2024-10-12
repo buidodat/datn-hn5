@@ -14,6 +14,7 @@ class TicketSeat extends Model
         'seat_id',
         'room_id',
         'movie_id',
+        'cinema_id',
         'price',
     ];
     public function ticket()
@@ -28,14 +29,16 @@ class TicketSeat extends Model
     {
         return $this->belongsTo(Showtime::class);
     }
-
+    public function cinema()
+    {
+        return $this->belongsTo(Cinema::class);
+    }
     public function room()
     {
         return $this->belongsTo(Room::class);
     }
     public function seat()
     {
-
         return $this->belongsTo(Seat::class);
     }
 }
