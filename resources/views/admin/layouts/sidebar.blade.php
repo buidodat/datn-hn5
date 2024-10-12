@@ -58,20 +58,20 @@
                 </li>
 
                 {{-- Quản lí Loại phòng --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.type-rooms.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
                             class=" ri-layout-grid-line"></i> <span data-key="t-layouts">Quản lý Loại
                             phòng</span></a>
-                </li>
+                </li> --}}
 
                 {{-- Quản lí Phòng --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link" data-key="t-horizontal"> <i
-                            class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span></a>
+                            class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng chiếu</span></a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.seat-templates.index') }}" class="nav-link menu-link" data-key="t-horizontal">  <i class="ri-rocket-line"></i>
-                         <span data-key="t-layouts">Sơ đồ ghế</span></a>
+                         <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                 </li>
 
                 {{-- <li class="nav-item">
@@ -148,10 +148,10 @@
                 </li>
 
                 {{-- Quản lí loại ghế --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.type_seats.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
                             class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span></a>
-                </li>
+                </li> --}}
 
                 {{-- Giá vé --}}
                 <li class="nav-item">

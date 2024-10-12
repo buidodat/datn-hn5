@@ -13,7 +13,7 @@ class Room extends Model
         'cinema_id',
         'type_room_id',
         'name',
-        'matrix_id',
+        'seat_template_id',
         'is_active',
         'is_publish'
     ];
@@ -30,8 +30,9 @@ class Room extends Model
     ];
     const SCOPE_REGULAR = ['min'=>3,'default'=>4,'max'=>5];
     const SCOPE_DOUBLE = ['min'=>0,'default'=>0,'max'=>2];
-    const ROW_SEAT_REGULAR = 4;
-    const ROW_SEAT_DOUBLE = 0;
+    public function seatTemplate(){
+        return $this->belongsTo(SeatTemplate::class);
+    }
 
     public function cinema()
     {

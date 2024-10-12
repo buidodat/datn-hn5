@@ -18,46 +18,10 @@ class SeatTemplateController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('seatTemplates'));
     }
 
-    // public function create()
-    // {
-    //     $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
-    //     return view(self::PATH_VIEW . __FUNCTION__, compact('branches'));
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(StoreCinemaRequest $request)
-    // {
-    //     try {
-    //         $data = $request->all();
-    //         $data['is_active'] ??= 0;
-
-    //         Cinema::query()->create($data);
-
-    //         return redirect()
-    //             ->route('admin.cinemas.index')
-    //             ->with('success', 'Thêm thành công!');
-    //     } catch (\Throwable $th) {
-    //         return back()->with('error', $th->getMessage());
-    //     }
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
     public function edit(SeatTemplate $seatTemplate)
     {
         // Lấy cấu trúc ma trận từ hằng số MATRIXS
-        $matrix = SeatTemplate::getMatrixById($seatTemplate->id);
+        $matrix = SeatTemplate::getMatrixById($seatTemplate->matrix_id);
 
         // Giải mã dữ liệu ghế từ trường seat_structure
         $seats = json_decode($seatTemplate->seat_structure, true);
@@ -93,49 +57,58 @@ class SeatTemplateController extends Controller
     }
 
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
     public function update(Request $request, SeatTemplate $seatTemplate)
     {
         try {
-            $dataSeatTemplate= [];
-            $message = 'Lưu nháp thành công !';
-            if($request->action === 'publish'){
-                $request->validate([
-                    'seat_structure' => 'required|json',
+            $dataSeatTemplate = [
+                'is_active' => isset($request->is_active) ? 1 : 0, // Mặc định cập nhật is_active
+            ];
+
+            if ($request->action === 'publish' && !$seatTemplate->is_publish) {
+                // Nếu hành động là publish và chưa được publish trước đó
+                $dataSeatTemplate = array_merge($dataSeatTemplate, [
+                    'is_publish' => 1,
+                    'seat_structure' => $request->seat_structure,
                 ]);
-                $dataSeatTemplate['is_publish'] = 1;
-                $dataSeatTemplate['is_active'] = 1;
-                $message = 'Xuất bản thành công !';
-                // Giải mã dữ liệu JSON và lưu vào trường seat_structure
+            } elseif ($request->action === 'draft' && !$seatTemplate->is_publish) {
+                // Nếu là hành động draft và chưa publish
+                $dataSeatTemplate['seat_structure'] = $request->seat_structure;
             }
-            $dataSeatTemplate['seat_structure'] = $request->seat_structure;
-            // dd($dataSeatTemplate);
-            $seatTemplate->seat_structure = json_decode($request->seat_structure, true);
 
+            // Thực hiện cập nhật
             $seatTemplate->update($dataSeatTemplate);
-
             return redirect()->back()
-                             ->with('success', $message);
+                ->with('success', 'Thao tác thành công');
         } catch (\Throwable $th) {
             // Trả về thông báo lỗi nếu có ngoại lệ xảy ra
             return back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
         }
     }
 
-
-    // public function changeCinema(Request $request)
+    // public function update(Request $request, SeatTemplate $seatTemplate)
     // {
-    //     // Kiểm tra xem cinema_id gửi lên có hợp lệ không
-    //     $cinema = Cinema::find($request->cinema_id);
+    //     dd($request->toArray());
+    //     try {
+    //         $dataSeatTemplate = [];
+    //         if ($request->action == 'publish' ) {
+    //             $request->validate([
+    //                 'seat_structure' => 'required|json',
+    //             ]);
+    //             $dataSeatTemplate['is_publish'] = 1;
+    //             $dataSeatTemplate['is_active'] = 1;
+    //             // Giải mã dữ liệu JSON và lưu vào trường seat_structure
+    //         }
+    //         $dataSeatTemplate['seat_structure'] = $request->seat_structure;
 
-    //     if ($cinema) {
-    //         // Lưu cinema_id vào session
-    //         Session::put('cinema_id', $cinema->id);
+    //         $seatTemplate->seat_structure = json_decode($request->seat_structure, true);
+
+    //         $seatTemplate->update($dataSeatTemplate);
+
+    //         return redirect()->back()
+    //             ->with('success', 'Thao tác thành công');
+    //     } catch (\Throwable $th) {
+    //         // Trả về thông báo lỗi nếu có ngoại lệ xảy ra
+    //         return back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
     //     }
-
-    //     // Điều hướng lại hoặc trả về kết quả phù hợp
-    //     return redirect()->back();
     // }
 }

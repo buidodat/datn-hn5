@@ -36,12 +36,15 @@ class SeatTemplateController extends Controller
                 'errors' => $validator->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
         }
-
+        $scopeRegular = SeatTemplate::SCOPE_REGULAR;
+        $scopeDouble= SeatTemplate::SCOPE_DOUBLE;
         try {
             $data = [
                 'name'=>$request->name,
                 'description'=>$request->description,
                 'matrix_id'=>$request->matrix_id,
+                'row_regular' =>$scopeRegular['default'],
+                'row_double'=>$scopeDouble['default']
             ];
             $seatTemplate = SeatTemplate::create($data);
 

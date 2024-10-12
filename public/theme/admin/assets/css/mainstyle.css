@@ -8,7 +8,7 @@
     margin: 20px 0;
     border-radius: 10px;
     position: relative;
-    color:#6c6c6c;
+    color:#2a2a2a;
     text-align: center;
     line-height: 30px;
     -webkit-user-select: none;
@@ -45,7 +45,17 @@
     transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
     font-size: 9px; /* Kích thước của văn bản */
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
-    color:#6c6c6c
+    color:#2a2a2a;
+  }
+  .seat-label-double {
+    position: absolute; /* Đặt vị trí tuyệt đối cho phần tử */
+    top: 40%; /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
+    font-size: 9px; /* Kích thước của văn bản */
+    /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+    color:#2a2a2a;
+    word-spacing: 0.8em;
   }
 
   .seat-row {

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách phòng chiếu
+    Danh sách sơ đồ ghế
 @endsection
 
 @section('style-libs')
@@ -23,11 +23,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản lý phòng chiếu</h4>
+                <h4 class="mb-sm-0">Quản lý sơ đồ ghế</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Phòng chiếu</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Sơ đồ ghế</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="card-header border-0">
                     <div class="row align-items-center gy-3">
                         <div class="col-sm">
-                            <h5 class="card-title mb-0">Danh sách phòng chiếu</h5>
+                            <h5 class="card-title mb-0">Danh sách sơ đồ ghế</h5>
                         </div>
                         <div class="col-sm-auto">
                             <div class="d-flex gap-1 flex-wrap">
@@ -58,28 +58,30 @@
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link  All active py-3" data-bs-toggle="tab" href="#allSeatTemplate" role="tab"
+                            <a class="nav-link  All  py-3" data-bs-toggle="tab" href="#allSeatTemplate" role="tab"
                                 aria-selected="true">
                                 Tất cả
-                                <span class="badge bg-dark align-middle ms-1">1</span>
+                                <span class="badge bg-dark align-middle ms-1">{{ $seatTemplates->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3  isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
+                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
                                 aria-selected="false">
                                 Đã xuất bản
-                                <span class="badge bg-success align-middle ms-1">2</span>
+                                <span
+                                    class="badge bg-success align-middle ms-1">{{ $seatTemplates->where('is_publish', 1)->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
                                 aria-selected="false">
-                                Bản nháp<span class="badge bg-warning align-middle ms-1">3</span>
+                                Bản nháp<span
+                                    class="badge bg-warning align-middle ms-1">{{ $seatTemplates->where('is_publish', 0)->count() }}</span>
                             </a>
                         </li>
                     </ul>
                     <div class="card-body tab-content ">
-                        <div class="tab-pane active " id="allSeatTemplate" role="tabpanel">
+                        <div class="tab-pane  " id="allSeatTemplate" role="tabpanel">
                             <table id="tableAllSeatTemplate"
                                 class="table table-bordered dt-responsive nowrap align-middle w-100" style="width:100%">
                                 <thead>
@@ -87,6 +89,7 @@
                                         <th>#</th>
                                         <th>Tên mẫu</th>
                                         <th>Mô tả</th>
+                                        <th>Ma trận ghế</th>
                                         <th>Trạng thái</th>
                                         <th>Hoạt động</th>
 
@@ -100,17 +103,17 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Chỉnh
-                                                            sửa</a>
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
                                                             data-seat-template-id="{{ $item->id }}"
                                                             data-seat-template-name="{{ $item->name }}"
                                                             data-seat-template-description="{{ $item->description }}"
                                                             data-matrix-id="{{ $item->matrix_id }}"
-                                                            data-is-publish={{ $item->is_publish }}>Sửa nhanh</a>
+                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
 
-                                                        @if (!$item->is_publish)
+
+                                                        {{-- @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $item) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
@@ -118,18 +121,19 @@
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
-                                                        @endif
-
-
-
-
-
-
-
+                                                        @endif --}}
                                                     </div>
                                                 </div>
                                             </td>
+
+
                                             <td>{{ $item->description }}</td>
+                                            @php
+                                                $matrixSeatTemplate = App\Models\SeatTemplate::getMatrixById(
+                                                    $item->matrix_id,
+                                                );
+                                            @endphp
+                                            <td>{{ $matrixSeatTemplate['name'] }}</td>
                                             <td>
                                                 {!! $item->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -150,144 +154,151 @@
 
                             </table>
                         </div>
-                        {{-- <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
-                                <thead class='table-light'>
+                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                            <table id="tableIsPublish" class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                style="width:100%">
+                                <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Phòng chiếu</th>
-                                        <th>Rạp chiếu</th>
-                                        <th>Loại Phòng</th>
-                                        <th>Sức chứa</th>
+                                        <th>Tên mẫu</th>
+                                        <th>Mô tả</th>
+                                        <th>Ma trận ghế</th>
                                         <th>Trạng thái</th>
                                         <th>Hoạt động</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($roomPublishs as $index => $room)
+                                    @foreach ($seatTemplates->where('is_publish', 1) as $item)
                                         <tr>
-                                            <td>{{ $room->id }}</td>
+                                            <td>{{ $item->id }}</td>
                                             <td>
-                                                <div class='room-name'>
-                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                <div class='seat-template-name'>
+                                                    <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        @if (!$room->is_publish)
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                            data-seat-template-id="{{ $item->id }}"
+                                                            data-seat-template-name="{{ $item->name }}"
+                                                            data-seat-template-description="{{ $item->description }}"
+                                                            data-matrix-id="{{ $item->matrix_id }}"
+                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
+
+
+                                                        {{-- @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                href="{{ route('admin.rooms.destroy', $item) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
                                                                 bỏ</a>
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                        @endif
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
-                                                            ghế</a>
-
+                                                                href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
+                                                        @endif --}}
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $room->cinema->name }}</td>
-                                            <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+
+                                            <td>{{ $item->description }}</td>
+                                            @php
+                                                $matrixSeatTemplate = App\Models\SeatTemplate::getMatrixById(
+                                                    $item->matrix_id,
+                                                );
+                                            @endphp
+                                            <td>{{ $matrixSeatTemplate['name'] }}</td>
                                             <td>
-                                                {!! $room->is_publish == 1
+                                                {!! $item->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
                                                     : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active updat-active"
                                                         name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $room->id }}" @checked($room->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                        data-id="{{ $item->id }}" @checked($item->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                        @disabled(!$item->is_publish)>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
+
                             </table>
                         </div>
                         <div class="tab-pane " id="isDraft" role="tabpanel">
 
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
-                                <thead class='table-light'>
+                            <table id="tableIsDraft" class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                style="width:100%">
+                                <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Phòng chiếu</th>
-                                        <th>Rạp chiếu</th>
-                                        <th>Loại Phòng</th>
-                                        <th>Sức chứa</th>
+                                        <th>Tên mẫu</th>
+                                        <th>Mô tả</th>
+                                        <th>Ma trận ghế</th>
                                         <th>Trạng thái</th>
                                         <th>Hoạt động</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($roomDrafts as $index => $room)
+                                    @foreach ($seatTemplates->where('is_publish', 0) as $item)
                                         <tr>
-                                            <td>{{ $room->id }}</td>
+                                            <td>{{ $item->id }}</td>
                                             <td>
-                                                <div class='room-name'>
-                                                    <div class='mb-1 fs-6'> {{ $room->name }}</div>
+                                                <div class='seat-template-name'>
+                                                    <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        @if (!$room->is_publish)
+                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                            data-seat-template-id="{{ $item->id }}"
+                                                            data-seat-template-name="{{ $item->name }}"
+                                                            data-seat-template-description="{{ $item->description }}"
+                                                            data-matrix-id="{{ $item->matrix_id }}"
+                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
+
+
+                                                        {{-- @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                href="{{ route('admin.rooms.destroy', $item) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
                                                                 bỏ</a>
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                        @endif
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
-                                                            ghế</a>
-
+                                                                href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
+                                                        @endif --}}
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $room->cinema->name }}</td>
-                                            <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+
+                                            <td>{{ $item->description }}</td>
+                                            @php
+                                                $matrixSeatTemplate = App\Models\SeatTemplate::getMatrixById(
+                                                    $item->matrix_id,
+                                                );
+                                            @endphp
+                                            <td>{{ $matrixSeatTemplate['name'] }}</td>
                                             <td>
-                                                {!! $room->is_publish == 1
+                                                {!! $item->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
                                                     : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active updat-active"
                                                         name="is_active" type="checkbox" role="switch"
-                                                        @checked($room->is_active) disabled>
+                                                        data-id="{{ $item->id }}" @checked($item->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                        @disabled(!$item->is_publish)>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
+
                             </table>
-                        </div> --}}
+                        </div>
 
                     </div>
 
@@ -422,10 +433,9 @@
                         console.log(data);
                         $('#createSeatTemplateModal').modal('hide');
                         form.reset();
-                        alert('thêm mới thành công');
                         window.location.reload();
-                        // window.location.href =
-                        //     `${APP_URL}/admin/rooms/seat-diagram/${data.room.id}`;
+                        window.location.href =
+                            `${APP_URL}/admin/seat-templates/${data.seatTemplate.id}/edit`;
                     }
                 })
                 .catch(error => console.error('Error adding room:', error));
@@ -433,7 +443,7 @@
         document.querySelectorAll('.openUpdateSeatTemplateModal').forEach(button => {
             button.addEventListener('click', function() {
                 const seatTemplateId = this.getAttribute(
-                'data-seat-template-id'); // Lấy roomId từ data attribute
+                    'data-seat-template-id'); // Lấy roomId từ data attribute
                 const seatTemplateName = this.getAttribute('data-seat-template-name');
                 const seatTemplateDescription = this.getAttribute('data-seat-template-description');
                 const matrixId = this.getAttribute('data-matrix-id');
@@ -441,7 +451,7 @@
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateSeatTemplateId').value =
-                seatTemplateId; // Gán giá trị roomId
+                    seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
@@ -465,7 +475,7 @@
             const formData = new FormData(form);
             console.log([...formData]);
             const seatTemplateId = document.getElementById('updateSeatTemplateId')
-            .value; // Lấy ID phòng từ hidden input
+                .value; // Lấy ID phòng từ hidden input
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
             const url = APP_URL + `/api/seat-templates/${seatTemplateId}`; // URL cập nhật phòng chiếu
 
@@ -528,7 +538,7 @@
                 let isActive = $(this).is(':checked') ? 1 : 0;
 
                 // Gửi yêu cầu AJAX
-                const url = APP_URL + `/api/seat-templates/update-active/` +seatTemplateId;
+                const url = APP_URL + `/api/seat-templates/update-active/` + seatTemplateId;
                 $.ajax({
                     url: url, // URL để cập nhật trạng thái (sẽ tạo sau)
                     method: 'POST',
