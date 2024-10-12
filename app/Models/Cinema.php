@@ -21,7 +21,10 @@ class Cinema extends Model
     protected $cast = [
         'is_active'=>'boolean'
     ];
-
+    public function ticketSeats()
+    {
+        return $this->hasMany(TicketSeat::class);
+    }
     public function branch(){
         return $this->belongsTo(Branch::class);
     }

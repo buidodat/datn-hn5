@@ -155,7 +155,7 @@
                                         @foreach ($tickets as $ticket)
                                             @php
                                                 // Nhóm các ticketMovie theo movie_id
-                                                $ticketSeatsByMovie = $ticket->ticketSeat->groupBy('movie_id');
+                                                $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
                                             @endphp
 
                                             @foreach ($ticketSeatsByMovie as $ticketSeats)
