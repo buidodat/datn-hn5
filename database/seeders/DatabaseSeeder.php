@@ -424,7 +424,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
-                'img_thumbnail' => '',
+                'img_thumbnail' => 'theme/admin/assets/images/users/user-dummy-img.jpg',
                 'phone' => '0975098710',
                 'email' => 'hieuhdph36384@fpt.edu.vn',
                 'password' => Hash::make('hieuhdph36384@fpt.edu.vn'),
@@ -435,7 +435,8 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Đặng Phú An',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG0pP-FGDHy0-uXweXmmsnNIMvtdjEJEpwgy-12MQkSnFPNmEsEvjbTG8ZosZJ4De8rsIMwzOpo8C5PJFBbfOTI&_nc_ohc=O_-7MtjY0RoQ7kNvgHCkypx&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDA4gmkPPxZSCLKPoL2oXl6VM-acUxCebUpqQ0317MFAA&oe=66EB71AD',
+                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=
+                6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
                 'phone' => '0378633611',
                 'email' => 'andpph31859@fpt.edu.vn',
                 'password' => Hash::make('andpph31859@fpt.edu.vn'),
@@ -446,7 +447,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'An Dang Phu',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG0pP-FGDHy0-uXweXmmsnNIMvtdjEJEpwgy-12MQkSnFPNmEsEvjbTG8ZosZJ4De8rsIMwzOpo8C5PJFBbfOTI&_nc_ohc=O_-7MtjY0RoQ7kNvgHCkypx&_nc_ht=scontent.fhan15-2.fna&oh=00_AYDA4gmkPPxZSCLKPoL2oXl6VM-acUxCebUpqQ0317MFAA&oe=66EB71AD',
+                'img_thumbnail' => '',
                 'phone' => '0378633611',
                 'email' => 'anpx123@gmail.com',
                 'password' => Hash::make('anpx123@gmail.com'),
@@ -457,7 +458,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
-                'img_thumbnail' => 'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEAlF7r3-iAR0crNJPRswHcnbI8umQnb6Wdsjy6ZCdvpQQy4yt-mXX6TisDxnCSzyG28t67CzUVAEm42R6E2k98&_nc_ohc=Qk1YWJ8PlQcQ7kNvgE2_TiU&_nc_ht=scontent.fhan15-1.fna&_nc_gid=AgWwivNA4s8Jztj4i--qQgS&oh=00_AYCadDBYztZNGM_JXjY2K59iDYOUgjjeoZI9RZ-DtOtepw&oe=66F34611',
+                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Ac_8W5oiz3UQ7kNvgE477pl&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ajp6VrKXh1BJ4nvrLvN-bbm&oh=00_AYCMP6yTzIhdGeGsW8knCmMkdI3IBd1wi_dlZwVKIfdn6w&oe=670D6BD1',
                 'phone' => '0973657594',
                 'email' => 'sonnvph33874@fpt.edu.vn',
                 'password' => Hash::make('sonnvph33874@fpt.edu.vn'),
@@ -468,7 +469,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
-                'img_thumbnail' => 'https://scontent.fhan5-9.fna.fbcdn.net/v/t39.30808-1/452225598_1222108569223026_3034596182689563543_n.jpg?stp=dst-jpg_s160x160&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeFkL2tp4r6CfMw41hxWmmvvQn_xOwpIMg9Cf_E7CkgyD3A0v4tp7jH4tumA_mY16BYIweBTwInZHv3-ewc-Xuv1&_nc_ohc=Rb2AkaAICU4Q7kNvgGTw_W7&_nc_ht=scontent.fhan5-9.fna&_nc_gid=A11gFe0tM_BGiNtmQW9hKts&oh=00_AYCktrv7R8SZSaW_GopvP8L4DYcUTPaGcRQR2rGAN_UClg&oe=66EB6EDF',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
                 'phone' => '0965263725',
                 'email' => 'datbdph38211@fpt.edu.vn',
                 'password' => Hash::make('datbdph38211@fpt.edu.vn'),
@@ -519,11 +520,11 @@ class DatabaseSeeder extends Seeder
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             DB::table('vouchers')->insert([
                 'code' => strtoupper(Str::random(6)),
-                'title' => fake()->sentence(5),
-                'description' => fake()->text(255),
+                'title' => fake()->sentence(3),
+                'description' => fake()->text(50),
                 'start_date_time' => Carbon::now()->subDays(rand(0, 30)),
                 'end_date_time' => Carbon::now()->addDays(rand(30, 60)),
                 'discount' => fake()->numberBetween(1000, 100000),
@@ -534,99 +535,67 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        //payment
-        $paymentMethods = [
-            ['name' => 'vnpay'],
-            ['name' => 'momo'],
-            ['name' => 'zalopay'],
-            ['name' => 'tiền mặt'],
-        ];
-
-        foreach ($paymentMethods as $payment) {
-            DB::table('payments')->insert([
-                'name' => $payment['name'],
-                'description' => fake()->text(50),
-                'is_active' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
-        $paymentIds = DB::table('payments')->pluck('id')->toArray();
+        //tickets
+        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
+        $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
+        $movieIds = DB::table('movies')->pluck('id')->toArray();
         $userIds = range(1, 6);
 
         foreach ($userIds as $userId) {
             //fake giới hạn trong 1 tháng
             $expiryDate = Carbon::now()->addMonth();
 
-            DB::table('tickets')->insert([
-                'user_id' => $userId,
-                'payment_id' => fake()->randomElement($paymentIds),
-                'voucher_id' => null,
-                'voucher_code' => null,
-                'voucher_discount' => null,
-                'code' => fake()->regexify('[A-Za-z0-9]{10}'), //qr
-                'total_price' => fake()->numberBetween(50, 200) * 1000,
-                'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Hủy']),
-                'expiry' => $expiryDate,
-                'staff' => fake()->randomElement(['admin', 'member']),
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+            for ($i = 0; $i < 2; $i++) {
+                $ticketId = DB::table('tickets')->insertGetId([
+                    'user_id' => $userId,
+                    'payment_method' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
+                    'voucher_id' => null,
+                    'voucher_code' => null,
+                    'voucher_discount' => null,
+                    'code' => fake()->regexify('[A-Za-z0-9]{10}'),
+                    'total_price' => fake()->numberBetween(50, 200) * 1000,
+                    'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Đã hết hạn']),
+                    'expiry' => $expiryDate,
+                    'staff' => fake()->randomElement(['admin', 'member']),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
 
-
-        $ticketIds = DB::table('tickets')->pluck('id')->toArray();
-        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
-        $movieIds = DB::table('movies')->pluck('id')->toArray();
-
-        foreach ($ticketIds as $ticket_id) {
-            //1 ticket_seat ngau nhien
-            for ($i = 0; $i < 1; $i++) {
+                // Lấy showtime và cinema ngẫu nhiên
                 $showtime_id = fake()->randomElement($showtimeIds);
-                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-                $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
+                $cinema_id = fake()->randomElement($cinemaIds);
 
-                if (!empty($seatIds)) {
+                // phòng theo suaats chiếu
+                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+
+                // ghế theo phòng
+                $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
+
+                $seatCount = ($i == 0) ? 3 : 1;
+
+                // Sắp xếp ghế liên tục cạnh nhau
+                $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
+                $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
+
+                $price = fake()->numberBetween(50, 200) * 1000;
+                $movie_id = fake()->randomElement($movieIds);
+
+                foreach ($selectedSeats as $seatId) {
                     DB::table('ticket_seats')->insert([
-                        'ticket_id' => $ticket_id,
+                        'ticket_id' => $ticketId,
                         'showtime_id' => $showtime_id,
-                        'seat_id' => fake()->randomElement($seatIds),
+                        'seat_id' => $seatId,
                         'room_id' => $room_id,
-                        'movie_id' => fake()->randomElement($movieIds),
-                        'price' => fake()->numberBetween(50, 200) * 1000,
+                        'movie_id' => $movie_id,
+                        'cinema_id' => $cinema_id,
+                        'price' => $price,
+                        'created_at' => now(),
+                        'updated_at' => now()
                     ]);
                 }
             }
-
-            $showtime_id = fake()->randomElement($showtimeIds);
-            $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-            $seatIds = DB::table('seats')->where('room_id', $room_id)->pluck('id')->toArray();
-            $movie_id = fake()->randomElement($movieIds);
-            $price = fake()->numberBetween(50, 200) * 1000;
-
-            // 3 ticket_seat co ticket_id trung nhau (3 ghe ngoi khac nhau)
-            if (count($seatIds) >= 3) {
-                sort($seatIds);
-                for ($i = 0; $i < count($seatIds) - 2; $i++) {
-                    // Lấy 3 seat IDs liên tục
-                    $selectedSeatIds = array_slice($seatIds, $i, 3);
-                    if (count($selectedSeatIds) == 3) {
-                        foreach ($selectedSeatIds as $seat_id) {
-                            DB::table('ticket_seats')->insert([
-                                'ticket_id' => $ticket_id,
-                                'showtime_id' => $showtime_id,
-                                'seat_id' => $seat_id,
-                                'room_id' => $room_id,
-                                'movie_id' => $movie_id,
-                                'price' => $price,
-                            ]);
-                        }
-                        break;
-                    }
-                }
-            }
         }
+
 
         // Tạo 10 bài viết
         for ($i = 1; $i <= 10; $i++) {

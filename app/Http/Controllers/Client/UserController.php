@@ -27,7 +27,7 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        $tickets = Ticket::query()->with('ticketSeat')->where('user_id', $userID)->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
@@ -112,7 +112,11 @@ class UserController extends Controller
             ->where('id', $ticketId)
             ->get();
 
+
+
+
         $qrCode = QrCode::size(120)->generate($ticketSeat->first()->code);
+
 
         $barcode = DNS1D::getBarcodeHTML($ticketSeat->first()->code, 'C128', 1.5, 50);       //C39 , C128
 

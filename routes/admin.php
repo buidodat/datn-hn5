@@ -42,13 +42,11 @@ Route::resource('branches', BranchController::class);
 Route::resource('cinemas', CinemaController::class);
 // Payment
 Route::resource('payments', PaymentController::class);
-// Payment
-Route::resource('payments', PaymentController::class);
 
 Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
 Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
-
-
+Route::resource('tickets',\App\Http\Controllers\Admin\TicketController::class);
+route::post('tickets/{ticket}/update-status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);

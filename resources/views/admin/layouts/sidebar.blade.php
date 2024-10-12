@@ -103,6 +103,13 @@
                             chiếu</span></a>
                 </li>
 
+                {{-- Quản lí ves --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link" data-key="t-horizontal">
+                        <i class="ri-wallet-3-fill"></i>
+                        <span data-key="t-layouts">Quản lý vé</span></a>
+                </li>
+
                 {{-- Quản lí thanh toán --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.payments.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
