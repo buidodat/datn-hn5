@@ -124,4 +124,21 @@ class SeatTemplateController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
         }
     }
+
+    public function updateActive(Request $request,SeatTemplate $seatTemplate)
+    {
+        try {
+            if($seatTemplate->is_publish){
+                $seatTemplate->update([
+                    'is_active' => $request->is_active
+                ]);
+                return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.']);
+            } else {
+                // Nếu template chưa được publish, trả về thông báo lỗi
+                return response()->json(['success' => false, 'message' => 'Template chưa được publish.']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
+        }
+    }
 }

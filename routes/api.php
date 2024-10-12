@@ -41,6 +41,7 @@ Route::prefix('seat-templates')
     ->group(function () {
         Route::post('store',    [SeatTemplateController::class, 'store']);
         Route::put('{seatTemplate}',    [SeatTemplateController::class, 'update']);
+        Route::post('update-active/{seatTemplate}',    [SeatTemplateController::class, 'updateActive']);
     });
 
 Route::post('seats/soft-delete', [SeatController::class, 'softDelete'])->name('seats.soft-delete');

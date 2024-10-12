@@ -89,7 +89,7 @@
                                         <th>Mô tả</th>
                                         <th>Trạng thái</th>
                                         <th>Hoạt động</th>
-                                        <th>Chức năng</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -100,6 +100,15 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
+                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Chỉnh
+                                                            sửa</a>
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                            data-seat-template-id="{{ $item->id }}"
+                                                            data-seat-template-name="{{ $item->name }}"
+                                                            data-seat-template-description="{{ $item->description }}"
+                                                            data-matrix-id="{{ $item->matrix_id }}"
+                                                            data-is-publish={{ $item->is_publish }}>Sửa nhanh</a>
 
                                                         @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
@@ -113,17 +122,8 @@
 
 
 
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
-                                                            data-seat-template-id="{{ $item->id }}"
-                                                            data-seat-template-name="{{ $item->name }}"
-                                                            data-seat-template-description="{{ $item->description }}"
-                                                            data-matrix-id="{{ $item->matrix_id }}"
-                                                            data-is-publish={{ $item->is_publish }}>Chỉnh
-                                                            sửa</a>
 
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $item) }}">Sơ đồ
-                                                            ghế</a>
+
 
 
                                                     </div>
@@ -137,31 +137,12 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active updat-active"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $item->id }}" @checked($item->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
                                                         @disabled(!$item->is_publish)>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                {{-- <a href="">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a> --}}
-
-                                                <a href="{{ route('admin.seat-templates.edit', $item) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                            class="fas fa-edit"></i></button>
-                                                </a>
-                                                {{-- <form action="{{ route('admin.seat-templates.destroy', $item) }}" method="POST"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn có muốn xóa không')">
-                                                    <i class="ri-delete-bin-7-fill"></i>
-                                                </button>
-                                            </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -451,14 +432,16 @@
         });
         document.querySelectorAll('.openUpdateSeatTemplateModal').forEach(button => {
             button.addEventListener('click', function() {
-                const seatTemplateId = this.getAttribute('data-seat-template-id'); // Lấy roomId từ data attribute
+                const seatTemplateId = this.getAttribute(
+                'data-seat-template-id'); // Lấy roomId từ data attribute
                 const seatTemplateName = this.getAttribute('data-seat-template-name');
                 const seatTemplateDescription = this.getAttribute('data-seat-template-description');
                 const matrixId = this.getAttribute('data-matrix-id');
                 const isPublish = this.getAttribute('data-is-publish');
 
                 // Điền dữ liệu vào modal
-                document.getElementById('updateSeatTemplateId').value = seatTemplateId; // Gán giá trị roomId
+                document.getElementById('updateSeatTemplateId').value =
+                seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
@@ -481,7 +464,8 @@
             const form = document.getElementById('updateSeatTemplateForm');
             const formData = new FormData(form);
             console.log([...formData]);
-            const seatTemplateId = document.getElementById('updateSeatTemplateId').value; // Lấy ID phòng từ hidden input
+            const seatTemplateId = document.getElementById('updateSeatTemplateId')
+            .value; // Lấy ID phòng từ hidden input
             let hasErrors = false; // Biến để theo dõi có lỗi hay không
             const url = APP_URL + `/api/seat-templates/${seatTemplateId}`; // URL cập nhật phòng chiếu
 
@@ -537,19 +521,19 @@
     {{-- cập nhật active phòng chiếu --}}
     <script>
         $(document).ready(function() {
-            $('.channge-is-active ').on('change', function() {
+            $('.updat-active ').on('change', function() {
                 // Lấy ID của room từ thuộc tính 'data-id'
-                let roomId = $(this).data('id');
+                let seatTemplateId = $(this).data('id');
                 // Lấy trạng thái hiện tại của checkbox
                 let isActive = $(this).is(':checked') ? 1 : 0;
 
                 // Gửi yêu cầu AJAX
+                const url = APP_URL + `/api/seat-templates/update-active/` +seatTemplateId;
                 $.ajax({
-                    url: '{{ route('rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
+                    url: url, // URL để cập nhật trạng thái (sẽ tạo sau)
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}', // Bảo vệ CSRF
-                        id: roomId,
                         is_active: isActive
                     },
                     success: function(response) {
