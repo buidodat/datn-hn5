@@ -1610,13 +1610,10 @@ pre code {
 }
 
 .row {
-    display: flex;
-    flex-wrap: wrap;
+
     margin-right: -5px;
     margin-left: -5px;
-    justify-content: start;
-    align-items: start;
-    box-sizing: border-box;
+
 }
 
 .row-bad {

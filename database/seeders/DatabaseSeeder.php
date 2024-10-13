@@ -8,6 +8,7 @@ use App\Models\Combo;
 use App\Models\ComboFood;
 use App\Models\Food;
 use App\Models\Movie;
+use App\Models\SeatTemplate;
 use App\Models\Slideshow;
 use App\Models\TypeRoom;
 use App\Models\User;
@@ -96,7 +97,7 @@ class DatabaseSeeder extends Seeder
             ]);
             DB::table('movie_versions')->insert([
                 'movie_id' => $movie,
-                'name' => 'Vietsub'
+                'name' => 'Phụ Đề'
             ]);
             DB::table('movie_versions')->insert([
                 'movie_id' => $movie,
@@ -150,30 +151,60 @@ class DatabaseSeeder extends Seeder
         $typeRooms = [
             ['name' => '2D', 'surcharge' => 0],
             ['name' => '3D', 'surcharge' => 30000],
-            ['name' => 'IMAX', 'surcharge' => 20000],
+            ['name' => 'IMAX', 'surcharge' => 50000]
         ];
         DB::table('type_rooms')->insert($typeRooms);
 
 
-        // Duyệt qua các rạp và tạo phòng cho mỗi rạp
+       // Duyệt qua các rạp và tạo phòng cho mỗi rạp
         $cinemaCount = [1, 2];
-        $roomsName = ['Poly Cinemas 01', 'Poly Cinemas 02', 'Poly Cinemas 03', 'Poly Cinemas 04'];
+        $roomsName = ['P201', 'L202', 'P303', 'P404'];
+
+        // Tạo template ghế
+        $seatTemplate = SeatTemplate::create([
+            'name' => 'Template 1',
+            'description' => 'Mô tả cho template 1',
+            'matrix_id' => 1, // ID matrix ví dụ
+            'seat_structure' => json_encode($this->generateSeatStructure()), // Cấu trúc ghế
+            'is_publish' => 1, // Đã publish
+            'is_active' => 1, // Đang hoạt động
+        ]);
 
         foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
             // Lấy branch_id từ cinema_id
             $branch_id = DB::table('cinemas')->where('id', $cinema_id)->value('branch_id');
 
             foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
-                DB::table('rooms')->insert([
-                    'branch_id' => $branch_id, // Thêm branch_id vào đây
+                $roomId = DB::table('rooms')->insertGetId([
+                    'branch_id' => $branch_id,
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
-                    'matrix_id' => 1, // Sức chứa ngẫu nhiên
+                    'seat_template_id' => $seatTemplate->id, // ID template ghế vừa tạo
                     'is_active' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
+
+                // Lấy cấu trúc ghế từ seat_template
+                $seatStructure = json_decode($seatTemplate->seat_structure, true);
+
+                $seatsData = []; // Mảng lưu trữ ghế
+                foreach ($seatStructure as $seat) {
+                    $seatsData[] = [
+                        'room_id' => $roomId, // ID của phòng
+                        'coordinates_x' => $seat['coordinates_x'], // Cột
+                        'coordinates_y' => $seat['coordinates_y'],
+                        'name' => $seat['coordinates_y'] . $seat['coordinates_x'], // Hàng
+                        'type_seat_id' => $seat['type_seat_id'], // Loại ghế
+                        'is_active' => 1, // Có thể thay đổi nếu cần
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+
+                // Chèn tất cả ghế vào bảng seats
+                DB::table('seats')->insert($seatsData);
             }
         }
 
@@ -273,31 +304,31 @@ class DatabaseSeeder extends Seeder
         $roomCount = DB::table('rooms')->count();
 
         // Tạo dữ liệu cho bảng seats
-        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
-            for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
-                for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
-                    // for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+        // for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+        //     for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+        //         for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
+        //             // for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
 
-                    // Xác định loại ghế dựa trên hàng (y)
-                    if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
-                        $type_seat_id = 1; // Ghế thường
-                    } else {
-                        $type_seat_id = 2; // Ghế VIP
-                    }
+        //             // Xác định loại ghế dựa trên hàng (y)
+        //             if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
+        //                 $type_seat_id = 1; // Ghế thường
+        //             } else {
+        //                 $type_seat_id = 2; // Ghế VIP
+        //             }
 
-                    DB::table('seats')->insert([
-                        'room_id' => $room_id,
-                        'type_seat_id' => $type_seat_id,
-                        'coordinates_x' => $x,
-                        'coordinates_y' => $y,
-                        'name' => $y . $x,
-                        'is_active' => 1,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
-        }
+        //             DB::table('seats')->insert([
+        //                 'room_id' => $room_id,
+        //                 'type_seat_id' => $type_seat_id,
+        //                 'coordinates_x' => $x,
+        //                 'coordinates_y' => $y,
+        //                 'name' => $y . $x,
+        //                 'is_active' => 1,
+        //                 'created_at' => now(),
+        //                 'updated_at' => now(),
+        //             ]);
+        //         }
+        //     }
+        // }
 
         // Lấy số lượng ghế và suất chiếu
         // $seatCount = DB::table('seats')->count();
@@ -649,4 +680,47 @@ class DatabaseSeeder extends Seeder
             ]);
         }
     }
+    private function generateSeatStructure()
+    {
+        $structure = [];
+
+        // 4 hàng đầu tiên: Ghế thường
+        for ($y = 1; $y <= 4; $y++) {  // Hàng từ 1 đến 4
+            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
+                $structure[] = [
+                    'coordinates_x' => $x, // Cột
+                    'coordinates_y' => chr(64 + $y), // Hàng: A, B, C, D
+                    'type_seat_id' => 1, // Ghế thường
+                ];
+            }
+        }
+
+        // 7 hàng tiếp theo: Ghế VIP
+        for ($y = 5; $y <= 11; $y++) {  // Hàng từ 5 đến 11
+            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
+                $structure[] = [
+                    'coordinates_x' => $x, // Cột
+                    'coordinates_y' => chr(64 + $y), // Hàng: E, F, G, H, I, J, K
+                    'type_seat_id' => 2, // Ghế VIP
+                ];
+            }
+        }
+
+        // Hàng cuối cùng: Ghế đôi
+        for ($y = 12; $y <= 12; $y++) {  // Hàng 12
+            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
+                if ($x % 2 == 0) {
+                    continue; // Chỉ giữ ghế lẻ (L1, L3, L5,...)
+                }
+                $structure[] = [
+                    'coordinates_x' => $x, // Cột
+                    'coordinates_y' => 'L', // Hàng: L1, L3,...
+                    'type_seat_id' => 3, // Ghế đôi
+                ];
+            }
+        }
+
+        return $structure;
+    }
 }
+
