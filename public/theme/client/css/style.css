@@ -2179,6 +2179,7 @@ body.active #mobile-nav {
     text-align: center;
     margin-top: 25px;
     transition: 0.5s;
+    height: 50px;
 }
 
 .buy-ticket-btn {
