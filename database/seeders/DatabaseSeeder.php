@@ -304,31 +304,31 @@ class DatabaseSeeder extends Seeder
         $roomCount = DB::table('rooms')->count();
 
         // Tạo dữ liệu cho bảng seats
-        for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
-            for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
-                for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
-                    // for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+        // for ($room_id = 1; $room_id <= $roomCount; $room_id++) {
+        //     for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
+        //         for ($x = 1; $x <= 10; $x++) { // Tạo 10 hàng ghế (trục x)
+        //             // for ($y = 'A'; $y <= 'J'; $y++) { // Tạo 10 cột ghế (trục y)
 
-                    // Xác định loại ghế dựa trên hàng (y)
-                    if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
-                        $type_seat_id = 1; // Ghế thường
-                    } else {
-                        $type_seat_id = 2; // Ghế VIP
-                    }
+        //             // Xác định loại ghế dựa trên hàng (y)
+        //             if (in_array($y, ['A', 'B', 'C', 'D', 'E'])) {
+        //                 $type_seat_id = 1; // Ghế thường
+        //             } else {
+        //                 $type_seat_id = 2; // Ghế VIP
+        //             }
 
-                    DB::table('seats')->insert([
-                        'room_id' => $room_id,
-                        'type_seat_id' => $type_seat_id,
-                        'coordinates_x' => $x,
-                        'coordinates_y' => $y,
-                        'name' => $y . $x,
-                        'is_active' => 1,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
-        }
+        //             DB::table('seats')->insert([
+        //                 'room_id' => $room_id,
+        //                 'type_seat_id' => $type_seat_id,
+        //                 'coordinates_x' => $x,
+        //                 'coordinates_y' => $y,
+        //                 'name' => $y . $x,
+        //                 'is_active' => 1,
+        //                 'created_at' => now(),
+        //                 'updated_at' => now(),
+        //             ]);
+        //         }
+        //     }
+        // }
 
         // Lấy số lượng ghế và suất chiếu
         // $seatCount = DB::table('seats')->count();
