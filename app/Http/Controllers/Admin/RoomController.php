@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\SeatTemplate;
 use App\Models\TypeRoom;
 use App\Models\TypeSeat;
 use Illuminate\Http\Request;
@@ -27,7 +28,11 @@ class RoomController extends Controller
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $cinemas = Cinema::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'typeRooms', 'roomPublishs', 'roomDrafts', 'cinemas'));
+        $seatTemplates = SeatTemplate::where('is_publish', 1)
+            ->where('is_active', 1)
+            ->pluck('name', 'id')
+            ->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'typeRooms', 'roomPublishs', 'roomDrafts', 'cinemas', 'seatTemplates'));
     }
 
 
@@ -37,52 +42,80 @@ class RoomController extends Controller
         $matrixSeat = Room::MATRIXS[$matrixKey];
         $seats = Seat::where(['room_id' => $room->id])->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seats','matrixSeat'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seats', 'matrixSeat'));
     }
 
-    public function seatDiagram(Room $room)
+    public function edit(Room $room)
     {
-        $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
-        $matrixSeat = Room::MATRIXS[$matrixKey];
-        $seats = Seat::withTrashed()->where(['room_id' => $room->id])->get();
-        $branches = Branch::all();
-        $cinemas = Cinema::where('branch_id', $room->branch->id)->get();
+        $matrixSeat = SeatTemplate::getMatrixById($room->seatTemplate->matrix_id);
+        $seats = Seat::where(['room_id' => $room->id])->get();
+        $seatMap = [];
+        foreach ($seats as $seat) {
+            $seatMap[$seat->coordinates_y][$seat->coordinates_x] = $seat;
+        }
+        // $activeSeats = Seat::where('is_active', 1)
+        //     ->selectRaw("
+        //         SUM(CASE
+        //             WHEN type_seat = 'double' THEN 2
+        //             ELSE 1
+        //         END) AS total_seats
+        //     ")->value('total_seats');
+
+        // // Đếm tổng tất cả ghế (không phân biệt trạng thái)
+        // $totalSeats = Seat::selectRaw("
+        //         SUM(CASE
+        //             WHEN type_seat = 'double' THEN 2
+        //             ELSE 1
+        //         END) AS total_seats
+        //     ")->value('total_seats');
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $typeSeats = TypeSeat::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . 'seat-diagram', compact(['typeRooms', 'branches', 'room', 'cinemas', 'seats', 'matrixSeat', 'typeSeats']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seatMap', 'matrixSeat', 'typeSeats'));
     }
-    public function publish(Request $request, Room $room)
+    public function update(Request $request, Room $room)
     {
         try {
-            $room->update([
-                'is_publish' => 1,
-                'is_active' => 1,
-            ]);
-            return redirect()
-                ->back()
-                ->with('success', 'Thao tác thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
-        }
-    }
-    public function updateSeatDiagram(Request $request, Room $room)
-    {
-        try {
-            foreach ($request->seats as $id => $isActive) {
-                $seat = Seat::find($id);
-                if ($seat) {
-                    $seat->update([
-                        'is_active' => $isActive
+            DB::transaction(function () use ($request, $room) {
+                if ($request->action == "publish" && !$room->is_publish) {
+
+                    $room->update([
+                        'is_publish' => 1,
+                        'is_active' => 1,
                     ]);
+
+                    $dataSeats = $request->seats;
+
+                    $seats = Seat::whereIn('id', array_keys($dataSeats))->get();
+
+                    foreach ($seats as $seat) {
+                        $seat->update([
+                            'is_active' => $dataSeats[$seat->id],
+                        ]);
+                    }
+                } else {
+                    $room->update([
+                        'is_active' => isset($request->is_active) ? 1 : 0,
+                    ]);
+                    $dataSeats = $request->seats;
+
+                    $seats = Seat::whereIn('id', array_keys($dataSeats))->get();
+
+                    foreach ($seats as $seat) {
+                        $seat->update([
+                            'is_active' => $dataSeats[$seat->id],
+                        ]);
+                    }
                 }
-            }
+            });
+
 
             return redirect()->back()->with('success', 'Thao tác thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
     }
-    public function destroy(Room $room){
+    public function destroy(Room $room)
+    {
         try {
             if ($room->is_publish) {
                 return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
@@ -91,7 +124,6 @@ class RoomController extends Controller
 
                 Seat::where('room_id', $room->id)->delete();
                 $room->delete();
-
             });
 
             return redirect()->back()->with('success', 'Thao tác thành công!');

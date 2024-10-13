@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('coordinates_y')->comment('Tọa độ Y (A, B, C)'); // Tọa độ ghế bằng (x,y) <=> (5,B)
             $table->string('name');
             $table->boolean('is_active')->default(true);
-            $table->softDeletes();
             $table->timestamps();
         });
     }
