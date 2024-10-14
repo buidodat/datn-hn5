@@ -24,6 +24,7 @@
     user-select: none;
 }
 
+
 .seat-item  {
     position: relative; /* Đặt vị trí tương đối cho container */
     display: inline-block; /* Đảm bảo kích thước của container phù hợp với nội dung */
@@ -130,4 +131,40 @@
 
 .delete-showtime {
   margin-top: 3px;
+}
+.showtime-item {
+    padding: 10px 0;
+}
+
+
+
+.showtime-item p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #666;
+}
+.list-showtimes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.showtime-item-start-time {
+    width: 100px;
+    text-align: center;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    font-size: 1.1em;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.showtime-item-start-time:hover {
+    background-color: #f0f0f0;
+}
+.empty-seat-showtime {
+    font-size: 12px;
+    text-align: center;
+    margin: 5px;
+
 }

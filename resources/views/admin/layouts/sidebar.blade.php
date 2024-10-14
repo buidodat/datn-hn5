@@ -44,6 +44,12 @@
                         <span data-key="t-dashboards">Thống Kê</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link" data-key="t-horizontal">
+                        <i class=" mdi mdi-store"></i>
+                        <span data-key="t-dashboards">Đặt vé tại quầy</span>
+                    </a>
+                </li>
 
                 {{-- Quản lí chi nhánh --}}
                 <li class="nav-item">
