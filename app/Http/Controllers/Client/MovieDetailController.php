@@ -17,7 +17,7 @@ class MovieDetailController extends Controller
         $endDate = now()->addDays(7);
 
         $movie = Movie::where('slug',$slug)->firstOrFail();
-//        $listBinhLuan = $movie->movieReview;
+
         $userReviewed = false;
         if (Auth::check()) {
             $review = MovieReview::where('user_id', Auth::id())
