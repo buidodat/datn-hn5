@@ -936,7 +936,7 @@
 }
 
 .box-checkout .total-price-checkout .text-danger {
-    color: #e74c3c;
+    color: #f1761d;
     /* Màu đỏ */
     font-size: 1.2em;
 }
@@ -1031,7 +1031,7 @@
     flex-grow: 3;
     text-align: right;
     font-size: 1.2em;
-    color: #e74c3c;
+    color: #f1761d;
     /* Màu đỏ cho thời gian còn lại */
 }
 
