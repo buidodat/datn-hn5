@@ -227,7 +227,7 @@
                         'data-seat-price')); // Lấy giá ghế từ thuộc tính data-seat-price
 
                     if (!seat.classList.contains('reserved') && !seat.classList.contains(
-                            'pre-booked')) {
+                            'sold')) {
                         seat.classList.toggle('selected');
 
                         if (seat.classList.contains('selected')) {
@@ -375,8 +375,8 @@
                     const seatPrice = parseInt(seat.getAttribute(
                     'data-seat-price')); // Lấy giá ghế từ thuộc tính data-seat-price
 
-                    if (!seat.classList.contains('reserved') && !seat.classList.contains(
-                            'pre-booked')) {
+                    if (!seat.classList.contains('hold') && !seat.classList.contains(
+                            'sold')) {
                         seat.classList.toggle('selected');
 
                         if (seat.classList.contains('selected')) {
