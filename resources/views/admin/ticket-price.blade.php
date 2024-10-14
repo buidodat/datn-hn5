@@ -36,10 +36,11 @@
 
 
     <div class="row">
+
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Quản lý giá vé </h5>
+                    <h5 class="card-title mb-0"> Giá vé theo Ghế - Loại phòng</h5>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -168,11 +169,31 @@
             </div>
         </div>
         <div class="col-md-6">
+
             <div class="row">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title mb-0">Giá vé theo rạp </h5>
+                    <div class="row">
+                        <div class="card-header d-flex justify-content-between">
+
+                            <div class="col-md-6">
+                                <h5 class="card-title mb-0">Giá vé theo rạp </h5>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center">
+                                <form action="" method="post" class="d-flex  align-items-center " align='right'>
+                                    <select name="branch_id" id="branch" class="form-select">
+                                        <option value="">Lọc theo Chi nhánh</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">
+                                                {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
+                                                {{ $branch->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-primary ms-2" type="submit">Lọc</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
+
                     @if (session()->has('success'))
                         <div class="alert alert-success m-3">
                             {{ session()->get('success') }}
@@ -195,7 +216,7 @@
                                         <tr>
                                             <td>{{ $cinema->name }}</td>
                                             <td><input type="text" class="form-control" id="{{ $cinema->id }}"
-                                                    placeholder="{{ $cinema->surcharge }}"></td>
+                                                    placeholder="{{ number_format($cinema->surcharge) }}đ"></td>
                                         </tr>
                                     @endforeach
 
@@ -217,60 +238,65 @@
             </div>
             <div class="row">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title mb-0">Phụ thu theo phim </h5>
+                    <div class="row">
+                        <div class="card-header d-flex justify-content-between">
+
+                            <div class="col-md-6">
+                                <h5 class="card-title mb-0">Phụ thu theo phim</h5>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center">
+                                <form action="" method="post" class="d-flex  align-items-center " align='right'>
+                                    <input type="text" class="form-control" placeholder="Tìm kiếm theo phim...">
+                                    <button class="btn btn-primary ms-2" type="submit">Tìm </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     @if (session()->has('success'))
                         <div class="alert alert-success m-3">
                             {{ session()->get('success') }}
                         </div>
                     @endif
+                    <form action="" method="post">
+                        <div class="card-body pt-0" style="max-height: 300px; overflow-y: auto;">
 
-                    <div class="card-body pt-0">
-                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                            style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Tên phim</th>
-                                    <th>Phụ thu</th>
-                                    {{-- <th>Thao tác</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <form action="" method="post">
+                            <table id="example"
+                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                                style="width:100%">
+                                <thead>
                                     <tr>
-                                        <td>Công chúa ngủ trong rừng</td>
-                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
-
+                                        <th>Tên phim</th>
+                                        <th>Phụ thu</th>
+                                        {{-- <th>Thao tác</th> --}}
                                     </tr>
-                                    <tr>
-                                        <td>Công chúa ngủ trong rừng</td>
-                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+                                </thead>
+                                <tbody>
 
-                                    </tr>
-                                    <tr>
-                                        <td>Công chúa ngủ trong rừng</td>
-                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+                                    @foreach ($movies as $movie)
+                                        <tr>
+                                            <td>{{ $movie->name }}</td>
+                                            <td><input type="text" class="form-control" id="{{ $movie->id }}"
+                                                    placeholder="{{ number_format($movie->surcharge) }}đ"></td>
+                                        </tr>
+                                    @endforeach
 
-                                    </tr>
-                                    <tr>
-                                        <td>Công chúa ngủ trong rừng</td>
-                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
 
-                                    </tr>
+                                </tbody>
 
-                                    <tr>
-                                        <td colspan="2" align="right">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
-                                                Cập nhật
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </form>
-                            </tbody>
+                            </table>
 
-                        </table>
-                    </div>
+                            {{-- {{ $movies->links() }} --}}
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 my-3 pr-4" align='right'>
+                                <button title="xem" class="btn btn-success btn-sm" type="button">
+                                    Cập nhật
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
 
