@@ -2,6 +2,7 @@
 
 use App\Models\Seat;
 use App\Models\Showtime;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +18,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Seat::class);
             $table->foreignIdFor(Showtime::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->string('status');
             $table->unsignedInteger('price')->nullable();
+            $table->timestamp('hold_expires_at')->nullable();
             $table->timestamps();
             $table->unique(['seat_id','showtime_id'],'seat_showtime');
         });

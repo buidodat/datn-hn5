@@ -11,8 +11,10 @@ class SeatShowtime extends Model
     protected $fillable = [
         'seat_id',
         'showtime_id',
+        'user_id',
         'status',
-        'price'
+        'price',
+        'hold_expires_at',
     ];
     public function showtime()
     {
