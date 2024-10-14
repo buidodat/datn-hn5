@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Seat extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $fillable = [
         'room_id',
         'type_seat_id',
@@ -29,7 +27,10 @@ class Seat extends Model
     {
         return $this->belongsTo(Room::class);
     }
-
+    public function ticketSeats()
+    {
+        return $this->hasMany(TicketSeat::class);
+    }
     // Quan hệ với loại ghế (TypeSeat)
     public function typeSeat()
     {

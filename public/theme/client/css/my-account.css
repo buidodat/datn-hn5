@@ -29,6 +29,7 @@
         background-color: white;
         /* Nền mặc định */
     }
+
     .my-account-tab:hover {
         color: #fff;
     }
@@ -359,7 +360,7 @@
     }
 
     .table-history {
-        margin-left: 15px;
+        margin-left: 5px;
     }
 
     .table-history table {
@@ -414,8 +415,8 @@
     }
 
     .cinema-journey-container .page-link {
-   
-     
+
+
         border-color: hsl(0, 0%, 87%);
         margin: 0px;
         color: #000000;
@@ -477,6 +478,7 @@
     .cinema-journey-container th {
         color: #192041;
     }
+
     .cinema-journey-container td {
         color: #192041;
     }
@@ -484,6 +486,7 @@
     .cinema-journey-container .btn-detail-ticket {
         color: #1e264f;
     }
+
     .cinema-journey-container .btn-detail-ticket:hover {
         color: #ff7307;
     }

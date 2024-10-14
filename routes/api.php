@@ -4,6 +4,7 @@ use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SeatController;
+use App\Http\Controllers\API\SeatTemplateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -30,8 +31,18 @@ Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion'])
 Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
 Route::get('typeRooms/{typeRoomId}', [APIController::class, 'getTypeRooms']);
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
+
 Route::resource('rooms', RoomController::class);
+
 Route::post('rooms/update-active', [RoomController::class, 'updateActive'])->name('rooms.update-active');
+
+Route::prefix('seat-templates')
+    ->as('seat-templates.')
+    ->group(function () {
+        Route::post('store',    [SeatTemplateController::class, 'store']);
+        Route::put('{seatTemplate}',    [SeatTemplateController::class, 'update']);
+        Route::post('update-active/{seatTemplate}',    [SeatTemplateController::class, 'updateActive']);
+    });
 
 Route::post('seats/soft-delete', [SeatController::class, 'softDelete'])->name('seats.soft-delete');
 Route::post('seats/restore', [SeatController::class, 'restore'])->name('seats.restore');
@@ -44,4 +55,4 @@ Route::post('movies/update-hot', [MovieController::class, 'updateHot'])->name('m
 
 
 
-
+Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);

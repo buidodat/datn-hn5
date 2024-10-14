@@ -58,18 +58,37 @@
                 </li>
 
                 {{-- Quản lí Loại phòng --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.type-rooms.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
                             class=" ri-layout-grid-line"></i> <span data-key="t-layouts">Quản lý Loại
                             phòng</span></a>
-                </li>
+                </li> --}}
 
                 {{-- Quản lí Phòng --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link" data-key="t-horizontal"> <i
-                            class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng</span></a>
+                            class=" ri-tv-line"></i> <span data-key="t-layouts">Quản lý Phòng chiếu</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.seat-templates.index') }}" class="nav-link menu-link" data-key="t-horizontal">  <i class="ri-rocket-line"></i>
+                         <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                 </li>
 
+                {{-- <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarRoomScrening" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarRoomScrening">
+                        <i class="ri-rocket-line"></i> <span data-key="t-landing">Sơ đồ ghế</span>
+                    </a>
+                    <div class="menu-dropdown collapse" id="sidebarRoomScrening" style="">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.rooms.index') }}" class="nav-link" data-key="t-one-page"> Danh sách </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="nft-landing.html" class="nav-link" data-key="t-nft-landing"> Sơ đồ ghế</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> --}}
                 {{-- Quản lí Phim --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.movies.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
@@ -82,6 +101,13 @@
                     <a href="{{ route('admin.showtimes.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
                             class=" ri-slideshow-3-fill"></i> <span data-key="t-layouts">Quản lý Suất
                             chiếu</span></a>
+                </li>
+
+                {{-- Quản lí ves --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link" data-key="t-horizontal">
+                        <i class="ri-wallet-3-fill"></i>
+                        <span data-key="t-layouts">Quản lý vé</span></a>
                 </li>
 
                 {{-- Quản lí thanh toán --}}
@@ -129,10 +155,10 @@
                 </li>
 
                 {{-- Quản lí loại ghế --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.type_seats.index') }}" class="nav-link menu-link" data-key="t-horizontal"><i
                             class="ri-layout-3-line"></i> <span data-key="t-layouts">Quản lý Loại Ghế</span></a>
-                </li>
+                </li> --}}
 
                 {{-- Giá vé --}}
                 <li class="nav-item">

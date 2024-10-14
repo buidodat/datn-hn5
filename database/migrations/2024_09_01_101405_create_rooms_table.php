@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(TypeRoom::class);
             $table->string('name');
-            $table->string('matrix_id');
+            $table->string('seat_template_id');
             $table->boolean('is_active')->default(false);
             $table->boolean('is_publish')->default(false);
             $table->timestamps();

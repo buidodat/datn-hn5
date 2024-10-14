@@ -174,27 +174,41 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+
+                                                        @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
+
+
+
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
                                                             data-branch-id="{{ $room->branch_id }}"
                                                             data-cinema-id="{{ $room->cinema_id }}"
                                                             data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            data-seat-template-id="{{ $room->seat_template_id }}"
+                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
 
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
+
+
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->where('is_active', true)->count() }}
+                                                / {{ $room->seats->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -216,7 +230,8 @@
                             </table>
                         </div>
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
+                                id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
@@ -236,26 +251,35 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
                                                             data-branch-id="{{ $room->branch_id }}"
                                                             data-cinema-id="{{ $room->cinema_id }}"
                                                             data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            data-seat-template-id="{{ $room->seat_template_id }}"
+                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
+
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->where('is_active', true)->count() }}
+                                                / {{ $room->seats->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -297,26 +321,35 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
                                                             data-branch-id="{{ $room->branch_id }}"
                                                             data-cinema-id="{{ $room->cinema_id }}"
                                                             data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-matrix-id="{{ $room->matrix_id }}" data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            data-seat-template-id="{{ $room->seat_template_id }}"
+                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
                                                         <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ đồ
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
+
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                            <td>{{ $room->seats->where('is_active', true)->count() }}
+                                                / {{ $room->seats->count() }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -365,7 +398,7 @@
                                                                 class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
                                                                 sửa</a>
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.seat-diagram', $room) }}">Sơ
+                                                                href="{{ route('admin.rooms.edit', $room) }}">Sơ
                                                                 đồ
                                                                 ghế</a>
                                                         </div>
@@ -373,8 +406,8 @@
                                                 </td>
                                                 <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
-                                                <td>{{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                    / {{ $room->seats->whereNull('deleted_at')->count() }} chỗ ngồi</td>
+                                                <td>{{ $room->seats->where('is_active', true)->count() }}
+                                                    / {{ $room->seats->count() }} chỗ ngồi</td>
                                                 <td>
                                                     {!! $room->is_publish == 1
                                                         ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -460,14 +493,14 @@
                                 <span class="text-danger mt-3" id="createTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận
+                                <label for="seat_template_id" class="form-label"><span class="text-danger">*</span> Mẫu sơ đồ
                                     ghế</label>
-                                <select class="form-select" id="matrix_id" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
-                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
+                                <select class="form-select" id="seat_template_id" name="seat_template_id" required>
+                                    @foreach ($seatTemplates as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="createMatrixSeatError"></span>
+                                <span class="text-danger mt-3" id="createSeatTemplateError"></span>
                             </div>
                             <!-- Chọn Chi Nhánh -->
 
@@ -501,7 +534,7 @@
                                 <label for="updateName" class="form-label"><span class="text-danger">*</span> Tên
                                     Phòng</label>
                                 <input type="text" class="form-control" id="updateName" name="name" required
-                                 placeholder="Poly 202">
+                                    placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="updateNameError"></span>
                             </div>
                             <div class="col-md-5 mb-3">
@@ -536,17 +569,16 @@
                                 <span class="text-danger mt-3" id="updateTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="updateMatrixId" class="form-label"><span class="text-danger">*</span> Ma trận
+                                <label for="updateSeatTemplateId" class="form-label"><span class="text-danger">*</span> Mẫu sơ đồ
                                     ghế</label>
-                                <select class="form-select" id="updateMatrixId" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
-                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
+                                <select class="form-select" id="updateSeatTemplateId" name="seat_template_id" required>
+                                    @foreach ($seatTemplates as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="text-danger mt-3" id="updateMatrixSeatError"></span>
+                                <span class="text-danger mt-3" id="updateSeatTemplateError"></span>
                             </div>
 
-                            <input type="hidden" name="capacity" value='5'> <!-- Giá trị cố định cho capacity -->
                         </div>
                     </form>
                 </div>
@@ -626,7 +658,7 @@
                         $('#createRoomModal').modal('hide');
                         form.reset();
                         window.location.href =
-                            `${APP_URL}/admin/rooms/seat-diagram/${data.room.id}`; // Sử dụng room.id vừa thêm
+                            `${APP_URL}/admin/rooms/edit/${data.room.id}`; // Sử dụng room.id vừa thêm
                     }
                 })
                 .catch(error => console.error('Error adding room:', error));
@@ -639,7 +671,7 @@
                 const branchId = this.getAttribute('data-branch-id');
                 const cinemaId = this.getAttribute('data-cinema-id');
                 const typeRoomId = this.getAttribute('data-type-room-id');
-                const matrixId = this.getAttribute('data-matrix-id');
+                const seatTemplateId = this.getAttribute('data-seat-template-id');
                 const isPublish = this.getAttribute('data-is-publish');
 
                 // Điền dữ liệu vào modal
@@ -651,23 +683,23 @@
                 loadCinemas('updateBranchId', 'updateCinemaId', cinemaId);
 
                 document.getElementById('updateTypeRoomId').value = typeRoomId;
-                document.getElementById('updateMatrixId').value = matrixId;
+                document.getElementById('updateSeatTemplateId').value = seatTemplateId;
                 if (isPublish == 1) {
                     // Chỉ cho phép nhập tên, các trường khác disabled
                     document.getElementById('updateBranchId').disabled = true;
                     document.getElementById('updateCinemaId').disabled = true;
                     document.getElementById('updateTypeRoomId').disabled = true;
-                    document.getElementById('updateMatrixId').disabled = true;
+                    document.getElementById('updateSeatTemplateId').disabled = true;
                 } else {
                     // Nếu chưa publish, cho phép chỉnh sửa tất cả
                     document.getElementById('updateBranchId').disabled = false;
                     document.getElementById('updateCinemaId').disabled = false;
                     document.getElementById('updateTypeRoomId').disabled = false;
-                    document.getElementById('updateMatrixId').disabled = false;
+                    document.getElementById('updateSeatTemplateId').disabled = false;
                 }
 
                 // Mở modal
-                console.log(roomId, roomName, branchId, cinemaId, typeRoomId, matrixId);
+                console.log(roomId, roomName, branchId, cinemaId, typeRoomId, seatTemplateId);
                 $('#updateRoomModal').modal('show');
             });
         });
@@ -717,7 +749,7 @@
             document.getElementById(`${prefix}NameError`).innerText = '';
             document.getElementById(`${prefix}BranchError`).innerText = '';
             document.getElementById(`${prefix}CinemaError`).innerText = '';
-            document.getElementById(`${prefix}MatrixSeatError`).innerText = '';
+            document.getElementById(`${prefix}SeatTemplateError`).innerText = '';
             document.getElementById(`${prefix}TypeRoomError`).innerText = '';
 
             // Kiểm tra và hiển thị lỗi cho từng trường
@@ -730,8 +762,8 @@
             if (errors.cinema_id) {
                 document.getElementById(`${prefix}CinemaError`).innerText = errors.cinema_id.join(', ');
             }
-            if (errors.matrix_id) {
-                document.getElementById(`${prefix}MatrixSeatError`).innerText = errors.matrix_id.join(', ');
+            if (errors.seat_template_id) {
+                document.getElementById(`${prefix}SeatTemplateError`).innerText = errors.seat_template_id.join(', ');
             }
             if (errors.type_room_id) {
                 document.getElementById(`${prefix}TypeRoomError`).innerText = errors.type_room_id.join(', ');

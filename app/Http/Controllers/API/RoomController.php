@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\SeatTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,6 @@ class RoomController extends Controller
 {
     public function store(Request $request)
     {
-        $matrixIds = array_column(Room::MATRIXS, 'id');
         $validator = Validator::make($request->all(), [
             'branch_id' => 'required|exists:branches,id',
             'cinema_id' => 'required|exists:cinemas,id',
@@ -28,7 +28,7 @@ class RoomController extends Controller
                     return $query->where('cinema_id', $request->cinema_id);
                 }),
             ],
-            'matrix_id' => ['required', Rule::in($matrixIds)],
+            'seat_template_id' => 'required|exists:seat_templates,id',
         ], [
             'name.required' => 'Vui lòng nhập tên phòng chiếu.',
             'name.unique' => 'Tên phòng đã tồn tại trong rạp.',
@@ -38,8 +38,8 @@ class RoomController extends Controller
             'cinema_id.exists' => 'Rạp chiếu phim bạn chọn không hợp lệ.',
             'type_room_id.required' => "Vui lòng chọn loại phòng.",
             'type_room_id.exists' => 'Loại phòng chiếu bạn chọn không hợp lệ.',
-            'matrix_id.required' => "Vui lòng chọn ma trận ghế",
-            'matrix_id.in' => 'Ma trận ghế không hợp lệ.'
+            'seat_template_id.required' => "Vui lòng chọn mẫu sơ đòo ghế",
+            'seat_template_id.exists' => 'Mẫu sơ đòo ghế không hợp lệ.'
         ]);
 
         if ($validator->fails()) {
@@ -55,31 +55,32 @@ class RoomController extends Controller
                     'cinema_id' => $request->cinema_id,
                     'type_room_id' => $request->type_room_id,
                     'name' => $request->name,
-                    'matrix_id' => $request->matrix_id,
+                    'seat_template_id' => $request->seat_template_id,
                 ];
                 $room = Room::create($dataRoom);
 
-                $matrixKey = array_search($request->matrix_id, array_column(Room::MATRIXS, 'id'));
-                $matrix = Room::MATRIXS[$matrixKey];
+                $seatTemplate = SeatTemplate::findOrFail($request->seat_template_id);
 
-                $rowSeatRegular =  Room::ROW_SEAT_REGULAR;
+                // Chuyển đổi seat_structure từ JSON object thành array
+                $seatStructureArray = json_decode($seatTemplate->seat_structure, true);
 
-                for ($row = 0; $row < $matrix['max_row']; $row++) {
-                    for ($col = 0; $col < $matrix['max_col']; $col++) {
-                        if ($row < $rowSeatRegular) {
-                            $typeSeatId = 1;
-                        } else {
-                            $typeSeatId = 2;
-                        }
-                        $dataSeats[] = [
-                            'room_id' => $room->id,
-                            'type_seat_id' => $typeSeatId,
-                            'coordinates_x' => $col + 1,
-                            'coordinates_y' => chr(65 + $row), // Chuyển đổi số thành ký tự (A, B, C,...)
-                            'name' => chr(65 + $row) . ($col + 1), // Ví dụ: A1, A2, B1, B2,...
-                        ];
-                    }
+                // Tạo mảng để lưu trữ các ghế
+                $dataSeats = [];
+
+                // Lặp qua từng ghế trong seat_structure
+                foreach ($seatStructureArray as $seat) {
+                    $dataSeats[] = [
+                        'coordinates_x' => $seat['coordinates_x'],
+                        'coordinates_y' => $seat['coordinates_y'],
+                        'name' => $seat['coordinates_y'] . $seat['coordinates_x'],
+                        'type_seat_id' => $seat['type_seat_id'],
+                        'room_id' => $room->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                 }
+
+                // Chèn ghế vào bảng seats
                 Seat::insert($dataSeats);
 
                 return $room;
@@ -193,10 +194,6 @@ class RoomController extends Controller
 
     public function update(Request $request, Room $room)
     {
-        // Lấy danh sách ID ma trận
-        $matrixIds = array_column(Room::MATRIXS, 'id');
-
-        // Xác thực dữ liệu đầu vào
         $rules = [
             'name' => [
                 'required',
@@ -213,7 +210,7 @@ class RoomController extends Controller
             $rules['branch_id'] = 'required|exists:branches,id';
             $rules['cinema_id'] = 'required|exists:cinemas,id';
             $rules['type_room_id'] = 'required|exists:type_rooms,id';
-            $rules['matrix_id'] = ['required', Rule::in($matrixIds)];
+            $rules['seat_template_id'] = 'required|exists:seat_templates,id';
         }
 
         // Thông báo lỗi tùy chỉnh
@@ -226,8 +223,8 @@ class RoomController extends Controller
             'cinema_id.exists' => 'Rạp chiếu phim bạn chọn không hợp lệ.',
             'type_room_id.required' => "Vui lòng chọn loại phòng.",
             'type_room_id.exists' => 'Loại phòng chiếu bạn chọn không hợp lệ.',
-            'matrix_id.required' => "Vui lòng chọn ma trận ghế",
-            'matrix_id.in' => 'Ma trận ghế không hợp lệ.'
+            'seat_template_id.required' => "Vui lòng chọn mẫu sơ đồ ghế",
+            'seat_template_id.exists' => 'Mẫu sơ đồ ghế không hợp lệ.'
         ];
 
         // Thực hiện validate
@@ -247,40 +244,37 @@ class RoomController extends Controller
                         'name' => $request->name, // Chỉ cập nhật tên
                     ]);
                 } else {
-                    // Cập nhật thông tin phòng và ghế nếu chưa publish
                     $room->update([
                         'branch_id' => $request->branch_id,
                         'cinema_id' => $request->cinema_id,
                         'type_room_id' => $request->type_room_id,
                         'name' => $request->name,
-                        'matrix_id' => $request->matrix_id,
+                        'seat_template_id' => $request->seat_template_id,
                     ]);
 
-                    // Lấy thông tin ma trận ghế từ const MATRIXS
-                    $matrixKey = array_search($request->matrix_id, array_column(Room::MATRIXS, 'id'));
-                    $matrix = Room::MATRIXS[$matrixKey];
-
-                    $rowSeatRegular = Room::ROW_SEAT_REGULAR;
-
-                    // Xóa các ghế cũ
                     Seat::where('room_id', $room->id)->forceDelete();
 
-                    // Thêm lại các ghế mới dựa trên ma trận mới
+                    $seatTemplate = SeatTemplate::findOrFail($request->seat_template_id);
+
+                    // Chuyển đổi seat_structure từ JSON object thành array
+                    $seatStructureArray = json_decode($seatTemplate->seat_structure, true);
+                    // Tạo mảng để lưu trữ các ghế
                     $dataSeats = [];
-                    for ($row = 0; $row < $matrix['max_row']; $row++) {
-                        for ($col = 0; $col < $matrix['max_col']; $col++) {
-                            $typeSeatId = ($row < $rowSeatRegular) ? 1 : 2;
-                            $dataSeats[] = [
-                                'room_id' => $room->id,
-                                'type_seat_id' => $typeSeatId,
-                                'coordinates_x' => $col + 1,
-                                'coordinates_y' => chr(65 + $row), // Chuyển đổi số thành ký tự (A, B, C,...)
-                                'name' => chr(65 + $row) . ($col + 1), // Ví dụ: A1, A2, B1, B2,...
-                            ];
-                        }
+
+                    // Lặp qua từng ghế trong seat_structure
+                    foreach ($seatStructureArray as $seat) {
+                        $dataSeats[] = [
+                            'coordinates_x' => $seat['coordinates_x'],
+                            'coordinates_y' => $seat['coordinates_y'],
+                            'name' => $seat['coordinates_y'] . $seat['coordinates_x'],
+                            'type_seat_id' => $seat['type_seat_id'],
+                            'room_id' => $room->id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
                     }
 
-                    // Chèn các ghế mới vào bảng seats
+                    // Chèn ghế vào bảng seats
                     Seat::insert($dataSeats);
                 }
             });

@@ -45,11 +45,7 @@ hr {
     border-bottom: 3px solid #ff7307;
 }
 
-/* Style cho phần chi tiết phim */
-.image-movie-detail {
-    text-align: center;
-    width: 360px;
-}
+
 
 .movie-poster {
     width: 100%;

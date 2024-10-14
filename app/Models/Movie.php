@@ -36,7 +36,7 @@ class Movie extends Model
         'is_special' => 'boolean',
     ];
     const VERSIONS = [
-       ['id'=>1,'name'=>'Vietsub'],
+       ['id'=>1,'name'=>'Phụ Đề'],
        ['id'=>2,'name'=>'Lồng Tiếng'],
        ['id'=>3,'name'=>'Thuyết Minh'],
     ];

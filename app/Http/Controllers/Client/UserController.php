@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Notifications\PasswordChanged;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
 class UserController extends Controller
 {
@@ -25,7 +27,7 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        $tickets = Ticket::query()->with('ticketSeat')->where('user_id', $userID)->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
@@ -101,16 +103,28 @@ class UserController extends Controller
         return view('client.users.cinema-journey');
     }
 
-    function ticketDetail($ticketId)
+    public function ticketDetail($ticketId)
     {
         $userID = Auth::user()->id;
-        // $ticketSeat = TicketSeat::findOrFail($ticketId);
-        $ticketSeat = Ticket::query()->with('ticketSeat')
+
+        $ticketSeat = Ticket::with(['ticketSeat', 'ticketCombo.combo'])
             ->where('user_id', $userID)
             ->where('id', $ticketId)
-        
             ->get();
-        // dd($ticketSeat);
-        return view('client.users.ticket-detail', compact('ticketSeat'));
+
+
+
+
+        $qrCode = QrCode::size(120)->generate($ticketSeat->first()->code);
+
+
+        $barcode = DNS1D::getBarcodeHTML($ticketSeat->first()->code, 'C128', 1.5, 50);       //C39 , C128
+
+        return view('client.users.ticket-detail', compact('ticketSeat', 'qrCode', 'barcode'));
     }
+
+    // function transactionHistory()
+    // {
+    //     return back();
+    // }
 }

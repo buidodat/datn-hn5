@@ -12,6 +12,8 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.5",
+        "milon/barcode": "^11.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "symfony/css-selector": "^6.0",
         "yoeunes/toastr": "^2.3"
     },
