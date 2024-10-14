@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 
 class TicketPriceController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $cinemas = Cinema::all();
-        return view( 'admin.ticket-price', compact('cinemas'));
+        $cinemasPaginate = Cinema::where('is_active', '1')->paginate('4');
+        return view('admin.ticket-price', compact('cinemas', 'cinemasPaginate'));
     }
 }

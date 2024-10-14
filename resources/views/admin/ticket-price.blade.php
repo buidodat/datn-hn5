@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản lý giá vé</h4>
+                <h4 class="mb-sm-0">Quản lý giá vé </h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -34,8 +34,9 @@
     </div>
     <!-- end page title -->
 
+
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Quản lý giá vé </h5>
@@ -46,9 +47,7 @@
                     </div>
                 @endif
 
-
                 <div class="card-body pt-0">
-
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active py-3" data-bs-toggle="tab" href="#priceDefault" role="tab"
@@ -59,8 +58,8 @@
                         </li>
                         @foreach ($cinemas as $cinema)
                             <li class="nav-item">
-                                <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#priceCinemaId{{ $cinema->id }}"
-                                    role="tab" aria-selected="false">
+                                <a class="nav-link py-3 isDraft" data-bs-toggle="tab"
+                                    href="#priceCinemaId{{ $cinema->id }}" role="tab" aria-selected="false">
                                     {{ $cinema->name }}
                                     {{-- <span class="badge bg-warning align-middle ms-1">{{ $cinema->rooms->count() }}</span> --}}
                                 </a>
@@ -70,42 +69,46 @@
                     </ul>
                     <div class="card-body tab-content   w-75 mx-auto ">
                         <div class="tab-pane active " id="priceDefault" role="tabpanel">
-                                <table class="table table-bordered rounded align-middle">
-                                    <thead>
-                                        <tr class="table-light">
-                                            <th colspan='2' class="text-center">GIÁ VÉ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr >
-                                            <td>Ghế tiêu chuẩn</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="50.000 đ"></td>
-                                        </tr>
-                                        <tr >
-                                            <td>Ghế vip</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="60.000 đ"></td>
-                                        </tr>
-                                        <tr >
-                                            <td>Ghế đôi</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="110.000 đ"></td>
-                                        </tr>
-                                    </tbody>
-                                    <thead>
-                                        <tr class="table-light">
-                                            <th colspan='2' class="text-center">PHỤ THU</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>3D</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="20.000 đ"></td>
-                                        </tr>
-                                    </tbody>
+                            <table class="table table-bordered rounded align-middle">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Ghế tiêu chuẩn</td>
+                                        <td><input type="number" name="" id="" class="form-control"
+                                                placeholder="50.000 đ"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ghế vip</td>
+                                        <td><input type="number" name="" id="" class="form-control"
+                                                placeholder="60.000 đ"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ghế đôi</td>
+                                        <td><input type="number" name="" id="" class="form-control"
+                                                placeholder="110.000 đ"></td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr class="table-light">
+                                        <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>3D</td>
+                                        <td><input type="number" name="" id="" class="form-control"
+                                                placeholder="20.000 đ"></td>
+                                    </tr>
+                                </tbody>
 
-                                </table>
-                                <div class='text-end'>
-                                    <button class='btn btn-primary'>Cập nhật</button>
-                                </div>
+                            </table>
+                            <div class='text-end'>
+                                <button class='btn btn-primary'>Cập nhật</button>
+                            </div>
                         </div>
 
                         @foreach ($cinemas as $cinema)
@@ -113,36 +116,41 @@
                                 <table class="table table-bordered rounded align-middle">
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">GIÁ VÉ</th>
+                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr >
+                                        <tr>
                                             <td>Ghế tiêu chuẩn</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="50.000 đ" disabled></td>
+                                            <td><input type="number" name="" id="" class="form-control"
+                                                    placeholder="50.000 đ" disabled></td>
                                         </tr>
-                                        <tr >
+                                        <tr>
                                             <td>Ghế vip</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="60.000 đ" disabled></td>
+                                            <td><input type="number" name="" id="" class="form-control"
+                                                    placeholder="60.000 đ" disabled></td>
                                         </tr>
-                                        <tr >
+                                        <tr>
                                             <td>Ghế đôi</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="110.000 đ" disabled></td>
+                                            <td><input type="number" name="" id="" class="form-control"
+                                                    placeholder="110.000 đ" disabled></td>
                                         </tr>
                                     </tbody>
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">PHỤ THU</th>
+                                            <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>3D</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="20.000 đ" disabled></td>
+                                            <td><input type="number" name="" id="" class="form-control"
+                                                    placeholder="20.000 đ" disabled></td>
                                         </tr>
                                         <tr>
-                                            <td>Poly {{ $cinema->name}}</td>
-                                            <td><input type="number" name="" id="" class="form-control" placeholder="20.000 đ"></td>
+                                            <td>Poly {{ $cinema->name }}</td>
+                                            <td><input type="number" name="" id="" class="form-control"
+                                                    placeholder="20.000 đ"></td>
                                         </tr>
                                     </tbody>
 
@@ -158,8 +166,116 @@
 
                 </div>
             </div>
-        </div><!--end col-->
-    </div><!--end row-->
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5 class="card-title mb-0">Giá vé theo rạp </h5>
+                    </div>
+                    @if (session()->has('success'))
+                        <div class="alert alert-success m-3">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+
+                    <div class="card-body pt-0">
+                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Tên rạp</th>
+                                    <th>Giá</th>
+                                    {{-- <th>Thao tác</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form action="" method="post">
+                                    @foreach ($cinemasPaginate as $cinema)
+                                        <tr>
+                                            <td>{{ $cinema->name }}</td>
+                                            <td><input type="text" class="form-control" id="{{ $cinema->id }}"
+                                                    placeholder="{{ $cinema->surcharge }}"></td>
+                                        </tr>
+                                    @endforeach
+
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                                Cập nhật
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </form>
+
+                            </tbody>
+
+                        </table>
+                        {{ $cinemasPaginate->links() }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5 class="card-title mb-0">Phụ thu theo phim </h5>
+                    </div>
+                    @if (session()->has('success'))
+                        <div class="alert alert-success m-3">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+
+                    <div class="card-body pt-0">
+                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Tên phim</th>
+                                    <th>Phụ thu</th>
+                                    {{-- <th>Thao tác</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form action="" method="post">
+                                    <tr>
+                                        <td>Công chúa ngủ trong rừng</td>
+                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Công chúa ngủ trong rừng</td>
+                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Công chúa ngủ trong rừng</td>
+                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Công chúa ngủ trong rừng</td>
+                                        <td><input type="text" class="form-control" placeholder="10.000đ"></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                                Cập nhật
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 @endsection
 
 
