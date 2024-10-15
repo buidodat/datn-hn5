@@ -53,7 +53,7 @@
                                         <div class="col-md-12 mb-3">
 
                                             <label for="name" class="form-label ">Tên phòng chiếu:</label>
-                                            <input type="text" class="form-control" value="{{ $room->name }}" disabled>
+                                            <input ="text" class="form-control" value="{{ $room->name }}" disabled>
 
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -212,13 +212,13 @@
                                             @for ($col = 0; $col < $matrix['max_col']; $col++)
                                                 @php
                                                     // Kiểm tra xem ô hiện tại có trong seatMap không
-                                                    $seatType =
+                                                    $seat =
                                                         isset($seatMap[chr(65 + $row)]) &&
                                                         isset($seatMap[chr(65 + $row)][$col + 1])
                                                             ? $seatMap[chr(65 + $row)][$col + 1]
                                                             : null;
                                                 @endphp
-                                                @if ($seatType == 3)
+                                                @if ($seat && $seat->type_seat_id == 3)
                                                     <!-- Nếu là ghế đôi -->
                                                     <td class="box-item" colspan="2">
                                                         <div class="seat-item">
@@ -239,13 +239,12 @@
                                                 @else
                                                     <td class="box-item">
                                                         <div class="seat-item">
-                                                            @switch($seatType)
+                                                            @switch($seat && $seat->type_seat_id)
                                                                 @case(1)
                                                                     <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
                                                                         width="100%">
                                                                     <span class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
                                                                 @break
-
                                                                 @case(2)
                                                                     <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
                                                                         width="100%">
