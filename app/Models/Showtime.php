@@ -55,7 +55,6 @@ class Showtime extends Model
 
 
 
-
     // Thời gian dọn phòng: 15p
     const CLEANINGTIME = '15';
 }

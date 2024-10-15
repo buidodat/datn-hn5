@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->comment('Mô tả ngắn');
             $table->text('content')->comment('Nội dung chính');
             $table->boolean('is_active')->default(true);
+            $table->integer('view_count')->default(0); // Thêm trường view_count, mặc định là 0
             $table->timestamps();
         });
     }
@@ -28,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        // Schema::dropIfExists('posts');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('view_count');
+        });
     }
 };

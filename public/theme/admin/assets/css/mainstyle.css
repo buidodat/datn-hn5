@@ -76,6 +76,7 @@
     color: #2a2a2a;
     word-spacing: 0.8em;
 }
+
 .seat-label-pro {
     position: absolute;
     /* Đặt vị trí tuyệt đối cho phần tử */
@@ -109,6 +110,7 @@
     word-spacing: 0.8em;
 }
 
+
 .img-movie {
     width: 40%;
 }
@@ -132,6 +134,7 @@
     cursor: pointer;
 }
 
+
 .resset-password:hover {
     color: rgb(231, 2, 2)
 }
@@ -142,6 +145,7 @@
     max-width: 35px;
     max-height: 35px;
 }
+
 .box-item-pro {
     width: 40px;
     height: 40px;
@@ -364,11 +368,13 @@
     mask-size: 100% 100%;
 }
 
+
 .seat-hold{
     color:rgb(0, 0, 195);
 }
 .seat-selected{
     color:rgb(38, 151, 244);
+
 }
 
 .seat-sold {
