@@ -342,7 +342,9 @@
 
             </div>
             <div class="text-end my-3">
-                <button  class="btn btn-success btn-label right ms-auto"><i class="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i> Tiếp tục</button>
+                <a href="{{ route('checkoutAdmin') }}">Tiếp tục</a>
+                <button class="btn btn-success btn-label right ms-auto"><i
+                        class="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i> Tiếp tục</button>
             </div>
 
         </div>
