@@ -12,6 +12,7 @@
                 <div class="hs_blog_detail_cont_main_wrapper" style="background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     <ul style="list-style: none; padding: 0; margin-bottom: 20px;">
                         <li style="display: inline-block; margin-right: 15px;"><i class="fa fa-calendar"></i> {{ $post->created_at->format('d/m/Y') }}</li>
+                        <li style="display: inline-block; margin-right: 15px;"><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
                         {{-- <li style="display: inline-block;"><i class="fa fa-user"></i> by Admin</li> --}}
                     </ul>
                     
@@ -50,8 +51,8 @@
         }
 
         .hs_blog_detail_img_main_wrapper img {
-            width: 600px; /* Đặt chiều rộng cố định */
-            height: 400px; /* Đặt chiều cao cố định */
+            max-width: 100%; /* Đặt chiều rộng cố định */
+            height: auto; /* Đặt chiều cao cố định */
             object-fit: cover; /* Đảm bảo ảnh không bị biến dạng, giữ nguyên tỷ lệ */
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 

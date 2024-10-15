@@ -23,6 +23,16 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
+
+        $postKey = 'post_' . $post->id;
+
+        // Kiểm tra nếu bài viết chưa được xem trong session
+        if (!session()->has($postKey)) {
+            $post->increment('view_count');
+            session()->put($postKey, 1); // Lưu lại session để ngăn việc tăng view khi refresh
+        }
+
         return view('client.posts.show', compact('post'));
     }
+
 }

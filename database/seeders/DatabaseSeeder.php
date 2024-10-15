@@ -633,7 +633,7 @@ class DatabaseSeeder extends Seeder
             Post::create([
                 'title' => 'Bài viết số ' . $i,
                 'slug' => 'bai-viet-so-' . $i,
-                'img_post' => 'https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/r/s/rsz_ty2-main-poster-printing.jpg',
+                'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
                 'description' => 'Đây là phần mô tả cho bài viết số ' . $i . '. Đây là đoạn văn ngắn mô tả nội dung của bài viết.',
                 'content' => '
                     <h2>Giới thiệu về bài viết số ' . $i . '</h2>
