@@ -76,6 +76,38 @@
     color: #2a2a2a;
     word-spacing: 0.8em;
 }
+.seat-label-pro {
+    position: absolute;
+    /* Đặt vị trí tuyệt đối cho phần tử */
+    top: 35%;
+    /* Căn giữa theo chiều dọc */
+    left: 53%;
+    /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Đưa phần tử trở lại giữa chính xác */
+    font-size: 10px;
+    /* Kích thước của văn bản */
+    font-weight: 600;
+    /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+    color: #2a2a2a;
+}
+
+.seat-label-double-pro {
+    position: absolute;
+    /* Đặt vị trí tuyệt đối cho phần tử */
+    top: 35%;
+    /* Căn giữa theo chiều dọc */
+    left: 52.5%;
+    /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Đưa phần tử trở lại giữa chính xác */
+    font-size: 10px;
+    /* Kích thước của văn bản */
+    font-weight: 600;
+    /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+    color: #2a2a2a;
+    word-spacing: 0.8em;
+}
 
 .img-movie {
     width: 40%;
@@ -110,6 +142,13 @@
     max-width: 35px;
     max-height: 35px;
 }
+.box-item-pro {
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+}
+
 
 .seat-item {
     cursor: pointer;
@@ -270,6 +309,50 @@
     display: inline-block;
     width: 70px;
     height: 35px;
+    --svg: url('../../../../svg/seat-double.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+.seat-vip-svg-pro {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    --svg: url('../../../../svg/seat-vip.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.seat-regular-svg-pro {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    --svg: url('../../../../svg/seat-regular.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.seat-double-svg-pro {
+    display: inline-block;
+    width: 80px;
+    height: 40px;
     --svg: url('../../../../svg/seat-double.svg');
     background-color: currentColor;
     color: #cccccc;

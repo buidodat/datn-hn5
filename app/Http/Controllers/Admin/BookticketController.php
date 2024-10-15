@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
-use App\Models\Room;
-use App\Models\Seat;
 use App\Models\SeatTemplate;
 use App\Models\Showtime;
-use App\Models\TypeRoom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -72,12 +69,13 @@ class BookTicketController extends Controller
         $branches = Branch::all();
         return view(self::PATH_VIEW . __FUNCTION__, compact('groupedShowtimes', 'cinemas', 'branches'));
     }
+
+
     public function show(Showtime $showtime)
     {
-        $showtime->load(['room.cinema', 'room', 'movieVersion', 'movie']);
+        $showtime->load(['cinema', 'room', 'movieVersion', 'movie','seats']);
         $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
-
-        $seats =  $showtime->room->seats;
+        $seats =  $showtime->seats;
         $seatMap = [];
         if ($seats) {
             foreach ($seats as $seat) {
@@ -90,8 +88,9 @@ class BookTicketController extends Controller
                 $seatMap[$coordinates_y][$coordinates_x] = $seat;
             }
         }
-            $typeRooms = TypeRoom::pluck('name', 'id')->all();
-            return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap','typeRooms', 'matrix'));
 
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix','showtime'));
     }
+
+
 }

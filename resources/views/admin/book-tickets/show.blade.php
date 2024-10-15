@@ -208,7 +208,7 @@
                                 <tbody>
                                     @for ($row = 0; $row < $matrix['max_row']; $row++)
                                         <tr>
-                                            <td class="box-item">{{ chr(65 + $row) }}</td>
+                                            <td class="box-item-pro">{{ chr(65 + $row) }}</td>
                                             @for ($col = 0; $col < $matrix['max_col']; $col++)
                                                 @php
                                                     // Kiểm tra xem ô hiện tại có trong seatMap không
@@ -220,35 +220,39 @@
                                                 @endphp
                                                 @if ($seat && $seat->type_seat_id == 3)
                                                     <!-- Nếu là ghế đôi -->
-                                                    <td class="box-item" colspan="2">
+                                                    <td class="box-item-pro" colspan="2"
+                                                        data-seat-status="{{ $seat->pivot->status ?? '' }}"
+                                                        data-seat-name="{{ $seat->name ?? '' }}"
+                                                        data-seat-price="{{ $seat->pivot->price ?? '' }}">
                                                         <div class="seat-item">
                                                             <!-- 3 cho ghế đôi -->
-                                                            <span class="seat-double-svg"></span>
                                                             <span
-                                                                class="seat-label-double">{{ chr(65 + $row) . ($col + 1) }}
+                                                                class="seat-double-svg-pro seat {{ $seat->pivot->status ? 'seat-' . $seat->pivot->status : '' }}"></span>
+                                                            <span
+                                                                class="seat-label-double-pro">{{ chr(65 + $row) . ($col + 1) }}
                                                                 {{ chr(65 + $row) . ($col + 2) }}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="box-item" style="display: none;">
-                                                        <div class="seat-item">
-                                                            <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
-                                                                width="60%">
                                                         </div>
                                                     </td>
                                                     @php $col++; @endphp
                                                 @else
-                                                    <td class="box-item">
+                                                    <td class="box-item-pro"
+                                                        data-seat-status="{{ $seat->pivot->status ?? '' }}"
+                                                        data-seat-name="{{ $seat->name ?? '' }}"
+                                                        data-seat-price="{{ $seat->pivot->price ?? '' }}">
                                                         <div class="seat-item">
-                                                            @switch($seat && $seat->type_seat_id)
+                                                            @switch($seat->type_seat_id ?? "")
                                                                 @case(1)
-                                                                    <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                    <span class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
+                                                                    <span
+                                                                        class="seat-regular-svg-pro seat {{ $seat->pivot->status ? 'seat-' . $seat->pivot->status : '' }}"></span>
+                                                                    <span
+                                                                        class="seat-label-pro">{{ chr(65 + $row) . $col + 1 }}</span>
                                                                 @break
+
                                                                 @case(2)
-                                                                    <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                    <span class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
+                                                                    <span
+                                                                        class="seat-vip-svg-pro  seat {{ $seat->pivot->status ? 'seat-' . $seat->pivot->status : '' }}"></span>
+                                                                    <span
+                                                                        class="seat-label-pro">{{ chr(65 + $row) . $col + 1 }}</span>
                                                                 @break
                                                             @endswitch
 
@@ -267,8 +271,12 @@
                                 <div><span class="seat-vip-svg"></span> Ghế Vip</div>
                                 <div><span class="seat-double-svg"></span> Ghế Đôi</div>
                                 <div>
+                                    <p>Tổng tiền:</p>
+                                    <p id="total-price" class="fw-bold">0 VNĐ</p>
+                                </div>
+                                <div>
                                     <p>Thời gian còn lại:</p>
-                                    <p id="timer" class="bold">8:16</p>
+                                    <p id="timer" class="fw-bold">8:16</p>
                                 </div>
                             </div>
                         </div>
@@ -284,13 +292,25 @@
                 </div>
                 <div class="movie-info mt-3 d-flex">
                     <div class='img-movie'>
-                        <img src="https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f16%2f400x633%2D5%2D161700%2D160824%2D33.jpg"
-                            width="100%">
+                        @php
+                            $url = $showtime->movie->img_thumbnail;
+
+                            if (!\Str::contains($url, 'http')) {
+                                $url = Storage::url($url);
+                            }
+
+                        @endphp
+                        @if (!empty($showtime->movie->img_thumbnail))
+                            <img src="{{ $url }}" width="100%">
+                        @else
+                            No image !
+                        @endif
+
                     </div>
                     <div class='name-movie mx-3 '>
-                        <h3 class='text-primary my-2'>Làm giàu với ma</h3>
+                        <h3 class='text-primary my-2'>{{ $showtime->movie->name }}</h3>
                         <div class="fs-5 mt-2">
-                            <span>2D Phụ Đề</span>
+                            <span>{{ $showtime->format }}</span>
                         </div>
                     </div>
                 </div>
@@ -300,11 +320,11 @@
                             <tbody>
                                 <tr>
                                     <td>Thể loại:</td>
-                                    <td class="text-end fw-bold">Kinh dị</td>
+                                    <td class="text-end fw-bold">{{ $showtime->movie->category }}</td>
                                 </tr>
                                 <tr>
                                     <td>Thời lượng: </td>
-                                    <td class="text-end fw-bold">138 phút</td>
+                                    <td class="text-end fw-bold">{{ $showtime->movie->duration }} phút</td>
                                 </tr>
 
                             </tbody>
@@ -317,15 +337,21 @@
                             <tbody>
                                 <tr>
                                     <td>Rạp chiếu: </td>
-                                    <td class="text-end fw-bold">Poly Mỹ Đình</td>
+                                    <td class="text-end fw-bold">{{ $showtime->cinema->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Ngày chiếu</td>
-                                    <td class="text-end fw-bold">14/10/2024</td>
+                                    <td class="text-end fw-bold">
+                                        {{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Giờ chiếu:</td>
-                                    <td class="text-end fw-bold" id="cart-shipping">20:00 ~ 21:38</td>
+                                    @php
+                                        $startTime = \Carbon\Carbon::parse($showtime->start_time);
+                                        $endTime = $startTime->copy()->addMinutes($showtime->movie->duration);
+                                    @endphp
+                                    <td class="text-end fw-bold">
+                                        {{ $startTime->format('H:i') }} ~ {{ $endTime->format('H:i') }}
                                 </tr>
                                 <tr>
                                     <td>Phòng Chiếu: </td>
@@ -333,7 +359,7 @@
                                 </tr>
                                 <tr>
                                     <td>Ghế ngồi: </td>
-                                    <td class="text-end fw-bold" id="cart-tax">L8,L9 </td>
+                                    <td class="text-end fw-bold" id="selected-seats"> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -356,4 +382,63 @@
 
 @section('style-libs')
     <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}">
+@endsection
+
+@section('script-libs')
+    {{-- js-ajax tăng giá và hiện thị ghế --}}
+    <script>
+        let selectedSeats = []; // Mảng lưu tên ghế đã chọn
+        let totalPrice = 0; // Tổng giá ghế đã chọn
+        let selectedSeatsCount = 0; // Số ghế đã chọn
+        const maxSeats = 8; // Giới hạn tối đa là 8 ghế
+
+        // Lấy tất cả các phần tử có class 'box-item-pro'
+        const boxItems = document.querySelectorAll('.box-item-pro');
+
+        // Hàm định dạng giá
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+        }
+
+        // Thêm sự kiện click cho từng phần tử
+        boxItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Lấy giá trị của thuộc tính data-seat-status
+                const status = this.getAttribute('data-seat-status');
+                const seatName = this.getAttribute('data-seat-name');
+                const seatPrice = parseInt(this.getAttribute('data-seat-price'));
+
+                // Kiểm tra nếu status là "available"
+                if (status === "available") {
+                    // Kiểm tra xem ghế đã được chọn chưa
+                    const seatIndex = selectedSeats.indexOf(seatName);
+
+                    if (seatIndex > -1) {
+                        // Nếu ghế đã được chọn, xóa ghế khỏi danh sách
+                        selectedSeats.splice(seatIndex, 1);
+                        totalPrice -= seatPrice; // Giảm giá
+                        this.querySelector('.seat').classList.remove('seat-selected');
+                        selectedSeatsCount--;
+                    } else {
+                        // Nếu ghế chưa được chọn, kiểm tra giới hạn
+                        if (selectedSeatsCount < maxSeats) {
+                            selectedSeats.push(seatName); // Thêm ghế vào danh sách
+                            totalPrice += seatPrice; // Tăng giá
+                            this.querySelector('.seat').classList.add('seat-selected');
+                            selectedSeatsCount++;
+                        } else {
+                            alert('Bạn chỉ có thể chọn tối đa ' + maxSeats + ' ghế.');
+                        }
+                    }
+
+                    // Cập nhật giá và ghế đã chọn
+                    document.getElementById('total-price').textContent = formatPrice(totalPrice);
+                    document.getElementById('selected-seats').textContent = selectedSeats.join(', ');
+                } else {
+                    // Nếu không, thông báo cho người dùng
+                    alert('Ghế này không khả dụng.');
+                }
+            });
+        });
+    </script>
 @endsection
