@@ -328,7 +328,7 @@
                                             <h2>{!! Str::limit($postItem->title, 30) !!}</h2>
                                             <br>
                                             <div class="prs_ft_small_cont_center">
-                                                {!! Str::limit($postItem->description, 100) !!}
+                                                {!! Str::limit($postItem->description, 70) !!}
                                             </div>
                                         </div>
                                     </div>
