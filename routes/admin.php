@@ -103,6 +103,7 @@ Route::prefix('book-tickets')
     ->as('book-tickets.')
     ->group(function () {
         Route::get('/',                     [BookticketController::class, 'index'])->name('index');
+        Route::get('{showtime}',        [BookticketController::class, 'show'])->name('show');
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });

@@ -45,6 +45,7 @@
     left: 50%; /* Căn giữa theo chiều ngang */
     transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
     font-size: 9px; /* Kích thước của văn bản */
+    font-weight: 500;
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
     color:#2a2a2a;
   }
@@ -54,9 +55,13 @@
     left: 50%; /* Căn giữa theo chiều ngang */
     transform: translate(-50%, -50%); /* Đưa phần tử trở lại giữa chính xác */
     font-size: 9px; /* Kích thước của văn bản */
+    font-weight: 500;
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
     color:#2a2a2a;
     word-spacing: 0.8em;
+  }
+  .img-movie{
+    width: 40%;
   }
 
   .seat-row {
@@ -167,4 +172,107 @@
     text-align: center;
     margin: 5px;
 
+}
+.list-seats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+}
+
+.list-seat {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 5px; /* Khoảng cách giữa ảnh và văn bản */
+}
+.list-seat span {
+    height: 30px;
+    display: flex;             /* Sử dụng flexbox để căn giữa nội dung */
+    align-items: center
+}
+
+
+
+.seat-vip-svg {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    --svg: url('../../../../svg/seat-vip.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+.seat-regular-svg {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    --svg: url('../../../../svg/seat-regular.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+.seat-double-svg {
+    display: inline-block;
+    width: 70px;
+    height: 35px;
+    --svg: url('../../../../svg/seat-double.svg');
+    background-color: currentColor;
+    color: #cccccc;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+.seat-hold{
+    color: rgb(38, 151, 244);
+}
+.seat-selected{
+    color:rgb(0, 0, 195);
+}
+.seat-sold{
+    color:#ff7307;
+}
+.status-seat {
+    font-size: 12px;
+    white-space: nowrap; /* Không cho xuống dòng */
+}
+ .legend {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgb(138, 138, 138);
+    border-radius: 5px;
+    height: 50px;
+} .legend div {
+    /* margin: 0px 20px; */
+    padding: 0px 12px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgb(222, 222, 222);
+
+}
+.legend  > div:last-child {
+    border-right: none; /* Bỏ border-right cho div cuối cùng */
+}
+.legend span {
+
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+.legend p {
+    margin: 0;
 }

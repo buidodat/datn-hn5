@@ -169,7 +169,7 @@
                                                                 @foreach ($formatData['showtimes'] as $showtime)
                                                                     <div class="list-showtimes">
                                                                         <div class="showtime-item">
-                                                                            <a href="">
+                                                                            <a href="{{ route('admin.book-tickets.show',$showtime) }}">
                                                                                 <div class="showtime-item-start-time">
                                                                                     {{ Carbon\Carbon::parse($showtime['start_time'])->format('H:i') }}
                                                                                 </div>
