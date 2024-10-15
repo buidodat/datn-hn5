@@ -108,9 +108,8 @@ class BookticketController extends Controller
                 }
             }
         }
-            $seats = Seat::where(['room_id' => $room->id])->get();
-            $typeRooms = TypeRoom::pluck('name', 'id')->all();
-            return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap','typeRooms', 'room', 'seats', 'matrix'));
-
+        $seats = Seat::where(['room_id' => $room->id])->get();
+        $typeRooms = TypeRoom::pluck('name', 'id')->all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'typeRooms', 'room', 'seats', 'matrix'));
     }
 }
