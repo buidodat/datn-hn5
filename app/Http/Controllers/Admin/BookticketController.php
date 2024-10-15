@@ -5,15 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
-use App\Models\Room;
-use App\Models\Seat;
 use App\Models\SeatTemplate;
 use App\Models\Showtime;
-use App\Models\TypeRoom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class BookticketController extends Controller
+class BookTicketController extends Controller
 {
     const PATH_VIEW = 'admin.book-tickets.';
 
@@ -72,20 +69,13 @@ class BookticketController extends Controller
         $branches = Branch::all();
         return view(self::PATH_VIEW . __FUNCTION__, compact('groupedShowtimes', 'cinemas', 'branches'));
     }
+
+
     public function show(Showtime $showtime)
     {
-        $seatTemplate = SeatTemplate::first();
-        $room = Room::first();
-        $matrix = SeatTemplate::getMatrixById($seatTemplate->matrix_id);
-
-
-        // Giải mã dữ liệu ghế từ trường seat_structure
-        $seats = json_decode($seatTemplate->seat_structure, true);
-
-
-        $totalSeats = 0; // Khởi tạo biến tổng số ghế
-
-
+        $showtime->load(['cinema', 'room', 'movieVersion', 'movie','seats']);
+        $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
+        $seats =  $showtime->seats;
         $seatMap = [];
         if ($seats) {
             foreach ($seats as $seat) {
@@ -95,21 +85,12 @@ class BookticketController extends Controller
                 if (!isset($seatMap[$coordinates_y])) {
                     $seatMap[$coordinates_y] = [];
                 }
-
-                $seatMap[$coordinates_y][$coordinates_x] = $seat['type_seat_id'];
-
-                // Tăng tổng số ghế
-                if ($seat['type_seat_id'] == 3) {
-                    // Ghế đôi, cộng thêm 2
-                    $totalSeats += 2;
-                } else {
-                    // Ghế thường hoặc ghế VIP, cộng thêm 1
-                    $totalSeats++;
-                }
+                $seatMap[$coordinates_y][$coordinates_x] = $seat;
             }
         }
-        $seats = Seat::where(['room_id' => $room->id])->get();
-        $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'typeRooms', 'room', 'seats', 'matrix'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix','showtime'));
     }
+
+
 }
