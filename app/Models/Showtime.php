@@ -43,7 +43,7 @@ class Showtime extends Model
             ->withPivot('status', 'price')
             ->withTimestamps();
     }
-    public function ticketSeat()
+    public function ticketSeats()
     {
         return $this->hasMany(TicketSeat::class);
     }
@@ -53,7 +53,7 @@ class Showtime extends Model
         return $this->belongsTo(Cinema::class);
     }
 
-    public function seatShowTime()
+    public function seatShowTimes()
     {
         return $this->hasMany(SeatShowtime::class);
     }
