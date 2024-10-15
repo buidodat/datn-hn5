@@ -49,7 +49,7 @@
                 @endif
 
                 <div class="card-body pt-0">
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                    {{-- <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active py-3" data-bs-toggle="tab" href="#priceDefault" role="tab"
                                 aria-selected="true">
@@ -62,12 +62,11 @@
                                 <a class="nav-link py-3 isDraft" data-bs-toggle="tab"
                                     href="#priceCinemaId{{ $cinema->id }}" role="tab" aria-selected="false">
                                     {{ $cinema->name }}
-                                    {{-- <span class="badge bg-warning align-middle ms-1">{{ $cinema->rooms->count() }}</span> --}}
                                 </a>
                             </li>
                         @endforeach
 
-                    </ul>
+                    </ul> --}}
                     <div class="card-body tab-content   w-75 mx-auto ">
                         <div class="tab-pane active " id="priceDefault" role="tabpanel">
                             <table class="table table-bordered rounded align-middle">
@@ -179,7 +178,9 @@
                                 <h5 class="card-title mb-0">Giá vé theo rạp </h5>
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
-                                <form action="" method="post" class="d-flex  align-items-center " align='right'>
+                                <form action="{{ route('admin.ticket-price') }}" method="get"
+                                    class="d-flex  align-items-center " align='right'>
+                                    {{-- @csrf --}}
                                     <select name="branch_id" id="branch" class="form-select">
                                         <option value="">Lọc theo Chi nhánh</option>
                                         @foreach ($branches as $branch)
@@ -236,7 +237,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="card">
                     <div class="row">
                         <div class="card-header d-flex justify-content-between">
@@ -267,7 +268,7 @@
                                     <tr>
                                         <th>Tên phim</th>
                                         <th>Phụ thu</th>
-                                        {{-- <th>Thao tác</th> --}}
+                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,7 +286,6 @@
 
                             </table>
 
-                            {{-- {{ $movies->links() }} --}}
 
                         </div>
                         <div class="row">
@@ -298,7 +298,7 @@
 
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
