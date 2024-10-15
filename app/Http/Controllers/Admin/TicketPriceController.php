@@ -6,13 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Movie;
+use App\Models\TypeRoom;
+use App\Models\TypeSeat;
 use Illuminate\Http\Request;
 
 class TicketPriceController extends Controller
 {
     public function index(Request $request)
     {
-        $cinemas = Cinema::all();
+
+        $typeRooms = TypeRoom::all();
+        $typeSeats = TypeSeat::all();
+
+
         $branches = Branch::where('is_active', '1')->get();
 
         // lỌc
@@ -21,13 +27,15 @@ class TicketPriceController extends Controller
             ->when($request->branch_id, function ($query) use ($request) {
                 return $query->where('branch_id', $request->branch_id);
             })
-            ->paginate(4)
+            ->paginate(6)
             ->appends($request->all());
 
 
-        $movies = Movie::where('is_active', '1')->get();
 
 
-        return view('admin.ticket-price', compact('cinemas', 'cinemasPaginate', 'branches', 'movies'));
+
+        return view('admin.ticket-price', compact('typeRooms', 'typeSeats', 'cinemasPaginate', 'branches'));
     }
+
+    // public update()
 }
