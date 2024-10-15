@@ -28,7 +28,6 @@ class MovieController extends Controller
                 ->whereDate('showtimes.date', $currentDate)
                 ->where('showtimes.start_time', '>', now())
                 ->orderBy('showtimes.start_time', 'asc')
-                ->select('showtimes.*') // Lấy tất cả các trường từ bảng showtimes
                 ->get();
             $showtimeFormats  = [];
             foreach ($showtimes as $showtime) {
@@ -79,7 +78,7 @@ class MovieController extends Controller
     {
         try {
             $movie = Movie::findOrFail($request->id);
-            
+
             $movie->is_hot = $request->is_hot;
             $movie->save();
 
