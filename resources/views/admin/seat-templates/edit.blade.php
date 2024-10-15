@@ -241,8 +241,7 @@
                                                     @php $col++; @endphp
                                                 @else
                                                     <td class="box-item">
-                                                        <div class="seat-item"
-                                                            data-type-seat-id="{{ $seatType ?? (in_array($row, $regularRows) ? 1 : (in_array($row, $doubleRows) ? 3 : 2)) }}">
+                                                        <div class="seat-item">
                                                             @switch($seatType)
                                                                 @case(1)
                                                                     <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'

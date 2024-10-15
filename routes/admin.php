@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BookticketController;
 use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
@@ -95,3 +96,14 @@ Route::get('my-account', [MyAccountController::class, 'show'])->name('my-account
 Route::get('my-account/edit', [MyAccountController::class, 'edit'])->name('my-account.edit');
 Route::put('my-account/update', [MyAccountController::class, 'update'])->name('my-account.update');
 Route::post('my-account/change-password', [MyAccountController::class, 'changePassword'])->name('my-account.change-password');
+
+
+// Đặt vé
+Route::prefix('book-tickets')
+    ->as('book-tickets.')
+    ->group(function () {
+        Route::get('/',                     [BookticketController::class, 'index'])->name('index');
+        Route::get('{showtime}',        [BookticketController::class, 'show'])->name('show');
+        // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
+        // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
+    });
