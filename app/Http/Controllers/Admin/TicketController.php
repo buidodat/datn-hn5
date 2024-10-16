@@ -21,6 +21,7 @@ class TicketController extends Controller
 
     public function index()
     {
+        $branches = Branch::all();
         $tickets = Ticket::with(['user', 'ticketSeats.cinema', 'ticketSeats.movie', 'ticketSeats.room', 'ticketSeats.showtime','ticketSeats.seat'])
             ->orderBy('id')
             ->get()
@@ -34,9 +35,8 @@ class TicketController extends Controller
         }
 
 
-        $cinemas = Cinema::all();
-        $branches = Branch::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('tickets', 'cinemas', 'branches'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('tickets',  'branches'));
     }
 
 
@@ -73,7 +73,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = Ticket::with(['ticketSeats.movie'])->findOrFail($ticket->id);
+        $ticket->load('ticketSeats');
         $users = $ticket->user()->first();
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
             return $ticketSeat->seat->typeSeat->price;

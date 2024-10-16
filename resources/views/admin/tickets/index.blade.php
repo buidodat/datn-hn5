@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách vé
+    Danh sách hóa đơn
 @endsection
 
 @section('style-libs')
@@ -39,54 +39,52 @@
             <div class="card">
                 {{--fillter--}}
                 <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search" placeholder="Tìm kiếm theo ID, khách hàng, trạng thái...">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
+                    <div class="row g-3">
+                        <div class="col-xxl-5 col-sm-6">
+                            <div class="search-box">
+                                <input type="text" class="form-control search" placeholder="Tìm kiếm theo ID, khách hàng, trạng thái...">
+                                <i class="ri-search-line search-icon"></i>
                             </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="date" name="date" id="" class="form-control"
-                                           value="{{ request('date', now()->format('Y-m-d')) }}">
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select name="branch_id" id="branch" class="form-select">
-                                        <option value="">Chi nhánh</option>
-                                        @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}"
-                                                {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
-                                                {{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select name="cinema_id" id="cinema" class="form-select">
-                                        <option value="">Chọn Rạp</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-1 col-sm-4">
-                                <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"><i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Lọc
-                                    </button>
-                                </div>
-                            </div>
-                            <!--end col-->
                         </div>
-                        <!--end row-->
-                    </form>
+                        <!--end col-->
+                        <div class="col-xxl-2 col-sm-6">
+                            <div>
+                                <input type="date" name="date" id="" class="form-control"
+                                       value="{{ request('date', now()->format('Y-m-d')) }}">
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-xxl-2 col-sm-4">
+                            <div>
+                                <select name="branch_id" id="branch" class="form-select">
+                                    <option value="">Chi nhánh</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">
+                                            {{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-2 col-sm-4">
+                            <div>
+                                <select name="cinema_id" id="cinema" class="form-select">
+                                    <option value="">Chọn Rạp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-1 col-sm-4">
+                            <div>
+                                <button class="btn btn-primary w-100" name="btnSearch" type="submit">
+                                    <i class="ri-equalizer-fill me-1 align-bottom"></i> Lọc
+                                </button>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                    </div>
                 </div>
 
                 @if (session()->has('success'))
@@ -101,8 +99,7 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
-                           style="width:100%;">
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle" style="width:100%;">
                         <thead class='table-light'>
                         <tr>
                             <th>Code phim</th>
@@ -159,58 +156,56 @@
                                     @endif
                                 </td>
                                 <td>
-
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span>
-                                                {{ $firstTicketSeat->movie->name }}
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
-                                                {{ $firstTicketSeat->room->branch->name }} - {{ $firstTicketSeat->room->cinema->name }} - {{ $firstTicketSeat->room->name }}
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
-                                                @foreach ($groupTickets->first()->ticketSeats as $ticketSeat)
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span>
+                                            {{ $firstTicketSeat->movie->name }}
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
+                                            {{ $firstTicketSeat->room->branch->name }} - {{ $firstTicketSeat->room->cinema->name }} - {{ $firstTicketSeat->room->name }}
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
+                                            @foreach ($groupTickets->first()->ticketSeats as $ticketSeat)
                                                 {{ $ticketSeat->seat->name }}
-                                                @endforeach
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span>
-                                                {{ number_format($groupTickets->first()->total_price) }} VNĐ
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
-                                                @switch($groupTickets->first()->status)
-                                                    @case('Chờ xác nhận')
-                                                        <span class="badge bg-warning">Chờ xác nhận</span>
-                                                        @break
+                                            @endforeach
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span>
+                                            {{ number_format($groupTickets->first()->total_price) }} VNĐ
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
+                                            @switch($groupTickets->first()->status)
+                                                @case('Chờ xác nhận')
+                                                    <span class="badge bg-warning">Chờ xác nhận</span>
+                                                    @break
 
-                                                    @case('Đã hết hạn')
-                                                        <span class="badge bg-danger">Đã hết hạn</span>
-                                                        @break
+                                                @case('Đã hết hạn')
+                                                    <span class="badge bg-danger">Đã hết hạn</span>
+                                                    @break
 
-                                                    @case('Hoàn thành')
-                                                        <span class="badge bg-success">Hoàn thành</span>
-                                                        @break
-                                                @endswitch
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
-                                                {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->start_time)->format('H:i') }}
-                                                ~ {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->end_time)->format('H:i') }}
-                                            </li>
+                                                @case('Hoàn thành')
+                                                    <span class="badge bg-success">Hoàn thành</span>
+                                                    @break
+                                            @endswitch
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
+                                            {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->start_time)->format('H:i') }}
+                                            ~ {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->end_time)->format('H:i') }}
+                                        </li>
 
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
-                                                {{ $groupTickets->first()->expiry->format('H:i, d/m/Y') }}
-                                            </li>
-                                        </ul>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
+                                            {{ $groupTickets->first()->expiry->format('H:i, d/m/Y') }}
+                                        </li>
+                                    </ul>
 
                                 </td>
                                 <td>
-                                    <select class="form-select" data-ticket-id="{{ $groupTickets->first()->id }}" onchange="changeStatus(this)"
+                                    <select class="form-select" data-ticket-id="{{ $groupTickets->first()->id }}"
+                                            data-current-status="{{ $groupTickets->first()->status }}" onchange="changeStatus(this)"
                                         {{ $groupTickets->first()->status == 'Đã hết hạn' && now()>($groupTickets->first()->expiry->format('H:i, d/m/Y'))  || $groupTickets->first()->status == 'Hoàn thành' ? 'disabled' : '' }}>
                                         <option value="Chờ xác nhận" {{ $groupTickets->first()->status == 'Chờ xác nhận' ? 'selected' : '' }}>Chờ xác nhận</option>
                                         <option value="Hoàn thành" {{ $groupTickets->first()->status == 'Hoàn thành' ? 'selected' : '' }}>Hoàn thành</option>
                                         @if ($groupTickets->first()->status == 'Đã hết hạn')
                                             <option value="Đã hết hạn" selected>Đã hết hạn</option>
                                         @endif
-
-
                                     </select>
                                 </td>
                                 <td>
@@ -228,14 +223,15 @@
 
             </div>
         </div><!--end col-->
-    </div><!--end row-->
+    </div>
+
 @endsection
 
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!--datatable js-->
+    {{--<!--datatable js-->--}}
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -254,54 +250,62 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        //cập nhật trạng thái
+        /*cập nhật trạng thái*/
         function changeStatus(e) {
             var ticketId = e.getAttribute('data-ticket-id');
             var newStatus = e.value;
+            var currentStatus = e.getAttribute('data-current-status');
 
-            fetch(`/admin/tickets/${ticketId}/update-status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({status: newStatus})
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Trạng thái đã được cập nhật thành công!');
-                        window.location.reload();
-                    } else {
-                        alert('Lỗi khi cập nhật trạng thái.');
-                    }
+            // Hiển thị hộp thoại xác nhận
+            if (confirm('Bạn có chắc chắn muốn thay đổi trạng thái không?')) {
+                fetch(`/admin/tickets/${ticketId}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({status: newStatus})
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Trạng thái đã được cập nhật thành công!');
+                            // Cập nhật trạng thái hiện tại sau khi thay đổi trạng thái thành công
+                            e.setAttribute('data-current-status', newStatus);
+                            window.location.reload();
+                        } else {
+                            alert('Lỗi khi cập nhật trạng thái.');
+                            // Đặt lại giá trị của select về trạng thái ban đầu nếu có lỗi
+                            e.value = currentStatus;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Đặt lại giá trị của select về trạng thái ban đầu nếu có lỗi
+                        e.value = currentStatus;
+                    });
+            } else {
+                // Đặt lại giá trị của select về trạng thái ban đầu nếu người dùng hủy thao tác
+                e.value = currentStatus;
+            }
         }
 
         /*Hiển thị rạp*/
-        $(document).ready(function () {
-            // Lấy giá trị branchId và cinemaId từ Laravel
-            // var selectedBranchId = "{{ old('branch_id', '') }}";
-            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
+        /* $(document).ready(function () {
+             // Xử lý sự kiện thay đổi chi nhánh
+             $('#branch').on('change', function () {
+                 var branchId = $(this).val();
+                 var cinemaSelect = $('#cinema');
+                 cinemaSelect.empty();
+                 cinemaSelect.append('<option value="">Chọn Rạp</option>');
 
-            // Xử lý sự kiện thay đổi chi nhánh
-            $('#branch').on('change', function () {
-                var branchId = $(this).val();
-                var cinemaSelect = $('#cinema');
-                cinemaSelect.empty();
-                cinemaSelect.append('<option value="">Chọn Rạp</option>');
-
-                if (branchId) {
-                    $.ajax({
-                        url: "{{ url('api/cinemas') }}/" + branchId,
+                 if (branchId) {
+                     $.ajax({
+                         url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
                         method: 'GET',
                         success: function (data) {
                             $.each(data, function (index, cinema) {
-                                cinemaSelect.append('<option value="' + cinema.id +
-                                    '" >' + cinema.name + '</option>');
+                                cinemaSelect.append('<option value="' + cinema.id +'" >' + cinema.name + '</option>');
                             });
 
                             // Chọn lại cinema nếu có selectedCinemaId
@@ -319,7 +323,7 @@
             //     $('#branch').val(selectedBranchId).trigger('change');
 
             // }
-        });
+        });*/
 
     </script>
 
