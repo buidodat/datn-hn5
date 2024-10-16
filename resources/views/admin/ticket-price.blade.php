@@ -49,71 +49,11 @@
                 @endif
 
                 <div class="card-body pt-0">
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active py-3" data-bs-toggle="tab" href="#priceDefault" role="tab"
-                                aria-selected="true">
-                                Mặc định
-                                <span class="badge bg-dark align-middle ms-1">1</span>
-                            </a>
-                        </li>
-                        @foreach ($cinemas as $cinema)
-                            <li class="nav-item">
-                                <a class="nav-link py-3 isDraft" data-bs-toggle="tab"
-                                    href="#priceCinemaId{{ $cinema->id }}" role="tab" aria-selected="false">
-                                    {{ $cinema->name }}
-                                    {{-- <span class="badge bg-warning align-middle ms-1">{{ $cinema->rooms->count() }}</span> --}}
-                                </a>
-                            </li>
-                        @endforeach
 
-                    </ul>
                     <div class="card-body tab-content   w-75 mx-auto ">
                         <div class="tab-pane active " id="priceDefault" role="tabpanel">
-                            <table class="table table-bordered rounded align-middle">
-                                <thead>
-                                    <tr class="table-light">
-                                        <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Ghế tiêu chuẩn</td>
-                                        <td><input type="number" name="" id="" class="form-control"
-                                                placeholder="50.000 đ"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ghế vip</td>
-                                        <td><input type="number" name="" id="" class="form-control"
-                                                placeholder="60.000 đ"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ghế đôi</td>
-                                        <td><input type="number" name="" id="" class="form-control"
-                                                placeholder="110.000 đ"></td>
-                                    </tr>
-                                </tbody>
-                                <thead>
-                                    <tr class="table-light">
-                                        <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>3D</td>
-                                        <td><input type="number" name="" id="" class="form-control"
-                                                placeholder="20.000 đ"></td>
-                                    </tr>
-                                </tbody>
-
-                            </table>
-                            <div class='text-end'>
-                                <button class='btn btn-primary'>Cập nhật</button>
-                            </div>
-                        </div>
-
-                        @foreach ($cinemas as $cinema)
-                            <div class="tab-pane " id="priceCinemaId{{ $cinema->id }}" role="tabpanel">
+                            <form action="" method="POST">
+                                @csrf
                                 <table class="table table-bordered rounded align-middle">
                                     <thead>
                                         <tr class="table-light">
@@ -121,48 +61,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Ghế tiêu chuẩn</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="50.000 đ" disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ghế vip</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="60.000 đ" disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ghế đôi</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="110.000 đ" disabled></td>
-                                        </tr>
+                                        @foreach ($typeSeats as $typeSeat)
+                                            <tr>
+                                                <td>{{ $typeSeat->name }}</td>
+                                                <td><input type="number" name="" id="" class="form-control"
+                                                        placeholder="{{ number_format($typeSeat->price) }}đ (giá cũ)">
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
+
                                     <thead>
                                         <tr class="table-light">
                                             <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>3D</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="20.000 đ" disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Poly {{ $cinema->name }}</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="20.000 đ"></td>
-                                        </tr>
+                                        @foreach ($typeRooms as $typeRoom)
+                                            <tr>
+                                                <td>{{ $typeRoom->name }}</td>
+                                                <td><input type="number" name="" id="" class="form-control"
+                                                        placeholder="{{ number_format($typeRoom->surcharge) }}đ (giá cũ)">
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
 
                                 </table>
                                 <div class='text-end'>
                                     <button class='btn btn-primary'>Cập nhật</button>
                                 </div>
+                            </form>
+                        </div>
 
 
-                            </div>
-                        @endforeach
                     </div>
 
                 </div>
@@ -179,12 +111,14 @@
                                 <h5 class="card-title mb-0">Giá vé theo rạp </h5>
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
-                                <form action="" method="post" class="d-flex  align-items-center " align='right'>
+                                <form action="{{ route('admin.ticket-price') }}" method="get"
+                                    class="d-flex  align-items-center " align='right'>
+                                    {{-- @csrf --}}
                                     <select name="branch_id" id="branch" class="form-select">
                                         <option value="">Lọc theo Chi nhánh</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}">
-                                                {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
+                                                {{ request('branch_id') == $branch->id ? 'selected' : '' }}
                                                 {{ $branch->name }}</option>
                                         @endforeach
                                     </select>
@@ -222,7 +156,8 @@
 
                                     <tr>
                                         <td colspan="2" align="right">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button">
+                                            {{ $cinemasPaginate->links() }}
+                                            <button title="xem" class="btn btn-primary " type="button">
                                                 Cập nhật
                                             </button>
                                         </td>
@@ -232,11 +167,11 @@
                             </tbody>
 
                         </table>
-                        {{ $cinemasPaginate->links() }}
+
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="card">
                     <div class="row">
                         <div class="card-header d-flex justify-content-between">
@@ -267,7 +202,7 @@
                                     <tr>
                                         <th>Tên phim</th>
                                         <th>Phụ thu</th>
-                                        {{-- <th>Thao tác</th> --}}
+                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,7 +220,6 @@
 
                             </table>
 
-                            {{-- {{ $movies->links() }} --}}
 
                         </div>
                         <div class="row">
@@ -298,7 +232,7 @@
 
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>

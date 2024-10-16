@@ -80,6 +80,7 @@ Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
+Route::post('update', [TicketPriceController::class, 'update'])->name('admin.ticket-price.update');
 
 
 // food

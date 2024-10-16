@@ -104,12 +104,22 @@
                                                                 Khác: Ly Vảy cá kèm nước x (4) <br>
                                                             </td>
                                                             <td>
-                                                                <div class="quantity-container">
+                                                                {{-- <div class="quantity-container">
                                                                     <button class="quantity-btn decrease">-</button>
                                                                     <input type="text" class="quantity-input"
                                                                         name="combo" value="0" min="1"
                                                                         max="10" readonly>
                                                                     <button class="quantity-btn increase">+</button>
+                                                                </div> --}}
+                                                                <div class="input-step step-primary">
+                                                                    <button type="button"
+                                                                        class="quantity-btn decrease">-</button>
+                                                                    <input type="number"
+                                                                        class="product-quantity quantity-input"
+                                                                        value="0" min="0" max="100"
+                                                                        readonly="">
+                                                                    <button type="button"
+                                                                        class="quantity-btn increase">+</button>
                                                                 </div>
 
                                                             </td>
@@ -228,7 +238,7 @@
                                             </div>
                                             <hr>
                                             <div class="img-payment-checkout">
-                                                <form action="" class="d-flex ">
+                                                <form action="" class="d-flex justify-content-between ">
                                                     <div>
                                                         <input type="radio" name="payment-checkout"
                                                             id="payment-checkout-1">
