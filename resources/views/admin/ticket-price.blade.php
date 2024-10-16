@@ -52,47 +52,46 @@
 
                     <div class="card-body tab-content   w-75 mx-auto ">
                         <div class="tab-pane active " id="priceDefault" role="tabpanel">
-                            <table class="table table-bordered rounded align-middle">
-                                <thead>
-                                    <tr class="table-light">
-                                        <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($typeSeats as $typeSeat)
-                                        <tr>
-                                            <td>{{ $typeSeat->name }}</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="{{ number_format($typeSeat->price) }}đ (giá cũ)">
-                                            </td>
+                            <form action="" method="POST">
+                                @csrf
+                                <table class="table table-bordered rounded align-middle">
+                                    <thead>
+                                        <tr class="table-light">
+                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($typeSeats as $typeSeat)
+                                            <tr>
+                                                <td>{{ $typeSeat->name }}</td>
+                                                <td><input type="number" name="" id="" class="form-control"
+                                                        placeholder="{{ number_format($typeSeat->price) }}đ (giá cũ)">
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
 
-
-
-                                </tbody>
-
-                                <thead>
-                                    <tr class="table-light">
-                                        <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @foreach ($typeRooms as $typeRoom)
-                                        <tr>
-                                            <td>{{ $typeRoom->name }}</td>
-                                            <td><input type="number" name="" id="" class="form-control"
-                                                    placeholder="{{ number_format($typeRoom->surcharge) }}đ (giá cũ)">
-                                            </td>
+                                    <thead>
+                                        <tr class="table-light">
+                                            <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($typeRooms as $typeRoom)
+                                            <tr>
+                                                <td>{{ $typeRoom->name }}</td>
+                                                <td><input type="number" name="" id="" class="form-control"
+                                                        placeholder="{{ number_format($typeRoom->surcharge) }}đ (giá cũ)">
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
 
-                            </table>
-                            <div class='text-end'>
-                                <button class='btn btn-primary'>Cập nhật</button>
-                            </div>
+                                </table>
+                                <div class='text-end'>
+                                    <button class='btn btn-primary'>Cập nhật</button>
+                                </div>
+                            </form>
                         </div>
 
 
@@ -119,7 +118,7 @@
                                         <option value="">Lọc theo Chi nhánh</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}">
-                                                {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
+                                                {{ request('branch_id') == $branch->id ? 'selected' : '' }}
                                                 {{ $branch->name }}</option>
                                         @endforeach
                                     </select>
@@ -157,6 +156,7 @@
 
                                     <tr>
                                         <td colspan="2" align="right">
+                                            {{ $cinemasPaginate->links() }}
                                             <button title="xem" class="btn btn-primary " type="button">
                                                 Cập nhật
                                             </button>
@@ -167,7 +167,7 @@
                             </tbody>
 
                         </table>
-                        {{ $cinemasPaginate->links() }}
+
                     </div>
                 </div>
             </div>
