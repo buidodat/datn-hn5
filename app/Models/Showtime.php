@@ -53,11 +53,7 @@ class Showtime extends Model
         return $this->belongsTo(Cinema::class);
     }
 
-    public function seatShowTimes()
-    {
-        return $this->hasMany(SeatShowtime::class);
-    }
-  
+
 
     // Thời gian dọn phòng: 15p
     const CLEANINGTIME = '15';
