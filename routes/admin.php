@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BookTicketController;
 use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
@@ -45,7 +46,7 @@ Route::resource('payments', PaymentController::class);
 
 Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
 Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
-Route::resource('tickets',\App\Http\Controllers\Admin\TicketController::class);
+Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class);
 route::post('tickets/{ticket}/update-status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 
 Route::resource('contacts', ContactController::class);
@@ -79,6 +80,7 @@ Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
+Route::post('update', [TicketPriceController::class, 'update'])->name('admin.ticket-price.update');
 
 
 // food
@@ -95,3 +97,16 @@ Route::get('my-account', [MyAccountController::class, 'show'])->name('my-account
 Route::get('my-account/edit', [MyAccountController::class, 'edit'])->name('my-account.edit');
 Route::put('my-account/update', [MyAccountController::class, 'update'])->name('my-account.update');
 Route::post('my-account/change-password', [MyAccountController::class, 'changePassword'])->name('my-account.change-password');
+
+
+// Đặt vé
+Route::prefix('book-tickets')
+    ->as('book-tickets.')
+    ->group(function () {
+        Route::get('/',                     [BookTicketController::class, 'index'])->name('index');
+        Route::get('{showtime}',        [BookTicketController::class, 'show'])->name('show');
+        // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
+        // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
+    });
+
+
