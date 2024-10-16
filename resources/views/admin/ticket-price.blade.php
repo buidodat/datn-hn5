@@ -36,7 +36,6 @@
 
 
     <div class="row">
-
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
@@ -50,9 +49,10 @@
 
                 <div class="card-body pt-0">
 
-                    <div class="card-body tab-content   w-75 mx-auto ">
+                    <div class="card-body tab-content w-75 mx-auto ">
                         <div class="tab-pane active " id="priceDefault" role="tabpanel">
-                            <form action="" method="POST">
+                            {{-- vl quả route, chịu luôn --}}
+                            <form action="{{ route('admin.ticket-update') }}" method="POST">
                                 @csrf
                                 <table class="table table-bordered rounded align-middle">
                                     <thead>
@@ -64,8 +64,10 @@
                                         @foreach ($typeSeats as $typeSeat)
                                             <tr>
                                                 <td>{{ $typeSeat->name }}</td>
-                                                <td><input type="number" name="" id="" class="form-control"
-                                                        placeholder="{{ number_format($typeSeat->price) }}đ (giá cũ)">
+                                                <td>
+                                                    <input type="number" name="prices[{{ $typeSeat->id }}]" id=""
+                                                        class="form-control"
+                                                        placeholder="{{ number_format($typeSeat->price) }}đ">
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -80,8 +82,9 @@
                                         @foreach ($typeRooms as $typeRoom)
                                             <tr>
                                                 <td>{{ $typeRoom->name }}</td>
-                                                <td><input type="number" name="" id="" class="form-control"
-                                                        placeholder="{{ number_format($typeRoom->surcharge) }}đ (giá cũ)">
+                                                <td><input type="number" name="surcharges[{{ $typeRoom->id }}]"
+                                                        id="" class="form-control"
+                                                        placeholder="{{ number_format($typeRoom->surcharge) }}đ">
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -118,7 +121,7 @@
                                         <option value="">Lọc theo Chi nhánh</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}">
-                                                {{ request('branch_id') == $branch->id ? 'selected' : '' }}
+                                                {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
                                                 {{ $branch->name }}</option>
                                         @endforeach
                                     </select>
@@ -134,41 +137,38 @@
                         </div>
                     @endif
 
-                    <div class="card-body pt-0">
-                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                            style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Tên rạp</th>
-                                    <th>Giá</th>
-                                    {{-- <th>Thao tác</th> --}}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <form action="" method="post">
+                    <form action="{{ route('admin.ticket-update') }}" method="POST">
+                        @csrf
+                        <div class="card-body pt-0" style="max-height: 474px; overflow-y: auto;">
+                            <table id="example"
+                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                                style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Tên rạp</th>
+                                        <th>Giá</th>
+                                        {{-- <th>Thao tác</th> --}}
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
                                     @foreach ($cinemasPaginate as $cinema)
                                         <tr>
                                             <td>{{ $cinema->name }}</td>
-                                            <td><input type="text" class="form-control" id="{{ $cinema->id }}"
+                                            <td><input type="text" class="form-control"
+                                                    name="surchargesCinema[{{ $cinema->id }}]" id="{{ $cinema->id }}"
                                                     placeholder="{{ number_format($cinema->surcharge) }}đ"></td>
                                         </tr>
                                     @endforeach
 
-                                    <tr>
-                                        <td colspan="2" align="right">
-                                            {{ $cinemasPaginate->links() }}
-                                            <button title="xem" class="btn btn-primary " type="button">
-                                                Cập nhật
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </form>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class='text-end'>
+                            <button class='btn btn-primary m-3'>Cập nhật</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             {{-- <div class="row">

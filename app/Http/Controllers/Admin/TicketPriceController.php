@@ -26,43 +26,41 @@ class TicketPriceController extends Controller
             ->when($request->branch_id, function ($query) use ($request) {
                 return $query->where('branch_id', $request->branch_id);
             })
-            ->paginate(6)
-            ->appends($request->all());
+            ->get();
+        // ->appends($request->all());
 
         return view('admin.ticket-price', compact('typeRooms', 'typeSeats', 'cinemasPaginate', 'branches'));
     }
 
     public function update(Request $request)
     {
-        // Cập nhật giá vé theo loại ghế
-        if ($request->has('seats')) {
-            foreach ($request->seats as $seatId => $price) {
-                // Tìm và cập nhật giá của ghế dựa trên ID
-                $seat = TypeSeat::find($seatId);
-                if ($seat) {
-                    $seat->price = $price;
-                    $seat->save();
+
+        if ($request->has('prices')) {
+
+            foreach ($request->prices as $id => $price) {
+                $typeSeat = TypeSeat::find($id);
+                if ($typeSeat) {
+                    $typeSeat->price = $price;
+                    $typeSeat->save();
                 }
             }
         }
 
-        // Cập nhật giá vé theo loại phòng
-        if ($request->has('rooms')) {
-            foreach ($request->rooms as $roomId => $surcharge) {
-                // Tìm và cập nhật giá phòng dựa trên ID
-                $room = TypeRoom::find($roomId);
-                if ($room) {
-                    $room->surcharge = $surcharge;
-                    $room->save();
+        if ($request->has('surcharges')) {
+
+            foreach ($request->surcharges as $id => $surcharge) {
+                $typeRoom = TypeRoom::find($id);
+                if ($typeRoom) {
+                    $typeRoom->surcharge = $surcharge;
+                    $typeRoom->save();
                 }
             }
         }
 
-        // Cập nhật giá vé theo rạp
-        if ($request->has('cinemas')) {
-            foreach ($request->cinemas as $cinemaId => $surcharge) {
-                // Tìm và cập nhật giá vé rạp dựa trên ID
-                $cinema = Cinema::find($cinemaId);
+        if ($request->has('surchargesCinema')) {
+
+            foreach ($request->surchargesCinema as $id => $surcharge) {
+                $cinema = Cinema::find($id);
                 if ($cinema) {
                     $cinema->surcharge = $surcharge;
                     $cinema->save();
@@ -70,7 +68,6 @@ class TicketPriceController extends Controller
             }
         }
 
-        // Chuyển hướng lại trang và hiển thị thông báo thành công
         return redirect()->route('admin.ticket-price')->with('success', 'Cập nhật giá vé thành công!');
     }
 }
