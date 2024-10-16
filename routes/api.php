@@ -56,3 +56,5 @@ Route::post('movies/update-hot', [MovieController::class, 'updateHot'])->name('m
 
 
 Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
+
+Route::post('vouchers',[\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
