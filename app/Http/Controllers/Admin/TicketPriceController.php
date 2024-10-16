@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateTicketPriceRequest;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Movie;
@@ -32,14 +33,14 @@ class TicketPriceController extends Controller
         return view('admin.ticket-price', compact('typeRooms', 'typeSeats', 'cinemasPaginate', 'branches'));
     }
 
-    public function update(Request $request)
+    public function update(UpdateTicketPriceRequest $request)
     {
 
         if ($request->has('prices')) {
 
             foreach ($request->prices as $id => $price) {
                 $typeSeat = TypeSeat::find($id);
-                if ($typeSeat) {
+                if ($typeSeat && $price !== null && $price != $typeSeat->price) {
                     $typeSeat->price = $price;
                     $typeSeat->save();
                 }
@@ -50,7 +51,7 @@ class TicketPriceController extends Controller
 
             foreach ($request->surcharges as $id => $surcharge) {
                 $typeRoom = TypeRoom::find($id);
-                if ($typeRoom) {
+                if ($typeRoom && $surcharge !== null && $surcharge != $typeRoom->surcharge) {
                     $typeRoom->surcharge = $surcharge;
                     $typeRoom->save();
                 }
@@ -61,7 +62,7 @@ class TicketPriceController extends Controller
 
             foreach ($request->surchargesCinema as $id => $surcharge) {
                 $cinema = Cinema::find($id);
-                if ($cinema) {
+                if ($cinema && $surcharge !== null && $surcharge != $cinema->surcharge) {
                     $cinema->surcharge = $surcharge;
                     $cinema->save();
                 }

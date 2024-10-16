@@ -34,13 +34,24 @@
     </div>
     <!-- end page title -->
 
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-6">
             <div class="card">
+
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Giá vé theo Ghế - Loại phòng</h5>
                 </div>
+
+
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
                         {{ session()->get('success') }}
@@ -66,8 +77,11 @@
                                                 <td>{{ $typeSeat->name }}</td>
                                                 <td>
                                                     <input type="number" name="prices[{{ $typeSeat->id }}]" id=""
-                                                        class="form-control"
+                                                        class="form-control" {{-- value="{{ old('prices.' . $typeSeat->id, $typeSeat->price) }}" --}}
                                                         placeholder="{{ number_format($typeSeat->price) }}đ">
+                                                    @error('price')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -85,6 +99,9 @@
                                                 <td><input type="number" name="surcharges[{{ $typeRoom->id }}]"
                                                         id="" class="form-control"
                                                         placeholder="{{ number_format($typeRoom->surcharge) }}đ">
+                                                    @error('surcharge')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -108,11 +125,21 @@
             <div class="row">
                 <div class="card">
                     <div class="row">
+                        {{-- @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif --}}
                         <div class="card-header d-flex justify-content-between">
 
                             <div class="col-md-6">
                                 <h5 class="card-title mb-0">Giá vé theo rạp </h5>
                             </div>
+
                             <div class="col-md-6 d-flex align-items-center">
                                 <form action="{{ route('admin.ticket-price') }}" method="get"
                                     class="d-flex  align-items-center " align='right'>
@@ -156,7 +183,7 @@
                                     @foreach ($cinemasPaginate as $cinema)
                                         <tr>
                                             <td>{{ $cinema->name }}</td>
-                                            <td><input type="text" class="form-control"
+                                            <td><input type="number" class="form-control"
                                                     name="surchargesCinema[{{ $cinema->id }}]" id="{{ $cinema->id }}"
                                                     placeholder="{{ number_format($cinema->surcharge) }}đ"></td>
                                         </tr>
