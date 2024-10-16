@@ -11,7 +11,7 @@ class StoreVoucherRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -26,9 +26,9 @@ class StoreVoucherRequest extends FormRequest
             'title' => 'required|string|max:255',
             'start_date_time' => 'required|date|before:end_date_time',
             'end_date_time' => 'required|date|after:start_date_time',
-            'discount' => ['required', 'regex:/^\d+(\.\d{1,2})?%?$/'],
+            'discount' => 'required',
             'quantity' => 'required|integer|min:1',
-            'limit' => 'required|integer|min:1',
+            'limit' => 'nullable|integer|min:1',
         ];
     }
     public function messages()
@@ -52,13 +52,11 @@ class StoreVoucherRequest extends FormRequest
             'end_date_time.after' => 'Thời gian kết thúc phải sau thời gian bắt đầu.',
 
             'discount.required' => 'Giảm giá là bắt buộc.',
-            'discount.regex' => 'Giảm giá phải là số nguyên hoặc phần trăm hợp lệ.',
 
             'quantity.required' => 'Số lượng là bắt buộc.',
             'quantity.integer' => 'Số lượng phải là số nguyên.',
             'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
 
-            'limit.required' => 'Giới hạn là bắt buộc.',
             'limit.integer' => 'Giới hạn phải là số nguyên.',
             'limit.min' => 'Giới hạn phải lớn hơn hoặc bằng 1.',
         ];

@@ -4,6 +4,10 @@
     Thêm vouchers
 @endsection
 
+@section('style-libs')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endsection
+
 @section('content')
     <form action="{{ route('admin.vouchers.store') }}" method="post" enctype="multipart/form-data">
         @csrf
@@ -48,11 +52,13 @@
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="mb-3">
+                                        <span class="text-danger">*</span>
                                         <label for="code" class="form-label ">Mã voucher:</label>
+                                        <span>Tạo mã</span>
                                         <input type="text" class="form-control " id="code"
-                                               name="code" value="{{ old('code') }}">
+                                               name="code" value="{{ old('code') }}" placeholder="Vui lòng tạo mã code...">
                                         @error('code')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -61,27 +67,61 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
+                                        <span class="text-danger">*</span>
                                         <label for="quantity" class="form-label ">Số lượng:</label>
                                         <input type="text" class="form-control " id="quantity"
-                                               name="quantity" value="{{ old('quantity') }}">
+                                               name="quantity" value="{{ old('quantity') }}" placeholder="Nhập số lượng...">
                                         @error('quantity')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                </div>
 
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <span class="text-danger">*</span>
+                                        <label for="discount" class="form-label ">Giảm giá (vnđ):</label>
+                                        <input type="text" class="form-control " id="discount"
+                                               name="discount" value="{{ old('discount') }}" placeholder="Nhập số tiền...">
+                                        @error('discount')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group mb-3">
+                                        <span class="text-danger">*</span>
+                                        <label for="datetime">Chọn thời gian bắt đầu:</label>
+                                        <input type="text"  id="start_datetime" class="form-control" name="start_date_time" value="{{ old('start_date_time') }}" placeholder="Chọn giờ bắt đầu">
+                                        @error('start_date_time')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group mb-3">
+                                        <span class="text-danger">*</span>
+                                        <label for="datetime">Chọn thời gian kết thúc:</label>
+                                        <input type="text" id="end_datetime" class="form-control" name="end_date_time" value="{{ old('end_date_time') }}" placeholder="Chọn giờ kết thúc">
+                                        @error('end_date_time')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
-                                        <label for="limit" class="form-label">Giới hạn sử dụng</label>
-                                        <input type="text" name="limit" id="limit" class="form-control">
+                                        <label for="limit" class="form-label">Giới hạn sử dụng:</label>
+                                        <input type="text" value="{{ old('limit') }}" name="limit" id="limit" class="form-control" placeholder="Mặc định 1, khác vui lòng nhập thêm...">
                                         @error('limit')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
                                 </div>
-                                <div class="col-md-4">
+                                {{--<div class="col-md-4">
                                     <div class="mb-3">
+                                        <span class="text-danger">*</span>
                                         <label for="start_time" class="form-label ">Thời gian bắt đầu:</label>
                                         <input type="date" class="form-control" id="start_time"
                                                name="start_date_time" value="{{ old('start_date_time') }}">
@@ -90,8 +130,27 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-md-4 mb-3">
+                                    <span class="text-danger">*</span>
+                                    <label for="start_time" class="form-label ">Giờ bắt đầu:</label>
+                                    <input type="time" class="form-control" name="start_time[]" id="start_time" value="">
+                                    @error('start_time')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-danger">*</span>
+                                    <label for="end_time" class="form-label ">Giờ kết thúc:</label>
+                                    <input type="time" class="form-control" name="end_time[]" id="end_time" value="">
+                                    @error('end_time')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+
                                 <div class="col-md-4">
                                     <div class="mb-3">
+                                        <span class="text-danger">*</span>
                                         <label for="end_time" class="form-label ">Thời gian kết thúc:</label>
                                         <input type="date" class="form-control" id="start_time"
                                                name="end_date_time" value="{{ old('end_date_time') }}">
@@ -100,19 +159,26 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="discount" class="form-label ">Giảm giá:</label>
-                                        <input type="text" class="form-control " id="discount"
-                                               name="discount" value="{{ old('discount') }}">
-                                        @error('discount')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
+                                <div class="col-md-4 mb-3">
+                                    <span class="text-danger">*</span>
+                                    <label for="start_time" class="form-label ">Giờ bắt đầu:</label>
+                                    <input type="time" class="form-control" name="start_time[]" id="start_time" value="">
+                                    @error('start_time')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
+                                <div class="col-md-4">
+                                    <span class="text-danger">*</span>
+                                    <label for="end_time" class="form-label ">Giờ kết thúc:</label>
+                                    <input type="time" class="form-control" name="end_time[]" id="end_time" value="">
+                                    @error('end_time')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>--}}
+
                                 <div class="col-md-12">
                                     <div class="mb-3">
+                                        <span class="text-danger">*</span>
                                         <label for="title" class="form-label ">Tiêu đề:</label>
                                         <input type="text" class="form-control " id="title"
                                                name="title" value="{{ old('title') }}">
@@ -127,7 +193,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
                                 </div>
                             </div>
 
@@ -151,7 +216,24 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    {{--<div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-check-label" for="is_active">Is publish</label>
+                                            <div class="form-check form-switch form-switch-default">
+                                                <input class="form-check-input" type="checkbox" role=""
+                                                       name="is_publish" checked value="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-check-label" for="is_active">Is user</label>
+                                            <div class="form-check form-switch form-switch-default">
+                                                <input class="form-check-input" type="checkbox" role=""
+                                                       name="is_publish" checked value="1">
+                                            </div>
+                                        </div>
+                                    </div>--}}
                                 </div>
                             </div>
                         </div>
@@ -171,6 +253,7 @@
                         <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                     </div>
                 </div>
+
             </div>
             <!--end col-->
         </div>
@@ -196,6 +279,25 @@
 @endsection
 
 @section('script-libs')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            flatpickr("#start_datetime", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i:s",
+                time_24hr: true,
+            });
+
+            flatpickr("#end_datetime", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i:s",
+                time_24hr: true,
+            });
+        });
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--select2 cdn-->

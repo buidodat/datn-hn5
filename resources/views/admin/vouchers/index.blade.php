@@ -59,7 +59,7 @@
                            style="width:100%">
                         <thead>
                         <tr>
-                            <th>#</th>
+
                             <th>Mã voucher</th>
                             {{--<th>Thông tin voucher</th>--}}
                             <th>Tiêu đề</th>
@@ -76,7 +76,7 @@
                         <tbody>
                         @foreach ($data as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
+
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->title }}</td>
                                 {{--<td class="nav nav-sm flex-column">
@@ -108,7 +108,7 @@
                                         <li class="nav-item mb-2">
                                             <span class="fw-semibold">Kết thúc:</span> {{ \Carbon\Carbon::parse($item->end_date_time)->format('d/m/Y') }}
                                         </li>
-                                    </td>                                    
+                                    </td>
                                 <td>{{ $item->discount }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ $item->limit }}</td>
