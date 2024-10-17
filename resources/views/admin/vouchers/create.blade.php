@@ -51,10 +51,10 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="code" class="form-label ">Mã voucher:</label>
-                                        <input type="text" class="form-control " id="code"
-                                               name="code" value="{{ old('code') }}">
+                                        <input type="text" class="form-control " id="code" name="code"
+                                            value="{{ old('code') }}">
                                         @error('code')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -62,10 +62,10 @@
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="quantity" class="form-label ">Số lượng:</label>
-                                        <input type="text" class="form-control " id="quantity"
-                                               name="quantity" value="{{ old('quantity') }}">
+                                        <input type="text" class="form-control " id="quantity" name="quantity"
+                                            value="{{ old('quantity') }}">
                                         @error('quantity')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -75,7 +75,7 @@
                                         <label for="limit" class="form-label">Giới hạn sử dụng</label>
                                         <input type="text" name="limit" id="limit" class="form-control">
                                         @error('limit')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -83,30 +83,30 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="start_time" class="form-label ">Thời gian bắt đầu:</label>
-                                        <input type="date" class="form-control" id="start_time"
-                                               name="start_date_time" value="{{ old('start_date_time') }}">
+                                        <input type="date" class="form-control" id="start_time" name="start_date_time"
+                                            value="{{ old('start_date_time') }}">
                                         @error('start_date_time')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="end_time" class="form-label ">Thời gian kết thúc:</label>
-                                        <input type="date" class="form-control" id="start_time"
-                                               name="end_date_time" value="{{ old('end_date_time') }}">
+                                        <input type="date" class="form-control" id="start_time" name="end_date_time"
+                                            value="{{ old('end_date_time') }}">
                                         @error('end_date_time')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="discount" class="form-label ">Giảm giá:</label>
-                                        <input type="text" class="form-control " id="discount"
-                                               name="discount" value="{{ old('discount') }}">
+                                        <input type="text" class="form-control " id="discount" name="discount"
+                                            value="{{ old('discount') }}">
                                         @error('discount')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -114,17 +114,17 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control " id="title"
-                                               name="title" value="{{ old('title') }}">
+                                        <input type="text" class="form-control " id="title" name="title"
+                                            value="{{ old('title') }}">
                                         @error('title')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả ngắn:</label>
                                         <textarea class="form-control " rows="3" name="description"></textarea>
                                         @error('description')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -147,7 +147,7 @@
                                             <label class="form-check-label" for="is_active">Is Active</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" checked value="1">
+                                                    name="is_active" checked value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -181,23 +181,23 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Layout config Js -->
     <script src="assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--select2 cdn-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
