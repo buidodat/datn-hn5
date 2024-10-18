@@ -20,11 +20,8 @@ return new class extends Migration
         Schema::create('ticket_seats', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Ticket::class);
-            $table->foreignIdFor(Room::class);
             $table->foreignIdFor(Showtime::class);
-            $table->foreignIdFor(Movie::class);
             $table->foreignIdFor(Seat::class);
-            $table->foreignIdFor(Cinema::class);
             /*$table->string('code')->comment('Mã từ bảng Vé tickets');*/
             $table->unsignedInteger('price')->comment('Giá vé gốc  tại thời điểm mua chưa trừ point và voucher');
             $table->timestamps();
