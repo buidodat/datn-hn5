@@ -103,8 +103,9 @@ Route::post('my-account/change-password', [MyAccountController::class, 'changePa
 Route::prefix('book-tickets')
     ->as('book-tickets.')
     ->group(function () {
-        Route::get('/',                     [BookTicketController::class, 'index'])->name('index');
-        Route::get('{showtime}',        [BookTicketController::class, 'show'])->name('show');
+        Route::get('/',                      [BookTicketController::class, 'index'])->name('index');
+        Route::get('{showtime}',             [BookTicketController::class, 'show'])->name('show');
+        Route::post('{showtime}',            [BookTicketController::class, 'payment'])->name('payment');
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
