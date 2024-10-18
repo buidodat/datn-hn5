@@ -11,7 +11,6 @@ class TicketCombo extends Model
     protected $fillable = [
         'ticket_id',
         'combo_id',
-        'code',
         'price',
         'quantity',
         'status'

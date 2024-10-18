@@ -12,9 +12,6 @@ class TicketSeat extends Model
         'ticket_id',
         'showtime_id',
         'seat_id',
-        'room_id',
-        'movie_id',
-        'cinema_id',
         'price',
     ];
     public function ticket()

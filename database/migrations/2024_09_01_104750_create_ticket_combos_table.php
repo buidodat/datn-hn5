@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Ticket::class);
             $table->foreignIdFor(Combo::class);
-            $table->string('code')->comment('Mã từ bảng Vé tickets');
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->string('status')->comment('Đã lấy đồ ăn, chưa lấy đồ ăn');
