@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
+use App\Models\Combo;
 use App\Models\SeatTemplate;
 use App\Models\Showtime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BookTicketController extends Controller
 {
@@ -73,9 +75,10 @@ class BookTicketController extends Controller
 
     public function show(Showtime $showtime)
     {
-        $showtime->load(['cinema', 'room', 'movieVersion', 'movie','seats']);
+        $showtime->load(['cinema', 'room', 'movieVersion', 'movie', 'seats']);
         $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
+
         $seatMap = [];
         if ($seats) {
             foreach ($seats as $seat) {
@@ -88,8 +91,9 @@ class BookTicketController extends Controller
                 $seatMap[$coordinates_y][$coordinates_x] = $seat;
             }
         }
+        $combos = Combo::with('food')->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix','showtime'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix', 'showtime', 'combos'));
     }
 
 
