@@ -72,7 +72,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#manageMovies" data-bs-toggle="collapse"
                         role="button" aria-expanded="false" aria-controls="manageMovies">
-                        <i class=" ri-slideshow-3-fill"></i> <span data-key="t-landing">Quản lý Phim - Suất chiếu</span>
+                        <i class=" ri-slideshow-3-fill"></i> <span data-key="t-landing">Phim & Suất chiếu</span>
                     </a>
                     <div class="menu-dropdown collapse" id="manageMovies" style="">
                         <ul class="nav nav-sm flex-column">
@@ -89,11 +89,18 @@
                                         lý Suất
                                         chiếu</span></a>
                             </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link"
                                     data-key="t-horizontal">
                                     <i class="ri-wallet-3-fill"></i>
                                     <span data-key="t-layouts">Quản lý hóa đơn</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link" data-key="t-horizontal">
+                                    <i class=" mdi mdi-store"></i>
+                                    <span data-key="t-dashboards">Đặt vé</span>
+                                </a>
                             </li>
                         </ul>
                     </div>

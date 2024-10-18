@@ -125,3 +125,8 @@ Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('c
 //Trang tin tức
 Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+
+//Viết tạm route chuyển trang admin checkout ở đây 
+Route::get('checkoutAdmin', function () {
+    return view('admin.book-tickets.checkout');
+})->name('checkoutAdmin');

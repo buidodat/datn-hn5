@@ -641,22 +641,11 @@ class DatabaseSeeder extends Seeder
 
 
         // Tạo 10 bài viết
-        // for ($i = 1; $i <= 10; $i++) {
-        //     Post::create([
-        //         'title' => 'Bài viết số ' . $i,
-        //         'slug' => 'bai-viet-so'. $i,
-        //         'img_post' => 'https://via.placeholder.com/800x400?text=Post+' . $i, // Link ảnh placeholder
-        //         'description' => 'Đây là phần mô tả cho bài viết số ' . $i . '. Đây là đoạn văn ngắn mô tả nội dung của bài viết.',
-        //         'content' => 'Nội dung chi tiết của bài viết số ' . $i . '. Đây là phần nội dung đầy đủ của bài viết với các đoạn văn và hình ảnh.',
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ]);
-        // }
         for ($i = 1; $i <= 10; $i++) {
             Post::create([
                 'title' => 'Bài viết số ' . $i,
                 'slug' => 'bai-viet-so-' . $i,
-                'img_post' => 'https://via.placeholder.com/800x400?text=Post+' . $i, // Link ảnh chính
+                'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
                 'description' => 'Đây là phần mô tả cho bài viết số ' . $i . '. Đây là đoạn văn ngắn mô tả nội dung của bài viết.',
                 'content' => '
                     <h2>Giới thiệu về bài viết số ' . $i . '</h2>
@@ -664,28 +653,27 @@ class DatabaseSeeder extends Seeder
                     
                     <h3>Phần 1: Tổng quan về nội dung</h3>
                     <p>Bài viết này sẽ đi sâu vào chi tiết của chủ đề được chọn. Mỗi phần của bài viết đều có mục đích riêng, giúp người đọc nắm bắt thông tin một cách dễ dàng hơn.</p>
-                    <img src="https://via.placeholder.com/600x300?text=Image+1+' . $i . '" alt="Image 1 for Post ' . $i . '">
-        
+                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-mada.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
+
                     <p>Tiếp theo là một số giải thích và minh họa thêm để tăng sự hấp dẫn cho bài viết. Các hình ảnh và nội dung được bố trí hợp lý để không gây nhàm chán.</p>
-                    <img src="https://via.placeholder.com/600x400?text=Image+2+' . $i . '" alt="Image 2 for Post ' . $i . '">
-        
+                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-kumanthong.jpg" alt="Image 2 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
+
                     <h3>Phần 2: Chi tiết chủ đề</h3>
                     <p>Chủ đề chính của bài viết sẽ được bàn luận sâu hơn trong phần này. Người viết sẽ cố gắng làm rõ các khía cạnh quan trọng của chủ đề. Bên cạnh đó, một số hình ảnh sẽ giúp minh họa rõ hơn cho các nội dung được đề cập.</p>
                     <p>Mỗi phần của bài viết đều có thể đi kèm với nhiều đoạn văn bản dài để cung cấp đầy đủ thông tin cho người đọc.</p>
-                    <img src="https://via.placeholder.com/700x300?text=Image+3+' . $i . '" alt="Image 3 for Post ' . $i . '">
+                    <img src="https://www.webstrot.com/html/moviepro/html/images/header/03.jpg" alt="Image 3 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
                     
                     <p>Bài viết số ' . $i . ' còn bao gồm các đoạn văn chi tiết về các chủ đề liên quan, mỗi đoạn văn sẽ giúp bổ sung thêm thông tin. Người đọc có thể dễ dàng theo dõi mạch nội dung nhờ cách trình bày rõ ràng, mạch lạc.</p>
-                    
-                    <img src="https://via.placeholder.com/650x350?text=Image+4+' . $i . '" alt="Image 4 for Post ' . $i . '">
-                    
+                    <img src="https://www.webstrot.com/html/moviepro/html/images/header/02.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
+
                     <h3>Phần 3: Phân tích và đánh giá</h3>
                     <p>Phần này sẽ đi sâu hơn vào việc phân tích chủ đề đã được trình bày ở phần trước. Một số phân tích chuyên sâu sẽ được đưa ra để giúp người đọc hiểu rõ hơn về các khía cạnh của vấn đề.</p>
                     <p>Ngoài ra, người viết sẽ cố gắng cung cấp thêm các ví dụ thực tiễn để minh họa cho các ý tưởng được nêu ra.</p>
-                    <img src="https://via.placeholder.com/600x300?text=Image+5+' . $i . '" alt="Image 5 for Post ' . $i . '">
+                    <img src="' . asset('theme/client/images/Fpoly_Cinemas.jpg') . '" alt="Image 5 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
                     
                     <h3>Kết luận</h3>
-                    <p>Phần kết luận của bài viết số ' . $i . ' sẽ tóm tắt các ý chính đã được thảo luận. Đây là nơi mà người viết có thể nhấn mạnh những điểm quan trọng và đưa ra kết luận cuối cùng. Để hoàn tất bài viết, thêm một hình ảnh minh họa cuối cùng sẽ giúp kết thúc nội dung một cách hợp lý.</p>
-                    <img src="https://via.placeholder.com/800x400?text=Final+Image+' . $i . '" alt="Final Image for Post ' . $i . '">
+                    <p>Cái này xem hay nè:)) .Đi xem đánh giá ở lotte 9.4/10.0 . Lúc nào rảnh đi xem tiếp cho đỡ sợ:)) .Phần kết luận của bài viết số ' . $i . ' sẽ tóm tắt các ý chính đã được thảo luận. Đây là nơi mà người viết có thể nhấn mạnh những điểm quan trọng và đưa ra kết luận cuối cùng. Để hoàn tất bài viết, thêm một hình ảnh minh họa cuối cùng sẽ giúp kết thúc nội dung một cách hợp lý.</p>
+                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/r/s/rsz_ty2-main-poster-printing.jpg" alt="Final Image for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
                 ',
                 'created_at' => now(),
                 'updated_at' => now(),
