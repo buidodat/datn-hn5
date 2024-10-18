@@ -566,66 +566,78 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        //tickets
+        // tickets        
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
         $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
         $movieIds = DB::table('movies')->pluck('id')->toArray();
+        $comboIds = DB::table('combos')->pluck('id')->toArray();
         $userIds = range(1, 6);
-
+        
         foreach ($userIds as $userId) {
-            //fake giới hạn trong 1 tháng
+            // Giới hạn trong 1 tháng
             $expiryDate = Carbon::now()->addMonth();
-
+        
             for ($i = 0; $i < 2; $i++) {
+                // Fake ticket data
                 $ticketId = DB::table('tickets')->insertGetId([
                     'user_id' => $userId,
-                    'payment_method' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
-                    'voucher_id' => null,
+                    'cinema_id' => fake()->randomElement($cinemaIds),
+                    'room_id' => DB::table('rooms')->inRandomOrder()->value('id'),
+                    'movie_id' => fake()->randomElement($movieIds),
                     'voucher_code' => null,
                     'voucher_discount' => null,
+                    'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
                     'status' => fake()->randomElement(['Chờ xác nhận', 'Hoàn thành', 'Đã hết hạn']),
-                    'expiry' => $expiryDate,
                     'staff' => fake()->randomElement(['admin', 'member']),
+                    'expiry' => $expiryDate,
                     'created_at' => now(),
-                    'updated_at' => now()
+                    'updated_at' => now(),
                 ]);
-
-                // Lấy showtime và cinema ngẫu nhiên
+        
+                // Lấy showtime ngẫu nhiên
                 $showtime_id = fake()->randomElement($showtimeIds);
-                $cinema_id = fake()->randomElement($cinemaIds);
-
-                // phòng theo suaats chiếu
                 $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-
-                // ghế theo phòng
+        
+                // Ghế theo phòng
                 $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
-
+        
                 $seatCount = ($i == 0) ? 3 : 1;
-
-                // Sắp xếp ghế liên tục cạnh nhau
                 $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
                 $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
-
+        
                 $price = fake()->numberBetween(50, 200) * 1000;
-                $movie_id = fake()->randomElement($movieIds);
-
+        
                 foreach ($selectedSeats as $seatId) {
+                    // Fake ticket_seats data
                     DB::table('ticket_seats')->insert([
                         'ticket_id' => $ticketId,
                         'showtime_id' => $showtime_id,
                         'seat_id' => $seatId,
-                        'room_id' => $room_id,
-                        'movie_id' => $movie_id,
-                        'cinema_id' => $cinema_id,
                         'price' => $price,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
+                    ]);
+                }
+        
+                // Fake combos cho mỗi ticket
+                $comboCount = fake()->numberBetween(1, 3);
+        
+                for ($j = 0; $j < $comboCount; $j++) {
+                    DB::table('ticket_combos')->insert([
+                        'ticket_id' => $ticketId,
+                        'combo_id' => fake()->randomElement($comboIds),
+                        'price' => fake()->numberBetween(50, 200) * 1000,
+                        'quantity' => fake()->numberBetween(1, 5),
+                        'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                 }
             }
         }
+        
 
 
         // Tạo 10 bài viết

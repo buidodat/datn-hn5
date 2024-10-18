@@ -56,17 +56,25 @@ Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
 Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
 
+// Route giữ ghế cho người dùng
+Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
+Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
+
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
 route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
-Route::get('login', function () {
-    return view('client.login');
-})->name('login');
+route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
 
-Route::get('register', function () {
-    return view('client.register');
-})->name('register');
+// Cổng thanh toán
+//1 VNPAY
+Route::get('vnpay-payment', [PaymentController::class, 'vnPayPayment'])->name('vnpay.payment');
+//2 MOMO
+Route::get('momo-payment', [PaymentController::class, 'moMoPayment'])->name('momo.payment');
+Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('momo.return');
+Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('momo.notify');
+//3 ZALOPAY
+Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 
 // User - Thông tin tài khoản
 Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
@@ -113,16 +121,6 @@ Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 // Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
 
 Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
-
-// Cổng thanh toán
-//1 VNPAY
-Route::post('vnpay-payment', [PaymentController::class, 'vnPayPayment']);
-//2 MOMO
-Route::post('momo-payment', [PaymentController::class, 'moMoPayment'])->name('momo.payment');
-Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('momo.return');
-Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('momo.notify');
-//3 ZALOPAY
-Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 
 //Trang tin tức
 Route::get('posts', [PostController::class, 'index'])->name('posts');
