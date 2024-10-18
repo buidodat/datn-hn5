@@ -56,10 +56,6 @@
 
 
 
-
-
-
-
         <div class="col-lg-12">
             <div class="card">
                 {{-- fillter --}}
@@ -97,7 +93,7 @@
                             <!--end col-->
                             <div class="col-xxl-1 col-sm-4">
                                 <div>
-                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"><i
+                                    <button type="submit" class="btn btn-primary w-100"><i
                                             class="ri-equalizer-fill me-1 align-bottom"></i>
                                         Lọc
                                     </button>
@@ -169,7 +165,8 @@
                                                                 @foreach ($formatData['showtimes'] as $showtime)
                                                                     <div class="list-showtimes">
                                                                         <div class="showtime-item">
-                                                                            <a href="{{ route('admin.book-tickets.show',$showtime) }}">
+                                                                            <a
+                                                                                href="{{ route('admin.book-tickets.show', $showtime) }}">
                                                                                 <div class="showtime-item-start-time">
                                                                                     {{ Carbon\Carbon::parse($showtime['start_time'])->format('H:i') }}
                                                                                 </div>
@@ -187,8 +184,6 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
-
 
                                     </tbody>
                                 </table>
@@ -208,5 +203,36 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script></script>
+    <script>
+        $(document).ready(function() {
+            // Xử lý sự kiện thay đổi chi nhánh
+            $('#branch').on('change', function() {
+                var branchId = $(this).val();
+                var cinemaSelect = $('#cinema');
+                cinemaSelect.empty();
+                cinemaSelect.append('<option value="">Chọn Rạp</option>');
+
+                if (branchId) {
+                    $.ajax({
+                        url: "{{ url('api/cinemas') }}/" + branchId,
+                        method: 'GET',
+                        success: function(data) {
+                            $.each(data, function(index, cinema) {
+                                cinemaSelect.append('<option value="' + cinema.id +
+                                    '" >' + cinema.name + '</option>');
+                            });
+
+                            // Chọn lại cinema nếu có selectedCinemaId
+                            if (selectedCinemaId) {
+                                cinemaSelect.val(selectedCinemaId);
+                                // selectedCinemaId = false;
+                            }
+                        }
+                    });
+                }
+            });
+
+           
+        });
+    </script>
 @endsection

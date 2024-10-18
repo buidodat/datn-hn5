@@ -56,7 +56,6 @@ class ShowtimeController extends Controller
 
     public function create()
     {
-        //
 
         $movies = Movie::where('is_active', '1')->get();
         $typeRooms = TypeRoom::all();
@@ -67,7 +66,6 @@ class ShowtimeController extends Controller
     }
 
 
-    //Lưu thêm bảng seat_showtime thì nhớ dùng Transaction
     public function store(StoreShowtimeRequest $request)
     {
         try {
@@ -89,12 +87,11 @@ class ShowtimeController extends Controller
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
                     $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-                    // Kiểm tra tg chiếu đag có với tg chuẩn bị thêm
+                    // Kiểm tra tg chiếu 
                     foreach ($existingShowtimes as $showtime) {
                         if ($startTime < $showtime->end_time && $endTime > $showtime->start_time) {
                             throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
 
-                            // return back()->with('error', 'Thời gian chiếu bị trùng lặp với các suất chiếu khác');
                         }
                     }
 
@@ -105,23 +102,23 @@ class ShowtimeController extends Controller
                         'movie_version_id' => $request->movie_version_id,
                         'movie_id' => $request->movie_id,
                         'date' => $request->date,
-                        'start_time' => $startTime->format('Y-m-d H:i'), // Định dạng start_time
-                        'end_time' => $endTime->format('Y-m-d H:i'), // Định dạng end_time
+                        'start_time' => $startTime->format('Y-m-d H:i'), 
+                        'end_time' => $endTime->format('Y-m-d H:i'), 
                         'is_active' => isset($request->is_active) ? 1 : 0,
                     ];
 
                     $showtime = Showtime::create($dataShowtimes);
 
-                    // Lấy tất cả ghế trong phòng
+                  
                     $seats = Seat::where('room_id', $room->id)->get();
 
                     $seatShowtimes = [];
                     foreach ($seats as $seat) {
-                        // Kiểm tra trạng thái is_active của mỗi ghế
+                        
                         if ($seat->is_active == 0) {
-                            $status = 'broken';  // Ghế hỏng
+                            $status = 'broken';  
                         } else {
-                            $status = 'available';  // Ghế trống
+                            $status = 'available';  
                         }
 
                         $seatShowtimes[] = [
@@ -131,7 +128,7 @@ class ShowtimeController extends Controller
                         ];
                     }
 
-                    // Tạo tất cả ghế cho suất chiếu
+                    
                     SeatShowtime::insert($seatShowtimes);
                 }
             });
