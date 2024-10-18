@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Combo;
 use App\Models\Food;
+use App\Models\Seat;
 use App\Models\Showtime;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
@@ -17,21 +18,28 @@ class CheckoutController extends Controller
     //
     public function checkout()
     {
-        // Lấy suất chiếu theo ID từ session
-        $showtime = Showtime::where('id', session('showtime_id'))->firstOrFail();
-        // $seatIds = session('seat_ids');
-        // $selectedSeats = session('selected_seats');
-        // $totalPrice = session('total_price_seat');
+        // dd(session()->all());
 
-        // In ra dữ liệu để kiểm tra
-        // dd($showtime->toArray(), $seatIds, $selectedSeats, $totalPrice);
+        //lấy dữ liệu trong session
+        $checkoutData = session()->get('checkout_data', []);
+
+        // Lấy suất chiếu theo ID từ session
+        $showtime = Showtime::where('id', $checkoutData['showtime_id'])->firstOrFail();
+
+        //lấy ghế
+        $showtimeId = $checkoutData['showtime_id'];
+        $seats = Seat::whereIn('id', $checkoutData['seat_ids'])
+            ->with(['typeSeat', 'showtimes' => function ($query) use ($showtimeId) {
+                $query->where('showtime_id', $showtimeId);
+            }])
+            ->get();
 
         // Lấy danh sách combo và thực phẩm liên quan
         $data = Combo::query()->where('is_active', '1')->with('comboFood')->latest('id')->get();
         $foods = Food::query()->select('id', 'name', 'type')->get();
 
         // Trả về view với dữ liệu
-        return view('client.checkout', compact('data', 'foods', 'showtime'));
+        return view('client.checkout', compact('data', 'foods', 'showtime', 'checkoutData', 'seats'));
     }
 
 

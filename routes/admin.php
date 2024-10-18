@@ -80,7 +80,9 @@ Route::resource('posts', PostController::class);
 Route::resource('showtimes', ShowtimeController::class);
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
-Route::post('update', [TicketPriceController::class, 'update'])->name('admin.ticket-price.update');
+Route::post('ticket-update', [TicketPriceController::class, 'update'])->name('ticket-update');
+
+// Route::post('admin/ticket-price/update', [TicketPriceController::class, 'update'])->name('admin.ticket-price.update');
 
 
 // food
@@ -109,5 +111,3 @@ Route::prefix('book-tickets')
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
-
-
