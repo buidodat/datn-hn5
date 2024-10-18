@@ -453,9 +453,14 @@
 /* Css cho phương thức thanh toán */
 
 .box-payment-checkout .payment-checkout img {
-    width: 40px;
+    width: 35px;
     height: auto;
+    border: 0.2px solid #cccccc;
+    border-radius: 4px;
+}
 
+.img-payment-checkout label {
+    cursor: pointer;
 }
 
 /* Css cho phương thức thanh toán :v */
