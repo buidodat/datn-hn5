@@ -45,8 +45,24 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketSeat::class);
     }
+
     public function ticketCombos()
     {
         return $this->hasMany(TicketCombo::class);
+    }
+
+    // Sơn sửa lại qh model
+    public function cinema()
+    {
+        return $this->belongsTo(Cinema::class);
+    }
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
     }
 }
