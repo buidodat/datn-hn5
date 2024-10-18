@@ -68,7 +68,7 @@
                                 <table class="table table-bordered rounded align-middle">
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ</th>
+                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ  <span class="text-muted">(VNĐ)</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,8 +77,8 @@
                                                 <td>{{ $typeSeat->name }}</td>
                                                 <td>
                                                     <input type="number" name="prices[{{ $typeSeat->id }}]" id=""
-                                                        class="form-control" {{-- value="{{ old('prices.' . $typeSeat->id, $typeSeat->price) }}" --}}
-                                                        placeholder="{{ number_format($typeSeat->price) }}đ">
+                                                        class="form-control" 
+                                                        value="{{ $typeSeat->price }}">
                                                     @error('price')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -89,7 +89,7 @@
 
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">GIÁ THEO LOẠI PHÒNG</th>
+                                            <th colspan='2' class="text-center">PHỤ THU THEO LOẠI PHÒNG  <span class="text-muted">(VNĐ)</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,7 +98,7 @@
                                                 <td>{{ $typeRoom->name }}</td>
                                                 <td><input type="number" name="surcharges[{{ $typeRoom->id }}]"
                                                         id="" class="form-control"
-                                                        placeholder="{{ number_format($typeRoom->surcharge) }}đ">
+                                                        value="{{ $typeRoom->surcharge }}">
                                                     @error('surcharge')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -137,7 +137,7 @@
                         <div class="card-header d-flex justify-content-between">
 
                             <div class="col-md-6">
-                                <h5 class="card-title mb-0">Giá vé theo rạp </h5>
+                                <h5 class="card-title mb-0">Phụ thu theo rạp </h5>
                             </div>
 
                             <div class="col-md-6 d-flex align-items-center">
@@ -173,7 +173,7 @@
                                 <thead>
                                     <tr>
                                         <th>Tên rạp</th>
-                                        <th>Giá</th>
+                                        <th>Giá <span class="text-muted">(VNĐ)</span> </th>
                                         {{-- <th>Thao tác</th> --}}
                                     </tr>
                                 </thead>
@@ -185,7 +185,7 @@
                                             <td>{{ $cinema->name }}</td>
                                             <td><input type="number" class="form-control"
                                                     name="surchargesCinema[{{ $cinema->id }}]" id="{{ $cinema->id }}"
-                                                    placeholder="{{ number_format($cinema->surcharge) }}đ"></td>
+                                                   value="{{ $cinema->surcharge }}"></td>
                                         </tr>
                                     @endforeach
 

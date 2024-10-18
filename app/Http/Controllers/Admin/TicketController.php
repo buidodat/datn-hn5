@@ -19,12 +19,33 @@ class TicketController extends Controller
 
     const PATH_VIEW = 'admin.tickets.';
 
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::with(['user', 'ticketSeats.cinema', 'ticketSeats.movie', 'ticketSeats.room', 'ticketSeats.showtime','ticketSeats.seat'])
-            ->orderBy('id')
-            ->get()
-            ->groupBy('code');
+        // $tickets = Ticket::with(['user', 'ticketSeats.cinema', 'ticketSeats.movie', 'ticketSeats.room', 'ticketSeats.showtime', 'ticketSeats.seat'])
+        //     ->orderBy('id')
+        //     ->get()
+        //     ->groupBy('code');
+
+        $tickets = Ticket::with(['user', 'ticketSeats.cinema', 'ticketSeats.movie', 'ticketSeats.room', 'ticketSeats.showtime', 'ticketSeats.seat'])
+            ->orderBy('id');
+
+        // Lọc theo cinema_id
+        if ($request->input('cinema_id')) {
+            $tickets = $tickets->whereHas('ticketSeats.cinema', function ($query) use ($request) {
+                $query->where('id', $request->cinema_id);
+            });
+        }
+
+        if ($request->input('date')) {
+            $date = $request->input('date');
+            // lọc theo created_at, vì khác định dạng date vs timestamp
+            $tickets = $tickets->whereBetween('created_at', [
+                Carbon::parse($date)->startOfDay(),         // 00:00:00 ngày ý
+                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý
+            ]);
+        }
+
+        $tickets = $tickets->get()->groupBy('code');
 
         //định dạng expiry để so sánh
         foreach ($tickets as $key => $group) {
@@ -79,7 +100,7 @@ class TicketController extends Controller
             return $ticketSeat->seat->typeSeat->price;
         });
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','users','oneTicket','totalPriceSeat'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat'));
     }
 
     /**

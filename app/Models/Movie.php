@@ -32,13 +32,13 @@ class Movie extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot' => 'boolean',
-         'is_show_home' => 'boolean',
+        'is_show_home' => 'boolean',
         'is_special' => 'boolean',
     ];
     const VERSIONS = [
-       ['id'=>1,'name'=>'Phụ Đề'],
-       ['id'=>2,'name'=>'Lồng Tiếng'],
-       ['id'=>3,'name'=>'Thuyết Minh'],
+        ['id' => 1, 'name' => 'Phụ Đề'],
+        ['id' => 2, 'name' => 'Lồng Tiếng'],
+        ['id' => 3, 'name' => 'Thuyết Minh'],
     ];
     // const RATINGS = [
     //     'P',
@@ -48,11 +48,11 @@ class Movie extends Model
     //     'K'
     // ];
     const RATINGS = [
-       ['id'=>1,'name'=>'P','description'=>'Phim được phép phổ biến đến người xem ở mọi độ tuổi.'],
-       ['id'=>2,'name'=>'T13','description'=>'Phim được phổ biến đến người xem dưới 13 tuổi và có người bảo hộ đi kèm.'],
-       ['id'=>3,'name'=>'T16','description'=>'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên (13+).'],
-       ['id'=>4,'name'=>'T18','description'=>'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên (16+).'],
-       ['id'=>5,'name'=>'K','description'=>'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên (18+).'],
+        ['id' => 1, 'name' => 'P', 'description' => 'Phim được phép phổ biến đến người xem ở mọi độ tuổi.'],
+        ['id' => 2, 'name' => 'T13', 'description' => 'Phim được phổ biến đến người xem dưới 13 tuổi và có người bảo hộ đi kèm.'],
+        ['id' => 3, 'name' => 'T16', 'description' => 'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên (13+).'],
+        ['id' => 4, 'name' => 'T18', 'description' => 'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên (16+).'],
+        ['id' => 5, 'name' => 'K', 'description' => 'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên (18+).'],
     ];
     public function movieVersions()
     {
@@ -62,9 +62,13 @@ class Movie extends Model
     {
         return $this->hasMany(MovieReview::class, 'movie_id');
     }
-    public function ticketSeats()
+    // public function ticketSeats()
+    // {
+    //     return $this->hasMany(TicketSeat::class);
+    // }
+    public function tickets()
     {
-        return $this->hasMany(TicketSeat::class);
+        return $this->hasMany(Ticket::class);
     }
     public function showtimes()
     {
