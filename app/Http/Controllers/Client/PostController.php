@@ -19,20 +19,13 @@ class PostController extends Controller
         // Truyền cả 2 biến vào view
         return view('client.posts.index', compact('leftPosts', 'rightPosts', 'posts'));
     }
-
     public function show($id)
     {
+        // Tăng lượt xem mỗi lần người dùng nhấn vào bài viết
         $post = Post::findOrFail($id);
+        $post->increment('view_count');
 
-        $postKey = 'post_' . $post->id;
-
-        // Kiểm tra nếu bài viết chưa được xem trong session
-        if (!session()->has($postKey)) {
-            $post->increment('view_count');
-            session()->put($postKey, 1); // Lưu lại session để ngăn việc tăng view khi refresh
-        }
-
+        // Hiển thị bài viết
         return view('client.posts.show', compact('post'));
     }
-
 }
