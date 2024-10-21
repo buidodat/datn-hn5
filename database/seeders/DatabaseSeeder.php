@@ -701,6 +701,7 @@ class DatabaseSeeder extends Seeder
         // Tạo 10 bài viết
         for ($i = 1; $i <= 10; $i++) {
             Post::create([
+                'user_id' => 1,
                 'title' => 'Bài viết số ' . $i,
                 'slug' => 'bai-viet-so-' . $i,
                 'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
