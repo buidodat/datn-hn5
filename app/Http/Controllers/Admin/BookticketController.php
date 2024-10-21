@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Combo;
+use App\Models\Seat;
 use App\Models\SeatTemplate;
 use App\Models\Showtime;
 use Carbon\Carbon;
@@ -78,7 +79,12 @@ class BookTicketController extends Controller
         $showtime->load(['cinema', 'room', 'movieVersion', 'movie', 'seats']);
         $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
-
+        $seatNames = Seat::whereHas('showtimes', function ($query) use ($showtime) {
+            $query->where('showtime_id', $showtime->id)
+                  ->where('user_id', auth()->id()); // Lọc ghế theo user_id trong bảng trung gian
+        })->pluck('name') // Lấy tên ghế
+          ->toArray(); // Chuyển đổi thành mảng
+        ;
         $seatMap = [];
         if ($seats) {
             foreach ($seats as $seat) {
@@ -93,8 +99,11 @@ class BookTicketController extends Controller
         }
         $combos = Combo::with('food')->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix', 'showtime', 'combos'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix', 'showtime', 'combos', 'seatNames'));
     }
-
-
+    public function clearSession(Request $request)
+    {
+        session()->forget('book_tickets');
+        return response()->json(['message' => 'Session cleared.']);
+    }
 }

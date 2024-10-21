@@ -62,6 +62,7 @@ Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
 
 Route::middleware(['web'])->group(function () {
     Route::post('toggle-seat/{showtime}',    [BookTicketController::class, 'toggleSeat'])->name('toggle-seat');
-    Route::get('get-selected-seat',          [BookTicketController::class, 'getSelectedSeat'])->name('get-selected-seat');
-    Route::post('payment',         [BookTicketController::class, 'payment'])->name('payment');
+    Route::get('get-selected-seat/{showtime}',          [BookTicketController::class, 'getSelectedSeat'])->name('get-selected-seat');
+    Route::post('payment-now/{showtime}',         [BookTicketController::class, 'payment'])->name('payment-now');
+    Route::post('clear-session/{showtime}', [BookTicketController::class, 'clearSession'])->name('clear-session');
 });

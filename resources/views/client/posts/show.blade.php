@@ -15,7 +15,7 @@
                         <li style="display: inline-block; margin-right: 15px;"><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
                         {{-- <li style="display: inline-block;"><i class="fa fa-user"></i> by Admin</li> --}}
                     </ul>
-                    
+
                     <h2 style="color: #333; font-weight: bold; font-size: 32px; margin-bottom: 20px;">{{ $post->title }}</h2>
                     <p style="font-size: 18px; line-height: 1.6; color: #555;">{{($post->description)}}</p>
                     <div class="hs_blog_detail_img_main_wrapper">
@@ -26,7 +26,7 @@
                             }
                         @endphp
                         <img src="{{ $url }}" alt="{{ $post->title }}" class="responsive-img" />
-                    </div>                    
+                                    </div>
                     <div class="hs_blog_detail_body" style="margin-top: 30px;">
                         {!! $post->content !!}
                     </div>
@@ -55,7 +55,7 @@
             height: auto; /* Đặt chiều cao cố định */
             object-fit: cover; /* Đảm bảo ảnh không bị biến dạng, giữ nguyên tỷ lệ */
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .hs_blog_detail_img_main_wrapper {

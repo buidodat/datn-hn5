@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/js/app.js',
                 'resources/js/choose-seat.js',
+                'resources/js/book-ticket.js',
             ],
             refresh: true,
         }),
