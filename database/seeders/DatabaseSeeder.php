@@ -191,20 +191,26 @@ class DatabaseSeeder extends Seeder
 
                 $seatsData = []; // Mảng lưu trữ ghế
                 foreach ($seatStructure as $seat) {
-                    $seatsData[] = [
-                        'room_id' => $roomId, // ID của phòng
-                        'coordinates_x' => $seat['coordinates_x'], // Cột
+                    $name = $seat['coordinates_y'] . $seat['coordinates_x'];
+
+                    // Nếu là ghế đôi thì thêm tên ghế thứ hai
+                    if ($seat['type_seat_id'] == 3) {
+                        $name .= ', ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
+                    }
+
+                    $dataSeats[] = [
+                        'coordinates_x' => $seat['coordinates_x'],
                         'coordinates_y' => $seat['coordinates_y'],
-                        'name' => $seat['coordinates_y'] . $seat['coordinates_x'], // Hàng
-                        'type_seat_id' => $seat['type_seat_id'], // Loại ghế
-                        'is_active' => 1, // Có thể thay đổi nếu cần
+                        'name' => $name,
+                        'type_seat_id' => $seat['type_seat_id'],
+                        'room_id' => $roomId,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
                 }
 
                 // Chèn tất cả ghế vào bảng seats
-                DB::table('seats')->insert($seatsData);
+                DB::table('seats')->insert($dataSeats);
             }
         }
 
@@ -618,7 +624,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // tickets        
+        // tickets
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
         $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
         $movieIds = DB::table('movies')->pluck('id')->toArray();
@@ -702,7 +708,7 @@ class DatabaseSeeder extends Seeder
                 'content' => '
                     <h2>Giới thiệu về bài viết số ' . $i . '</h2>
                     <p>Đây là phần mở đầu cho bài viết số ' . $i . '. Nội dung bài viết này sẽ tập trung vào việc cung cấp thông tin chi tiết về một chủ đề nhất định. Các thông tin sẽ được trình bày rõ ràng và dễ hiểu.</p>
-                    
+
                     <h3>Phần 1: Tổng quan về nội dung</h3>
                     <p>Bài viết này sẽ đi sâu vào chi tiết của chủ đề được chọn. Mỗi phần của bài viết đều có mục đích riêng, giúp người đọc nắm bắt thông tin một cách dễ dàng hơn.</p>
                     <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-mada.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
@@ -714,7 +720,7 @@ class DatabaseSeeder extends Seeder
                     <p>Chủ đề chính của bài viết sẽ được bàn luận sâu hơn trong phần này. Người viết sẽ cố gắng làm rõ các khía cạnh quan trọng của chủ đề. Bên cạnh đó, một số hình ảnh sẽ giúp minh họa rõ hơn cho các nội dung được đề cập.</p>
                     <p>Mỗi phần của bài viết đều có thể đi kèm với nhiều đoạn văn bản dài để cung cấp đầy đủ thông tin cho người đọc.</p>
                     <img src="https://www.webstrot.com/html/moviepro/html/images/header/03.jpg" alt="Image 3 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-                    
+
                     <p>Bài viết số ' . $i . ' còn bao gồm các đoạn văn chi tiết về các chủ đề liên quan, mỗi đoạn văn sẽ giúp bổ sung thêm thông tin. Người đọc có thể dễ dàng theo dõi mạch nội dung nhờ cách trình bày rõ ràng, mạch lạc.</p>
                     <img src="https://www.webstrot.com/html/moviepro/html/images/header/02.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
 
@@ -722,7 +728,7 @@ class DatabaseSeeder extends Seeder
                     <p>Phần này sẽ đi sâu hơn vào việc phân tích chủ đề đã được trình bày ở phần trước. Một số phân tích chuyên sâu sẽ được đưa ra để giúp người đọc hiểu rõ hơn về các khía cạnh của vấn đề.</p>
                     <p>Ngoài ra, người viết sẽ cố gắng cung cấp thêm các ví dụ thực tiễn để minh họa cho các ý tưởng được nêu ra.</p>
                     <img src="' . asset('theme/client/images/Fpoly_Cinemas.jpg') . '" alt="Image 5 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-                    
+
                     <h3>Kết luận</h3>
                     <p>Cái này xem hay nè:)) .Đi xem đánh giá ở lotte 9.4/10.0 . Lúc nào rảnh đi xem tiếp cho đỡ sợ:)) .Phần kết luận của bài viết số ' . $i . ' sẽ tóm tắt các ý chính đã được thảo luận. Đây là nơi mà người viết có thể nhấn mạnh những điểm quan trọng và đưa ra kết luận cuối cùng. Để hoàn tất bài viết, thêm một hình ảnh minh họa cuối cùng sẽ giúp kết thúc nội dung một cách hợp lý.</p>
                     <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/r/s/rsz_ty2-main-poster-printing.jpg" alt="Final Image for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">

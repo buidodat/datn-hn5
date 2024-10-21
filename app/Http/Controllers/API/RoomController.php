@@ -69,10 +69,17 @@ class RoomController extends Controller
 
                 // Lặp qua từng ghế trong seat_structure
                 foreach ($seatStructureArray as $seat) {
-                    $dataSeats[] = [
+                    $name = $seat['coordinates_y'] . $seat['coordinates_x'];
+
+                    // Nếu là ghế đôi thì thêm tên ghế thứ hai
+                    if ($seat['type_seat_id'] == 3) {
+                        $name .= ', ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
+                    }
+
+                    $dataSeats[] = [    
                         'coordinates_x' => $seat['coordinates_x'],
                         'coordinates_y' => $seat['coordinates_y'],
-                        'name' => $seat['coordinates_y'] . $seat['coordinates_x'],
+                        'name' => $name,
                         'type_seat_id' => $seat['type_seat_id'],
                         'room_id' => $room->id,
                         'created_at' => now(),
