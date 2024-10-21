@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Cinema;
+use App\Models\Movie;
 use App\Models\Payment;
+use App\Models\Room;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Database\Migrations\Migration;
@@ -17,14 +20,16 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Voucher::class)->nullable();
+            $table->foreignIdFor(Cinema::class);
+            $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Movie::class);
             $table->string('voucher_code')->nullable();
             $table->unsignedInteger('voucher_discount')->nullable();
-            $table->string('payment_method')->comment('phương thức thanh toán');
+            $table->string('payment_name')->comment('phương thức thanh toán');
             $table->string('code')->unique()->comment('Mã code quét Qr hoặc mã vạch');
             $table->unsignedBigInteger('total_price')->comment('giá cuối khi đã trừ point và voucher');
             $table->string('status');
-            $table->string('staff')->comment('lấy theo type của user');
+            $table->string('staff')->nullable()->comment('lấy theo type của user');
             $table->dateTime('expiry')->comment('hạn sử dụng');
             $table->timestamps();
         });

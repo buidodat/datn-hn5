@@ -304,7 +304,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="prs_feature_slider_wrapper" id="post-content">
                         <div class="owl-carousel owl-theme show-post">
-                            @foreach ($post as $postItem)
+                            @foreach ($posts as $postItem)
                                 <div class="item prs_feature_slider_item_wrapper">
                                     <div class="prs_feature_img_box_wrapper">
                                         <div class="prs_feature_img"
@@ -320,7 +320,7 @@
                                                 style="width: 100%; height: 100%; object-fit: cover;" />
                                             <div class="prs_ft_btn_wrapper">
                                                 <ul>
-                                                    <li><a href="{{ route('posts.show', $postItem->id) }}">Xem chi tiết</a></li>
+                                                    <li><a href="{{ route('posts.show', $postItem->slug) }}">Xem chi tiết</a></li>
                                                 </ul>
                                             </div>
                                         </div>

@@ -12,6 +12,7 @@
 
     <!-- App favicon -->
     @yield('style-libs')
+    
 
     <link rel="shortcut icon" href="{{ asset('theme/client/images/header/poly2.svg') }}">
 

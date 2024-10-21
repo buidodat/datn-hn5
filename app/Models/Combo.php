@@ -30,4 +30,8 @@ class Combo extends Model
     {
         return $this->hasMany(TicketCombo::class);
     }
+    public function food()
+    {
+        return $this->belongsToMany(Food::class, 'combo_food')->withPivot('quantity');
+    }
 }

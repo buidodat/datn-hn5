@@ -15,6 +15,7 @@ class Post extends Model
         'description',
         'content',
         'is_active',
+        'view_count',
     ];
     protected $cast = [
         'is_active'=>'boolean'

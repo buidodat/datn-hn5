@@ -166,7 +166,7 @@
                                                         @php
                                                             // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
 
-                                                            $url = $ticketSeats->first()->movie->img_thumbnail;
+                                                            $url = $ticket->movie->img_thumbnail;
 
                                                             if (!\Str::contains($url, 'http')) {
                                                                 $url = Storage::url($url);
@@ -177,22 +177,19 @@
                                                         <img class="cinema-journey-movie-poster"
                                                             src="{{ $url }}" alt="movie_img" />
                                                         <p class="cinema-journey-movie-title" align='left'>
-                                                            {{ $ticketSeats->first()->movie->name }}
+                                                            {{ $ticket->movie->name }}
                                                         </p>
-
-
-
                                                     </td>
                                                     <td class="cinema-journey-td">
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d-m-Y') }}
+                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
                                                         <br />
                                                         {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                                         -
                                                         {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
                                                     </td>
                                                     <td class="cinema-journey-td">
-                                                        {{ $ticketSeats->first()->showtime->cinema->name }} -
-                                                        {{ $ticketSeats->first()->room->name }}
+                                                        {{ $ticket->cinema->name }} -
+                                                        {{ $ticket->room->name }}
                                                     </td>
 
 
@@ -391,7 +388,7 @@
                 </div>
                 <div class="my-account-text-center">
                     <button type="submit" class="my-account-btn"
-                        onclick="return confirm('Bạn có chắc chắn muốn đổi mật khẩu không?')">Xác nhận</button>
+                        >Xác nhận</button>
                     <button type="button" class="my-account-btn" id="closeChangePassword">Hủy</button>
                 </div>
             </form>

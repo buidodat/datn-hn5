@@ -69,7 +69,7 @@
                                         <div class="col-md-6">
                                             <div class="payment-checkout-detail">
                                                 <b>Phương thức thanh toán</b>
-                                                <p>{{ $ticket->payment_method }}</p>
+                                                <p>{{ $ticket->payment_name }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -119,11 +119,11 @@
                                                 @foreach ($ticketSeatsByMovie as $ticketSeats)
                                                     <tr>
 
-                                                        <td>{{ $ticketSeats->first()->movie->name }}</td>
+                                                        <td>{{ $ticket->movie->name }}</td>
                                                         <td>
-                                                            <b> {{ $ticketSeats->first()->showtime->cinema->name }}
+                                                            <b> {{ $ticket->cinema->name }}
                                                             </b> <br>
-                                                            <p> {{ $ticketSeats->first()->room->name }}</p>
+                                                            <p> {{ $ticket->room->name }}</p>
                                                             <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
                                                             </p>
                                                             <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}

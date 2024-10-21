@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\APIController;
+use App\Http\Controllers\API\BookTicketController;
 use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SeatController;
@@ -25,11 +26,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // // Định nghĩa các route chuẩn cho CRUD của Branch
 // Route::apiResource('branches', BranchController::class);
-Route::get('cinemas/{branchId}', [APIController::class, 'getCinemas']);
-Route::get('rooms/{movieId}', [APIController::class, 'getRooms']);
-Route::get('movieVersions/{movieId}', [APIController::class, 'getMovieVersion']);
-Route::get('getMovieDuration/{movieId}', [APIController::class, 'getMovieDuration']);
-Route::get('typeRooms/{typeRoomId}', [APIController::class, 'getTypeRooms']);
+Route::get('cinemas/{branchId}',           [APIController::class, 'getCinemas']);
+Route::get('rooms/{movieId}',              [APIController::class, 'getRooms']);
+Route::get('movieVersions/{movieId}',      [APIController::class, 'getMovieVersion']);
+Route::get('getMovieDuration/{movieId}',   [APIController::class, 'getMovieDuration']);
+Route::get('typeRooms/{typeRoomId}',       [APIController::class, 'getTypeRooms']);
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 
 Route::resource('rooms', RoomController::class);
@@ -39,22 +40,31 @@ Route::post('rooms/update-active', [RoomController::class, 'updateActive'])->nam
 Route::prefix('seat-templates')
     ->as('seat-templates.')
     ->group(function () {
-        Route::post('store',    [SeatTemplateController::class, 'store']);
-        Route::put('{seatTemplate}',    [SeatTemplateController::class, 'update']);
-        Route::post('update-active/{seatTemplate}',    [SeatTemplateController::class, 'updateActive']);
+        Route::post('store',                        [SeatTemplateController::class, 'store']);
+        Route::put('{seatTemplate}',                [SeatTemplateController::class, 'update']);
+        Route::post('update-active/{seatTemplate}', [SeatTemplateController::class, 'updateActive']);
     });
 
-Route::post('seats/soft-delete', [SeatController::class, 'softDelete'])->name('seats.soft-delete');
-Route::post('seats/restore', [SeatController::class, 'restore'])->name('seats.restore');
+Route::post('seats/soft-delete',     [SeatController::class, 'softDelete'])->name('seats.soft-delete');
+Route::post('seats/restore',         [SeatController::class, 'restore'])->name('seats.restore');
 Route::post('seats/soft-delete-row', [SeatController::class, 'softDeleteRow'])->name('seats.soft-delete-row');
-Route::post('seats/restore-row', [SeatController::class, 'restoreRow'])->name('seats.restore-row');
-Route::post('seats/update-type', [SeatController::class, 'updateSeatType'])->name('seats.update-type');
+Route::post('seats/restore-row',     [SeatController::class, 'restoreRow'])->name('seats.restore-row');
+Route::post('seats/update-type',     [SeatController::class, 'updateSeatType'])->name('seats.update-type');
 
-Route::post('movies/update-active', [MovieController::class, 'updateActive'])->name('movies.update-active');
-Route::post('movies/update-hot', [MovieController::class, 'updateHot'])->name('movies.update-hot');
+Route::post('movies/update-active',  [MovieController::class, 'updateActive'])->name('movies.update-active');
+Route::post('movies/update-hot',     [MovieController::class, 'updateHot'])->name('movies.update-hot');
 
 
 
 Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
 
 Route::post('vouchers',[\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
+
+
+
+Route::middleware(['web'])->group(function () {
+    Route::post('toggle-seat/{showtime}',    [BookTicketController::class, 'toggleSeat'])->name('toggle-seat');
+    Route::get('get-selected-seat/{showtime}',          [BookTicketController::class, 'getSelectedSeat'])->name('get-selected-seat');
+    Route::post('payment-now/{showtime}',         [BookTicketController::class, 'payment'])->name('payment-now');
+    Route::post('clear-session/{showtime}', [BookTicketController::class, 'clearSession'])->name('clear-session');
+});

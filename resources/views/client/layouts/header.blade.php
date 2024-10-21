@@ -121,7 +121,7 @@
                         <a href="{{ route('policy') }}">Chính sách</a>
                     </li>
                     <li>
-                        <a href="">Giá vé</a>
+                        <a href="{{ route('ticket-price')}}">Giá vé</a>
                     </li>
                     <li>
                         <a href="{{ route('posts') }}">Tin tức</a>

@@ -6,9 +6,9 @@
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
@@ -56,32 +56,32 @@
 
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                           style="width:100%">
+                        style="width:100%">
                         <thead>
-                        <tr>
-
-                            <th>Mã voucher</th>
-                            {{--<th>Thông tin voucher</th>--}}
-                            <th>Tiêu đề</th>
-                            <th>Thời gian sử dụng</th>
-                            {{--<th>Thời gian kết thúc</th>--}}
-                            <th>Giảm giá</th>
-                            <th>Số lượng</th>
-                            <th>Giới hạn</th>
-                            <th>Mô tả</th>
-                            <th>Hoạt động</th>
-                            <th>Chức năng</th>
-                        </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Mã voucher</th>
+                                {{-- <th>Thông tin voucher</th> --}}
+                                <th>Tiêu đề</th>
+                                <th>Thời gian sử dụng</th>
+                                {{-- <th>Thời gian kết thúc</th> --}}
+                                <th>Giảm giá</th>
+                                <th>Số lượng</th>
+                                <th>Giới hạn</th>
+                                <th>Mô tả</th>
+                                <th>Hoạt động</th>
+                                <th>Chức năng</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach ($data as $item)
-                            <tr>
-
-                                <td>{{ $item->code }}</td>
-                                <td>{{ $item->title }}</td>
-                                {{--<td class="nav nav-sm flex-column">
-                                    --}}{{--<li class="nav-item mb-2"><span
-                                            class="fw-semibold">Mã code:</span> {{ $item->code }}</li>--}}{{--
+                            @foreach ($data as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->code }}</td>
+                                    <td>{{ $item->title }}</td>
+                                    {{-- <td class="nav nav-sm flex-column">
+                                    --}}{{-- <li class="nav-item mb-2"><span
+                                            class="fw-semibold">Mã code:</span> {{ $item->code }}</li> --}}{{--
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Tiêu đề:</span> {{ $item->title }}</li>
                                     <li class="nav-item mb-2"><span
@@ -94,8 +94,8 @@
                                             class="fw-semibold">Bắt đầu:</span> {{ $item->start_date_time }}</li>
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Kết thúc:</span> {{ $item->end_date_time }}</li>
-                                </td>--}}
-                                {{-- <td class="nav nav-sm flex-column">
+                                </td> --}}
+                                    {{-- <td class="nav nav-sm flex-column">
                                     <li class="nav-item mb-2"><span
                                             class="fw-semibold">Bắt đầu:</span> {{ $item->start_date_time }}</li>
                                     <li class="nav-item mb-2"><span
@@ -103,41 +103,43 @@
                                     </td> --}}
                                     <td class="nav nav-sm flex-column">
                                         <li class="nav-item mb-2">
-                                            <span class="fw-semibold">Bắt đầu:</span> {{ \Carbon\Carbon::parse($item->start_date_time)->format('d/m/Y') }}
+                                            <span class="fw-semibold">Bắt đầu:</span>
+                                            {{ \Carbon\Carbon::parse($item->start_date_time)->format('d/m/Y') }}
                                         </li>
                                         <li class="nav-item mb-2">
-                                            <span class="fw-semibold">Kết thúc:</span> {{ \Carbon\Carbon::parse($item->end_date_time)->format('d/m/Y') }}
+                                            <span class="fw-semibold">Kết thúc:</span>
+                                            {{ \Carbon\Carbon::parse($item->end_date_time)->format('d/m/Y') }}
                                         </li>
                                     </td>
-                                <td>{{ $item->discount }}</td>
-                                <td>{{ $item->quantity }}</td>
-                                <td>{{ $item->limit }}</td>
-                                <td>{{ $item->description }}</td>
-                                <td>
-                                    {!! $item->is_active == 1
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                </td>
-                                <td>
-                                    {{--<a href="{{ route('admin.vouchers.show', $item) }}">
+                                    <td>{{ $item->discount }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->limit }}</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>
+                                        {!! $item->is_active == 1
+                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
+                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    </td>
+                                    <td>
+                                        {{-- <a href="{{ route('admin.vouchers.show', $item) }}">
                                         <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                 class="fas fa-eye"></i></button>
-                                    </a>--}}
-                                    <a href="{{ route('admin.vouchers.edit', $item) }}">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
+                                    </a> --}}
+                                        <a href="{{ route('admin.vouchers.edit', $item) }}">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
+                                        </a>
 
-                                     {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
+                                        {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
                                                 <i class="ri-delete-bin-7-fill"></i>
                                             </button>
                                         </form> --}}
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
 
                     </table>
@@ -150,7 +152,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

@@ -10,8 +10,10 @@ class Ticket extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'payment_method',
-        'voucher_id',
+        'cinema_id',
+        'room_id',
+        'movie_id',
+        'payment_name',
         'voucher_code',
         'voucher_discount',
         'code',
@@ -43,8 +45,24 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketSeat::class);
     }
+
     public function ticketCombos()
     {
         return $this->hasMany(TicketCombo::class);
+    }
+
+    // Sơn sửa lại qh model
+    public function cinema()
+    {
+        return $this->belongsTo(Cinema::class);
+    }
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
     }
 }
