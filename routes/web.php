@@ -132,3 +132,7 @@ Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::get('checkoutAdmin', function () {
     return view('admin.book-tickets.checkout');
 })->name('checkoutAdmin');
+
+Route::get('public', function () {
+    return view('public');
+})->name('public');

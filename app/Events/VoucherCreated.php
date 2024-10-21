@@ -2,22 +2,21 @@
 
 namespace App\Events;
 
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class VoucherCreated implements ShouldBroadcast
+class VoucherCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
-    /**
-     * Create a new event instance.
-     */
     public $voucher;
 
     public function __construct($voucher)
@@ -38,9 +37,8 @@ class VoucherCreated implements ShouldBroadcast
             'discount' => $this->voucher->discount,
             'start_date_time' => $this->voucher->start_date_time,
             'end_date_time' => $this->voucher->end_date_time,
-            'quantity' => $this->voucher->quantity,
-            'limit' => $this->voucher->limit,
-            'is_active' => $this->voucher->is_active,
         ];
     }
+
+
 }
