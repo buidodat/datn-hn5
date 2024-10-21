@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\PostController;
 use App\Http\Controllers\Client\MoMoPaymentController;
 use App\Http\Controllers\Client\MovieController;
+use App\Http\Controllers\Client\TicketPriceController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
@@ -124,9 +125,12 @@ Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('c
 
 //Trang tin tức
 Route::get('posts', [PostController::class, 'index'])->name('posts');
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
 //Viết tạm route chuyển trang admin checkout ở đây 
 Route::get('checkoutAdmin', function () {
     return view('admin.book-tickets.checkout');
 })->name('checkoutAdmin');
+
+// Giá vé theo chi nhánh
+Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');

@@ -1,9 +1,10 @@
-<?php
 
 namespace App\Http\Controllers\API;
 
 use App\Events\ChangeSeat;
+use App\Events\SeatRelease;
 use App\Http\Controllers\Controller;
+use App\Jobs\ReleaseSeatHoldJob;
 use App\Models\Combo;
 use App\Models\Seat;
 use App\Models\SeatShowtime;
@@ -165,11 +166,10 @@ class BookTicketController extends Controller
                 'seatIds' => $seatIds, // Thêm mảng seatIds vào dữ liệu trả về
             ];
 
-            return response()->json(['success' => true, 'data' => $data, 'seats' => $seats]);
+            return response()->json(['success' => true, 'data' => $data]);
         } catch (\Throwable $th) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.'], 500);
         }
-
     }
 
 
@@ -257,7 +257,88 @@ class BookTicketController extends Controller
     {
         try {
             if ($request->payment_method == 'cash') {
-                return response()->json(['success' => true, 'data' => session('book_tickets')]);
+
+                $seatIds = $request->seatSelected;
+                $showtimeId = $showtime->id;
+                $userId = auth()->id();
+                $seatShowtimes = DB::table('seat_showtimes')
+                    ->whereIn('seat_id', $seatIds)
+                    ->where('showtime_id', $showtimeId)
+                    ->get();
+
+                $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
+
+                foreach ($seatShowtimes as $seatShowtime) {
+                    // Kiểm tra xem có ghế nào hết thời gian giữ chỗ
+                    if ($seatShowtime->hold_expires_at < now()) {
+                        $hasExpiredSeats = true; // Đánh dấu có ghế hết thời gian giữ chỗ
+                        break; // Dừng vòng lặp khi tìm thấy ghế hết thời gian giữ
+                    }
+                }
+                if ($hasExpiredSeats) {
+                    // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ, cập nhật tất cả ghế thành 'available'
+                    DB::table('seat_showtimes')
+                        ->whereIn('seat_id', $seatIds)
+                        ->where('showtime_id', $showtimeId)
+                        ->update([
+                            'status' => 'available',
+                            'user_id' => null,
+                            'hold_expires_at' => null,
+                        ]);
+
+                    // Phát sự kiện Pusher để thông báo tất cả ghế được giải phóng cho người dùng khác
+                    foreach ($seatIds as $seatId) {
+                        event(new SeatRelease($seatId, $showtimeId));
+                    }
+
+                    // Chuyển hướng về trang chọn ghế với thông báo lỗi
+                    return redirect()->route('choose-seat', $showtimeId)
+                        ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
+                }
+
+                DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request) {
+                    // Gia hạn thời gian giữ chỗ thêm 5 phút
+                    DB::table('seat_showtimes')
+                        ->whereIn('seat_id', $seatIds)
+                        ->where('showtime_id', $showtimeId)
+                        ->update([
+                            'hold_expires_at' => now()->addMinutes(5),
+                        ]);
+
+                        $dataTicket = [
+                            'user_id' => $request->user_id ?? '',
+                            'payment_name' =>'Thanh toán tiền mặt',
+                            'voucher_code' => $request->voucher_code ?? '',
+                            'voucher_discount' => $request->voucher_discount,
+                            'total_price',
+                            'status'=>'Đã thanh toán',
+                            'staff_id'=>$userId,
+                            'expiry',
+                        ];
+
+                        foeach($ticket)
+
+                    // Dispatch job để giải phóng ghế sau 5 phút
+                    ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId)->delay(now()->addMinutes(5));
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
         } catch (\Throwable $th) {
             return response()->json([
@@ -266,9 +347,9 @@ class BookTicketController extends Controller
             ], 500);
         }
     }
-    public function clearSession(Request $request, Showtime $showtime)
-    {
-        session()->forget('book_tickets');
-        return response()->json(['success' => true]);
-    }
+    // public function clearSession(Request $request, Showtime $showtime)
+    // {
+    //     session()->forget('book_tickets');
+    //     return response()->json(['success' => true]);
+    // }
 }

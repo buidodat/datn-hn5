@@ -58,9 +58,9 @@ class HomeController extends Controller
 
 
 
-        $post = Post::orderBy('created_at', 'desc')->take(5)->get();
+        $posts = Post::orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'post', 'currentNow', 'endDate'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'posts', 'currentNow', 'endDate'));
     }
 
     public function policy()
