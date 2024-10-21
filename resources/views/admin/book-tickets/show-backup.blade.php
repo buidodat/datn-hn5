@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <form id="proceedPayment" action="{{ route('payment', $showtime) }}" method="POST">
+    <form id="formBook" action="{{ route('payment', $showtime) }}" method="POST">
         @csrf
         <div class="row">
 
@@ -309,7 +309,7 @@
                                                 </div>
 
                                                 {{-- Voucher giảm giá --}}
-                                                {{-- <div class="row">
+                                                <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="box-voucher my-5">
                                                             <h4 class="p-3 mb-2  bg-light text-dark">Giảm giá</h4>
@@ -319,34 +319,32 @@
                                                                     <div class="voucher-title">
                                                                         <h5>Poly Voucher</h5>
                                                                     </div>
-                                                                    <form class="voucher-form" id="voucher-form"
-                                                                        method="POST">
-                                                                        @csrf
 
-                                                                        <div class="row">
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="code"
-                                                                                    class="form-control" id="voucher_code"
-                                                                                    required placeholder="Nhập mã voucher">
 
-                                                                            </div>
-                                                                            <div class="col-md-2">
-                                                                                <button class="btn btn-primary w-100"
-                                                                                    type="submit"
-                                                                                    id="apply-voucher-btn">Xác nhận
-                                                                                </button>
-                                                                            </div>
-
+                                                                    <div class="row">
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="code"
+                                                                                class="form-control" id="voucher_code"
+                                                                                required placeholder="Nhập mã voucher">
 
                                                                         </div>
+                                                                        <div class="col-md-2">
+                                                                            <button class="btn btn-primary w-100"
+                                                                                type="submit" id="apply-voucher-btn">Xác
+                                                                                nhận
+                                                                            </button>
+                                                                        </div>
 
-                                                                    </form>
+
+                                                                    </div>
+
+
                                                                     <div id="voucher-response"></div>
                                                                 </div>
 
 
 
-                                                                <div class="points-section mt-4">
+                                                                {{-- <div class="points-section mt-4">
                                                                     <div class="points-title mx-2">
                                                                         <h5>Điểm Poly</h5>
                                                                     </div>
@@ -378,11 +376,11 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </form>
-                                                                </div>
+                                                                </div> --}}
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div> --}}
+                                                </div>
 
                                                 {{-- tong tien --}}
                                                 <div class="total-price-checkout" id="getPriceOrder">
@@ -580,6 +578,7 @@
             </div>
 
         </div>
+        <input type="text" value="{{ $showtime->id }}" id="showtime-id">
     </form>
 
 
@@ -591,12 +590,7 @@
 
 @section('script-libs')
     {{-- @vite('resources/js/choose-seat.js') --}}
-    <script>
-        const showtimeId = {{ $showtime->id }}
-    </script>
-
     @vite('resources/js/book-ticket.js')
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         window.addEventListener('beforeunload', function(event) {
@@ -620,10 +614,6 @@
                 </button>`;
 
             document.getElementById('backToChooseSeat').addEventListener('click', backToChooseSeat);
-            document.getElementById('bookNow').addEventListener('click', function() {
-                // Gọi hàm xử lý thanh toán ở đây
-                handlePayment();
-            });
         }
 
         function backToChooseSeat() {
@@ -640,7 +630,11 @@
                 </button>`;
             document.getElementById('nextChooseSeat').addEventListener('click', loadSeatsFromSession);
         }
+
+        // Khởi động sự kiện cho nút "Tiếp tục"
         document.getElementById('nextChooseSeat')?.addEventListener('click', loadSeatsFromSession);
+
+        // Quản lý ghế đã chọn
 
         let selectedSeats = [];
 
@@ -648,69 +642,97 @@
         let selectedSeatIds = [];
         let totalPriceSeat = 0;
 
-
+        // Định dạng giá
         function formatPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
         }
 
+        // function toggleSeat(element) {
+        //     const status = element.getAttribute('data-seat-status');
+        //     const seatName = element.getAttribute('data-seat-name');
+        //     const seatId = element.getAttribute('data-seat-id');
+        //     const seatPrice = parseInt(element.getAttribute('data-seat-price'), 10);
+        //     const typeSeatId = parseInt(element.getAttribute('data-type-seat-id'), 10);
 
+        //     if (status !== "available") {
+        //         alert('Ghế này không khả dụng.');
+        //         return;
+        //     }
+
+        //     const seatIndex = selectedSeats.indexOf(seatName);
+        //     const isDoubleSeat = typeSeatId === 3;
+
+        //     if (seatIndex > -1) {
+        //         // Bỏ chọn ghế
+        //         selectedSeats.splice(seatIndex, 1);
+        //         selectedSeatIds.splice(seatIndex, 1);
+        //         totalPriceSeat -= seatPrice;
+        //         element.querySelector('.seat').classList.remove('seat-selected');
+        //     } else {
+        //         // Thêm ghế
+        //         selectedSeats.push(seatName);
+        //         selectedSeatIds.push(seatId);
+        //         totalPriceSeat += seatPrice;
+        //         element.querySelector('.seat').classList.add('seat-selected');
+        //     }
+
+        //     updateSelectedInfo();
+        //     toggleSeatToSession(selectedSeatIds);
+        // }
 
         function toggleSeat(element) {
-            const seatId = element.getAttribute('data-seat-id');
+            const status = element.getAttribute('data-seat-status');
+            const userId = element.getAttribute('data-user-id');
             const seatName = element.getAttribute('data-seat-name');
+            const seatId = element.getAttribute('data-seat-id');
             const seatPrice = parseInt(element.getAttribute('data-seat-price'), 10);
+            const typeSeatId = parseInt(element.getAttribute('data-type-seat-id'), 10);
 
-            toggleSeatToSession(seatId)
-                .then((action) => {
-                    if (action === 'added') {
-                        selectedSeats.push(seatName);
-                        totalPriceSeat += seatPrice;
-                        element.querySelector('.seat').classList.add('seat-selected');
-                    } else if (action === 'removed') {
-                        selectedSeats = selectedSeats.filter(seat => seat !== seatName);
-                        totalPriceSeat -= seatPrice;
-                        element.querySelector('.seat').classList.remove('seat-selected');
-                    } else {
-                        alert('Không thể chọn ghế này ');
-                        return;
-                    }
+            if (status !== "available") {
+                if (userId != {{ auth()->id() }}) {
+                    alert('Ghế này không khả dụng.');
+                    return
+                }
 
-                    updateSelectedInfo(); // Cập nhật thông tin đã chọn
-                })
-                .catch((errorMessage) => {
-                    alert(errorMessage); // Thông báo lỗi
-                });
+            }
+
+            const seatIndex = selectedSeats.indexOf(seatName);
+            const isDoubleSeat = typeSeatId == 3;
+
+            const isSelected = selectedSeats.includes(seatName); // Kiểm tra xem ghế đã được chọn hay chưa
+
+            if (isSelected) {
+                // Bỏ chọn ghế
+                selectedSeats = selectedSeats.filter(seat => seat !== seatName); // Loại bỏ ghế ra khỏi mảng
+                totalPriceSeat -= seatPrice;
+                element.querySelector('.seat').classList.remove('seat-selected');
+            } else {
+                // Thêm ghế
+                selectedSeats.push(seatName);
+                totalPriceSeat += seatPrice;
+                element.querySelector('.seat').classList.add('seat-selected');
+            }
+
+            updateSelectedInfo();
+            toggleSeatToSession(seatId); // Gọi AJAX với từng seatId
         }
 
         function toggleSeatToSession(seatId) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    url: '{{ route('toggle-seat', $showtime) }}',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        seatId
-                    }),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: (data) => {
-                        if (data.success) {
-                            resolve(data.action); // 'added' hoặc 'removed'
-                        } else {
-                            reject(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
-                        }
-                    },
-                    error: (jqXHR) => {
-                        const errorMessage = jqXHR.responseJSON?.message ||
-                            'Lỗi hệ thống, vui lòng thử lại.';
-                        reject(errorMessage);
-                    }
-                });
+            $.ajax({
+                url: '{{ route('toggle-seat', $showtime) }}',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    seatId
+                }), // Truyền seatId duy nhất
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: (data) => console.log(data),
+                error: (jqXHR, textStatus, errorThrown) =>
+                    console.error('Error:', textStatus, errorThrown)
             });
         }
-
-
         document.querySelectorAll('.box-item-pro').forEach(item => {
             item.addEventListener('click', function() {
                 toggleSeat(this);
@@ -729,7 +751,21 @@
 
 
 
-
+        // function toggleSeatToSession(selectedSeatIds) {
+        //     $.ajax({
+        //         url: '{{ route('toggle-seat', $showtime) }}',
+        //         method: 'POST',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({
+        //             selectedSeatIds
+        //         }),
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success: (data) => console.log(data),
+        //         error: (jqXHR, textStatus, errorThrown) => console.error('Error:', textStatus, errorThrown)
+        //     });
+        // }
         function loadSeatsFromSession() {
             $.ajax({
                 url: '{{ route('get-selected-seat', $showtime) }}',
@@ -740,26 +776,15 @@
                 success: (data) => {
                     if (data.success) {
                         $('#seatDetails').empty();
-
-
-                        // Hiển thị thông tin chi tiết ghế
                         data.data.seatDetails.forEach(seat => {
                             $('#seatDetails').append(`
-                        <div class="info-seat-checkout m-2 d-flex justify-content-between my-2">
-                            <div><b>${seat.name}</b></div>
-                            <div class="text-danger">
-                                <span>${seat.quantity} x ${seat.price.toLocaleString()} VNĐ</span>
-                                <span> = ${(seat.quantity * seat.price).toLocaleString()} VNĐ</span>
-                            </div>
-                        </div>`);
-
-                            const seatIds = data.data.seatIds; // Lấy seatIds từ API
-                            seatIds.forEach(id => {
-                                $('#seatDetails').append(
-                                    `<input type="hidden" name="seatSelected[]" value="${id}">`
-                                );
-                            });
-
+                                <div class="info-seat-checkout m-2 d-flex justify-content-between my-2">
+                                    <div><b>${seat.name}</b></div>
+                                    <div class="text-danger">
+                                        <span>${seat.quantity} x ${seat.price.toLocaleString()} VNĐ</span>
+                                        <span> = ${(seat.quantity * seat.price).toLocaleString()} VNĐ</span>
+                                    </div>
+                                </div>`);
                         });
                         document.getElementById('chooseSeat').style.display = 'none';
                         document.getElementById('checkOut').style.display = 'block';
@@ -772,14 +797,11 @@
                     if (jqXHR.status == 401) {
                         alert(jqXHR.responseJSON.message);
                     } else {
-                        console.error('Error:', jqXHR.statusText, jqXHR.responseText);
+                        console.error('Error:', textStatus, errorThrown);
                     }
                 }
             });
-
-            updatePrice();
         }
-
 
         // Hàm tổng giá
         function getTotalPriceCombo() {
@@ -848,39 +870,12 @@
 
             // Khởi tạo tổng giá ngay khi trang được tải
             calculateTotalPrice();
-
         });
 
         // Xử lý thanh toán
+        document.addEventListener('DOMContentLoaded', function() {
 
-        function handlePayment() {
-            const formData = new FormData(document.getElementById('proceedPayment'));
-
-            fetch('{{ route('payment-now', $showtime) }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => {
-                            throw new Error(err.message || 'Đã có lỗi xảy ra.');
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert(data.message); // Hiển thị thông báo thành công
-                    // Thực hiện thêm hành động nếu cần, ví dụ: chuyển hướng
-                })
-                .catch(error => {
-                    alert(error.message); // Hiển thị thông báo lỗi
-                });
-        }
-
-
+        });
 
         // Đầu vào tổng giá thanh toán
         document.getElementById('totalPricePaid').textContent = getTotalPricePaid().toLocaleString('vi-VN') + ' VNĐ';

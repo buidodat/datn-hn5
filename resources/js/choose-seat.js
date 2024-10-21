@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
     hiddenSelectedSeats.value = selectedSeats.join(',');
-    hiddenSeatIds.value = selectedSeatIds.join(','); 
+    hiddenSeatIds.value = selectedSeatIds.join(',');
     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
     hiddenTotalPrice.value = totalPrice;
 
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
                 selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                 hiddenSelectedSeats.value = selectedSeats.join(',');
-                hiddenSeatIds.value = selectedSeatIds.join(','); 
+                hiddenSeatIds.value = selectedSeatIds.join(',');
                 totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
                 hiddenTotalPrice.value = totalPrice;
             } else {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                     hiddenSelectedSeats.value = selectedSeats.join(',');
-                    hiddenSeatIds.value = selectedSeatIds.join(','); 
+                    hiddenSeatIds.value = selectedSeatIds.join(',');
                     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
                     hiddenTotalPrice.value = totalPrice;
 
