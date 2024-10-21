@@ -1,12 +1,12 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Giá vé Poly {{ $cinema->name }}
+    Giá vé Poly {{ $cinemas->name }}
 @endsection
 
 @section('content')
-<h1 class="ticket-price">BẢNG GIÁ VÉ - {{ $cinema->branch->name }} - {{ $cinema->name }}</h1>
 <div class="container-ticket-price">
+    <h1 class="ticket-price">BẢNG GIÁ VÉ - {{ $cinemas->branch->name }} - {{ $cinemas->name }}</h1>
     <table class="table table-bordered rounded align-middle">
         <thead>
             <tr class="table-header">
@@ -27,10 +27,12 @@
             </tr>
         </thead>
         <tbody>
+            @if ($cinemas->surcharge > 0) <!-- Kiểm tra phụ phí của rạp chiếu -->
             <tr>
-                <td>Poly {{ $cinema->name }}</td>
-                <td>{{ number_format($cinema->surcharge) }}đ</td>
+                <td>Poly {{ $cinemas->name }}</td>
+                <td>{{ number_format($cinemas->surcharge) }}đ</td>
             </tr>
+            @endif
             @foreach ($typeRooms as $typeRoom)
             <tr>
                 <td>{{ $typeRoom->name }}</td>
@@ -53,7 +55,7 @@
     }
 
     h1.ticket-price {
-        font-size: 30px;
+        font-size: 20px;
         text-align: center;
         margin-bottom: 40px;
         margin-top: 50px;
@@ -65,7 +67,6 @@
         letter-spacing: 2.5px;
         text-transform: uppercase;
     }
-
     .container-ticket-price {
         width: 60%;
         margin: 0 auto;
@@ -90,10 +91,6 @@
         }
     }
 
-    .container-ticket-price:hover {
-        transform: scale(1.05);
-    }
-
     table {
         width: 100%;
         border-collapse: separate;
@@ -106,7 +103,7 @@
         background-color: rgba(255, 255, 255, 0.85);
         border-radius: 20px;
         box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.05), -10px -10px 20px rgba(255, 255, 255, 0.6);
-        font-size: 18px;
+        font-size: 15px;
         transition: all 0.3s ease;
     }
 
@@ -157,7 +154,7 @@
         }
 
         h1.ticket-price {
-            font-size: 32px;
+            font-size: 20px;
         }
 
         th, td {

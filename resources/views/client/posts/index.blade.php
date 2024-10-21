@@ -7,72 +7,33 @@
 @section('content')
 <div class="hs_blog_categories_main_wrapper">
     <div class="container">
-        <div class="row" style="display: flex; align-items: stretch;">
-            <!-- Cột trái -->
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="hs_blog_left_sidebar_main_wrapper">
-                    <div class="row">
-                        @foreach($leftPosts as $post)
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px;">
-                            <div class="hs_blog_box1_main_wrapper">
-                                <div class="hs_blog_box1_img_wrapper">
-                                    @php
-                                    $url = $post->img_post;
-                                    if (!\Str::contains($url, 'http')) {
-                                        $url = Storage::url($url);
-                                    }
-                                    @endphp
-                                    <img src="{{ $url }}" alt="Chưa có ảnh" />
-                                </div>
-                                <div class="hs_blog_box1_cont_main_wrapper">
-                                    <div class="hs_blog_cont_heading_wrapper">
-                                        <ul>
-                                            <li>{{ $post->created_at->format('d/m/Y') }}</li>
-                                        </ul>
-                                        <h2>{{ $post->title }}</h2>
-                                        <p>{{ Str::limit($post->description, 100) }}</p>
-                                        <h5><a href="{{ route('posts.show', $post->id) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="row">
+            <!-- Lặp qua 6 bài viết -->
+            @foreach($posts as $post)
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 30px;">
+                <div class="hs_blog_box1_main_wrapper">
+                    <div class="hs_blog_box1_img_wrapper">
+                        @php
+                        $url = $post->img_post;
+                        if (!\Str::contains($url, 'http')) {
+                            $url = Storage::url($url);
+                        }
+                        @endphp
+                        <img src="{{ $url }}" alt="Chưa có ảnh" />
+                    </div>
+                    <div class="hs_blog_box1_cont_main_wrapper">
+                        <div class="hs_blog_cont_heading_wrapper">
+                            <ul>
+                                <li>{{ $post->created_at->format('d/m/Y') }}</li>
+                            </ul>
+                            <h2>{{ $post->title }}</h2>
+                            <p>{{ Str::limit($post->description, 100) }}</p>
+                            <h5><a href="{{ route('posts.show', $post->slug) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5> <!-- Sử dụng slug -->
                         </div>
-                        @endforeach
                     </div>
                 </div>
             </div>
-
-            <!-- Cột phải -->
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="hs_blog_left_sidebar_main_wrapper">
-                    <div class="row">
-                        @foreach($rightPosts as $post)
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px;">
-                            <div class="hs_blog_box1_main_wrapper">
-                                <div class="hs_blog_box1_img_wrapper">
-                                    @php
-                                    $url = $post->img_post;
-                                    if (!\Str::contains($url, 'http')) {
-                                        $url = Storage::url($url);
-                                    }
-                                    @endphp
-                                    <img src="{{ $url }}" alt="Chưa có ảnh" />
-                                </div>
-                                <div class="hs_blog_box1_cont_main_wrapper">
-                                    <div class="hs_blog_cont_heading_wrapper">
-                                        <ul>
-                                            <li>{{ $post->created_at->format('d/m/Y') }}</li>
-                                        </ul>
-                                        <h2>{{ $post->title }}</h2>
-                                        <p>{{ Str::limit($post->description, 50) }}</p>
-                                        <h5><a href="{{ route('posts.show', $post->id) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         <!-- Phân trang -->
@@ -93,7 +54,6 @@
         background-color: #F6F6F6;
         padding: 20px;
         border-radius: 10px;
-        /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
         height: 450px; 
         display: flex;
         flex-direction: column;
@@ -102,14 +62,14 @@
 
     .hs_blog_box1_img_wrapper {
         width: 100%;
-        height: 250px; /* Chiều cao cố định cho khung chứa ảnh */
-        overflow: hidden; /* Ẩn phần ảnh dư thừa */
+        height: 250px;
+        overflow: hidden;
     }
 
     .hs_blog_box1_img_wrapper img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Giữ tỷ lệ ảnh và bao phủ toàn bộ khung */
+        object-fit: cover;
         border-radius: 10px;
     }
 

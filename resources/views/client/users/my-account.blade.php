@@ -388,7 +388,7 @@
                 </div>
                 <div class="my-account-text-center">
                     <button type="submit" class="my-account-btn"
-                        onclick="return confirm('Bạn có chắc chắn muốn đổi mật khẩu không?')">Xác nhận</button>
+                        >Xác nhận</button>
                     <button type="button" class="my-account-btn" id="closeChangePassword">Hủy</button>
                 </div>
             </form>

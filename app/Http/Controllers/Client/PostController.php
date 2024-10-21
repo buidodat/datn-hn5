@@ -5,24 +5,24 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+
 class PostController extends Controller
 {
     public function index()
     {
-        // Lấy 6 bài viết mới nhất
+        // Lấy 6 bài viết mới nhất và phân trang
         $posts = Post::latest()->paginate(6); 
 
-        // Chia bài viết thành hai phần: 3 bài cho cột trái và 3 bài cho cột phải
-        $leftPosts = $posts->forPage(1, 3); // Lấy 3 bài đầu tiên
-        $rightPosts = $posts->forPage(2, 3); // Lấy 3 bài tiếp theo
-
-        // Truyền cả 2 biến vào view
-        return view('client.posts.index', compact('leftPosts', 'rightPosts', 'posts'));
+        // Truyền biến $posts vào view
+        return view('client.posts.index', compact('posts'));
     }
-    public function show($id)
+
+    public function show($slug)
     {
-        // Tăng lượt xem mỗi lần người dùng nhấn vào bài viết
-        $post = Post::findOrFail($id);
+        // Tìm bài viết dựa trên slug thay vì id
+        $post = Post::where('slug', $slug)->firstOrFail();
+
+        // Tăng lượt xem
         $post->increment('view_count');
 
         // Hiển thị bài viết
