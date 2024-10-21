@@ -27,7 +27,7 @@ class UserController extends Controller
         $user = User::findOrFail($userID);
         $genders = User::GENDERS;
 
-        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets'));
     }
@@ -123,8 +123,9 @@ class UserController extends Controller
         return view('client.users.ticket-detail', compact('ticketSeat', 'qrCode', 'barcode'));
     }
 
-    // function transactionHistory()
-    // {
-    //     return back();
-    // }
+    function transactionHistory()
+    {
+        return redirect()->back();
+        // dd('Quay trở về');
+    }
 }

@@ -82,16 +82,15 @@ class ShowtimeController extends Controller
                     ->where('date', $request->date)
                     ->get();
 
-                // Lặp qua tất cả start-time
+                // lặp qua tất cả start-time
                 foreach ($request->start_time as $i => $startTimeChild) {
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
                     $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-                    // Kiểm tra tg chiếu 
+                    // kiểm tra tg chiếu 
                     foreach ($existingShowtimes as $showtime) {
                         if ($startTime < $showtime->end_time && $endTime > $showtime->start_time) {
                             throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
-
                         }
                     }
 
@@ -102,33 +101,42 @@ class ShowtimeController extends Controller
                         'movie_version_id' => $request->movie_version_id,
                         'movie_id' => $request->movie_id,
                         'date' => $request->date,
-                        'start_time' => $startTime->format('Y-m-d H:i'), 
-                        'end_time' => $endTime->format('Y-m-d H:i'), 
+                        'start_time' => $startTime->format('Y-m-d H:i'),
+                        'end_time' => $endTime->format('Y-m-d H:i'),
                         'is_active' => isset($request->is_active) ? 1 : 0,
                     ];
 
                     $showtime = Showtime::create($dataShowtimes);
 
-                  
+
                     $seats = Seat::where('room_id', $room->id)->get();
 
                     $seatShowtimes = [];
                     foreach ($seats as $seat) {
-                        
+
+                        $cinemaPrice = $room->cinema->surcharge;
+                        $moviePrice = $movie->surcharge;
+                        $typeRoomPrice = $typeRoom->surcharge;
+                        $typeSeat = $seat->typeSeat->price;
+
+                        // dd($cinemaPrice . '-' . $moviePrice  . '-' . $typeRoomPrice  . '-' . $typeSeat);
+
+                        $price = $cinemaPrice + $moviePrice + $typeRoomPrice + $typeSeat;
                         if ($seat->is_active == 0) {
-                            $status = 'broken';  
+                            $status = 'broken';
                         } else {
-                            $status = 'available';  
+                            $status = 'available';
                         }
 
                         $seatShowtimes[] = [
                             'showtime_id' => $showtime->id,
                             'seat_id' => $seat->id,
                             'status' => $status,
+                            'price' => $price
                         ];
                     }
 
-                    
+
                     SeatShowtime::insert($seatShowtimes);
                 }
             });

@@ -150,7 +150,7 @@
                                                     {!! Str::limit($showtime->movie->name, 40) !!}
                                                     <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
                                                     </span>
-                                                  
+
                                                 </p>
                                             @else
                                                 <p class="mb-0">{!! Str::limit($showtime->movie->name, 40) !!}</p>
@@ -182,6 +182,14 @@
                                             {!! $showtime->is_active == 1
                                                 ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
                                                 : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+
+                                            {{-- <div class="form-check form-switch form-switch-default">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    name="is_active"
+                                                    @if ($showtime->is_active) checked disabled @endif
+                                                    data-id="{{ $showtime->id }}">
+                                            </div> --}}
+
                                             @if ($showtime->is_active == 1)
                                                 @if ($showing)
                                                     <span class="badge bg-danger-subtle text-danger text-uppercase">Đang
@@ -208,7 +216,7 @@
                                                 <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                         class="fas fa-eye"></i></button></a>
 
-                                            @if ($upComing)
+                                            @if ($showtime->is_active == 0)
                                                 <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                                                     <button title="xem" class="btn btn-warning btn-sm" type="button"><i
                                                             class="fas fa-edit"></i></button>
