@@ -55,68 +55,7 @@
                     </div>
                 </div>
                 {{-- giao diện bộ lọc, bộ tìm kiếm  --}}
-                {{-- <div class="card-body border border-dashed border-end-0 border-start-0">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-xxl-5 col-sm-6">
-                                <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Search for order ID, customer, order status or something...">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="text" class="form-control" data-provider="flatpickr"
-                                        data-date-format="d M, Y" data-range-date="true" id="demo-datepicker"
-                                        placeholder="Select date">
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices="" data-choices-search-false=""
-                                        name="choices-single-default" id="idStatus">
-                                        <option value="">Status</option>
-                                        <option value="all" selected="">All</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Inprogress">Inprogress</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                        <option value="Pickups">Pickups</option>
-                                        <option value="Returns">Returns</option>
-                                        <option value="Delivered">Delivered</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select class="form-control" data-choices="" data-choices-search-false=""
-                                        name="choices-single-default" id="idPayment">
-                                        <option value="">Select Payment</option>
-                                        <option value="all" selected="">All</option>
-                                        <option value="Mastercard">Mastercard</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Visa">Visa</option>
-                                        <option value="COD">COD</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-1 col-sm-4">
-                                <div>
-                                    <button type="button" class="btn btn-info w-100" onclick="SearchData();"> <i
-                                            class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Lọc
-                                    </button>
-                                </div>
-                            </div>
-                            <!--end col-->
-                        </div>
-                        <!--end row-->
-                    </form>
-                </div> --}}
+
 
                 <div class="card-body pt-0">
 
@@ -132,13 +71,13 @@
                             <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
                                 aria-selected="false">
                                 Đã xuất bản
-                                <span class="badge bg-success align-middle ms-1">{{ $roomPublishs->count() }}</span>
+                                <span class="badge bg-success align-middle ms-1">{{ $rooms->where('is_publish',true)->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
                                 aria-selected="false">
-                                Bản nháp<span class="badge bg-warning align-middle ms-1">{{ $roomDrafts->count() }}</span>
+                                Bản nháp<span class="badge bg-warning align-middle ms-1">{{ $rooms->where('is_publish',false)->count() }}</span>
                             </a>
                         </li>
                         @foreach ($cinemas as $cinema)
@@ -175,19 +114,11 @@
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
 
-                                                        @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                        @endif
 
 
 
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
+
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
                                                             data-room-id="{{ $room->id }}"
                                                             data-room-name="{{ $room->name }}"
                                                             data-branch-id="{{ $room->branch_id }}"
@@ -197,9 +128,18 @@
                                                             data-is-publish={{ $room->is_publish }}>Chỉnh
                                                             sửa</a>
 
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
+                                                        @if (!$room->is_publish)
+                                                            <a class="link-opacity-75-hover link-opacity-50"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                bỏ</a>
+                                                        @else
+                                                            <a class=" link-opacity-75-hover link-opacity-50 "
+                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
+                                                        @endif
 
 
                                                     </div>
@@ -230,8 +170,7 @@
                             </table>
                         </div>
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table class="table table-bordered dt-responsive nowrap align-middle w-100"
-                                id="tableIsPublish">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
@@ -244,13 +183,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($roomPublishs as $index => $room)
+                                    @foreach ($rooms->where('is_publish',true) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
+
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-seat-template-id="{{ $room->seat_template_id }}"
+                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                         @if (!$room->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $room) }}"
@@ -260,18 +212,6 @@
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
                                                         @endif
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-seat-template-id="{{ $room->seat_template_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
-                                                            ghế</a>
 
                                                     </div>
                                                 </div>
@@ -314,13 +254,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($roomDrafts as $index => $room)
+                                    @foreach ($rooms->where('is_publish',false) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
+
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                            data-room-id="{{ $room->id }}"
+                                                            data-room-name="{{ $room->name }}"
+                                                            data-branch-id="{{ $room->branch_id }}"
+                                                            data-cinema-id="{{ $room->cinema_id }}"
+                                                            data-type-room-id="{{ $room->type_room_id }}"
+                                                            data-seat-template-id="{{ $room->seat_template_id }}"
+                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                            sửa</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                         @if (!$room->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
                                                                 href="{{ route('admin.rooms.destroy', $room) }}"
@@ -330,18 +283,6 @@
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
                                                         @endif
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateRoomModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-seat-template-id="{{ $room->seat_template_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
-                                                            ghế</a>
 
                                                     </div>
                                                 </div>
@@ -493,7 +434,8 @@
                                 <span class="text-danger mt-3" id="createTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="seat_template_id" class="form-label"><span class="text-danger">*</span> Mẫu sơ đồ
+                                <label for="seat_template_id" class="form-label"><span class="text-danger">*</span> Mẫu
+                                    sơ đồ
                                     ghế</label>
                                 <select class="form-select" id="seat_template_id" name="seat_template_id" required>
                                     @foreach ($seatTemplates as $id => $name)
@@ -569,7 +511,8 @@
                                 <span class="text-danger mt-3" id="updateTypeRoomError"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="updateSeatTemplateId" class="form-label"><span class="text-danger">*</span> Mẫu sơ đồ
+                                <label for="updateSeatTemplateId" class="form-label"><span class="text-danger">*</span>
+                                    Mẫu sơ đồ
                                     ghế</label>
                                 <select class="form-select" id="updateSeatTemplateId" name="seat_template_id" required>
                                     @foreach ($seatTemplates as $id => $name)
@@ -732,10 +675,7 @@
                         console.log(data);
                         $('#updateRoomModal').modal('hide');
                         form.reset();
-
-                        alert('Thao tác thành công!'); // Hiển thị thông báo trước khi reload trang
                         location.reload();
-
                     }
 
                 })

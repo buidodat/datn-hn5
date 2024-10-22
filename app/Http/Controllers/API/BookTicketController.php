@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Validator;
 
 class BookTicketController extends Controller
 {
-    //Hàm toggleSeat đễ lưu lại sự thay đổi khi người dùng chọn seat và lưu seat đó vào sesion luôn
+        //Hàm toggleSeat đễ lưu lại sự thay đổi khi người dùng chọn seat và lưu seat đó vào sesion luôn
 
-    // mã mới thao tác với 1 phần tử
+        // mã mới thao tác với 1 phần tử
     public function toggleSeat(Request $request, Showtime $showtime)
     {
         try {
