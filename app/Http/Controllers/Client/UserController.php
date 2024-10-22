@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -61,10 +62,42 @@ class UserController extends Controller
         }
     }
 
-    public function changePassword(Request $request)
+    // public function changePassword(Request $request)
+    // {
+    //     // Validate input
+    //     $request->validate([
+    //         'old_password' => 'required',
+    //         'password' => 'required|min:8|max:30|confirmed',
+    //     ], [
+    //         'old_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
+    //         'password.required' => 'Vui lòng nhập mật khẩu mới.',
+    //         'password.min' => 'Mật khẩu tối thiểu phải 8 ký tự.',
+    //         'password.max' => 'Mật khẩu không được quá 30 ký tự.',
+    //         'password.confirmed' => 'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
+    //     ]);
+
+    //     $user = User::findOrFail(Auth::user()->id);
+
+    //     // Kiểm tra mật khẩu hiện tại
+    //     if (!Hash::check($request->old_password, $user->password)) {
+    //         return redirect()->back()->withErrors(['old_password' => 'Mật khẩu hiện tại không chính xác.']);
+    //     }
+
+    //     // Cập nhật mật khẩu mới
+    //     $user->update([
+    //         'password' => Hash::make($request->password),
+    //     ]);
+
+    //     // Gửi thông báo qua email
+    //     Notification::send($user, new PasswordChanged());
+
+    //     return redirect()->back()->with('success', 'Đổi mật khẩu thành công!');
+    // }
+
+    public function changePasswordAjax(Request $request)
     {
         // Validate input
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'old_password' => 'required',
             'password' => 'required|min:8|max:30|confirmed',
         ], [
@@ -75,23 +108,29 @@ class UserController extends Controller
             'password.confirmed' => 'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
         ]);
 
-        $user = User::findOrFail(Auth::user()->id);
-
-        // Kiểm tra mật khẩu hiện tại
-        if (!Hash::check($request->old_password, $user->password)) {
-            return redirect()->back()->withErrors(['old_password' => 'Mật khẩu hiện tại không chính xác.']);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Cập nhật mật khẩu mới
+        $user = User::findOrFail(Auth::user()->id);
+
+        // Check if old password is correct
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['error' => 'Mật khẩu hiện tại không chính xác.'], 400);
+        }
+
+        // Update password
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        // Gửi thông báo qua email
-        Notification::send($user, new PasswordChanged());
+        // Return success response for AJAX
+        session()->flash('success', 'Đổi mật khẩu thành công!');
 
-        return redirect()->back()->with('success', 'Đổi mật khẩu thành công!');
+        // Trả về phản hồi thành công
+        return response()->json(['success' => true]);
     }
+
     // Thẻ thành viên
 
     // ...
