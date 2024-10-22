@@ -68,7 +68,7 @@
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
                                 <th>Giới hạn</th>
-                                <th>Mô tả</th>
+                                {{-- <th>Mô tả</th> --}}
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -78,7 +78,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->code }}</td>
-                                    <td>{{ $item->title }}</td>
+                                    <td>{{ Str::limit($item->title ,30)}}</td>
                                     {{-- <td class="nav nav-sm flex-column">
                                     --}}{{-- <li class="nav-item mb-2"><span
                                             class="fw-semibold">Mã code:</span> {{ $item->code }}</li> --}}{{--
@@ -114,11 +114,14 @@
                                     <td>{{ $item->discount }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ $item->limit }}</td>
-                                    <td>{{ $item->description }}</td>
+                                    {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
-                                        {!! $item->is_active == 1
-                                            ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                            : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-voucher-id="{{ $item->id }}" @checked($item->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
                                     </td>
                                     <td>
                                         {{-- <a href="{{ route('admin.vouchers.show', $item) }}">
@@ -169,6 +172,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let voucherId = $(this).data('voucher-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('vouchers.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: voucherId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection
