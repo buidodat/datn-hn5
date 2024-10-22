@@ -128,14 +128,14 @@
                                                         <td class="box-item" colspan="2">
                                                             <div class="seat-item change-active">
                                                                 <!-- 3 cho ghế đôi -->
-                                                                <img src="{{ $seat->is_active == 1 ? asset('svg/seat-double.svg') : asset('svg/seat-double-broken.svg') }}" class='seat'
-                                                                    width="100%">
+                                                                <img src="{{ $seat->is_active == 1 ? asset('svg/seat-double.svg') : asset('svg/seat-double-broken.svg') }}"
+                                                                    class='seat' width="100%">
                                                                 <span
                                                                     class="seat-label-double">{{ chr(65 + $row) . ($col + 1) }}
                                                                     {{ chr(65 + $row) . ($col + 2) }}</span>
-                                                                    <input type="hidden" class='seat-active'
-                                                                            name="seats[{{ $seat->id }}]"
-                                                                            value="{{ $seat->is_active }}">
+                                                                <input type="hidden" class='seat-active'
+                                                                    name="seats[{{ $seat->id }}]"
+                                                                    value="{{ $seat->is_active }}">
                                                             </div>
                                                         </td>
                                                         <td class="box-item" style="display: none;">
@@ -154,17 +154,17 @@
                                                                             class='seat' width="100%">
                                                                         <span
                                                                             class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
-                                                                            <input type="hidden" class='seat-active'
+                                                                        <input type="hidden" class='seat-active'
                                                                             name="seats[{{ $seat->id }}]"
                                                                             value="{{ $seat->is_active }}">
                                                                     @break
 
                                                                     @case(2)
-                                                                        <img src="{{ $seat->is_active == 1 ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}" class='seat'
-                                                                            width="100%">
+                                                                        <img src="{{ $seat->is_active == 1 ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}"
+                                                                            class='seat' width="100%">
                                                                         <span
                                                                             class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
-                                                                            <input type="hidden" class='seat-active'
+                                                                        <input type="hidden" class='seat-active'
                                                                             name="seats[{{ $seat->id }}]"
                                                                             value="{{ $seat->is_active }}">
                                                                     @break
@@ -173,31 +173,6 @@
                                                             </div>
                                                         </td>
                                                     @endif
-                                                    {{-- <td class="box-item">
-                                                        @foreach ($seats as $seat)
-                                                            @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
-                                                                @if ($seat->type_seat_id == 1)
-                                                                    <div class="seat-item change-active">
-                                                                        <img src="{{ $seat->is_active ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
-                                                                            class="seat" width="100%">
-                                                                        <span class="seat-label">{{ $seat->name }}</span>
-                                                                        <input type="hidden" class='seat-active'
-                                                                            name="seats[{{ $seat->id }}]"
-                                                                            value="{{ $seat->is_active }}">
-                                                                    </div>
-                                                                @else
-                                                                    <div class="seat-item change-active">
-                                                                        <img src="{{ $seat->is_active ? asset('svg/seat-vip.svg') : asset('svg/seat-vip-broken.svg') }}"
-                                                                            class="seat" width="100%">
-                                                                        <span class="seat-label">{{ $seat->name }}</span>
-                                                                        <input type="hidden" class='seat-active'
-                                                                            name="seats[{{ $seat->id }}]"
-                                                                            value="{{ $seat->is_active }}">
-                                                                    </div>
-                                                                @endif
-                                                            @endif
-                                                        @endforeach
-                                                    </td> --}}
                                                 @endfor
                                             </tr>
                                         @endfor
@@ -283,17 +258,19 @@
                             <table class="table table-borderless   align-middle mb-0">
 
                                 <tbody>
-                                    <tr>
-                                        <td class="text-muted m-0 p-0" colspan='2'>
-                                            **Khi thay đổi trạng thái ghế sẽ không ảnh hưởng đến suất chiếu trước đó.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ghế hỏng</td>
-                                        <td class="text-center"> <img src="{{ asset('svg/seat-regular-broken.svg') }}"
-                                                height="30px">
-                                        </td>
-                                    </tr>
+                                    @if ($room->is_publish)
+                                        <tr>
+                                            <td class="text-muted m-0 p-0" colspan='2'>
+                                                **Khi thay đổi trạng thái ghế sẽ không ảnh hưởng đến suất chiếu trước đó.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ghế hỏng</td>
+                                            <td class="text-center"> <img
+                                                    src="{{ asset('svg/seat-regular-broken.svg') }}" height="30px">
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td>Ghế thường</td>
                                         <td class="text-center"> <img src="{{ asset('svg/seat-regular.svg') }}"
@@ -313,13 +290,19 @@
                                         </td>
                                     </tr>
 
-                                    {{-- <tr class="table-active">
-                                        <th colspan='2' class="text-center">Tổng
-                                            {{ $room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                            /
-                                            {{ $seats->whereNull('deleted_at')->count() }} chỗ ngồi</th>
+                                    <tr class="table-active">
+                                        <th colspan='2' class="text-center">
+                                            @if ($room->is_publish)
+                                                Tổng
+                                                {{ $room->seats->where('is_active', true)->count() }}
+                                                /
+                                                {{ $room->seats->count() }} chỗ ngồi
+                                            @else
+                                                Tổng {{ $room->seats->count() }} chỗ ngồi
+                                            @endif
+                                        </th>
 
-                                    </tr> --}}
+                                    </tr>
 
                                 </tbody>
 
@@ -343,53 +326,54 @@
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Lắng nghe sự kiện click vào các phần tử có class "change-active"
-            document.querySelectorAll('.change-active').forEach(function(seatElement) {
-                seatElement.addEventListener('click', function() {
-                    // Tìm phần tử img bên trong .change-active
-                    var seatImage = seatElement.querySelector('img');
-                    var seatInput = seatElement.querySelector('.seat-active');
+    @if ($room->is_publish)
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Lắng nghe sự kiện click vào các phần tử có class "change-active"
+                document.querySelectorAll('.change-active').forEach(function(seatElement) {
+                    seatElement.addEventListener('click', function() {
+                        // Tìm phần tử img bên trong .change-active
+                        var seatImage = seatElement.querySelector('img');
+                        var seatInput = seatElement.querySelector('.seat-active');
 
-                    // Đặt biến chứa đường dẫn của ảnh hiện tại
-                    var currentImage = seatImage.src;
-                    var regularSeat = "{{ asset('svg/seat-regular.svg') }}";
-                    var brokenSeat = "{{ asset('svg/seat-regular-broken.svg') }}";
-                    var vipSeat = "{{ asset('svg/seat-vip.svg') }}";
-                    var vipBrokenSeat = "{{ asset('svg/seat-vip-broken.svg') }}";
-                    var doubleSeat = "{{ asset('svg/seat-double.svg') }}";
-                    var doubleBrokenSeat = "{{ asset('svg/seat-double-broken.svg') }}";
+                        // Đặt biến chứa đường dẫn của ảnh hiện tại
+                        var currentImage = seatImage.src;
+                        var regularSeat = "{{ asset('svg/seat-regular.svg') }}";
+                        var brokenSeat = "{{ asset('svg/seat-regular-broken.svg') }}";
+                        var vipSeat = "{{ asset('svg/seat-vip.svg') }}";
+                        var vipBrokenSeat = "{{ asset('svg/seat-vip-broken.svg') }}";
+                        var doubleSeat = "{{ asset('svg/seat-double.svg') }}";
+                        var doubleBrokenSeat = "{{ asset('svg/seat-double-broken.svg') }}";
 
-                    // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế thường
-                    if (currentImage.includes('seat-regular.svg')) {
-                        seatImage.src = brokenSeat;
-                        seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
-                    } else if (currentImage.includes('seat-regular-broken.svg')) {
-                        seatImage.src = regularSeat;
-                        seatInput.value = 1; // Cập nhật trạng thái là hoạt động
-                    }
+                        // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế thường
+                        if (currentImage.includes('seat-regular.svg')) {
+                            seatImage.src = brokenSeat;
+                            seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
+                        } else if (currentImage.includes('seat-regular-broken.svg')) {
+                            seatImage.src = regularSeat;
+                            seatInput.value = 1; // Cập nhật trạng thái là hoạt động
+                        }
 
-                    // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế VIP
-                    if (currentImage.includes('seat-vip.svg')) {
-                        seatImage.src = vipBrokenSeat;
-                        seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
-                    } else if (currentImage.includes('seat-vip-broken.svg')) {
-                        seatImage.src = vipSeat;
-                        seatInput.value = 1; // Cập nhật trạng thái là hoạt động
-                    }
+                        // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế VIP
+                        if (currentImage.includes('seat-vip.svg')) {
+                            seatImage.src = vipBrokenSeat;
+                            seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
+                        } else if (currentImage.includes('seat-vip-broken.svg')) {
+                            seatImage.src = vipSeat;
+                            seatInput.value = 1; // Cập nhật trạng thái là hoạt động
+                        }
 
-                    // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế đôi
-                    if (currentImage.includes('seat-double.svg')) {
-                        seatImage.src = doubleBrokenSeat;
-                        seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
-                    } else if (currentImage.includes('seat-double-broken.svg')) {
-                        seatImage.src = doubleSeat;
-                        seatInput.value = 1; // Cập nhật trạng thái là hoạt động
-                    }
+                        // Kiểm tra và thay đổi hình ảnh khi nhấn vào ghế đôi
+                        if (currentImage.includes('seat-double.svg')) {
+                            seatImage.src = doubleBrokenSeat;
+                            seatInput.value = 0; // Cập nhật trạng thái là không hoạt động
+                        } else if (currentImage.includes('seat-double-broken.svg')) {
+                            seatImage.src = doubleSeat;
+                            seatInput.value = 1; // Cập nhật trạng thái là hoạt động
+                        }
+                    });
                 });
             });
-        });
-    </script>
-
+        </script>
+    @endif
 @endsection

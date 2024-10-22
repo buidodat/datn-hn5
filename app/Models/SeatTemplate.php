@@ -24,8 +24,8 @@ class SeatTemplate extends Model
         'is_active' => 'boolean',
         'seat_structure' => 'array'
     ];
-    const SCOPE_REGULAR = ['min'=>3,'default'=>4,'max'=>5];
-    const SCOPE_DOUBLE = ['min'=>0,'default'=>0,'max'=>2];
+    const ROW_REGULAR = 4;
+    const ROW_DOUBLE = 2;
     const MATRIXS = [
         ['id' => 1, 'name' => '12x12', 'max_row' => 12, 'max_col' => 12],
         ['id' => 2, 'name' => '13x13', 'max_row' => 13, 'max_col' => 13],

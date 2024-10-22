@@ -18,11 +18,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản lý sơ đồ ghế</h4>
+                <h4 class="mb-sm-0">Quản lý mẫu sơ đồ ghế</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.rooms.index') }}">Sơ đồ ghế</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.seat-templates.index') }}">Mẫu sơ đồ ghế</a></li>
                         <li class="breadcrumb-item active">Cập nhật</li>
                     </ol>
                 </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <form id="seatForm" method="POST" action="{{ route('admin.seat-templates.update', $seatTemplate) }}">
+    <form id="seatForm" method="POST" action="{{ route('admin.seat-templates.update.seat-structure', $seatTemplate) }}">
         @csrf
         @method('PUT')
         <div class="row">
@@ -43,30 +43,18 @@
                     <div class="card-body mb-3">
 
                         @php
-                            $scopeRegular = App\Models\Room::SCOPE_REGULAR;
-                            $scopeDouble = App\Models\Room::SCOPE_DOUBLE;
-                            $regularRows = range(0, $seatTemplate->row_regular - 1); // Các hàng ghế thường
+                            $rowRegular = App\Models\SeatTemplate::ROW_REGULAR;
+                            $rowDouble = App\Models\SeatTemplate::ROW_DOUBLE;
+                            $regularRows = range(0, $rowRegular - 1); // Các hàng ghế thường
 
-                            // $doubleRows =
-                            //     $seatTemplate->row_double > 0
-                            //         ? range($matrix['max_row'] - $seatTemplate->row_double, $matrix['max_row'] - 1)
-                            //         : []; // Các hàng ghế đôi
-                            $doubleRows = range($matrix['max_row'] - $seatTemplate->row_double, $matrix['max_row'] - 1) ;
-                            $vipRows = range(
-                                $seatTemplate->row_regular,
-                                $matrix['max_row'] - $seatTemplate->row_double - 1,
-                            ); // Các hàng ghế VIP
+                            $doubleRows =
+                                $rowDouble > 0 ? range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1) : []; // Các hàng ghế đôi
+                            $doubleRows = range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1);
+                            $vipRows = range($seatTemplate->row_regular, $matrix['max_row'] - $rowDouble - 1);
                         @endphp
                         @if (!$seatTemplate->is_publish)
                             <input type="hidden" name="seat_structure" id="seatStructure">
                             <input type="hidden" name="action" id="formAction">
-                            <input type="hidden" name="row_regular" id="inputRowRegular"
-                                value="{{ $seatTemplate->row_regular }}">
-                            <input type="hidden" name="row_vip" id="inputRowVip" value="8">
-
-                            <input type="hidden" name="row_double" id="inputRowDouble"
-                                value="{{ $seatTemplate->row_double }}">
-
                             <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
                                 <tbody>
                                     @for ($row = 0; $row < $matrix['max_row']; $row++)
@@ -75,17 +63,20 @@
                                             $isAllRegular = $isAllVip = $isAllDouble = false;
 
                                             if (in_array($row, $regularRows)) {
+                                                $rowTypeSeat = 1;
                                                 $rowClass = 'light-orange'; // Ghế thường
                                                 $isAllRegular = true;
                                             } elseif (in_array($row, $doubleRows)) {
                                                 $rowClass = 'light-pink'; // Ghế đôi
+                                                $rowTypeSeat = 3;
                                                 $isAllDouble = true;
                                             } else {
                                                 $rowClass = 'light-blue'; // Ghế VIP
                                                 $isAllVip = true;
+                                                $rowTypeSeat = 2;
                                             }
                                         @endphp
-                                        <tr>
+                                        <tr data-row-type-seat={{ $rowTypeSeat }}>
                                             <td class="box-item">{{ chr(65 + $row) }}</td>
                                             @for ($col = 0; $col < $matrix['max_col']; $col++)
                                                 @php
@@ -141,63 +132,17 @@
                                                 @endif
                                             @endfor
                                             <td class='box-item border-1'>
-                                                <span data-bs-toggle="offcanvas"
-                                                    data-bs-target="#rowSeat{{ chr(65 + $row) }}">
-                                                    <i class="fas fa-edit"></i>
-                                                </span>
-
-                                                <div class="offcanvas offcanvas-start" tabindex="-1"
-                                                    id="rowSeat{{ chr(65 + $row) }}">
-                                                    <div class="offcanvas-header border-bottom">
-                                                        <h5 class="offcanvas-title">Chỉnh sửa hàng ghế {{ chr(65 + $row) }}
-                                                        </h5>
-                                                        <button type="button" class="btn-close text-reset"
-                                                            data-bs-dismiss="offcanvas"></button>
-                                                    </div>
-                                                    <div class="offcanvas-body">
-                                                        <div class="row">
-                                                            <div class="col-md-12 mb-3">
-                                                                <div class="form-check form-radio-primary mb-3">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="typeSeatRow{{ chr(65 + $row) }}"
-                                                                        value="1" @checked($isAllRegular)
-                                                                        data-row="{{ chr(65 + $row) }}"
-                                                                        data-action="regular">
-                                                                    <label class="form-check-label">Ghế thường</label>
-                                                                </div>
-                                                                <div class="form-check form-radio-primary mb-3">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="typeSeatRow{{ chr(65 + $row) }}"
-                                                                        value="2" @checked($isAllVip)
-                                                                        data-row="{{ chr(65 + $row) }}" data-action="vip">
-                                                                    <label class="form-check-label">Ghế VIP</label>
-                                                                </div>
-                                                                <div class="form-check form-radio-primary mb-3">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="typeSeatRow{{ chr(65 + $row) }}"
-                                                                        value="3" data-row="{{ chr(65 + $row) }}"
-                                                                        data-action="double" @checked($isAllDouble)>
-                                                                    <label class="form-check-label">Ghế đôi</label>
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="col-md-12 text-center">
-                                                                <button type='button'
-                                                                    class="btn btn-danger btn-remove-all mx-1"
-                                                                    data-row="{{ chr(65 + $row) }}">
-                                                                    <i class="mdi mdi-trash-can-outline me-1"></i>Bỏ tất cả
-                                                                </button>
-                                                                <button type='button'
-                                                                    class="btn btn-info btn-restore-all mx-1"
-                                                                    data-row="{{ chr(65 + $row) }}">
-                                                                    <i class="ri-add-line align-bottom me-1"></i>Chọn tất
-                                                                    cả
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <button type="button" class="btn btn-info btn-select-all btn-sm "
+                                                    data-row="{{ chr(65 + $row) }}"> <i
+                                                        class="ri-add-line align-bottom"></i></button>
                                             </td>
+                                            <td class='box-item border-1'>
+                                                <button type="button" class="btn btn-danger btn-remove-all btn-sm "
+                                                    data-row="{{ chr(65 + $row) }}"> <i
+                                                        class="mdi mdi-trash-can-outline "></i></button>
+
+                                            </td>
+
                                         </tr>
                                     @endfor
                                 </tbody>
@@ -413,93 +358,66 @@
     @if (!$seatTemplate->is_publish)
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Lắng nghe sự kiện click trên ghế
+                // Hàm kiểm tra ghế kế bên có đủ điều kiện làm ghế đôi không
+                function canMakeDoubleSeat(td) {
+                    return td && td.querySelector('img') && td.querySelector('img').src.includes('seat-add.svg') && td
+                        .style.display !== 'none';
+                }
+
                 document.querySelectorAll('.box-item-seat').forEach(function(seat) {
                     seat.addEventListener('click', function() {
                         var img = this.querySelector('img');
                         var currentSrc = img.src;
-                        var typeSeatId = this.dataset.typeSeatId;
+                        var typeSeatId = parseInt(this.dataset
+                            .typeSeatId); // Lấy typeSeatId từ dataset và chuyển thành số nguyên
+
+                        // closest() để tìm phần tử td
                         var tdElement = this.closest('td');
+                        // nextElementSibling để tìm phần tử tdElement tiếp theo có cùng cấp
+                        var nextTd = tdElement ? tdElement.nextElementSibling : null;
+                        var previousTd = tdElement ? tdElement.previousElementSibling : null;
 
                         if (currentSrc.includes('seat-add.svg')) {
-                            if (typeSeatId == 3) {
-                                var nextTd = tdElement.nextElementSibling;
-                                if (nextTd && nextTd.querySelector('img').src.includes(
-                                        'seat-add.svg')) {
+                            if (typeSeatId === 3) { // Ghế đôi
+                                // Kiểm tra ghế bên phải và bên trái
+                                if (canMakeDoubleSeat(nextTd)) {
+                                    // Chọn ghế đôi bên phải
                                     tdElement.colSpan = 2;
                                     nextTd.style.display = 'none';
                                     img.src = "{{ asset('svg/seat-double.svg') }}";
                                     img.style.width = "90%";
+                                } else if (canMakeDoubleSeat(previousTd)) {
+                                    // Chọn ghế đôi bên trái
+                                    previousTd.colSpan = 2;
+                                    tdElement.style.display = 'none';
+                                    var previousImg = previousTd.querySelector('img');
+                                    previousImg.src = "{{ asset('svg/seat-double.svg') }}";
+                                    previousImg.style.width = "90%";
                                 } else {
-                                    alert('Bên phải không còn chỗ trống để đặt ghế đôi.');
+                                    alert('Không có đủ chỗ trống để đặt ghế đôi.');
                                 }
                             } else {
-                                if (typeSeatId == 1) {
-                                    img.src = "{{ asset('svg/seat-regular.svg') }}";
-                                } else if (typeSeatId == 2) {
-                                    img.src = "{{ asset('svg/seat-vip.svg') }}";
-                                }
+                                // Xử lý ghế thường và ghế VIP
+                                img.src = (typeSeatId === 1) ? "{{ asset('svg/seat-regular.svg') }}" :
+                                    "{{ asset('svg/seat-vip.svg') }}";
                                 img.style.width = "100%";
                             }
                         } else {
+                            // Trả ghế về trạng thái ban đầu
                             img.style.width = "60%";
                             img.src = "{{ asset('svg/seat-add.svg') }}";
 
-                            if (typeSeatId == 3 && tdElement.colSpan == 2) {
-                                var nextTd = tdElement.nextElementSibling;
-                                tdElement.colSpan = 1;
-                                nextTd.style.display = '';
-                            }
-                        }
-                    });
-                });
-
-                // Lắng nghe sự kiện thay đổi radio button trong Offcanvas
-                document.querySelectorAll('.form-check-input').forEach(function(radio) {
-                    radio.addEventListener('change', function() {
-                        var row = this.dataset.row;
-                        var typeSeatRowId = this.value;
-
-                        // Xóa class hiện tại, cập nhật lại hình ảnh và dataset.type
-                        var seats = document.querySelectorAll(`td[data-row="${row}"]`);
-                        seats.forEach(function(seat) {
-                            seat.classList.remove('light-orange', 'light-blue', 'light-pink');
-                            var seatDiv = seat.querySelector('.box-item-seat');
-                            seatDiv.dataset.typeSeatId = typeSeatRowId;
-
-                            // Cập nhật hình ảnh ghế về trạng thái "add"
-                            var img = seatDiv.querySelector('img');
-                            img.src = "{{ asset('svg/seat-add.svg') }}";
-                            img.style.width = "60%"; // Trả hình ảnh về trạng thái chưa chọn
-
-                            // Kiểm tra nếu ghế là ghế đôi và có colSpan = 2, trả về colSpan = 1
-                            var tdElement = seat.closest('td');
-                            if (seatDiv.dataset.typeSeatIdSeatId == 3 && tdElement.colSpan ==
-                                2) {
-                                var nextTd = tdElement.nextElementSibling;
-                                tdElement.colSpan = 1;
-                                nextTd.style.display = '';
-                            }
-
-                            // Cập nhật màu sắc ghế dựa trên loại ghế được chọn
-                            if (typeSeatRowId == 1) {
-                                seat.classList.add('light-orange'); // Ghế thường
-                            } else if (typeSeatRowId == 2) {
-                                seat.classList.add('light-blue'); // Ghế VIP
-                            } else if (typeSeatRowId == 3) {
-                                seat.classList.add('light-pink'); // Ghế đôi
-                            }
-
-                            // Nếu chuyển từ ghế đôi về ghế thường hoặc VIP
-                            if (typeSeatRowId == 1 || typeSeatRowId == 2) {
-                                if (tdElement.colSpan == 2) {
-                                    // Chuyển đổi colSpan về 1 nếu cần
+                            // Nếu ghế hiện tại là ghế đôi, trả colSpan về 1 và hiển thị lại ghế kế bên
+                            if (typeSeatId === 3 && tdElement.colSpan === 2) {
+                                if (nextTd) {
                                     tdElement.colSpan = 1;
-                                    var nextTd = tdElement.nextElementSibling;
                                     nextTd.style.display = '';
+                                } else if (previousTd) {
+                                    previousTd.colSpan = 1;
+                                    tdElement.style.display = '';
                                 }
                             }
-                        });
+                        }
                     });
                 });
 
@@ -514,67 +432,92 @@
                             img.src =
                                 "{{ asset('svg/seat-add.svg') }}"; // Đặt lại hình ảnh ghế về trạng thái "add"
                             img.style.width = "60%"; // Đặt lại kích thước hình ảnh
+
+                            // Đảm bảo trả lại colSpan về 1 nếu cần
+                            var tdElement = seatDiv.closest('td');
+                            if (tdElement.colSpan == 2) {
+                                var nextTd = tdElement.nextElementSibling;
+                                tdElement.colSpan = 1;
+                                nextTd.style.display = '';
+                            }
                         });
-
-
                     });
                 });
 
                 // Lắng nghe sự kiện click trên nút "Chọn tất cả"
-                document.querySelectorAll('.btn-restore-all').forEach(function(button) {
+                document.querySelectorAll('.btn-select-all').forEach(function(button) {
                     button.addEventListener('click', function() {
                         var row = this.dataset.row;
                         var seats = document.querySelectorAll(`td[data-row="${row}"] .box-item-seat`);
+                        var seatType = parseInt(this.closest('tr').dataset.rowTypeSeat);
 
-                        seats.forEach(function(seatDiv) {
-                            var img = seatDiv.querySelector('img');
-                            var seatType = document.querySelector(
-                                    `input[name="typeSeatRow${row}"]:checked`)
-                                .value; // Lấy loại ghế đã chọn
+                        // Reset trạng thái cho các ghế trong hàng trước khi chọn mới
+                        resetAllSeats(seats);
 
-                            // Cập nhật hình ảnh và loại ghế dựa trên loại ghế đã chọn
-                            if (seatType == 1) { // Ghế thường
+                        if (seatType === 1) { // Ghế thường
+                            seats.forEach(function(seatDiv) {
+                                var img = seatDiv.querySelector('img');
                                 img.src = "{{ asset('svg/seat-regular.svg') }}";
                                 img.style.width = "100%";
-                                seatDiv.dataset.type = 'regular'; // Cập nhật loại ghế
-                            } else if (seatType == 2) { // Ghế VIP
+                            });
+                        } else if (seatType === 2) { // Ghế VIP
+                            seats.forEach(function(seatDiv) {
+                                var img = seatDiv.querySelector('img');
                                 img.src = "{{ asset('svg/seat-vip.svg') }}";
                                 img.style.width = "100%";
-                                seatDiv.dataset.type = 'vip'; // Cập nhật loại ghế
-                            } else if (seatType == 3) { // Ghế đôi
+                            });
+                        } else if (seatType === 3) { // Ghế đôi
+                            for (let i = 0; i < seats.length; i++) {
+                                var seatDiv = seats[i];
+                                var img = seatDiv.querySelector('img');
                                 var tdElement = seatDiv.closest('td');
-                                var nextTd = tdElement.nextElementSibling;
+                                var nextTd = tdElement ? tdElement.nextElementSibling : null;
 
-                                if (nextTd && nextTd.querySelector('img').src.includes(
-                                        'seat-add.svg')) {
-                                    tdElement.colSpan = 2; // Đặt colspan về 2
-                                    nextTd.style.display = 'none'; // Ẩn cột bên cạnh
-                                    img.src = "{{ asset('svg/seat-double.svg') }}";
-                                    img.style.width = "90%";
-                                    seatDiv.dataset.type = 'double'; // Cập nhật loại ghế
-                                } else {
-                                    alert('Bên phải không còn chỗ trống để đặt ghế đôi.');
+                                // Kiểm tra có thể ghép đôi
+                                if (canMakeDoubleSeat(nextTd)) {
+                                    // Chọn ghế đôi bên phải
+                                    tdElement.colSpan = 2; // Tăng colSpan
+                                    nextTd.style.display = 'none'; // Ẩn ghế bên phải
+                                    img.src =
+                                    "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
+                                    img.style.width = "90%"; // Đặt lại kích thước
+                                    i++; // Bỏ qua ghế bên phải vì đã ghép đôi
+                                } else if (i > 0 && canMakeDoubleSeat(seats[i - 1].closest('td'))) {
+                                    // Chọn ghế đôi bên trái nếu có
+                                    var previousTd = seats[i - 1].closest('td');
+                                    previousTd.colSpan = 2; // Tăng colSpan
+                                    tdElement.style.display = 'none'; // Ẩn ghế hiện tại
+                                    var previousImg = previousTd.querySelector('img');
+                                    previousImg.src =
+                                    "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
+                                    previousImg.style.width = "90%"; // Đặt lại kích thước
                                 }
                             }
-                        });
-
-                        // Cập nhật màu sắc cho các ô ghế
-                        var rowCells = document.querySelectorAll(`td[data-row="${row}"]`);
-                        rowCells.forEach(function(cell) {
-                            var seatDiv = cell.querySelector('.box-item-seat');
-                            var seatType = seatDiv.dataset.type;
-
-                            // Cập nhật màu sắc ghế dựa trên loại ghế
-                            if (seatType === 'regular') {
-                                cell.classList.add('light-orange'); // Ghế thường
-                            } else if (seatType === 'vip') {
-                                cell.classList.add('light-blue'); // Ghế VIP
-                            } else if (seatType === 'double') {
-                                cell.classList.add('light-pink'); // Ghế đôi
-                            }
-                        });
+                        }
                     });
                 });
+
+                // Hàm để reset trạng thái cho tất cả ghế trong hàng
+                function resetAllSeats(seats) {
+                    seats.forEach(function(seatDiv) {
+                        var img = seatDiv.querySelector('img');
+                        var tdElement = seatDiv.closest('td');
+                        var colSpan = tdElement.colSpan;
+
+                        // Trả ghế về trạng thái ban đầu nếu nó không được chọn
+                        img.src =
+                            "{{ asset('svg/seat-add.svg') }}"; // Đặt lại hình ảnh ghế về trạng thái "add"
+                        img.style.width = "60%"; // Đặt lại kích thước hình ảnh
+
+                        // Đảm bảo trả lại colSpan về 1 nếu cần
+                        if (colSpan == 2) {
+                            tdElement.colSpan = 1; // Trả về colSpan
+                            var nextTd = tdElement.nextElementSibling;
+                            if (nextTd) nextTd.style.display = ''; // Hiển thị ghế bên cạnh
+                        }
+                    });
+                }
+
             });
         </script>
         {{-- Lấy dữ liệu khi gửi form --}}
