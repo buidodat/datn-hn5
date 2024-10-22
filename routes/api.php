@@ -6,6 +6,7 @@ use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SeatController;
 use App\Http\Controllers\API\SeatTemplateController;
+use App\Http\Controllers\API\UpdateActiveController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -35,7 +36,17 @@ Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class
 
 Route::middleware('web')->resource('rooms', RoomController::class);
 
-Route::post('rooms/update-active', [RoomController::class, 'updateActive'])->name('rooms.update-active');
+Route::post('rooms/update-active',      [RoomController::class, 'updateActive'])->name('rooms.update-active');
+Route::post('movies/update-active',     [MovieController::class, 'updateActive'])->name('movies.update-active');
+Route::post('movies/update-hot',        [MovieController::class, 'updateHot'])->name('movies.update-hot');
+Route::post('branches/change-active',   [UpdateActiveController::class, 'branch'])->name('branches.change-active');
+Route::post('cinemas/change-active',    [UpdateActiveController::class, 'cinema'])->name('cinemas.change-active');
+Route::post('food/change-active',       [UpdateActiveController::class, 'food'])->name('food.change-active');
+Route::post('combos/change-active',     [UpdateActiveController::class, 'combo'])->name('combos.change-active');
+Route::post('slideshows/change-active', [UpdateActiveController::class, 'slideshow'])->name('slideshows.change-active');
+Route::post('posts/change-active',      [UpdateActiveController::class, 'post'])->name('posts.change-active');
+Route::post('showtimes/change-active',  [UpdateActiveController::class, 'showtime'])->name('showtimes.change-active');
+Route::post('vouchers/change-active',   [UpdateActiveController::class, 'voucher'])->name('vouchers.change-active');
 
 Route::prefix('seat-templates')
     ->as('seat-templates.')
@@ -47,8 +58,7 @@ Route::prefix('seat-templates')
     });
 
 
-Route::post('movies/update-active',  [MovieController::class, 'updateActive'])->name('movies.update-active');
-Route::post('movies/update-hot',     [MovieController::class, 'updateHot'])->name('movies.update-hot');
+
 
 
 
