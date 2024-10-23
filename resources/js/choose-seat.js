@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (seat) {
             await handleSeatClick(seat);
         }
-    }, 0)); // Thay đổi thời gian delay nếu cần(milliseconds)
+    }, 5)); // Thay đổi thời gian delay nếu cần(milliseconds)
 
 
 
