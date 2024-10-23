@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class ReleaseSeatHoldJob implements ShouldQueue
 {
@@ -21,6 +22,8 @@ class ReleaseSeatHoldJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param array $seatIds
+     * @param mixed $showtimeId
      * @return void
      */
     public function __construct(array $seatIds, $showtimeId)
@@ -77,4 +80,3 @@ class ReleaseSeatHoldJob implements ShouldQueue
         });
     }
 }
-
