@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Cinema;
 use App\Models\Combo;
+use App\Models\Seat;
 use App\Models\SeatTemplate;
 use App\Models\Showtime;
 use Carbon\Carbon;
@@ -75,10 +76,40 @@ class BookTicketController extends Controller
 
     public function show(Showtime $showtime)
     {
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+        // Kiểm tra và khởi tạo thời gian bắt đầu
+        if (!session()->has('end_time')) {
+            // Nếu chưa tồn tại trong session, khởi tạo endTime
+            $endTime = $now->copy()->addMinutes(1);
+            session()->put('end_time', $endTime);
+        } else {
+            // Nếu đã tồn tại, lấy giá trị từ session
+            $endTime = session('end_time');
+
+            if ($now->greaterThan($endTime)) {
+                // Nếu now lớn hơn endTime, khởi tạo lại endTime
+                $endTime = $now->copy()->addMinutes(2); // Cập nhật endTime thành 10 phút sau thời gian hiện tại
+                session()->put('end_time', $endTime); // Lưu lại vào session
+                echo "Thời gian kết thúc đã được cập nhật: " . $endTime; // Hiển thị thông tin
+            }
+        }
+
+        // Tính thời gian còn lại
+        $remainingSeconds = $now->diffInSeconds($endTime);
+
+
+
+
+
         $showtime->load(['cinema', 'room', 'movieVersion', 'movie', 'seats']);
         $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
-
+        $seatNames = Seat::whereHas('showtimes', function ($query) use ($showtime) {
+            $query->where('showtime_id', $showtime->id)
+                ->where('user_id', auth()->id()); // Lọc ghế theo user_id trong bảng trung gian
+        })->pluck('name') // Lấy tên ghế
+            ->toArray(); // Chuyển đổi thành mảng
+        ;
         $seatMap = [];
         if ($seats) {
             foreach ($seats as $seat) {
@@ -93,8 +124,11 @@ class BookTicketController extends Controller
         }
         $combos = Combo::with('food')->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix', 'showtime', 'combos'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('seatMap', 'matrix', 'showtime', 'combos', 'seatNames', 'remainingSeconds'));
     }
-
-
+    public function clearSession(Request $request)
+    {
+        session()->forget('book_tickets');
+        return response()->json(['message' => 'Session cleared.']);
+    }
 }

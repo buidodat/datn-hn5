@@ -22,9 +22,7 @@ class RoomController extends Controller
     const PATH_UPLOAD = 'rooms';
     public function index()
     {
-        $roomPublishs = Room::query()->with(['typeRoom', 'cinema'])->where('is_publish', true)->latest('id')->get();
-        $roomDrafts = Room::query()->with(['typeRoom', 'cinema'])->where('is_publish', false)->latest('id')->get();
-        $rooms = Room::query()->with(['typeRoom', 'cinema'])->latest('cinema_id')->get();
+        $rooms = Room::query()->with(['typeRoom', 'cinema','seats'])->latest('cinema_id')->get();
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $cinemas = Cinema::all();
@@ -32,7 +30,7 @@ class RoomController extends Controller
             ->where('is_active', 1)
             ->pluck('name', 'id')
             ->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'typeRooms', 'roomPublishs', 'roomDrafts', 'cinemas', 'seatTemplates'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('rooms', 'branches', 'typeRooms', 'cinemas', 'seatTemplates'));
     }
 
 
@@ -53,21 +51,6 @@ class RoomController extends Controller
         foreach ($seats as $seat) {
             $seatMap[$seat->coordinates_y][$seat->coordinates_x] = $seat;
         }
-        // $activeSeats = Seat::where('is_active', 1)
-        //     ->selectRaw("
-        //         SUM(CASE
-        //             WHEN type_seat = 'double' THEN 2
-        //             ELSE 1
-        //         END) AS total_seats
-        //     ")->value('total_seats');
-
-        // // Đếm tổng tất cả ghế (không phân biệt trạng thái)
-        // $totalSeats = Seat::selectRaw("
-        //         SUM(CASE
-        //             WHEN type_seat = 'double' THEN 2
-        //             ELSE 1
-        //         END) AS total_seats
-        //     ")->value('total_seats');
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $typeSeats = TypeSeat::pluck('name', 'id')->all();
         return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seatMap', 'matrixSeat', 'typeSeats'));
@@ -133,14 +116,4 @@ class RoomController extends Controller
     }
 
 
-    // public function convertNumberToLetters($number = Room::ROW_SEAT_REGULAR)
-    // { // hàm chuyển đổi số thành mangr chữ câis
-    //     $letters = [];
-
-    //     for ($i = 0; $i < $number; $i++) {
-    //         $letters[] = chr(65 + $i); // 65 là mã ASCII của chữ cái 'A'
-    //     }
-
-    //     return $letters;
-    // }
 }

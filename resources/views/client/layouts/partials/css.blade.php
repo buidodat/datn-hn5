@@ -40,7 +40,6 @@
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/login.css') }}" /> --}}
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/my-account.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/trailler.css') }}" />
-<link rel="stylesheet" id="theme-color" type="text/css" href="#" />
 {{-- #f7941d: màu text , #f37022: màu logo, #fe6f01: màu background đậm, #ff7307: màu bg cam vừa --}}
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/color/style4.css') }}" /> --}}
 

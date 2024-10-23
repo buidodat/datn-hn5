@@ -80,7 +80,7 @@ Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 // User - Thông tin tài khoản
 Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
-Route::put('my-account/changePassword', [UserController::class, 'changePassword'])->name('my-account.changePassword');
+Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
 
 // // User - Lịch sử mua hàng
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');
@@ -125,7 +125,7 @@ Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('c
 
 //Trang tin tức
 Route::get('posts', [PostController::class, 'index'])->name('posts');
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
 //Viết tạm route chuyển trang admin checkout ở đây 
 Route::get('checkoutAdmin', function () {

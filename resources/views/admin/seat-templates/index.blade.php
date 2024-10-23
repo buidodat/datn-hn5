@@ -39,7 +39,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card" id="orderList">
+            <div class="card">
                 <div class="card-header border-0">
                     <div class="row align-items-center gy-3">
                         <div class="col-sm">
@@ -103,25 +103,23 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
                                                             data-seat-template-id="{{ $item->id }}"
                                                             data-seat-template-name="{{ $item->name }}"
                                                             data-seat-template-description="{{ $item->description }}"
                                                             data-matrix-id="{{ $item->matrix_id }}"
                                                             data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
 
 
-                                                        {{-- @if (!$item->is_publish)
+                                                        @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $item) }}"
+                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
                                                                 bỏ</a>
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
-                                                        @endif --}}
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -155,8 +153,7 @@
                             </table>
                         </div>
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
-                            <table id="tableIsPublish" class="table table-bordered dt-responsive nowrap align-middle w-100"
-                                style="width:100%">
+                            <table id="tableIsPublish" class="table table-bordered dt-responsive nowrap align-middle w-100">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -176,30 +173,22 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
                                                             data-seat-template-id="{{ $item->id }}"
                                                             data-seat-template-name="{{ $item->name }}"
                                                             data-seat-template-description="{{ $item->description }}"
                                                             data-matrix-id="{{ $item->matrix_id }}"
                                                             data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
-
-
-                                                        {{-- @if (!$item->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $item) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
-                                                        @endif --}}
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
                                                     </div>
                                                 </div>
                                             </td>
 
-                                            <td>{{ $item->description }}</td>
+                                            <td style="width: 30%">
+                                                {{ $item->description }}
+                                            </td>
                                             @php
                                                 $matrixSeatTemplate = App\Models\SeatTemplate::getMatrixById(
                                                     $item->matrix_id,
@@ -249,25 +238,23 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                         <a class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1 openUpdateSeatTemplateModal"
+                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
                                                             data-seat-template-id="{{ $item->id }}"
                                                             data-seat-template-name="{{ $item->name }}"
                                                             data-seat-template-description="{{ $item->description }}"
                                                             data-matrix-id="{{ $item->matrix_id }}"
                                                             data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
-                                                        <a class=" link-opacity-75-hover link-opacity-50 "
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Vị trí ghế</a>
+                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
 
 
-                                                        {{-- @if (!$item->is_publish)
+                                                        @if (!$item->is_publish)
                                                             <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $item) }}"
+                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
                                                                 onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
                                                                 bỏ</a>
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $item) }}">Chi tiết</a>
-                                                        @endif --}}
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -451,7 +438,7 @@
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateSeatTemplateId').value =
-                    seatTemplateId; // Gán giá trị roomId
+                seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
@@ -459,7 +446,6 @@
                     document.getElementById('updateMatrixId').disabled = true;
                 } else {
                     // Nếu chưa publish, cho phép chỉnh sửa tất cả
-
                     document.getElementById('updateMatrixId').disabled = false;
                 }
 
@@ -498,8 +484,6 @@
                         console.log(data);
                         $('#updateSeatTemplateModal').modal('hide');
                         form.reset();
-
-                        alert('Thao tác thành công!'); // Hiển thị thông báo trước khi reload trang
                         location.reload();
 
                     }

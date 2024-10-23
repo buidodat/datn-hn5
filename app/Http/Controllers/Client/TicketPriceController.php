@@ -12,22 +12,12 @@ class TicketPriceController extends Controller
 {
     public function index(Request $request)
     {
-        // $typeRooms = TypeRoom::all();
-
-        // Lọc $typeRooms chỉ lấy 3D và IMAX
-        $typeRooms = TypeRoom::whereIn('name', ['3D', 'IMAX'])->get();
+        $typeRooms = TypeRoom::where('surcharge', '>' ,0)->get();
         
         $typeSeats = TypeSeat::all();
+        
+        $cinemas = Cinema::where('id', session('cinema_id'))->firstOrFail();
 
-        $cinemasPaginate = Cinema::where('is_active', '1')
-            ->latest('branch_id')
-            ->when($request->branch_id, function ($query) use ($request) {
-                return $query->where('branch_id', $request->branch_id);
-            })
-            ->get();
-
-        $cinemaId = session('cinema_id') ?? $request->input('cinema_id');
-        $cinema = Cinema::with('branch')->find($cinemaId);
-        return view('client.ticket-price', compact('typeRooms','typeSeats','cinemasPaginate','cinema'));
+        return view('client.ticket-price', compact('typeRooms','typeSeats','cinemas'));
     }
 }

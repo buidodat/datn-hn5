@@ -39,8 +39,6 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        // 
-        // dd('Đã vào store add');
         try {
             $dataPost = [
                 'title' => $request->title,
@@ -48,13 +46,13 @@ class PostController extends Controller
                 'description' => $request->description,
                 'content' => $request->content,
                 'is_active' => isset($request->is_active) ? 1 : 0,
+                'user_id' => auth()->user()->id, // Thêm dòng này để gán user_id từ người dùng đăng nhập
             ];
-
 
             if ($request->img_post) {
                 $dataPost['img_post'] = Storage::put(self::PATH_UPLOAD, $request->img_post);
             }
-            // dd($dataPost);
+
             Post::query()->create($dataPost);
 
             return redirect()->route('admin.posts.index')->with('success', 'Thêm mới thành công!');
@@ -62,7 +60,6 @@ class PostController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
     /**
      * Display the specified resource.
      */
@@ -86,8 +83,6 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
-        // dd('đã vafp update');
         try {
             $dataPost = [
                 'title' => $request->title,
@@ -97,7 +92,7 @@ class PostController extends Controller
                 'is_active' => isset($request->is_active) ? 1 : 0,
             ];
 
-            ///nếu ko cập nhật thì để nguyên ảnh, nếu cập nhật thì xóa ảnh cũ, thay ảnh mới
+            ///nếu không cập nhật ảnh thì giữ nguyên ảnh cũ, nếu cập nhật thì xóa ảnh cũ và thay bằng ảnh mới
             if ($request->img_post) {
                 if (Storage::exists($post->img_post)) {
                     Storage::delete($post->img_post);
@@ -114,6 +109,7 @@ class PostController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

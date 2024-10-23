@@ -109,15 +109,19 @@
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ number_format($item->price_sale) }} VNĐ</td>
                                     <td>{{ $item->description }}</td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    <td>
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-combo-id="{{ $item->id }}" @checked($item->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
                                     </td>
                                     <td>
 
-                                        <a href="{{ route('admin.combos.show',$item) }}">
+                                        {{-- <a href="{{ route('admin.combos.show',$item) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
+                                                    class="fas fa-eye"></i></button></a> --}}
                                         <a href="{{ route('admin.combos.edit',$item) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
@@ -160,6 +164,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+     <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let comboId = $(this).data('combo-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('combos.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: comboId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection

@@ -197,7 +197,7 @@
             </div>
             <div class="col-lg-3">
 
-                <div class="col-md-12">
+                {{-- <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <label class="form-check-label" for="is_active">Is Active</label>
@@ -206,7 +206,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-md-12">

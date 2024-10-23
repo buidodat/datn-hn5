@@ -9,14 +9,22 @@ class Post extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'user_id',
         'title',
         'slug',
         'img_post',
         'description',
         'content',
         'is_active',
+        'view_count',
     ];
     protected $cast = [
         'is_active'=>'boolean'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
