@@ -1,6 +1,5 @@
 import './bootstrap';
 document.addEventListener('DOMContentLoaded', () => {
-    const seats = document.querySelectorAll('.seat');
     const selectedSeatsDisplay = document.getElementById('selected-seats');
     const hiddenSelectedSeats = document.getElementById('hidden-selected-seats-name');
     const hiddenSeatIds = document.getElementById('hidden-seat-ids');
@@ -41,12 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
     hiddenSelectedSeats.value = selectedSeats.join(',');
-    hiddenSeatIds.value = selectedSeatIds.join(','); 
+    hiddenSeatIds.value = selectedSeatIds.join(',');
     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
     hiddenTotalPrice.value = totalPrice;
 
-    seats.forEach(seat => {
-        seat.addEventListener('click', async () => {
+    const seatTable = document.querySelector('.table-seat tbody'); // Chọn phần tử cha
+
+    seatTable.addEventListener('click', async (event) => {
+        const seat = event.target.closest('.seat'); // Tìm phần tử ghế gần nhất mà người dùng đã nhấp
+
+        if (seat) {
             const seatId = seat.getAttribute('data-seat-id');
             const seatLabel = seat.querySelector('.seat-label').textContent;
             const seatPrice = parseInt(seat.getAttribute('data-seat-price'));
@@ -63,13 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     try {
                         await axios.post('/release-seats', {
-                            seat_ids: [seatId],
+                            seat_id: seatId,
                             showtime_id: showtimeId
-                        }).then(response => {
-                            console.log(response.data.message);
-                        }).catch(error => {
-                            console.error(error.response.data.message);
                         });
+                        console.log(`Ghế ${seatLabel} đã được hủy!`);
                     } catch (error) {
                         console.error('Error releasing seat:', error);
                         seat.classList.remove('available');
@@ -86,13 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         try {
                             await axios.post('/hold-seats', {
-                                seat_ids: [seatId],
+                                seat_id: seatId,
                                 showtime_id: showtimeId
-                            }).then(response => {
-                                console.log(response.data.message);
-                            }).catch(error => {
-                                console.error(error.response.data.message);
                             });
+                            console.log(`Ghế ${seatLabel} đã được giữ!`);
                         } catch (error) {
                             console.error('Error holding seat:', error);
                             seat.classList.remove('selected');
@@ -106,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
                 selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                 hiddenSelectedSeats.value = selectedSeats.join(',');
-                hiddenSeatIds.value = selectedSeatIds.join(','); 
+                hiddenSeatIds.value = selectedSeatIds.join(',');
                 totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
                 hiddenTotalPrice.value = totalPrice;
             } else {
@@ -117,8 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Ghế này đã được bán!');
                 }
             }
-        });
+        }
     });
+
 
     window.Echo.channel(`showtime.${showtimeId}`)
         .listen('SeatHold', (e) => {
@@ -142,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                     hiddenSelectedSeats.value = selectedSeats.join(',');
-                    hiddenSeatIds.value = selectedSeatIds.join(','); 
+                    hiddenSeatIds.value = selectedSeatIds.join(',');
                     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
                     hiddenTotalPrice.value = totalPrice;
 

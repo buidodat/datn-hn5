@@ -1,6 +1,5 @@
 import './bootstrap';
 document.addEventListener('DOMContentLoaded', () => {
-    const seats = document.querySelectorAll('.seat');
     const selectedSeatsDisplay = document.getElementById('selected-seats');
     const hiddenSelectedSeats = document.getElementById('hidden-selected-seats-name');
     const hiddenSeatIds = document.getElementById('hidden-seat-ids');
@@ -33,92 +32,131 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPrice += parseInt(seatElement.getAttribute('data-seat-price'));
             }
         });
-    } else {
-        console.error('ahihi');
     }
-
 
     // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
     hiddenSelectedSeats.value = selectedSeats.join(',');
-    hiddenSeatIds.value = selectedSeatIds.join(','); 
+    hiddenSeatIds.value = selectedSeatIds.join(',');
     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
     hiddenTotalPrice.value = totalPrice;
 
-    seats.forEach(seat => {
-        seat.addEventListener('click', async () => {
-            const seatId = seat.getAttribute('data-seat-id');
-            const seatLabel = seat.querySelector('.seat-label').textContent;
-            const seatPrice = parseInt(seat.getAttribute('data-seat-price'));
 
-            if (!seat.classList.contains('hold') && !seat.classList.contains('sold')) {
-                if (seat.classList.contains('selected')) {
-                    // Bỏ chọn ghế
-                    selectedSeats = selectedSeats.filter(s => s !== seatLabel);
-                    selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
-                    totalPrice -= seatPrice;
+    const seatTable = document.querySelector('.table-seat tbody'); // Chọn phần tử cha
+    let isProcessing = false; // Biến trạng thái để theo dõi quá trình xử lý yêu cầu
 
-                    seat.classList.remove('selected');
-                    seat.classList.add('available');
+    function debounce(func, delay) {
+        let timeout;
+        return function (...args) {
+            const context = this;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
 
+    const updateSelectedSeatsDisplay = () => {
+        selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+        hiddenSelectedSeats.value = selectedSeats.join(',');
+        hiddenSeatIds.value = selectedSeatIds.join(',');
+        totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
+        hiddenTotalPrice.value = totalPrice;
+    };
+
+    const handleSeatClick = async (seat) => {
+        const seatId = seat.getAttribute('data-seat-id');
+        const seatLabel = seat.querySelector('.seat-label').textContent;
+        const seatPrice = parseInt(seat.getAttribute('data-seat-price'));
+
+        if (!seat.classList.contains('hold') && !seat.classList.contains('sold')) {
+            if (seat.classList.contains('selected')) {
+                // Bỏ chọn ghế
+                selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+                selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
+                totalPrice -= seatPrice;
+
+                seat.classList.remove('selected');
+                seat.classList.add('available');
+
+                // Cập nhật giao diện ngay lập tức
+                updateSelectedSeatsDisplay();
+
+                // Gửi yêu cầu
+                try {
+                    isProcessing = true;
+                    await axios.post('/release-seats', { 
+                        seat_id: seatId, 
+                        showtime_id: showtimeId 
+                    });
+                    console.log(`Ghế ${seatLabel} đã được hủy!`);
+                } catch (error) {
+                    console.error('Error releasing seat:', error);
+                    // Hoàn tác nếu có lỗi
+                    selectedSeats.push(seatLabel);
+                    selectedSeatIds.push(seatId);
+                    totalPrice += seatPrice;
+                    seat.classList.add('selected');
+                    seat.classList.remove('available');
+                    updateSelectedSeatsDisplay();
+                } finally {
+                    isProcessing = false;
+                }
+            } else {
+                if (selectedSeats.length < 8) {
+                    selectedSeats.push(seatLabel);
+                    selectedSeatIds.push(seatId);
+                    totalPrice += seatPrice;
+
+                    seat.classList.add('selected');
+                    seat.classList.remove('available');
+
+                    // Cập nhật giao diện ngay lập tức
+                    updateSelectedSeatsDisplay();
+
+                    // Gửi yêu cầu
                     try {
-                        await axios.post('/release-seats', {
-                            seat_ids: [seatId],
-                            showtime_id: showtimeId
-                        }).then(response => {
-                            console.log(response.data.message);
-                        }).catch(error => {
-                            console.error(error.response.data.message);
+                        isProcessing = true;
+                        await axios.post('/hold-seats', { 
+                            seat_id: seatId, 
+                            showtime_id: showtimeId 
                         });
+                        console.log(`Ghế ${seatLabel} đã được giữ!`);
                     } catch (error) {
-                        console.error('Error releasing seat:', error);
-                        seat.classList.remove('available');
-                        seat.classList.add('selected');
+                        console.error('Error holding seat:', error);
+                        // Hoàn tác nếu có lỗi
+                        selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+                        selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
+                        totalPrice -= seatPrice;
+                        seat.classList.remove('selected');
+                        seat.classList.add('available');
+                        updateSelectedSeatsDisplay();
+                    } finally {
+                        isProcessing = false;
                     }
                 } else {
-                    if (selectedSeats.length < 8) {
-                        selectedSeats.push(seatLabel);
-                        selectedSeatIds.push(seatId);
-                        totalPrice += seatPrice;
-
-                        seat.classList.add('selected');
-                        seat.classList.remove('available');
-
-                        try {
-                            await axios.post('/hold-seats', {
-                                seat_ids: [seatId],
-                                showtime_id: showtimeId
-                            }).then(response => {
-                                console.log(response.data.message);
-                            }).catch(error => {
-                                console.error(error.response.data.message);
-                            });
-                        } catch (error) {
-                            console.error('Error holding seat:', error);
-                            seat.classList.remove('selected');
-                            seat.classList.add('available');
-                        }
-                    } else {
-                        alert('Bạn chỉ được chọn tối đa 8 ghế!');
-                    }
-                }
-
-                // Cập nhật lại hiển thị cho tổng tiền và danh sách ghế đã chọn
-                selectedSeatsDisplay.textContent = selectedSeats.join(', ');
-                hiddenSelectedSeats.value = selectedSeats.join(',');
-                hiddenSeatIds.value = selectedSeatIds.join(','); 
-                totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
-                hiddenTotalPrice.value = totalPrice;
-            } else {
-                if (seat.classList.contains('hold')) {
-                    alert('Ghế này đã được giữ!');
-                }
-                if (seat.classList.contains('sold')) {
-                    alert('Ghế này đã được bán!');
+                    alert('Bạn chỉ được chọn tối đa 8 ghế!');
                 }
             }
-        });
-    });
+        } else {
+            if (seat.classList.contains('hold')) {
+                alert('Ghế này đã được giữ!');
+            }
+            if (seat.classList.contains('sold')) {
+                alert('Ghế này đã được bán!');
+            }
+        }
+    };
+
+    seatTable.addEventListener('click', debounce(async (event) => {
+        if (isProcessing) return;
+
+        const seat = event.target.closest('.seat');
+        if (seat) {
+            await handleSeatClick(seat);
+        }
+    }, 0)); // Thay đổi thời gian delay nếu cần(milliseconds)
+
+
+
 
     window.Echo.channel(`showtime.${showtimeId}`)
         .listen('SeatHold', (e) => {
@@ -142,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
                     hiddenSelectedSeats.value = selectedSeats.join(',');
-                    hiddenSeatIds.value = selectedSeatIds.join(','); 
+                    hiddenSeatIds.value = selectedSeatIds.join(',');
                     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
                     hiddenTotalPrice.value = totalPrice;
 

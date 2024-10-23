@@ -247,7 +247,7 @@
                                             </div>
                                             <hr>
                                             <div class="img-payment-checkout">
-
+                                        
                                                 <div>
                                                     <input type="radio" name="payment_name" value="momo" checked>
                                                     <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
@@ -277,8 +277,7 @@
                                         </div>
                                         <div>
                                             <p>Thời gian còn lại:</p>
-                                            <p id="timer" class="bold">
-                                                {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
+                                            <p id="timer" class="bold">10:00</p>
                                         </div>
 
                                     </div>
@@ -325,7 +324,7 @@
                                                     class="bold">{{ $showtime->room->cinema->name }}</span>
                                             </li>
                                             <li> Ngày chiếu: <span
-                                                    class="bold">{{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</span>
+                                                    class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
                                             </li>
                                             <li> Giờ chiếu: <span
                                                     class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
@@ -340,13 +339,12 @@
                                     <div class="total-price-choose-seat float_left">
                                         <div class="total-price-choose-seat float_left">
                                             {{--  ticket --}}
-                                            <input type="hidden" name="code"
-                                                value="{{ strtoupper(\Str::random(10)) }}">
+                                            <input type="hidden" name="code" value="{{ strtoupper(\Str::random(10)) }}">
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                             <input type="hidden" name="voucher_discount" id="total-discount">
                                             <input type="hidden" name="total_price" id="total-price-payment">
 
-                                            {{-- ticketseat --}}
+                                            {{--ticketseat--}}
                                             <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
                                             @foreach ($checkoutData['seat_ids'] as $seatId)
                                                 <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
@@ -380,33 +378,5 @@
         let discountAmount = 0; // Số tiền được giảm
 
         const totalDiscountElement = document.querySelector('.total-discount');
-
-
-
-        // Lấy giá trị thời gian còn lại từ server-side PHP và gán vào biến JavaScript
-        let timeLeft = {{ $checkoutData['remainingSeconds'] }}; // Thời gian còn lại tính bằng giây
-        const timerElement = document.getElementById('timer');
-
-        // Hàm đếm ngược thời gian
-        const countdown = setInterval(() => {
-            // Tính số phút và giây còn lại
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-
-            // Hiển thị thời gian còn lại ở định dạng mm:ss
-            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
-            // Giảm thời gian còn lại
-            timeLeft--;
-
-            // Khi thời gian kết thúc (hết 0 giây)
-            if (timeLeft < 0) {
-                clearInterval(countdown); // Dừng đếm ngược
-
-                // Hiển thị thông báo và quay về trang chủ
-                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-                window.location.href = '/'; // Điều hướng về trang chủ ("/")
-            }
-        }, 1000); // Cập nhật mỗi giây
     </script>
 @endsection
