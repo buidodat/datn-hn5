@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ReleaseSeatHoldJob;
+use App\Mail\TicketInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +15,7 @@ use App\Models\Showtime;
 use App\Models\Ticket;
 use App\Models\TicketCombo;
 use App\Models\TicketSeat;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -246,6 +248,9 @@ class PaymentController extends Controller
                             ]);
                         }
                     }
+
+                    // Gửi email hóa đơn
+                    Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
                 session()->forget('payment_data');
