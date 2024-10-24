@@ -66,12 +66,15 @@ class BranchController extends Controller
     }
 
     public function destroy(Branch $branch){
-        try{
+        try {
+            if ($branch->cinemas()->count() > 0) {
+                return back()->with('error', 'Không thể xóa chi nhánh vì có rạp đang sử dụng chi nhánh này');
+            }
+
             $branch->delete();
 
-            return back()
-                ->with('success', 'Xóa thành công');
-        }catch(\Throwable $th){
+            return back()->with('success', 'Xóa chi nhánh thành công');
+        } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
     }

@@ -24,11 +24,13 @@
                     <div class="hs_blog_box1_cont_main_wrapper">
                         <div class="hs_blog_cont_heading_wrapper">
                             <ul>
-                                <li>{{ $post->created_at->format('d/m/Y') }}</li>
+                                <li>{{ $post->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</li>
+                                <li>{{ $post->user->name ?? 'Không có người đăng' }}</li>
+                                <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
                             </ul>
                             <h2>{{ $post->title }}</h2>
                             <p>{{ Str::limit($post->description, 100) }}</p>
-                            <h5><a href="{{ route('posts.show', $post->slug) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5> <!-- Sử dụng slug -->
+                            <h5><a href="{{ route('posts.show', $post->slug) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5>
                         </div>
                     </div>
                 </div>

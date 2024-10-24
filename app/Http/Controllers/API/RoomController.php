@@ -76,7 +76,7 @@ class RoomController extends Controller
                         $name .= ', ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
                     }
 
-                    $dataSeats[] = [    
+                    $dataSeats[] = [
                         'coordinates_x' => $seat['coordinates_x'],
                         'coordinates_y' => $seat['coordinates_y'],
                         'name' => $name,
@@ -213,7 +213,7 @@ class RoomController extends Controller
         ];
 
         if (!$room->is_publish) {
-            // Chỉ thêm các rule này nếu phòng chưa publish
+            // Thêm các rule này nếu phòng chưa publish
             $rules['branch_id'] = 'required|exists:branches,id';
             $rules['cinema_id'] = 'required|exists:cinemas,id';
             $rules['type_room_id'] = 'required|exists:type_rooms,id';
@@ -259,7 +259,7 @@ class RoomController extends Controller
                         'seat_template_id' => $request->seat_template_id,
                     ]);
 
-                    Seat::where('room_id', $room->id)->forceDelete();
+                    Seat::where('room_id', $room->id)->delete();
 
                     $seatTemplate = SeatTemplate::findOrFail($request->seat_template_id);
 
@@ -270,28 +270,35 @@ class RoomController extends Controller
 
                     // Lặp qua từng ghế trong seat_structure
                     foreach ($seatStructureArray as $seat) {
+                        $name = $seat['coordinates_y'] . $seat['coordinates_x'];
+
+                        // Nếu là ghế đôi thì thêm tên ghế thứ hai
+                        if ($seat['type_seat_id'] == 3) {
+                            $name .= ', ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
+                        }
+
                         $dataSeats[] = [
                             'coordinates_x' => $seat['coordinates_x'],
                             'coordinates_y' => $seat['coordinates_y'],
-                            'name' => $seat['coordinates_y'] . $seat['coordinates_x'],
+                            'name' => $name,
                             'type_seat_id' => $seat['type_seat_id'],
                             'room_id' => $room->id,
                             'created_at' => now(),
                             'updated_at' => now(),
                         ];
                     }
-
                     // Chèn ghế vào bảng seats
                     Seat::insert($dataSeats);
                 }
             });
-
+            session()->flash('success', 'Thao tác thành công!');
             return response()->json([
                 'message' => "Cập nhật thành công",
                 'room' => $room,
             ], Response::HTTP_OK); // 200
 
         } catch (\Throwable $th) {
+            session()->flash('error', 'Đã sảy ra lỗi!');
             return response()->json([
                 'error' => $th->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500

@@ -45,18 +45,18 @@
                                                             @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                                                 <tr>
                                                                     @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
-                                                                        <td class="row-seat">
-                                                                            @foreach ($showtime->room->seats as $seat)
-                                                                                @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
-                                                                                    @php
-                                                                                        $seatData = $seat->showtimes
-                                                                                            ->where('id', $showtime->id)
-                                                                                            ->first()->pivot;
-                                                                                        $seatStatus = $seatData->status;
-                                                                                        $seatPrice = $seatData->price;
-                                                                                    @endphp
+                                                                        @foreach ($showtime->room->seats as $seat)
+                                                                            @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                                                @php
+                                                                                    $seatData = $seat->showtimes
+                                                                                        ->where('id', $showtime->id)
+                                                                                        ->first()->pivot;
+                                                                                    $seatStatus = $seatData->status;
+                                                                                    $seatPrice = $seatData->price;
+                                                                                @endphp
 
-                                                                                    @if ($seat->type_seat_id == 1)
+                                                                                @if ($seat->type_seat_id == 1)
+                                                                                    <td class="row-seat">
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
@@ -65,8 +65,10 @@
                                                                                             <span
                                                                                                 class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
-                                                                                    @endif
-                                                                                    @if ($seat->type_seat_id == 2)
+                                                                                    </td>
+                                                                                @endif
+                                                                                @if ($seat->type_seat_id == 2)
+                                                                                    <td class="row-seat">
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
@@ -75,20 +77,22 @@
                                                                                             <span
                                                                                                 class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
-                                                                                    @endif
-                                                                                    @if ($seat->type_seat_id == 3)
+                                                                                    </td>
+                                                                                @endif
+                                                                                @if ($seat->type_seat_id == 3)
+                                                                                    <td class="row-seat" colspan="2">
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
-                                                                                            class="game-icons--sofa seat span-seat {{ $seatStatus }}"
+                                                                                            class="game-icons--sofa seat-double seat span-seat {{ $seatStatus }}"
                                                                                             id="seat-{{ $seat->id }}">
                                                                                             <span
                                                                                                 class="seat-label">{{ $seat->name }}</span>
                                                                                         </span>
-                                                                                    @endif
+                                                                                    </td>
                                                                                 @endif
-                                                                            @endforeach
-                                                                        </td>
+                                                                            @endif
+                                                                        @endforeach
                                                                     @endfor
                                                                 </tr>
                                                             @endfor
@@ -108,7 +112,8 @@
                                                 </div>
                                                 <div>
                                                     <p>Thời gian còn lại:</p>
-                                                    <p id="timer" class="bold">10:00</p>
+                                                    <p id="timer" class="bold">{{ gmdate('i:s', $remainingSeconds) }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +159,7 @@
                                         <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                         </li>
                                         <li> Ngày chiếu: <span
-                                                class="bold">{{ \Carbon\Carbon::parse($showtime->movie->release_date)->format('d/m/Y') }}</span>
+                                                class="bold">{{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</span>
                                         </li>
                                         <li> Giờ chiếu: <span
                                                 class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
@@ -166,16 +171,18 @@
 
                                 <div class="total-price-choose-seat float_left">
                                     <div class="total-price-choose-seat float_left">
-                                        <form action="{{ route('save-information', $showtime->id) }}" method="POST">
+                                        <form action="{{ route('save-information', $showtime->id) }}" method="POST" id="checkout-form">
                                             @csrf
-                                            <input type="hidden" name="showtimeId" value="{{ $showtime->id }}"
-                                                id="showtime-id">
+                                            <input type="hidden" name="showtimeId" value="{{ $showtime->id }}" id="showtime-id">
                                             <input type="hidden" name="seatId" id="hidden-seat-ids">
                                             <input type="hidden" name="selected_seats_name" id="hidden-selected-seats-name">
                                             <input type="hidden" name="total_price" id="hidden-total-price">
+                                            <!-- Thêm id vào input hidden để cập nhật remainingSeconds bằng JS -->
+                                            <input type="hidden" name="remainingSeconds" id="remaining-seconds" value="{{ $remainingSeconds }}">
                                             <a href="{{ route('showtimes') }}">Quay lại</a>
                                             <button id="submit-button" type="submit">Tiếp tục</button>
                                         </form>
+                                        
                                     </div>
                                 </div>
 
@@ -192,4 +199,40 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/js/choose-seat.js')
+    <script>
+        // Lấy giá trị thời gian còn lại từ server-side PHP và gán vào biến JavaScript
+        let timeLeft = {{ $remainingSeconds }}; // Thời gian còn lại tính bằng giây
+        const timerElement = document.getElementById('timer');
+        const remainingSecondsInput = document.getElementById('remaining-seconds');
+        const checkoutForm = document.getElementById('checkout-form');
+        
+        // Hàm đếm ngược thời gian
+        const countdown = setInterval(() => {
+            // Tính số phút và giây còn lại
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+        
+            // Hiển thị thời gian còn lại ở định dạng mm:ss
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        
+            // Giảm thời gian còn lại
+            timeLeft--;
+        
+            // Khi thời gian kết thúc (hết 0 giây)
+            if (timeLeft < 0) {
+                clearInterval(countdown); // Dừng đếm ngược
+        
+                // Hiển thị thông báo và quay về trang chủ
+                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                window.location.href = '/'; // Điều hướng về trang chủ ("/")
+            }
+        }, 1000); // Cập nhật mỗi giây
+        
+        // Cập nhật remainingSeconds trước khi form được submit
+        checkoutForm.addEventListener('submit', function() {
+            // Gán giá trị thời gian còn lại (timeLeft) vào input hidden
+            remainingSecondsInput.value = timeLeft;
+        });
+        </script>
+        
 @endsection

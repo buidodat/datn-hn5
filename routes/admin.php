@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
@@ -72,7 +74,9 @@ Route::prefix('seat-templates')
     ->group(function () {
         Route::get('/',                     [SeatTemplateController::class, 'index'])->name('index');
         Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
-        Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
+        Route::put('{seatTemplate}/seat-structure',   [SeatTemplateController::class, 'updateSeatStructure'])->name('update.seat-structure');
+        Route::put('{seatTemplate}/info',   [SeatTemplateController::class, 'update'])->name('updateInfo')->name('update.info');
+        Route::get('{seatTemplate}',   [SeatTemplateController::class, 'destroy'])->name('destroy');
     });
 // Route::resource('rooms', RoomController::class);
 
@@ -111,3 +115,7 @@ Route::prefix('book-tickets')
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
+
+// Phân quyền
+Route::resource('permissions', PermissionController::class);
+Route::resource('roles', RoleController::class);

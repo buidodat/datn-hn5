@@ -110,8 +110,19 @@ class FoodController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Food $food){
+        try {
+            if ($food->combos()->count() > 0) {
+                return back()->with('error', 'Không thể xóa đồ ăn vì đã có combo đang sử dụng.');
+            }
+            $food->delete();
+            if ($food->img_thumbnail && Storage::exists($food->img_thumbnail)) {
+                Storage::delete($food->img_thumbnail);
+            }
+
+            return back()->with('success', 'Xóa đồ ăn thành công');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

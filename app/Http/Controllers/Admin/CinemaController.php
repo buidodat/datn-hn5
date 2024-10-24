@@ -10,6 +10,7 @@ use App\Models\Cinema;
 use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CinemaController extends Controller
 {
@@ -39,10 +40,16 @@ class CinemaController extends Controller
     public function store(StoreCinemaRequest $request)
     {
         try {
-            $data = $request->all();
-            $data['is_active'] ??= 0;
+            $dataCinema = [
+                'name'=> $request->name,
+                'branch_id'=> $request->branch_id,
+                'slug'=> Str::slug($request->name),
+                'address'=> $request->address,
+                'description'=>$request->description,
+                'is_active'=>$request->is_active ?? 0
+            ];
 
-            Cinema::query()->create($data);
+            Cinema::create($dataCinema);
 
             return redirect()
                 ->route('admin.cinemas.index')
@@ -55,10 +62,7 @@ class CinemaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -87,6 +91,19 @@ class CinemaController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+    public function destroy(Cinema $cinema){
+        try {
+            if ($cinema->rooms()->count() > 0) {
+                return back()->with('error', 'Không thể xóa rạp này, vì có phòng đang sử dụng rạp này');
+            }
+
+            $cinema->delete();
+
+            return back()->with('success', 'Xóa rạp chiếu thành công');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
 
     public function changeCinema(Request $request)
     {
@@ -99,6 +116,6 @@ class CinemaController extends Controller
         }
 
         // Điều hướng lại hoặc trả về kết quả phù hợp
-        return redirect()->back(); 
+        return redirect()->back();
     }
 }

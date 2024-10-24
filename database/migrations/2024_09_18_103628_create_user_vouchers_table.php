@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\User::class)->constrained();
             $table->foreignIdFor(\App\Models\Voucher::class)->constrained();
-            $table->dateTime('used_at')->nullable();
-            $table->unsignedInteger('discount_applied')->nullable();
+            $table->unsignedInteger('usage_count')->default(0);
             $table->timestamps();
         });
     }

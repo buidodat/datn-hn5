@@ -91,26 +91,35 @@
                                     </td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ $item->description }}</td>
-                                    <td>{!! $item->is_active
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    <td>
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-food-id="{{ $item->id }}" @checked($item->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
                                     </td>
                                     <td>
-                                        <a href="">
+                                        {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button">
                                                 <i class="fas fa-eye"></i></button>
-                                        </a>
+                                        </a> --}}
                                         <a href="{{ route('admin.food.edit', $item) }}">
                                             <button title="sửa" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
                                         </a>
-                                         {{-- <form action="{{route('admin.food.destroy', $item)}}" method="POST" class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
-                                        </form> --}}
+                                        @if ($item->combos()->count() == 0)
+                                            <form action="{{ route('admin.food.destroy', $item) }}" method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -142,6 +151,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+     <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let foodId = $(this).data('food-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('food.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: foodId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection
