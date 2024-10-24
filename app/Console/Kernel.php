@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Jobs\CheckBirthdayJob;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,6 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->job(new CheckBirthdayJob)
+            ->dailyAt('00:00')
+            ->timezone('Asia/Ho_Chi_Minh')
+            ->withoutOverlapping();
+//        $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
     }
 
     /**
@@ -20,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
