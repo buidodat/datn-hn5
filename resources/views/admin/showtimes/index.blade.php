@@ -182,7 +182,14 @@
                                             {!! $showtime->is_active == 1
                                                 ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
                                                 : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-
+                                           
+                                           {{-- <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active updat-active"
+                                                    name="is_active" type="checkbox" role="switch"
+                                                    data-id="{{ $showtime->id }}" @checked($showtime->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                    >
+                                            </div> --}}
                                             {{-- <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     name="is_active"
