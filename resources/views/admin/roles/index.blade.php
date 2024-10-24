@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách Vai trò</h5>
-                    <a href="" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.roles.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
@@ -65,7 +65,9 @@
                             <tr>
                                 <td>1</td>
                                 <td>Admin</td>
-                                <td> <span class="badge badge-info">Tất cả hệ thống</span></td>
+                                <td>
+                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Tất cả hệ thống</span>
+                                </td>
                                 <td>
                                     <div class="d-flex">
                                         <a href="">
@@ -89,8 +91,38 @@
                             </tr>
                             <tr>
                                 <td>1</td>
-                                <td>Quản trị bài viết</td>
-                                <td> <span class="badge badge-info">Quản lý bài viết</span></td>
+                                <td>Manager Post</td>
+                                <td>
+                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Quản lý bài viết</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a>
+                                        <a class="mx-1" href="">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
+                                        </a>
+                                        {{-- Xóa --}}
+
+                                        <form action="" method="post" class="d-inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                    class="ri-delete-bin-7-fill"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Manager Showtime</td>
+                                <td>
+                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Quản lý suất
+                                        chiếu</span>
+                                </td>
                                 <td>
                                     <div class="d-flex">
                                         <a href="">

@@ -24,6 +24,7 @@ class RoleController extends Controller
     public function create()
     {
         //
+        return view(self::PATH_VIEW . __FUNCTION__);
     }
 
     /**

@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách Quyền</h5>
-                    <a href="" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
                 @if (session()->has('success'))
