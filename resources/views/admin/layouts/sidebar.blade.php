@@ -97,7 +97,8 @@
                                     <span data-key="t-layouts">Quản lý hóa đơn</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link" data-key="t-horizontal">
+                                <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal">
                                     <i class=" mdi mdi-store"></i>
                                     <span data-key="t-dashboards">Đặt vé</span>
                                 </a>
@@ -215,9 +216,32 @@
                     </div>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="permissions">
+                        <i class="ri-account-circle-line"></i>
+                        <span data-key="t-landing">Phân quyền</span>
+                    </a>
+                    <div class="menu-dropdown collapse" id="permissions" style="">
+                        <ul class="nav nav-sm flex-column">
 
 
-                {{-- Menu cũ --}}
+                            <li class="nav-item">
+                                <a href="{{ route('admin.permissions.index') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
+                                        data-key="t-layouts">Danh sách quyền</span></a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal">
+                                    <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Danh sách vai
+                                        trò</span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
 
 
 

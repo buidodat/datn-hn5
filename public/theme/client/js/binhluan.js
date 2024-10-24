@@ -3,7 +3,7 @@ let comments = [];
 let currentPage = 0;
 const perPage = 3;
 function fetchComments() {
-    fetch(`/movie/${movieId}/comments`)
+    fetch(`/movies/${movieId}/comments`)
         .then(response => response.json())
         .then(data => {
             comments = data;

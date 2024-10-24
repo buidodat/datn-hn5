@@ -38,6 +38,10 @@
                                                 <div class="seat-selection">
                                                     <table class="table-seat">
                                                         <tbody>
+                                                            {{-- lưu chữ id ghế vào session vd: load lại trang thì tự động select lại ghế --}}
+                                                            <input type="hidden" id="selected-seats-session"
+                                                                value="{{ json_encode($selectedSeats) }}">
+
                                                             @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                                                 <tr>
                                                                     @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
@@ -167,8 +171,9 @@
                                             <input type="hidden" name="showtimeId" value="{{ $showtime->id }}"
                                                 id="showtime-id">
                                             <input type="hidden" name="seatId" id="hidden-seat-ids">
-                                            <input type="hidden" name="selected_seats" id="hidden-selected-seats">
+                                            <input type="hidden" name="selected_seats_name" id="hidden-selected-seats-name">
                                             <input type="hidden" name="total_price" id="hidden-total-price">
+                                            <a href="{{ route('showtimes') }}">Quay lại</a>
                                             <button id="submit-button" type="submit">Tiếp tục</button>
                                         </form>
                                     </div>
