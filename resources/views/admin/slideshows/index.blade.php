@@ -98,9 +98,13 @@
                             </td>
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->route_url }}</td>
-                            <td>{!! $item->is_active
-                                    ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                    : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                            <td>
+                                <div class="form-check form-switch form-switch-success">
+                                    <input class="form-check-input switch-is-active changeActive"
+                                        name="is_active" type="checkbox" role="switch"
+                                        data-slideshow-id="{{ $item->id }}" @checked($item->is_active)
+                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                </div>
                             </td>
                             <td>
                                 {{-- <a href="{{ route('admin.slideshows.show',$item) }}">
@@ -150,6 +154,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let slideshowId = $(this).data('slideshow-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('slideshows.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: slideshowId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection

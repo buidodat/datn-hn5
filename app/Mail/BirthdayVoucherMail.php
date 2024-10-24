@@ -38,13 +38,6 @@ class BirthdayVoucherMail extends Mailable
      */
     public function content(): Content
     {
-        /*return new Content(
-            view: 'emails.birthday-voucher',
-            with: [
-                'userName' => $this->user->name,
-                'voucherCode' => $this->voucher->code,
-            ],
-        );*/
         $content = new Content(
             view: 'emails.birthday-voucher',
             with: [
@@ -53,7 +46,7 @@ class BirthdayVoucherMail extends Mailable
             ],
         );
 
-        /*Log::info('BirthdayVoucherMail - Data View blade:', [
+        /*Log::info('Thông tin email:', [
             'userName' => $this->user->name,
             'voucherCode' => $this->voucher->code,
         ]);*/

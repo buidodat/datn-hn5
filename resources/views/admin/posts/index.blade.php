@@ -79,12 +79,12 @@
                                     </td>
 
                                     <td>
-
-                                        @if ($post->is_active == 1)
-                                            <span class="badge bg-success-subtle text-success text-uppercase">Yes</span>
-                                        @else
-                                            <span class="badge bg-danger-subtle text-danger text-uppercase">No</span>
-                                        @endif
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-post-id="{{ $post->id }}" @checked($post->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
                                     </td>
 
 
@@ -143,6 +143,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let postId = $(this).data('post-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('posts.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: postId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection

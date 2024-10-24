@@ -74,7 +74,8 @@
     font-weight: 500;
     /* Thêm các thuộc tính khác như padding, background-color nếu cần */
     color: #2a2a2a;
-    word-spacing: 0.8em;
+    word-spacing: 0.4em;
+    width: 66px;
 }
 
 .seat-label-pro {

@@ -162,8 +162,8 @@ class DatabaseSeeder extends Seeder
 
         // Tạo template ghế
         $seatTemplate = SeatTemplate::create([
-            'name' => 'Template 1',
-            'description' => 'Mô tả cho template 1',
+            'name' => 'Template standard',
+            'description' => 'Mẫu sơ đồ ghế tiêu chuẩn gồm 4 hàng ghế thường , 6 hàng ghế vip, 2 hàng ghế đôi',
             'matrix_id' => 1, // ID matrix ví dụ
             'seat_structure' => json_encode($this->generateSeatStructure()), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
@@ -189,13 +189,13 @@ class DatabaseSeeder extends Seeder
                 // Lấy cấu trúc ghế từ seat_template
                 $seatStructure = json_decode($seatTemplate->seat_structure, true);
 
-                $seatsData = []; // Mảng lưu trữ ghế
+                $dataSeats = []; // Mảng lưu trữ ghế
                 foreach ($seatStructure as $seat) {
                     $name = $seat['coordinates_y'] . $seat['coordinates_x'];
 
                     // Nếu là ghế đôi thì thêm tên ghế thứ hai
                     if ($seat['type_seat_id'] == 3) {
-                        $name .= ', ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
+                        $name .= ' ' . $seat['coordinates_y'] . ($seat['coordinates_x'] + 1);
                     }
 
                     $dataSeats[] = [
@@ -542,7 +542,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('anpx123@gmail.com'),
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
-                'birthday' => '2004-01-01',
+                'birthday' => '2004-10-01',
                 'type' => 'member'
             ],
             [
@@ -608,9 +608,9 @@ class DatabaseSeeder extends Seeder
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
-
+        $userIds = range(1, 6);
         for ($i = 0; $i < 5; $i++) {
-            DB::table('vouchers')->insert([
+            $voucherId  = DB::table('vouchers')->insertGetId([
                 'code' => strtoupper(Str::random(6)),
                 'title' => fake()->sentence(3),
                 'description' => fake()->text(50),
@@ -619,9 +619,17 @@ class DatabaseSeeder extends Seeder
                 'discount' => fake()->numberBetween(1000, 100000),
                 'quantity' => fake()->numberBetween(1, 100),
                 'limit' => fake()->numberBetween(1, 5),
-                'is_active' => true,
-
+                'is_active' => 1,
+                'is_publish' => 1,
+                'type' => 2,
             ]);
+            foreach ($userIds as $userId) {
+                DB::table('user_vouchers')->insert([
+                    'user_id' => $userId,
+                    'voucher_id' => $voucherId,
+                    'usage_count' => 0,
+                ]);
+            }
         }
 
         // tickets
@@ -701,6 +709,7 @@ class DatabaseSeeder extends Seeder
         // Tạo 10 bài viết
         for ($i = 1; $i <= 10; $i++) {
             Post::create([
+                'user_id' => random_int(1,5),
                 'title' => 'Bài viết số ' . $i,
                 'slug' => 'bai-viet-so-' . $i,
                 'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',

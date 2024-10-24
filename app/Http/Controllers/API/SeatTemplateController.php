@@ -36,15 +36,11 @@ class SeatTemplateController extends Controller
                 'errors' => $validator->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
         }
-        $scopeRegular = SeatTemplate::SCOPE_REGULAR;
-        $scopeDouble= SeatTemplate::SCOPE_DOUBLE;
         try {
             $data = [
                 'name'=>$request->name,
                 'description'=>$request->description,
                 'matrix_id'=>$request->matrix_id,
-                'row_regular' =>$scopeRegular['default'],
-                'row_double'=>$scopeDouble['default']
             ];
             $seatTemplate = SeatTemplate::create($data);
 
@@ -68,14 +64,10 @@ class SeatTemplateController extends Controller
 
         // Xác thực dữ liệu đầu vào
         $rules = [
-            'name' =>'required|string|max:255|unique:seat_templates,name,'.$seatTemplate->id,
-            'description' =>'required|string|max:255'
+            'name' => 'required|string|max:255|unique:seat_templates,name,' . $seatTemplate->id,
+            'description' => 'required|string|max:255',
+            'matrix_id' => !$seatTemplate->is_publish ? ['required', Rule::in($matrixIds)] : 'nullable',
         ];
-
-        if (!$seatTemplate->is_publish) {
-            // Chỉ thêm các rule này nếu phòng chưa publish
-            $rules['matrix_id'] = ['required', Rule::in($matrixIds)];
-        }
 
         // Thông báo lỗi tùy chỉnh
         $messages = [
@@ -94,39 +86,36 @@ class SeatTemplateController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors(),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
+            return response()->json(['error' => $validator->errors()], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
         }
 
         try {
             DB::transaction(function () use ($request, $seatTemplate) {
-                // Nếu phòng đã publish, chỉ cho phép cập nhật tên
-                if ($seatTemplate->is_publish) {
-                    $seatTemplate->update([
-                        'name' => $request->name,
-                        'description' => $request->description,
-                    ]);
-                } else {
-                    // Cập nhật thông tin phòng và ghế nếu chưa publish
-                    $seatTemplate->update([
-                        'name' => $request->name,
-                        'description' => $request->description,
-                        'matrix_id' => $request->matrix_id,
-                    ]);
-                }
-            });
+                // Cập nhật thông tin mẫu ghế
+                $dataSeatTemplate = [
+                    'name' => $request->name,
+                    'description' => $request->description,
+                ];
 
-            return response()->json([
-                'message' => "Cập nhật thành công",
-            ], Response::HTTP_OK); // 200
+                // Chỉ thêm matrix_id và structure_seat nếu chưa publish
+                if (!$seatTemplate->is_publish) {
+                    $dataSeatTemplate['matrix_id'] = $request->matrix_id;
+
+                    if ($seatTemplate->matrix_id !== $request->matrix_id) {
+                        $dataSeatTemplate['structure_seat'] = []; // Thêm structure_seat nếu matrix_id thay đổi
+                    }
+                }
+
+                $seatTemplate->update($dataSeatTemplate);
+            });
+            session()->flash('success','Thao tác thành công');
+            return response()->json(['message' => "Thao tác thành công"], Response::HTTP_OK); // 200
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'error' => $th->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
+            return response()->json(['error' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
         }
     }
+
 
     public function updateActive(Request $request,SeatTemplate $seatTemplate)
     {

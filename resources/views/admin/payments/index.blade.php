@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Quản lý thanh toán</h5>
-                    <a href="{{route('admin.payments.create')}}" class="btn btn-primary">Thêm mới</a>
+                    <a href="{{ route('admin.payments.create') }}" class="btn btn-primary">Thêm mới</a>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -69,15 +69,17 @@
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
 
-                                        <a href="{{ route('admin.payments.edit', $payment)}}">
+                                        <a href="{{ route('admin.payments.edit', $payment) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        
-                                        <form action="{{route('admin.payments.destroy', $payment)}}" method="POST" class="d-inline-block">
+
+                                        <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST"
+                                            class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có muốn xóa không')">
                                                 <i class="ri-delete-bin-7-fill"></i>
                                             </button>
                                         </form>

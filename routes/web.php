@@ -80,7 +80,7 @@ Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 // User - Thông tin tài khoản
 Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
-Route::put('my-account/changePassword', [UserController::class, 'changePassword'])->name('my-account.changePassword');
+Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
 
 // // User - Lịch sử mua hàng
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');
@@ -136,6 +136,8 @@ Route::get('checkoutAdmin', function () {
 // Giá vé theo chi nhánh
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 
+
 Route::get('public', function () {
     return view('public');
 })->name('public');
+

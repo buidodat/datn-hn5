@@ -12,6 +12,7 @@ class PostController extends Controller
     {
         // Lấy 6 bài viết mới nhất và phân trang
         $posts = Post::latest()->paginate(6); 
+        // $data = Product::query()->with(['category'])->get();
 
         // Truyền biến $posts vào view
         return view('client.posts.index', compact('posts'));

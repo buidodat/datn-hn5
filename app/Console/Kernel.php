@@ -16,11 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new CheckBirthdayJob)
+        /*$schedule->job(new CheckBirthdayJob)
             ->dailyAt('00:00')
             ->timezone('Asia/Ho_Chi_Minh')
-            ->withoutOverlapping();
-//        $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
+            ->withoutOverlapping();*/
+        $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
     }
 
     /**

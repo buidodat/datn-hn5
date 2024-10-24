@@ -223,10 +223,10 @@
 
                                         </tfoot> --}}
                                         </table>
-                                        {{-- <div class="back-list-history">
-                                            <a href="{{ route('transactionHistory') }}" aria-controls="trand" role="tab" data-toggle="tab">
+                                        <div class="back-list-history">
+                                            <a href="{{ route('my-account.edit') }}" >
                                                 << Trở về</a>
-                                        </div> --}}
+                                        </div>
 
                                     </div>
 
