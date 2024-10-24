@@ -22,45 +22,52 @@ class StoreVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|unique:vouchers,code|max:255',
-            'title' => 'required|string|max:255',
-            'start_date_time' => 'required|date|before:end_date_time',
-            'end_date_time' => 'required|date|after:start_date_time',
-            'discount' => ['required', 'regex:/^\d+(\.\d{1,2})?%?$/'],
+            'code' => 'required|string|unique:vouchers,code|size:8',
+            'title' => 'required|string|min:3|max:255',
+            'start_date_time' => 'required|date|before_or_equal:end_date_time',
+            'end_date_time' => 'required|date|after:start_date_time|after_or_equal:now',
+            'discount' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:1',
-            'limit' => 'required|integer|min:1',
+            'limit' => 'nullable|integer|min:1',
+            'description' => 'nullable|string|max:1000',
         ];
     }
     public function messages()
     {
         return [
-            'code.required' => 'Mã là bắt buộc.',
-            'code.string' => 'Mã phải là kiểu chuỗi.',
-            'code.unique' => 'Mã này đã tồn tại.',
-            'code.max' => 'Mã không được dài quá 255 ký tự.',
+            'code.required' => 'Mã voucher là bắt buộc.',
+            'code.string' => 'Mã voucher phải là một chuỗi ký tự.',
+            'code.unique' => 'Mã voucher này đã tồn tại, vui lòng chọn mã khác.',
+            'code.size' => 'Mã voucher phải đúng 8 ký tự.',
 
             'title.required' => 'Tiêu đề là bắt buộc.',
-            'title.string' => 'Tiêu đề phải là kiểu chuỗi.',
-            'title.max' => 'Tiêu đề không được dài quá 255 ký tự.',
+            'title.string' => 'Tiêu đề phải là một chuỗi ký tự.',
+            'title.min' => 'Tiêu đề phải có ít nhất 3 ký tự.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
 
-            'start_date_time.required' => 'Thời gian bắt đầu là bắt buộc.',
-            'start_date_time.date' => 'Thời gian bắt đầu phải là một ngày hợp lệ.',
-            'start_date_time.before' => 'Thời gian bắt đầu phải trước thời gian kết thúc.',
+            'start_date_time.required' => 'Vui lòng chọn ngày bắt đầu.',
+            'start_date_time.date' => 'Ngày bắt đầu phải là ngày hợp lệ.',
+            'start_date_time.before_or_equal' => 'Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.',
 
-            'end_date_time.required' => 'Thời gian kết thúc là bắt buộc.',
-            'end_date_time.date' => 'Thời gian kết thúc phải là một ngày hợp lệ.',
-            'end_date_time.after' => 'Thời gian kết thúc phải sau thời gian bắt đầu.',
+            'end_date_time.required' => 'Vui lòng chọn ngày kết thúc.',
+            'end_date_time.date' => 'Ngày kết thúc phải là ngày hợp lệ.',
+            'end_date_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
+            'end_date_time.after_or_equal' => 'Ngày kết thúc không thể là thời gian trong quá khứ.',
 
-            'discount.required' => 'Giảm giá là bắt buộc.',
-            'discount.regex' => 'Giảm giá phải là số nguyên hoặc phần trăm hợp lệ.',
+            'discount.required' => 'Vui lòng nhập số tiền giảm giá.',
+            'discount.numeric' => 'Số tiền giảm giá phải là số.',
+            'discount.min' => 'Số tiền giảm giá phải lớn hơn hoặc bằng 0.',
 
-            'quantity.required' => 'Số lượng là bắt buộc.',
-            'quantity.integer' => 'Số lượng phải là số nguyên.',
-            'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1.',
+            'quantity.required' => 'Số lượng voucher là bắt buộc.',
+            'quantity.integer' => 'Số lượng voucher phải là số nguyên.',
+            'quantity.min' => 'Số lượng voucher phải lớn hơn hoặc bằng 1.',
 
-            'limit.required' => 'Giới hạn là bắt buộc.',
-            'limit.integer' => 'Giới hạn phải là số nguyên.',
-            'limit.min' => 'Giới hạn phải lớn hơn hoặc bằng 1.',
+            'limit.integer' => 'Giới hạn sử dụng phải là số nguyên.',
+            'limit.min' => 'Giới hạn sử dụng phải lớn hơn hoặc bằng 1 nếu được đặt.',
+
+            'description.string' => 'Mô tả phải là một chuỗi ký tự.',
+            'description.max' => 'Mô tả không được vượt quá :max ký tự.',
+
         ];
     }
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách thanh toán
+    Danh sách Quyền
 @endsection
 
 @section('style-libs')
@@ -13,22 +13,18 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
 
-
-
 @section('content')
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Thanh toán</h4>
-
+                <h4 class="mb-sm-0">Quyền</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Thanh toán</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
+                        <li class="breadcrumb-item active">Quyền</li>
                     </ol>
                 </div>
-
             </div>
         </div>
     </div>
@@ -38,12 +34,19 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Quản lý thanh toán</h5>
-                    <a href="{{ route('admin.payments.create') }}" class="btn btn-primary">Thêm mới</a>
+                    <h5 class="card-title mb-0">Danh sách Quyền</h5>
+                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
+
                 @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -52,43 +55,61 @@
                         style="width:100%">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Tên phương thức thanh toán</th>
-                                <th>Mô tả</th>
-                                <th>Chức năng</th>
+                                <th>ID</th>
+                                <th>Tên quyền</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($payments as $payment)
-                                <tr>
-                                    <td>{{ $payment->id }}</td>
-                                    <td>{{ $payment->name }}</td>
-                                    <td>{{ $payment->description }}</td>
-                                    <td>
-                                        {{-- <a href="">
+                            <tr>
+                                <td>1</td>
+                                <td>Quản lý phim</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a> --}}
-
-                                        <a href="{{ route('admin.payments.edit', $payment) }}">
+                                                    class="fas fa-eye"></i></button></a>
+                                        <a class="mx-1" href="">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
+                                        {{-- Xóa --}}
 
-                                        <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST"
-                                            class="d-inline-block">
+                                        <form action="" method="post" class="d-inline-block">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('delete')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
+                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                    class="ri-delete-bin-7-fill"></i></button>
                                         </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        </tbody>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Quản lý Suất chiếu</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="">
+                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                    class="fas fa-eye"></i></button></a>
+                                        <a class="mx-1" href="">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
+                                        </a>
+                                        {{-- Xóa --}}
 
+                                        <form action="" method="post" class="d-inline-block">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                    class="ri-delete-bin-7-fill"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

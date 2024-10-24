@@ -127,10 +127,17 @@ Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('c
 Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
-//Viết tạm route chuyển trang admin checkout ở đây 
+//Viết tạm route chuyển trang admin checkout ở đây
 Route::get('checkoutAdmin', function () {
     return view('admin.book-tickets.checkout');
 })->name('checkoutAdmin');
 
+
 // Giá vé theo chi nhánh
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
+
+
+Route::get('public', function () {
+    return view('public');
+})->name('public');
+

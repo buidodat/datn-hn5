@@ -64,6 +64,8 @@ Route::prefix('seat-templates')
 
 Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
 
+Route::post('vouchers',[\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
+
 
 
 Route::middleware(['web'])->group(function () {
