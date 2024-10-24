@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SeatTemplate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class SeatTemplateController extends Controller
 {
@@ -57,7 +61,7 @@ class SeatTemplateController extends Controller
     }
 
 
-    public function update(Request $request, SeatTemplate $seatTemplate)
+    public function updateSeatStructure(Request $request, SeatTemplate $seatTemplate)
     {
         try {
             $dataSeatTemplate = [
@@ -68,6 +72,7 @@ class SeatTemplateController extends Controller
                 // Nếu hành động là publish và chưa được publish trước đó
                 $dataSeatTemplate = array_merge($dataSeatTemplate, [
                     'is_publish' => 1,
+                    'is_active' => 1,
                     'seat_structure' => $request->seat_structure,
                 ]);
             } elseif ($request->action === 'draft' && !$seatTemplate->is_publish) {
@@ -84,31 +89,17 @@ class SeatTemplateController extends Controller
             return back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
         }
     }
+    public function destroy(SeatTemplate $seatTemplate)
+    {
+        try {
+            if ($seatTemplate->is_publish) {
+                return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
+            }
+            $seatTemplate->delete();
+            return redirect()->back()->with('success', 'Thao tác thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
 
-    // public function update(Request $request, SeatTemplate $seatTemplate)
-    // {
-    //     dd($request->toArray());
-    //     try {
-    //         $dataSeatTemplate = [];
-    //         if ($request->action == 'publish' ) {
-    //             $request->validate([
-    //                 'seat_structure' => 'required|json',
-    //             ]);
-    //             $dataSeatTemplate['is_publish'] = 1;
-    //             $dataSeatTemplate['is_active'] = 1;
-    //             // Giải mã dữ liệu JSON và lưu vào trường seat_structure
-    //         }
-    //         $dataSeatTemplate['seat_structure'] = $request->seat_structure;
-
-    //         $seatTemplate->seat_structure = json_decode($request->seat_structure, true);
-
-    //         $seatTemplate->update($dataSeatTemplate);
-
-    //         return redirect()->back()
-    //             ->with('success', 'Thao tác thành công');
-    //     } catch (\Throwable $th) {
-    //         // Trả về thông báo lỗi nếu có ngoại lệ xảy ra
-    //         return back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
-    //     }
-    // }
 }

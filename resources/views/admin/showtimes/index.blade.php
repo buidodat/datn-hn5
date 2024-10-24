@@ -179,17 +179,15 @@
                                         @endif
 
                                         <td>
-                                            {!! $showtime->is_active == 1
-                                                ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                                : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
-                                           
-                                           {{-- <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input switch-is-active updat-active"
-                                                    name="is_active" type="checkbox" role="switch"
-                                                    data-id="{{ $showtime->id }}" @checked($showtime->is_active)
-                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
-                                                    >
-                                            </div> --}}
+
+                                                <div class="form-check form-switch form-switch-success d-inline-block">
+                                                    <input class="form-check-input switch-is-active changeActive"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-showtime-id="{{ $showtime->id }}" @checked($showtime->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                </div>
+
+
                                             {{-- <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     name="is_active"
@@ -328,6 +326,33 @@
             //     $('#branch').val(selectedBranchId).trigger('change');
 
             // }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let showtimeId = $(this).data('showtime-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('showtimes.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: showtimeId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection

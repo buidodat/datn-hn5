@@ -6,6 +6,7 @@ use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SeatController;
 use App\Http\Controllers\API\SeatTemplateController;
+use App\Http\Controllers\API\UpdateActiveController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -33,26 +34,31 @@ Route::get('getMovieDuration/{movieId}',   [APIController::class, 'getMovieDurat
 Route::get('typeRooms/{typeRoomId}',       [APIController::class, 'getTypeRooms']);
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 
-Route::resource('rooms', RoomController::class);
+Route::middleware('web')->resource('rooms', RoomController::class);
 
-Route::post('rooms/update-active', [RoomController::class, 'updateActive'])->name('rooms.update-active');
+Route::post('rooms/update-active',      [RoomController::class, 'updateActive'])->name('rooms.update-active');
+Route::post('movies/update-active',     [MovieController::class, 'updateActive'])->name('movies.update-active');
+Route::post('movies/update-hot',        [MovieController::class, 'updateHot'])->name('movies.update-hot');
+Route::post('branches/change-active',   [UpdateActiveController::class, 'branch'])->name('branches.change-active');
+Route::post('cinemas/change-active',    [UpdateActiveController::class, 'cinema'])->name('cinemas.change-active');
+Route::post('food/change-active',       [UpdateActiveController::class, 'food'])->name('food.change-active');
+Route::post('combos/change-active',     [UpdateActiveController::class, 'combo'])->name('combos.change-active');
+Route::post('slideshows/change-active', [UpdateActiveController::class, 'slideshow'])->name('slideshows.change-active');
+Route::post('posts/change-active',      [UpdateActiveController::class, 'post'])->name('posts.change-active');
+Route::post('showtimes/change-active',  [UpdateActiveController::class, 'showtime'])->name('showtimes.change-active');
+Route::post('vouchers/change-active',   [UpdateActiveController::class, 'voucher'])->name('vouchers.change-active');
 
 Route::prefix('seat-templates')
     ->as('seat-templates.')
+    ->middleware('web')
     ->group(function () {
         Route::post('store',                        [SeatTemplateController::class, 'store']);
         Route::put('{seatTemplate}',                [SeatTemplateController::class, 'update']);
         Route::post('update-active/{seatTemplate}', [SeatTemplateController::class, 'updateActive']);
     });
 
-Route::post('seats/soft-delete',     [SeatController::class, 'softDelete'])->name('seats.soft-delete');
-Route::post('seats/restore',         [SeatController::class, 'restore'])->name('seats.restore');
-Route::post('seats/soft-delete-row', [SeatController::class, 'softDeleteRow'])->name('seats.soft-delete-row');
-Route::post('seats/restore-row',     [SeatController::class, 'restoreRow'])->name('seats.restore-row');
-Route::post('seats/update-type',     [SeatController::class, 'updateSeatType'])->name('seats.update-type');
 
-Route::post('movies/update-active',  [MovieController::class, 'updateActive'])->name('movies.update-active');
-Route::post('movies/update-hot',     [MovieController::class, 'updateHot'])->name('movies.update-hot');
+
 
 
 

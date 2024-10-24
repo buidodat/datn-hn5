@@ -90,7 +90,6 @@ class PostController extends Controller
                 'description' => $request->description,
                 'content' => $request->content,
                 'is_active' => isset($request->is_active) ? 1 : 0,
-                'user_id' => auth()->user()->id, // Cập nhật user_id thành người dùng hiện tại
             ];
 
             ///nếu không cập nhật ảnh thì giữ nguyên ảnh cũ, nếu cập nhật thì xóa ảnh cũ và thay bằng ảnh mới

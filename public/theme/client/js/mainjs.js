@@ -457,30 +457,3 @@ document.querySelectorAll('.time-btn').forEach(btn => {
 //         }
 //     });
 // }
-
-
-// Thời gian đếm ngược (10 phút = 600 giây)
-let timeLeft = 600; // 600 giây tương đương 10 phút
-const timerElement = document.getElementById('timer');
-
-// Hàm đếm ngược thời gian
-const countdown = setInterval(() => {
-    // Tính số phút và giây còn lại
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-
-    // Hiển thị thời gian còn lại ở định dạng mm:ss
-    timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
-    // Giảm thời gian còn lại
-    timeLeft--;
-
-    // Khi thời gian kết thúc (hết 0 giây)
-    if (timeLeft < 0) {
-        clearInterval(countdown); // Dừng đếm ngược
-
-        // Hiển thị thông báo và quay về trang chủ
-        alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
-        window.location.href = '/'; // Điều hướng về trang chủ ("/")
-    }
-}, 1000); // Cập nhật mỗi giây

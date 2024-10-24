@@ -63,9 +63,13 @@
                                 <tr>
                                     <td>{{ $branch->id }}</td>
                                     <td>{{ $branch->name }}</td>
-                                    <td>{!! $branch->is_active
-                                        ? '<span class="badge bg-success-subtle text-success text-uppercase">Yes</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">No</span>' !!}
+                                    <td>
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive"
+                                                name="is_active" type="checkbox" role="switch"
+                                                data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
                                     </td>
                                     <td>
                                         {{-- <a href="">
@@ -76,13 +80,15 @@
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
-                                        <form action="{{route('admin.branches.destroy', $branch)}}" method="POST" class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
-                                        </form>
+                                        @if($branch->cinemas()->count() == 0 )
+                                            <form action="{{route('admin.branches.destroy', $branch)}}" method="POST" class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -115,6 +121,33 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+     <script>
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
+                let branchId = $(this).data('branch-id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '{{ route('branches.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: branchId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (!response.success) {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endsection

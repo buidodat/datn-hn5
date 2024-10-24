@@ -26,6 +26,7 @@
                             <ul>
                                 <li>{{ $post->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</li>
                                 <li>{{ $post->user->name ?? 'Không có người đăng' }}</li>
+                                <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
                             </ul>
                             <h2>{{ $post->title }}</h2>
                             <p>{{ Str::limit($post->description, 100) }}</p>
