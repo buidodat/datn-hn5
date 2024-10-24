@@ -1,14 +1,14 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách vé
+    Danh sách hóa đơn
 @endsection
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
@@ -20,11 +20,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách vé</h4>
+                <h4 class="mb-sm-0">Danh sách hóa đơn</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Vé</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Hóa đơn</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -167,7 +167,7 @@
                                             No image !
                                         @endif
                                     </td>
-                                  
+
                                     <td>
 
                                         <ul class="nav nav-sm flex-column">
@@ -341,5 +341,8 @@
 
             // }
         });
+
     </script>
+
 @endsection
+

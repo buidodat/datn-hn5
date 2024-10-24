@@ -1,3 +1,5 @@
+import 'bootstrap';
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -21,10 +23,10 @@ if (document.querySelector('meta[name="csrf-token"]') != undefined) {
  */
 
 import Echo from 'laravel-echo';
- 
+
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
- 
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
