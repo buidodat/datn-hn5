@@ -26,7 +26,7 @@ class TicketController extends Controller
         //     ->get()
         //     ->groupBy('code');
 
-        $tickets = Ticket::with(['user', 'ticketSeats.cinema', 'ticketSeats.movie', 'ticketSeats.room', 'ticketSeats.showtime', 'ticketSeats.seat'])
+        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->orderBy('id');
 
         // Lọc theo cinema_id
@@ -46,7 +46,6 @@ class TicketController extends Controller
         }
 
         $tickets = $tickets->get()->groupBy('code');
-
         //định dạng expiry để so sánh
         foreach ($tickets as $key => $group) {
             foreach ($group as $ticket) {
@@ -67,6 +66,28 @@ class TicketController extends Controller
             'status' => 'required',
         ]);
 
+        if ($ticket->status == 'Đã suất vé') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vé đã hoàn tất, không thể chỉnh sửa.'
+            ]);
+        }
+
+        // Tạo biến thời gian hiện tại với múi giờ Asia/Ho_Chi_Minh
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+
+        // Kiểm tra nếu vé đã hết hạn
+        if ($ticket->expiry < $now) {
+            $ticket->status = 'Đã hết hạn';
+            $ticket->save();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Vé đã hết hạn và trạng thái đã được cập nhật thành "Đã hết hạn".'
+            ]);
+        }
+
+        // Nếu vé chưa hết hạn, tiếp tục cập nhật trạng thái theo yêu cầu
         $ticket->status = $request->status;
         $ticket->save();
 

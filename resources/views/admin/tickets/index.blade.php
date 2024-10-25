@@ -58,7 +58,7 @@
                                         <option value="">Chi nhánh</option>
                                         @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}"
-                                               >
+                                            >
                                                 {{ $branch->name }}</option>
                                         @endforeach
                                     </select>
@@ -75,7 +75,7 @@
                             <div class="col-xxl-2 col-sm-6">
                                 <div>
                                     <input type="date" name="date" id="" class="form-control"
-                                        value="{{ request('date', now()->format('Y-m-d')) }}">
+                                           value="{{ request('date', now()->format('Y-m-d')) }}">
                                 </div>
                             </div>
                             <!--end col-->
@@ -111,134 +111,95 @@
 
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
-                        style="width:100%;">
+                           style="width:100%;">
                         <thead class='table-light'>
-                            <tr>
-                                <th>Code phim</th>
-                                <th>Thông tin người dùng</th>
-                                <th class="text-center">Hình ảnh</th>
-                                <th>Thông tin vé</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
-                            </tr>
+                        <tr>
+                            <th>Code phim</th>
+                            <th>Thông tin người dùng</th>
+                            <th class="text-center">Hình ảnh</th>
+                            <th>Thông tin vé</th>
+                            <th>Trạng thái</th>
+                            <th>Chức năng</th>
+                        </tr>
                         </thead>
                         <tbody id="ticket-table-body">
-                            @foreach ($tickets as $code => $groupTickets)
-                                <tr>
-                                    <td>{{ $code }}</td>
-                                    <td>
-                                        <div>
-                                            <ul class="nav nav-sm flex-column">
-                                                <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span>
-                                                    {{ $groupTickets->first()->user->name }}
-                                                </li>
-                                                <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
-                                                    <span
-                                                        class="badge {{ $groupTickets->first()->staff === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">
-                                                        {{ $groupTickets->first()->staff }}
-                                                    </span>
-                                                </li>
-                                                <li class="nav-item mb-1"><span class="fw-semibold">Email:</span>
-                                                    {{ $groupTickets->first()->user->email }}
-                                                </li>
-                                                <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span>
-                                                    {{ $groupTickets->first()->user->phone }}
-                                                </li>
-                                                <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh
-                                                        toán:</span>
-                                                    {{ $groupTickets->first()->payment_method }}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        @php
-                                            $firstTicketSeat = $groupTickets->first()->ticketSeats->first();
-                                            $url = $firstTicketSeat->movie->img_thumbnail;
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-                                        @endphp
-
-                                        @if (!empty($firstTicketSeat->movie->img_thumbnail))
-                                            <img src="{{ $url }}" alt="Movie Thumbnail" width="100px">
-                                        @else
-                                            No image !
+                        @foreach ($tickets as $code => $groupTickets)
+                            @php
+                                $ticket = $groupTickets->first();
+                                $url = $ticket->movie->img_thumbnail;
+                                if (!\Str::contains($url, 'http')) {
+                                    $url = Storage::url($url);
+                                }
+                                $showtime = $ticket->ticketSeats->first()?->showtime;
+                                $showtimeStart = $showtime ? \Carbon\Carbon::parse($showtime->start_time)->format('H:i') : 'Không có';
+                                $showtimeEnd = $showtime ? \Carbon\Carbon::parse($showtime->end_time)->format('H:i') : 'Không có';
+                            @endphp
+                            <tr>
+                                <td>{{ $code }}</td>
+                                <td>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span> {{ $ticket->user->name }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
+                                            <span class="badge {{ $ticket->staff === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->staff }}</span>
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Email:</span> {{ $ticket->user->email }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span> {{ $ticket->user->phone }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_method }}</li>
+                                    </ul>
+                                </td>
+                                <td class="text-center">
+                                    @if (!empty($ticket->movie->img_thumbnail))
+                                        <img src="{{ $url }}" alt="Movie Thumbnail" width="100px">
+                                    @else
+                                        No image !
+                                    @endif
+                                </td>
+                                <td>
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span> {{ $ticket->movie->name }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
+                                            {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }} - {{ $ticket->room->name }}
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
+                                            @foreach ($ticket->ticketSeats as $ticketSeat)
+                                                {{ $ticketSeat->seat->name }}
+                                            @endforeach
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span> {{ number_format($ticket->total_price) }} VNĐ</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
+                                            @switch($ticket->status)
+                                                @case('Chưa suất vé')
+                                                    <span class="badge bg-warning">Chưa suất vé</span>
+                                                    @break
+                                                @case('Đã hết hạn')
+                                                    <span class="badge bg-danger">Đã hết hạn</span>
+                                                    @break
+                                                @case('Đã suất vé')
+                                                    <span class="badge bg-success">Đã suất vé</span>
+                                                    @break
+                                            @endswitch
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span> {{ $showtimeStart }} ~ {{ $showtimeEnd }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span> {{ $ticket->expiry->format('H:i, d/m/Y') }}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <select class="form-select" data-original-status="{{ $ticket->status }}" data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
+                                        {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
+                                        <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận</option>
+                                        <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
+                                        @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                            <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
                                         @endif
-                                    </td>
-
-                                    <td>
-
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span>
-                                                {{ $firstTicketSeat->movie->name }}
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
-                                                {{ $firstTicketSeat->room->branch->name }} -
-                                                {{ $firstTicketSeat->room->cinema->name }} -
-                                                {{ $firstTicketSeat->room->name }}
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
-                                                @foreach ($groupTickets->first()->ticketSeats as $ticketSeat)
-                                                    {{ $ticketSeat->seat->name }}
-                                                @endforeach
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span>
-                                                {{ number_format($groupTickets->first()->total_price) }} VNĐ
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
-                                                @switch($groupTickets->first()->status)
-                                                    @case('Chờ xác nhận')
-                                                        <span class="badge bg-warning">Chờ xác nhận</span>
-                                                    @break
-
-                                                    @case('Đã hết hạn')
-                                                        <span class="badge bg-danger">Đã hết hạn</span>
-                                                    @break
-
-                                                    @case('Hoàn thành')
-                                                        <span class="badge bg-success">Hoàn thành</span>
-                                                    @break
-                                                @endswitch
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
-                                                {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->start_time)->format('H:i') }}
-                                                ~
-                                                {{ \Carbon\Carbon::parse($firstTicketSeat->showtime->end_time)->format('H:i') }}
-                                            </li>
-
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
-                                                {{ $groupTickets->first()->expiry->format('H:i, d/m/Y') }}
-                                            </li>
-                                        </ul>
-
-                                    </td>
-                                    <td>
-                                        <select class="form-select" data-ticket-id="{{ $groupTickets->first()->id }}"
-                                            onchange="changeStatus(this)"
-                                            {{ ($groupTickets->first()->status == 'Đã hết hạn' && now() > $groupTickets->first()->expiry->format('H:i, d/m/Y')) || $groupTickets->first()->status == 'Hoàn thành' ? 'disabled' : '' }}>
-                                            <option value="Chờ xác nhận"
-                                                {{ $groupTickets->first()->status == 'Chờ xác nhận' ? 'selected' : '' }}>
-                                                Chờ xác nhận</option>
-                                            <option value="Hoàn thành"
-                                                {{ $groupTickets->first()->status == 'Hoàn thành' ? 'selected' : '' }}>Hoàn
-                                                thành</option>
-                                            @if ($groupTickets->first()->status == 'Đã hết hạn')
-                                                <option value="Đã hết hạn" selected>Đã hết hạn</option>
-                                            @endif
-
-
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.tickets.show', $groupTickets->first()) }}">
-                                            <button title="Xem" class="btn btn-success btn-sm" type="button"><i
-                                                    class="fas fa-eye"></i></button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.tickets.show', $ticket) }}">
+                                        <button title="Xem" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
 
                     </table>
@@ -253,7 +214,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -275,10 +236,11 @@
     <script>
         //cập nhật trạng thái
         function changeStatus(e) {
-            var ticketId = e.getAttribute('data-ticket-id');
-            var newStatus = e.value;
+            if (confirm("Bạn có chắc chắn muốn thay đổi trạng thái vé không?")) {
+                var ticketId = e.getAttribute('data-ticket-id');
+                var newStatus = e.value;
 
-            fetch(`/admin/tickets/${ticketId}/update-status`, {
+                fetch(`/admin/tickets/${ticketId}/update-status`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -288,28 +250,39 @@
                         status: newStatus
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Trạng thái đã được cập nhật thành công!');
-                        window.location.reload();
-                    } else {
-                        alert('Lỗi khi cập nhật trạng thái.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Trạng thái đã được cập nhật thành công!');
+                            window.location.reload();
+                        } else {
+                            // Hiển thị thông báo lỗi từ server và load laji trang
+                            alert(data.message || 'Lỗi khi cập nhật trạng thái.');
+                            window.location.reload();
+
+                            // Khôi phục trạng thái cũ nếu có lỗi
+                            e.value = e.getAttribute("data-original-status");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi trong quá trình xử lý.');
+                        e.value = e.getAttribute("data-original-status");
+                    });
+            } else {
+                // Khôi phục trạng thái cũ nếu người dùng chọn "Cancel" trong confirm
+                e.value = e.getAttribute("data-original-status");
+            }
         }
 
         /*Hiển thị rạp*/
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Lấy giá trị branchId và cinemaId từ Laravel
             // var selectedBranchId = "{{ old('branch_id', '') }}";
             // var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
             // Xử lý sự kiện thay đổi chi nhánh
-            $('#branch').on('change', function() {
+            $('#branch').on('change', function () {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
                 cinemaSelect.empty();
@@ -319,8 +292,8 @@
                     $.ajax({
                         url: "{{ url('api/cinemas') }}/" + branchId,
                         method: 'GET',
-                        success: function(data) {
-                            $.each(data, function(index, cinema) {
+                        success: function (data) {
+                            $.each(data, function (index, cinema) {
                                 cinemaSelect.append('<option value="' + cinema.id +
                                     '" >' + cinema.name + '</option>');
                             });
