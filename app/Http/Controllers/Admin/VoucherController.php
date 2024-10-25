@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreVoucherRequest;
 use App\Http\Requests\Admin\UpdateVoucherRequest;
 use App\Models\User;
+use App\Models\UserVoucher;
 use App\Models\Voucher;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 class VoucherController extends Controller
@@ -40,7 +42,7 @@ class VoucherController extends Controller
 
     public function generateCode(){
         do {
-            $code = strtoupper(Str::random(8));
+            $code = strtoupper(Str::random(10));
             $codeExist = Voucher::where('code', $code)->exists();
         } while ($codeExist);
         return $code;
@@ -57,13 +59,39 @@ class VoucherController extends Controller
         $data['is_active'] = $request->has('is_active') ? 1 : 0;
         $data['is_publish'] = $request->has('is_publish') ? 1 : 0;
 
-        $voucher = Voucher::create($data);
+        DB::beginTransaction();
 
-        if ($voucher->is_publish && $voucher->is_active) {
-            broadcast(new VoucherCreated($voucher))->toOthers();
+        try {
+            $voucher = Voucher::create($data);
+
+            // Gán voucher cho tất cả các user có trong hệ thống
+            $users = User::all();
+            $userVouchers = [];
+            foreach ($users as $user) {
+                $userVouchers[] = [
+                    'user_id' => $user->id,
+                    'voucher_id' => $voucher->id,
+                    'usage_count' => 0,
+                ];
+            }
+
+            // Chèn dữ liệu vào bảng UserVoucher
+            UserVoucher::insert($userVouchers);
+
+            // Kiểm tra điều kiện broadcast
+            if ($voucher->is_publish && $voucher->is_active) {
+                broadcast(new VoucherCreated($voucher))->toOthers();
+            }
+
+            // Commit transaction nếu không có lỗi
+            DB::commit();
+
+            return redirect()->route('admin.vouchers.index')->with('success', 'Thêm thành công!');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.vouchers.index')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        return redirect()->route('admin.vouchers.index')->with('success', 'Thêm thành công!');
     }
 
     /**
