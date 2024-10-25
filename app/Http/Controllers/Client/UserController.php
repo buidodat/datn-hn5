@@ -25,7 +25,7 @@ class UserController extends Controller
     public function edit()
     {
         $userID = Auth::user()->id;
-        $user = User::findOrFail($userID);
+        $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
 
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);

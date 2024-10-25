@@ -18,13 +18,16 @@
 <script src="{{ asset('theme/client/js/jquery_min.js') }}"></script>
 <script src="{{ asset('theme/client/js/modernizr.js') }}"></script>
 <script src="{{ asset('theme/client/js/bootstrap.js') }}"></script>
+
 <script src="{{ asset('theme/client/js/owl.carousel.js') }}"></script>
 <script src="{{ asset('theme/client/js/jquery.dlmenu.js') }}"></script>
 <script src="{{ asset('theme/client/js/jquery.sticky.js') }}"></script>
-<script src="{{ asset('theme/client/js/jquery.nice-select.min.js') }}"></script>
+{{-- <script src="{{ asset('theme/client/js/jquery.nice-select.min.js') }}"></script> --}}
 <script src="{{ asset('theme/client/js/jquery.magnific-popup.js') }}"></script>
 <script src="{{ asset('theme/client/js/jquery.bxslider.min.js') }}"></script>
 <script src="{{ asset('theme/client/js/venobox.min.js') }}"></script>
+
+
 <script src="{{ asset('theme/client/js/smothscroll_part1.js') }}"></script>
 <script src="{{ asset('theme/client/js/smothscroll_part2.js') }}"></script>
 <script src="{{ asset('theme/client/js/plugin/rs_slider/jquery.themepunch.revolution.min.js') }}"></script>

@@ -173,7 +173,7 @@ class PaymentController extends Controller
     // Xử lý khi người dùng được chuyển về từ MoMo
     public function returnPayment(Request $request)
     {
-        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không 
+        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không
         $paymentData = session()->get('payment_data', []);
         if (empty($paymentData)) {
             return redirect()->route('home')->with('error', 'Dữ liệu thanh toán không tồn tại.');
@@ -358,7 +358,7 @@ class PaymentController extends Controller
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://datn-hn5.test/";
-        $vnp_TmnCode = "1U83ZQU1"; //Mã website tại VNPAY 
+        $vnp_TmnCode = "1U83ZQU1"; //Mã website tại VNPAY
         $vnp_HashSecret = "WEFJK48ZJU89ZE87ITT22GQ06JCNPP8B"; //Chuỗi bí mật
         $vnp_TxnRef = '123458'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = 'Thanh toán vnpay test';
@@ -408,7 +408,7 @@ class PaymentController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(

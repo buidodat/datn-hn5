@@ -47,9 +47,9 @@ class CheckoutController extends Controller
     public function applyVoucher(Request $request)
     {
 
-        if (!Auth::check()) {
-            return response()->json(['error' => 'Bạn cần đăng nhập để nhập mã voucher'], 403);
-        }
+        // if (!Auth::check()) {
+        //     return response()->json(['error' => 'Bạn cần đăng nhập để nhập mã voucher'], 403);
+        // }
 
         $voucher = Voucher::where('code', $request->code)->first();
 
