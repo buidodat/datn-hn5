@@ -609,7 +609,7 @@ class DatabaseSeeder extends Seeder
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
         $userIds = range(1, 6);
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $voucherId  = DB::table('vouchers')->insertGetId([
                 'code' => strtoupper(Str::random(6)),
                 'title' => fake()->sentence(3),
@@ -621,7 +621,7 @@ class DatabaseSeeder extends Seeder
                 'limit' => fake()->numberBetween(1, 5),
                 'is_active' => 1,
                 'is_publish' => 1,
-                'type' => 2,
+                'type' => 1,
             ]);
             foreach ($userIds as $userId) {
                 DB::table('user_vouchers')->insert([
