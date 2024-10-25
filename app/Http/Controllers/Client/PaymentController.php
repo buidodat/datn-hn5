@@ -25,6 +25,7 @@ class PaymentController extends Controller
     public function payment(Request $request)
     {
         // dd(session()->all());
+        // dd($request->all());
 
         $seatIds = $request->seat_id; // Danh sách ghế từ request
         $showtimeId = $request->showtime_id;
