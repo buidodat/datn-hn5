@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ReleaseSeatHoldJob;
+use App\Mail\TicketInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +15,17 @@ use App\Models\Showtime;
 use App\Models\Ticket;
 use App\Models\TicketCombo;
 use App\Models\TicketSeat;
+use App\Models\User;
+use App\Models\UserVoucher;
+use App\Models\Voucher;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
     public function payment(Request $request)
     {
         // dd(session()->all());
+        // dd($request->all());
 
         $seatIds = $request->seat_id; // Danh sách ghế từ request
         $showtimeId = $request->showtime_id;
@@ -70,7 +76,7 @@ class PaymentController extends Controller
                     ->whereIn('seat_id', $seatIds)
                     ->where('showtime_id', $showtimeId)
                     ->update([
-                        'hold_expires_at' => now()->addMinutes(5),
+                        'hold_expires_at' => now()->addMinutes(15),
                     ]);
 
                 // Lưu thông tin thanh toán vào session
@@ -89,12 +95,14 @@ class PaymentController extends Controller
                 ]);
 
                 // Dispatch job để giải phóng ghế sau 5 phút
-                ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId)->delay(now()->addMinutes(5));
+                ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId)->delay(now()->addMinutes(15));
             });
 
             // Chuyển hướng tới trang thanh toán
             if ($request->payment_name == 'momo') {
                 return redirect()->route('momo.payment');
+            } else if ($request->payment_name == 'vnpay') {
+                return redirect()->route('vnpay.payment');
             }
         } catch (\Exception $e) {
             return redirect()->route('home')
@@ -246,6 +254,31 @@ class PaymentController extends Controller
                             ]);
                         }
                     }
+
+                    // lưu voucher lượt sd voucher
+                    if ($paymentData['voucher_code'] != null) {
+                        $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
+
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
+                        }
+                    }
+
+                    // Gửi email hóa đơn
+                    Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
                 session()->forget('payment_data');
@@ -295,79 +328,29 @@ class PaymentController extends Controller
 
     // ================================================================================ //
 
-    // ====================THANH TOÁN ZALOPAY==================== //
-
-    public function zaloPayPayment(Request $request)
-    {
-        $config = [
-            "app_id" => 2553,
-            "key1" => "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL",
-            "key2" => "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz",
-            "endpoint" => "https://sb-openapi.zalopay.vn/v2/create"
-        ];
-
-        $embeddata = json_encode(['redirecturl' => 'http://datn-hn5.test']); // Merchant's data
-        $items = '[]'; // Merchant's data
-        $transID = rand(0, 1000000); //Random trans id
-        $order = [
-            "app_id" => $config["app_id"],
-            "app_time" => round(microtime(true) * 1000), // miliseconds
-            "app_trans_id" => date("ymd") . "_" . $transID, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
-            "app_user" => "user123",
-            "item" => $items,
-            "embed_data" => $embeddata,
-            "amount" => 150000,
-            "description" => "Lazada - Payment for the order #$transID",
-            "bank_code" => "",
-            // "callback_url" => "http://localhost/zalopay/callback.php",   //
-        ];
-
-        // appid|app_trans_id|appuser|amount|apptime|embeddata|item
-        $data = $order["app_id"] . "|" . $order["app_trans_id"] . "|" . $order["app_user"] . "|" . $order["amount"]
-            . "|" . $order["app_time"] . "|" . $order["embed_data"] . "|" . $order["item"];
-        $order["mac"] = hash_hmac("sha256", $data, $config["key1"]);
-
-        $context = stream_context_create([
-            "http" => [
-                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
-                "method" => "POST",
-                "content" => http_build_query($order)
-            ]
-        ]);
-
-        $resp = file_get_contents($config["endpoint"], false, $context);
-        $result = json_decode($resp, true);
-
-        if ($result['return_code'] == 1) { //
-            header("Location:" . $result['order_url']);
-            exit;
-        }
-
-        foreach ($result as $key => $value) {
-            echo "$key: $value<br>";
-        }
-    }
-
-    // ====================END THANH TOÁN ZALOPAY==================== //
-
-    // ================================================================================ //
-
     // ====================THANH TOÁN VNPAY==================== //
 
     public function vnPayPayment(Request $request)
     {
+        // Lấy dữ liệu thanh toán từ session
+        $paymentData = session()->get('payment_data', []);
+
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://datn-hn5.test/";
-        $vnp_TmnCode = "1U83ZQU1"; //Mã website tại VNPAY
-        $vnp_HashSecret = "WEFJK48ZJU89ZE87ITT22GQ06JCNPP8B"; //Chuỗi bí mật
-        $vnp_TxnRef = '123458'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = 'Thanh toán vnpay test';
+        $vnp_Returnurl = route('vnpay.return');
+        $vnp_TmnCode = "4UF9062G"; //Mã website tại VNPAY
+        $vnp_HashSecret = "XJYFD35V0FR97BW869CYABFKXE07I5B4"; //Chuỗi bí mật
+
+        $vnp_TxnRef = $paymentData['code']; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này
+
+        $vnp_OrderInfo = 'Nội dung thang toán';
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 20000 * 100;
+        $vnp_Amount = $paymentData['total_price'] * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = 'NCB';
-
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        //Add Params of 2.0.1 Version
+        // $vnp_ExpireDate = $_POST['txtexpire'];
+
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -381,14 +364,11 @@ class PaymentController extends Controller
             "vnp_OrderType" => $vnp_OrderType,
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef
-
+            // "vnp_ExpireDate" => $vnp_ExpireDate,
         );
 
         if (isset($vnp_BankCode) && $vnp_BankCode != "") {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
         }
 
         //var_dump($inputData);
@@ -416,14 +396,128 @@ class PaymentController extends Controller
             'message' => 'success',
             'data' => $vnp_Url
         );
-        if (isset($_POST['redirect'])) {
-            header('Location: ' . $vnp_Url);
-            die();
+        if (isset($request)) {
+            // Chuyển hướng tới trang thanh toán của VNPAY
+            return redirect($vnp_Url);
         } else {
             echo json_encode($returnData);
         }
     }
 
-    // ====================END THANH TOÁN VNPAY==================== //
+    public function returnVnpay(Request $request)
+    {
+        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không
+        $paymentData = session()->get('payment_data', []);
+        if (empty($paymentData)) {
+            return redirect()->route('home')->with('error', 'Dữ liệu thanh toán không tồn tại.');
+        }
 
+        $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+        $vnp_TxnRef = $request->input('vnp_TxnRef'); // mã giao dịch duy nhất
+        $showtime = Showtime::find($paymentData['showtime_id']);
+
+        // Kiểm tra nếu thanh toán thành công
+        if ($vnp_ResponseCode == '00') {
+            try {
+                DB::transaction(function () use ($paymentData, $showtime) {
+                    $existingTicket = Ticket::where('code', $paymentData['code'])->first();
+                    if ($existingTicket) {
+                        throw new \Exception('Đơn hàng đã được xử lý.');
+                    }
+
+                    // Lưu vào bảng tickets
+                    $ticket = Ticket::create([
+                        'user_id' => $paymentData['user_id'],
+                        'cinema_id' => $showtime->cinema_id,
+                        'room_id' => $showtime->room_id,
+                        'movie_id' => $showtime->movie_id,
+                        'voucher_code' => $paymentData['voucher_code'],
+                        'voucher_discount' => $paymentData['voucher_discount'],
+                        'payment_name' => $paymentData['payment_name'],
+                        'code' => $paymentData['code'],
+                        'total_price' => $paymentData['total_price'],
+                        'status' => 'Chưa suất vé',
+                        'expiry' => $showtime->end_time,
+                    ]);
+
+                    // Lưu thông tin bảng ticket_seat và update lại status của ghế
+                    foreach ($paymentData['seat_id'] as $seatId) {
+                        TicketSeat::create([
+                            'ticket_id' => $ticket->id,
+                            'showtime_id' => $paymentData['showtime_id'],
+                            'seat_id' => $seatId,
+                            'price' => DB::table('seat_showtimes')
+                                ->where('seat_id', $seatId)
+                                ->where('showtime_id', $paymentData['showtime_id'])
+                                ->value('price'),
+                        ]);
+
+                        DB::table('seat_showtimes')
+                            ->where('seat_id', $seatId)
+                            ->where('showtime_id', $paymentData['showtime_id'])
+                            ->update([
+                                'status' => 'sold',
+                                'hold_expires_at' => null,
+                            ]);
+
+                        event(new SeatSold($seatId, $paymentData['showtime_id']));
+                    }
+
+                    // Lưu thông tin combo vào bảng ticket_combos
+                    foreach ($paymentData['combo'] as $comboId => $quantity) {
+                        if ($quantity > 0) {
+                            $combo = Combo::find($comboId);
+
+                            // Tính giá bằng price_sale nếu có, nếu không thì lấy price
+                            $price = $combo->price_sale ?? $combo->price;
+
+                            TicketCombo::create([
+                                'ticket_id' => $ticket->id,
+                                'combo_id' => $comboId,
+                                'price' => $price * $quantity,  // Nhân giá với số lượng
+                                'quantity' => $quantity,
+                                'status' => 'Chưa lấy đồ ăn',
+                            ]);
+                        }
+                    }
+
+                    // lưu voucher lượt sd voucher
+                    if ($paymentData['voucher_code'] != null) {
+                        $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
+
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
+                        }
+                    }
+
+                    // Gửi email hóa đơn
+                    Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
+                });
+
+                session()->forget('payment_data');
+
+                return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+            } catch (\Exception $e) {
+                // Xử lý thanh toán thất bại hoặc hủy
+                return $this->handleFailedPayment($paymentData);
+            }
+        } else {
+            // Xử lý thanh toán thất bại hoặc hủy
+            return $this->handleFailedPayment($paymentData);
+        }
+    }
+    // ====================END THANH TOÁN VNPAY==================== //
 }
