@@ -4743,7 +4743,7 @@ border-bottom-left-radius: 10px;
 	margin-top: 20px;
 }
 
-.pagination {
+/* .pagination {
 	margin: 0;
 	padding-top: 45px;
 }
@@ -4818,7 +4818,7 @@ border-bottom-left-radius: 10px;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
 	transition: all 0.5s;
-}
+} */
 
 .prs_mcc_left_searchbar_wrapper {
 	float: left;

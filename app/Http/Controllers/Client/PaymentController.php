@@ -181,7 +181,7 @@ class PaymentController extends Controller
     // Xử lý khi người dùng được chuyển về từ MoMo
     public function returnPayment(Request $request)
     {
-        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không 
+        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không
         $paymentData = session()->get('payment_data', []);
         if (empty($paymentData)) {
             return redirect()->route('home')->with('error', 'Dữ liệu thanh toán không tồn tại.');
@@ -337,10 +337,10 @@ class PaymentController extends Controller
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('vnpay.return');
-        $vnp_TmnCode = "4UF9062G"; //Mã website tại VNPAY 
+        $vnp_TmnCode = "4UF9062G"; //Mã website tại VNPAY
         $vnp_HashSecret = "XJYFD35V0FR97BW869CYABFKXE07I5B4"; //Chuỗi bí mật
 
-        $vnp_TxnRef = $paymentData['code']; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
+        $vnp_TxnRef = $paymentData['code']; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này
 
         $vnp_OrderInfo = 'Nội dung thang toán';
         $vnp_OrderType = 'billpayment';
@@ -388,7 +388,7 @@ class PaymentController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(
@@ -406,7 +406,7 @@ class PaymentController extends Controller
 
     public function returnVnpay(Request $request)
     {
-        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không 
+        // lấy dữ liệu của session và kiểm tra nó xem còn tồn tại hay không
         $paymentData = session()->get('payment_data', []);
         if (empty($paymentData)) {
             return redirect()->route('home')->with('error', 'Dữ liệu thanh toán không tồn tại.');
