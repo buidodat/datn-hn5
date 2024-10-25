@@ -251,25 +251,18 @@
                                                 </div>
                                                 <hr>
                                                 <div class="img-payment-checkout">
-
                                                     <div>
-                                                        <input type="radio" name="payment_name" value="momo" checked>
+                                                        <input type="radio" name="payment_name" value="vnpay" checked>
+                                                        <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
+                                                            alt="">
+                                                        <label for="">Ví VnPay</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="payment_name" value="momo" >
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
                                                         <label for="">Ví MoMo</label>
                                                     </div>
-                                                    <div>
-                                                        <input type="radio" name="payment_name" value="zalopay">
-                                                        <img src="{{ asset('theme/client/images/index_III/vi-zalo-pay.png') }}"
-                                                            alt="">
-                                                        <label for="">Ví ZaloPay</label>
-                                                    </div>
-                                                    {{-- <div>
-                                                <input type="radio" name="payment_name" value="vnpay">
-                                                <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
-                                                    alt="">
-                                                <label for="">Ví VnPay</label>
-                                            </div> --}}
                                                 </div>
                                             </div>
                                         </div>

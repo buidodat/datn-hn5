@@ -13,32 +13,32 @@ class TicketInvoiceMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $ticket;
+    public $user;
+    public $showtime;
+    public $seats;
+    public $combos;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param Ticket $ticket
-     */
     public function __construct(Ticket $ticket)
     {
-        $this->ticket = $ticket;
+        // Load các mối quan hệ liên quan tới vé
+        $this->ticket = $ticket->load(['user','ticketSeats.showtime', 'ticketSeats.seat', 'ticketCombos.combo']);
+        // $this->ticket = $ticket->load(['user', 'showtime', 'ticketSeats.seat', 'ticketCombos.combo']);
+        $this->user = $this->ticket->user;           // Người dùng đặt vé
+        $this->showtime = $this->ticket->ticketSeats->first()->showtime ?? null; // Chọn suất chiếu từ ghế đầu tiên
+        $this->seats = $this->ticket->ticketSeats;   // Các ghế đã đặt
+        $this->combos = $this->ticket->ticketCombos; // Các combo đã mua
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('emails.ticket_invoice')
-                    ->subject('Hóa đơn đặt vé')
-                    ->with([
-                        'ticket' => $this->ticket,
-                        'user' => $this->ticket->user,
-                        'showtime' => $this->ticket->showtime,
-                        'seats' => $this->ticket->ticketSeats,
-                        'combos' => $this->ticket->ticketCombos,
-                    ]);
+        return $this->view('client.emails.ticket_invoice')
+            ->subject('Hóa đơn đặt vé')
+            ->with([
+                'ticket' => $this->ticket,
+                'user' => $this->user,
+                'showtime' => $this->showtime,
+                'seats' => $this->seats,
+                'combos' => $this->combos,
+            ]);
     }
 }
