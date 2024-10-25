@@ -16,6 +16,8 @@ use App\Models\Ticket;
 use App\Models\TicketCombo;
 use App\Models\TicketSeat;
 use App\Models\User;
+use App\Models\UserVoucher;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
@@ -252,6 +254,28 @@ class PaymentController extends Controller
                         }
                     }
 
+                    // lưu voucher lượt sd voucher
+                    if ($paymentData['voucher_code'] != null) {
+                        $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
+
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
+                        }
+                    }
+
                     // Gửi email hóa đơn
                     Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
@@ -390,7 +414,7 @@ class PaymentController extends Controller
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
         $vnp_TxnRef = $request->input('vnp_TxnRef'); // mã giao dịch duy nhất
         $showtime = Showtime::find($paymentData['showtime_id']);
-    
+
         // Kiểm tra nếu thanh toán thành công
         if ($vnp_ResponseCode == '00') {
             try {
@@ -453,6 +477,28 @@ class PaymentController extends Controller
                                 'quantity' => $quantity,
                                 'status' => 'Chưa lấy đồ ăn',
                             ]);
+                        }
+                    }
+
+                    // lưu voucher lượt sd voucher
+                    if ($paymentData['voucher_code'] != null) {
+                        $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
+
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
                         }
                     }
 
