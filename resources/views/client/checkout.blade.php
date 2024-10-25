@@ -253,7 +253,7 @@
                                                 <div class="img-payment-checkout">
                                                     <div>
                                                         <input type="radio" name="payment_name" value="vnpay" checked>
-                                                        <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
+                                                        <img src="{{ asset('theme/client/images/index_III/vi-vnpay.webp') }}"
                                                             alt="">
                                                         <label for="">Ví VnPay</label>
                                                     </div>
