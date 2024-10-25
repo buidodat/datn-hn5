@@ -542,7 +542,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('anpx123@gmail.com'),
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
-                'birthday' => '2004-01-01',
+                'birthday' => '2004-10-01',
                 'type' => 'member'
             ],
             [
@@ -608,9 +608,9 @@ class DatabaseSeeder extends Seeder
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
-
+        $userIds = range(1, 6);
         for ($i = 0; $i < 5; $i++) {
-            DB::table('vouchers')->insert([
+            $voucherId  = DB::table('vouchers')->insertGetId([
                 'code' => strtoupper(Str::random(6)),
                 'title' => fake()->sentence(3),
                 'description' => fake()->text(50),
@@ -619,9 +619,17 @@ class DatabaseSeeder extends Seeder
                 'discount' => fake()->numberBetween(1000, 100000),
                 'quantity' => fake()->numberBetween(1, 100),
                 'limit' => fake()->numberBetween(1, 5),
-                'is_active' => true,
-
+                'is_active' => 1,
+                'is_publish' => 1,
+                'type' => 2,
             ]);
+            foreach ($userIds as $userId) {
+                DB::table('user_vouchers')->insert([
+                    'user_id' => $userId,
+                    'voucher_id' => $voucherId,
+                    'usage_count' => 0,
+                ]);
+            }
         }
 
         // tickets
