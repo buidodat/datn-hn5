@@ -1,20 +1,20 @@
 /*-------------------------------------
-    
-	Author: Webstrot 
+
+	Author: Webstrot
 	Copyright © 2018
-	
+
 ---------------------------------------
-    
+
     CSS INDEX
     ===================
-	
+
     1. BODY
 	2. CUSTOM CSS / A
 	3. PRELOADER
 	4. NAVIGATION
 	5. SLIDER
 	6. UPCOMING MOVIES
-	7. VIDEO SECTION 
+	7. VIDEO SECTION
 	8. WEB SERIES
 	9. TOP MOVIES IN THEATRES
 	10. LATEST NEWS
@@ -32,7 +32,7 @@ body, html {
 	font-size: 16px;
 	line-height: 23px;
 	padding-right:0 !important;
-	color: #707070;
+	color: #333;
 	overflow-x:hidden;
 }
 body::-webkit-scrollbar-track{
@@ -48,11 +48,11 @@ body::-webkit-scrollbar-thumb{
 	background-color: #000000;
 }
 a {
-	color: #797979;
+	color: #333;
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #707070;
+	color: #333;
 	text-decoration: none;
 	outline: none;
 }
@@ -142,7 +142,7 @@ ul{
     left: 1px;
     top: 9px;
     font-size: 30px;
-	
+
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -ms-transition: all 0.3s ease;
@@ -257,7 +257,7 @@ ul.colors li:hover p {
 	animation-name: spin;
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
-  animation-timing-function: linear; 
+  animation-timing-function: linear;
 }
 @keyframes spin {
     from {
@@ -278,7 +278,7 @@ ul.colors li:hover p {
 }
 #style-switcher > div > select {
 	width: 90%;
-}	
+}
 /*-- prs navigation Start --*/
 .prs_navigation_main_wrapper{
 	float:left;
@@ -337,7 +337,7 @@ ul.colors li:hover p {
     background: -webkit-linear-gradient(to right, #4c46e6, #6d68fe, rgb(151, 0, 255));
     background: linear-gradient(to right, #4c46e6, #6d68fe, rgb(151, 0, 255));   -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px; 
+    border-radius: 10px;
 	margin-right:10px;}
 .dl-menuwrapper button:hover, .dl-menuwrapper button.dl-active, .dl-menuwrapper ul {     background: -moz-linear-gradient(to right, #4c46e6, #6d68fe, rgb(151, 0, 255));
     background: -webkit-linear-gradient(to right, #4c46e6, #6d68fe, rgb(151, 0, 255));
@@ -1118,7 +1118,7 @@ a.navbar-brand img { padding-right: 15px; }
 .prs_animate_btn1 .button--tamaya:hover::before {
 	-webkit-transform: translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0);
-	
+
 }
 .prs_animate_btn1 .button--tamaya:hover::after {
 	-webkit-transform: translate3d(0, 100%, 0);
@@ -1128,7 +1128,7 @@ a.navbar-brand img { padding-right: 15px; }
 	opacity: 1;
 	-webkit-transform: scale3d(1, 1, 1);
 	transform: scale3d(1, 1, 1);
-	
+
 }
 .prs_animate_btn1 .prs_upcom_main_btn::before,
 .prs_animate_btn1 .prs_upcom_main_btn::after {
@@ -1622,7 +1622,7 @@ letter-spacing: 1.17px;
   padding-right: 25px;
   padding-bottom:300px;
 }
-/* Container for slider. 
+/* Container for slider.
 Width set to 100% so player will fill it's parent container  */
 
 .sliderContainer {
@@ -1772,14 +1772,14 @@ Width set to 100% so player will fill it's parent container  */
   transition: all 0.2s ease-in-out;
   /* Scale down images not centered. */
   transform: scale(0.8);
-  
-  /* Get rid of blue focus border. The focus border is ugly but important for accessibility. As active states look different - i.e. change in opacity and size - think it's OK to get rid of it on this slider. 
+
+  /* Get rid of blue focus border. The focus border is ugly but important for accessibility. As active states look different - i.e. change in opacity and size - think it's OK to get rid of it on this slider.
 Good solution here ---> https://hackernoon.com/removing-that-ugly-focus-ring-and-keeping-it-too-6c8727fefcd2 */
-  
+
   outline: none;
-  
+
   /* Grab Hand Cursor */
-  
+
   cursor: move;
   cursor: grab;
   cursor: -moz-grab;
@@ -1951,7 +1951,7 @@ pre {overflow:auto;}
 	left:0;
 	padding-top:16px;
 	border-bottom-right-radius:8px;
-		
+
 }
 .st_slider_rating i{
 	color:#DF1F00;
@@ -2101,7 +2101,7 @@ padding-top:5px;
 }
 .cc_pc_accordion input[type="checkbox"] {
   display: none;
-  
+
 }
 .cc_pc_accordion label {
   cursor: pointer;
@@ -2147,11 +2147,11 @@ text-transform:uppercase;
 }
 .cc_pc_color_accordion input[type="checkbox"] {
   display: none;
-  
+
 }
 .cc_pc_color_accordion label {
   cursor: pointer;
-  color:#797979;
+  color:#333;
   font-size: 16px;
 }
 .cc_pc_color_accordion input[type="checkbox"]:checked + label:after {
@@ -2221,7 +2221,7 @@ border-radius: 4px 4px 0px 0px;
 }
 .accordion li.default .submenu {
 	display: block;
-	
+
 }
 .accordion .cc_product_heading{
 	padding-left:26px !important;
@@ -2955,7 +2955,7 @@ font-weight:600;
 	-o-transition: all 0.5s;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-	transition: all 0.5s;    
+	transition: all 0.5s;
 }
 .prs_footer_cont1_wrapper li a img{
 	-webkit-border-radius: 5px;
@@ -2998,7 +2998,7 @@ font-weight:600;
 	-o-transition: all 0.5s;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-	transition: all 0.5s; 
+	transition: all 0.5s;
 }
 .prs_footer_social_wrapper li a:hover{
 	border:1px solid #b446ff;
@@ -3010,7 +3010,7 @@ font-weight:600;
 	-o-transition: all 0.5s;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-	transition: all 0.5s; 
+	transition: all 0.5s;
 }
 .prs_bottom_footer_wrapper{
 	float:left;
@@ -3074,7 +3074,7 @@ font-weight:600;
 	-o-transition: all 0.5s;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-	transition: all 0.5s; 
+	transition: all 0.5s;
 }
 .prs_title_heading_wrapper li a:hover{
 	color:#b446ff;
@@ -3082,7 +3082,7 @@ font-weight:600;
 	-o-transition: all 0.5s;
 	-ms-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-	transition: all 0.5s; 
+	transition: all 0.5s;
 }
 /*-- prs title wrapper End --*/
 /*-- prs about presenter wrapper Start --*/
@@ -3224,7 +3224,7 @@ font-weight:600;
     -o-transition: all 0.5s;
     -ms-transition: all 0.5s;
     -moz-transition: all 0.5s;
-    transition: all 0.5s;	
+    transition: all 0.5s;
 
 }
 .prs_about_pre_right_sec_wrapper:hover .prs_about_pre_right_slider_sec_cont_wrapper{
@@ -3700,7 +3700,7 @@ font-weight:600;
     -o-transition: all 0.5s;
     -ms-transition: all 0.5s;
     -moz-transition: all 0.5s;
-    transition: all 0.5s;	
+    transition: all 0.5s;
 }
 .prs_mcc_left_side_wrapper:hover{
 	 -webkit-box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.10);
@@ -3807,7 +3807,7 @@ font-weight:600;
 }
 .pagination > li a i:before{
 	margin-left:0;
-} 
+}
 .pagination > li:last-child > a{
 	width:50px;
 	height:50px;
@@ -3819,7 +3819,7 @@ font-weight:600;
 	-webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-}	
+}
 .pagination > li:first-child:hover > a{
 	background:#111111;
 	border:1px solid transparent;
@@ -4193,7 +4193,7 @@ font-weight:600;
     -ms-transition: all 0.5s;
     -moz-transition: all 0.5s;
     transition: all 0.5s;
-}	
+}
 .prs_mcc_list_right_cont_wrapper a i:before{
 	margin-left:0;
 }
@@ -4243,7 +4243,7 @@ font-weight:600;
 	    -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-	
+
 }
 .prs_ms_trailer_vid_icon_wrapper{
 	text-align:center;
@@ -4280,7 +4280,7 @@ font-weight:600;
 .prs_ms_trailer_vid_icon_wrapper li a i:before{
 	margin-left:0;
 	font-size:35px;
-	
+
 }
 .prs_ms_trailer_vid_icon_wrapper h2{
 	font-size:32px;
@@ -4314,7 +4314,7 @@ font-weight:600;
     -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
     -o-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
     -ms-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
-    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10); 
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
 	 -webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
     -ms-transition: all 0.5s;
@@ -4467,7 +4467,7 @@ font-weight:600;
 }
 .prs_ms_trailer_slider_right_wrapper h5{
 	font-family: 'Lato', sans-serif;
-	color:#797979;
+	color:#333;
 	font-size:16px;
 	padding-top:25px;
 	line-height:26px;
@@ -4644,7 +4644,7 @@ font-weight:600;
 }
 .prs_syn_cont_wrapper h4{
 	font-size:18px;
-	color:#707070;
+	color:#333;
 	padding-top:50px;
 	font-family: 'Lato', sans-serif;
 }
@@ -4852,7 +4852,7 @@ font-weight:600;
     -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
     -o-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
     -ms-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
-    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);  
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.10);
 	-webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
     -ms-transition: all 0.5s;
@@ -5085,7 +5085,7 @@ font-weight:600;
 	background:#85df88;
 }
 .smalltext{
-	color:#797979;
+	color:#333;
 	padding-top: 15px;
 	font-size: 16px;
 }
@@ -5220,7 +5220,7 @@ font-weight:600;
 	float:left;
 }
 #filter li a{
-	padding: 15px 70px;	
+	padding: 15px 70px;
 }
 .prs_gallery_btn_wrapper ul{
 	margin-top:60px;
@@ -5866,7 +5866,7 @@ font-weight:600;
 }
 .prs_blog_pagi_wrapper ul{
 	padding-top:55px;
-}	
+}
 .pagination > li > a{
 	margin-top:5px !important;
 }
@@ -6765,7 +6765,7 @@ font-weight:600;
 	border: none;
 	margin: 0;
 }
-.accordionFifteen .panel .panel-heading a {	
+.accordionFifteen .panel .panel-heading a {
 	display: block;
 	background: white;
 	padding: 15px 20px;
@@ -6835,9 +6835,9 @@ font-weight:600;
 	line-height: 24px;
 	text-align: center;
 	display: block;
-	border-radius: 50%;	
+	border-radius: 50%;
 }
-.accordionFifteen .panel .panel-heading a:after {  
+.accordionFifteen .panel .panel-heading a:after {
   content: "\f107";
   background: #b446ff;
   width:24px;
@@ -6925,7 +6925,7 @@ font-weight:600;
 	right:0;
 	margin:0px auto;
 	background:#d63f3f;
-	
+
 }
 .prs_es_pt_heading_box_wrapper h2{
 	font-size:24px;
@@ -7051,8 +7051,8 @@ font-weight:600;
 	border:1px solid #ffffff !important;
 }
 #map{
-	width:100%; 
-	float:left; 
+	width:100%;
+	float:left;
 	height:560px;
 }
 .mobile-logo a svg{
@@ -7810,10 +7810,10 @@ font-weight:600;
 }
 .prs_in_right_box_img_wrapper img{
 	width:100%;
-	-webkit-transition: all .3s ease-out; 
-    -moz-transition: all .3s ease-out; 
-    -o-transition: all .3s ease-out; 
-    transition: all .3s ease-out; 
+	-webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -o-transition: all .3s ease-out;
+    transition: all .3s ease-out;
 	-webkit-backface-visibility: hidden;
 	-webkit-perspective: 1000;
 }
@@ -8181,7 +8181,7 @@ padding-top:25px;
 	width:100%;
 	height:40px;
 	border: 1px solid rgba(0,0,0,0.38);
-	border-radius: 4px;	
+	border-radius: 4px;
 	padding-left:20px;
 	-webkit-transition: all 0.5s;
     -o-transition: all 0.5s;
