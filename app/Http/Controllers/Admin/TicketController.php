@@ -115,7 +115,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = Ticket::with(['ticketSeats.movie'])->findOrFail($ticket->id);
+        $oneTicket = Ticket::with(['movie','room'])->findOrFail($ticket->id);
         $users = $ticket->user()->first();
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
             return $ticketSeat->seat->typeSeat->price;

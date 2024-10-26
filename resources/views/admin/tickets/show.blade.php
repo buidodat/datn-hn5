@@ -53,7 +53,7 @@
                             <tr>
                                 <td>
                                     @php
-                                        $img = $oneTicket->ticketSeats->first();
+                                        $img = $oneTicket->first();
                                         $url = $img->movie->img_thumbnail;
                                         if (!\Str::contains($url, 'http')) {
                                             $url = Storage::url($url);
@@ -65,10 +65,10 @@
                                     @else
                                         No image!
                                     @endif
-                                    <b>{{ $oneTicket->ticketSeats->first()->movie->name }}</b></td>
+                                    <b>{{ $oneTicket->first()->movie->name }}</b></td>
                                 <td>
                                     <p><b> {{ $oneTicket->ticketSeats->first()->showtime->cinema->name }} </b></p>
-                                    <p> {{ $oneTicket->ticketSeats->first()->room->name }}</p>
+                                    <p> {{ $oneTicket->first()->room->name }}</p>
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->date)->format('d-m-Y') }}</p>
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                         ~ {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}</p>
@@ -83,7 +83,7 @@
                                             <span class="link-primary">{{ $ticketSeat->seat->name }}</span>
                                         </p>
                                     @endforeach
-                                    <p class="text-muted mb-0">Phân loại:
+                                    <p class="text-muted mb-0">Loại:
                                         <span class="fw-medium">{{ $ticketSeat->seat->typeSeat->name }}</span>
                                     </p>
                                 </td>
@@ -137,14 +137,14 @@
                 <div class="card-header">
                     <div class="d-sm-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
-                        <div class="flex-shrink-0 mt-2 mt-sm-0">
+                        {{--<div class="flex-shrink-0 mt-2 mt-sm-0">
                             <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
                                     class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
                                 tin</a>
                             <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
                                     class="mdi mdi-archive-remove-outline align-middle me-1"></i>
                                 Hủy</a>
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
                 <div class="card-body">
