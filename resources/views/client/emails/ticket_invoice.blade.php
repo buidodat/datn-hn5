@@ -1,4 +1,78 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hóa đơn đặt vé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .total-price {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Xin chào {{ $user->name }}</h1>
+    <p>Cảm ơn bạn đã đặt vé xem phim tại hệ thống của chúng tôi. Dưới đây là thông tin vé của bạn:</p>
+
+    <h2>Thông tin vé</h2>
+    <ul>
+        <li><strong>Mã vé:</strong> {{ $ticket->code }}</li>
+        <li><strong>Phim:</strong> {{ $ticket->movie->name }}</li>
+        <li><strong>Rạp:</strong> {{ $ticket->cinema->name }}</li>
+        <li><strong>Phòng chiếu:</strong> {{ $ticket->room->name }}</li>
+        <li><strong>Suất chiếu:</strong> {{ $showtime->start_time }}</li>
+        <li class="total-price"><strong>Tổng giá:</strong> {{ number_format($ticket->total_price) }} VND</li>
+    </ul>
+
+    <h2>Ghế đã chọn</h2>
+    <ul>
+        @foreach ($seats as $seat)
+            <li>Ghế: {{ $seat->seat->name }} - Giá: {{ number_format($seat->price) }} VND</li>
+        @endforeach
+    </ul>
+
+    @if ($combos->isNotEmpty())
+        <h2>Combo đồ ăn</h2>
+        <ul>
+            @foreach ($combos as $combo)
+                <li>
+                    {{ $combo->combo->name ?? 'Không xác định' }} -
+                    Số lượng: {{ $combo->quantity }} -
+                    Giá: {{ number_format($combo->price) }} VND
+                </li>
+            @endforeach
+        </ul>
+    @endif
+
+
+    <p>Chúc bạn xem phim vui vẻ!</p>
+</body>
+
+</html>
+{{-- <!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -188,4 +262,5 @@
     </div>
 </body>
 
-</html>
+</html> --}}
+

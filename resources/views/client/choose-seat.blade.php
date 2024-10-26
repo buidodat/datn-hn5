@@ -179,7 +179,6 @@
                                             <input type="hidden" name="total_price" id="hidden-total-price">
                                             <!-- Thêm id vào input hidden để cập nhật remainingSeconds bằng JS -->
                                             <input type="hidden" name="remainingSeconds" id="remaining-seconds" value="{{ $remainingSeconds }}">
-                                            <a href="{{ route('showtimes') }}">Quay lại</a>
                                             <button id="submit-button" type="submit">Tiếp tục</button>
                                         </form>
                                         

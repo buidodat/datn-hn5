@@ -63,7 +63,6 @@
     <!--main js file end-->
     @yield('scripts')
     @yield('script-libs')
-    @vite('resources/js/public.js')
 </body>
 
 </html>

@@ -251,25 +251,18 @@
                                                 </div>
                                                 <hr>
                                                 <div class="img-payment-checkout">
-
                                                     <div>
-                                                        <input type="radio" name="payment_name" value="momo" checked>
+                                                        <input type="radio" name="payment_name" value="vnpay" checked>
+                                                        <img src="{{ asset('theme/client/images/index_III/vi-vnpay.webp') }}"
+                                                            alt="">
+                                                        <label for="">Ví VnPay</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="payment_name" value="momo" >
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
                                                         <label for="">Ví MoMo</label>
                                                     </div>
-                                                    <div>
-                                                        <input type="radio" name="payment_name" value="zalopay">
-                                                        <img src="{{ asset('theme/client/images/index_III/vi-zalo-pay.png') }}"
-                                                            alt="">
-                                                        <label for="">Ví ZaloPay</label>
-                                                    </div>
-                                                    {{-- <div>
-                                                <input type="radio" name="payment_name" value="vnpay">
-                                                <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
-                                                    alt="">
-                                                <label for="">Ví VnPay</label>
-                                            </div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -393,22 +386,44 @@
                                         </div>
                                         {{-- thong tin --}}
                                         <div class="">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Họ tên:</th>
-                                                        {{-- <th>Số điện thoại</th> --}}
-                                                        <th>Email</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>{{ Auth::user()->name }}</td>
-                                                        {{-- <td>0987654321</td> --}}
-                                                        <td>{{ Auth::user()->email }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="row" >
+                                                <div class="col-md-6" >
+                                                    <div>
+                                                        <div>
+                                                            <span class="bold">Thông tin người đặt:</span>
+                                                        </div>
+                                                        <div class='info-checkout'>
+                                                            <ul class="text-dark">
+                                                                <li>Mã: {{ auth()->user()->id }}</li>
+                                                                <li>Họ tên: {{ auth()->user()->name }}</li>
+                                                                <li>Email: {{ auth()->user()->email }} </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div id="card-member">
+                                                        <div>
+                                                            <span class="bold">Thông tin khách hàng: </span>
+                                                        </div>
+                                                        <div class='info-checkout'>
+                                                            <div id='info-membership'>
+                                                                <!-- Thông tin khách hàng sẽ được hiển thị ở đây sau khi tìm kiếm -->
+                                                            </div>
+                                                            <div class="form-membership" id='form-membership'>
+                                                                <input type="text" id="data_membership" placeholder="Thẻ thành viên/Email">
+                                                                <button type="button" id='submit-membership'>Xác nhận</button>
+                                                            </div>
+                                                            <div id='error-membership'></div>
+                                                            <div id="change-membership" style="text-align: right; margin-top: 10px; display:none">
+                                                                <button id="change-user" type="button" class='btn'>Thay đổi</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
 
                                         </div>
                                         <hr>
@@ -549,7 +564,7 @@
                                                     {{-- diem --}}
                                                     <div class="points-section">
                                                         <div class="points-title">Điểm Poly</div>
-                                                        <form class="points-form" action="">
+                                                        <form class="points-form" action="" id='form-point'>
                                                             <table class="points-table">
                                                                 <thead>
                                                                     <tr>
@@ -561,7 +576,8 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td>1900</td>
+                                                                        <td id='points-membership'>{{ number_format(auth()->user()->membership->points, 0, ',', '.') }}
+                                                                        </td>
                                                                         <td><input type="text" name="point_use"
                                                                                 placeholder="Nhập điểm"></td>
                                                                         <td>= 0 Vnđ</td>
@@ -742,6 +758,59 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#submit-membership').on('click', function() {
+                const dataMembership = $('#data_membership').val().trim();
+
+                if (dataMembership) {
+                    $.ajax({
+                        url: '{{ route('get-membership') }}',
+                        method: 'GET',
+                        data: { data_membership: dataMembership },
+                        success: function(response) {
+                            if (response.error) {
+                                $('#error-membership').html(`<p class="text-danger">${response.error}</p>`);
+                            } else {
+                                $
+                                $('#info-membership').html(`
+                                    <ul>
+                                        <li>Họ tên: ${response.data.name}</li>
+                                        <li>Email: ${response.data.email || 'Không có'}</li>
+                                        <li>Số điện thoại: ${response.data.phone}</li>
+                                        <li>Thẻ thành viên: ${response.data.membership_code}</li>
+                                        <li>Điểm tích lũy: ${response.data.points} điểm</li>
+                                    </ul>
+                                `);
+                                $('#points-membership').text(`${response.data.points}`);
+                                $('#error-membership').empty();
+                                $('#form-membership').hide();
+                                $('#change-membership').show();
+                            }
+                        },
+                        error: function() {
+                            $('#error-membership').html('<p class="text-danger">Không tìm thấy thông tin người dùng.</p>');
+                        }
+                    });
+                } else {
+                    $('#error-membership').html('<p class="text-danger">Vui lòng nhập mã thẻ thành viên hoặc email.</p>');
+                }
+            });
+
+            $('#change-membership').on('click', function() {
+                $('#form-membership').show();
+                $('#info-membership').empty();
+                $('#error-membership').empty();
+                $('#data_membership').val('');
+                $('#points-membership').text('{{ auth()->user()->membership->points }}');
+                $(this).hide();
+            });
+        });
+    </script>
+
+
+
     <script>
         var routeUrl = "{{ route('applyVoucher') }}";
         var csrfToken = "{{ csrf_token() }}";

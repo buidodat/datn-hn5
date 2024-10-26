@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Membership;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -40,6 +42,10 @@ class GoogleAuthController extends Controller
                         'email' => $userGoogle->email,
                         'service_id' => $userGoogle->id,
                         'service_name' => 'google',
+                    ]);
+                    Membership::create([
+                        'user_id' => $newUser->id ,
+                        'code' => Membership::codeMembership(),
                     ]);
                     Auth::login($newUser);
                 }

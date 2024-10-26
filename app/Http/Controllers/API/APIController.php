@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cinema;
+use App\Models\Membership;
 use App\Models\Movie;
 use App\Models\MovieVersion;
 use App\Models\Room;
 use App\Models\Showtime;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -76,5 +78,62 @@ class APIController extends Controller
         }
 
         return response()->json($showtimes);
+    }
+
+
+
+
+    //lấy thông tin membership
+    public function getMembership(Request $request)
+    {
+        // Lấy dữ liệu từ request có thể là email hoặc mã thẻ thành viên
+        $dataMembership = $request->input('data_membership');
+
+        // Tìm thông tin thành viên dựa trên mã thành viên
+        $membership = Membership::where('code', $dataMembership)->first();
+
+        // Nếu tìm thấy membership
+        if ($membership) {
+            $user = User::find($membership->user_id);
+
+            if ($user) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                        'membership_code' => $membership->code,
+                        'rank' => $membership->rank,
+                        'points' => $membership->points,
+                    ]
+                ]);
+            }
+        }
+
+        // Nếu không tìm thấy bằng mã thành viên, tìm kiếm bằng email
+        $user = User::where('email', $dataMembership)->first();
+
+        if ($user) {
+            // Tìm thông tin thành viên bằng user_id
+            $membership = Membership::where('user_id', $user->id)->first();
+
+            if ($membership) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [ 
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                        'membership_code' => $membership->code,
+                        'rank' => $membership->rank,
+                        'points' => $membership->points,
+                    ]
+                ]);
+            }
+        }
+
+        // Nếu không tìm thấy cả hai trường hợp
+        return response()->json(['success' => false, 'message' => 'Thông tin không hợp lệ.'], 404);
     }
 }
