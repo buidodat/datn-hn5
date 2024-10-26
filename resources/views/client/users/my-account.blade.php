@@ -151,7 +151,8 @@
                                     <div class="col-md-9">
 
                                         <div class='text-center'>
-                                            <p> <span class="span_card">Cấp độ thẻ: </span><span class="bold">{{ $user->membership->rank }}</span></p>
+                                            <p> <span class="span_card">Cấp độ thẻ: </span><span
+                                                    class="bold">{{ $user->membership->rank }}</span></p>
                                         </div>
                                         <div class="progress-wrapper">
                                             <div class="progress-info">
@@ -192,13 +193,18 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="points-info">
-                                            <div><span class="span_label">Điểm đã tích lũy:</span> <span class='bold'>{{ $user->membership->pointHistories->where('transaction_type', null)->sum('points') }} điểm</span>
+                                            <div><span class="span_label">Điểm đã tích lũy:</span> <span
+                                                    class='bold'>{{ $user->membership->pointHistories->where('transaction_type', null)->sum('points') }}
+                                                    điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm đã sử dụng:</span> <span class='bold'>20.000 điểm</span>
+                                            <div><span class="span_label">Điểm đã sử dụng:</span> <span
+                                                    class='bold'>20.000 điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm đã hết hạn:</span> <span class='bold'>3.000 điểm</span>
+                                            <div><span class="span_label">Điểm đã hết hạn:</span> <span
+                                                    class='bold'>3.000 điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>0 điểm</span></div>
+                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>0
+                                                    điểm</span></div>
 
                                         </div>
                                     </div>
@@ -211,9 +217,9 @@
                                         Lịch sử điểm
                                     </div>
                                     <table id="pointHistory"
-                                        class='table table-bordered dt-responsive nowrap table-striped align-middle dataTable no-footer dtr-inline'
+                                        class='table table-bordered dt-responsive nowrap  align-middle dataTable no-footer dtr-inline'
                                         width="100%">
-                                        <thead>
+                                        <thead class='xanh-fpt'>
                                             <tr>
                                                 <th>Thời gian</th>
                                                 <th>Số điểm</th>
@@ -710,12 +716,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        < script >
-            new DataTable("#transactionHistory", {
-                order: [
-                    [0, 'desc']
-                ]
-            });
+        new DataTable("#transactionHistory", {
+            order: [
+            ]
+        });
     </script>
     <script>
         new DataTable("#pointHistory", {

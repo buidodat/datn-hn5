@@ -12,12 +12,26 @@ window.Echo.channel('vouchers')
         console.log(`Thời gian kết thúc: ${endDateTime}`);
 
         if (now >= startDateTime && now <= endDateTime) {
-            alert(`Voucher đã được phát hành: ${e.title}`);
+            Swal.fire({
+                title: 'Chúc mừng',
+                text: `Bạn vừa nhận được mã voucher ${e.code} trị giá: ${e.discount} VNĐ`,
+                icon: 'success',
+                timer: 5000,
+                timerProgressBar: true,
+                confirmButtonText: 'Mua Vé Ngay'
+            });
         } else {
             const timeStart = startDateTime - now;
             if (timeStart > 0) {
                 setTimeout(() => {
-                    alert(`Voucher đã được phát hành: ${e.title}`);
+                    Swal.fire({
+                        title: 'Chúc mừng',
+                        text: `Bạn vừa nhận được mã voucher ${e.code} trị giá: ${e.discount} VNĐ`,
+                        icon: 'success',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        confirmButtonText: 'Mua Vé Ngay'
+                    });
                 }, timeStart);
             }
         }
