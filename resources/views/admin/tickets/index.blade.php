@@ -140,11 +140,11 @@
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span> {{ $ticket->user->name }}</li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
-                                            <span class="badge {{ $ticket->staff === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->staff }}</span>
+                                            <span class="badge {{ $ticket->user->type === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->user->type }}</span>
                                         </li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Email:</span> {{ $ticket->user->email }}</li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span> {{ $ticket->user->phone }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_method }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_name }}</li>
                                     </ul>
                                 </td>
                                 <td class="text-center">
@@ -195,7 +195,11 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.tickets.show', $ticket) }}">
-                                        <button title="Xem" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
+                                        <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
+                                    </a>
+                                    <a href="{{ route('admin.tickets.print', $ticket) }}">
+                                        <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                                class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</button>
                                     </a>
                                 </td>
                             </tr>
