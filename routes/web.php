@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginFacebookController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ChooseSeatController;
 use App\Http\Controllers\Client\HomeController;
+use App\Mail\TicketInvoiceMail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Client\MovieDetailController;
 use App\Http\Controllers\Client\ContactController;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Client\TicketPriceController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
@@ -72,6 +72,8 @@ route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
 // Cổng thanh toán
 //1 VNPAY
 Route::get('vnpay-payment', [PaymentController::class, 'vnPayPayment'])->name('vnpay.payment');
+Route::get('vnpay-return', [PaymentController::class, 'returnVnpay'])->name('vnpay.return');
+
 //2 MOMO
 Route::get('momo-payment', [PaymentController::class, 'moMoPayment'])->name('momo.payment');
 Route::get('momo-return', [PaymentController::class, 'returnPayment'])->name('momo.return');
@@ -129,10 +131,11 @@ Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('c
 Route::get('posts', [PostController::class, 'index'])->name('posts');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
-//Viết tạm route chuyển trang admin checkout ở đây 
+//Viết tạm route chuyển trang admin checkout ở đây
 Route::get('checkoutAdmin', function () {
     return view('admin.book-tickets.checkout');
 })->name('checkoutAdmin');
+
 
 // Giá vé theo chi nhánh
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
@@ -186,4 +189,24 @@ Route::get('admin/assign-admin', function () {
     } else {
         return 'Người dùng này không có vai trò Admin';
     }
+});
+
+
+Route::get('public', function () {
+    return view('public');
+})->name('public');
+
+Route::get('huhu', function () {
+    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    if (!$ticket) {
+        return 'Ticket not found';
+    }
+
+    Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
+
+    return 'Email sent successfully';
+});
+Route::get('hihi/{id}', function () {
+    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    return view('welcome', compact('ticket'));
 });

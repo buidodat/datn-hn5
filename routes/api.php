@@ -32,6 +32,7 @@ Route::get('rooms/{movieId}',              [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}',      [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}',   [APIController::class, 'getMovieDuration']);
 Route::get('typeRooms/{typeRoomId}',       [APIController::class, 'getTypeRooms']);
+Route::get('get-membership}',       [APIController::class, 'getMembership'])->name('get-membership');
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 
 Route::middleware('web')->resource('rooms', RoomController::class);
@@ -64,6 +65,8 @@ Route::prefix('seat-templates')
 
 Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
 
+Route::post('vouchers',[\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
+
 
 
 Route::middleware(['web'])->group(function () {
@@ -72,3 +75,8 @@ Route::middleware(['web'])->group(function () {
     Route::post('payment-now/{showtime}',         [BookTicketController::class, 'payment'])->name('payment-now');
     Route::post('clear-session/{showtime}', [BookTicketController::class, 'clearSession'])->name('clear-session');
 });
+
+
+
+
+

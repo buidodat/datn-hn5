@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/public.js',
                 'resources/js/choose-seat.js',
                 'resources/js/book-ticket.js',
             ],

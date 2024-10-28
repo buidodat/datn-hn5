@@ -22,6 +22,8 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
             $table->unsignedTinyInteger('limit')->default(1);
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_publish')->default(true);
+            $table->integer('type')->default(1)->comment('1: hệ thống, 2: sinh nhật');
             $table->timestamps();
         });
     }

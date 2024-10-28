@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Combo;
 use App\Models\ComboFood;
 use App\Models\Food;
+use App\Models\Membership;
 use App\Models\Movie;
 use App\Models\SeatTemplate;
 use App\Models\Slideshow;
@@ -508,7 +509,7 @@ class DatabaseSeeder extends Seeder
                 'phone' => '0332293871',
                 'email' => 'luctcph37171@fpt.edu.vn',
                 'password' => Hash::make('luctcph37171@fpt.edu.vn'),
-                'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nữ',
                 'birthday' => '2004-02-07',
                 'type' => 'admin'
@@ -526,8 +527,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Đặng Phú An',
-                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=
-                6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
+                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
                 'phone' => '0378633611',
                 'email' => 'andpph31859@fpt.edu.vn',
                 'password' => Hash::make('andpph31859@fpt.edu.vn'),
@@ -544,7 +544,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('anpx123@gmail.com'),
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
-                'birthday' => '2004-01-01',
+                'birthday' => '2004-10-01',
                 'type' => 'member'
             ],
             [
@@ -564,13 +564,27 @@ class DatabaseSeeder extends Seeder
                 'phone' => '0965263725',
                 'email' => 'datbdph38211@fpt.edu.vn',
                 'password' => Hash::make('datbdph38211@fpt.edu.vn'),
-                'address' => ' Bích Hòa, Thanh Oai, Hà Nội',
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
                 'type' => 'admin'
             ],
         ];
+
+        // Chèn tất cả người dùng vào cơ sở dữ liệu
         User::insert($users);
+
+        // Tạo một bản ghi thành viên cho mỗi người dùng
+        foreach ($users as $userData) {
+            $user = User::where('email', $userData['email'])->first();
+            if ($user) {
+                Membership::create([
+                    'user_id' => $user->id,
+                    'code' => Membership::codeMembership(),
+                ]);
+            }
+        }
+
 
 
         //3 bảng ghi food
@@ -610,9 +624,9 @@ class DatabaseSeeder extends Seeder
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
-
+        $userIds = range(1, 6);
         for ($i = 0; $i < 5; $i++) {
-            DB::table('vouchers')->insert([
+            $voucherId  = DB::table('vouchers')->insertGetId([
                 'code' => strtoupper(Str::random(6)),
                 'title' => fake()->sentence(3),
                 'description' => fake()->text(50),
@@ -621,9 +635,17 @@ class DatabaseSeeder extends Seeder
                 'discount' => fake()->numberBetween(1000, 100000),
                 'quantity' => fake()->numberBetween(1, 100),
                 'limit' => fake()->numberBetween(1, 5),
-                'is_active' => true,
-
+                'is_active' => 1,
+                'is_publish' => 1,
+                'type' => 2,
             ]);
+            foreach ($userIds as $userId) {
+                DB::table('user_vouchers')->insert([
+                    'user_id' => $userId,
+                    'voucher_id' => $voucherId,
+                    'usage_count' => 0,
+                ]);
+            }
         }
 
         // tickets

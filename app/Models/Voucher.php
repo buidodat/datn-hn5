@@ -18,6 +18,8 @@ class Voucher extends Model
         'quantity',
         'limit',
         'is_active',
+        'is_publish',
+        'type',
     ];
     protected $cast = [
         'is_active'=>'boolean'
