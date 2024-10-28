@@ -625,7 +625,7 @@ class DatabaseSeeder extends Seeder
         $userIds = range(1, 6);
         for ($i = 0; $i < 2; $i++) {
             $voucherId  = DB::table('vouchers')->insertGetId([
-                'code' => strtoupper(Str::random(6)),
+                'code' => strtoupper(Str::random(10)),
                 'title' => fake()->sentence(3),
                 'description' => fake()->text(50),
                 'start_date_time' => Carbon::now()->subDays(rand(0, 30)),
@@ -669,7 +669,7 @@ class DatabaseSeeder extends Seeder
                     'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => fake()->randomElement(['Chưa suất vé', 'Đã suất vé', 'Đã hết hạn']),
+                    'status' => fake()->randomElement(['Chưa suất vé', 'Đã suất vé']),
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
                     'created_at' => now(),
