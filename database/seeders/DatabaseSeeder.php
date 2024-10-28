@@ -807,7 +807,7 @@ class DatabaseSeeder extends Seeder
 
         // Tạo các vai trò
         $roles = [
-            'Admin',
+            'System Admin',
             'Content Manager',
             'Movie Manager',
             'User Manager',
@@ -837,6 +837,7 @@ class DatabaseSeeder extends Seeder
         $user = User::find('1');
         $user->assignRole('User Manager');
     }
+    
     private function generateSeatStructure()
     {
         $structure = [];
