@@ -18,7 +18,9 @@ use App\Http\Controllers\Client\TicketPriceController;
 use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -134,3 +136,54 @@ Route::get('checkoutAdmin', function () {
 
 // Giá vé theo chi nhánh
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
+
+
+// để tạm để test
+Route::get('admin/assign-manager-showtimes', function () {
+    $user = User::find('4');
+    $user->assignRole('Manager Showtimes');
+    // dd($user->name);
+
+    if ($user && $user->hasRole('Manager Showtimes')) {
+        return 'Người dùng này có vai trò Manager Showtimes';
+    } else {
+        return 'Người dùng này không có vai trò Manager Showtimes';
+    }
+});
+
+Route::get('admin/assign-manager-movie', function () {
+    // $user = Auth::user();
+    $user = User::find('1');
+    $user->assignRole('Manager Movies');
+    // dd($user->name);
+
+    if ($user && $user->hasRole('Manager Movies')) {
+        return 'Người dùng này có vai trò Manager Movies';
+    } else {
+        return 'Người dùng này không có vai trò Manager Movies';
+    }
+});
+
+Route::get('admin/assign-manager-user', function () {
+    $user = User::find('2');
+    $user->assignRole('Manager Users');
+    // dd($user->name);
+
+    if ($user && $user->hasRole('Manager Users')) {
+        return 'Người dùng này có vai trò Manager Users';
+    } else {
+        return 'Người dùng này không có vai trò Manager Users';
+    }
+});
+
+Route::get('admin/assign-admin', function () {
+    $user = User::find('5');
+    $user->assignRole('Admin');
+    // dd($user->name);
+
+    if ($user && $user->hasRole('Admin')) {
+        return 'Người dùng này có vai trò Admin';
+    } else {
+        return 'Người dùng này không có vai trò Admin';
+    }
+});

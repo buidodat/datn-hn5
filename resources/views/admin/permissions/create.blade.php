@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.permissions.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -54,13 +54,25 @@
                                                 Quyền:
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Quản lý phim, Quản lý suất chiếu,...">
+                                                value="{{ old('name') }}" placeholder="Vd: Quản lý phim">
+                                            <div class="row mt-3 mx-1">
+                                                <span class="text-muted">Lưu ý: Tên quyền phải đặt theo cấu trúc: Quản lý
+                                                    + tên giống
+                                                    menu
+                                                            <br>
+                                                            Quản lý phim <br>
+                                                            Danh sách phim <br>
+                                                            Thêm phim <br>
+                                                            Sửa phim <br>
+                                                            Xóa phim <br>
+                                                </span>
+                                            </div>
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
 
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!--end col-->
         </div>
         <div class="row">

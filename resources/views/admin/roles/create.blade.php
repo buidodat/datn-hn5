@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.roles.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -26,7 +26,7 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin vai trò</h4>
@@ -54,13 +54,13 @@
                                                 vai trò:
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Manager Post, Manager Movie...">
+                                                value="{{ old('name') }}"
+                                                placeholder="Vd: Movie Manager">
+                                           
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-
-
 
 
                                     </div>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -79,41 +79,28 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Thêm quyền hạn cho vai trò</h4>
                             </div><!-- end card header -->
                             <div class="card-body">
+                                <div class="row mb-2">
+                                    <label for="name" class="form-label col-12">
+                                        <span class="text-danger">*</span> Chọn Quyền
+                                    </label>
+                                </div>
                                 <div class="row">
-                                    <div class="row">
-                                        <label for="name" class="form-label "> <span class="text-danger">*</span>Chọn
-                                            Quyền
-                                        </label>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                value="1">
-                                            <label class="form-check-label">Quản lý bài viết</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                value="1">
-                                            <label class="form-check-label">Quản lý suất chiếu</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                value="1">
-                                            <label class="form-check-label">Quản lý phim</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                value="1">
-                                            <label class="form-check-label">Quản lý bài viết</label>
-                                        </div>
-
+                                    <div class="col-md-12  px-5">
+                                        @foreach ($permissions as $permission)
+                                            <div class="form-check mb-2 border py-2 px-5 ">
+                                                <input type="checkbox" class="form-check-input" id="{{ $permission->id }}"
+                                                    name="permissions[]" value="{{ $permission->name }}">
+                                                <label for="{{ $permission->id }}">{{ $permission->name }}</label>
+                                            </div>
+                                        @endforeach
+                            
                                         @error('permissions')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

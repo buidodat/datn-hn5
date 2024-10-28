@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -701,7 +703,7 @@ class DatabaseSeeder extends Seeder
         // Tạo 10 bài viết
         for ($i = 1; $i <= 10; $i++) {
             Post::create([
-                'user_id' => random_int(1,5),
+                'user_id' => random_int(1, 5),
                 'title' => 'Bài viết số ' . $i,
                 'slug' => 'bai-viet-so-' . $i,
                 'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
@@ -738,6 +740,80 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+
+
+        $permissions = [
+            'Quản lý chi nhánh',
+            'Danh sách chi nhánh',
+            'Thêm chi nhánh',
+            'Sửa chi nhánh',
+            'Xóa chi nhánh',
+
+            'Quản lý rạp',
+            'Danh sách rạp',
+            'Thêm rạp',
+            'Sửa rạp',
+            'Xóa rạp',
+
+            'Quản lý phòng chiếu',
+            'Danh sách phòng chiếu',
+            'Thêm phòng chiếu',
+            'Sửa phòng chiếu',
+            'Xóa phòng chiếu',
+
+
+            'Quản lý mẫu sơ đồ ghế',
+            'Quản lý phim',
+            'Quản lý suất chiếu',
+            'Quản lý hóa đơn',
+            'Quản lý đặt vé',
+            'Quản lý đồ ăn',
+            'Quản lý combo',
+            'Quản lý vouchers',
+            'Quản lý thanh toán',
+            'Quản lý giá',
+            'Quản lý bài viết',
+            'Quản lý slideshows',
+            'Quản lý liên hệ',
+            'Quản lý tài khoản',
+            'Quản lý thống kê'
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
+
+        // Tạo các vai trò
+        $roles = [
+            'Admin',
+            'Content Manager',
+            'Movie Manager',
+            'User Manager',
+            'Customer Support',
+            'Branch Manager'
+
+        ];
+
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
+        }
+
+        // Gán quyền cho vai trò
+        $adminRole = Role::findByName('Admin');
+        $adminRole->givePermissionTo($permissions);         //gắn cho tất cả quyền luôn
+        $user = User::find('5');
+        $user->assignRole('Admin');
+
+        $managerRole = Role::findByName('Movie Manager');
+        $managerRole->givePermissionTo(['Quản lý phim', 'Quản lý suất chiếu']);
+
+        $staffRole = Role::findByName('User Manager');
+        $staffRole->givePermissionTo(['Quản lý tài khoản']);
+
+        $user = User::find('4');
+        $user->assignRole('Movie Manager');
+        $user = User::find('1');
+        $user->assignRole('User Manager');
     }
     private function generateSeatStructure()
     {
