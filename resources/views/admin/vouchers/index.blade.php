@@ -59,7 +59,7 @@
                         style="width:100%">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                {{--<th>#</th>--}}
                                 <th>Mã voucher</th>
                                 {{-- <th>Thông tin voucher</th> --}}
                                 <th>Tiêu đề</th>
@@ -68,6 +68,7 @@
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
                                 <th>Giới hạn</th>
+                                {{--<th>Thể loại</th>--}}
                                 {{-- <th>Mô tả</th> --}}
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
@@ -76,7 +77,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
+                                    {{--<td>{{ $item->id }}</td>--}}
                                     <td>{{ $item->code }}</td>
                                     <td>{{ Str::limit($item->title ,30)}}</td>
                                     {{-- <td class="nav nav-sm flex-column">
@@ -103,17 +104,24 @@
                                     </td> --}}
                                     <td class="nav nav-sm flex-column">
                                         <li class="nav-item mb-2">
-                                            <span class="fw-semibold">Bắt đầu:</span>
-                                            {{ \Carbon\Carbon::parse($item->start_date_time)->format('d/m/Y') }}
+                                            <span class="fw-semibold">Từ:</span>
+                                            {{ \Carbon\Carbon::parse($item->start_date_time)->format('H:i, d/m/Y') }}
                                         </li>
                                         <li class="nav-item mb-2">
-                                            <span class="fw-semibold">Kết thúc:</span>
-                                            {{ \Carbon\Carbon::parse($item->end_date_time)->format('d/m/Y') }}
+                                            <span class="fw-semibold">Đến:</span>
+                                            {{ \Carbon\Carbon::parse($item->end_date_time)->format('H:i, d/m/Y') }}
                                         </li>
                                     </td>
                                     <td>{{ $item->discount }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ $item->limit }}</td>
+                                    {{--<td>
+                                            @if ($item->type == 1)
+                                                Toàn hệ thống
+                                            @elseif ($item->type == 2)
+                                                    Người dùng
+                                            @endif
+                                    </td>--}}
                                     {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
                                         <div class="form-check form-switch form-switch-success">

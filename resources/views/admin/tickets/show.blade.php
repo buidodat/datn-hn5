@@ -31,9 +31,11 @@
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Order: #{{ $ticket->id }}</h5>
                         <div class="flex-shrink-0">
-                            <a href="apps-invoices-details.html" class="btn btn-success btn-sm"
-                               onclick="window.print()"><i
-                                    class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                            @if($oneTicket->status == 'Đã suất vé')
+                                <a href="#" class="btn btn-success btn-sm"
+                                   onclick="window.print()"><i
+                                        class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -45,50 +47,63 @@
                                 <th scope="col">Phim</th>
                                 <th scope="col">Suất chiếu</th>
                                 <th scope="col">Combo</th>
-                                <th scope="col ">Vé</th>
+                                <th scope="col">Vé</th>
                                 <th scope="col" class="text-end">Giá ghế</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>
+                                <td colspan="1">
                                     @php
-                                        $img = $oneTicket->ticketSeats->first();
+                                        $img = $oneTicket->first();
                                         $url = $img->movie->img_thumbnail;
                                         if (!\Str::contains($url, 'http')) {
                                             $url = Storage::url($url);
                                         }
                                     @endphp
-
-                                    @if (!empty($img->movie->img_thumbnail))
-                                        <img src="{{ $url }}" alt="Movie Thumbnail" width="50px">
-                                    @else
-                                        No image!
-                                    @endif
-                                    <b>{{ $oneTicket->ticketSeats->first()->movie->name }}</b></td>
-                                <td>
-                                    <p><b> {{ $oneTicket->ticketSeats->first()->showtime->cinema->name }} </b></p>
-                                    <p> {{ $oneTicket->ticketSeats->first()->room->name }}</p>
+                                    <div style="display: flex; justify-content: center">
+                                        @if (!empty($img->movie->img_thumbnail))
+                                            <img src="{{ $url }}" alt="Movie Thumbnail" width="50px">
+                                        @else
+                                            No image!
+                                        @endif
+                                    </div>
+                                    <div style="display: flex; justify-content: center">
+                                        <p class="mt-2"><b>{{ $oneTicket->movie->name }}</b></p>
+                                    </div>
+                                </td>
+                                <td colspan="1">
+                                    <p> {{ $oneTicket->room->name }}</p>
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->date)->format('d-m-Y') }}</p>
                                     <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
                                         ~ {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}</p>
                                 </td>
-                                <td>
-                                    <p><b>Poly Combo 49k x 3</b></p>
-                                    <p>147.000đ</p>
+                                <td colspan="1">
+                                    @foreach ($ticket->ticketCombos as $ticketCombo)
+                                        @php
+                                            $combo = $ticketCombo->combo;
+                                        @endphp
+
+                                        <span><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}</b></span>
+                                        <p>{{ number_format($combo->price * $ticketCombo->quantity) }} vnđ</p>
+
+                                        {{--<ul>
+                                            @foreach ($combo->food as $food)
+                                                <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                            @endforeach
+                                        </ul>--}}
+
+                                    @endforeach
                                 </td>
-                                <td class="fw-medium align-content-start">
+                                <td colspan="1" class="fw-medium align-content-start">
                                     @foreach($ticket->ticketSeats as $ticketSeat)
-                                        <p class="fs-15">Ghế:
-                                            <span class="link-primary">{{ $ticketSeat->seat->name }}</span>
+                                        <p class="fs-15">-
+                                            <span class="link-primary">{{ $ticketSeat->seat->name }} </span>
+                                            (<span>{{ $ticketSeat->seat->typeSeat->name }}</span>)
                                         </p>
                                     @endforeach
-                                    <p class="text-muted mb-0">Phân loại:
-                                        <span class="fw-medium">{{ $ticketSeat->seat->typeSeat->name }}</span>
-                                    </p>
                                 </td>
-
-                                <td class="fw-medium text-end align-content-start">
+                                <td colspan="1" class="fw-medium text-end align-content-start">
                                     @foreach($ticket->ticketSeats as $ticketSeat)
                                         <p class="fs-15">{{ number_format($ticketSeat->seat->typeSeat->price, 0, ',', '.') }}
                                             vnđ</p>
@@ -97,13 +112,30 @@
                             </tr>
                             <tr class="border-top border-top-dashed">
                                 <td colspan="4"></td>
-
                                 <td colspan="1" class="fw-medium p-0">
                                     <table class="table table-borderless mb-0">
                                         <tbody>
                                         <tr>
-                                            <td>Tổng tiền :</td>
+                                            <td>Tiền vé:</td>
                                             <td class="text-end">{{ number_format($totalPriceSeat, 0, ',', '.') }}vnđ
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tiền combos:</td>
+                                            <td class="text-end">
+                                                @php
+                                                    $totalComboPrice = 0;
+                                                @endphp
+
+                                                @foreach($ticket->ticketCombos as $ticketCombo)
+                                                    @php
+                                                        $comboPrice = $ticketCombo->combo->price * $ticketCombo->quantity;
+                                                        $totalComboPrice += $comboPrice;
+                                                    @endphp
+                                                @endforeach
+
+                                                {{ number_format($totalComboPrice, 0, ',', '.') }} vnđ
+
                                             </td>
                                         </tr>
                                         <tr>
@@ -137,14 +169,14 @@
                 <div class="card-header">
                     <div class="d-sm-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
-                        <div class="flex-shrink-0 mt-2 mt-sm-0">
+                        {{--<div class="flex-shrink-0 mt-2 mt-sm-0">
                             <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
                                     class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
                                 tin</a>
                             <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
                                     class="mdi mdi-archive-remove-outline align-middle me-1"></i>
                                 Hủy</a>
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -174,13 +206,13 @@
                                     <div class="accordion-body ms-2 ps-5 pt-0">
                                         <h6 class="mb-1">Chờ lấy vé</h6>
 
-                                        @if($ticket->status != 'Chờ xác nhận')
+                                        @if($ticket->status != 'Chưa suất vé')
                                             <p class="text-muted"></p>
-                                            @if($ticket->status == 'Hoàn thành' && new DateTime() < new DateTime($ticket->expiry))
-                                                <h6 class="mb-1">Đã lấy vé</h6>
+                                            @if($ticket->status == 'Đã suất vé' && new DateTime() < new DateTime($ticket->expiry))
+                                                <h6 class="mb-1">Đã suất vé</h6>
                                                 <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
                                             @else
-                                                <h6 class="mb-1">Quá hạn</h6>
+                                                <h6 class="mb-1">Đã hết hạn</h6>
                                                 <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
                                             @endif
                                         @endif
@@ -188,8 +220,8 @@
                                     </div>
                                 </div>
                             </div>
-                            @if($ticket->status !== 'Chờ xác nhận')
-                                @if($ticket->status == 'Hoàn thành')
+                            @if($ticket->status !== 'Chưa suất vé')
+                                @if($ticket->status == 'Đã suất vé')
                                     <div class="accordion-item border-0">
                                         <div class="accordion-header" id="headingTwo">
                                             <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
@@ -203,7 +235,8 @@
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
                                                         <h6 class="fs-15 mb-1 fw-semibold">Hoàn thành - <span
-                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span></h6>
+                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
+                                                        </h6>
                                                     </div>
                                                 </div>
                                             </a>
@@ -222,7 +255,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1 ms-3">
-                                                        <h6 class="fs-15 mb-1 fw-semibold">Hủy - <span class="fw-normal">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
+                                                        <h6 class="fs-15 mb-1 fw-semibold">Hủy - <span
+                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -316,9 +350,10 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
-                             alt="">
-                        <p class="text-muted mb-0">Code: <b>{{ $ticket->code }}</b></p>
+                        {{--<img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
+                             alt="">--}}
+                        {!! $qrCode !!}
+                        <p class="text-muted mb-0 mt-2">Code: <b>{{ $ticket->code }}</b></p>
 
                     </div>
                 </div>
@@ -420,7 +455,7 @@
                             <p class="text-muted mb-0">Phương thức thanh toán:</p>
                         </div>
                         <div class="flex-grow-1 ms-2">
-                            <h6 class="mb-0">{{ $ticket->payment_method }}</h6>
+                            <h6 class="mb-0">{{ $ticket->payment_name }}</h6>
                         </div>
                     </div>
                     <div class="d-flex align-items-center mb-2">

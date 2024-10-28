@@ -40,7 +40,7 @@ Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::c
 Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
 Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class);
 route::post('tickets/{ticket}/update-status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-
+Route::get('tickets/{ticket}/print', [\App\Http\Controllers\Admin\TicketController::class, 'print'])->name('tickets.print');
 Route::resource('contacts', ContactController::class);
 
 // Route::group(['middleware' => ['auth', 'checkPermission:manage movies']], function () {
