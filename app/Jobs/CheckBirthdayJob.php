@@ -47,7 +47,7 @@ class CheckBirthdayJob implements ShouldQueue
 
             DB::transaction(function () use ($user) {
                 $voucher = Voucher::create([
-                    'code' => 'BDAY' . substr((string) Ulid::generate(), 0, 15),
+                    'code' => 'BDAY' . substr((string) Ulid::generate(), 0, 6),
                     'title' => 'Voucher Sinh Nhật của ' . $user->name,
                     'description' => 'Voucher giảm giá sinh nhật tháng ' . now()->month,
                     'start_date_time' => Carbon::now('Asia/Ho_Chi_Minh'),
