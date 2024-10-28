@@ -504,6 +504,18 @@ class DatabaseSeeder extends Seeder
         //tạo 5 bản ghỉ user type admin
         $users = [
             [
+                'name' => 'System Admin',
+                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'phone' => '0332293871',
+                'email' => 'admin@fpt.edu.vn',
+                'password' => Hash::make('admin@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-02-07',
+                'type' => 'admin',
+                'cinema_id' => null,
+            ],
+            [
                 'name' => 'Trương Công Lực',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
                 'phone' => '0332293871',
@@ -512,7 +524,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nữ',
                 'birthday' => '2004-02-07',
-                'type' => 'admin'
+                'type' => 'admin',
+                'cinema_id' => 1,
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
@@ -523,7 +536,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-08-08',
-                'type' => 'admin'
+                'type' => 'admin',
+                'cinema_id' => 2,
             ],
             [
                 'name' => 'Đặng Phú An',
@@ -534,7 +548,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-06-06',
-                'type' => 'admin'
+                'type' => 'admin',
+                'cinema_id' => 3,
             ],
             [
                 'name' => 'An Dang Phu',
@@ -545,7 +560,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-01',
-                'type' => 'member'
+                'type' => 'admin',
+                'cinema_id' => 1,
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
@@ -556,7 +572,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-11-11',
-                'type' => 'admin'
+                'type' => 'admin',
+                'cinema_id' => 3,
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
@@ -567,7 +584,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'admin'
+                'type' => 'admin',
+                'cinema_id' => 2,
             ],
         ];
 
@@ -763,44 +781,133 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // 'Quản lý chi nhánh',
+        // 'Quản lý rạp',
+        // 'Quản lý phòng chiếu',
+        // 'Quản lý mẫu sơ đồ ghế',
+        // 'Quản lý phim',
+        // 'Quản lý suất chiếu',
+        // 'Quản lý hóa đơn',
+        // 'Quản lý đặt vé',
+        // 'Quản lý đồ ăn',
+        // 'Quản lý combo',
+        // 'Quản lý vouchers',
+        // 'Quản lý thanh toán',
+        // 'Quản lý giá',
+        // 'Quản lý bài viết',
+        // 'Quản lý slideshows',
+        // 'Quản lý liên hệ',
+        // 'Quản lý tài khoản',
+        // 'Quản lý thống kê'
 
+        // $permissions = [
+        //     ['name' => 'Danh sách chi nhánh', 'slug' => 'branch.list', 'guard_name' => 'web'],
+        //     ['name' => 'Thêm chi nhánh', 'slug' => 'branch.add', 'guard_name' => 'web'],
+        //     ['name' => 'Sửa chi nhánh', 'slug' => 'branch.edit', 'guard_name' => 'web'],
+        //     ['name' => 'Xóa chi nhánh', 'slug' => 'branch.delete', 'guard_name' => 'web'],
+
+        //     ['name' => 'Danh sách rạp', 'slug' => 'cinema.list', 'guard_name' => 'web'],
+        //     ['name' => 'Thêm rạp', 'slug' => 'cinema.add', 'guard_name' => 'web'],
+        //     ['name' => 'Sửa rạp', 'slug' => 'cinema.edit', 'guard_name' => 'web'],
+        //     ['name' => 'Xóa rạp', 'slug' => 'cinema.delete', 'guard_name' => 'web'],
+
+        //     ['name' => 'Danh sách phòng chiếu', 'slug' => 'room.list', 'guard_name' => 'web'],
+        //     ['name' => 'Thêm phòng chiếu', 'slug' => 'room.add', 'guard_name' => 'web'],
+        //     ['name' => 'Sửa phòng chiếu', 'slug' => 'room.edit', 'guard_name' => 'web'],
+        //     ['name' => 'Xóa phòng chiếu', 'slug' => 'room.delete', 'guard_name' => 'web'],
+
+        //     ['name' => 'Danh sách phim', 'slug' => 'movie.list', 'guard_name' => 'web'],
+        //     ['name' => 'Thêm phim', 'slug' => 'movie.add', 'guard_name' => 'web'],
+        //     ['name' => 'Sửa phim', 'slug' => 'movie.edit', 'guard_name' => 'web'],
+        //     ['name' => 'Xóa phim', 'slug' => 'movie.delete', 'guard_name' => 'web'],
+
+        //     ['name' => 'Danh sách suất chiếu', 'slug' => 'showtime.list', 'guard_name' => 'web'],
+        //     ['name' => 'Thêm suất chiếu', 'slug' => 'showtime.add', 'guard_name' => 'web'],
+        //     ['name' => 'Sửa suất chiếu', 'slug' => 'showtime.edit', 'guard_name' => 'web'],
+        //     ['name' => 'Xóa suất chiếu', 'slug' => 'showtime.delete', 'guard_name' => 'web'],
+        // ];
         $permissions = [
-            'Quản lý chi nhánh',
             'Danh sách chi nhánh',
             'Thêm chi nhánh',
             'Sửa chi nhánh',
             'Xóa chi nhánh',
-
-            'Quản lý rạp',
             'Danh sách rạp',
             'Thêm rạp',
             'Sửa rạp',
             'Xóa rạp',
-
-            'Quản lý phòng chiếu',
             'Danh sách phòng chiếu',
             'Thêm phòng chiếu',
             'Sửa phòng chiếu',
-            'Xóa phòng chiếu',
+            'Xóa
+            phòng chiếu',
+            'Danh sách mẫu sơ đồ ghế',
+            'Thêm mẫu sơ đồ ghế',
+            'Sửa mẫu sơ đồ ghế',
+            'Xóa mẫu sơ đồ
+            ghế',
+            'Danh sách phim',
+            'Thêm phim',
+            'Sửa phim',
+            'Xóa phim',
+            'Danh sách suất chiếu',
+            'Thêm suất chiếu',
+            'Sửa suất chiếu',
+            'Xóa suất chiếu',
+            'Danh sách hóa đơn',
+            'Thêm hóa đơn',
+            'Sửa hóa đơn',
+            'Xóa
+            hóa đơn',
+            'Danh sách đặt vé',
+            'Thêm đặt vé',
+            'Sửa đặt vé',
+            'Xóa đặt vé',
+            'Danh sách đồ ăn',
+            'Thêm đồ ăn',
+            'Sửa đồ ăn',
+            'Xóa đồ ăn',
+            'Danh sách combo',
+            'Thêm combo',
+            'Sửa combo',
+            'Xóa combo',
+            'Danh sách vouchers',
+            'Thêm vouchers',
+            'Sửa vouchers',
+            'Xóa
+            vouchers',
+            'Danh sách thanh toán',
+            'Thêm thanh toán',
+            'Sửa thanh toán',
+            'Xóa thanh toán',
+            'Danh sách giá',
+            'Thêm giá',
+            'Sửa giá',
+            'Xóa giá',
+            'Danh sách bài viết',
+            'Thêm bài viết',
+            'Sửa bài viết',
+            'Xóa bài viết',
+            'Danh sách slideshows',
+            'Thêm slideshows',
+            'Sửa slideshows',
+            'Xóa slideshows',
+            'Danh sách liên hệ',
+            'Thêm liên hệ',
+            'Sửa liên hệ',
+            'Xóa liên hệ',
+            'Danh sách tài khoản',
+            'Thêm tài khoản',
+            'Sửa tài khoản',
+            'Xóa tài khoản',
+            'Danh sách thống kê',
+            'Thêm thống kê',
+            'Sửa thống kê',
+            'Xóa
+            thống kê',
 
-
-            'Quản lý mẫu sơ đồ ghế',
-            'Quản lý phim',
-            'Quản lý suất chiếu',
-            'Quản lý hóa đơn',
-            'Quản lý đặt vé',
-            'Quản lý đồ ăn',
-            'Quản lý combo',
-            'Quản lý vouchers',
-            'Quản lý thanh toán',
-            'Quản lý giá',
-            'Quản lý bài viết',
-            'Quản lý slideshows',
-            'Quản lý liên hệ',
-            'Quản lý tài khoản',
-            'Quản lý thống kê'
         ];
 
+        // Tạo các quyền từ danh sách
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
         }
@@ -808,36 +915,40 @@ class DatabaseSeeder extends Seeder
         // Tạo các vai trò
         $roles = [
             'System Admin',
-            'Content Manager',
-            'Movie Manager',
-            'User Manager',
-            'Customer Support',
-            'Branch Manager'
-
+            'Cinema Manager',
+            'Staff'
         ];
 
-        foreach ($roles as $role) {
-            Role::create(['name' => $role]);
+        foreach ($roles as $roleName) {
+            Role::create(['name' => $roleName, 'guard_name' => 'web']);
         }
 
-        // Gán quyền cho vai trò
-        $adminRole = Role::findByName('Admin');
-        $adminRole->givePermissionTo($permissions);         //gắn cho tất cả quyền luôn
-        $user = User::find('5');
-        $user->assignRole('Admin');
+        // Gán tất cả quyền cho System Admin
+        $adminRole = Role::findByName('System Admin', 'web');
+        $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
-        $managerRole = Role::findByName('Movie Manager');
-        $managerRole->givePermissionTo(['Quản lý phim', 'Quản lý suất chiếu']);
+        // Gán vai trò cho User với ID = 1
+        $user = User::find(1);
+        if ($user) {
+            $user->assignRole('System Admin');
+        }
 
-        $staffRole = Role::findByName('User Manager');
-        $staffRole->givePermissionTo(['Quản lý tài khoản']);
+        $managerRole = Role::findByName('Cinema Manager', 'web');
+        $managerRole->givePermissionTo(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh', 'Danh sách rạp', 'Thêm rạp']);
 
-        $user = User::find('4');
-        $user->assignRole('Movie Manager');
-        $user = User::find('1');
-        $user->assignRole('User Manager');
+        // Gán vai trò cho User với ID = 2
+        $user = User::find(2);
+        if ($user) {
+            $user->assignRole('Cinema Manager');
+        }
+
+        // Gán vai trò Staff cho User với ID = 6
+        $user = User::find(6);
+        if ($user) {
+            $user->assignRole('Staff');
+        }
     }
-    
+
     private function generateSeatStructure()
     {
         $structure = [];

@@ -55,7 +55,7 @@
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}"
-                                                placeholder="Vd: Movie Manager">
+                                                placeholder="Vd: Người viết bài, Nhân viên hóa đơn,...">
                                            
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>

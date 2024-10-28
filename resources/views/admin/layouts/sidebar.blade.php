@@ -38,7 +38,26 @@
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
                 {{-- Menu mới --}}
-                @canany(['Quản lý chi nhánh', 'Quản lý rạp', 'Quản lý phòng chiếu', 'Quản lý mẫu sơ đồ ghế'])
+                @canany([
+                    'Danh sách chi nhánh',
+                    'Thêm chi nhánh',
+                    'Sửa chi nhánh',
+                    'Xóa chi nhánh',
+                    'Danh sách rạp',
+                    'Thêm rạp',
+                    'Sửa rạp',
+                    'Xóa rạp',
+                    'Danh sách phòng chiếu',
+                    'Thêm phòng chiếu',
+                    'Sửa phòng chiếu',
+                    'Xóa
+                    phòng chiếu',
+                    'Danh sách mẫu sơ đồ ghế',
+                    'Thêm mẫu sơ đồ ghế',
+                    'Sửa mẫu sơ đồ ghế',
+                    'Xóa mẫu sơ đồ
+                    ghế',
+                    ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#systemCinemas" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="systemCinemas">
@@ -46,28 +65,34 @@
                         </a>
                         <div class="menu-dropdown collapse" id="systemCinemas" style="">
                             <ul class="nav nav-sm flex-column">
-                                @can('Quản lý chi nhánh')
+                                @canany(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.branches.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-ancient-gate-fill"></i><span
                                                 data-key="t-layouts">Quản lý chi nhánh</span></a>
                                     </li>
                                 @endcan
-                                @can('Quản lý rạp')
+                                @canany(['Danh sách rạp', 'Thêm rạp', 'Sửa rạp', 'Xóa rạp'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.cinemas.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"> <i class=" ri-store-3-fill"></i> <span
                                                 data-key="t-layouts">Quản lý Rạp</span></a>
                                     </li>
                                 @endcan
-                                @can('Quản lý phòng chiếu')
+                                @canany(['Danh sách phòng chiếu', 'Thêm phòng chiếu', 'Sửa phòng chiếu', 'Xóa phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
-                                @can('Quản lý mẫu sơ đồ ghế')
+                                @canany([
+                                    'Danh sách mẫu sơ đồ ghế',
+                                    'Thêm mẫu sơ đồ ghế',
+                                    'Sửa mẫu sơ đồ ghế',
+                                    'Xóa mẫu sơ đồ
+                                    ghế',
+                                    ])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.seat-templates.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"> <i class="ri-rocket-line"></i>
@@ -79,7 +104,26 @@
                     </li>
                 @endcanany
 
-                @canany(['Quản lý phim', 'Quản lý suất chiếu', 'Quản lý hóa đơn', 'Quản lý đặt vé'])
+
+                @canany([
+                    'Danh sách phim',
+                    'Thêm phim',
+                    'Sửa phim',
+                    'Xóa phim',
+                    'Danh sách suất chiếu',
+                    'Thêm suất chiếu',
+                    'Sửa suất chiếu',
+                    'Xóa suất chiếu',
+                    'Danh sách hóa đơn',
+                    'Thêm hóa đơn',
+                    'Sửa hóa đơn',
+                    'Xóa
+                    hóa đơn',
+                    'Danh sách đặt vé',
+                    'Thêm đặt vé',
+                    'Sửa đặt vé',
+                    'Xóa đặt vé',
+                    ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#manageMovies" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="manageMovies">
@@ -88,7 +132,7 @@
                         <div class="menu-dropdown collapse" id="manageMovies" style="">
                             <ul class="nav nav-sm flex-column">
 
-                                @can('Quản lý phim')
+                                @canany(['Danh sách phim', 'Thêm phim', 'Sửa phim', 'Xóa phim'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.movies.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="mdi mdi-movie-open-outline"></i> <span
@@ -97,7 +141,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý suất chiếu')
+                                @canany(['Danh sách suất chiếu', 'Thêm suất chiếu', 'Sửa suất chiếu', 'Xóa suất chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.showtimes.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class=" ri-slideshow-3-fill"></i> <span
@@ -107,7 +151,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý hóa đơn')
+                                @canany(['Danh sách hóa đơn', 'Thêm hóa đơn', 'Sửa hóa đơn', 'Xóa hóa đơn'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -116,7 +160,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý đặt vé')
+                                @canany(['Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -131,7 +175,30 @@
                 @endcanany
 
 
-                @canany(['Quản lý đồ ăn', 'Quản lý combo', 'Quản lý vouchers', 'Quản lý thanh toán', 'Quản lý giá'])
+
+                @canany([
+                    'Danh sách đồ ăn',
+                    'Thêm đồ ăn',
+                    'Sửa đồ ăn',
+                    'Xóa đồ ăn',
+                    'Danh sách combo',
+                    'Thêm combo',
+                    'Sửa combo',
+                    'Xóa combo',
+                    'Danh sách vouchers',
+                    'Thêm vouchers',
+                    'Sửa vouchers',
+                    'Xóa
+                    vouchers',
+                    'Danh sách thanh toán',
+                    'Thêm thanh toán',
+                    'Sửa thanh toán',
+                    'Xóa thanh toán',
+                    'Danh sách giá',
+                    'Thêm giá',
+                    'Sửa giá',
+                    'Xóa giá',
+                    ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#service" data-bs-toggle="collapse" role="button"
                             aria-expanded="false" aria-controls="service">
@@ -140,7 +207,7 @@
                         <div class="menu-dropdown collapse" id="service" style="">
                             <ul class="nav nav-sm flex-column">
 
-                                @can('Quản lý đồ ăn')
+                                @canany(['Danh sách đồ ăn', 'Thêm đồ ăn', 'Sửa đồ ăn', 'Xóa đồ ăn'])
                                     {{-- Quản lí đồ ăn --}}
                                     <li class="nav-item">
                                         <a href="{{ route('admin.food.index') }}" class="nav-link menu-link"
@@ -149,7 +216,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý combo')
+                                @canany(['Danh sách combo', 'Thêm combo', 'Sửa combo', 'Xóa combo'])
                                     {{-- Quản lí Combo --}}
                                     <li class="nav-item">
                                         <a href="{{ route('admin.combos.index') }}" class="nav-link menu-link"
@@ -159,7 +226,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý vouchers')
+                                @canany(['Danh sách vouchers', 'Thêm vouchers', 'Sửa vouchers', 'Xóa vouchers'])
                                     {{-- Vouchers --}}
                                     <li class="nav-item">
                                         <a href="{{ route('admin.vouchers.index') }}" class="nav-link menu-link"
@@ -168,7 +235,8 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý thanh toán')
+
+                                @canany(['Danh sách thanh toán', 'Thêm thanh toán', 'Sửa thanh toán', 'Xóa thanh toán'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.payments.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-layout-3-line"></i> <span
@@ -177,7 +245,7 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý giá')
+                                @canany(['Danh sách giá', 'Thêm giá', 'Sửa giá', 'Xóa giá'])
                                     {{-- Giá vé --}}
                                     <li class="nav-item">
                                         <a class="nav-link menu-link" href="{{ route('admin.ticket-price') }}">
@@ -193,7 +261,8 @@
 
 
 
-                @canany(['Quản lý bài viết', 'Quản lý slideshows'])
+                @canany(['Danh sách bài viết', 'Thêm bài viết', 'Sửa bài viết', 'Xóa bài viết', 'Danh sách slideshows',
+                    'Thêm slideshows', 'Sửa slideshows', 'Xóa slideshows'])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#contentMarketing" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="contentMarketing">
@@ -202,7 +271,7 @@
                         <div class="menu-dropdown collapse" id="contentMarketing" style="">
                             <ul class="nav nav-sm flex-column">
 
-                                @can('Quản lý bài viết')
+                                @canany(['Danh sách bài viết', 'Thêm bài viết', 'Sửa bài viết', 'Xóa bài viết'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.posts.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
@@ -210,7 +279,8 @@
                                                 viết</span></a>
                                     </li>
                                 @endcan
-                                @can('Quản lý slideshows')
+
+                                @canany(['Danh sách slideshows', 'Thêm slideshows', 'Sửa slideshows', 'Xóa slideshows'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.slideshows.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"> <i class="ri-slideshow-3-line"></i> <span
@@ -223,7 +293,23 @@
                 @endcanany
 
 
-                @canany(['Quản lý liên hệ', 'Quản lý tài khoản', 'Quản lý thống kê'])
+
+
+                @canany([
+                    'Danh sách liên hệ',
+                    'Thêm liên hệ',
+                    'Sửa liên hệ',
+                    'Xóa liên hệ',
+                    'Danh sách tài khoản',
+                    'Thêm tài khoản',
+                    'Sửa tài khoản',
+                    'Xóa tài khoản',
+                    'Danh sách thống kê',
+                    'Thêm thống kê',
+                    'Sửa thống kê',
+                    'Xóa
+                    thống kê',
+                    ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#user-report" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="user-report">
@@ -233,7 +319,8 @@
                         <div class="menu-dropdown collapse" id="user-report" style="">
                             <ul class="nav nav-sm flex-column">
 
-                                @can('Quản lý liên hệ')
+
+                                @canany(['Danh sách liên hệ', 'Thêm liên hệ', 'Sửa liên hệ', 'Xóa liên hệ'])
                                     {{-- Quản lí Liên hệ --}}
                                     <li class="nav-item">
                                         <a href="{{ route('admin.contacts.index') }}" class="nav-link menu-link"
@@ -242,7 +329,9 @@
                                     </li>
                                 @endcan
 
-                                @can('Quản lý tài khoản')
+
+
+                                @canany(['Danh sách tài khoản', 'Thêm tài khoản', 'Sửa tài khoản', 'Xóa tài khoản'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.users.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -250,7 +339,9 @@
                                                 khoản</span></a>
                                     </li>
                                 @endcan
-                                @can('Quản lý thống kê')
+
+
+                                @canany(['Danh sách thống kê', 'Thêm thống kê', 'Sửa thống kê', 'Xóa thống kê'])
                                     {{-- Thống kê --}}
                                     <li class="nav-item">
                                         <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
@@ -264,7 +355,7 @@
                     </li>
                 @endcanany
 
-                @if (auth()->user()->hasRole('Admin'))
+                @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
