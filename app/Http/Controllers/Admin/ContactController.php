@@ -11,6 +11,13 @@ class ContactController extends Controller
 {
 
     const PATH_VIEW = 'admin.contacts.';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách liên hệ')->only('index');
+        $this->middleware('can:Thêm liên hệ')->only(['create', 'store']);
+        $this->middleware('can:Sửa liên hệ')->only(['edit', 'update']);
+        $this->middleware('can:Xóa liên hệ')->only('destroy');
+    }
 
 
     /**

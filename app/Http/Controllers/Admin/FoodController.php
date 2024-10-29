@@ -17,6 +17,14 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách đồ ăn')->only('index');
+        $this->middleware('can:Thêm đồ ăn')->only(['create', 'store']);
+        $this->middleware('can:Sửa đồ ăn')->only(['edit', 'update']);
+        $this->middleware('can:Xóa đồ ăn')->only('destroy');
+    }
+
     public function index()
     {
         $data = Food::query()->latest('id')->get();

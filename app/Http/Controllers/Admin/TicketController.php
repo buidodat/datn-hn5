@@ -20,6 +20,13 @@ class TicketController extends Controller
      */
 
     const PATH_VIEW = 'admin.tickets.';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách hóa đơn')->only('index');
+        $this->middleware('can:Thêm hóa đơn')->only(['create', 'store']);
+        $this->middleware('can:Sửa hóa đơn')->only(['edit', 'update']);
+        $this->middleware('can:Xóa hóa đơn')->only('destroy');
+    }
 
     public function index(Request $request)
     {

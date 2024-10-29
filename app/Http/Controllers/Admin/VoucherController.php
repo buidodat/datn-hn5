@@ -15,12 +15,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+
 class VoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     const PATH_VIEW = 'admin.vouchers.';
+
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách vouchers')->only('index');
+        $this->middleware('can:Thêm vouchers')->only(['create', 'store']);
+        $this->middleware('can:Sửa vouchers')->only(['edit', 'update']);
+        $this->middleware('can:Xóa vouchers')->only('destroy');
+    }
 
     public function index()
     {
@@ -37,10 +46,11 @@ class VoucherController extends Controller
 
         $uniqueCode = $this->generateCode();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users','uniqueCode'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'uniqueCode'));
     }
 
-    public function generateCode(){
+    public function generateCode()
+    {
         do {
             $code = strtoupper(Str::random(10));
             $codeExist = Voucher::where('code', $code)->exists();
@@ -87,7 +97,6 @@ class VoucherController extends Controller
             DB::commit();
 
             return redirect()->route('admin.vouchers.index')->with('success', 'Thêm thành công!');
-
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('admin.vouchers.index')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());

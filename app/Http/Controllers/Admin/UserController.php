@@ -13,6 +13,14 @@ class UserController extends Controller
 {
     const PATH_VIEW = 'admin.users.';
     const PATH_UPLOAD = 'users';
+
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách tài khoản')->only('index');
+        $this->middleware('can:Thêm tài khoản')->only(['create', 'store']);
+        $this->middleware('can:Sửa tài khoản')->only(['edit', 'update']);
+        $this->middleware('can:Xóa tài khoản')->only('destroy');
+    }
     public function index()
     {
         $users = User::query()->latest('id')->get();

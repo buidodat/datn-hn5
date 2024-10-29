@@ -17,6 +17,13 @@ class PostController extends Controller
      */
     const PATH_VIEW = 'admin.posts.';
     const PATH_UPLOAD = 'posts';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách bài viết')->only('index');
+        $this->middleware('can:Thêm bài viết')->only(['create', 'store']);
+        $this->middleware('can:Sửa bài viết')->only(['edit', 'update']);
+        $this->middleware('can:Xóa bài viết')->only('destroy');
+    }
     public function index()
     {
         //

@@ -3,6 +3,11 @@
 
 }
 
+.box-permission-role {
+    max-height: 450px;
+    overflow: auto;
+}
+
 .srceen {
     background-color: #ccc;
     height: 30px;
@@ -324,6 +329,7 @@
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
 }
+
 .seat-vip-svg-pro {
     display: inline-block;
     width: 40px;
@@ -370,11 +376,12 @@
 }
 
 
-.seat-hold{
-    color:rgb(0, 0, 195);
+.seat-hold {
+    color: rgb(0, 0, 195);
 }
-.seat-selected{
-    color:rgb(38, 151, 244);
+
+.seat-selected {
+    color: rgb(38, 151, 244);
 
 }
 
@@ -544,4 +551,3 @@
 }
 
 /* Gữi chỗ */
-
