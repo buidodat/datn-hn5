@@ -18,7 +18,13 @@ class ComboController extends Controller
 
     const PATH_VIEW = 'admin.combos.';
     const PATH_UPLOAD = 'combos';
-
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách combo')->only('index');
+        $this->middleware('can:Thêm combo')->only(['create', 'store']);
+        $this->middleware('can:Sửa combo')->only(['edit', 'update']);
+        $this->middleware('can:Xóa combo')->only('destroy');
+    }
 
     /**
      * Display a listing of the resource.

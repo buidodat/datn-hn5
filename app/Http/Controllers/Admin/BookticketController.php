@@ -17,6 +17,13 @@ class BookTicketController extends Controller
 {
     const PATH_VIEW = 'admin.book-tickets.';
 
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách đặt vé')->only('index');
+        $this->middleware('can:Thêm đặt vé')->only(['create', 'store']);
+        $this->middleware('can:Sửa đặt vé')->only(['edit', 'update']);
+        $this->middleware('can:Xóa đặt vé')->only('destroy');
+    }
     public function index()
     {
 

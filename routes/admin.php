@@ -48,7 +48,7 @@ Route::resource('movies', MovieController::class);
 // });
 
 
-Route::resource('type-rooms', TypeRoomController::class);
+// Route::resource('type-rooms', TypeRoomController::class);
 
 // Quản lý phòng chiếu
 Route::prefix('rooms')
@@ -76,9 +76,9 @@ Route::prefix('seat-templates')
 
 Route::resource('posts', PostController::class);
 
-Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiếu']], function () {
-    Route::resource('showtimes', ShowtimeController::class);
-});
+// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiếu']], function () {
+Route::resource('showtimes', ShowtimeController::class);
+// });
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 Route::post('ticket-update', [TicketPriceController::class, 'update'])->name('ticket-update');
@@ -93,9 +93,10 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 //user
-Route::group(['middleware' => ['auth', 'checkPermission:Danh sách tài khoản']], function () {
-    Route::resource('users', UserController::class);
-});
+
+// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách tài khoản']], function () {
+Route::resource('users', UserController::class);
+// });
 // Route::group(['middleware' => ['auth', 'checkPermission:Quản lý tài khoản']], function () {
 
 // });
@@ -121,8 +122,16 @@ Route::prefix('book-tickets')
     });
 
 // Phân quyền
-Route::resource('permissions', PermissionController::class);
-Route::resource('roles', RoleController::class);
-Route::resource('assign-roles', AssignRolesController::class);
+
+// Route::resource('permissions', PermissionController::class);
+// Route::resource('roles', RoleController::class);
+// Route::resource('assign-roles', AssignRolesController::class);
+
+Route::group(['middleware' => 'CheckSystemAdmin'], function () {
+    Route::resource('permissions', PermissionController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('assign-roles', AssignRolesController::class);
+});
+
 
 // Lưu ý: chưa check middleware hết được

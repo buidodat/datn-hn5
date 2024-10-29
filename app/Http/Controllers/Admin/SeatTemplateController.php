@@ -16,6 +16,13 @@ class SeatTemplateController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách mẫu sơ đồ ghế')->only('index');
+        $this->middleware('can:Thêm mẫu sơ đồ ghế')->only(['create', 'store']);
+        $this->middleware('can:Sửa mẫu sơ đồ ghế')->only(['edit', 'update']);
+        $this->middleware('can:Xóa mẫu sơ đồ ghế')->only('destroy');
+    }
     public function index()
     {
         $seatTemplates = SeatTemplate::all();
@@ -101,5 +108,4 @@ class SeatTemplateController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
 }
