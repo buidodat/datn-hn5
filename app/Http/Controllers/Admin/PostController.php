@@ -93,24 +93,31 @@ class PostController extends Controller
                 'slug' => Str::slug($request->title),
                 'description' => $request->description,
                 'content' => $request->content,
-                'is_active' => isset($request->is_active) ? 1 : 0,
+                'is_active' => $request->has('is_active') ? 1 : 0,
             ];
-
-            ///nếu không cập nhật ảnh thì giữ nguyên ảnh cũ, nếu cập nhật thì xóa ảnh cũ và thay bằng ảnh mới
-            if ($request->img_post) {
-                if (Storage::exists($post->img_post)) {
+    
+            // Kiểm tra nếu có file ảnh mới
+            if ($request->hasFile('img_post')) {
+                // Xoá ảnh cũ nếu tồn tại
+                if ($post->img_post && Storage::exists($post->img_post)) {
                     Storage::delete($post->img_post);
                 }
-                $dataPost['img_post'] = Storage::put(self::PATH_UPLOAD, $request->img_post);
+                // Upload ảnh mới và lưu đường dẫn
+                $dataPost['img_post'] = $request->file('img_post')
+                    ->storeAs(self::PATH_UPLOAD, Str::uuid() . '.' . $request->file('img_post')->getClientOriginalExtension());
             } else {
+                // Giữ lại ảnh cũ nếu không có ảnh mới
                 $dataPost['img_post'] = $post->img_post;
             }
-
+    
+            // Cập nhật bài viết
             $post->update($dataPost);
 
-            return redirect()->route('admin.posts.index')->with('success', 'Cập nhật thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return redirect()
+                ->back()
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
 
@@ -120,18 +127,18 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
         try {
-
-            if (Storage::exists($post->img_post)) {
+            // Kiểm tra xem ảnh có tồn tại và có đường dẫn hợp lệ
+            if ($post->img_post && Storage::exists($post->img_post)) {
                 Storage::delete($post->img_post);
             }
+    
+            // Xóa bài viết
             $post->delete();
-
-            return back()
-                ->with('success', 'Xóa thành công !');
+    
+            return back()->with('success', 'Xóa thành công!');
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
 }
