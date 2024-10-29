@@ -20,7 +20,7 @@ class AssignRolesController extends Controller
     public function index()
     {
         //
-        $users = User::where('type', 'admin')->with('roles')->get(); // Lấy danh sách người dùng cùng với vai trò
+        $users = User::where('type', 'admin')->with('roles', 'cinema')->get(); // Lấy danh sách người dùng cùng với vai trò
         $roles = Role::all(); // Lấy tất cả các vai trò
         return view(self::PATH_VIEW . __FUNCTION__,  compact('users', 'roles'));
     }
@@ -28,55 +28,42 @@ class AssignRolesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function update(Request $request, User $user)
     {
-        //
+        // dd($user);
         try {
 
-            // $user = User::find($user->id);
-            // $roles = Role::find($request->role_id);
-            // $user->syncRoles($request->role_id);
+            // $request->validate([
+            //     'role_id' => 'required|array',
+            //     'role_id.*' => 'exists:roles,id'
+            // ]);
 
-            // $roleNames = Role::whereIn('id', $request->role_id)->pluck('name')->toArray();
-            // $user->assignRole($roleNames);
-            // $user->syncRoles($roleNames);
+            $user = User::find($request->user_id);
+            if (!$request->has('role_id') || !is_array($request->role_id) || empty($request->role_id)) {
+                // Xóa tất cả vai trò 
+                $user->syncRoles([]);
+                return redirect()
+                ->back()
+                ->with('success', 'Xóa vai trò thành công!');
+            } else {
+              
+                $roles = Role::whereIn('id', $request->role_id)->get();
+                $user->syncRoles($roles);
+            }
 
-          
-            DB::table('model_has_roles')->update([
-                'role_id' => $request->role_id,
-                'model_type' => 'App\Models\User',
-                'model_id' => $user->id
-            ]);
 
             return redirect()
                 ->back()
                 ->with('success', 'Gán vai trò thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Gán vai trò không thành công: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
 
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //

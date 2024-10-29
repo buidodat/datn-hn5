@@ -76,7 +76,7 @@ Route::prefix('seat-templates')
 
 Route::resource('posts', PostController::class);
 
-Route::group(['middleware' => ['auth', 'checkPermission:Quản lý suất chiếu']], function () {
+Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiếu']], function () {
     Route::resource('showtimes', ShowtimeController::class);
 });
 
@@ -100,11 +100,11 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 //user
-Route::group(['middleware' => ['auth', 'checkPermission:Quản lý tài khoản']], function () {
+Route::group(['middleware' => ['auth', 'checkPermission:Danh sách tài khoản']], function () {
     Route::resource('users', UserController::class);
 });
 // Route::group(['middleware' => ['auth', 'checkPermission:Quản lý tài khoản']], function () {
-   
+
 // });
 
 
@@ -131,4 +131,7 @@ Route::prefix('book-tickets')
 Route::resource('permissions', PermissionController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('assign-roles', AssignRolesController::class);
+// Route::put('admin/assign-roles/', [AssignRolesController::class, 'index'])->name('admin/assign-roles');
+// Route::put('/admin/assign-roles/{user}', [AssignRolesController::class, 'update'])->name('admin.assign-roles.update');
+
 // Lưu ý: chưa check middleware hết được

@@ -76,35 +76,10 @@
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Thêm quyền hạn cho vai trò</h4>
                             </div><!-- end card header -->
-                            {{-- <div class="card-body">
-                                <div class="row">
-                                    <div class="row">
-                                        <label for="name" class="form-label "> <span class="text-danger">*</span>Chọn
-                                            Quyền
-                                        </label>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        @foreach ($permissions as $permission)
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="{{ $permission->id }}"
-                                                    name="permissions[]" value="{{ $permission->name }}"
-                                                    @if (in_array($permission->name, $rolePermissions)) checked @endif>
-                                                <label class="form-check-label"
-                                                    for="{{ $permission->id }}">{{ $permission->name }}</label>
-                                            </div>
-                                        @endforeach
+                         
 
 
-                                        @error('permissions')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-                            </div> --}}
-
-
-                            <div class="card-body">
+                            <div class="card-body box-permission-role">
                                 <div class="row mb-2">
                                     <label for="name" class="form-label col-12">
                                         <span class="text-danger">*</span> Chọn Quyền

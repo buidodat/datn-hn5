@@ -11,8 +11,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -94,5 +95,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function membership()
     {
         return $this->hasOne(Membership::class);
+    }
+
+    public function cinema()
+    {
+        return $this->belongsTo(Cinema::class);
     }
 }

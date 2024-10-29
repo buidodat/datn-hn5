@@ -58,31 +58,46 @@
                             <tr>
                                 <th>Tên Quản trị viên</th>
                                 <th>Vai Trò</th>
+
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>
-                                        <form action="{{ route('admin.assign-roles.update', $user) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <select class="js-example-basic-multiple" name="role_id[]" multiple="multiple">
-                                                @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}"
-                                                        {{ $user->roles->contains($role) ? 'selected' : '' }}>
-                                                        {{ $role->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-primary">Gán Vai Trò</button>
-                                    </td>
-                                    </form>
-                                </tr>
+                                @if ($user->name != 'System Admin')
+                                    <tr>
+                                        <td>{{ $user->name }} </td>
+                                        <td>
+                                            <form action="{{ route('admin.assign-roles.update', $user) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                                <select class="js-example-basic-multiple" name="role_id[]"
+                                                    multiple="multiple">
+
+                                                    @foreach ($roles as $role)
+                                                        @if ($role->name != 'System Admin')
+                                                            <option value="{{ $role->id }}"
+                                                                {{ $user->roles->contains($role) ? 'selected' : '' }}
+                                                                title="">
+                                                                {{ $role->name }}
+
+                                                                @if ($user->cinema && $user->cinema->name != '')
+                                                                    - {{ $user->cinema->name }}
+                                                                @endif
+
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                        </td>
+
+                                        <td>
+                                            <button type="submit" class="btn btn-primary">Gán Vai Trò</button>
+                                        </td>
+                                        </form>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
