@@ -55,10 +55,12 @@
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ $role->name }}" required
-                                                placeholder="Manager Post, Manager Movie...">
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                                placeholder="Quản lý Rạp, Người viết bài,...">
+                                            <div class="mt-2">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
 
                                     </div>
@@ -76,7 +78,7 @@
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Thêm quyền hạn cho vai trò</h4>
                             </div><!-- end card header -->
-                         
+
 
 
                             <div class="card-body box-permission-role">
@@ -84,6 +86,9 @@
                                     <label for="name" class="form-label col-12">
                                         <span class="text-danger">*</span> Chọn Quyền
                                     </label>
+                                    @error('permissions')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12  px-5">
@@ -108,7 +113,7 @@
             </div>
             <!--end col-->
         </div>
-        
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">

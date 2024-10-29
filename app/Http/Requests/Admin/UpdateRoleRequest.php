@@ -11,7 +11,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|unique:roles,name,' . $this->route('role')->id,
+            'permissions' => 'required|array',
+            // 'permissions.*' => 'exists:permissions,id',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Tên vai trò không được để trống.',
+            'name.unique' => 'Tên vai trò đã tồn tại, vui lòng chọn tên khác.',
+            'permissions.required' => 'Bạn cần chọn ít nhất một quyền.',
+            'permissions.*.exists' => 'Quyền không hợp lệ.',
         ];
     }
 }

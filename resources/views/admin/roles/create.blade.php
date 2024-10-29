@@ -56,10 +56,12 @@
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}"
                                                 placeholder="Vd: Người viết bài, Nhân viên hóa đơn,...">
+                                            <div class="mt-2">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
 
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
 
@@ -83,6 +85,9 @@
                                     <label for="name" class="form-label col-12">
                                         <span class="text-danger">*</span> Chọn Quyền
                                     </label>
+                                    @error('permissions')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12  px-5">
@@ -94,33 +99,10 @@
                                             </div>
                                         @endforeach
 
-                                        @error('permissions')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+
                                     </div>
                                 </div>
-                                {{-- <table id="example" class="table table-bordered dt-responsive table-striped align-middle"
-                                    style="width:100%">
-                                    <thead>
-                                        <tr>
-                                       
-                                            <th>Tên</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($permissions as $permission)
-                                            <tr>
-                                                <td>{{ $permission->id }}</td>
-                                                <td>    <input type="checkbox" class="form-check-input" id="{{ $permission->id }}"
-                                                    name="permissions[]" value="{{ $permission->name }}">
-                                                <label for="{{ $permission->id }}">{{ $permission->name }}</label></td>
-                                            </tr>
-                                        @endforeach
-
-                                    </tbody>
-
-                                </table> --}}
+                                
                             </div>
 
                         </div>
@@ -142,7 +124,7 @@
         </div>
     </form>
     <style>
-      
+
     </style>
 @endsection
 
