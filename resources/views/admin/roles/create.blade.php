@@ -31,7 +31,6 @@
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin vai trò</h4>
                     </div><!-- end card header -->
-
                     @if (session()->has('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
@@ -61,10 +60,7 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -82,12 +78,23 @@
                             </div><!-- end card header -->
                             <div class="card-body box-permission-role">
                                 <div class="row mb-2">
-                                    <label for="name" class="form-label col-12">
-                                        <span class="text-danger">*</span> Chọn Quyền
-                                    </label>
-                                    @error('permissions')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <div class="col-md-6">
+                                        {{-- <label for="name" class="form-label col-12">
+                                            <span class="text-danger">*</span> Chọn Quyền
+                                        </label> --}}
+                                        <p> <span class="text-danger">*</span> Chọn Quyền</p>
+                                        @error('permissions')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 d-flex">
+                                        <input type="text" class="form-control" id="search-permission"
+                                            placeholder="Tìm tên quyền...">
+                                        <button class="btn btn-primary" type="button"
+                                            onclick="filterPermissions()">Tìm</button>
+
+                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12  px-5">
@@ -102,7 +109,7 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
 
                         </div>
@@ -123,9 +130,6 @@
             <!--end col-->
         </div>
     </form>
-    <style>
-
-    </style>
 @endsection
 
 
@@ -149,5 +153,19 @@
                 [0, 'desc']
             ]
         });
+
+        function filterPermissions() {
+        const searchValue = document.getElementById("search-permission").value.toLowerCase();
+        const permissionItems = document.querySelectorAll(".form-check");
+
+        permissionItems.forEach(item => {
+            const label = item.querySelector("label").textContent.toLowerCase();
+            if (label.includes(searchValue)) {
+                item.style.display = "block"; // Hiển thị mục nếu khớp
+            } else {
+                item.style.display = "none"; // Ẩn mục nếu không khớp
+            }
+        });
+    }
     </script>
 @endsection

@@ -80,13 +80,6 @@ Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiế
     Route::resource('showtimes', ShowtimeController::class);
 });
 
-
-// Route::group(['middleware' => ['auth', 'checkPermission']], function () {
-//     Route::resource('showtimes', ShowtimeController::class);
-// });
-
-
-
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 Route::post('ticket-update', [TicketPriceController::class, 'update'])->name('ticket-update');
 
@@ -131,7 +124,5 @@ Route::prefix('book-tickets')
 Route::resource('permissions', PermissionController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('assign-roles', AssignRolesController::class);
-// Route::put('admin/assign-roles/', [AssignRolesController::class, 'index'])->name('admin/assign-roles');
-// Route::put('/admin/assign-roles/{user}', [AssignRolesController::class, 'update'])->name('admin.assign-roles.update');
 
 // Lưu ý: chưa check middleware hết được

@@ -79,16 +79,25 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Thêm quyền hạn cho vai trò</h4>
                             </div><!-- end card header -->
 
-
-
                             <div class="card-body box-permission-role">
                                 <div class="row mb-2">
-                                    <label for="name" class="form-label col-12">
-                                        <span class="text-danger">*</span> Chọn Quyền
-                                    </label>
-                                    @error('permissions')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <div class="col-md-6">
+                                        {{-- <label for="name" class="form-label col-12">
+                                            <span class="text-danger">*</span> Chọn Quyền
+                                        </label> --}}
+                                        <p> <span class="text-danger">*</span> Chọn Quyền</p>
+                                        @error('permissions')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 d-flex">
+                                        <input type="text" class="form-control" id="search-permission"
+                                            placeholder="Tìm tên quyền...">
+                                        <button class="btn btn-primary" type="button"
+                                            onclick="filterPermissions()">Tìm</button>
+
+                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12  px-5">
@@ -126,4 +135,39 @@
             <!--end col-->
         </div>
     </form>
+@endsection
+
+
+
+@section('script-libs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script>
+       
+
+        function filterPermissions() {
+            const searchValue = document.getElementById("search-permission").value.toLowerCase();
+            const permissionItems = document.querySelectorAll(".form-check");
+
+            permissionItems.forEach(item => {
+                const label = item.querySelector("label").textContent.toLowerCase();
+                if (label.includes(searchValue)) {
+                    item.style.display = "block"; // Hiển thị mục nếu khớp
+                } else {
+                    item.style.display = "none"; // Ẩn mục nếu không khớp
+                }
+            });
+        }
+    </script>
 @endsection

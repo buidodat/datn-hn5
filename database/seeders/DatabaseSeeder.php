@@ -781,24 +781,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // 'Quản lý chi nhánh',
-        // 'Quản lý rạp',
-        // 'Quản lý phòng chiếu',
-        // 'Quản lý mẫu sơ đồ ghế',
-        // 'Quản lý phim',
-        // 'Quản lý suất chiếu',
-        // 'Quản lý hóa đơn',
-        // 'Quản lý đặt vé',
-        // 'Quản lý đồ ăn',
-        // 'Quản lý combo',
-        // 'Quản lý vouchers',
-        // 'Quản lý thanh toán',
-        // 'Quản lý giá',
-        // 'Quản lý bài viết',
-        // 'Quản lý slideshows',
-        // 'Quản lý liên hệ',
-        // 'Quản lý tài khoản',
-        // 'Quản lý thống kê'
+       
 
         // $permissions = [
         //     ['name' => 'Danh sách chi nhánh', 'slug' => 'branch.list', 'guard_name' => 'web'],
@@ -838,13 +821,11 @@ class DatabaseSeeder extends Seeder
             'Danh sách phòng chiếu',
             'Thêm phòng chiếu',
             'Sửa phòng chiếu',
-            'Xóa
-            phòng chiếu',
+            'Xóa phòng chiếu',
             'Danh sách mẫu sơ đồ ghế',
             'Thêm mẫu sơ đồ ghế',
             'Sửa mẫu sơ đồ ghế',
-            'Xóa mẫu sơ đồ
-            ghế',
+            'Xóa mẫu sơ đồ ghế',
             'Danh sách phim',
             'Thêm phim',
             'Sửa phim',
@@ -856,8 +837,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách hóa đơn',
             'Thêm hóa đơn',
             'Sửa hóa đơn',
-            'Xóa
-            hóa đơn',
+            'Xóa hóa đơn',
             'Danh sách đặt vé',
             'Thêm đặt vé',
             'Sửa đặt vé',
@@ -873,8 +853,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách vouchers',
             'Thêm vouchers',
             'Sửa vouchers',
-            'Xóa
-            vouchers',
+            'Xóa vouchers',
             'Danh sách thanh toán',
             'Thêm thanh toán',
             'Sửa thanh toán',
@@ -902,9 +881,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách thống kê',
             'Thêm thống kê',
             'Sửa thống kê',
-            'Xóa
-            thống kê',
-
+            'Xóa thống kê',
         ];
 
         // Tạo các quyền từ danh sách
@@ -915,8 +892,8 @@ class DatabaseSeeder extends Seeder
         // Tạo các vai trò
         $roles = [
             'System Admin',
-            'Cinema Manager',
-            'Staff'
+            'Quản lý cơ sở',
+            'Nhân viên'
         ];
 
         foreach ($roles as $roleName) {
@@ -933,19 +910,19 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('System Admin');
         }
 
-        $managerRole = Role::findByName('Cinema Manager', 'web');
+        $managerRole = Role::findByName('Quản lý cơ sở', 'web');
         $managerRole->givePermissionTo(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh', 'Danh sách rạp', 'Thêm rạp']);
 
         // Gán vai trò cho User với ID = 2
         $user = User::find(2);
         if ($user) {
-            $user->assignRole('Cinema Manager');
+            $user->assignRole('Quản lý cơ sở');
         }
 
-        // Gán vai trò Staff cho User với ID = 6
+        // Gán vai trò Nhân viên cho User với ID = 6
         $user = User::find(6);
         if ($user) {
-            $user->assignRole('Staff');
+            $user->assignRole('Nhân viên');
         }
     }
 

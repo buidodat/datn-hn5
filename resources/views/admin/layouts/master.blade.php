@@ -35,6 +35,7 @@
     <link href="{{ asset('theme/admin/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/admin/assets/css/mainstyle.css') }}" rel="stylesheet" type="text/css" />
 
+    <script src="{{ asset('theme/admin/assets/js/permissions/role.js') }}"></script>
 
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">

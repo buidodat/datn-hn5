@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateAssignRoleRequest;
 // use DB;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -33,12 +34,6 @@ class AssignRolesController extends Controller
     {
         // dd($user);
         try {
-
-            // $request->validate([
-            //     'role_id' => 'required|array',
-            //     'role_id.*' => 'exists:roles,id'
-            // ]);
-
             $user = User::find($request->user_id);
             if (!$request->has('role_id') || !is_array($request->role_id) || empty($request->role_id)) {
                 // Xóa tất cả vai trò 
@@ -46,6 +41,7 @@ class AssignRolesController extends Controller
                 return redirect()
                 ->back()
                 ->with('success', 'Xóa vai trò thành công!');
+
             } else {
               
                 $roles = Role::whereIn('id', $request->role_id)->get();

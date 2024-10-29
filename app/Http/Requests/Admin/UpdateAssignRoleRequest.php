@@ -11,7 +11,7 @@ class UpdateAssignRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class UpdateAssignRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'role_id' => 'nullable|array', // Cho phép trống khi không có vai trò nào được chọn
+            
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'role_id.array' => 'Vai trò phải là một mảng giá trị hợp lệ.',
+            
         ];
     }
 }
