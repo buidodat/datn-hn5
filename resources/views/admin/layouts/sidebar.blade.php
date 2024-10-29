@@ -5,21 +5,21 @@
         <!-- Dark Logo-->
         <a href="#" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px" height="40px">
+                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt="" height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px"
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
                     height="40px">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="#" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px"
-                    height="40px">
+                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt=""
+                    height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="" width="187px"
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
                     height="40px">
             </span>
         </a>
