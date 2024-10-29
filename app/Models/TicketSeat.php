@@ -18,10 +18,6 @@ class TicketSeat extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
-    public function movie()
-    {
-        return $this->belongsTo(Movie::class);
-    }
     public function showtime()
     {
         return $this->belongsTo(Showtime::class);
