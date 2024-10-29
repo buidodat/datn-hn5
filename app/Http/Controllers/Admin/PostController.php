@@ -45,19 +45,23 @@ class PostController extends Controller
                 'slug' => Str::slug($request->title),
                 'description' => $request->description,
                 'content' => $request->content,
-                'is_active' => isset($request->is_active) ? 1 : 0,
+                'is_active' => $request->has('is_active') ? 1 : 0,
                 'user_id' => auth()->user()->id, // Thêm dòng này để gán user_id từ người dùng đăng nhập
+                'view_count' => 0, // Khởi tạo view_count = 0
             ];
-
-            if ($request->img_post) {
-                $dataPost['img_post'] = Storage::put(self::PATH_UPLOAD, $request->img_post);
+    
+            // Xử lý upload ảnh nếu có
+            if ($request->hasFile('img_post')) {
+                $dataPost['img_post'] = $request->file('img_post')
+                    ->storeAs(self::PATH_UPLOAD, Str::uuid() . '.' . $request->file('img_post')->getClientOriginalExtension());
             }
-
-            Post::query()->create($dataPost);
-
-            return redirect()->route('admin.posts.index')->with('success', 'Thêm mới thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+    
+            // Tạo bài viết mới
+            Post::create($dataPost);
+    
+            return redirect()->route('admin.posts.index')->with('success', 'Thêm mới bài viết thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
     }
     /**
