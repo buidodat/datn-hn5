@@ -114,6 +114,12 @@ class TicketController extends Controller
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','users','totalPriceSeat','barcode'));
     }
+    public function printCombo(Ticket $ticket)
+    {
+        $oneTicket = Ticket::with(['ticketCombos','cinema.branch'])->findOrFail($ticket->id);
+        $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','barcode'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -140,9 +146,8 @@ class TicketController extends Controller
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
             return $ticketSeat->seat->typeSeat->price;
         });
-        // Tạo QR code và barcode dựa trên mã 'code' của vé
-        $qrCode = QrCode::size(120)->generate($oneTicket->code);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','qrCode'));
+        $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','barcode'));
     }
 
     /**

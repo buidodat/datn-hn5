@@ -51,6 +51,8 @@ Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class
 Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class);
 route::post('tickets/{ticket}/update-status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
 Route::get('tickets/{ticket}/print', [\App\Http\Controllers\Admin\TicketController::class, 'print'])->name('tickets.print');
+Route::get('tickets/{ticket}/print-combo', [\App\Http\Controllers\Admin\TicketController::class, 'printCombo'])->name('tickets.printCombo');
+
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);
 

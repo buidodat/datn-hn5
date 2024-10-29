@@ -71,64 +71,161 @@
                 size: auto; /*  Tự động điều chỉnh khổ giấy */
                 margin: 10mm; /* Lề 10mm cho tất cả các cạnh */
             }
+
+            .no-print {
+                display: none;
+            }
         }
 
     </style>
 @endsection
 
 @section('content')
+{{--    <div class="d-flex justify-content-around">--}}
     <div class="ticket-container">
-        <div class="flex-shrink-0">
-            @if($oneTicket->status == 'Đã suất vé')
-                <a href="#" class="btn btn-success btn-sm"
-                   onclick="window.print()"><i
-                        class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
-            @endif
-        </div>
-        <div class="ticket-header">
-            <h2>VÉ XEM PHIM</h2>
-        </div>
-        <div class="ticket-info border-bottom-dashed">
-            <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong></p>
-            <p>Địa chỉ: 1 Quang Trung - {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</p>
-            <p>mst: 012147901412</p>
-        </div>
-        <div class="ticket-info border-bottom-dashed mt-2">
-            <p><strong>Poly Cinemas {{ $oneTicket->cinema->branch->name }} - {{ $oneTicket->cinema->name }}</strong></p>
-            <p>Thời gian: 28/10/2024 15:05:00</p>
-        </div>
-        <div class="ticket-info border-bottom-dashed mt-2">
-            <p><strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->movie->movieVersions->first()->name }})</strong></p>
-            <p><strong>{{ $oneTicket->movie->rating }}</strong></p>
-            <p><strong>Phòng:</strong> {{ $oneTicket->room->name }}</p>
-            <p><strong>Ghế:</strong>
-                @foreach($oneTicket->ticketSeats as $seat)
-                    {{ $seat->seat->name }},
-                @endforeach
-            </p>
-        </div>
-        <div class="ticket-info mt-2">
-            <div class="d-flex justify-content-between">
+        <div>
+            <div class="flex-shrink-0 no-print">
+                @if($oneTicket->status == 'Đã suất vé')
+                    <a href="#" class="btn btn-success btn-sm"
+                       onclick="window.print()"><i
+                            class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                @endif
+            </div>
+            <div class="ticket-header">
+                <h2>VÉ XEM PHIM</h2>
+            </div>
+            <div class="ticket-info border-bottom-dashed">
+                <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong></p>
+                <p>Địa chỉ: 1 Quang Trung - {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</p>
+                <p>mst: 012147901412</p>
+            </div>
+            <div class="ticket-info border-bottom-dashed mt-2">
+                <p><strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}  </strong></p>
+                <p>Thời gian: {{ $oneTicket->ticketSeats->first()->showtime->start_time }}</p>
+            </div>
+            <div class="ticket-info border-bottom-dashed mt-2">
+                <p><strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->movie->movieVersions->first()->name }})</strong></p>
+                @php
+                    $rating = $oneTicket->movie->rating;
+                    $description = null;
+
+                    if ($rating == 'P') {
+                        $description = 'Mọi độ tuổi';
+                    } elseif ($rating == 'T13') {
+                        $description = 'Dưới 13 tuổi và có người bảo hộ đi kèm';
+                    } elseif ($rating == 'T16') {
+                        $description = '13+';
+                    } elseif ($rating == 'T18') {
+                        $description = '16+';
+                    } elseif ($rating == 'K') {
+                        $description = '18+';
+                    }
+                @endphp
+                <p><strong>{{ $oneTicket->movie->rating }} @if ($description)
+                            <span>({{ $description }})</span>
+                        @endif</strong></p>
+
+
+                <p><strong>Phòng:</strong> {{ $oneTicket->room->name }}</p>
+                <p><strong>Ghế:</strong>
+                    {{ implode(', ', $oneTicket->ticketSeats->pluck('seat.name')->toArray()) }}
+                </p>
+            </div>
+            <div class="ticket-info mt-2">
+                <div class="d-flex justify-content-between">
                 <span>
                     <strong>Giá vé:</strong>
                 </span>
-                <span><strong>{{ number_format($oneTicket->total_price, 0, ',', '.') }} VND</strong></span>
-            </div>
-            <div class="d-flex justify-content-between">
-                <span><strong>Giảm giá:</strong> </span>
-                <span><strong>{{ number_format($oneTicket->voucher_discount, 0, ',', '.') }} VND</strong></span>
-            </div>
+                    <span><strong>{{ number_format($oneTicket->total_price, 0, ',', '.') }} VND</strong></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span><strong>Giảm giá:</strong> </span>
+                    <span><strong>{{ number_format($oneTicket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                </div>
 
-        </div>
-        <div class="mt-4 border-top-double">
-            <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
-            <div class="d-flex justify-content-center">
-                <p><strong>{{ $oneTicket->code }}</strong></p>
+            </div>
+            <div class="mt-4 border-top-double">
+                <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                <div class="d-flex justify-content-center">
+                    <p><strong>{{ $oneTicket->code }}</strong></p>
+                </div>
             </div>
         </div>
     </div>
+{{--    <div class="ticket-container">
+        <div>
+            <div class="flex-shrink-0">
+                @if($oneTicket->status == 'Đã suất vé')
+                    <a href="#" class="btn btn-success btn-sm"
+                       onclick="window.print()"><i
+                            class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                @endif
+            </div>
+            <div class="ticket-header">
+                <h2>VÉ XEM PHIM</h2>
+            </div>
+            <div class="ticket-info border-bottom-dashed">
+                <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong></p>
+                <p>Địa chỉ: 1 Quang Trung - {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</p>
+                <p>mst: 012147901412</p>
+            </div>
+            <div class="ticket-info border-bottom-dashed mt-2">
+                <p><strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}  </strong></p>
+                <p>Thời gian: 28/10/2024 15:05:00</p>
+            </div>
+            <div class="ticket-info border-bottom-dashed mt-2">
+                <p><strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->movie->movieVersions->first()->name }})</strong></p>
+                @php
+                    $rating = $oneTicket->movie->rating;
+                    $description = null;
 
-    {{--<script>
+                    if ($rating == 'P') {
+                        $description = 'Mọi độ tuổi';
+                    } elseif ($rating == 'T13') {
+                        $description = 'Dưới 13 tuổi và có người bảo hộ đi kèm';
+                    } elseif ($rating == 'T16') {
+                        $description = '13+';
+                    } elseif ($rating == 'T18') {
+                        $description = '16+';
+                    } elseif ($rating == 'C18') {
+                        $description = '18+';
+                    }
+                @endphp
+                <p><strong>{{ $oneTicket->movie->rating }} @if ($description)
+                            <span>({{ $description }})</span>
+                        @endif</strong></p>
+
+
+                <p><strong>Phòng:</strong> {{ $oneTicket->room->name }}</p>
+                <p><strong>Ghế:</strong>
+                    @foreach($oneTicket->ticketSeats as $seat)
+                        {{ $seat->seat->name }},
+                    @endforeach
+                </p>
+            </div>
+            <div class="ticket-info mt-2">
+                <div class="d-flex justify-content-between">
+                <span>
+                    <strong>Giá vé:</strong>
+                </span>
+                    <span><strong>{{ number_format($oneTicket->total_price, 0, ',', '.') }} VND</strong></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span><strong>Giảm giá:</strong> </span>
+                    <span><strong>{{ number_format($oneTicket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                </div>
+
+            </div>
+            <div class="mt-4 border-top-double">
+                <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                <div class="d-flex justify-content-center">
+                    <p><strong>{{ $oneTicket->code }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>--}}
+    <script>
         window.print();
-    </script>--}}
+    </script>
 @endsection

@@ -197,10 +197,17 @@
                                     <a href="{{ route('admin.tickets.show', $ticket) }}">
                                         <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
                                     </a>
-                                    <a href="{{ route('admin.tickets.print', $ticket) }}">
-                                        <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                                class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</button>
-                                    </a>
+                                    @if($ticket->status == 'Đã suất vé')
+                                        <a href="{{ route('admin.tickets.print', $ticket) }}">
+                                            <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                                    class="ri-download-2-fill align-middle me-1"></i> In vé</button>
+                                        </a>
+                                        <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
+                                            <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                                    class="ri-download-2-fill align-middle me-1"></i> In combo</button>
+                                        </a>
+                                    @endif
+
                                 </td>
                             </tr>
                         @endforeach
