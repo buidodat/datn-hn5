@@ -31,10 +31,15 @@
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Order: #{{ $ticket->id }}</h5>
                         <div class="flex-shrink-0">
-                            @if($oneTicket->status == 'Đã suất vé')
-                                <a href="#" class="btn btn-success btn-sm"
-                                   onclick="window.print()"><i
-                                        class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                            @if($ticket->status == 'Đã suất vé')
+                                <a href="{{ route('admin.tickets.print', $ticket) }}">
+                                    <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                            class="ri-download-2-fill align-middle me-1"></i> In vé</button>
+                                </a>
+                                <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
+                                    <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                            class="ri-download-2-fill align-middle me-1"></i> In combo</button>
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -48,7 +53,7 @@
                                 <th scope="col">Suất chiếu</th>
                                 <th scope="col">Combo</th>
                                 <th scope="col">Vé</th>
-                                <th scope="col" class="text-end">Giá ghế</th>
+                                <th scope="col" class="text-end">Giá tiền</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -352,8 +357,8 @@
                     <div class="text-center">
                         {{--<img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
                              alt="">--}}
-                        {!! $qrCode !!}
-                        <p class="text-muted mb-0 mt-2">Code: <b>{{ $ticket->code }}</b></p>
+                       <div class="d-flex justify-content-center">{!! $barcode !!}</div>
+                        <p class="text-muted mb-0 mt-2"><b>{{ $ticket->code }}</b></p>
 
                     </div>
                 </div>
