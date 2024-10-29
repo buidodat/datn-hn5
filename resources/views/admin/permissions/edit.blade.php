@@ -30,7 +30,7 @@
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Quyền</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Cập nhật thông tin Quyền</h4>
                     </div><!-- end card header -->
 
                     @if (session()->has('success'))
@@ -56,10 +56,21 @@
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ $permission->name }}"
-                                                placeholder="Manage movies, manage showtimes,...">
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                                placeholder="...">
+                                            <div class="mt-2">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="row mt-2 mx-1">
+                                                <span class="text-muted">Lưu ý: Tên quyền phải đặt theo cấu trúc: ví dụ:
+                                                    Danh sách phim ,
+                                                    Thêm phim ,
+                                                    Sửa phim ,
+                                                    Xóa phim
+                                                </span>
+                                            </div>
                                         </div>
 
 

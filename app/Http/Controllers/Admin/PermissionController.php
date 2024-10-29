@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StorePermissionRequest;
+use App\Http\Requests\Admin\UpdatePermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -26,21 +28,13 @@ class PermissionController extends Controller
     public function create()
     {
         //
-
         return view(self::PATH_VIEW . __FUNCTION__);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
         //
         try {
-            $request->validate([
-                'name' => 'required|unique:permissions'
-            ]);
-
             Permission::create(['name' => $request->name]);
             return redirect()
                 ->route('admin.permissions.index')
@@ -70,14 +64,10 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
         //
         try {
-            $request->validate([
-                'name' => 'required|unique:permissions,name,' . $permission->id
-            ]);
-
             $permission->update(['name' => $request->name]);
             return redirect()
                 ->route('admin.permissions.index')

@@ -55,19 +55,21 @@
                                             </label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Vd: Thêm phim">
-                                            <div class="row mt-3 mx-1">
+                                            <div class="mt-2">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="row mt-2 mx-1">
                                                 <span class="text-muted">Lưu ý: Tên quyền phải đặt theo cấu trúc: ví dụ:
-                                                   
-                                                          
-                                                            Danh sách phim , 
-                                                            Thêm phim  ,
-                                                            Sửa phim  ,
-                                                            Xóa phim  
+                                                    Danh sách phim ,
+                                                    Thêm phim ,
+                                                    Sửa phim ,
+                                                    Xóa phim
                                                 </span>
                                             </div>
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+
                                         </div>
 
 
