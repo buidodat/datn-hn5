@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 
 class TicketPriceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách giá')->only('index');
+        $this->middleware('can:Thêm giá')->only(['create', 'store']);
+        $this->middleware('can:Sửa giá')->only(['edit', 'update']);
+        $this->middleware('can:Xóa giá')->only('destroy');
+    }
     public function index(Request $request)
     {
 

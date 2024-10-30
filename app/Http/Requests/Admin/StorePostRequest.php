@@ -22,25 +22,25 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'title' => 'required|unique:posts,title',
-            'img_post' => 'nullable|image|max:2048',
-            // 'slug' => 'required|unique:posts,slug',
-            'description' => 'required',
+            'title' => 'required|unique:posts,title|max:255',
+            'img_post' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|max:500',
             'content' => 'required',
-            // 'is_active'     => 'required|boolean',
         ];
     }
     public function messages()
     {
         return [
             'title.required' => 'Tiêu đề không được để trống.',
-            'title.unique' => "Tiêu đề bài viết này đã tồn tại.",
+            'title.unique' => 'Tiêu đề bài viết này đã tồn tại.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'img_post.required' => 'Vui lòng chọn ảnh đại diện cho bài viết.',
             'img_post.image' => 'File phải là một hình ảnh.',
-            // 'slug.required' => "Đường link slug không được để trống.",
-            'description.required' => "Mô tả ngắn không được để trống.",
-            'content.required' => "Nội dung không được để trống.",
-
+            'img_post.mimes' => 'Chỉ chấp nhận các định dạng: jpeg, png, jpg, gif, svg.',
+            'img_post.max' => 'Hình ảnh không được lớn hơn 2MB.',
+            'description.required' => 'Mô tả ngắn không được để trống.',
+            'description.max' => 'Mô tả không được vượt quá 500 ký tự.',
+            'content.required' => 'Nội dung không được để trống.',
         ];
     }
 }

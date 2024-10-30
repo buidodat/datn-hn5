@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreRoleRequest;
+use App\Http\Requests\Admin\UpdateRoleRequest;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -15,7 +19,8 @@ class RoleController extends Controller
     const PATH_UPLOAD = 'roles';
     public function index()
     {
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $roles = Role::with('permissions')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('roles'));
     }
 
     /**
@@ -24,15 +29,29 @@ class RoleController extends Controller
     public function create()
     {
         //
-        return view(self::PATH_VIEW . __FUNCTION__);
+        $permissions = Permission::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('permissions'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
         //
+        try {
+            $role = Role::create([
+                'name' => $request->name,
+            ]);
+            // dd('đã đi vào store');
+            $role->syncPermissions($request->permissions);
+
+            return redirect()
+                ->route('admin.roles.index')
+                ->with('success', 'Thêm mới thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -46,24 +65,44 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Role $role)
     {
         //
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
         //
+        try {
+          
+            $role->update(['name' => $request->name]);
+            $role->syncPermissions($request->permissions);
+
+            return redirect()
+                ->route('admin.roles.index')
+                ->with('success', 'Cập nhật thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
         //
+        
+        $role->delete();
+        return redirect()
+            ->route('admin.roles.index')
+            ->with('success', 'Xóa thành công!');
     }
 }
