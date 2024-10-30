@@ -124,6 +124,11 @@ class ChooseSeatController extends Controller
             if ($now->greaterThanOrEqualTo($endTime)) {
                 // Nếu hết thời gian, xóa session
                 session()->forget($timeKey);
+
+                $endTime = $now->copy()->addMinutes(1);
+                session()->put($timeKey, [
+                    'end_time' => $endTime->toDateTimeString(),
+                ]);
                 $remainingSeconds = 1 * 60; // 10 phút
             } else {
                 // Tính thời gian còn lại
@@ -372,7 +377,7 @@ class ChooseSeatController extends Controller
             $action = $request->action; // 'hold' hoặc 'release'
             $userId = auth()->id();
             $timeKey = 'timeData.' . $showtimeId;
-            $timeData = session()->get($timeKey, null);
+            $timeData = session()->get($timeKey);
 
             // Kiểm tra xem thời gian giữ chỗ có hợp lệ không
             if ($action === 'hold' && (!$timeData || !isset($timeData['end_time']))) {
