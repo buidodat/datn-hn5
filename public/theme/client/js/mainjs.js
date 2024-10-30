@@ -131,96 +131,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function attachCancelVoucherEvent() {
-        $('#cancel-voucher-btn').on('click', function () {
-            // Phục hồi giá trị và nút bấm về trạng thái ban đầu
-            $('#voucher_code').val(''); // Đặt giá trị của input về rỗng
-            $('#voucher-response').html('');
+    // function attachCancelVoucherEvent() {
+    //     $('#cancel-voucher-btn').on('click', function () {
+    //         // Phục hồi giá trị và nút bấm về trạng thái ban đầu
+    //         $('#voucher_code').val(''); // Đặt giá trị của input về rỗng
+    //         $('#voucher-response').html('');
 
-            // Lấy giá trị tổng tiền ban đầu và định dạng lại
-            var originalTotalPrice = parseInt($('#total-price').val());
-            $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' Vnđ');
-            $('.total-discount').text('0 Vnđ');
+    //         // Lấy giá trị tổng tiền ban đầu và định dạng lại
+    //         var originalTotalPrice = parseInt($('#total-price').val());
+    //         $('.total-price-payment').text(originalTotalPrice.toLocaleString() + ' Vnđ');
+    //         $('.total-discount').text('0 Vnđ');
 
-            // Cập nhật lại trạng thái nút
-            $('#apply-voucher-btn').attr('disabled', false);
+    //         // Cập nhật lại trạng thái nút
+    //         $('#apply-voucher-btn').attr('disabled', false);
 
-            // Cập nhật lại discountAmount về 0
-            discountAmount = 0;
-            calculateTotal(); // Tính lại tổng tiền thanh toán sau khi hủy voucher
-        });
-    }
+    //         // Cập nhật lại discountAmount về 0
+    //         discountAmount = 0;
+    //         calculateTotal(); // Tính lại tổng tiền thanh toán sau khi hủy voucher
+    //     });
+    // }
 
-    // Code xử lý chính
-    // Gán sự kiện cho nút "Xác nhận"
-    $('#apply-voucher-btn').on('click', function (e) {
-        e.preventDefault(); // Ngăn chặn hành động mặc định
+    //Đạt đóng xử lý voucher
+    // $('#apply-voucher-btn').on('click', function (e) {
+    //     e.preventDefault(); // Ngăn chặn hành động mặc định
 
-        $(this).attr('disabled', true); // Vô hiệu hóa nút để ngăn gửi nhiều lần
+    //     $(this).attr('disabled', true); // Vô hiệu hóa nút để ngăn gửi nhiều lần
 
-        var formData = {
-            code: $('#voucher_code').val(),
-            _token: $('input[name="_token"]').val() // Lấy CSRF token từ input
-        };
+    //     var formData = {
+    //         code: $('#voucher_code').val(),
+    //         _token: $('input[name="_token"]').val() // Lấy CSRF token từ input
+    //     };
 
-        $.ajax({
-            url: routeUrl,
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                var discountAmountReceived = response.discount;
-                discountAmount = discountAmountReceived; // Cập nhật discountAmount
-                var discountAmountFormatted = discountAmountReceived.toLocaleString();
+    //     $.ajax({
+    //         url: routeUrl,
+    //         type: "POST",
+    //         data: formData,
+    //         success: function (response) {
+    //             var discountAmountReceived = response.discount;
+    //             discountAmount = discountAmountReceived; // Cập nhật discountAmount
+    //             var discountAmountFormatted = discountAmountReceived.toLocaleString();
 
-                $('#voucher-response').html(`
-                <div class="t-success">${response.success}</div>
-                <div class="show-text">
-                    <span>Voucher: <b>${response.voucher_code}</b></span>
-                    <span>Giảm giá: <b>${discountAmountFormatted}</b> Vnđ</span>
-                    <button type="button" id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
-                </div>
-            `);
+    //             $('#voucher-response').html(`
+    //             <div class="t-success">${response.success}</div>
+    //             <div class="show-text">
+    //                 <span>Voucher: <b>${response.voucher_code}</b></span>
+    //                 <span>Giảm giá: <b>${discountAmountFormatted}</b> Vnđ</span>
+    //                 <button type="button" id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
+    //             </div>
+    //         `);
 
-                var totalPrice = parseInt($('#total-price').val());
-                var totalPricePayment = totalPrice - discountAmount;
+    //             var totalPrice = parseInt($('#total-price').val());
+    //             var totalPricePayment = totalPrice - discountAmount;
 
-                $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' Vnđ');
-                $('.total-discount').text(discountAmountFormatted + ' Vnđ');
+    //             $('.total-price-payment').text(totalPricePayment.toLocaleString() + ' Vnđ');
+    //             $('.total-discount').text(discountAmountFormatted + ' Vnđ');
 
-                $('#apply-voucher-btn').attr('disabled', false);
-                attachCancelVoucherEvent(); // Gán sự kiện cho nút "Hủy"
-            },
-            error: function (xhr) {
-                var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
-                showModalError(error);
-                $('#apply-voucher-btn').attr('disabled', false);
-            }
-        });
-    });
+    //             $('#apply-voucher-btn').attr('disabled', false);
+    //             attachCancelVoucherEvent(); // Gán sự kiện cho nút "Hủy"
+    //         },
+    //         error: function (xhr) {
+    //             var error = xhr.responseJSON.error || 'Voucher không hợp lệ';
+    //             showModalError(error);
+    //             $('#apply-voucher-btn').attr('disabled', false);
+    //         }
+    //     });
+    // });
 
-    function showModalError(errorMessage) {
-        const modalHTML = `
-                    <div id="error-modal" class="modal">
-                        <div class="modal-content" >
-                            <p class="text-error">${errorMessage}</p>
-                            <span class="close-modal button-error">Hủy</span>
-                        </div>
-                    </div>
-                `;
+    // function showModalError(errorMessage) {
+    //     const modalHTML = `
+    //                 <div id="error-modal" class="modal">
+    //                     <div class="modal-content" >
+    //                         <p class="text-error">${errorMessage}</p>
+    //                         <span class="close-modal button-error">Hủy</span>
+    //                     </div>
+    //                 </div>
+    //             `;
 
-        $('body').append(modalHTML);
-        $('#error-modal').css('display', 'block');
-        $('.close-modal').on('click', function () {
-            $('#error-modal').remove();
-            $('#voucher_code').val(''); // Đặt giá trị của input về rỗng
-        });
+    //     $('body').append(modalHTML);
+    //     $('#error-modal').css('display', 'block');
+    //     $('.close-modal').on('click', function () {
+    //         $('#error-modal').remove();
+    //         $('#voucher_code').val(''); // Đặt giá trị của input về rỗng
+    //     });
 
-        $(window).on('click', function (event) {
-            if ($(event.target).is('#error-modal')) {
-                $('#error-modal').remove();
-            }
-        });
-    }
+    //     $(window).on('click', function (event) {
+    //         if ($(event.target).is('#error-modal')) {
+    //             $('#error-modal').remove();
+    //         }
+    //     });
+    // }
 
     // Tính toán ban đầu khi trang được tải
     calculateTotal();

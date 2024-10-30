@@ -20,8 +20,11 @@ use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +72,8 @@ Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout'
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
 route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
-route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
+route::post('payment', [PaymentController::class, 'payment'])->name('payment');
+route::post('payment-admin', [PaymentController::class, 'paymentAdmin'])->name('payment-admin');
 
 // Cổng thanh toán
 //1 VNPAY
@@ -141,6 +145,33 @@ Route::get('checkoutAdmin', function () {
 
 // Giá vé theo chi nhánh
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
+
+
+// để tạm để test
+// Route::get('admin/assign-manager-showtimes', function () {
+//     dd(Auth::user()->getAllPermissions()->pluck('slug'));
+// });
+
+Route::get('admin/assign-admin', function () {
+    $user = User::find('1');
+    // $user->assignRole('System Admin');
+    // dd($user->name);
+
+
+    $adminRole = Role::findByName('System Admin', 'web');
+    $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get());
+
+    // $adminRole->syncPermissions($permissions);
+
+    if ($user && $user->hasRole('System Admin')) {
+        return 'Người dùng này đã có vai trò System Admin';
+    } else {
+        return 'Người dùng này không có vai trò System Admin';
+    }
+});
+
+
+
 
 
 Route::get('public', function () {

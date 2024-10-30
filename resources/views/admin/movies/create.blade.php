@@ -150,6 +150,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="form-check-label mb-2" for="is_active"><span
                                                     class='text-danger'>*</span> Phiên bản:</label>
+                                                    
                                             <select class="js-example-basic-multiple" name="versions[]"
                                                 multiple="multiple">
                                                 @foreach ($versions as $version)

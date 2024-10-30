@@ -11,6 +11,13 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     const PATH_VIEW = 'admin.payments.';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách thanh toán')->only('index');
+        $this->middleware('can:Thêm thanh toán')->only(['create', 'store']);
+        $this->middleware('can:Sửa thanh toán')->only(['edit', 'update']);
+        $this->middleware('can:Xóa thanh toán')->only('destroy');
+    }
     public function index()
     {
         $payments = Payment::query()->latest('id')->get();

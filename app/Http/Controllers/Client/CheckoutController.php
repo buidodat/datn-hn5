@@ -46,6 +46,7 @@ class CheckoutController extends Controller
 
 
     public function applyVoucher(Request $request)
+    
     {
         $voucher = Voucher::where('code', $request->code)->first();
 
@@ -62,7 +63,7 @@ class CheckoutController extends Controller
             return response()->json(['error' => 'Voucher đã được sử dụng hết.'], 400);
         }
 
-        if ($voucher->type == 2) { // Voucher sinh nhật type =2
+        /*if ($voucher->type == 2) { // Voucher sinh nhật type =2
             $userVoucher = UserVoucher::where([
                 'voucher_id' => $voucher->id,
                 'user_id' => Auth::id(),
@@ -84,6 +85,27 @@ class CheckoutController extends Controller
             if ($userVoucher && $userVoucher->usage_count >= $voucher->limit) {
                 return response()->json(['error' => 'Voucher không còn lượt sử dụng.'], 400);
             }
+        }*/
+
+        // Kiểm tra quyền truy cập vào voucher của người dùng
+        $userVoucher = UserVoucher::firstOrNew([
+            'voucher_id' => $voucher->id,
+            'user_id' => Auth::id(),
+        ]);
+
+        if ($voucher->type == 2) { // Voucher sinh nhật
+            if (!$userVoucher->exists) {
+                return response()->json(['error' => 'Voucher sinh nhật không áp dụng cho bạn.'], 400);
+            }
+        }
+
+        if ($userVoucher->usage_count >= $voucher->limit) {
+            return response()->json(['error' => 'Voucher đã hết lượt sử dụng.'], 400);
+        }
+
+        // Bỏ qua phản hồi nếu discount = 0
+        if ($voucher->discount == 0) {
+            return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
         }
 
         return response()->json([
@@ -96,7 +118,7 @@ class CheckoutController extends Controller
     }
 
 
-    //    public function cancelVoucher(Request $request)
+    //    public function cancelVouche  r(Request $request)
     //    {
     //        $userVoucher = UserVoucher::where('user_id', auth()->id())
     //            ->where('voucher_id', $request->voucher_id)

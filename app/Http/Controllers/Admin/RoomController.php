@@ -20,6 +20,13 @@ class RoomController extends Controller
 {
     const PATH_VIEW = 'admin.rooms.';
     const PATH_UPLOAD = 'rooms';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách phòng chiếu')->only('index');
+        $this->middleware('can:Thêm phòng chiếu')->only(['create', 'store']);
+        $this->middleware('can:Sửa phòng chiếu')->only(['edit', 'update']);
+        $this->middleware('can:Xóa phòng chiếu')->only('destroy');
+    }
     public function index()
     {
         $rooms = Room::query()->with(['typeRoom', 'cinema','seats'])->latest('cinema_id')->get();

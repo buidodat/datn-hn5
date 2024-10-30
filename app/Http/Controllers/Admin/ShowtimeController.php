@@ -25,6 +25,13 @@ class ShowtimeController extends Controller
      */
     const PATH_VIEW = 'admin.showtimes.';
     const PATH_UPLOAD = 'showtimes';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách suất chiếu')->only('index');
+        $this->middleware('can:Thêm suất chiếu')->only(['create', 'store']);
+        $this->middleware('can:Sửa suất chiếu')->only(['edit', 'update']);
+        $this->middleware('can:Xóa suất chiếu')->only('destroy');
+    }
 
     public function index(Request $request)
     {
