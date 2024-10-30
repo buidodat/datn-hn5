@@ -47,18 +47,19 @@ class MembershipController extends Controller
                     'message' => 'Số điểm sử dụng vượt quá số điểm bạn hiện có.',
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
-
+            $point_discount = $request->use_points * Membership::CONVERSION_RATE;
            $paymentPoint = [
             'user_id'=>$request->user_id,
             'membership_code'=>$membership->code,
             'total_points'=>$membership->points,
-            'use_points'=>$request->use_points
+            'use_points'=>$request->use_points,
+            'point_discount' =>$point_discount
            ];
            session(['payment_point' => $paymentPoint]);
             return response()->json([
                 'success' => true,
                 'use_points' => $request->use_points,
-                'point_discount' => $request->use_points * Membership::CONVERSION_RATE,
+                'point_discount' => $point_discount,
             ]);
         } catch (\Exception $e) {
             // Xử lý ngoại lệ

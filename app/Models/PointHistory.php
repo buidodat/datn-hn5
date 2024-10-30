@@ -14,7 +14,14 @@ class PointHistory extends Model
         'type',
         'expiry_date',
     ];
+
+    const POINTS_ACCUMULATED = 'Tích điểm'; // Tích điểm
+    const POINTS_SPENT = 'Tiêu điểm';             // Tiêu điểm
+    const POINTS_EXPIRY = 'Hết hạn';            // Hết hạn
+
+
+
     public function membership(){
-        return $this->belongsTo(Membership::class); 
+        return $this->belongsTo(Membership::class);
     }
 }
