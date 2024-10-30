@@ -26,7 +26,7 @@
 
         <!-- thông tin -->
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin vai trò</h4>
@@ -47,7 +47,7 @@
                     <div class="card-body">
                         <div class="live-preview">
                             <div class="row gy-4">
-                                <div class="col-md-8 ">
+                                <div class="col-md-12 ">
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
                                             <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -82,23 +82,35 @@
                             <div class="card-body box-permission-role">
                                 <div class="row mb-2">
                                     <div class="col-md-6">
-                                        {{-- <label for="name" class="form-label col-12">
+                                        <label for="name" class="form-label col-12">
                                             <span class="text-danger">*</span> Chọn Quyền
-                                        </label> --}}
-                                        <p> <span class="text-danger">*</span> Chọn Quyền</p>
+                                        </label>
+
                                         @error('permissions')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2">
+                                                <input type="checkbox" name="checkboxAll" class="checkboxAll"
+                                                    id="checkboxAll">
+                                                <label for="checkboxAll">Chọn tất cả</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 d-flex">
-                                        <input type="text" class="form-control" id="search-permission"
-                                            placeholder="Tìm tên quyền...">
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="filterPermissions()">Tìm</button>
 
+                                    <div class="col-md-6 box-search-role">
+                                        <div>
+                                            <input type="text" class="form-control input-search-role"
+                                                id="search-permission" placeholder="Tìm tên quyền...">
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-primary btn-search-role" type="button"
+                                                onclick="filterPermissions()">Tìm</button>
+                                        </div>
                                     </div>
 
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-12  px-5">
                                         @foreach ($permissions as $permission)
@@ -154,8 +166,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-       
-
         function filterPermissions() {
             const searchValue = document.getElementById("search-permission").value.toLowerCase();
             const permissionItems = document.querySelectorAll(".form-check");
@@ -169,5 +179,25 @@
                 }
             });
         }
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectAllCheckbox = document.querySelector("#checkboxAll");
+            const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
+
+            selectAllCheckbox.addEventListener("click", function() {
+                checkboxes.forEach((checkbox) => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+
+
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener("click", function() {
+                    // Kiểm tra nếu tất cả checkbox con được chọn thì chọn "Chọn tất cả"
+                    selectAllCheckbox.checked = [...checkboxes].every(
+                        (checkbox) => checkbox.checked
+                    );
+                });
+            });
+        });
     </script>
 @endsection
