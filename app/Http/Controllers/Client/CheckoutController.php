@@ -46,6 +46,7 @@ class CheckoutController extends Controller
 
 
     public function applyVoucher(Request $request)
+    
     {
         $voucher = Voucher::where('code', $request->code)->first();
 
@@ -96,7 +97,7 @@ class CheckoutController extends Controller
     }
 
 
-    //    public function cancelVoucher(Request $request)
+    //    public function cancelVouche  r(Request $request)
     //    {
     //        $userVoucher = UserVoucher::where('user_id', auth()->id())
     //            ->where('voucher_id', $request->voucher_id)

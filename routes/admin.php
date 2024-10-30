@@ -111,7 +111,7 @@ Route::prefix('book-tickets')
     ->group(function () {
         Route::get('/',                      [BookTicketController::class, 'index'])->name('index');
         Route::get('{showtime}',             [BookTicketController::class, 'show'])->name('show');
-        Route::post('{showtime}',            [BookTicketController::class, 'payment'])->name('payment');
+        Route::post('{showtime}',            [BookTicketController::class, 'payment']);
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
