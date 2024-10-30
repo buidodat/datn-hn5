@@ -6,9 +6,9 @@
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endsection
@@ -57,8 +57,7 @@
                                     <select name="branch_id" id="branch" class="form-select">
                                         <option value="">Chi nhánh</option>
                                         @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}"
-                                            >
+                                            <option value="{{ $branch->id }}">
                                                 {{ $branch->name }}</option>
                                         @endforeach
                                     </select>
@@ -75,7 +74,7 @@
                             <div class="col-xxl-2 col-sm-6">
                                 <div>
                                     <input type="date" name="date" id="" class="form-control"
-                                           value="{{ request('date', now()->format('Y-m-d')) }}">
+                                        value="{{ request('date', now()->format('Y-m-d')) }}">
                                 </div>
                             </div>
                             <!--end col-->
@@ -111,99 +110,139 @@
 
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
-                           style="width:100%;">
+                        style="width:100%;">
                         <thead class='table-light'>
-                        <tr>
-                            <th>Code phim</th>
-                            <th>Thông tin người dùng</th>
-                            <th class="text-center">Hình ảnh</th>
-                            <th>Thông tin vé</th>
-                            <th>Trạng thái</th>
-                            <th>Chức năng</th>
-                        </tr>
+                            <tr>
+                                <th>Code phim</th>
+                                <th>Thông tin người dùng</th>
+                                <th class="text-center">Hình ảnh</th>
+                                <th>Thông tin vé</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
+                            </tr>
                         </thead>
                         <tbody id="ticket-table-body">
-                        @foreach ($tickets as $code => $groupTickets)
-                            @php
-                                $ticket = $groupTickets->first();
-                                $url = $ticket->movie->img_thumbnail;
-                                if (!\Str::contains($url, 'http')) {
-                                    $url = Storage::url($url);
-                                }
-                                $showtime = $ticket->ticketSeats->first()?->showtime;
-                                $showtimeStart = $showtime ? \Carbon\Carbon::parse($showtime->start_time)->format('H:i') : 'Không có';
-                                $showtimeEnd = $showtime ? \Carbon\Carbon::parse($showtime->end_time)->format('H:i') : 'Không có';
-                            @endphp
-                            <tr>
-                                <td>{{ $code }}</td>
-                                <td>
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span> {{ $ticket->user->name }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
-                                            <span class="badge {{ $ticket->user->type === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->user->type }}</span>
-                                        </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Email:</span> {{ $ticket->user->email }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span> {{ $ticket->user->phone }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_name }}</li>
-                                    </ul>
-                                </td>
-                                <td class="text-center">
-                                    @if (!empty($ticket->movie->img_thumbnail))
-                                        <img src="{{ $url }}" alt="Movie Thumbnail" width="100px">
-                                    @else
-                                        No image !
-                                    @endif
-                                </td>
-                                <td>
-                                    <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span> {{ $ticket->movie->name }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
-                                            {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }} - {{ $ticket->room->name }}
-                                        </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
-                                            @foreach ($ticket->ticketSeats as $ticketSeat)
-                                                {{ $ticketSeat->seat->name }}
-                                            @endforeach
-                                        </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span> {{ number_format($ticket->total_price) }} VNĐ</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
-                                            @switch($ticket->status)
-                                                @case('Chưa suất vé')
-                                                    <span class="badge bg-warning">Chưa suất vé</span>
-                                                    @break
-                                                @case('Đã hết hạn')
-                                                    <span class="badge bg-danger">Đã hết hạn</span>
-                                                    @break
-                                                @case('Đã suất vé')
-                                                    <span class="badge bg-success">Đã suất vé</span>
-                                                    @break
-                                            @endswitch
-                                        </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span> {{ $showtimeStart }} ~ {{ $showtimeEnd }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span> {{ $ticket->expiry->format('H:i, d/m/Y') }}</li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <select class="form-select" data-original-status="{{ $ticket->status }}" data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
-                                        {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                        <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận</option>
-                                        <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
-                                        @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
-                                            <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
+                            @foreach ($tickets as $code => $groupTickets)
+                                @php
+                                    $ticket = $groupTickets->first();
+                                    $url = $ticket->movie->img_thumbnail;
+                                    if (!\Str::contains($url, 'http')) {
+                                        $url = Storage::url($url);
+                                    }
+                                    $showtime = $ticket->ticketSeats->first()?->showtime;
+                                    $showtimeStart = $showtime
+                                        ? \Carbon\Carbon::parse($showtime->start_time)->format('H:i')
+                                        : 'Không có';
+                                    $showtimeEnd = $showtime
+                                        ? \Carbon\Carbon::parse($showtime->end_time)->format('H:i')
+                                        : 'Không có';
+                                @endphp
+                                <tr>
+                                    <td>{{ $code }}</td>
+                                    <td>
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span>
+                                                {{ $ticket->user->name }}</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
+                                                <span
+                                                    class="badge {{ $ticket->user->type === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->user->type }}</span>
+                                            </li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Email:</span>
+                                                {{ $ticket->user->email }}</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span>
+                                                {{ $ticket->user->phone }}</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh
+                                                    toán:</span> {{ $ticket->payment_name }}</li>
+                                        </ul>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (!empty($ticket->movie->img_thumbnail))
+                                            <img src="{{ $url }}" alt="Movie Thumbnail" width="100px">
+                                        @else
+                                            No image !
                                         @endif
-                                    </select>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.tickets.show', $ticket) }}">
-                                        <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
-                                    </a>
-                                    <a href="{{ route('admin.tickets.print', $ticket) }}">
-                                        <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                                class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-sm flex-column">
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span>
+                                                {{ $ticket->movie->name }}</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
+                                                {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }} -
+                                                {{ $ticket->room->name }}
+                                            </li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
+                                                @foreach ($ticket->ticketSeats as $ticketSeat)
+                                                    {{ $ticketSeat->seat->name }}
+                                                @endforeach
+                                            </li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span>
+                                                {{ number_format($ticket->total_price) }} VNĐ</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
+                                                @switch($ticket->status)
+                                                    @case('Chưa suất vé')
+                                                        <span class="badge bg-warning">Chưa suất vé</span>
+                                                    @break
+
+                                                    @case('Đã hết hạn')
+                                                        <span class="badge bg-danger">Đã hết hạn</span>
+                                                    @break
+
+                                                    @case('Đã suất vé')
+                                                        <span class="badge bg-success">Đã suất vé</span>
+                                                    @break
+                                                @endswitch
+                                            </li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
+                                                {{ $showtimeStart }} ~ {{ $showtimeEnd }}</li>
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
+                                                {{ $ticket->expiry->format('H:i, d/m/Y') }}</li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        @if (Auth::user()->can('Sửa hóa đơn'))
+                                            <select class="form-select" data-original-status="{{ $ticket->status }}"
+                                                data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
+                                                {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
+                                                <option value="Chưa suất vé"
+                                                    {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận
+                                                </option>
+                                                <option value="Đã suất vé"
+                                                    {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất
+                                                </option>
+                                                @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                                    <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
+                                                @endif
+                                            </select>
+                                        @else
+                                            <select class="form-select" data-original-status="{{ $ticket->status }}"
+                                                data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)" disabled
+                                                {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
+                                                <option value="Chưa suất vé"
+                                                    {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận
+                                                </option>
+                                                <option value="Đã suất vé"
+                                                    {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất
+                                                </option>
+                                                @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                                    <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
+                                                @endif
+                                            </select>
+                                        @endif
+                                        {{-- @can('Sửa hóa đơn')
+                                        @endcan --}}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.tickets.show', $ticket) }}">
+                                            <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i
+                                                    class="fas fa-eye"></i></button>
+                                        </a>
+                                        <a href="{{ route('admin.tickets.print', $ticket) }}">
+                                            <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                                    class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
 
                     </table>
@@ -218,7 +257,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -245,15 +284,15 @@
                 var newStatus = e.value;
 
                 fetch(`/admin/tickets/${ticketId}/update-status`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        status: newStatus
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
                     })
-                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -280,13 +319,13 @@
         }
 
         /*Hiển thị rạp*/
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ Laravel
             // var selectedBranchId = "{{ old('branch_id', '') }}";
             // var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
             // Xử lý sự kiện thay đổi chi nhánh
-            $('#branch').on('change', function () {
+            $('#branch').on('change', function() {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
                 cinemaSelect.empty();
@@ -296,8 +335,8 @@
                     $.ajax({
                         url: "{{ url('api/cinemas') }}/" + branchId,
                         method: 'GET',
-                        success: function (data) {
-                            $.each(data, function (index, cinema) {
+                        success: function(data) {
+                            $.each(data, function(index, cinema) {
                                 cinemaSelect.append('<option value="' + cinema.id +
                                     '" >' + cinema.name + '</option>');
                             });
@@ -318,8 +357,5 @@
 
             // }
         });
-
     </script>
-
 @endsection
-

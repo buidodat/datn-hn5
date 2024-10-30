@@ -45,13 +45,15 @@
                         <div class="col-sm">
                             <h5 class="card-title mb-0">Danh sách sơ đồ ghế</h5>
                         </div>
-                        <div class="col-sm-auto">
-                            <div class="d-flex gap-1 flex-wrap">
-                                <button class="btn btn-primary mb-3 " data-bs-toggle="modal"
-                                    data-bs-target="#createSeatTemplate">Thêm
-                                    mới</button>
+                        @can('Thêm mẫu sơ đồ ghế')
+                            <div class="col-sm-auto">
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <button class="btn btn-primary mb-3 " data-bs-toggle="modal"
+                                        data-bs-target="#createSeatTemplate">Thêm
+                                        mới</button>
+                                </div>
                             </div>
-                        </div>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body pt-0">
@@ -103,22 +105,27 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
-                                                            data-seat-template-id="{{ $item->id }}"
-                                                            data-seat-template-name="{{ $item->name }}"
-                                                            data-seat-template-description="{{ $item->description }}"
-                                                            data-matrix-id="{{ $item->matrix_id }}"
-                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @can('Sửa mẫu sơ đồ ghế')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                                data-seat-template-id="{{ $item->id }}"
+                                                                data-seat-template-name="{{ $item->name }}"
+                                                                data-seat-template-description="{{ $item->description }}"
+                                                                data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @endcan
+
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
                                                             ghế</a>
 
 
                                                         @if (!$item->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
+                                                            @can('Xóa mẫu sơ đồ ghế')
+                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                    href="{{ route('admin.seat-templates.destroy', $item) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                    bỏ</a>
+                                                            @endcan
                                                         @endif
                                                     </div>
                                                 </div>
@@ -173,12 +180,14 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
-                                                            data-seat-template-id="{{ $item->id }}"
-                                                            data-seat-template-name="{{ $item->name }}"
-                                                            data-seat-template-description="{{ $item->description }}"
-                                                            data-matrix-id="{{ $item->matrix_id }}"
-                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @can('Sửa mẫu sơ đồ ghế')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                                data-seat-template-id="{{ $item->id }}"
+                                                                data-seat-template-name="{{ $item->name }}"
+                                                                data-seat-template-description="{{ $item->description }}"
+                                                                data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @endcan
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
                                                             ghế</a>
@@ -238,22 +247,26 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
-                                                            data-seat-template-id="{{ $item->id }}"
-                                                            data-seat-template-name="{{ $item->name }}"
-                                                            data-seat-template-description="{{ $item->description }}"
-                                                            data-matrix-id="{{ $item->matrix_id }}"
-                                                            data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @can('Sửa mẫu sơ đồ ghế')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                                data-seat-template-id="{{ $item->id }}"
+                                                                data-seat-template-name="{{ $item->name }}"
+                                                                data-seat-template-description="{{ $item->description }}"
+                                                                data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                        @endcan
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
                                                             ghế</a>
 
 
                                                         @if (!$item->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
+                                                            @can('Xóa mẫu sơ đồ ghế')
+                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                    href="{{ route('admin.seat-templates.destroy', $item) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                    bỏ</a>
+                                                            @endcan
                                                         @endif
                                                     </div>
                                                 </div>
@@ -438,7 +451,7 @@
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateSeatTemplateId').value =
-                seatTemplateId; // Gán giá trị roomId
+                    seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
