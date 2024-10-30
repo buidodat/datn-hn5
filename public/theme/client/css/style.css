@@ -5109,7 +5109,9 @@ border-bottom-left-radius: 10px;
 	font-weight: bold;
 	text-transform: uppercase;
 }
-
+.text-transform{
+    text-transform: uppercase;
+}
 .prs_mcc_list_left_cont_wrapper p {
 	padding-top: 10px;
 }
