@@ -171,17 +171,21 @@
 
                                 <div class="total-price-choose-seat float_left">
                                     <div class="total-price-choose-seat float_left">
-                                        <form action="{{ route('save-information', $showtime->id) }}" method="POST" id="checkout-form">
+                                        <form action="{{ route('save-information', $showtime->id) }}" method="POST"
+                                            id="checkout-form">
                                             @csrf
-                                            <input type="hidden" name="showtimeId" value="{{ $showtime->id }}" id="showtime-id">
+                                            <input type="hidden" name="showtimeId" value="{{ $showtime->id }}"
+                                                id="showtime-id">
                                             <input type="hidden" name="seatId" id="hidden-seat-ids">
-                                            <input type="hidden" name="selected_seats_name" id="hidden-selected-seats-name">
+                                            <input type="hidden" name="selected_seats_name"
+                                                id="hidden-selected-seats-name">
                                             <input type="hidden" name="total_price" id="hidden-total-price">
                                             <!-- Thêm id vào input hidden để cập nhật remainingSeconds bằng JS -->
-                                            <input type="hidden" name="remainingSeconds" id="remaining-seconds" value="{{ $remainingSeconds }}">
+                                            <input type="hidden" name="remainingSeconds" id="remaining-seconds"
+                                                value="{{ $remainingSeconds }}">
                                             <button id="submit-button" type="submit">Tiếp tục</button>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
 
@@ -199,39 +203,267 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/js/choose-seat.js')
     <script>
+        // Định nghĩa các biến toàn cục
+        const selectedSeatsDisplay = document.getElementById('selected-seats');
+        const hiddenSelectedSeats = document.getElementById('hidden-selected-seats-name');
+        const hiddenSeatIds = document.getElementById('hidden-seat-ids');
+        const totalPriceElement = document.getElementById('total-price');
+        const hiddenTotalPrice = document.getElementById('hidden-total-price');
+        const submitButton = document.getElementById('submit-button');
+        const showtimeId = document.getElementById('showtime-id').value;
+
+        let selectedSeats = [];
+        let selectedSeatIds = [];
+        let totalPrice = 0;
+
+        // Lấy danh sách ghế đã được lưu từ session
+        const selectedSeatsFromSession = JSON.parse(document.getElementById('selected-seats-session').value);
+        const seatIds = Object.values(selectedSeatsFromSession);
+
+        // Kiểm tra và thiết lập trạng thái ghế từ session
+        if (Array.isArray(seatIds) && seatIds.length > 0) {
+            seatIds.forEach(seatId => setInitialSeatSelection(seatId));
+        }
+
+        // Thiết lập trạng thái ghế từ session
+        function setInitialSeatSelection(seatId) {
+            const seatElement = document.querySelector(`.seat[data-seat-id="${seatId}"]`);
+            if (seatElement) {
+                seatElement.classList.add('selected'); // Đánh dấu ghế là đã chọn
+                seatElement.classList.remove('hold'); // Bỏ trạng thái available
+
+                const seatLabel = seatElement.querySelector('.seat-label').textContent;
+                selectedSeats.push(seatLabel);
+                selectedSeatIds.push(seatId);
+                totalPrice += parseInt(seatElement.getAttribute('data-seat-price'));
+            }
+        }
+
+        // Cập nhật hiển thị ban đầu cho tổng tiền và danh sách ghế đã chọn
+        updateDisplay();
+
+        // Event delegation để xử lý sự kiện click cho tất cả các ghế
+        document.querySelector('.seat-selection').addEventListener('click', async (event) => {
+            const seat = event.target.closest('.seat');
+            if (!seat) return;
+
+            // Xử lý chọn ghế
+            handleSeatSelection(seat);
+        });
+
+        // Xử lý chọn ghế
+        async function handleSeatSelection(seat) {
+            const seatId = seat.getAttribute('data-seat-id');
+            const seatLabel = seat.querySelector('.seat-label').textContent;
+            const seatPrice = parseInt(seat.getAttribute('data-seat-price'));
+
+            // Kiểm tra trạng thái ghế (hold hoặc sold)
+            if (seat.classList.contains('hold') || seat.classList.contains('sold')) {
+                alert(seat.classList.contains('hold') ? 'Ghế này đã được giữ!' : 'Ghế này đã được bán!');
+                return;
+            }
+
+            // Lưu thời gian bắt đầu
+            const startTime = new Date();
+
+            // Xử lý chọn hoặc bỏ chọn ghế
+            if (seat.classList.contains('selected')) {
+                releaseSeat(seat, seatLabel, seatId, seatPrice);
+            } else {
+                if (selectedSeats.length >= 8) {
+                    alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                    return;
+                }
+                selectSeat(seat, seatLabel, seatId, seatPrice);
+            }
+
+            // Lưu thời gian kết thúc
+            const endTime = new Date();
+            const processingTime = endTime - startTime; // thời gian xử lý tính bằng mili giây
+
+            console.log(`Thời gian xử lý: ${processingTime} ms`);
+
+            // Cập nhật hiển thị danh sách ghế đã chọn và tổng tiền
+            updateDisplay();
+        }
+
+        // Chọn ghế
+        function selectSeat(seat, seatLabel, seatId, seatPrice) {
+            selectedSeats.push(seatLabel);
+            selectedSeatIds.push(seatId);
+            totalPrice += seatPrice;
+
+            seat.classList.toggle('selected');
+            seat.classList.toggle('available');
+
+            // Cập nhật server
+            updateSeatOnServer(seatId, 'hold');
+        }
+
+        // Bỏ chọn ghế
+        function releaseSeat(seat, seatLabel, seatId, seatPrice) {
+            selectedSeats = selectedSeats.filter(s => s !== seatLabel);
+            selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
+            totalPrice -= seatPrice;
+
+            seat.classList.toggle('selected');
+            seat.classList.toggle('available');
+
+            // Cập nhật server
+            updateSeatOnServer(seatId, 'release');
+        }
+
+        // Cập nhật ghế trên server
+        async function updateSeatOnServer(seatId, action) {
+            try {
+                await axios.post('/update-seat', {
+                    seat_id: seatId,
+                    showtime_id: showtimeId,
+                    action: action
+                });
+            } catch (error) {
+                console.error(`Lỗi ${action === 'hold' ? 'giữ' : 'hủy'} ghế:`, error);
+                throw error; // Ném lỗi để có thể xử lý ở nơi gọi
+            }
+        }
+
+        // Cập nhật hiển thị
+        function updateDisplay() {
+            selectedSeatsDisplay.textContent = selectedSeats.join(', ');
+            hiddenSelectedSeats.value = selectedSeats.join(',');
+            hiddenSeatIds.value = selectedSeatIds.join(',');
+            totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
+            hiddenTotalPrice.value = totalPrice;
+        }
+
+
+        // Hàm kiểm tra xem có ghế trống nằm giữa hai ghế được chọn không (cho ghế sole)
+        function checkSoleSeats() {
+            const rows = document.querySelectorAll('.table-seat tr');
+            let soleSeatsMessage = '';
+            let isSoleSeatIssue = false;
+
+            rows.forEach(row => {
+                const seatsInRow = Array.from(row.querySelectorAll('.seat'));
+                let selectedIndexes = [];
+
+                seatsInRow.forEach((seat, index) => {
+                    if (seat.classList.contains('selected')) {
+                        selectedIndexes.push(index);
+                    }
+                });
+
+                for (let i = 0; i < selectedIndexes.length - 1; i++) {
+                    const gap = selectedIndexes[i + 1] - selectedIndexes[i];
+                    if (gap === 2) {
+                        isSoleSeatIssue = true;
+                        const emptySeatIndex = selectedIndexes[i] + 1;
+                        soleSeatsMessage += seatsInRow[emptySeatIndex].querySelector('.seat-label')
+                            .textContent + ' ';
+                    }
+                }
+            });
+
+            return {
+                isSoleSeatIssue,
+                soleSeatsMessage
+            };
+        }
+
+        // Hàm kiểm tra xem ghế ngoài cùng có bị trống không khi ghế ngay cạnh được chọn
+        function checkAdjacentEdgeSeats() {
+            const rows = document.querySelectorAll('.table-seat tr');
+            let edgeSeatsMessage = '';
+            let isEdgeSeatIssue = false;
+
+            rows.forEach(row => {
+                const seatsInRow = row.querySelectorAll('.seat');
+                if (seatsInRow.length >= 2) {
+                    const firstSeat = seatsInRow[0];
+                    const secondSeat = seatsInRow[1];
+                    const lastSeat = seatsInRow[seatsInRow.length - 1];
+                    const beforeLastSeat = seatsInRow[seatsInRow.length - 2];
+
+                    if (!firstSeat.classList.contains('selected') && secondSeat.classList.contains(
+                            'selected')) {
+                        isEdgeSeatIssue = true;
+                        edgeSeatsMessage += firstSeat.querySelector('.seat-label').textContent + ' ';
+                    }
+                    if (!lastSeat.classList.contains('selected') && beforeLastSeat.classList.contains(
+                            'selected')) {
+                        isEdgeSeatIssue = true;
+                        edgeSeatsMessage += lastSeat.querySelector('.seat-label').textContent + ' ';
+                    }
+                }
+            });
+
+            return {
+                isEdgeSeatIssue,
+                edgeSeatsMessage
+            };
+        }
+
+        // Kiểm tra cả hai điều kiện trước khi submit form
+        submitButton.addEventListener('click', (event) => {
+            const {
+                isEdgeSeatIssue,
+                edgeSeatsMessage
+            } = checkAdjacentEdgeSeats();
+            const {
+                isSoleSeatIssue,
+                soleSeatsMessage
+            } = checkSoleSeats();
+
+            if (selectedSeats.length === 0) {
+                event.preventDefault();
+                alert('Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.');
+                return false;
+            } else if (selectedSeats.length > 8) {
+                event.preventDefault();
+                alert('Bạn chỉ được chọn tối đa 8 ghế!');
+            } else if (isEdgeSeatIssue) {
+                event.preventDefault();
+                alert(`Bạn không được để trống ghế: ${edgeSeatsMessage}`);
+                return false;
+            } else if (isSoleSeatIssue) {
+                event.preventDefault();
+                alert(`Bạn không được để trống ghế: ${soleSeatsMessage}`);
+                return false;
+            }
+        });
+
         // Lấy giá trị thời gian còn lại từ server-side PHP và gán vào biến JavaScript
         let timeLeft = {{ $remainingSeconds }}; // Thời gian còn lại tính bằng giây
         const timerElement = document.getElementById('timer');
         const remainingSecondsInput = document.getElementById('remaining-seconds');
         const checkoutForm = document.getElementById('checkout-form');
-        
+
         // Hàm đếm ngược thời gian
         const countdown = setInterval(() => {
             // Tính số phút và giây còn lại
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-        
+
             // Hiển thị thời gian còn lại ở định dạng mm:ss
             timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-        
+
             // Giảm thời gian còn lại
             timeLeft--;
-        
+
             // Khi thời gian kết thúc (hết 0 giây)
             if (timeLeft < 0) {
                 clearInterval(countdown); // Dừng đếm ngược
-        
+
                 // Hiển thị thông báo và quay về trang chủ
                 alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
                 window.location.href = '/'; // Điều hướng về trang chủ ("/")
             }
         }, 1000); // Cập nhật mỗi giây
-        
+
         // Cập nhật remainingSeconds trước khi form được submit
         checkoutForm.addEventListener('submit', function() {
             // Gán giá trị thời gian còn lại (timeLeft) vào input hidden
             remainingSecondsInput.value = timeLeft;
         });
-        </script>
-        
+    </script>
 @endsection

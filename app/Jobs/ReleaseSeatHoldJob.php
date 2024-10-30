@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\SeatStatusChange;
 use App\Events\SeatRelease;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -66,7 +67,8 @@ class ReleaseSeatHoldJob implements ShouldQueue
                     $expiredSeatIds[] = $seat->seat_id;
 
                     // Phát sự kiện giải phóng ghế
-                    event(new SeatRelease($seat->seat_id, $this->showtimeId));
+                    event(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'));
+                    // event(new SeatRelease($seat->seat_id, $this->showtimeId));
                 }
             }
 
