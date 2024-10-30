@@ -752,7 +752,7 @@
                                                 <input type="hidden" name="voucher_discount" id="voucher-discount">
                                                 <input type="hidden" name="point_discount" id="point-discount">
                                                 <input type="hidden" name="total_discount" id="total-discount">
-                                                <input type="hidden" name="total_price" id="total-price-payment">
+                                                <input type="hidden" name="total_price" id="total-price-payment" >
 
 
                                                 {{-- ticketseat --}}
@@ -819,7 +819,7 @@
                     },
                     success: function() {
                         $('#apply-point').show();
-                        $('#use_points').prop('disabled', false);
+                        $('#use_points').prop('readonly', false);
                         $('#point-discount').val(0);
                         $('#point_discount').text('');
                         $('#cancel-point').hide();
@@ -850,7 +850,7 @@
                             $('#point-discount').val(response.point_discount);
                             $('#point_discount').text(response.point_discount.toLocaleString('vi-VN'));
                             $('#apply-point').hide();
-                            $('#use_points').prop('disabled', true);
+                            $('#use_points').prop('readonly', true);
                             $('#cancel-point').show();
                             calculateTotal();
                         },
