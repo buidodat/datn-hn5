@@ -24,7 +24,7 @@
                                                 <span class="ei--user"></span>
                                             </div>
                                             <div>
-                                                <h4>Thông tin thanh toán</h4>
+                                                <h4 class='text-transform'>Thông tin thanh toán</h4>
                                             </div>
                                         </div>
                                         {{-- thong tin --}}
@@ -74,7 +74,7 @@
                                                     <span class="map--food"></span>
                                                 </div>
                                                 <div>
-                                                    <h4>Combo Ưu Đãi</h4>
+                                                    <h4 class='text-transform' >Combo Ưu Đãi</h4>
                                                 </div>
                                             </div>
                                             <div class="combo-uu-dai">
@@ -153,7 +153,7 @@
                                                         <span class="mdi--voucher"></span>
                                                     </div>
                                                     <div>
-                                                        <h4>Giảm giá</h4>
+                                                        <h4 class='text-transform' >Giảm giá</h4>
                                                     </div>
                                                 </div>
                                                 <div class="info-voucher-checkout">
@@ -242,7 +242,7 @@
                                                     <span class="ic--baseline-payment"></span>
                                                 </div>
                                                 <div>
-                                                    <h4>Phương thức thanh toán</h4>
+                                                    <h4 class='text-transform'>Phương thức thanh toán</h4>
                                                 </div>
                                             </div>
                                             <div class="payment-checkout">
@@ -258,7 +258,7 @@
                                                         <label for="">Ví VnPay</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name="payment_name" value="momo" >
+                                                        <input type="radio" name="payment_name" value="momo">
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
                                                         <label for="">Ví MoMo</label>
@@ -340,7 +340,8 @@
                                                 {{--  ticket --}}
                                                 <input type="hidden" name="code"
                                                     value="{{ strtoupper(\Str::random(10)) }}">
-                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="user_id" id="userId"
+                                                    value="{{ Auth::user()->id }}">
                                                 <input type="hidden" name="voucher_discount" id="total-discount">
                                                 <input type="hidden" name="total_price" id="total-price-payment">
 
@@ -363,7 +364,7 @@
             </div>
         </form>
     @else
-        <form action="{{ route('payment') }}" method="post" id="payment-form">
+        <form action="{{ route('payment-admin') }}" method="post" id="payment-form">
             @csrf
             <div class="st_dtts_wrapper float_left">
                 <div class="container container-choose-seat">
@@ -381,13 +382,13 @@
                                                 <span class="ei--user"></span>
                                             </div>
                                             <div>
-                                                <h4>Thông tin thanh toán</h4>
+                                                <h4 class='text-transform'>Thông tin thanh toán</h4>
                                             </div>
                                         </div>
                                         {{-- thong tin --}}
                                         <div class="">
-                                            <div class="row" >
-                                                <div class="col-md-6" >
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <div>
                                                         <div>
                                                             <span class="bold">Thông tin người đặt:</span>
@@ -411,12 +412,16 @@
                                                                 <!-- Thông tin khách hàng sẽ được hiển thị ở đây sau khi tìm kiếm -->
                                                             </div>
                                                             <div class="form-membership" id='form-membership'>
-                                                                <input type="text" id="data_membership" placeholder="Thẻ thành viên/Email">
-                                                                <button type="button" id='submit-membership'>Xác nhận</button>
+                                                                <input type="text" id="data_membership"
+                                                                    placeholder="Thẻ thành viên/Email">
+                                                                <button type="button" id='submit-membership'>Xác
+                                                                    nhận</button>
                                                             </div>
                                                             <div id='error-membership'></div>
-                                                            <div id="change-membership" style="text-align: right; margin-top: 10px; display:none">
-                                                                <button id="change-user" type="button" class='btn'>Thay đổi</button>
+                                                            <div id="change-membership"
+                                                                style="text-align: right; margin-top: 10px; display:none">
+                                                                <button id="change-user" type="button"
+                                                                    class='btn'>Thay đổi</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -453,7 +458,7 @@
                                                     <span class="map--food"></span>
                                                 </div>
                                                 <div>
-                                                    <h4>Combo Ưu Đãi</h4>
+                                                    <h4 class='text-transform' >Combo Ưu Đãi</h4>
                                                 </div>
                                             </div>
                                             <div class="combo-uu-dai">
@@ -532,31 +537,34 @@
                                                         <span class="mdi--voucher"></span>
                                                     </div>
                                                     <div>
-                                                        <h4>Giảm giá</h4>
+                                                        <h4 class='text-transform' >Giảm giá</h4>
                                                     </div>
                                                 </div>
                                                 <div class="info-voucher-checkout">
                                                     <div class="voucher-section">
                                                         <div class="voucher-title">Poly Voucher</div>
-                                                        <form id="voucher-form" method="POST">
-                                                            <div class="voucher-form">
-                                                                @csrf
-                                                                <label for="voucher_code">Vui lòng nhập mã voucher vào ô
-                                                                    trống
-                                                                    phía
-                                                                    dưới để được giảm giá!</label> <br>
-                                                                <div class="form-row">
-                                                                    <input type="text" name="voucher_code"
-                                                                        id="voucher_code" placeholder="Nhập mã voucher"
-                                                                        @guest disabled @endguest>
 
-                                                                    <button type="submit" id="apply-voucher-btn"
-                                                                        @guest disabled @endguest>Xác nhận
-                                                                    </button>
-                                                                </div>
+                                                        <div class="voucher-form">
+
+                                                            <label for="voucher_code">Vui lòng nhập mã voucher vào ô
+                                                                trống
+                                                                phía
+                                                                dưới để được giảm giá!</label> <br>
+                                                            <div class="form-row">
+                                                                <input type="text" name="voucher_code"
+                                                                    id="voucher_code" placeholder="Nhập mã voucher" >
+
+                                                                <button type="button" id="apply-voucher-btn"
+                                                                    class='btn btn-danger'>Xác nhận
+                                                                </button>
                                                             </div>
-                                                        </form>
-                                                        <div id="voucher-response"></div>
+                                                            <div id="voucher-response">
+
+                                                            </div>
+                                                        </div>
+
+
+
                                                     </div>
 
 
@@ -564,7 +572,7 @@
                                                     {{-- diem --}}
                                                     <div class="points-section">
                                                         <div class="points-title">Điểm Poly</div>
-                                                        <form class="points-form" action="" id='form-point'>
+                                                        <div class="points-form" action="" id='form-point'>
                                                             <table class="points-table">
                                                                 <thead>
                                                                     <tr>
@@ -576,18 +584,25 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td id='points-membership'>{{ number_format(auth()->user()->membership->points, 0, ',', '.') }}
+                                                                        <td id='points-membership'>
+                                                                            {{ number_format(auth()->user()->membership->points, 0, ',', '.') }}
                                                                         </td>
-                                                                        <td><input type="text" name="point_use"
-                                                                                placeholder="Nhập điểm"></td>
-                                                                        <td>= 0 Vnđ</td>
-                                                                        <td>
-                                                                            <button type="submit">Đổi điểm</button>
+                                                                        <td><input type="text" name="use_points"
+                                                                                id='use_points' placeholder="Nhập điểm">
+                                                                        </td>
+                                                                        <td>= <b><span id='point_discount'>0</span></b> Vnđ</td>
+                                                                        <td style="width: 20%">
+                                                                            <button type="button" class='btn btn-danger'
+                                                                                id="apply-point">Đổi
+                                                                                điểm</button>
+                                                                            <button type="button" id="cancel-point"
+                                                                                class='btn'
+                                                                                style="display:none">Hủy</button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -615,24 +630,23 @@
                                             </div>
                                         </div>
                                         {{-- phuong thuc thanh toan --}}
-                                        <div class="box-payment-checkout">
+
                                             <div class="text-info-checkout">
                                                 <div>
                                                     {{-- <span class="ei--user"></span> --}}
                                                     <span class="ic--baseline-payment"></span>
                                                 </div>
                                                 <div>
-                                                    <h4>Phương thức thanh toán</h4>
+                                                    <h4 class='text-transform'>Phương thức thanh toán</h4>
                                                 </div>
                                             </div>
                                             <div class="payment-checkout">
                                                 <div>
-                                                    <p>Chọn thẻ thanh toán</p>
+                                                    <span class="bold">Chọn loại thanh toán:</span>
                                                 </div>
                                                 <hr>
                                                 <div class="img-payment-checkout">
-
-                                                    <div>
+                                                    {{-- <div>
                                                         <input type="radio" name="payment_name" value="momo" checked>
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
@@ -649,10 +663,15 @@
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
                                                         <label for="">hiihi test</label>
+                                                    </div> --}}
+                                                    <div>
+                                                        <input type="radio" name="payment_name" value="cash" id="payment-checkout-1" checked="">
+                                                        <label for="payment-checkout-1"><img src="{{ asset('svg/cod.svg') }}"> Thanh toán tiền
+                                                            mặt</label>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+
                                         {{-- 10p --}}
                                         <div class="giu-cho-checkout">
                                             <div>
@@ -727,9 +746,14 @@
                                                 {{--  ticket --}}
                                                 <input type="hidden" name="code"
                                                     value="{{ strtoupper(\Str::random(10)) }}">
-                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                                <input type="hidden" name="voucher_discount" id="total-discount">
+                                                <input type="hidden" name="user_id" id="userId"
+                                                    value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="voucher_discount" id="voucher-discount">
+                                                <input type="hidden" name="point_discount" id="point-discount">
+                                                <input type="hidden" name="total_discount" id="total-discount">
                                                 <input type="hidden" name="total_price" id="total-price-payment">
+
 
                                                 {{-- ticketseat --}}
                                                 <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
@@ -758,36 +782,126 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
         $(document).ready(function() {
+            // Hàm hiển thị thông báo
+            function showAlertMessage(message, type = 'error') {
+                Swal.fire({
+                    text: message,
+                    icon: type,
+                    timer: 5000,
+                    confirmButtonText: 'Đóng'
+                });
+            }
+
+            // Hàm cập nhật giá trị điểm và voucher sau khi tính toán tổng tiền
+            function calculateTotal() {
+                const originalTotal = parseInt($("#total-price").val()) || 0;
+                const pointDiscount = parseInt($("#point-discount").val()) || 0;
+                const voucherDiscount = parseInt($("#voucher-discount").val()) || 0;
+
+                const totalDiscount = pointDiscount + voucherDiscount;
+                const totalPayment = Math.max(originalTotal - totalDiscount, 0);
+
+                $("#total-discount").val(totalDiscount);
+                $("#total-price-payment").val(totalPayment);
+
+                $('.total-price-payment').text(totalPayment.toLocaleString() + ' Vnđ');
+                $('.total-discount').text(totalDiscount.toLocaleString() + ' Vnđ');
+            }
+
+            // Hàm xử lý hủy sử dụng điểm
+            function handleCancelPoint() {
+                $.post({
+                    url: '{{ route('cancel-point') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        $('#apply-point').show();
+                        $('#use_points').prop('disabled', false);
+                        $('#point-discount').val(0);
+                        $('#point_discount').text('');
+                        $('#cancel-point').hide();
+                        calculateTotal();
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseJSON.errors);
+                    }
+                });
+            }
+
+            // Sự kiện áp dụng điểm
+            $('#apply-point').on('click', function() {
+                const usePoints = parseInt($('#use_points').val().trim());
+                const userId = $('#userId').val();
+
+                if (!isNaN(usePoints) && usePoints > 0) {
+                    $.post({
+                        url: '{{ route('apply-point') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: {
+                            use_points: usePoints,
+                            user_id: userId
+                        },
+                        success: function(response) {
+                            $('#point-discount').val(response.point_discount);
+                            $('#point_discount').text(response.point_discount.toLocaleString('vi-VN'));
+                            $('#apply-point').hide();
+                            $('#use_points').prop('disabled', true);
+                            $('#cancel-point').show();
+                            calculateTotal();
+                        },
+                        error: function(xhr) {
+                            let errorText = xhr.responseJSON.message || 'Lỗi không xác định';
+                            if (xhr.status === 422) errorText = xhr.responseJSON.error.use_points[0];
+                            showAlertMessage(errorText, 'error');
+                        }
+                    });
+                } else {
+                    showAlertMessage(`Vui lòng nhập số điểm cần đổi hợp lệ.`, 'error');
+                }
+            });
+
+            $('#cancel-point').on('click', handleCancelPoint);
+
+            // Sự kiện submit membership
             $('#submit-membership').on('click', function() {
                 const dataMembership = $('#data_membership').val().trim();
 
                 if (dataMembership) {
-                    $.ajax({
+                    $.post({
                         url: '{{ route('get-membership') }}',
-                        method: 'GET',
-                        data: { data_membership: dataMembership },
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: {
+                            data_membership: dataMembership
+                        },
                         success: function(response) {
+                            handleCancelPoint();
                             if (response.error) {
-                                $('#error-membership').html(`<p class="text-danger">${response.error}</p>`);
+                                $('#error-membership').html(
+                                    `<p class="text-danger">${response.error}</p>`);
                             } else {
-                                $
+                                const data = response.data;
+                                $('#userId').val(data.user_id);
                                 $('#info-membership').html(`
                                     <ul>
-                                        <li>Họ tên: ${response.data.name}</li>
-                                        <li>Email: ${response.data.email || 'Không có'}</li>
-                                        <li>Số điện thoại: ${response.data.phone}</li>
-                                        <li>Thẻ thành viên: ${response.data.membership_code}</li>
-                                        <li>Điểm tích lũy: ${response.data.points} điểm</li>
+                                        <li>Họ tên: ${data.name}</li>
+                                        <li>Email: ${data.email || 'Không có'}</li>
+                                        <li>Số điện thoại: ${data.phone}</li>
+                                        <li>Thẻ thành viên: ${data.membership_code}</li>
+                                        <li>Điểm tích lũy: ${data.points} điểm</li>
                                     </ul>
                                 `);
-                                $('#points-membership').text(`${response.data.points}`);
-                                $('#error-membership').empty();
+                                $('#points-membership').text(data.points);
                                 $('#form-membership').hide();
                                 $('#change-membership').show();
                             }
+                            $('#error-membership').empty();
                         },
                         error: function() {
                             $('#error-membership').html('<p class="text-danger">Không tìm thấy thông tin người dùng.</p>');
@@ -798,16 +912,60 @@
                 }
             });
 
+            // Sự kiện thay đổi membership
             $('#change-membership').on('click', function() {
+                handleCancelPoint();
                 $('#form-membership').show();
                 $('#info-membership').empty();
                 $('#error-membership').empty();
                 $('#data_membership').val('');
                 $('#points-membership').text('{{ auth()->user()->membership->points }}');
+                $('#userId').val({{ auth()->user()->id }});
                 $(this).hide();
+            });
+
+            // Sử dụng voucher
+            $('#apply-voucher-btn').on('click', function() {
+                $.post({
+                    url: '{{ route('applyVoucher') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: {
+                        code: $('#voucher_code').val().trim()
+                    },
+                    success: function(response) {
+                        $('#voucher-discount').val(response.discount);
+                        calculateTotal();
+                        $('#apply-voucher-btn, #voucher_code').prop('readonly', true);
+                        $('#voucher-response').html(`
+                            <div class="t-success">${response.success}</div>
+                            <div class="show-text">
+                                <span>Voucher: <b>${response.voucher_code}</b></span>
+                                <span>Giảm giá: <b>${response.discount.toLocaleString()}</b> Vnđ</span>
+                                <button type="button" id="cancel-voucher-btn" data-voucher-id="${response.id}">Hủy</button>
+                            </div>
+                        `);
+                    },
+                    error: function(xhr) {
+                        const errorText = xhr.responseJSON.error || 'Voucher không hợp lệ';
+                        showAlertMessage(errorText, 'error');
+                    }
+                });
+            });
+
+            // Sự kiện hủy voucher
+            $(document).on('click', '#cancel-voucher-btn', function() {
+                $('#voucher_code').val('');
+                $('#voucher-response').empty();
+                $('#voucher-discount').val(0);
+                calculateTotal();
+                $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
             });
         });
     </script>
+
+
 
 
 

@@ -520,4 +520,92 @@ class PaymentController extends Controller
         }
     }
     // ====================END THANH TOÁN VNPAY==================== //
+
+    public function paymentAdmin(Request $request)
+    {
+        // dd(session()->all());
+        dd($request->all());
+
+        $seatIds = $request->seat_id; // Danh sách ghế từ request
+        $showtimeId = $request->showtime_id;
+        $userId = auth()->id(); // Lấy ID người dùng đang đăng nhập
+
+        // Kiểm tra ghế trước khi bắt đầu transaction
+        $seatShowtimes = DB::table('seat_showtimes')
+            ->whereIn('seat_id', $seatIds)
+            ->where('showtime_id', $showtimeId)
+            ->get();
+
+        $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
+
+        foreach ($seatShowtimes as $seatShowtime) {
+            // Kiểm tra xem có ghế nào hết thời gian giữ chỗ
+            if ($seatShowtime->hold_expires_at < now()) {
+                $hasExpiredSeats = true; // Đánh dấu có ghế hết thời gian giữ chỗ
+                break; // Dừng vòng lặp khi tìm thấy ghế hết thời gian giữ
+            }
+        }
+
+        if ($hasExpiredSeats) {
+            // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ, cập nhật tất cả ghế thành 'available'
+            DB::table('seat_showtimes')
+                ->whereIn('seat_id', $seatIds)
+                ->where('showtime_id', $showtimeId)
+                ->update([
+                    'status' => 'available',
+                    'user_id' => null,
+                    'hold_expires_at' => null,
+                ]);
+
+            // Phát sự kiện Pusher để thông báo tất cả ghế được giải phóng cho người dùng khác
+            foreach ($seatIds as $seatId) {
+                event(new SeatRelease($seatId, $showtimeId));
+            }
+
+            // Chuyển hướng về trang chọn ghế với thông báo lỗi
+            return redirect()->route('choose-seat', $showtimeId)
+                ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
+        }
+
+        try {
+            // Nếu không có ghế nào hết thời gian giữ, tiếp tục với transaction
+            DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request) {
+                // Gia hạn thời gian giữ chỗ thêm 5 phút
+                DB::table('seat_showtimes')
+                    ->whereIn('seat_id', $seatIds)
+                    ->where('showtime_id', $showtimeId)
+                    ->update([
+                        'hold_expires_at' => now()->addMinutes(15),
+                    ]);
+
+                // Lưu thông tin thanh toán vào session
+                session([
+                    'payment_data' => [
+                        'code' => $request->code,
+                        'user_id' => $request->user_id,
+                        'payment_name' => $request->payment_name,
+                        'voucher_code' => $request->voucher_code,
+                        'voucher_discount' => $request->voucher_discount,
+                        'total_price' => $request->total_price,
+                        'showtime_id' => $request->showtime_id,
+                        'seat_id' => $request->seat_id,
+                        'combo' => $request->combo,
+                    ]
+                ]);
+
+                // Dispatch job để giải phóng ghế sau 5 phút
+                ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId)->delay(now()->addMinutes(15));
+            });
+
+            // Chuyển hướng tới trang thanh toán
+            if ($request->payment_name == 'momo') {
+                return redirect()->route('momo.payment');
+            } else if ($request->payment_name == 'vnpay') {
+                return redirect()->route('vnpay.payment');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('home')
+                ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
+        }
+    }
 }
