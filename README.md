@@ -7,6 +7,9 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 - php artisan migrate
 - php artisan storage:link
 - Chạy câu lệnh: "composer install" để dùng được gói Laravel UI
+- npm run build 
+- php artisan queue:work
+- php artisan schedule:work (chạy lịch kiểm tra sinh nhật)
 
 
 1. Cấu hình queue 

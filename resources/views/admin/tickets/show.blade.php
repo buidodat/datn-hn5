@@ -87,11 +87,12 @@
                                     @foreach ($ticket->ticketCombos as $ticketCombo)
                                         @php
                                             $combo = $ticketCombo->combo;
+                                            $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price; // Kiểm tra price_sale
+                                            $totalPrice = $price * $ticketCombo->quantity;
                                         @endphp
 
                                         <span><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}</b></span>
-                                        <p>{{ number_format($combo->price * $ticketCombo->quantity) }} vnđ</p>
-
+                                        <p>{{ number_format($totalPrice, 0, ',', '.') }} vnđ</p>
                                         {{--<ul>
                                             @foreach ($combo->food as $food)
                                                 <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
@@ -110,7 +111,7 @@
                                 </td>
                                 <td colspan="1" class="fw-medium text-end align-content-start">
                                     @foreach($ticket->ticketSeats as $ticketSeat)
-                                        <p class="fs-15">{{ number_format($ticketSeat->seat->typeSeat->price, 0, ',', '.') }}
+                                        <p class="fs-15">{{ number_format($ticketSeat->price, 0, ',', '.') }}
                                             vnđ</p>
                                     @endforeach
                                 </td>
@@ -134,8 +135,8 @@
 
                                                 @foreach($ticket->ticketCombos as $ticketCombo)
                                                     @php
-                                                        $comboPrice = $ticketCombo->combo->price * $ticketCombo->quantity;
-                                                        $totalComboPrice += $comboPrice;
+                                                        $price = $ticketCombo->combo->price_sale > 0 ? $ticketCombo->combo->price_sale : $ticketCombo->combo->price;
+                                                        $totalComboPrice += $price * $ticketCombo->quantity;
                                                     @endphp
                                                 @endforeach
 
