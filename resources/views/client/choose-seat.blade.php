@@ -38,10 +38,6 @@
                                                 <div class="seat-selection">
                                                     <table class="table-seat">
                                                         <tbody>
-                                                            {{-- lưu chữ id ghế vào session vd: load lại trang thì tự động select lại ghế --}}
-                                                            <input type="hidden" id="selected-seats-session"
-                                                                value="{{ json_encode($selectedSeats) }}">
-
                                                             @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                                                 <tr>
                                                                     @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
@@ -216,13 +212,12 @@
         let selectedSeatIds = [];
         let totalPrice = 0;
 
-        // Lấy danh sách ghế đã được lưu từ session
-        const selectedSeatsFromSession = JSON.parse(document.getElementById('selected-seats-session').value);
-        const seatIds = Object.values(selectedSeatsFromSession);
+        // Đọc danh sách ghế từ biến PHP 
+        const selectedSaveSeats = @json($selectedSeats);
 
-        // Kiểm tra và thiết lập trạng thái ghế từ session
-        if (Array.isArray(seatIds) && seatIds.length > 0) {
-            seatIds.forEach(seatId => setInitialSeatSelection(seatId));
+        // Kiểm tra và thiết lập trạng thái ghế từ danh sách selectedSaveSeats
+        if (Array.isArray(selectedSaveSeats) && selectedSaveSeats.length > 0) {
+            selectedSaveSeats.forEach(seatId => setInitialSeatSelection(seatId));
         }
 
         // Thiết lập trạng thái ghế từ session

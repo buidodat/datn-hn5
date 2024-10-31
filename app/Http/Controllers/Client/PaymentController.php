@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Events\SeatRelease;
 use App\Events\SeatSold;
+use App\Events\SeatStatusChange;
 use App\Models\Combo;
 use App\Models\Showtime;
 use App\Models\Ticket;
@@ -234,7 +235,7 @@ class PaymentController extends Controller
                                 'hold_expires_at' => null,
                             ]);
 
-                        event(new SeatSold($seatId, $paymentData['showtime_id']));
+                        event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
                     }
 
                     // Lưu thông tin combo vào bảng ticket_combos
@@ -460,7 +461,8 @@ class PaymentController extends Controller
                                 'hold_expires_at' => null,
                             ]);
 
-                        event(new SeatSold($seatId, $paymentData['showtime_id']));
+                        // event(new SeatSold($seatId, $paymentData['showtime_id']));
+                        event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
                     }
 
                     // Lưu thông tin combo vào bảng ticket_combos

@@ -93,21 +93,14 @@ class ChooseSeatController extends Controller
         $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
         $matrixSeat = Room::MATRIXS[$matrixKey];
 
-        // Lấy danh sách ghế đã được chọn từ session
-        $selectedSeats = session()->get('selected_seats.' . $id, []);
-
-        // Kiểm tra và xóa những ghế đã hết hạn giữ chỗ
-        $selectedSeats = array_filter($selectedSeats, function ($seatId) use ($id) {
-            $seatShowtime = SeatShowtime::where('showtime_id', $id)
-                ->where('seat_id', $seatId)
-                ->first();
-
-            // Trả về true nếu ghế còn thời gian giữ chỗ, ngược lại trả về false
-            return $seatShowtime && $seatShowtime->hold_expires_at >= now();
-        });
-
-        // Cập nhật lại session
-        session('selected_seats.' . $id, array_values($selectedSeats));
+        // Lấy danh sách ghế được giữ bởi user hiện tại cho suất chiếu này
+        $userId = auth()->id(); // Lấy user ID
+        $selectedSeats = SeatShowtime::where('showtime_id', $id)
+            ->where('user_id', $userId)
+            ->where('status', 'hold')
+            ->where('hold_expires_at', '>=', now())
+            ->pluck('seat_id')
+            ->toArray();
 
         // dd($selectedSeats);
 
@@ -125,22 +118,22 @@ class ChooseSeatController extends Controller
                 // Nếu hết thời gian, xóa session
                 session()->forget($timeKey);
 
-                $endTime = $now->copy()->addMinutes(1);
+                $endTime = $now->copy()->addMinutes(10);
                 session()->put($timeKey, [
                     'end_time' => $endTime->toDateTimeString(),
                 ]);
-                $remainingSeconds = 1 * 60; // 10 phút
+                $remainingSeconds = 10 * 60; // 10 phút
             } else {
                 // Tính thời gian còn lại
                 $remainingSeconds = $now->diffInSeconds($endTime);
             }
         } else {
             // Nếu chưa có session, tạo mới với thời gian 10 phút
-            $endTime = $now->copy()->addMinutes(1);
+            $endTime = $now->copy()->addMinutes(10);
             session()->put($timeKey, [
                 'end_time' => $endTime->toDateTimeString(),
             ]);
-            $remainingSeconds = 1 * 60; // 10 phút
+            $remainingSeconds = 10 * 60; // 10 phút
         }
 
         // dd(session()->all());
@@ -408,12 +401,6 @@ class ChooseSeatController extends Controller
                             'user_id' => $userId,
                             'hold_expires_at' => $holdExpiresAt,
                         ]);
-
-                    $selectedSeats = session()->get('selected_seats.' . $showtimeId, []);
-                    if (!in_array((string)$seatId, array_map('strval', $selectedSeats))) {
-                        $selectedSeats[] = (string)$seatId;
-                    }
-                    session()->put('selected_seats.' . $showtimeId, $selectedSeats);
                 } elseif ($action === 'release' && $seatShowtime->status === 'hold') {
                     DB::table('seat_showtimes')
                         ->where('seat_id', $seatId)
@@ -423,12 +410,6 @@ class ChooseSeatController extends Controller
                             'user_id' => null,
                             'hold_expires_at' => null,
                         ]);
-
-                    $selectedSeats = session()->get('selected_seats.' . $showtimeId, []);
-                    if (($key = array_search($seatId, $selectedSeats)) !== false) {
-                        unset($selectedSeats[$key]);
-                    }
-                    session()->put('selected_seats.' . $showtimeId, array_values($selectedSeats));
                 }
             });
 
