@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\TicketSeat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
@@ -35,13 +36,17 @@ class TicketController extends Controller
         //     ->get()
         //     ->groupBy('code');
 
+
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('created_at');
+        if (Auth::user()->cinema_id != "") {
+            $tickets = $tickets->where('cinema_id', Auth::user()->cinema_id);
+        }
 
 
         // Lọc theo cinema_id
         if ($request->input('cinema_id')) {
-            $tickets = $tickets->whereHas('ticketSeats.cinema', function ($query) use ($request) {
+            $tickets = $tickets->whereHas('cinema', function ($query) use ($request) {
                 $query->where('id', $request->cinema_id);
             });
         }
@@ -112,14 +117,14 @@ class TicketController extends Controller
 
     public function print(Ticket $ticket)
     {
-        $oneTicket = Ticket::with(['movie.movieVersions','room','ticketCombos','ticketSeats.seat','cinema.branch'])->findOrFail($ticket->id);
+        $oneTicket = Ticket::with(['movie.movieVersions', 'room', 'ticketCombos', 'ticketSeats.seat', 'cinema.branch'])->findOrFail($ticket->id);
         $users = $ticket->user()->first();
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
             return $ticketSeat->seat->typeSeat->price;
         });
         $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','users','totalPriceSeat','barcode'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'oneTicket', 'users', 'totalPriceSeat', 'barcode'));
     }
     /**
      * Show the form for creating a new resource.
@@ -142,14 +147,14 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = Ticket::with(['movie','room','ticketCombos','ticketSeats.showtime'])->findOrFail($ticket->id);
+        $oneTicket = Ticket::with(['movie', 'room', 'ticketCombos', 'ticketSeats.showtime'])->findOrFail($ticket->id);
         $users = $ticket->user()->first();
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
             return $ticketSeat->seat->typeSeat->price;
         });
         // Tạo QR code và barcode dựa trên mã 'code' của vé
         $qrCode = QrCode::size(120)->generate($oneTicket->code);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','qrCode'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat', 'qrCode'));
     }
 
     /**

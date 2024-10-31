@@ -20,7 +20,10 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách hóa đơn</h4>
+                <h4 class="mb-sm-0">Danh sách hóa đơn @if (Auth::user()->cinema_id != '')
+                        - {{ Auth::user()->cinema->name }}
+                    @endif
+                </h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -52,25 +55,27 @@
                             <!--end col-->
 
                             <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select name="branch_id" id="branch" class="form-select">
-                                        <option value="">Chi nhánh</option>
-                                        @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}">
-                                                {{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
+                            @if (Auth::user()->cinema_id == '')
+                                <div class="col-xxl-2 col-sm-4">
+                                    <div>
+                                        <select name="branch_id" id="branch" class="form-select">
+                                            <option value="">Chi nhánh</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}">
+                                                    {{ $branch->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <select name="cinema_id" id="cinema" class="form-select">
-                                        <option value="">Chọn Rạp</option>
-                                    </select>
+                                <!--end col-->
+                                <div class="col-xxl-2 col-sm-4">
+                                    <div>
+                                        <select name="cinema_id" id="cinema" class="form-select">
+                                            <option value="">Chọn Rạp</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="col-xxl-2 col-sm-6">
                                 <div>
                                     <input type="date" name="date" id="" class="form-control"
@@ -167,7 +172,7 @@
                                             <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span>
                                                 {{ $ticket->movie->name }}</li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
-                                                {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }} -
+                                                {{ $ticket->cinema->branch->name }} - {{ $ticket->cinema->name }} -
                                                 {{ $ticket->room->name }}
                                             </li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
@@ -214,19 +219,14 @@
                                                 @endif
                                             </select>
                                         @else
-                                            <select class="form-select" data-original-status="{{ $ticket->status }}"
-                                                data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)" disabled
-                                                {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                                <option value="Chưa suất vé"
-                                                    {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận
-                                                </option>
-                                                <option value="Đã suất vé"
-                                                    {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất
-                                                </option>
-                                                @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
-                                                    <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
-                                                @endif
-                                            </select>
+                                        
+                                            @if ($ticket->status == 'Chưa suất vé')
+                                                Chờ xác nhận
+                                            @elseif($ticket->status == 'Đã suất vé')
+                                                Hoàn tất
+                                            @elseif($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                                Đã hết hạn
+                                            @endif
                                         @endif
                                         {{-- @can('Sửa hóa đơn')
                                         @endcan --}}
