@@ -46,7 +46,10 @@
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Suất chiếu</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Suất chiếu @if (Auth::user()->cinema_id != '')
+                                - {{ Auth::user()->cinema->name }}
+                            @endif
+                        </h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="live-preview">
@@ -86,60 +89,81 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row gy-4">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Chi nhánh:</label>
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chọn</option>
-                                            @foreach ($branches as $item)
-                                                <option value="{{ $item->id }}" @selected($item->id == old('branch_id'))>
-                                                    {{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('cinema_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
+                            @if (Auth::user()->cinema_id == '')
+                                <div class="row gy-4">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên Chi nhánh:</label>
+                                            <select name="branch_id" id="branch" class="form-select">
+                                                <option value="">Chọn</option>
+                                                @foreach ($branches as $item)
+                                                    <option value="{{ $item->id }}" @selected($item->id == old('branch_id'))>
+                                                        {{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('cinema_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên Rạp:</label>
+                                            <select name="cinema_id" id="cinema" class="form-select">
+                                                <option value="">Chọn</option>
+                                            </select>
+                                            @error('cinema_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên phòng:</label>
+                                            <select name="room_id" id="room" class="form-select">
+                                                <option value="">Chọn</option>
+
+                                            </select>
+                                            @error('room_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Rạp:</label>
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn</option>
-
-
-                                        </select>
-                                        @error('cinema_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
+                            @else
+                                <div class="row gy-4">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên phòng:</label>
+                                            <select name="room_id" id="room" class="form-select">
+                                                <option value="">Chọn phòng</option>
+                                                @foreach ($rooms as $room)
+                                                    <option value="{{ $room->id }}">{{ $room->name }} -
+                                                        {{ $room->typeRoom->name }}
+                                                        - {{ $room->seats->where('is_active', true)->count() }} ghế </option>
+                                                @endforeach
+                                            </select>
+                                            @error('room_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
+                            @endif
 
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên phòng:</label>
-                                        <select name="room_id" id="room" class="form-select">
-                                            <option value="">Chọn</option>
-
-                                        </select>
-                                        @error('room_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                            </div>
                             <div class="row mb-3">
                                 <div class="col-md-8">
                                     <span class='text-danger'>*</span>
