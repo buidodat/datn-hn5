@@ -82,54 +82,54 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalDiscountElement = document.querySelector('.total-discount');
 
     // Hàm tính tổng tiền
-    function calculateTotal() {
-        let totalPrice = sessionTotalPrice; // Bắt đầu từ tổng tiền trong session
+    // function calculateTotal() {
+    //     let totalPrice = sessionTotalPrice; // Bắt đầu từ tổng tiền trong session
 
-        // Tính tiền combo dựa trên số lượng
-        quantityInputs.forEach(input => {
-            const quantity = parseInt(input.value, 10); // Chuyển thành số nguyên
-            const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset.price, 10);
-            totalPrice += quantity * pricePerCombo;
-        });
+    //     // Tính tiền combo dựa trên số lượng
+    //     quantityInputs.forEach(input => {
+    //         const quantity = parseInt(input.value, 10); // Chuyển thành số nguyên
+    //         const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset.price, 10);
+    //         totalPrice += quantity * pricePerCombo;
+    //     });
 
-        // Cập nhật tổng tiền
-        totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
-        totalPriceInput.value = totalPrice; // Cập nhật giá trị ô input ẩn
+    //     // Cập nhật tổng tiền
+    //     totalPriceElement.textContent = totalPrice.toLocaleString() + ' Vnđ';
+    //     totalPriceInput.value = totalPrice; // Cập nhật giá trị ô input ẩn
 
-        // Tính số tiền cần thanh toán sau khi giảm giá
-        let totalPayment = totalPrice - discountAmount;
-        totalPayment = Math.max(totalPayment, 0); // Đảm bảo không âm
+    //     // Tính số tiền cần thanh toán sau khi giảm giá
+    //     let totalPayment = totalPrice - discountAmount;
+    //     totalPayment = Math.max(totalPayment, 0); // Đảm bảo không âm
 
-        // Cập nhật hiển thị số tiền cần thanh toán
-        totalPaymentElement.textContent = totalPayment.toLocaleString() + ' Vnđ';
-    }
+    //     // Cập nhật hiển thị số tiền cần thanh toán
+    //     totalPaymentElement.textContent = totalPayment.toLocaleString() + ' Vnđ';
+    // }
+    //Đạt comment lôi ra ngoài
+    // // Sự kiện khi bấm nút tăng số lượng
+    // increaseBtns.forEach(button => {
+    //     button.addEventListener('click', function () {
+    //         const input = this.closest('.quantity-container').querySelector(
+    //             '.quantity-input');
+    //         let currentValue = parseInt(input.value);
+    //         const max = parseInt(input.getAttribute('max'));
+    //         if (currentValue < max) { // Chỉ tăng nếu giá trị nhỏ hơn max
+    //             input.value = currentValue + 1;
+    //             calculateTotal(); // Cập nhật tổng tiền
+    //         }
+    //     });
+    // });
 
-    // Sự kiện khi bấm nút tăng số lượng
-    increaseBtns.forEach(button => {
-        button.addEventListener('click', function () {
-            const input = this.closest('.quantity-container').querySelector(
-                '.quantity-input');
-            let currentValue = parseInt(input.value);
-            const max = parseInt(input.getAttribute('max'));
-            if (currentValue < max) { // Chỉ tăng nếu giá trị nhỏ hơn max
-                input.value = currentValue + 1;
-                calculateTotal(); // Cập nhật tổng tiền
-            }
-        });
-    });
-
-    // Sự kiện khi bấm nút giảm số lượng
-    decreaseBtns.forEach(button => {
-        button.addEventListener('click', function () {
-            const input = this.closest('.quantity-container').querySelector(
-                '.quantity-input');
-            let currentValue = parseInt(input.value);
-            if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
-                input.value = currentValue - 1;
-                calculateTotal(); // Cập nhật tổng tiền
-            }
-        });
-    });
+    // // Sự kiện khi bấm nút giảm số lượng
+    // decreaseBtns.forEach(button => {
+    //     button.addEventListener('click', function () {
+    //         const input = this.closest('.quantity-container').querySelector(
+    //             '.quantity-input');
+    //         let currentValue = parseInt(input.value);
+    //         if (currentValue > 0) { // Chỉ giảm khi giá trị lớn hơn 0
+    //             input.value = currentValue - 1;
+    //             calculateTotal(); // Cập nhật tổng tiền
+    //         }
+    //     });
+    // });
 
     // function attachCancelVoucherEvent() {
     //     $('#cancel-voucher-btn').on('click', function () {
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // }
 
     // Tính toán ban đầu khi trang được tải
-    calculateTotal();
+    // calculateTotal();
 
     document.getElementById('payment-form').addEventListener('submit', function (e) {
         // Lấy giá trị từ phần tử hiển thị
