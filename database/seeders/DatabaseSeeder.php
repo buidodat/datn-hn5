@@ -605,7 +605,7 @@ class DatabaseSeeder extends Seeder
             if ($user) {
                 Membership::create([
                     'user_id' => $user->id,
-                    'rank_id' =>random_int(1,4),
+                    'rank_id' =>1,
                     'code' => Membership::codeMembership(),
                 ]);
             }
