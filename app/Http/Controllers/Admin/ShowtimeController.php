@@ -36,8 +36,14 @@ class ShowtimeController extends Controller
     public function index(Request $request)
     {
         $branches = Branch::all();
-        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
+        $user = auth()->user();
 
+        $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
+        if ($user->cinema_id != "") {
+            $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($user) {
+                $query->where('id', $user->cinema_id);
+            });
+        }
         if ($request->input('cinema_id')) {
             $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
                 $query->where('id', $request->cinema_id);
@@ -67,9 +73,13 @@ class ShowtimeController extends Controller
         $movies = Movie::where('is_active', '1')->get();
         $typeRooms = TypeRoom::all();
         $branches = Branch::where('is_active', '1')->get();
+        $user = auth()->user();
+
+        $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
+
 
         $cleaningTime = Showtime::CLEANINGTIME;
-        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches', 'rooms'));
     }
 
 
@@ -83,6 +93,7 @@ class ShowtimeController extends Controller
                 $movie = Movie::find($request->movie_id);
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
+                $user = auth()->user();
 
                 //lấy suất chiếu đang có theo room, date
                 $existingShowtimes = Showtime::where('room_id', $request->room_id)
@@ -102,7 +113,7 @@ class ShowtimeController extends Controller
                     }
 
                     $dataShowtimes = [
-                        'cinema_id' => $request->cinema_id,
+                        'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : $user->cinema_id,
                         'room_id' => $request->room_id,
                         'format' => $typeRoom->name . ' ' . $movieVersion->name,
                         'movie_version_id' => $request->movie_version_id,
@@ -158,10 +169,6 @@ class ShowtimeController extends Controller
 
 
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
@@ -183,11 +190,17 @@ class ShowtimeController extends Controller
         $showtimes = Showtime::with(['room', 'movieVersion'])->get();
 
         $movies = Movie::where('is_active', '1')->get();
-        $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
-
+        $user = auth()->user();
+        if ($user->cinema_id == "") {
+            $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
+        } else {
+            $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
+        }
         $movieVersions = MovieVersion::all();
         $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
         $branches = Branch::where('is_active', '1')->get();
+
+
 
         $cleaningTime = Showtime::CLEANINGTIME;
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime'));
@@ -208,13 +221,13 @@ class ShowtimeController extends Controller
             $movie = Movie::find($request->movie_id);
             $movieDuration = $movie ? $movie->duration : 0;
             $cleaningTime = Showtime::CLEANINGTIME;
-
+            $user = auth()->user();
 
             $startTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
             $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
             $dataShowtimes = [
-                'cinema_id' => $request->cinema_id,
+                'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : $user->cinema_id,
                 'room_id' => $request->room_id,
                 'format' => $typeRoom->name . ' ' . $movieVersion->name,
                 'movie_version_id' => $request->movie_version_id,

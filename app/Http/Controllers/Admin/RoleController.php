@@ -19,7 +19,9 @@ class RoleController extends Controller
     const PATH_UPLOAD = 'roles';
     public function index()
     {
-        $roles = Role::with('permissions')->get();
+        $roles = Role::with('permissions')->latest('id')->get();
+
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('roles'));
     }
 
@@ -30,6 +32,13 @@ class RoleController extends Controller
     {
         //
         $permissions = Permission::all();
+
+        // $groupedPermissions = [];
+        // foreach ($permissions as $permission) {
+        //     $parts = explode(' ', $permission, 2); // Lấy module từ tên quyền
+        //     $module = $parts[1] ?? 'Khác';
+        //     $groupedPermissions[$module][] = $permission;
+        // }
         return view(self::PATH_VIEW . __FUNCTION__, compact('permissions'));
     }
 
@@ -81,7 +90,7 @@ class RoleController extends Controller
     {
         //
         try {
-          
+
             $role->update(['name' => $request->name]);
             $role->syncPermissions($request->permissions);
 
@@ -99,7 +108,7 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
-        
+
         $role->delete();
         return redirect()
             ->route('admin.roles.index')
