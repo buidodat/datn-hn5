@@ -19,7 +19,7 @@ class RoleController extends Controller
     const PATH_UPLOAD = 'roles';
     public function index()
     {
-        $roles = Role::with('permissions')->get();
+        $roles = Role::with('permissions')->latest('id')->get();
 
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('roles'));
