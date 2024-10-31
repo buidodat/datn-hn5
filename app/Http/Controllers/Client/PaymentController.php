@@ -587,7 +587,7 @@ class PaymentController extends Controller
             'payment_name' => $request->payment_name,
             'voucher_code' => $voucher->code ?? null,
             'voucher_discount' => $voucherDiscount,
-            'point_use' => $dataUsePoint['point_use'] ?? null,
+            'point_use' => $dataUsePoint['use_points'] ?? null,
             'point_discount' => $pointDiscount,
             'total_price' => $totalPayment,
             'expiry' => $showtime->end_time,
@@ -692,6 +692,7 @@ class PaymentController extends Controller
                     'membership_id' => $membership->id,
                     'points' => $totalPoints,
                     'type' => PointHistory::POINTS_ACCUMULATED,
+                    'expiry_date' => now()->addMonths(PointHistory::POINT_EXPIRY_DURATION),
                 ]);
 
                 // Kiểm tra thăng hạng
