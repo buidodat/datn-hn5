@@ -1717,9 +1717,6 @@ ul.dropdown {
     text-align: left;
 }
 
-.milestone:nth-child(2) {
-    left: 40%; /* Đặt vị trí cho VIP */
-}
 
 .milestone:last-child {
     right: 0;
