@@ -152,9 +152,9 @@
 
                                         <div class='text-center'>
                                             <p> <span class="span_card">Cấp độ thẻ: </span><span
-                                                    class="bold">{{ $user->membership->rank }}</span></p>
+                                                    class="bold">{{ $user->membership->rank->name }}</span></p>
                                         </div>
-                                        <div class="progress-wrapper">
+                                        {{-- <div class="progress-wrapper">
                                             <div class="progress-info">
                                                 <span>Số tiền đã chi tiêu</span>
                                                 <span
@@ -183,7 +183,38 @@
                                                     <span>5.000.000</span>
                                                 </div>
                                             </div>
+                                        </div> --}}
+
+                                    <div class="progress-wrapper">
+                                        <div class="progress-info">
+                                            <span>Số tiền đã chi tiêu</span>
+                                            <span class="amount">
+                                                {{ number_format($user->membership->total_spent, 0, ',', '.') }} <strong>VND</strong>
+                                            </span>
                                         </div>
+
+                                        @php
+                                            $maxAmount = $ranks->max('total_spent');
+                                            // Tính toán phần trăm tiến độ dựa trên maxAmount
+                                            $progress = min(($user->membership->total_spent / $maxAmount) * 100, 100);
+                                        @endphp
+
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar-fill {{ $progress >= 100 ? 'full' : '' }}" style="width: {{ $progress }}%;"></div>
+                                        </div>
+
+                                        <div class="milestone-container">
+                                            @foreach ($ranks as $index => $rank)
+                                                <div class="milestone" style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
+                                                    <span>{{ $rank['name'] }}</span>
+                                                    <span>{{ number_format($rank['total_spent'], 0, ',', '.') }} VND</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+
+
 
                                     </div>
                                     <div class="col-md-3">

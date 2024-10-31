@@ -10,8 +10,8 @@ class Membership extends Model
     use HasFactory;
     public $fillable = [
         'user_id',
+        'rank_id',
         'code',
-        'rank',
         'points',
         'total_spent',
     ];
@@ -25,6 +25,9 @@ class Membership extends Model
     }
     public function pointHistories(){
         return $this->hasMany(PointHistory::class);
+    }
+    public function rank(){
+        return $this->belongsTo(Rank::class);
     }
 
     public static function  codeMembership() {
