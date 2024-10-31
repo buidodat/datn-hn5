@@ -56,6 +56,7 @@
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="1"
                                                                                             class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}"
                                                                                             id="seat-{{ $seat->id }}">
                                                                                             <span
@@ -68,6 +69,7 @@
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="2"
                                                                                             class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}"
                                                                                             id="seat-{{ $seat->id }}">
                                                                                             <span
@@ -80,6 +82,7 @@
                                                                                         <span
                                                                                             data-seat-id="{{ $seat->id }}"
                                                                                             data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="3"
                                                                                             class="game-icons--sofa seat-double seat span-seat {{ $seatStatus }}"
                                                                                             id="seat-{{ $seat->id }}">
                                                                                             <span
@@ -343,18 +346,25 @@
                 let selectedIndexes = [];
 
                 seatsInRow.forEach((seat, index) => {
-                    if (seat.classList.contains('selected')) {
+                    const seatType = seat.getAttribute('data-type'); // Lấy loại ghế từ data-type
+                    if (seat.classList.contains('selected') && seatType !==
+                        '3') { // Bỏ qua ghế đôi hoặc ghế có type=3
                         selectedIndexes.push(index);
                     }
                 });
 
                 for (let i = 0; i < selectedIndexes.length - 1; i++) {
                     const gap = selectedIndexes[i + 1] - selectedIndexes[i];
+                    // Kiểm tra khoảng cách giữa hai ghế chọn là 2 (tức là có một ghế trống ở giữa)
                     if (gap === 2) {
-                        isSoleSeatIssue = true;
                         const emptySeatIndex = selectedIndexes[i] + 1;
-                        soleSeatsMessage += seatsInRow[emptySeatIndex].querySelector('.seat-label')
-                            .textContent + ' ';
+                        const emptySeat = seatsInRow[emptySeatIndex];
+
+                        // Bỏ qua nếu ghế ở giữa có trạng thái sold hoặc hold
+                        if (!emptySeat.classList.contains('sold') && !emptySeat.classList.contains('hold')) {
+                            isSoleSeatIssue = true;
+                            soleSeatsMessage += emptySeat.querySelector('.seat-label').textContent + ' ';
+                        }
                     }
                 }
             });
@@ -379,13 +389,22 @@
                     const lastSeat = seatsInRow[seatsInRow.length - 1];
                     const beforeLastSeat = seatsInRow[seatsInRow.length - 2];
 
-                    if (!firstSeat.classList.contains('selected') && secondSeat.classList.contains(
-                            'selected')) {
+                    // Bỏ qua nếu ghế đầu là ghế đôi, có type=3 hoặc có trạng thái sold/hold
+                    if (!firstSeat.classList.contains('selected') &&
+                        secondSeat.classList.contains('selected') &&
+                        firstSeat.getAttribute('data-type') !== '3' &&
+                        !firstSeat.classList.contains('sold') &&
+                        !firstSeat.classList.contains('hold')) {
                         isEdgeSeatIssue = true;
                         edgeSeatsMessage += firstSeat.querySelector('.seat-label').textContent + ' ';
                     }
-                    if (!lastSeat.classList.contains('selected') && beforeLastSeat.classList.contains(
-                            'selected')) {
+
+                    // Bỏ qua nếu ghế cuối là ghế đôi, có type=3 hoặc có trạng thái sold/hold
+                    if (!lastSeat.classList.contains('selected') &&
+                        beforeLastSeat.classList.contains('selected') &&
+                        lastSeat.getAttribute('data-type') !== '3' &&
+                        !lastSeat.classList.contains('sold') &&
+                        !lastSeat.classList.contains('hold')) {
                         isEdgeSeatIssue = true;
                         edgeSeatsMessage += lastSeat.querySelector('.seat-label').textContent + ' ';
                     }
