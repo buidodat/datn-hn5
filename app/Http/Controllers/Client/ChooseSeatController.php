@@ -104,7 +104,7 @@ class ChooseSeatController extends Controller
 
         // dd($selectedSeats);
 
-        $now = Carbon::now();
+        $now = Carbon::now('Asia/Ho_Chi_Minh'); 
         $timeKey = 'timeData.' . $id; // Khóa chung cho cả end_time 
 
         // Kiểm tra session
@@ -379,7 +379,9 @@ class ChooseSeatController extends Controller
                 return response()->json(['message' => 'Dữ liệu thời gian không hợp lệ.'], 400);
             }
 
-            DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $timeData) {
+            $holdExpiresAt = Carbon::parse($timeData['end_time']);
+
+            DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
                 // Tìm ghế trong showtime và kiểm tra trạng thái
                 $seatShowtime = DB::table('seat_showtimes')
                     ->where('seat_id', $seatId)
@@ -393,8 +395,6 @@ class ChooseSeatController extends Controller
 
                 // Cập nhật trạng thái ghế
                 if ($action === 'hold' && $seatShowtime->status === 'available') {
-                    $holdExpiresAt = Carbon::parse($timeData['end_time']);
-
                     DB::table('seat_showtimes')
                         ->where('seat_id', $seatId)
                         ->where('showtime_id', $showtimeId)
@@ -423,10 +423,10 @@ class ChooseSeatController extends Controller
 
             // Phát sự kiện sau khi transaction hoàn tất
             if ($action === 'hold') {
-                broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'hold'))->toOthers();
-                ReleaseSeatHoldJob::dispatch([$seatData->seat_id], $showtimeId)->delay(Carbon::parse($timeData['end_time']));
+                event(new SeatStatusChange($seatData->seat_id, $showtimeId, 'hold'));
+                ReleaseSeatHoldJob::dispatch([$seatData->seat_id], $showtimeId)->delay($holdExpiresAt);
             } elseif ($action === 'release') {
-                broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'available'))->toOthers();
+                event(new SeatStatusChange($seatData->seat_id, $showtimeId, 'available'));
             }
 
 

@@ -49,7 +49,7 @@ class ReleaseSeatHoldJob implements ShouldQueue
                 ->lockForUpdate()
                 ->get();
 
-            $now = Carbon::now();
+            $now = Carbon::now('Asia/Ho_Chi_Minh'); 
             $expiredSeatIds = [];
 
             foreach ($seats as $seat) {
