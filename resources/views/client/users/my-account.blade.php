@@ -225,16 +225,16 @@
                                     <div class="col-md-12">
                                         <div class="points-info">
                                             <div><span class="span_label">Điểm đã tích lũy:</span> <span
-                                                    class='bold'>{{ $user->membership->pointHistories->where('transaction_type', null)->sum('points') }}
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_ACCUMULATED)->sum('points'), 0, ',', '.')}}
                                                     điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã sử dụng:</span> <span
-                                                    class='bold'>20.000 điểm</span>
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.')}} điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã hết hạn:</span> <span
-                                                    class='bold'>3.000 điểm</span>
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.')}} điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>0
+                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>{{  number_format($user->membership->points, 0, ',', '.')}}
                                                     điểm</span></div>
 
                                         </div>
@@ -259,154 +259,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($user->membership->pointHistories as $pointHistory)
+                                            @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
                                                 <tr>
-                                                    <td>{{ $pointHistory->create_at }}</td>
-                                                    <td>{{ $pointHistory->points }}</td>
+                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i')  }}</td>
+                                                    <td>
+                                                        {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
+                                                        ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
+                                                        : '- ' . number_format($pointHistory->points, 0, ',', '.')}}
+                                                    </td>
                                                     <td>{{ $pointHistory->type }}</td>
-                                                    <td>{{ $pointHistory->expiry_date }}</td>
+                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}</td>
                                                 </tr>
                                             @endforeach
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -755,7 +619,6 @@
     <script>
         new DataTable("#pointHistory", {
             order: [
-                [0, 'desc']
             ]
         });
     </script>

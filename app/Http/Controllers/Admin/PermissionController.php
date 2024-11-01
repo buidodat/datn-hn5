@@ -18,7 +18,7 @@ class PermissionController extends Controller
     public function index()
     {
         //
-        $permissions = Permission::all();
+        $permissions = Permission::latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('permissions'));
     }
 

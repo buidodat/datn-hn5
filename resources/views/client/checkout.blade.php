@@ -74,7 +74,7 @@
                                                     <span class="map--food"></span>
                                                 </div>
                                                 <div>
-                                                    <h4 class='text-transform' >Combo Ưu Đãi</h4>
+                                                    <h4 class='text-transform'>Combo Ưu Đãi</h4>
                                                 </div>
                                             </div>
                                             <div class="combo-uu-dai">
@@ -153,7 +153,7 @@
                                                         <span class="mdi--voucher"></span>
                                                     </div>
                                                     <div>
-                                                        <h4 class='text-transform' >Giảm giá</h4>
+                                                        <h4 class='text-transform'>Giảm giá</h4>
                                                     </div>
                                                 </div>
                                                 <div class="info-voucher-checkout">
@@ -217,7 +217,7 @@
                                         <div class="total-price-checkout">
                                             <div>
                                                 <p>Tổng tiền:</p>
-                                                <p class="text-danger total-price-display">
+                                                <p class="text-danger total-price-display" id="original-total">
                                                     {{ number_format($checkoutData['total_price'], 0, ',', '.') }} Vnđ
                                                 </p>
                                                 <input type="hidden" name="tong_tien_ban_dau" id="total-price"
@@ -458,7 +458,7 @@
                                                     <span class="map--food"></span>
                                                 </div>
                                                 <div>
-                                                    <h4 class='text-transform' >Combo Ưu Đãi</h4>
+                                                    <h4 class='text-transform'>Combo Ưu Đãi</h4>
                                                 </div>
                                             </div>
                                             <div class="combo-uu-dai">
@@ -537,7 +537,7 @@
                                                         <span class="mdi--voucher"></span>
                                                     </div>
                                                     <div>
-                                                        <h4 class='text-transform' >Giảm giá</h4>
+                                                        <h4 class='text-transform'>Giảm giá</h4>
                                                     </div>
                                                 </div>
                                                 <div class="info-voucher-checkout">
@@ -552,7 +552,7 @@
                                                                 dưới để được giảm giá!</label> <br>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code"
-                                                                    id="voucher_code" placeholder="Nhập mã voucher" >
+                                                                    id="voucher_code" placeholder="Nhập mã voucher">
 
                                                                 <button type="button" id="apply-voucher-btn"
                                                                     class='btn btn-danger'>Xác nhận
@@ -590,7 +590,8 @@
                                                                         <td><input type="text" name="use_points"
                                                                                 id='use_points' placeholder="Nhập điểm">
                                                                         </td>
-                                                                        <td>= <b><span id='point_discount'>0</span></b> Vnđ</td>
+                                                                        <td>= <b><span id='point_discount'>0</span></b> Vnđ
+                                                                        </td>
                                                                         <td style="width: 20%">
                                                                             <button type="button" class='btn btn-danger'
                                                                                 id="apply-point">Đổi
@@ -631,22 +632,22 @@
                                         </div>
                                         {{-- phuong thuc thanh toan --}}
 
-                                            <div class="text-info-checkout">
-                                                <div>
-                                                    {{-- <span class="ei--user"></span> --}}
-                                                    <span class="ic--baseline-payment"></span>
-                                                </div>
-                                                <div>
-                                                    <h4 class='text-transform'>Phương thức thanh toán</h4>
-                                                </div>
+                                        <div class="text-info-checkout">
+                                            <div>
+                                                {{-- <span class="ei--user"></span> --}}
+                                                <span class="ic--baseline-payment"></span>
                                             </div>
-                                            <div class="payment-checkout">
-                                                <div>
-                                                    <span class="bold">Chọn loại thanh toán:</span>
-                                                </div>
-                                                <hr>
-                                                <div class="img-payment-checkout">
-                                                    {{-- <div>
+                                            <div>
+                                                <h4 class='text-transform'>Phương thức thanh toán</h4>
+                                            </div>
+                                        </div>
+                                        <div class="payment-checkout">
+                                            <div>
+                                                <span class="bold">Chọn loại thanh toán:</span>
+                                            </div>
+                                            <hr>
+                                            <div class="img-payment-checkout">
+                                                {{-- <div>
                                                         <input type="radio" name="payment_name" value="momo" checked>
                                                         <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
                                                             alt="">
@@ -664,13 +665,15 @@
                                                             alt="">
                                                         <label for="">hiihi test</label>
                                                     </div> --}}
-                                                    <div>
-                                                        <input type="radio" name="payment_name" value="cash" id="payment-checkout-1" checked="">
-                                                        <label for="payment-checkout-1"><img src="{{ asset('svg/cod.svg') }}"> Thanh toán tiền
-                                                            mặt</label>
-                                                    </div>
+                                                <div>
+                                                    <input type="radio" name="payment_name" value="cash"
+                                                        id="payment-checkout-1" checked="">
+                                                    <label for="payment-checkout-1"><img
+                                                            src="{{ asset('svg/cod.svg') }}"> Thanh toán tiền
+                                                        mặt</label>
                                                 </div>
                                             </div>
+                                        </div>
 
                                         {{-- 10p --}}
                                         <div class="giu-cho-checkout">
@@ -749,10 +752,13 @@
                                                 <input type="hidden" name="user_id" id="userId"
                                                     value="{{ Auth::user()->id }}">
                                                 <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="price_seat" id="price-seat"
+                                                    value="{{ $checkoutData['total_price'] }}">
+                                                <input type="hidden" name="price_combo" id="price-combo">
                                                 <input type="hidden" name="voucher_discount" id="voucher-discount">
                                                 <input type="hidden" name="point_discount" id="point-discount">
                                                 <input type="hidden" name="total_discount" id="total-discount">
-                                                <input type="hidden" name="total_price" id="total-price-payment" >
+                                                <input type="hidden" name="total_price" id="total-price-payment">
 
 
                                                 {{-- ticketseat --}}
@@ -784,6 +790,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+
             // Hàm hiển thị thông báo
             function showAlertMessage(message, type = 'error') {
                 Swal.fire({
@@ -794,23 +802,67 @@
                 });
             }
 
-            // Hàm cập nhật giá trị điểm và voucher sau khi tính toán tổng tiền
-            function calculateTotal() {
-                const originalTotal = parseInt($("#total-price").val()) || 0;
-                const pointDiscount = parseInt($("#point-discount").val()) || 0;
-                const voucherDiscount = parseInt($("#voucher-discount").val()) || 0;
+            // Tính toán giá combo và tổng giá
+            function calculateComboPrice() {
+                let priceCombo = 0;
 
-                const totalDiscount = pointDiscount + voucherDiscount;
-                const totalPayment = Math.max(originalTotal - totalDiscount, 0);
+                // Tính tổng giá cho mỗi combo
+                quantityInputs.forEach(input => {
+                    const quantity = Math.max(0, parseInt(input.value, 10) || 0);
+                    const pricePerCombo = parseInt(input.closest('tr').querySelector('.combo-price').dataset
+                        .price, 10) || 0;
+                    priceCombo += quantity * pricePerCombo; // Tính giá tổng
+                });
 
-                $("#total-discount").val(totalDiscount);
-                $("#total-price-payment").val(totalPayment);
+                // Cập nhật giá combo vào input
+                document.getElementById('price-combo').value = priceCombo;
+                console.log("Total Combo Price: ", priceCombo); // Debug tổng giá combo
 
-                $('.total-price-payment').text(totalPayment.toLocaleString() + ' Vnđ');
-                $('.total-discount').text(totalDiscount.toLocaleString() + ' Vnđ');
+                calculateTotal(); // Cập nhật tổng khi giá combo thay đổi
             }
 
-            // Hàm xử lý hủy sử dụng điểm
+            // Cập nhật giá trị điểm và voucher sau khi tính toán tổng tiền
+            function calculateTotal() {
+                const priceSeat = {{ $checkoutData['total_price'] }};
+                const priceCombo = parseInt(document.getElementById("price-combo").value) || 0;
+                const pointDiscount = parseInt(document.getElementById("point-discount").value) || 0;
+                const voucherDiscount = parseInt(document.getElementById("voucher-discount").value) || 0;
+
+                const totalPrice = priceSeat + priceCombo; // Tính tổng giá
+                const totalDiscount = pointDiscount + voucherDiscount; // Tính tổng giảm giá
+                const totalPayment = Math.max(totalPrice - totalDiscount, 10000); // Tính tổng thanh toán
+
+                // Cập nhật giá trị vào input
+                document.getElementById("total-price").value = totalPrice;
+                document.getElementById("total-discount").value = totalDiscount;
+                document.getElementById("total-price-payment").value = totalPayment;
+
+                // Cập nhật hiển thị tổng tiền
+                document.querySelector('.total-price-payment').textContent = totalPayment.toLocaleString() + ' Vnđ';
+                document.querySelector('.total-discount').textContent = totalDiscount.toLocaleString() + ' Vnđ';
+                document.querySelector('.total-price-display').textContent = totalPrice.toLocaleString() + ' Vnđ';
+            }
+
+            // Xử lý sự kiện tăng/giảm số lượng
+            function setupQuantityButtons() {
+                document.querySelectorAll('.quantity-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const input = this.closest('.quantity-container').querySelector(
+                            '.quantity-input');
+                        let currentValue = parseInt(input.value);
+                        const max = parseInt(input.getAttribute('max')) || Infinity;
+
+                        if (this.classList.contains('increase') && currentValue < max) {
+                            input.value = currentValue + 1;
+                        } else if (this.classList.contains('decrease') && currentValue > 0) {
+                            input.value = currentValue - 1;
+                        }
+                        calculateComboPrice(); // Cập nhật giá combo
+                    });
+                });
+            }
+
+            // Xử lý hủy sử dụng điểm
             function handleCancelPoint() {
                 $.post({
                     url: '{{ route('cancel-point') }}',
@@ -819,7 +871,7 @@
                     },
                     success: function() {
                         $('#apply-point').show();
-                        $('#use_points').prop('readonly', false);
+                        $('#use_points').prop('readonly', false).val('');
                         $('#point-discount').val(0);
                         $('#point_discount').text('');
                         $('#cancel-point').hide();
@@ -833,10 +885,10 @@
 
             // Sự kiện áp dụng điểm
             $('#apply-point').on('click', function() {
-                const usePoints = parseInt($('#use_points').val().trim());
+                const usePoints = parseInt($('#use_points').val().trim()) || 0;
                 const userId = $('#userId').val();
 
-                if (!isNaN(usePoints) && usePoints > 0) {
+                if (usePoints > 0) {
                     $.post({
                         url: '{{ route('apply-point') }}',
                         headers: {
@@ -848,7 +900,8 @@
                         },
                         success: function(response) {
                             $('#point-discount').val(response.point_discount);
-                            $('#point_discount').text(response.point_discount.toLocaleString('vi-VN'));
+                            $('#point_discount').text(response.point_discount.toLocaleString(
+                                'vi-VN'));
                             $('#apply-point').hide();
                             $('#use_points').prop('readonly', true);
                             $('#cancel-point').show();
@@ -856,7 +909,8 @@
                         },
                         error: function(xhr) {
                             let errorText = xhr.responseJSON.message || 'Lỗi không xác định';
-                            if (xhr.status === 422) errorText = xhr.responseJSON.error.use_points[0];
+                            if (xhr.status === 422) errorText = xhr.responseJSON.error
+                                .use_points[0];
                             showAlertMessage(errorText, 'error');
                         }
                     });
@@ -904,11 +958,14 @@
                             $('#error-membership').empty();
                         },
                         error: function() {
-                            $('#error-membership').html('<p class="text-danger">Không tìm thấy thông tin người dùng.</p>');
+                            $('#error-membership').html(
+                                '<p class="text-danger">Không tìm thấy thông tin người dùng.</p>'
+                                );
                         }
                     });
                 } else {
-                    $('#error-membership').html('<p class="text-danger">Vui lòng nhập mã thẻ thành viên hoặc email.</p>');
+                    $('#error-membership').html(
+                        '<p class="text-danger">Vui lòng nhập mã thẻ thành viên hoặc email.</p>');
                 }
             });
 
@@ -962,8 +1019,12 @@
                 calculateTotal();
                 $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
             });
+
+            setupQuantityButtons(); // Thiết lập sự kiện cho nút tăng/giảm
+            calculateComboPrice(); // Tính toán giá combo khi trang được tải
         });
     </script>
+
 
 
 
