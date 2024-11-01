@@ -45,6 +45,7 @@ class UpdateUserRequest extends FormRequest
             'phone.required' =>'Vui lòng nhập số điện thoại.',
             'phone.min' =>'Số điện thoại tối thiểu 9 ký tự.',
             'phone.max' =>'Số điện thoại không quá 12 ký tự.',
+            'phone.unique' => 'Số điện thoại này đã được sử dụng.',
             'birthday.required' => 'Vui lòng nhập ngày sinh.',
             'birthday.date' => 'Ngày sinh phải là một ngày hợp lệ.',
             'birthday.before' => 'Bạn phải đủ trên 10 tuổi để đăng ký.',
