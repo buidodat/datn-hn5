@@ -158,7 +158,8 @@ class ChooseSeatController extends Controller
                 'seat_ids' => explode(',', $request->seatId), // Chuỗi ghế thành mảng
                 'selected_seats_name' => $request->selected_seats_name, // Tên ghế thành mảng
                 'total_price' => $request->total_price,
-                'remainingSeconds' => $request->remainingSeconds
+                'remainingSeconds' => $request->remainingSeconds,
+                'lastUpdated' => now() // lưu thời gian hiện tại lúc bấm nút tiếp tục
             ]
         ]);
 
