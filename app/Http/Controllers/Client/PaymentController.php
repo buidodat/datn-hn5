@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Log;
 use App\Events\SeatRelease;
 use App\Events\SeatSold;
 use App\Models\Combo;
+use App\Models\Membership;
+use App\Models\PointHistory;
+use App\Models\Rank;
 use App\Models\Showtime;
 use App\Models\Ticket;
 use App\Models\TicketCombo;
@@ -520,4 +523,214 @@ class PaymentController extends Controller
         }
     }
     // ====================END THANH TOÁN VNPAY==================== //
+
+    public function paymentAdmin(Request $request)
+    {
+        // 1. Xác thực dữ liệu đầu vào
+        $request->validate([
+            'seat_id' => 'required|array',
+            'seat_id.*' => 'integer|exists:seats,id',
+            'combo' => 'nullable|array',
+            'combo.*' => 'nullable|integer|min:0|max:10',
+            'voucher_code' => 'nullable|string|exists:vouchers,code',
+        ]);
+
+        // 2. Lấy dữ liệu từ request và các thông tin liên quan
+        $seatIds = $request->seat_id;
+        $showtimeId = $request->showtime_id;
+        $showtime = Showtime::findOrFail($showtimeId);
+        $authId = auth()->id();
+
+        // 3. Kiểm tra ghế tồn tại trong suất chiếu và tính tổng giá ghế
+        $seatShowtimes = DB::table('seat_showtimes')
+            ->whereIn('seat_id', $seatIds)
+            ->where('showtime_id', $showtimeId)
+            ->get();
+        $priceSeat = $seatShowtimes->sum('price');
+
+        // 4. Tính giá combo
+        $priceCombo = 0;
+        foreach ($request->combo as $comboId => $quantity) {
+            if ($quantity > 0) {
+                $combo = Combo::findOrFail($comboId);
+                $comboPrice = $combo->price_sale ?? $combo->price; // Nếu có giá khuyến mãi thì dùng, không thì dùng giá gốc
+                $priceCombo += $comboPrice * $quantity;
+            }
+        }
+
+
+        // 5. Xác thực và tính giá voucher
+        $voucherDiscount = 0;
+        $voucher = Voucher::where('code', $request->voucher_code)->first();
+        $currentDateTime = now()->setTimezone('Asia/Ho_Chi_Minh');
+        if ($voucher && $voucher->is_active && $voucher->quantity > 0 && $currentDateTime->between($voucher->start_date_time, $voucher->end_date_time)) {
+            $voucherDiscount = $voucher->discount;
+        }
+
+        // 6. Tính giảm giá từ điểm tích lũy (nếu có trong session)
+        $dataUsePoint = session('payment_point', []);
+        $pointDiscount = $dataUsePoint['point_discount'] ?? 0;
+
+        // 7. Tính tổng giá, tổng giảm giá và tổng thanh toán
+        $totalPrice = $priceSeat + $priceCombo;
+        $totalDiscount = $pointDiscount + $voucherDiscount;
+        $totalPayment = max($totalPrice - $totalDiscount, 10000); // Đảm bảo giá tối thiểu là 10k
+
+        // 8. Thiết lập dữ liệu ticket
+        $dataTicket = [
+            'code' => Ticket::generateTicketCode(),
+            'cinema_id' => $showtime->cinema_id,
+            'room_id' => $showtime->room_id,
+            'movie_id' => $showtime->movie_id,
+            'user_id' => $dataUsePoint['user_id'] ?? $authId,
+            'staff_id' => $authId,
+            'payment_name' => $request->payment_name,
+            'voucher_code' => $voucher->code ?? null,
+            'voucher_discount' => $voucherDiscount,
+            'point_use' => $dataUsePoint['use_points'] ?? null,
+            'point_discount' => $pointDiscount,
+            'total_price' => $totalPayment,
+            'expiry' => $showtime->end_time,
+        ];
+
+        // 9. Kiểm tra trạng thái giữ chỗ của ghế
+        $hasExpiredSeats = false;
+        foreach ($seatShowtimes as $seatShowtime) {
+            if ($seatShowtime->hold_expires_at < now()) {
+                $hasExpiredSeats = true;
+                break;
+            }
+        }
+
+        // 10. Xử lý ghế hết thời gian giữ chỗ
+        if ($hasExpiredSeats) {
+            DB::table('seat_showtimes')
+                ->whereIn('seat_id', $seatIds)
+                ->where('showtime_id', $showtimeId)
+                ->update([
+                    'status' => 'available',
+                    'user_id' => null,
+                    'hold_expires_at' => null,
+                ]);
+            foreach ($seatIds as $seatId) {
+                event(new SeatRelease($seatId, $showtimeId));
+            }
+            return redirect()->route('choose-seat', $showtimeId)
+                ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
+        }
+
+        // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ
+        try {
+            DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo) {
+                // Tạo ticket
+                $ticket = Ticket::create($dataTicket);
+
+                // Tạo ticket_seat và cập nhật trạng thái ghế
+                foreach ($seatIds as $seatId) {
+                    // Lấy giá ghế từ seat_showtimes
+                    $price = DB::table('seat_showtimes')
+                        ->where('seat_id', $seatId)
+                        ->where('showtime_id', $showtimeId)
+                        ->value('price');
+
+                    TicketSeat::create([
+                        'ticket_id' => $ticket->id,
+                        'showtime_id' => $showtimeId,
+                        'seat_id' => $seatId,
+                        'price' => $price,
+                    ]);
+
+                    // Cập nhật trạng thái ghế
+                    DB::table('seat_showtimes')
+                        ->where('seat_id', $seatId)
+                        ->where('showtime_id', $showtimeId)
+                        ->update([
+                            'status' => 'sold',
+                            'hold_expires_at' => null,
+                        ]);
+
+                    event(new SeatSold($seatId, $showtimeId));
+                }
+
+                // Tạo ticket_combo
+                foreach ($request->combo as $comboId => $quantity) {
+                    if ($quantity > 0) {
+                        $combo = Combo::findOrFail($comboId); // Sử dụng findOrFail
+                        $price = $combo->price_sale ?? $combo->price;
+                        TicketCombo::create([
+                            'ticket_id' => $ticket->id,
+                            'combo_id' => $comboId,
+                            'price' => $price * $quantity,
+                            'quantity' => $quantity,
+                            'status' => 'Chưa lấy đồ ăn',
+                        ]);
+                    }
+                }
+
+                // Lấy thông tin thành viên
+                $membership = Membership::findOrFail($ticket->user_id);
+
+                // Tiêu điểm
+                if ($ticket->point_use > 0) {
+                    $membership->decrement('points', $ticket->point_use);
+                    PointHistory::create([
+                        'membership_id' => $membership->id,
+                        'points' => $ticket->point_use,
+                        'type' => PointHistory::POINTS_SPENT,
+                    ]);
+                }
+
+                // Tích điểm
+                $rank = Rank::findOrFail($membership->rank_id);
+                $pointsForTicket = $priceSeat * ($rank->ticket_percentage / 100);
+                $pointsForCombo = $priceCombo * ($rank->combo_percentage / 100);
+                $totalPoints = $pointsForTicket + $pointsForCombo;
+
+                $membership->increment('points', $totalPoints);
+                $membership->increment('total_spent', $ticket->total_price);
+                PointHistory::create([
+                    'membership_id' => $membership->id,
+                    'points' => $totalPoints,
+                    'type' => PointHistory::POINTS_ACCUMULATED,
+                    'expiry_date' => now()->addMonths(PointHistory::POINT_EXPIRY_DURATION),
+                ]);
+
+                // Kiểm tra thăng hạng
+                $newRank = Rank::where('total_spent', '<=', $membership->total_spent)
+                    ->orderBy('total_spent', 'desc')
+                    ->first();
+
+                if ($newRank && $newRank->id != $membership->rank_id) {
+                    $membership->update(['rank_id' => $newRank->id]);
+                }
+
+                // lưu voucher lượt sd voucher
+                // if ($voucher->code != null) {
+                //     $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+                //     if ($voucher) {
+                //         $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                //             ->where('voucher_id', $voucher->id)
+                //             ->first();
+
+                //         if ($userVoucher) {
+                //             // Nếu đã tồn tại, tăng usage_count
+                //             $userVoucher->increment('usage_count');
+                //         } else {
+                //             // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                //             UserVoucher::create([
+                //                 'user_id' => $paymentData['user_id'],
+                //                 'voucher_id' => $voucher->id,
+                //                 'usage_count' => 1,
+                //             ]);
+                //         }
+                //     }
+                // }
+            });
+
+            return redirect()->route('home')->with('success', 'Thanh toán thành công!');
+        } catch (\Exception $e) {
+            return redirect()->route('home')
+                ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
+        }
+    }
 }

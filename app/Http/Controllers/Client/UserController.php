@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateUserRequest;
+use App\Models\Rank;
 use App\Models\Ticket;
 use App\Models\TicketMovie;
 use App\Models\TicketSeat;
@@ -27,10 +28,10 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
-
+        $ranks =Rank::all();
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
-        return view('client.users.my-account', compact('user', 'genders', 'tickets'));
+        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks'));
     }
 
     public function update(UpdateUserRequest $request)

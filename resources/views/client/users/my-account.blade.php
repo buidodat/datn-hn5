@@ -151,9 +151,9 @@
 
                                         <div class='text-center'>
                                             <p> <span class="span_card">Cấp độ thẻ: </span><span
-                                                    class="bold">{{ $user->membership->rank }}</span></p>
+                                                    class="bold">{{ $user->membership->rank->name }}</span></p>
                                         </div>
-                                        <div class="progress-wrapper">
+                                        {{-- <div class="progress-wrapper">
                                             <div class="progress-info">
                                                 <span>Số tiền đã chi tiêu</span>
                                                 <span
@@ -182,7 +182,38 @@
                                                     <span>5.000.000</span>
                                                 </div>
                                             </div>
+                                        </div> --}}
+
+                                    <div class="progress-wrapper">
+                                        <div class="progress-info">
+                                            <span>Số tiền đã chi tiêu</span>
+                                            <span class="amount">
+                                                {{ number_format($user->membership->total_spent, 0, ',', '.') }} <strong>VND</strong>
+                                            </span>
                                         </div>
+
+                                        @php
+                                            $maxAmount = $ranks->max('total_spent');
+                                            // Tính toán phần trăm tiến độ dựa trên maxAmount
+                                            $progress = min(($user->membership->total_spent / $maxAmount) * 100, 100);
+                                        @endphp
+
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar-fill {{ $progress >= 100 ? 'full' : '' }}" style="width: {{ $progress }}%;"></div>
+                                        </div>
+
+                                        <div class="milestone-container">
+                                            @foreach ($ranks as $index => $rank)
+                                                <div class="milestone" style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
+                                                    <span>{{ $rank['name'] }}</span>
+                                                    <span>{{ number_format($rank['total_spent'], 0, ',', '.') }} VND</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+
+
 
                                     </div>
                                     <div class="col-md-3">
@@ -193,16 +224,16 @@
                                     <div class="col-md-12">
                                         <div class="points-info">
                                             <div><span class="span_label">Điểm đã tích lũy:</span> <span
-                                                    class='bold'>{{ $user->membership->pointHistories->where('transaction_type', null)->sum('points') }}
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_ACCUMULATED)->sum('points'), 0, ',', '.')}}
                                                     điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã sử dụng:</span> <span
-                                                    class='bold'>20.000 điểm</span>
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.')}} điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã hết hạn:</span> <span
-                                                    class='bold'>3.000 điểm</span>
+                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.')}} điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>0
+                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>{{  number_format($user->membership->points, 0, ',', '.')}}
                                                     điểm</span></div>
 
                                         </div>
@@ -227,154 +258,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($user->membership->pointHistories as $pointHistory)
+                                            @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
                                                 <tr>
-                                                    <td>{{ $pointHistory->create_at }}</td>
-                                                    <td>{{ $pointHistory->points }}</td>
+                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i')  }}</td>
+                                                    <td>
+                                                        {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
+                                                        ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
+                                                        : '- ' . number_format($pointHistory->points, 0, ',', '.')}}
+                                                    </td>
                                                     <td>{{ $pointHistory->type }}</td>
-                                                    <td>{{ $pointHistory->expiry_date }}</td>
+                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}</td>
                                                 </tr>
                                             @endforeach
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-                                                <td>hihi</td>
-
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -663,7 +558,6 @@
     <script>
         new DataTable("#pointHistory", {
             order: [
-                [0, 'desc']
             ]
         });
     </script>

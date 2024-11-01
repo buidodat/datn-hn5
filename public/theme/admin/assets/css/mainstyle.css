@@ -8,6 +8,22 @@
     overflow: auto;
 }
 
+.box-search-role {
+    display: flex;
+}
+
+.box-search-role input#search-permission {
+    width: 265px;
+}
+
+.box-search-role button.btn.btn-primary.btn-search-role {
+    margin-left: 8px;
+}
+
+.box-permission-role input.checkboxAll {
+    margin-left: 35px;
+}
+
 .srceen {
     background-color: #ccc;
     height: 30px;

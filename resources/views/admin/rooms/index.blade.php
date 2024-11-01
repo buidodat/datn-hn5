@@ -45,13 +45,15 @@
                         <div class="col-sm">
                             <h5 class="card-title mb-0">Danh sách phòng chiếu</h5>
                         </div>
-                        <div class="col-sm-auto">
-                            <div class="d-flex gap-1 flex-wrap">
-                                <button class="btn btn-primary mb-3 " data-bs-toggle="modal"
-                                    data-bs-target="#createRoomModal">Thêm
-                                    mới</button>
+                        @can('Thêm phòng chiếu')
+                            <div class="col-sm-auto">
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <button class="btn btn-primary mb-3 " data-bs-toggle="modal"
+                                        data-bs-target="#createRoomModal">Thêm
+                                        mới</button>
+                                </div>
                             </div>
-                        </div>
+                        @endcan
                     </div>
                 </div>
                 {{-- giao diện bộ lọc, bộ tìm kiếm  --}}
@@ -60,24 +62,35 @@
                 <div class="card-body pt-0">
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
-                                aria-selected="true">
-                                Tất cả
-                                <span class="badge bg-dark align-middle ms-1">{{ $rooms->count() }}</span>
-                            </a>
-                        </li>
+                        @if (Auth::user()->cinema_id == '')
+                            <li class="nav-item">
+                                <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
+                                    aria-selected="true">
+                                    Tất cả
+                                    <span
+                                        class="badge bg-dark align-middle ms-1">{{ $rooms->when(Auth::user()->cinema_id, function ($query) {
+                                                return $query->where('cinema_id', Auth::user()->cinema_id);
+                                            })->count() }}</span>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
                                 aria-selected="false">
                                 Đã xuất bản
-                                <span class="badge bg-success align-middle ms-1">{{ $rooms->where('is_publish',true)->count() }}</span>
+                                <span
+                                    class="badge bg-success align-middle ms-1">{{ $rooms->where('is_publish', true)->when(Auth::user()->cinema_id, function ($query) {
+                                            return $query->where('cinema_id', Auth::user()->cinema_id);
+                                        })->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
                                 aria-selected="false">
-                                Bản nháp<span class="badge bg-warning align-middle ms-1">{{ $rooms->where('is_publish',false)->count() }}</span>
+                                Bản nháp<span
+                                    class="badge bg-warning align-middle ms-1">{{ $rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
+                                        return $query->where('cinema_id', Auth::user()->cinema_id);
+                                    })->count() }}</span>
                             </a>
                         </li>
                         @foreach ($cinemas as $cinema)
@@ -85,13 +98,14 @@
                                 <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#cinemaID{{ $cinema->id }}"
                                     role="tab" aria-selected="false">
                                     {{ $cinema->name }}
-                                    {{-- <span class="badge bg-warning align-middle ms-1">{{ $cinema->rooms->count() }}</span> --}}
                                 </a>
                             </li>
                         @endforeach
-
                     </ul>
+
+
                     <div class="card-body tab-content ">
+                        {{-- Tất cả ok rồi --}}
                         <div class="tab-pane " id="allRoom" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllRoom">
                                 <thead class='table-light'>
@@ -113,29 +127,30 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-
-
-
-
-
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-seat-template-id="{{ $room->seat_template_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
+                                                        @can('Sửa phòng chiếu')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                                data-room-id="{{ $room->id }}"
+                                                                data-room-name="{{ $room->name }}"
+                                                                data-branch-id="{{ $room->branch_id }}"
+                                                                data-cinema-id="{{ $room->cinema_id }}"
+                                                                data-type-room-id="{{ $room->type_room_id }}"
+                                                                data-seat-template-id="{{ $room->seat_template_id }}"
+                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                                sửa</a>
+                                                        @endcan
 
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
+
+
                                                         @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
+                                                            @can('Xóa phòng chiếu')
+                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                    href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                    bỏ</a>
+                                                            @endcan
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
@@ -169,6 +184,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- Đã xuất bản --}}
                         <div class="tab-pane active " id="isPublish" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
                                 <thead class='table-light'>
@@ -183,31 +199,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rooms->where('is_publish',true) as $index => $room)
+                                    @foreach ($rooms->where('is_publish', true) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-seat-template-id="{{ $room->seat_template_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
+                                                        @can('Sửa phòng chiếu')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                                data-room-id="{{ $room->id }}"
+                                                                data-room-name="{{ $room->name }}"
+                                                                data-branch-id="{{ $room->branch_id }}"
+                                                                data-cinema-id="{{ $room->cinema_id }}"
+                                                                data-type-room-id="{{ $room->type_room_id }}"
+                                                                data-seat-template-id="{{ $room->seat_template_id }}"
+                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                                sửa</a>
+                                                        @endcan
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
                                                         @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
+                                                            @can('Xóa phòng chiếu')
+                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                    href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                    bỏ</a>
+                                                            @endcan
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
@@ -239,8 +258,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- Bản nháp --}}
                         <div class="tab-pane " id="isDraft" role="tabpanel">
-
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
                                 <thead class='table-light'>
                                     <tr>
@@ -254,31 +273,36 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rooms->where('is_publish',false) as $index => $room)
+                                    @foreach ($rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
+            return $query->where('cinema_id', Auth::user()->cinema_id);
+        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
-
-                                                        <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
-                                                            data-room-id="{{ $room->id }}"
-                                                            data-room-name="{{ $room->name }}"
-                                                            data-branch-id="{{ $room->branch_id }}"
-                                                            data-cinema-id="{{ $room->cinema_id }}"
-                                                            data-type-room-id="{{ $room->type_room_id }}"
-                                                            data-seat-template-id="{{ $room->seat_template_id }}"
-                                                            data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                            sửa</a>
+                                                        @can('Sửa phòng chiếu')
+                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                                data-room-id="{{ $room->id }}"
+                                                                data-room-name="{{ $room->name }}"
+                                                                data-branch-id="{{ $room->branch_id }}"
+                                                                data-cinema-id="{{ $room->cinema_id }}"
+                                                                data-type-room-id="{{ $room->type_room_id }}"
+                                                                data-seat-template-id="{{ $room->seat_template_id }}"
+                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
+                                                                sửa</a>
+                                                        @endcan
                                                         <a class=" link-opacity-75-hover link-opacity-50  mx-1"
                                                             href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                             ghế</a>
                                                         @if (!$room->is_publish)
-                                                            <a class="link-opacity-75-hover link-opacity-50"
-                                                                href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                bỏ</a>
+                                                            @can('Xóa phòng chiếu')
+                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                    href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
+                                                                    bỏ</a>
+                                                            @endcan
                                                         @else
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
@@ -309,6 +333,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        {{-- Các Rạp khác ok rồi --}}
                         @foreach ($cinemas as $cinema)
                             <div class="tab-pane " id="cinemaID{{ $cinema->id }}" role="tabpanel">
                                 <table class="table table-bordered dt-responsive nowrap align-middle w-100"
@@ -335,9 +361,11 @@
                                                         <div>
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                            <a
-                                                                class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
-                                                                sửa</a>
+                                                            @can('Sửa phòng chiếu')
+                                                                <a
+                                                                    class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
+                                                                    sửa</a>
+                                                            @endcan
                                                             <a class=" link-opacity-75-hover link-opacity-50 "
                                                                 href="{{ route('admin.rooms.edit', $room) }}">Sơ
                                                                 đồ

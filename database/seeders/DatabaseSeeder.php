@@ -14,6 +14,7 @@ use App\Models\Slideshow;
 use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Rank;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -591,13 +592,20 @@ class DatabaseSeeder extends Seeder
 
         // Chèn tất cả người dùng vào cơ sở dữ liệu
         User::insert($users);
-
+        $dataRanks = [
+            ['name'=>'Nhựa',        'total_spent'=>0,         'ticket_percentage'=>5,     'combo_percentage'=>3],
+            ['name'=>'Vàng',        'total_spent'=>2000000,   'ticket_percentage'=>7,     'combo_percentage'=>5],
+            ['name'=>'Cao thủ',     'total_spent'=>5000000,   'ticket_percentage'=>10,    'combo_percentage'=>7],
+            ['name'=>'Chiến tướng', 'total_spent'=>10000000,  'ticket_percentage'=>15,    'combo_percentage'=>10],
+        ];
+        Rank::insert($dataRanks);
         // Tạo một bản ghi thành viên cho mỗi người dùng
         foreach ($users as $userData) {
             $user = User::where('email', $userData['email'])->first();
             if ($user) {
                 Membership::create([
                     'user_id' => $user->id,
+                    'rank_id' =>1,
                     'code' => Membership::codeMembership(),
                 ]);
             }
@@ -781,7 +789,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-       
+
 
         // $permissions = [
         //     ['name' => 'Danh sách chi nhánh', 'slug' => 'branch.list', 'guard_name' => 'web'],

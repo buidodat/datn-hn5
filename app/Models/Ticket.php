@@ -17,6 +17,8 @@ class Ticket extends Model
         'payment_name',
         'voucher_code',
         'voucher_discount',
+        'point_use',
+        'point_discount',
         'code',
         'total_price',
         'status',
@@ -69,5 +71,27 @@ class Ticket extends Model
     public function movie()
     {
         return $this->belongsTo(Movie::class);
+    }
+
+
+    //Hàm tạo mã vé: ví dụ hôm này là ngày 20/10/2024 thì hóa đơn sẽ có dạng HD201024-0001 , HD201024-0002,...
+    public static function generateTicketCode()
+    {
+        // Lấy ngày hiện tại theo định dạng ddmmyy
+        $dateCode = now()->setTimezone('Asia/Ho_Chi_Minh')->format('dmy');
+
+        // Tìm mã vé mới nhất
+        $latestTicket = Ticket::query()
+            ->where('code', 'like', "HD{$dateCode}-%")
+            ->latest('id')
+            ->first();
+
+        // Tính số thứ tự tiếp theo
+        $nextNumber = $latestTicket ? ((int)substr($latestTicket->code, -4) + 1) : 1;
+
+        // Tạo mã hóa đơn theo định dạng HDddmmyy-xxxx
+        //  %s là chuỗi string tức là $dateCode ta lấy được 201024
+        // %04d: Là số nguyên (integer) với độ dài 4 chữ số, và 0 ở đây chỉ định điền thêm số 0 vào phía trước nếu số không đủ độ dài tức  là nếu nextNumber = 123 thì trả về  0123
+        return sprintf("HD%s-%04d", $dateCode, $nextNumber);
     }
 }
