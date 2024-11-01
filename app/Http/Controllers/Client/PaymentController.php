@@ -64,7 +64,7 @@ class PaymentController extends Controller
 
             // Phát sự kiện Pusher để thông báo tất cả ghế được giải phóng cho người dùng khác
             foreach ($seatIds as $seatId) {
-                event(new SeatRelease($seatId, $showtimeId));
+                event(new SeatStatusChange($seatId, $showtimeId, 'available'));
             }
 
             // Chuyển hướng về trang chọn ghế với thông báo lỗi
@@ -311,7 +311,7 @@ class PaymentController extends Controller
             ]);
 
         foreach ($paymentData['seat_id'] as $seatId) {
-            event(new SeatRelease($seatId, $paymentData['showtime_id']));
+            event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'));
         }
 
         session()->forget('payment_data');

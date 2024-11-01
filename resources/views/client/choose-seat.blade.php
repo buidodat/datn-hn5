@@ -223,7 +223,7 @@
             selectedSaveSeats.forEach(seatId => setInitialSeatSelection(seatId));
         }
 
-        // Thiết lập trạng thái ghế từ session
+        // Thiết lập trạng thái ghế mà mình đang chọn
         function setInitialSeatSelection(seatId) {
             const seatElement = document.querySelector(`.seat[data-seat-id="${seatId}"]`);
             if (seatElement) {
@@ -287,19 +287,26 @@
 
         // Chọn ghế
         function selectSeat(seat, seatLabel, seatId, seatPrice) {
-            selectedSeats.push(seatLabel);
-            selectedSeatIds.push(seatId);
-            totalPrice += seatPrice;
+            seatId = parseInt(seatId); // Ép kiểu thành số nguyên
 
-            seat.classList.toggle('selected');
-            seat.classList.toggle('available');
+            if (!selectedSeatIds.includes(seatId)) { // Kiểm tra ghế đã có trong mảng chưa
+                selectedSeats.push(seatLabel);
+                selectedSeatIds.push(seatId);
+                totalPrice += seatPrice;
 
-            // Cập nhật server
-            updateSeatOnServer(seatId, 'hold');
+                seat.classList.toggle('selected');
+                seat.classList.toggle('available');
+
+                // Cập nhật server
+                updateSeatOnServer(seatId, 'hold');
+                updateDisplay();
+            }
         }
 
         // Bỏ chọn ghế
         function releaseSeat(seat, seatLabel, seatId, seatPrice) {
+            seatId = parseInt(seatId); // Ép kiểu thành số nguyên
+
             selectedSeats = selectedSeats.filter(s => s !== seatLabel);
             selectedSeatIds = selectedSeatIds.filter(id => id !== seatId);
             totalPrice -= seatPrice;
@@ -309,6 +316,7 @@
 
             // Cập nhật server
             updateSeatOnServer(seatId, 'release');
+            updateDisplay();
         }
 
         // Cập nhật ghế trên server

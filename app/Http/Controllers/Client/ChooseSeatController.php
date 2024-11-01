@@ -151,6 +151,7 @@ class ChooseSeatController extends Controller
         // dd($request->all());
         // dd(session()->all());
         session()->forget('checkout_data');
+        
         session()->put([
             'checkout_data' => [
                 'showtime_id' => $request->showtimeId,
