@@ -11,7 +11,6 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="prs_title_heading_wrapper">
-                    <h2>Liên hệ với chúng tôi</h2>
                     <ul>
                         <li><a href="{{route('home')}}">Trang chủ</a>
                         </li>
