@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\Cinema;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -23,8 +24,9 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = User::query()->latest('id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__ ,compact('users'));
+        $users = User::with('cinema')->latest('type')->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('users',));
     }
 
     /**
@@ -35,7 +37,8 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeAdmin','typeMember','genders']));
+        $cinemas = Cinema::where('is_active', '1')->first('branch_id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'cinemas']));
     }
 
     /**
@@ -45,6 +48,8 @@ class UserController extends Controller
     {
         try {
             $dataUser = $request->all();
+            $dataUser['type'] = "admin";
+            $dataUser['cinema_id'] = $request->cinema_id;
             if ($request->img_thumbnail) {
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
             }
@@ -67,7 +72,7 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeAdmin','typeMember','genders','user']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user']));
     }
 
     /**
@@ -78,7 +83,9 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
-        return view(self::PATH_VIEW . __FUNCTION__,compact(['typeAdmin','typeMember','genders','user']));
+        $cinemas = Cinema::where('is_active', '1')->first('branch_id')->get();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user', 'cinemas']));
     }
 
     /**
@@ -88,9 +95,7 @@ class UserController extends Controller
     {
         try {
             $dataUser = $request->all();
-
-
-
+            $dataUser['cinema_id'] = $request->cinema_id;
             if ($request->img_thumbnail) {
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
                 // Lưu lại đường dẫn của ảnh hiện tại để so sánh sau
@@ -111,31 +116,29 @@ class UserController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-    public function resetPassword(Request $request, User $user){
+    public function resetPassword(Request $request, User $user)
+    {
 
         //validate
         $request->validate([
             'password' => 'required|min:8|max:30|confirmed',
-        ],[
-            'password.required' =>'Vui lòng nhập mật khẩu.',
-            'password.min' =>'Mật khẩu tối thiểu phải 8 ký tự.',
-            'password.max' =>'Mật khẩu không được quá 30 ký tự.',
-            'password.confirmed' =>'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
+        ], [
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu tối thiểu phải 8 ký tự.',
+            'password.max' => 'Mật khẩu không được quá 30 ký tự.',
+            'password.confirmed' => 'Mật khẩu và xác nhận mật khẩu không trùng khớp.',
         ]);
 
         try {
             $user->update([
-                'password'=>$request->password
+                'password' => $request->password
             ]);
             return redirect()
                 ->back()
                 ->with('success', 'Đổi mật khẩu thành công!');
-
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
-
-
     }
 
     /**

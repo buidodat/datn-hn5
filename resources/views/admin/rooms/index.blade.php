@@ -89,8 +89,8 @@
                                 aria-selected="false">
                                 Bản nháp<span
                                     class="badge bg-warning align-middle ms-1">{{ $rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
-                                        return $query->where('cinema_id', Auth::user()->cinema_id);
-                                    })->count() }}</span>
+                                            return $query->where('cinema_id', Auth::user()->cinema_id);
+                                        })->count() }}</span>
                             </a>
                         </li>
                         @foreach ($cinemas as $cinema)
@@ -414,7 +414,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createRoomModalLabel">Thêm Phòng Chiếu Mới</h5>
+                    <h5 class="modal-title" id="createRoomModalLabel">Thêm Phòng Chiếu Mới @if (Auth::user()->cinema_id != '')
+                            - {{ Auth::user()->cinema->name }}
+                        @endif
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -429,28 +432,34 @@
                                     placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="createNameError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
-                            <div class="col-md-5 mb-3">
-                                <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
-                                    Nhánh</label>
-                                <select class="form-select" id="branchId" name="branch_id"
-                                    onchange="loadCinemas('branchId', 'cinemaId')" required>
-                                    <option value="" disabled selected>Chọn chi nhánh</option>
-                                    @foreach ($branches as $branch)
-                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger mt-3" id="createBranchError"></span> <!-- Thêm thông báo lỗi -->
-                            </div>
 
-                            <!-- Chọn Rạp Chiếu -->
-                            <div class="col-md-7 mb-3">
-                                <label for="cinemaId" class="form-label"><span class="text-danger">*</span> Rạp
-                                    Chiếu</label>
-                                <select class="form-select" id="cinemaId" name="cinema_id" required>
-                                    <option value="" disabled selected>Chọn rạp chiếu</option>
-                                </select>
-                                <span class="text-danger mt-3" id="createCinemaError"></span>
-                            </div>
+                            @if (Auth::user()->cinema_id == '')
+                                <div class="col-md-5 mb-3">
+                                    <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
+                                        Nhánh</label>
+                                    <select class="form-select" id="branchId" name="branch_id"
+                                        onchange="loadCinemas('branchId', 'cinemaId')" required>
+                                        <option value="" disabled selected>Chọn chi nhánh</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger mt-3" id="createBranchError"></span>
+                                    <!-- Thêm thông báo lỗi -->
+                                </div>
+
+                                <!-- Chọn Rạp Chiếu -->
+                                <div class="col-md-7 mb-3">
+                                    <label for="cinemaId" class="form-label"><span class="text-danger">*</span> Rạp
+                                        Chiếu</label>
+                                    <select class="form-select" id="cinemaId" name="cinema_id" required>
+                                        <option value="" disabled selected>Chọn rạp chiếu</option>
+                                    </select>
+                                    <span class="text-danger mt-3" id="createCinemaError"></span>
+                                </div>
+                            @endif
+
+
                             <div class="col-md-6 mb-3">
                                 <label for="type_room_id" class="form-label"><span class="text-danger">*</span> Loại
                                     phòng chiếu</label>
@@ -507,6 +516,7 @@
                                     placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="updateNameError"></span>
                             </div>
+                            {{-- @if (Auth::user()->cinema_id == '') --}}
                             <div class="col-md-5 mb-3">
                                 <label for="updateBranchId" class="form-label"><span class="text-danger">*</span> Chi
                                     Nhánh</label>
@@ -528,6 +538,8 @@
                                 </select>
                                 <span class="text-danger mt-3" id="updateCinemaError"></span>
                             </div>
+                            {{-- @endif --}}
+
                             <div class="col-md-6 mb-3">
                                 <label for="updateTypeRoomId" class="form-label"><span class="text-danger">*</span> Loại
                                     phòng chiếu</label>

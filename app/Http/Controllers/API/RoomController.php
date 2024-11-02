@@ -8,6 +8,7 @@ use App\Models\Seat;
 use App\Models\SeatTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -17,9 +18,34 @@ class RoomController extends Controller
 {
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'branch_id' => 'required|exists:branches,id',
-            'cinema_id' => 'required|exists:cinemas,id',
+        // $validator = Validator::make($request->all(), [
+        //     'type_room_id' => 'required|exists:type_rooms,id',
+        //     'name' => [
+        //         'required',
+        //         'string',
+        //         Rule::unique('rooms')->where(function ($query) use ($request) {
+        //             return $query->where('cinema_id', $request->cinema_id);
+        //         }),
+        //     ],
+        //     'seat_template_id' => 'required|exists:seat_templates,id',
+        // ], [
+        //     'name.required' => 'Vui lòng nhập tên phòng chiếu.',
+        //     'name.unique' => 'Tên phòng đã tồn tại trong rạp.',
+        //     'branch_id.required' => "Vui lòng chọn chi nhánh.",
+        //     'branch_id.exists' => 'Chi nhánh bạn chọn không hợp lệ.',
+        //     'cinema_id.required' => "Vui lòng chọn rạp chiếu.",
+        //     'cinema_id.exists' => 'Rạp chiếu phim bạn chọn không hợp lệ.',
+        //     'type_room_id.required' => "Vui lòng chọn loại phòng.",
+        //     'type_room_id.exists' => 'Loại phòng chiếu bạn chọn không hợp lệ.',
+        //     'seat_template_id.required' => "Vui lòng chọn mẫu sơ đòo ghế",
+        //     'seat_template_id.exists' => 'Mẫu sơ đồ ghế không hợp lệ.'
+        // ]);
+
+        // if (Auth::user()->cinema_id == "") {
+        //     $rules['branch_id'] = 'required|exists:branches,id';
+        //     $rules['cinema_id'] = 'required|exists:cinemas,id';
+        // }
+        $rules = [
             'type_room_id' => 'required|exists:type_rooms,id',
             'name' => [
                 'required',
@@ -29,7 +55,16 @@ class RoomController extends Controller
                 }),
             ],
             'seat_template_id' => 'required|exists:seat_templates,id',
-        ], [
+        ];
+
+        
+        if (empty(Auth::user()->cinema_id)) {
+            $rules['branch_id'] = 'required|exists:branches,id';
+            $rules['cinema_id'] = 'required|exists:cinemas,id';
+        }
+
+        // Khởi tạo Validator với các quy tắc đã được cấu hình
+        $validator = Validator::make($request->all(), $rules, [
             'name.required' => 'Vui lòng nhập tên phòng chiếu.',
             'name.unique' => 'Tên phòng đã tồn tại trong rạp.',
             'branch_id.required' => "Vui lòng chọn chi nhánh.",
@@ -38,8 +73,8 @@ class RoomController extends Controller
             'cinema_id.exists' => 'Rạp chiếu phim bạn chọn không hợp lệ.',
             'type_room_id.required' => "Vui lòng chọn loại phòng.",
             'type_room_id.exists' => 'Loại phòng chiếu bạn chọn không hợp lệ.',
-            'seat_template_id.required' => "Vui lòng chọn mẫu sơ đòo ghế",
-            'seat_template_id.exists' => 'Mẫu sơ đòo ghế không hợp lệ.'
+            'seat_template_id.required' => "Vui lòng chọn mẫu sơ đồ ghế.",
+            'seat_template_id.exists' => 'Mẫu sơ đồ ghế không hợp lệ.'
         ]);
 
         if ($validator->fails()) {
@@ -51,8 +86,8 @@ class RoomController extends Controller
         try {
             $room = DB::transaction(function () use ($request) {
                 $dataRoom = [
-                    'branch_id' => $request->branch_id,
-                    'cinema_id' => $request->cinema_id,
+                    'branch_id' => isset($request->branch_id) ? $request->branch_id : Auth::user()->cinema->branch_id,
+                    'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : Auth::user()->cinema_id,
                     'type_room_id' => $request->type_room_id,
                     'name' => $request->name,
                     'seat_template_id' => $request->seat_template_id,

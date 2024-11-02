@@ -507,7 +507,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'System Admin',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
-                'phone' => '0332293871',
+                'phone' => '0332295555',
                 'email' => 'admin@fpt.edu.vn',
                 'password' => Hash::make('admin@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',

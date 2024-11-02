@@ -32,7 +32,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'address',
         'service_id',
         'service_name',
-        'type'
+        'type',
+        'cinema_id'
     ];
 
     /**

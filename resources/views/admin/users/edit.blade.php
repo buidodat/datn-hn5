@@ -134,7 +134,7 @@
                                                         <span class='text-danger'>*</span>
                                                         <label class="form-label">Họ và tên</label>
                                                         <input type="text" class="form-control" placeholder="Họ và tên"
-                                                            name="name" value="{{ $user->name }}">
+                                                            name="name" value="{{ $user->name }}"  >
                                                         @error('name')
                                                             <div class='mt-1'>
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -148,7 +148,7 @@
                                                         <label class="form-label">Email</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="user123@gmail.com" name="email"
-                                                            value="{{ $user->email }}">
+                                                            value="{{ $user->email }}"  >
                                                         @error('email')
                                                             <div class='mt-1'>
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -162,7 +162,7 @@
                                                         <label class="form-label">Số điện thoại</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="0965263725" name="phone"
-                                                            value="{{ $user->phone }}">
+                                                            value="{{ $user->phone }}"  >
                                                         @error('phone')
                                                             <div class='mt-1'>
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -176,7 +176,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Ngày sinh</label>
                                                         <input type="date" class="form-control" name="birthday"
-                                                            value="{{ $user->birthday }}">
+                                                            value="{{ $user->birthday }}"  >
                                                         @error('birthday')
                                                             <div class='mt-1'>
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -187,9 +187,9 @@
                                                 <div class="col-lg-4 col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Giới tính</label>
-                                                        <select name="gender" id="" class="form-select">
+                                                        <select name="gender" id="" class="form-select"  >
                                                             @foreach ($genders as $gender)
-                                                                <option value="{{ $gender }}"
+                                                                <option value="{{ $gender }}" 
                                                                     @selected($user->gender == $gender)>{{ $gender }}
                                                                 </option>
                                                             @endforeach
@@ -202,17 +202,34 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
-                                                    <div class="mb-3">
+                                                    {{-- <div class="mb-3">
 
                                                         <label class="form-label">Loại tài khoản</label>
                                                         <select name="type" id="" class="form-select">
-                                                            <option value="{{ $typeAdmin }}"
+                                                            <option value="{{ $typeAdmin }}" 
                                                                 @selected($user->type == $typeAdmin)>Quản trị viên</option>
                                                             <option
-                                                                value="{{ $typeMember }}"@selected($user->type == $typeMember)>
+                                                                value="{{ $typeMember }}" @selected($user->type == $typeMember)>
                                                                 Khách hàng</option>
                                                         </select>
                                                         @error('type')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
+                                                    </div> --}}
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Quản trị viên tại</label>
+                                                        <select name="cinema_id" id="" class="form-select">
+                                                            @foreach ($cinemas as $cinema)
+                                                                <option value="{{ $cinema->id }}" 
+                                                                    @if ($user->cinema_id == $cinema->id) selected @endif>
+                                                                    {{ $cinema->name }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                        @error('cinema_id')
                                                             <div class='mt-1'>
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             </div>
