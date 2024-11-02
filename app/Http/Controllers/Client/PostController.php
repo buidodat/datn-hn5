@@ -10,9 +10,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        // Lấy 6 bài viết mới nhất và phân trang
-        $posts = Post::latest()->paginate(6); 
-        // $data = Product::query()->with(['category'])->get();
+        // Lấy 6 bài viết mới nhất, có is_active = 1 và phân trang
+        $posts = Post::where('is_active', 1)->latest()->paginate(6); 
 
         // Truyền biến $posts vào view
         return view('client.posts.index', compact('posts'));
