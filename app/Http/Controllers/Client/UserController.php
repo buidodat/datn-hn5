@@ -28,7 +28,7 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
-        $ranks =Rank::all();
+        $ranks = Rank::orderBy('total_spent', 'asc')->get();
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks'));
