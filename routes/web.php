@@ -64,8 +64,9 @@ Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('cho
 Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
 
 // Route giữ ghế cho người dùng
-Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
-Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
+Route::post('/update-seat', [ChooseSeatController::class, 'updateSeat'])->name('update-seat');
+// Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
+// Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
@@ -178,7 +179,7 @@ Route::get('public', function () {
 })->name('public');
 
 Route::get('huhu', function () {
-    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     if (!$ticket) {
         return 'Ticket not found';
     }
@@ -188,6 +189,6 @@ Route::get('huhu', function () {
     return 'Email sent successfully';
 });
 Route::get('hihi/{id}', function () {
-    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });

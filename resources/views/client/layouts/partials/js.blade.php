@@ -47,6 +47,3 @@
 <script src="{{ asset('theme/client/js/my-account.js') }}"></script>
 <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
 <!--main js file end-->
-
-
-<script src="{{ mix('js/app.js') }}"></script>

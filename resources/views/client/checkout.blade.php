@@ -159,25 +159,25 @@
                                                 <div class="info-voucher-checkout">
                                                     <div class="voucher-section">
                                                         <div class="voucher-title">Poly Voucher</div>
-                                                        <form id="voucher-form" method="POST">
-                                                            <div class="voucher-form">
-                                                                @csrf
-                                                                <label for="voucher_code">Vui lòng nhập mã voucher vào ô
-                                                                    trống
-                                                                    phía
-                                                                    dưới để được giảm giá!</label> <br>
-                                                                <div class="form-row">
-                                                                    <input type="text" name="voucher_code"
-                                                                        id="voucher_code" placeholder="Nhập mã voucher"
-                                                                        @guest disabled @endguest>
 
-                                                                    <button type="submit" id="apply-voucher-btn"
-                                                                        @guest disabled @endguest>Xác nhận
-                                                                    </button>
-                                                                </div>
+                                                        <div class="voucher-form">
+
+                                                            <label for="voucher_code">Vui lòng nhập mã voucher vào ô
+                                                                trống
+                                                                phía
+                                                                dưới để được giảm giá!</label> <br>
+                                                            <div class="form-row">
+                                                                <input type="text" name="voucher_code" id="voucher_code"
+                                                                    placeholder="Nhập mã voucher">
+
+                                                                <button type="button" id="apply-voucher-btn"
+                                                                    class='btn btn-danger'>Xác nhận
+                                                                </button>
                                                             </div>
-                                                        </form>
-                                                        <div id="voucher-response"></div>
+                                                            <div id="voucher-response">
+
+                                                            </div>
+                                                        </div>
                                                     </div>
 
 
@@ -185,7 +185,7 @@
                                                     {{-- diem --}}
                                                     <div class="points-section">
                                                         <div class="points-title">Điểm Poly</div>
-                                                        <form class="points-form" action="">
+                                                        <div class="points-form" action="" id='form-point'>
                                                             <table class="points-table">
                                                                 <thead>
                                                                     <tr>
@@ -197,27 +197,36 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td>1900</td>
-                                                                        <td><input type="text" name="point_use"
-                                                                                placeholder="Nhập điểm"></td>
-                                                                        <td>= 0 Vnđ</td>
-                                                                        <td>
-                                                                            <button type="submit">Đổi điểm</button>
+                                                                        <td id='points-membership'>
+                                                                            {{ number_format(auth()->user()->membership->points, 0, ',', '.') }}
+                                                                        </td>
+                                                                        <td><input type="text" name="use_points"
+                                                                                id='use_points' placeholder="Nhập điểm">
+                                                                        </td>
+                                                                        <td>= <b><span id='point_discount'>0</span></b> Vnđ
+                                                                        </td>
+                                                                        <td style="width: 20%">
+                                                                            <button type="button" class='btn btn-danger'
+                                                                                id="apply-point">Đổi
+                                                                                điểm</button>
+                                                                            <button type="button" id="cancel-point"
+                                                                                class='btn'
+                                                                                style="display:none">Hủy</button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                        {{-- tong tien --}}
+               
                                         <div class="total-price-checkout">
                                             <div>
                                                 <p>Tổng tiền:</p>
-                                                <p class="text-danger total-price-display" id="original-total">
+                                                <p class="text-danger total-price-display">
                                                     {{ number_format($checkoutData['total_price'], 0, ',', '.') }} Vnđ
                                                 </p>
                                                 <input type="hidden" name="tong_tien_ban_dau" id="total-price"
@@ -234,6 +243,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         {{-- phuong thuc thanh toan --}}
                                         <div class="box-payment-checkout">
                                             <div class="text-info-checkout">
@@ -342,7 +352,13 @@
                                                     value="{{ strtoupper(\Str::random(10)) }}">
                                                 <input type="hidden" name="user_id" id="userId"
                                                     value="{{ Auth::user()->id }}">
-                                                <input type="hidden" name="voucher_discount" id="total-discount">
+
+                                                <input type="hidden" name="price_seat" id="price-seat"
+                                                    value="{{ $checkoutData['total_price'] }}">
+                                                <input type="hidden" name="price_combo" id="price-combo">
+                                                <input type="hidden" name="point_discount" id="point-discount">
+                                                <input type="hidden" name="total_discount" id="total-discount">
+                                                <input type="hidden" name="voucher_discount" id="voucher-discount">
                                                 <input type="hidden" name="total_price" id="total-price-payment">
 
                                                 {{-- ticketseat --}}
@@ -960,7 +976,7 @@
                         error: function() {
                             $('#error-membership').html(
                                 '<p class="text-danger">Không tìm thấy thông tin người dùng.</p>'
-                                );
+                            );
                         }
                     });
                 } else {
@@ -1024,10 +1040,6 @@
             calculateComboPrice(); // Tính toán giá combo khi trang được tải
         });
     </script>
-
-
-
-
 
 
     <script>
