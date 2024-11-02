@@ -49,45 +49,35 @@
                             <div class="prs_contact_input_wrapper">
                                 <label for="user_contact" class="form-label">Họ và tên:</label>
                                 <input type="text" class="form-control" id="user_contact" name="user_contact" placeholder="Nhập họ và tên">
-                                @error("user_contact")
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <span class="text-danger"></span> 
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="prs_contact_input_wrapper">
                                 <label for="email" class="form-label">Email:</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email">
-                                @error("email")
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <span class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="prs_contact_input_wrapper">
                                 <label for="phone" class="form-label">Số điện thoại:</label>
-                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại">
-                                @error("phone")
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <input type="" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại">
+                                <span class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="prs_contact_input_wrapper">
                                 <label for="title" class="form-label">Tiêu đề:</label>
                                 <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề">
-                                @error("title")
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <span class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="prs_contact_input_wrapper">
                                 <label for="content" class="form-label">Nội dung:</label>
                                 <textarea class="form-control " rows="3" id="content" name="content" placeholder="Nhập nội dung"></textarea>
-                                @error('content')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                 <span class="text-danger"></span> 
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -126,4 +116,69 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('styles')
+    <style>
+        .prs_contact_input_wrapper {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* Căn chỉnh thông báo lỗi bên dưới input */
+        .prs_contact_input_wrapper .text-danger {
+            position: absolute;
+            bottom: -20px; /* Điều chỉnh khoảng cách giữa input và thông báo lỗi */
+            left: 0;
+            font-size: 14px;
+            color: #ff5b5b;
+            margin: 0;
+        }
+
+        /* Đảm bảo các input có kích thước đồng đều */
+        .prs_contact_input_wrapper input,
+        .prs_contact_input_wrapper textarea {
+            width: 100%;
+        }
+    </style>
+@endsection
+
+@section('style-libs')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault(); // Ngăn tải lại trang
+
+                let formData = new FormData(this);
+                $('.text-danger').html(''); // Xóa lỗi cũ nếu có
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            // Tải lại trang khi gửi yêu cầu thành công
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            // Hiển thị lỗi cho từng trường input
+                            $.each(errors, function (key, value) {
+                                $(`#${key}`).next('.text-danger').html(value[0]);
+                            });
+                        } else {
+                            $('.response').html(`<div class="alert alert-danger">${xhr.responseJSON.message}</div>`);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
