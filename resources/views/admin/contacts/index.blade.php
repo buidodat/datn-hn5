@@ -72,11 +72,12 @@
                                     <td>{{ $contact->phone }}</td>
                                     <td>{{ $contact->title }}</td>
                                     <td>{{ $contact->content }}</td>
-                                    <td>{{ $contact->created_at }}</td>
-                                    <td>{!! $contact->status ? 
-                                        '<span class="badge bg-success-subtle text-success text-uppercase">Đã xử lý</span>'
-                                        : '<span class="badge bg-danger-subtle text-danger text-uppercase">Chưa xử lí</span>' !!}</td>
-                                    <td>
+                                    <td>{{ $contact->created_at }}</td>                                  
+                                    <td>{!! $contact->status == 'pending' ? 
+                                        '<span class="badge bg-danger-subtle text-danger text-uppercase">Chưa xử lí</span>'
+                                        : '<span class="badge bg-success-subtle text-success text-uppercase">Đã xử lí</span>' !!}
+                                    </td>
+                                    <td>    
                                         {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
