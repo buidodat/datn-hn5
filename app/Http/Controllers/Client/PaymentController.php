@@ -99,7 +99,7 @@ class PaymentController extends Controller
 
         try {
             // Nếu không có ghế nào hết thời gian giữ, tiếp tục với transaction
-            DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request, $voucherDiscount, $totalPayment, $pointDiscount, $dataUsePoint,$priceSeat, $priceCombo) {
+            DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request, $voucherDiscount, $totalPayment, $pointDiscount, $dataUsePoint, $priceSeat, $priceCombo) {
                 // Gia hạn thời gian giữ chỗ thêm 15 phút
                 DB::table('seat_showtimes')
                     ->whereIn('seat_id', $seatIds)
@@ -121,8 +121,8 @@ class PaymentController extends Controller
                         'total_price' => $totalPayment,
                         'showtime_id' => $request->showtime_id,
                         'seat_id' => $request->seat_id,
-                        'priceSeat'=> $priceSeat,
-                        'priceCombo'=> $priceCombo,
+                        'priceSeat' => $priceSeat,
+                        'priceCombo' => $priceCombo,
                         'combo' => $request->combo,
                     ]
                 ]);
@@ -269,7 +269,8 @@ class PaymentController extends Controller
                                 'hold_expires_at' => null,
                             ]);
 
-                        event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
+                        // event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
+                        broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'))->toOthers();
                     }
 
                     // Lưu thông tin combo vào bảng ticket_combos
@@ -303,7 +304,7 @@ class PaymentController extends Controller
                             'type' => PointHistory::POINTS_SPENT,
                         ]);
                     }
-                    
+
                     // Tích điểm
                     $rank = Rank::findOrFail($membership->rank_id);
                     $pointsForTicket = $paymentData['priceSeat'] * ($rank->ticket_percentage / 100);
@@ -380,7 +381,8 @@ class PaymentController extends Controller
             ]);
 
         foreach ($paymentData['seat_id'] as $seatId) {
-            event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'));
+            // event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'));
+            broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'))->toOthers();
         }
 
         session()->forget('payment_data');
@@ -535,8 +537,8 @@ class PaymentController extends Controller
                                 'hold_expires_at' => null,
                             ]);
 
-                        // event(new SeatSold($seatId, $paymentData['showtime_id']));
-                        event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
+                        // event(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'));
+                        broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'sold'))->toOthers();
                     }
 
                     // Lưu thông tin combo vào bảng ticket_combos
@@ -569,7 +571,7 @@ class PaymentController extends Controller
                             'type' => PointHistory::POINTS_SPENT,
                         ]);
                     }
-                    
+
                     // Tích điểm
                     $rank = Rank::findOrFail($membership->rank_id);
                     $pointsForTicket = $paymentData['priceSeat'] * ($rank->ticket_percentage / 100);
@@ -723,7 +725,9 @@ class PaymentController extends Controller
                     'hold_expires_at' => null,
                 ]);
             foreach ($seatIds as $seatId) {
-                event(new SeatRelease($seatId, $showtimeId));
+                // event(new SeatRelease($seatId, $showtimeId));
+                broadcast(new SeatStatusChange($seatId, $showtimeId,'available'))->toOthers();
+
             }
             return redirect()->route('choose-seat', $showtimeId)
                 ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
@@ -759,7 +763,9 @@ class PaymentController extends Controller
                             'hold_expires_at' => null,
                         ]);
 
-                    event(new SeatSold($seatId, $showtimeId));
+                    // event(new SeatSold($seatId, $showtimeId));
+                    broadcast(new SeatStatusChange($seatId, $showtimeId,'sold'))->toOthers();
+
                 }
 
                 // Tạo ticket_combo
