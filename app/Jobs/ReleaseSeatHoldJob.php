@@ -49,7 +49,7 @@ class ReleaseSeatHoldJob implements ShouldQueue
                 ->lockForUpdate()
                 ->get();
 
-            $now = Carbon::now('Asia/Ho_Chi_Minh'); 
+            $now = Carbon::now('Asia/Ho_Chi_Minh');
             $expiredSeatIds = [];
 
             foreach ($seats as $seat) {
@@ -67,7 +67,8 @@ class ReleaseSeatHoldJob implements ShouldQueue
                     $expiredSeatIds[] = $seat->seat_id;
 
                     // Phát sự kiện giải phóng ghế
-                    event(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'));
+                    broadcast(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'))->toOthers();
+                    // event(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'));
                     // event(new SeatRelease($seat->seat_id, $this->showtimeId));
                 }
             }
