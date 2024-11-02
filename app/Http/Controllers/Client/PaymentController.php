@@ -83,7 +83,7 @@ class PaymentController extends Controller
 
         $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
         foreach ($seatShowtimes as $seatShowtime) {
-            // Kiểm tra xem có ghế nào hết thời gian giữ chỗ
+            // Kiểm tra xem có ghế xem có đủ tiêu chuẩn để đc bấm nút tiếp tục hay không
             if ($seatShowtime->hold_expires_at < now() || $seatShowtime->user_id != $userId || $seatShowtime->status != 'hold') {
                 $hasExpiredSeats = true; // Đánh dấu có ghế hết thời gian giữ chỗ
                 break; // Dừng vòng lặp khi tìm thấy ghế hết thời gian giữ
@@ -91,24 +91,10 @@ class PaymentController extends Controller
         }
 
         if ($hasExpiredSeats) {
-            // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ, cập nhật tất cả ghế thành 'available'
-            DB::table('seat_showtimes')
-                ->whereIn('seat_id', $seatIds)
-                ->where('showtime_id', $showtimeId)
-                ->update([
-                    'status' => 'available',
-                    'user_id' => null,
-                    'hold_expires_at' => null,
-                ]);
-
-            // Phát sự kiện Pusher để thông báo tất cả ghế được giải phóng cho người dùng khác
-            foreach ($seatIds as $seatId) {
-                event(new SeatStatusChange($seatId, $showtimeId, 'available'));
-            }
-
+            // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
             // Chuyển hướng về trang chọn ghế với thông báo lỗi
             return redirect()->route('choose-seat', $showtimeId)
-                ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
+                ->with('error', 'Ghế đã hết thời gian giữ chỗ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
         }
 
         try {
@@ -522,7 +508,7 @@ class PaymentController extends Controller
                         'voucher_discount' => $paymentData['voucher_discount'],
                         'point_use' => $paymentData['point_use'],
                         'point_discount' => $paymentData['point_discount'],
-                        'payment_name' => "Ví MoMo",
+                        'payment_name' => "Ví VnPay",
                         'code' => $paymentData['code'],
                         'total_price' => $paymentData['total_price'],
                         'status' => 'Chưa suất vé',
@@ -566,11 +552,10 @@ class PaymentController extends Controller
                                 'combo_id' => $comboId,
                                 'price' => $price * $quantity,  // Nhân giá với số lượng
                                 'quantity' => $quantity,
-                                // 'status' => 'Chưa lấy đồ ăn',
+                                'status' => 'Chưa lấy đồ ăn',
                             ]);
                         }
                     }
-
 
                     // Lấy thông tin thành viên
                     $membership = Membership::findOrFail($ticket->user_id);

@@ -93,6 +93,25 @@ class ChooseSeatController extends Controller
         $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
         $matrixSeat = Room::MATRIXS[$matrixKey];
 
+        // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
+        DB::table('seat_showtimes')
+            ->where('showtime_id', $id)
+            ->where(function ($query) {
+                $query->where('user_id', 0)
+                    ->orWhereNull('user_id')
+                    ->orWhere('status', 'available')
+                    ->orWhere(function ($query) {
+                        $query->where('status', '!=', 'sold')
+                            ->where('hold_expires_at', '<', now());
+                    });
+            })
+            ->update([
+                'status' => 'available',
+                'user_id' => null,
+                'hold_expires_at' => null,
+            ]);
+
+
         // Lấy danh sách ghế được giữ bởi user hiện tại cho suất chiếu này
         $userId = auth()->id(); // Lấy user ID
         $selectedSeats = SeatShowtime::where('showtime_id', $id)
@@ -104,7 +123,7 @@ class ChooseSeatController extends Controller
 
         // dd($selectedSeats);
 
-        $now = Carbon::now('Asia/Ho_Chi_Minh'); 
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
         $timeKey = 'timeData.' . $id; // Khóa chung cho cả end_time 
 
         // Kiểm tra session
@@ -150,12 +169,34 @@ class ChooseSeatController extends Controller
     {
         // dd($request->all());
         // dd(session()->all());
-        session()->forget('checkout_data');
-        
+
+        $seatIds = explode(',', $request->seatId); // Chuỗi ghế thành mảng
+        $userId = auth()->id();
+
+        // Kiểm tra ghế, bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
+        $seatShowtimes = DB::table('seat_showtimes')
+            ->whereIn('seat_id', $seatIds)
+            ->where('showtime_id', $showtimeId)
+            ->get();
+
+        $hasExpiredSeats = false; // Biến đánh dấu 
+        foreach ($seatShowtimes as $seatShowtime) {
+            // Kiểm tra xem có ghế xem có đủ tiêu chuẩn để đc bấm nút tiếp tục hay không
+            if ($seatShowtime->hold_expires_at < now() || $seatShowtime->user_id != $userId || $seatShowtime->status != 'hold') {
+                $hasExpiredSeats = true; // Đánh dấu có ghế 
+                break; // Dừng vòng lặp khi tìm thấy ghế 
+            }
+        }
+
+        if ($hasExpiredSeats) {
+            // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
+            return back()->with('error', 'Ghế đã có người khác giữ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
+        }
+
         session()->put([
             'checkout_data' => [
                 'showtime_id' => $request->showtimeId,
-                'seat_ids' => explode(',', $request->seatId), // Chuỗi ghế thành mảng
+                'seat_ids' => $seatIds,
                 'selected_seats_name' => $request->selected_seats_name, // Tên ghế thành mảng
                 'total_price' => $request->total_price,
                 'remainingSeconds' => $request->remainingSeconds,
