@@ -13,9 +13,11 @@ class PointHistory extends Model
         'points',
         'type',
         'expiry_date',
+        'processed'
     ];
     protected $casts = [
         'expiry_date' => 'datetime',
+        'processed'=>'boolean'
     ];
 
     const POINTS_ACCUMULATED = 'Tích điểm'; // Tích điểm

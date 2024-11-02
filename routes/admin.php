@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RankController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
@@ -133,5 +134,14 @@ Route::group(['middleware' => 'CheckSystemAdmin'], function () {
     Route::resource('assign-roles', AssignRolesController::class);
 });
 
+Route::prefix('ranks')
+    ->as('ranks.')
+    ->group(function () {
+        Route::get('', [RankController::class, 'index'])->name('index');
+        Route::post('', [RankController::class, 'store'])->name('store');
+        Route::get('{rank}/delete', [RankController::class, 'destroy'])->name('destroy');
+        Route::put('{rank}/update', [RankController::class, 'update'])->name('update');
+
+    });
 
 // Lưu ý: chưa check middleware hết được

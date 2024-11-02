@@ -21,6 +21,8 @@ class Kernel extends ConsoleKernel
             ->timezone('Asia/Ho_Chi_Minh')
             ->withoutOverlapping();*/
         $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
+        $schedule->command('points:expire')->daily();
+        $schedule->command('membership:reset')->yearly();
     }
 
     /**
@@ -29,6 +31,8 @@ class Kernel extends ConsoleKernel
     protected function commands(): void
     {
         $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__ . '/Commands/ExpirePoints.php');
+        $this->load(__DIR__ . '/Commands/ResetMembership.php');
 
         require base_path('routes/console.php');
     }
