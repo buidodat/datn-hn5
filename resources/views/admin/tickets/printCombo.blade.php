@@ -109,7 +109,8 @@
                         $combo = $ticketCombo->combo;
                     @endphp
 
-                    <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}  ( {{ number_format($combo->price * $ticketCombo->quantity) }} vnđ )</b></p>
+                    <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ( {{ number_format($combo->price * $ticketCombo->quantity) }}
+                            vnđ )</b></p>
 
                     <ul>
                         @foreach ($combo->food as $food)
@@ -206,6 +207,6 @@
         </div>
         </div>--}}
     <script>
-        window.print();
+        // window.print();
     </script>
 @endsection

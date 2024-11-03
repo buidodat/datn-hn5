@@ -92,6 +92,11 @@
                                     <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
                                 </div>
                             </div>
+                            <div class="col-xxl-2 col-sm-4">
+                                <div>
+                                    <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
+                                </div>
+                            </div>
                             <!--end col-->
                         </div>
                         <!--end row-->
@@ -114,12 +119,12 @@
                            style="width:100%;">
                         <thead class='table-light'>
                         <tr>
-                            <th>Code phim</th>
+                            <th>Mã vé</th>
                             <th>Thông tin người dùng</th>
                             <th class="text-center">Hình ảnh</th>
                             <th>Thông tin vé</th>
-                            <th>Trạng thái</th>
-                            <th>Chức năng</th>
+                            {{--<th>Trạng thái</th>--}}
+                            <th>Chức năng(Phân quyền)</th>
                         </tr>
                         </thead>
                         <tbody id="ticket-table-body">
@@ -135,16 +140,23 @@
                                 $showtimeEnd = $showtime ? \Carbon\Carbon::parse($showtime->end_time)->format('H:i') : 'Không có';
                             @endphp
                             <tr>
-                                <td>{{ $code }}</td>
+                                <td>
+                                    {{--{!! $barcodes[$code] !!}--}}
+                                    {{ $code }}
+                                </td>
                                 <td>
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span> {{ $ticket->user->name }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span> {{ $ticket->user->name }}
+                                        </li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Chức vụ:</span>
-                                            <span class="badge {{ $ticket->user->type === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->user->type }}</span>
+                                            <span
+                                                class="badge {{ $ticket->user->type === 'admin' ? 'bg-primary-subtle text-primary' : ' bg-secondary-subtle text-secondary' }}">{{ $ticket->user->type }}</span>
                                         </li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Email:</span> {{ $ticket->user->email }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span> {{ $ticket->user->phone }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_name }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span> {{ $ticket->user->phone }}
+                                        </li>
+                                        <li class="nav-item mb-1"><span
+                                                class="fw-semibold">Phương thức thanh toán:</span> {{ $ticket->payment_name }}</li>
                                     </ul>
                                 </td>
                                 <td class="text-center">
@@ -158,14 +170,17 @@
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item mb-1"><span class="fw-semibold">Phim:</span> {{ $ticket->movie->name }}</li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Nơi chiếu:</span>
-                                            {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }} - {{ $ticket->room->name }}
+                                            {{ $ticket->room->branch->name }} - {{ $ticket->room->cinema->name }}
+                                            - {{ $ticket->room->name }}
                                         </li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
                                             @foreach ($ticket->ticketSeats as $ticketSeat)
                                                 {{ $ticketSeat->seat->name }}
                                             @endforeach
                                         </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span> {{ number_format($ticket->total_price) }} VNĐ</li>
+                                        <li class="nav-item mb-1"><span
+                                                class="fw-semibold">Tổng tiền:</span> {{ number_format($ticket->total_price) }} VNĐ
+                                        </li>
                                         <li class="nav-item mb-1"><span class="fw-semibold">Trạng thái:</span>
                                             @switch($ticket->status)
                                                 @case('Chưa suất vé')
@@ -179,35 +194,43 @@
                                                     @break
                                             @endswitch
                                         </li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span> {{ $showtimeStart }} ~ {{ $showtimeEnd }}</li>
-                                        <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span> {{ $ticket->expiry->format('H:i, d/m/Y') }}</li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span> {{ $showtimeStart }}
+                                            ~ {{ $showtimeEnd }}</li>
+                                        <li class="nav-item mb-1"><span
+                                                class="fw-semibold">Thời hạn sử dụng:</span> {{ $ticket->expiry->format('H:i, d/m/Y') }}
+                                        </li>
                                     </ul>
                                 </td>
-                                <td>
-                                    <select class="form-select" data-original-status="{{ $ticket->status }}" data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
+                               {{-- <td>
+                                    <select class="form-select" data-original-status="{{ $ticket->status }}"
+                                            data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
                                         {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                        <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận</option>
+                                        <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác
+                                            nhận
+                                        </option>
                                         <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
                                         @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
                                             <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
                                         @endif
                                     </select>
-                                </td>
+                                </td>--}}
                                 <td>
                                     <a href="{{ route('admin.tickets.show', $ticket) }}">
-                                        <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i></button>
+                                        <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i>
+                                        </button>
                                     </a>
-                                    @if($ticket->status == 'Đã suất vé')
+                                    {{--@if($ticket->status == 'Đã suất vé')
                                         <a href="{{ route('admin.tickets.print', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                                    class="ri-download-2-fill align-middle me-1"></i> In vé</button>
+                                                    class="ri-download-2-fill align-middle me-1"></i> In vé
+                                            </button>
                                         </a>
                                         <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                                    class="ri-download-2-fill align-middle me-1"></i> In combo</button>
+                                                    class="ri-download-2-fill align-middle me-1"></i> In combo
+                                            </button>
                                         </a>
-                                    @endif
-
+                                    @endif--}}
                                 </td>
                             </tr>
                         @endforeach
@@ -238,15 +261,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
+            order: []
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         //cập nhật trạng thái
-        function changeStatus(e) {
+        /*function changeStatus(e) {
             if (confirm("Bạn có chắc chắn muốn thay đổi trạng thái vé không?")) {
                 var ticketId = e.getAttribute('data-ticket-id');
                 var newStatus = e.value;
@@ -284,7 +305,7 @@
                 // Khôi phục trạng thái cũ nếu người dùng chọn "Cancel" trong confirm
                 e.value = e.getAttribute("data-original-status");
             }
-        }
+        }*/
 
         /*Hiển thị rạp*/
         $(document).ready(function () {
