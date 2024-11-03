@@ -45,6 +45,6 @@
 
 <!-- favicon links -->
 {{-- <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/favicon.ico') }}" /> --}}
-<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/poly2.svg') }}" />
+<link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/P2.svg') }}" />
 
 <link rel="stylesheet" href="{{ mix('css/app.css') }}">

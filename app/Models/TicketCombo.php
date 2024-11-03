@@ -12,8 +12,7 @@ class TicketCombo extends Model
         'ticket_id',
         'combo_id',
         'price',
-        'quantity',
-        'status'
+        'quantity'
     ];
 
     public function ticket()
