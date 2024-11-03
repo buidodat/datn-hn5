@@ -20,8 +20,11 @@ use App\Models\Room;
 use App\Models\Seat;
 use App\Models\Showtime;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,14 +64,16 @@ Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('cho
 Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
 
 // Route giữ ghế cho người dùng
-Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
-Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
+Route::post('/update-seat', [ChooseSeatController::class, 'updateSeat'])->name('update-seat');
+// Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
+// Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
 route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
-route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
+route::post('payment', [PaymentController::class, 'payment'])->name('payment');
+route::post('payment-admin', [PaymentController::class, 'paymentAdmin'])->name('payment-admin');
 
 // Cổng thanh toán
 //1 VNPAY
@@ -142,12 +147,39 @@ Route::get('checkoutAdmin', function () {
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 
 
+// để tạm để test
+// Route::get('admin/assign-manager-showtimes', function () {
+//     dd(Auth::user()->getAllPermissions()->pluck('slug'));
+// });
+
+Route::get('admin/assign-admin', function () {
+    $user = User::find('1');
+    // $user->assignRole('System Admin');
+    // dd($user->name);
+
+
+    $adminRole = Role::findByName('System Admin', 'web');
+    $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get());
+
+    // $adminRole->syncPermissions($permissions);
+
+    if ($user && $user->hasRole('System Admin')) {
+        return 'Người dùng này đã có vai trò System Admin';
+    } else {
+        return 'Người dùng này không có vai trò System Admin';
+    }
+});
+
+
+
+
+
 Route::get('public', function () {
     return view('public');
 })->name('public');
 
 Route::get('huhu', function () {
-    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     if (!$ticket) {
         return 'Ticket not found';
     }
@@ -157,6 +189,6 @@ Route::get('huhu', function () {
     return 'Email sent successfully';
 });
 Route::get('hihi/{id}', function () {
-    $ticket = Ticket::find(22); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });

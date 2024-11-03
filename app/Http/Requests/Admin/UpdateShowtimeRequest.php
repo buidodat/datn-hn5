@@ -29,8 +29,8 @@ class UpdateShowtimeRequest extends FormRequest
                 'required',
             ],
             'movie_id' => 'required',
-            'cinema_id' => 'required',
-            'branch_id' => 'required',
+            // 'cinema_id' => 'required',
+            // 'branch_id' => 'required',
             'movie_version_id' => 'required|exists:movie_versions,id',
             'date' => 'required|date|after_or_equal:today',   //ngăn chặn chọn ngày trog quá khứ
             'start_time' => 'required',

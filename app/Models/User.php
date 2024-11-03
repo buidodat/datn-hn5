@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasRoles;
     use HasApiTokens, HasFactory, Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +32,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'address',
         'service_id',
         'service_name',
-        'type'
+        'type',
+        'cinema_id'
     ];
 
     /**
@@ -53,6 +57,13 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     const TYPE_ADMIN = 'admin';
     const TYPE_MEMBER = 'member';
+
+    const ROLE = [
+        'System Admin',
+        'Cinema Manager',
+        'Staff'
+    ];
+    // const 
     const GENDERS = [
         'Nam',
         'Nữ',
@@ -69,20 +80,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Voucher::class, 'user_vouchers')->withTimestamps();
     }
 
-    public function posts() {
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
     public function movieReview()
     {
-        return $this->hasMany(MovieReview::class,'user_id');
+        return $this->hasMany(MovieReview::class, 'user_id');
     }
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
     }
-    public function membership(){
+    public function membership()
+    {
         return $this->hasOne(Membership::class);
     }
 
+    public function cinema()
+    {
+        return $this->belongsTo(Cinema::class);
+    }
 }

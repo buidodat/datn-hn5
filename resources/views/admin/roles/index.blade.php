@@ -62,88 +62,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Admin</td>
-                                <td>
-                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Tất cả hệ thống</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a class="mx-1" href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- Xóa --}}
+                            @foreach ($roles as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>
+                                        @if ($item->permissions->isNotEmpty())
+                                            @foreach ($item->permissions->take(3) as $permission)
+                                                
+                                                <span
+                                                    class="badge bg-success-subtle text-success text-uppercase">{{ $permission->name }}</span>
+                                            @endforeach
+                                            @if ($item->permissions->count() > 3)
+                                                
+                                                <span
+                                                    class="badge bg-info-subtle text-info text-uppercase">+{{ $item->permissions->count() - 3 }}
+                                                    quyền khác</span>
+                                            @endif
+                                        @else
+                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Không có
+                                                quyền</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
 
-                                        <form action="" method="post" class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Manager Post</td>
-                                <td>
-                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Quản lý bài viết</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a class="mx-1" href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- Xóa --}}
+                                            <a class="mx-1" href="{{ route('admin.roles.edit', $item) }}">
+                                                <button title="" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                            {{-- Xóa --}}
 
-                                        <form action="" method="post" class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Manager Showtime</td>
-                                <td>
-                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Quản lý suất
-                                        chiếu</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a class="mx-1" href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- Xóa --}}
+                                            <form action="{{ route('admin.roles.destroy', $item) }}" method="post"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                        class="ri-delete-bin-7-fill"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
 
-                                        <form action="" method="post" class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -170,7 +132,7 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                // [0, 'desc']
             ]
         });
     </script>

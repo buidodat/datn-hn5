@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateUserRequest;
+use App\Models\Rank;
 use App\Models\Ticket;
 use App\Models\TicketMovie;
 use App\Models\TicketSeat;
@@ -27,10 +28,10 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
-
+        $ranks = Rank::orderBy('total_spent', 'asc')->get();
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
-        return view('client.users.my-account', compact('user', 'genders', 'tickets'));
+        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks'));
     }
 
     public function update(UpdateUserRequest $request)
@@ -40,25 +41,26 @@ class UserController extends Controller
         try {
             $dataUser = $request->all();
 
-
-            if ($request->img_thumbnail) {
+            if ($request->hasFile('img_thumbnail')) {
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
-                // Lưu lại đường dẫn của ảnh hiện tại để so sánh sau
                 $ImgThumbnailCurrent = $user->img_thumbnail;
             }
 
             $user->update($dataUser);
 
-            // Nếu có ảnh mới và ảnh mới khác với ảnh cũ, xóa ảnh cũ khỏi hệ thống
-            if (!empty($ImgThumbnailCurrent) && ($dataMovie['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
+            if (!empty($ImgThumbnailCurrent) && ($dataUser['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
                 Storage::delete($ImgThumbnailCurrent);
             }
 
-            return redirect()
-                ->back()
-                ->with('success', 'Cập nhật thành công!');
+             // Return success response for AJAX
+             session()->flash('success', 'Thông tin của bạn đã được cập nhật thành công!');
+
+             // Trả về phản hồi thành công
+             return response()->json(['success' => true]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['success' => false, 'errors' => $e->validator->errors()], 422);
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
         }
     }
 
@@ -123,6 +125,9 @@ class UserController extends Controller
         $user->update([
             'password' => Hash::make($request->password),
         ]);
+
+        // Gửi thông báo qua email
+        Notification::send($user, new PasswordChanged());
 
         // Return success response for AJAX
         session()->flash('success', 'Đổi mật khẩu thành công!');

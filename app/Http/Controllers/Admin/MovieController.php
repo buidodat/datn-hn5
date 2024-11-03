@@ -20,6 +20,14 @@ class MovieController extends Controller
 
     const PATH_VIEW = 'admin.movies.';
     const PATH_UPLOAD = 'movies';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách phim')->only('index');
+        $this->middleware('can:Thêm phim')->only(['create', 'store']);
+        $this->middleware('can:Sửa phim')->only(['edit', 'update']);
+        $this->middleware('can:Xóa phim')->only('destroy');
+    }
+
     public function index()
     {
         $movies = Movie::query()->with('movieVersions')->latest('id')->get();

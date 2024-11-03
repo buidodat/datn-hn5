@@ -121,13 +121,14 @@ class APIController extends Controller
             if ($membership) {
                 return response()->json([
                     'success' => true,
-                    'data' => [ 
+                    'data' => [
                         'name' => $user->name,
                         'email' => $user->email,
                         'phone' => $user->phone,
                         'membership_code' => $membership->code,
                         'rank' => $membership->rank,
                         'points' => $membership->points,
+                        'user_id'=>$user->id
                     ]
                 ]);
             }

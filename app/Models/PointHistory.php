@@ -13,8 +13,21 @@ class PointHistory extends Model
         'points',
         'type',
         'expiry_date',
+        'processed'
     ];
+    protected $casts = [
+        'expiry_date' => 'datetime',
+        'processed'=>'boolean'
+    ];
+
+    const POINTS_ACCUMULATED = 'Tích điểm'; // Tích điểm
+    const POINTS_SPENT = 'Tiêu điểm';             // Tiêu điểm
+    const POINTS_EXPIRY = 'Hết hạn';            // Hết hạn
+
+    const POINT_EXPIRY_DURATION = 6; // Đơn vị là tháng tính từ ngày tích điểm
+
+
     public function membership(){
-        return $this->belongsTo(Membership::class); 
+        return $this->belongsTo(Membership::class);
     }
 }

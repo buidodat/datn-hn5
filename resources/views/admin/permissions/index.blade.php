@@ -61,54 +61,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Quản lý phim</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a class="mx-1" href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- Xóa --}}
+                            @foreach ($permissions as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>
+                                        <div class="d-flex">
 
-                                        <form action="" method="post" class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Quản lý Suất chiếu</td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a class="mx-1" href="">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        {{-- Xóa --}}
+                                            <a class="mx-1" href="{{ route('admin.permissions.edit', $item) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                            {{-- Xóa --}}
 
-                                        <form action="" method="post" class="d-inline-block">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                    class="ri-delete-bin-7-fill"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                                            <form action="{{ route('admin.permissions.destroy', $item) }}" method="post"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                        class="ri-delete-bin-7-fill"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -135,7 +113,7 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                // [0, 'desc']
             ]
         });
     </script>

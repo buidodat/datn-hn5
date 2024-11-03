@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hóa Đơn CGV</title>
+    <title>Hóa Đơn Poly Cinemas</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -34,6 +34,7 @@
             text-align: center;
             margin: 5px 0;
         }
+
         h4 {
             /* font-size: 26px; */
             text-align: center;
@@ -118,15 +119,26 @@
 
 <body>
     <div class="container">
-        <div class="barcode">
-            @php
-                $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);
-            @endphp
+        @php
+            // Khởi tạo tên file duy nhất
+            $fileName = $ticket->code . '.png';
 
-            <div class="barcode">
-                <center>{!! $barcode !!}</center>
-                <p>{{ $ticket->code }}</p>
-            </div>
+            // Đường dẫn đầy đủ đến file trong public/storage/barcodes
+            $filePath = public_path($fileName);
+
+            // Kiểm tra và tạo thư mục nếu chưa tồn tại
+            if (!file_exists(public_path('storage/barcodes'))) {
+                mkdir(public_path('storage/barcodes'), 0777, true);
+            }
+
+            // Tạo mã vạch và lưu vào file
+            \DNS1D::getBarcodePNGPath($ticket->code, 'C128', 1.5, 50, [0, 0, 0], true, $filePath);
+        @endphp
+
+
+        <div class="barcode">
+            <img src="{{ asset('barcodes/' . $fileName) }}" alt="Barcode">
+            <p>{{ $ticket->code }}</p>
         </div>
 
         <h4>Thông Tin Vé</h4>
@@ -180,9 +192,9 @@
         </div>
 
         <div class="footer">
-            <p><span class="highlight">CGV Cinemas Việt Nam</span></p>
-            <p>Lầu 2, 72B Thành Thái, Phường 14, Quận 10, TP.HCM</p>
-            <p>Email hỗ trợ: <a href="mailto:hoidap@cgv.vn">hoidap@cgv.vn</a></p>
+            <p><span class="highlight">Poly Cinemas Việt Nam</span></p>
+            {{-- <p>Lầu 2, 72B Thành Thái, Phường 14, Quận 10, TP.HCM</p> --}}
+            {{-- <p>Email hỗ trợ: <a href="mailto:hoidap@cgv.vn">hoidap@cgv.vn</a></p> --}}
             <p>Hotline: 1900 6017</p>
         </div>
     </div>

@@ -46,7 +46,10 @@
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Suất chiếu</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Thêm thông tin Suất chiếu @if (Auth::user()->cinema_id != '')
+                                - {{ Auth::user()->cinema->name }}
+                            @endif
+                        </h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="live-preview">
@@ -86,60 +89,82 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row gy-4">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Chi nhánh:</label>
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chọn</option>
-                                            @foreach ($branches as $item)
-                                                <option value="{{ $item->id }}" @selected($item->id == old('branch_id'))>
-                                                    {{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('cinema_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
+                            @if (Auth::user()->hasRole('System Admin'))
+                                <div class="row gy-4">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên Chi nhánh:</label>
+                                            <select name="branch_id" id="branch" class="form-select">
+                                                <option value="">Chọn</option>
+                                                @foreach ($branches as $item)
+                                                    <option value="{{ $item->id }}" @selected($item->id == old('branch_id'))>
+                                                        {{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('cinema_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên Rạp:</label>
+                                            <select name="cinema_id" id="cinema" class="form-select">
+                                                <option value="">Chọn</option>
+                                            </select>
+                                            @error('cinema_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên phòng:</label>
+                                            <select name="room_id" id="room" class="form-select">
+                                                <option value="">Chọn</option>
+
+                                            </select>
+                                            @error('room_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên Rạp:</label>
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn</option>
-
-
-                                        </select>
-                                        @error('cinema_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
+                            @else
+                                <div class="row gy-4">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <span class='text-danger'>*</span>
+                                            <label for="title" class="form-label ">Tên phòng:</label>
+                                            <select name="room_id" id="room" class="form-select">
+                                                <option value="">Chọn phòng</option>
+                                                @foreach ($rooms as $room)
+                                                    <option value="{{ $room->id }}">{{ $room->name }} -
+                                                        {{ $room->typeRoom->name }}
+                                                        - {{ $room->seats->where('is_active', true)->count() }} ghế
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('room_id')
+                                                <div class='mt-1'>
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
+                            @endif
 
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <span class='text-danger'>*</span>
-                                        <label for="title" class="form-label ">Tên phòng:</label>
-                                        <select name="room_id" id="room" class="form-select">
-                                            <option value="">Chọn</option>
-
-                                        </select>
-                                        @error('room_id')
-                                            <div class='mt-1'>
-                                                <span class="text-danger">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                            </div>
                             <div class="row mb-3">
                                 <div class="col-md-8">
                                     <span class='text-danger'>*</span>
@@ -159,7 +184,28 @@
                                         chiếu</button>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="auto-generate-showtimes" name="auto_generate_showtimes">
+                                    Tự động thêm các suất chiếu trong ngày
+                                </label>
+                            </div>
+
+                            <div class="row" id="auto-showtime-settings" style="display: none;">
+                                <div class="col-md-6 mb-1">
+                                    <label for="start_hour">Giờ mở cửa:</label>
+                                    <input type="time" id="start_hour" name="start_hour" class="form-control">
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label for="end_hour">Giờ đóng cửa:</label>
+                                    <input type="time" id="end_hour" name="end_hour" class="form-control">
+                                </div>
+                            </div>
+
+                            <!-- Các input cho giờ mở cửa và giờ đóng cửa, chỉ hiển thị khi checkbox được chọn -->
+
+                            <div class="row" id="add-start-time">
                                 <div id="showtime-container">
                                     <div class="row showtime-row">
 
@@ -187,6 +233,8 @@
                                             @enderror
 
                                         </div>
+
+
 
                                     </div>
                                 </div>
@@ -222,14 +270,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="listShowtimes">
-
-                                        {{-- @for ($i = 0; $i < 4; $i++)
-                                            <tr>
-                                                <td>12:00 - 14:00</td>
-                                                <td>Poly 01</td>
-                                            </tr>
-                                        @endfor --}}
-
 
                                     </tbody>
                                 </table>
@@ -595,6 +635,21 @@
         $(document).on('change', 'input[name="start_time[]"]', function() {
             const currentRow = $(this).closest('.showtime-row');
             checkTimeOrder(currentRow); // Gọi hàm kiểm tra khi có thay đổi
+        });
+
+
+        // JavaScript để hiển thị/ẩn các input giờ mở và đóng cửa khi chọn checkbox
+        document.getElementById('auto-generate-showtimes').addEventListener('change', function() {
+            const showtimeSettings = document.getElementById('auto-showtime-settings');
+            const addStartTime = document.getElementById('add-start-time');
+            if (this.checked) {
+                showtimeSettings.style.display = 'block';
+                addStartTime.style.display = 'none';
+
+            } else {
+                showtimeSettings.style.display = 'none';
+                addStartTime.style.display = 'block';
+            }
         });
     </script>
 @endsection

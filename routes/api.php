@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\API\BookTicketController;
+use App\Http\Controllers\API\MembershipController;
 use App\Http\Controllers\API\MovieController;
 use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\API\SeatController;
 use App\Http\Controllers\API\SeatTemplateController;
 use App\Http\Controllers\API\UpdateActiveController;
+use App\Models\Membership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\BranchController;
@@ -32,7 +34,7 @@ Route::get('rooms/{movieId}',              [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}',      [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}',   [APIController::class, 'getMovieDuration']);
 Route::get('typeRooms/{typeRoomId}',       [APIController::class, 'getTypeRooms']);
-Route::get('get-membership}',       [APIController::class, 'getMembership'])->name('get-membership');
+
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 
 Route::middleware('web')->resource('rooms', RoomController::class);
@@ -49,6 +51,7 @@ Route::post('posts/change-active',      [UpdateActiveController::class, 'post'])
 Route::post('showtimes/change-active',  [UpdateActiveController::class, 'showtime'])->name('showtimes.change-active');
 Route::post('vouchers/change-active',   [UpdateActiveController::class, 'voucher'])->name('vouchers.change-active');
 
+
 Route::prefix('seat-templates')
     ->as('seat-templates.')
     ->middleware('web')
@@ -59,13 +62,20 @@ Route::prefix('seat-templates')
     });
 
 
+Route::middleware('web')->group(function () {
+    Route::post('membership/apply-point', [MembershipController::class, 'applyPoint'])->name('apply-point');
+    Route::post('get-membership',       [APIController::class, 'getMembership'])->name('get-membership');
+    Route::post('membership/cancel-point',       [MembershipController::class, 'cancelPoint'])->name('cancel-point');
+});
+
+
 
 
 
 
 Route::get('getShowtimesByRoom', [APIController::class, 'getShowtimesByRoom']);
 
-Route::post('vouchers',[\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
+Route::post('vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');
 
 
 
@@ -75,8 +85,3 @@ Route::middleware(['web'])->group(function () {
     Route::post('payment-now/{showtime}',         [BookTicketController::class, 'payment'])->name('payment-now');
     Route::post('clear-session/{showtime}', [BookTicketController::class, 'clearSession'])->name('clear-session');
 });
-
-
-
-
-

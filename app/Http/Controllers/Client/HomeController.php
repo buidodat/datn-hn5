@@ -58,7 +58,7 @@ class HomeController extends Controller
 
 
 
-        $posts = Post::orderBy('created_at', 'desc')->take(5)->get();
+        $posts = Post::where('is_active', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
         return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'posts', 'currentNow', 'endDate'));
     }

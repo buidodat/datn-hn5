@@ -40,7 +40,11 @@
                 <div class="card-header ">
                     {{-- d-flex justify-content-between --}}
                     <div class="row mb-3">
-                        <h5 class="card-title mb-0">Danh sách Suất chiếu</h5>
+                        <h5 class="card-title mb-0">Danh sách Suất chiếu
+                            @if (Auth::user()->cinema_id != '')
+                                - {{ Auth::user()->cinema->name }}
+                            @endif
+                        </h5>
                     </div>
 
                     <div class="row">
@@ -48,31 +52,37 @@
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 {{-- TÌm kiếm --}}
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chi nhánh</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
-                                                    {{ $branch->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    @if (Auth::user()->hasRole('System Admin'))
+                                        <div class="col-md-3">
+                                            <select name="branch_id" id="branch" class="form-select">
+                                                <option value="">Chi nhánh</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
+                                                        {{ $branch->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-                                    <div class="col-md-3">
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn Rạp</option>
+                                        <div class="col-md-3">
+                                            <select name="cinema_id" id="cinema" class="form-select">
+                                                <option value="">Chọn Rạp</option>
+                                            </select>
+                                        </div>
+                                    @else
+                                        <div class="col-md-2">
+                                            <label for="">Lọc theo ngày:</label>
+                                        </div>
+                                    @endif
 
-                                        </select>
-                                    </div>
 
                                     <div class="col-md-3">
                                         {{-- <label for="">Ngày chiếu:</label> --}}
                                         <input type="date" name="date" id="" class="form-control"
                                             value="{{ request('date', now()->format('Y-m-d')) }}">
                                     </div>
-                                    <div class="col-md-3">
 
+                                    <div class="col-md-3">
                                         <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
                                     </div>
                                 </div>
@@ -180,12 +190,12 @@
 
                                         <td>
 
-                                                <div class="form-check form-switch form-switch-success d-inline-block">
-                                                    <input class="form-check-input switch-is-active changeActive"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-showtime-id="{{ $showtime->id }}" @checked($showtime->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                            <div class="form-check form-switch form-switch-success d-inline-block">
+                                                <input class="form-check-input switch-is-active changeActive"
+                                                    name="is_active" type="checkbox" role="switch"
+                                                    data-showtime-id="{{ $showtime->id }}" @checked($showtime->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
 
 
                                             {{-- <div class="form-check form-switch form-switch-default">

@@ -104,19 +104,18 @@
             <div class="col-lg-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active:</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                    name="is_active" value="1" checked>
+                        <div class="card card-seat ">
+                            <div class="card-body ">
+                                <div class="row ">
+                                    <div class="col-md-12 mb-3 d-flex ">
+                                        <label class="form-label">Trạng thái:</label>
+                                        <span class="text-muted mx-2">
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active" name="is_active"
+                                                    type="checkbox" role="switch" checked value="1">
                                             </div>
-                                        </div>
+                                        </span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

@@ -25,6 +25,14 @@ class CheckoutController extends Controller
         //lấy dữ liệu trong session
         $checkoutData = session()->get('checkout_data', []);
 
+        // Tính lại thời gian còn lại
+        if (isset($checkoutData['remainingSeconds']) && isset($checkoutData['lastUpdated'])) {
+            $elapsedTime = now()->diffInSeconds($checkoutData['lastUpdated']);
+            $checkoutData['remainingSeconds'] = max(0, $checkoutData['remainingSeconds'] - $elapsedTime);
+            session()->put('checkout_data.remainingSeconds', $checkoutData['remainingSeconds']);
+            session()->put('checkout_data.lastUpdated', now()); // Cập nhật thời điểm hiện tại
+        }
+
         // Lấy suất chiếu theo ID từ session
         $showtime = Showtime::where('id', $checkoutData['showtime_id'])->firstOrFail();
 
@@ -46,6 +54,7 @@ class CheckoutController extends Controller
 
 
     public function applyVoucher(Request $request)
+
     {
         $voucher = Voucher::where('code', $request->code)->first();
 
@@ -113,11 +122,10 @@ class CheckoutController extends Controller
             'voucher_code' => $voucher->code,
             'discount' => $voucher->discount,
         ]);
-
     }
 
 
-    //    public function cancelVoucher(Request $request)
+    //    public function cancelVouche  r(Request $request)
     //    {
     //        $userVoucher = UserVoucher::where('user_id', auth()->id())
     //            ->where('voucher_id', $request->voucher_id)

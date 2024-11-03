@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\TicketSeat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
@@ -21,16 +22,30 @@ class TicketController extends Controller
      */
 
     const PATH_VIEW = 'admin.tickets.';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách hóa đơn')->only('index');
+        $this->middleware('can:Thêm hóa đơn')->only(['create', 'store']);
+        $this->middleware('can:Sửa hóa đơn')->only(['edit', 'update']);
+        $this->middleware('can:Xóa hóa đơn')->only('destroy');
+    }
 
     public function index(Request $request)
     {
 
+
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('id');
+        if (Auth::user()->cinema_id != "") {
+            $tickets = $tickets->where('cinema_id', Auth::user()->cinema_id);
+        }
+
 
         // Lọc theo cinema_id
         if ($request->input('cinema_id')) {
-            $tickets = $tickets->where('cinema_id', $request->input('cinema_id'));
+            $tickets = $tickets->whereHas('cinema', function ($query) use ($request) {
+                $query->where('id', $request->cinema_id);
+            });
         }
 
         // Lọc theo ngày

@@ -1,15 +1,5 @@
     /* Thông tin tài khoản */
     /* ========================================================= */
-    /* .my-account-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-        margin-top: 120px;
-        margin-bottom: 30px;
-        background-color: white;
-        border: 3px solid #ddd;
-        border-radius: 8px;
-    } */
 
     .my-account-tabs {
         display: flex;
@@ -101,7 +91,24 @@
     }
 
     .my-account-mb-3 {
+        position: relative;
+        margin-bottom: 30px;
         margin-bottom: 25px;
+    }
+
+    /* Căn chỉnh thông báo lỗi bên dưới input */
+    .my-account-mb-3 .text-danger {
+        position: absolute;
+        bottom: -20px; /* Điều chỉnh khoảng cách giữa input và thông báo lỗi */
+        left: 0;
+        font-size: 14px;
+        color: #ff5b5b;
+        margin: 0;
+    }
+
+    /* Đảm bảo các input có kích thước đồng đều */
+    .my-account-mb-3 input {
+        width: 100%;
     }
 
     .my-account-form-control {
@@ -170,9 +177,11 @@
         padding: 20px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-        margin-top: 30px;
-        width: 30%;
-        height: 60%;
+        max-width: 90%; /* Điều chỉnh khung với tỷ lệ phần trăm */
+        width: 400px; /* Thiết lập chiều rộng tối đa */
+        height: auto; /* Để chiều cao tự động, giúp giảm vỡ layout */
+        max-height: 80%; /* Giới hạn chiều cao ở 80% */
+        overflow-y: auto; /* Thêm cuộn dọc nếu nội dung vượt quá */
     }
 
     .my-account-overlay {
@@ -206,15 +215,12 @@
         background-color: #f0f0f0;
     }
 
-    /* Căn chỉnh ảnh bên trong khung */
     .my-account-image-upload-container img {
-        /* width: 100%; 
-        height: 100%; */
         max-width: 100%;
         max-height: 100%;
         object-fit: cover;
         display: block;
-    }
+    }  
 
     input[type="file"] {
         display: none;
@@ -223,13 +229,13 @@
     .my-account-form-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px;
         align-items: flex-start;
     }
-
+    
     .my-account-form-group {
         flex: 1;
-        min-width: 200px;
+        min-width: 45%; /* Điều chỉnh để không chiếm hết chiều rộng khi thu nhỏ */
     }
 
 

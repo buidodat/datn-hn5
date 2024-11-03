@@ -58,60 +58,67 @@
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
                                 <th>Ngày sinh</th>
-                                <th>Giới tính</th>
-                                <th>Loại người dùng</th>
+                                {{-- <th>Giới tính</th> --}}
+                                <th>Chức danh</th>
+                                <th>Tại</th>
                                 <th>Chức năng</th>
                             </tr>
                         <tbody>
                             @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>
-                                        @php
-                                            $url = $user->img_thumbnail;
+                                @if ($user->name != 'System Admin')
+                                    <tr>
+                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>
+                                            @php
+                                                $url = $user->img_thumbnail;
 
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
 
-                                        @endphp
+                                            @endphp
 
-                                        @if (!empty($user->img_thumbnail))
-                                            <img src="{{ $url }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image "
-                                                alt="user-profile-image">
-                                        @else
-                                            <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
-                                                alt="user-profile-image">
-                                        @endif
-
-
-
-
-                                    </td>
-                                    <td>{{ $user->email }}
-                                    </td>
-                                    <td>{{ $user->phone }}</td>
-                                    <td>{{ Carbon\Carbon::parse($user->birthday)->format('d/m/Y') ?? 'null' }}</td>
-                                    <td>{{ $user->gender }}</td>
-                                    <td>
-                                        @if ($user->type == App\Models\User::TYPE_ADMIN)
-                                            <span class="badge badge-gradient-success">Quản trị viên</span>
-                                        @else
-                                            <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
-                                                hàng</span>
-                                        @endif
-                                    </td>
+                                            @if (!empty($user->img_thumbnail))
+                                                <img src="{{ $url }}"
+                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image "
+                                                    alt="user-profile-image">
+                                            @else
+                                                <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
+                                                    class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                    alt="user-profile-image">
+                                            @endif
 
 
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('admin.users.show', $user) }}">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a>
-                                            {{-- <a href="{{ route('admin.users.edit', $user) }}">
+
+
+                                        </td>
+                                        <td>{{ $user->email }}
+                                        </td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ Carbon\Carbon::parse($user->birthday)->format('d/m/Y') ?? 'null' }}</td>
+                                        {{-- <td>{{ $user->gender }}</td> --}}
+                                        <td>
+                                            @if ($user->type == App\Models\User::TYPE_ADMIN)
+                                                <span class="badge badge-gradient-success">Quản trị viên</span>
+                                            @else
+                                                <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
+                                                    hàng</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user->cinema != '')
+                                                {{ $user->cinema->name }}
+                                            @endif
+                                        </td>
+
+
+                                        <td>
+                                            <div class="d-flex">
+                                                <a href="{{ route('admin.users.show', $user) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                            class="fas fa-eye"></i></button></a>
+                                                <a href="{{ route('admin.users.edit', $user) }}">
                                                 <button title="xem" class="btn btn-warning btn-sm mx-1 "
                                                     type="button"><i class="fas fa-edit"></i></button>
                                             </a>
@@ -121,10 +128,11 @@
                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
                                                     <i class="ri-delete-bin-7-fill"></i>
                                                 </button>
-                                            </form> --}}
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
 
                         </tbody>
@@ -154,7 +162,8 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
+                [6, 'desc']
+
             ]
         });
     </script>

@@ -12,6 +12,7 @@ use App\Models\SeatTemplate;
 use App\Models\TypeRoom;
 use App\Models\TypeSeat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,12 +21,24 @@ class RoomController extends Controller
 {
     const PATH_VIEW = 'admin.rooms.';
     const PATH_UPLOAD = 'rooms';
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách phòng chiếu')->only('index');
+        $this->middleware('can:Thêm phòng chiếu')->only(['create', 'store']);
+        $this->middleware('can:Sửa phòng chiếu')->only(['edit', 'update']);
+        $this->middleware('can:Xóa phòng chiếu')->only('destroy');
+    }
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom', 'cinema','seats'])->latest('cinema_id')->get();
+        $rooms = Room::query()->with(['typeRoom', 'cinema', 'seats'])->latest('cinema_id')->get();
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
-        $cinemas = Cinema::all();
+        if (Auth::user()->cinema_id == "") {
+            $cinemas = Cinema::all();
+        } else {
+            $cinemas = Cinema::where('id', Auth::user()->cinema_id)->get();
+        }
+
         $seatTemplates = SeatTemplate::where('is_publish', 1)
             ->where('is_active', 1)
             ->pluck('name', 'id')
@@ -114,6 +127,4 @@ class RoomController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
-
 }

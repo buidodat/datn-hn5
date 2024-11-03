@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AssignRolesController;
 use App\Http\Controllers\Admin\BookTicketController;
 use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\BranchController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\MyAccountController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RankController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
@@ -23,22 +25,11 @@ use App\Http\Controllers\Admin\TypeSeatController;
 
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('admin.dashboard');
 });
-
-// Route::prefix('posts')
-//     ->as('posts.')
-//     ->group(function () {
-//         Route::get('/', function () {
-//             return view('admin.posts.index');
-//         })->name('index');
-
-//         Route::get('create', function () {
-//             return view('admin.posts.create');
-//         })->name('create');
-//     });
 
 // City
 Route::resource('branches', BranchController::class);
@@ -63,9 +54,13 @@ Route::post('tickets/process-scan', [TicketController::class, 'processScan'])->n
 Route::post('tickets/{ticket}/confirm-print', [TicketController::class, 'confirmPrint'])->name('tickets.confirmPrint');
 
 Route::resource('contacts', ContactController::class);
-Route::resource('movies', MovieController::class);
 
-Route::resource('type-rooms', TypeRoomController::class);
+// Route::group(['middleware' => ['auth', 'checkPermission:manage movies']], function () {
+Route::resource('movies', MovieController::class);
+// });
+
+
+// Route::resource('type-rooms', TypeRoomController::class);
 
 // Quản lý phòng chiếu
 Route::prefix('rooms')
@@ -92,7 +87,10 @@ Route::prefix('seat-templates')
 // Route::resource('rooms', RoomController::class);
 
 Route::resource('posts', PostController::class);
+
+// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiếu']], function () {
 Route::resource('showtimes', ShowtimeController::class);
+// });
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 Route::post('ticket-update', [TicketPriceController::class, 'update'])->name('ticket-update');
@@ -107,7 +105,15 @@ Route::resource('combos', ComboController::class);
 // TypeSeat
 Route::resource('type_seats', TypeSeatController::class);
 //user
+
+// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách tài khoản']], function () {
 Route::resource('users', UserController::class);
+// });
+// Route::group(['middleware' => ['auth', 'checkPermission:Quản lý tài khoản']], function () {
+
+// });
+
+
 Route::put('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.password.reset');
 //my-account
 Route::get('my-account', [MyAccountController::class, 'show'])->name('my-account');
@@ -122,11 +128,31 @@ Route::prefix('book-tickets')
     ->group(function () {
         Route::get('/',                      [BookTicketController::class, 'index'])->name('index');
         Route::get('{showtime}',             [BookTicketController::class, 'show'])->name('show');
-        Route::post('{showtime}',            [BookTicketController::class, 'payment'])->name('payment');
+        Route::post('{showtime}',            [BookTicketController::class, 'payment']);
         // Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
 
 // Phân quyền
-Route::resource('permissions', PermissionController::class);
-Route::resource('roles', RoleController::class);
+
+// Route::resource('permissions', PermissionController::class);
+// Route::resource('roles', RoleController::class);
+// Route::resource('assign-roles', AssignRolesController::class);
+
+Route::group(['middleware' => 'CheckSystemAdmin'], function () {
+    Route::resource('permissions', PermissionController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('assign-roles', AssignRolesController::class);
+});
+
+Route::prefix('ranks')
+    ->as('ranks.')
+    ->group(function () {
+        Route::get('', [RankController::class, 'index'])->name('index');
+        Route::post('', [RankController::class, 'store'])->name('store');
+        Route::get('{rank}/delete', [RankController::class, 'destroy'])->name('destroy');
+        Route::put('{rank}/update', [RankController::class, 'update'])->name('update');
+
+    });
+
+// Lưu ý: chưa check middleware hết được
