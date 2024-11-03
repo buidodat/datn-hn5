@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignIdFor(Combo::class);
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
-            $table->string('status')->comment('Đã lấy đồ ăn, chưa lấy đồ ăn');
             $table->timestamps();
         });
     }
