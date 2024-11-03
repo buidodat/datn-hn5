@@ -52,7 +52,7 @@
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 {{-- TÌm kiếm --}}
                                 <div class="row">
-                                    @if (Auth::user()->cinema_id == '')
+                                    @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chi nhánh</option>

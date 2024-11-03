@@ -166,10 +166,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4">
-                                                    <div class="mb-3">
-
+                                                    {{-- <div class="mb-3">
                                                         <label class="form-label">Loại tài khoản</label>
-                                                        <select name="type" id="" class="form-select">
+                                                        <select name="type" id="" class="form-control">
                                                             <option value="{{ $typeAdmin }}"
                                                                 @selected(old('type') == $typeAdmin)>Quản trị viên</option>
                                                             <option
@@ -181,8 +180,24 @@
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             </div>
                                                         @enderror
+                                                    </div> --}}
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Quản trị viên tại</label>
+                                                        <select name="cinema_id" id="" class="form-select">
+                                                            @foreach ($cinemas as $cinema)
+                                                                <option value="{{ $cinema->id }}">{{ $cinema->name }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                        @error('cinema_id')
+                                                            <div class='mt-1'>
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            </div>
+                                                        @enderror
                                                     </div>
                                                 </div>
+
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Địa chỉ</label>
@@ -203,7 +218,8 @@
                                         <button type="submit"
                                             class="btn btn-primary btn-label right ms-auto nexttab nexttab"
                                             data-nexttab="pills-success-tab"><i
-                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Thêm mới</button>
+                                                class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Thêm
+                                            mới</button>
                                     </div>
                                 </div>
 

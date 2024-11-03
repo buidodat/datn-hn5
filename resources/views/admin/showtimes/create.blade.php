@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Auth::user()->cinema_id == '')
+                            @if (Auth::user()->hasRole('System Admin'))
                                 <div class="row gy-4">
                                     <div class="col-md-4">
                                         <div class="mb-3">
@@ -151,7 +151,8 @@
                                                 @foreach ($rooms as $room)
                                                     <option value="{{ $room->id }}">{{ $room->name }} -
                                                         {{ $room->typeRoom->name }}
-                                                        - {{ $room->seats->where('is_active', true)->count() }} ghế </option>
+                                                        - {{ $room->seats->where('is_active', true)->count() }} ghế
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('room_id')
@@ -183,7 +184,28 @@
                                         chiếu</button>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="auto-generate-showtimes" name="auto_generate_showtimes">
+                                    Tự động thêm các suất chiếu trong ngày
+                                </label>
+                            </div>
+
+                            <div class="row" id="auto-showtime-settings" style="display: none;">
+                                <div class="col-md-6 mb-1">
+                                    <label for="start_hour">Giờ mở cửa:</label>
+                                    <input type="time" id="start_hour" name="start_hour" class="form-control">
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label for="end_hour">Giờ đóng cửa:</label>
+                                    <input type="time" id="end_hour" name="end_hour" class="form-control">
+                                </div>
+                            </div>
+
+                            <!-- Các input cho giờ mở cửa và giờ đóng cửa, chỉ hiển thị khi checkbox được chọn -->
+
+                            <div class="row" id="add-start-time">
                                 <div id="showtime-container">
                                     <div class="row showtime-row">
 
@@ -211,6 +233,8 @@
                                             @enderror
 
                                         </div>
+
+
 
                                     </div>
                                 </div>
@@ -246,14 +270,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="listShowtimes">
-
-                                        {{-- @for ($i = 0; $i < 4; $i++)
-                                            <tr>
-                                                <td>12:00 - 14:00</td>
-                                                <td>Poly 01</td>
-                                            </tr>
-                                        @endfor --}}
-
 
                                     </tbody>
                                 </table>
@@ -619,6 +635,21 @@
         $(document).on('change', 'input[name="start_time[]"]', function() {
             const currentRow = $(this).closest('.showtime-row');
             checkTimeOrder(currentRow); // Gọi hàm kiểm tra khi có thay đổi
+        });
+
+
+        // JavaScript để hiển thị/ẩn các input giờ mở và đóng cửa khi chọn checkbox
+        document.getElementById('auto-generate-showtimes').addEventListener('change', function() {
+            const showtimeSettings = document.getElementById('auto-showtime-settings');
+            const addStartTime = document.getElementById('add-start-time');
+            if (this.checked) {
+                showtimeSettings.style.display = 'block';
+                addStartTime.style.display = 'none';
+
+            } else {
+                showtimeSettings.style.display = 'none';
+                addStartTime.style.display = 'block';
+            }
         });
     </script>
 @endsection
