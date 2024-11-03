@@ -14,4 +14,11 @@ class Rank extends Model
         'ticket_percentage',
         'combo_percentage',
     ];
+
+    public $casts = [
+        'is_default'=>'boolean'
+    ];
+    const MAX_RANK = 5;
+
+
 }

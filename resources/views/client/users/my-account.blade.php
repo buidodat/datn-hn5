@@ -39,7 +39,7 @@
                 <div class="tab-content">
                     {{-- Thông tin tài khoản --}}
                     <div id="my-account" class="tab-pane active"> {{-- active --}}
-                        <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data" id="updateAccountForm">
                             @csrf
                             @method('PUT')
 
@@ -136,8 +136,7 @@
                             </div>
 
                             <div class="my-account-text-center my-account-my-3">
-                                <button type="submit" class="my-account-btn"
-                                    onclick="return confirm('Bạn có chắc chắn muốn cập nhật không?')">Cập nhật</button>
+                                <button type="submit" class="my-account-btn">Cập nhật</button>
                             </div>
                         </form>
                     </div>
@@ -533,66 +532,6 @@
 
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Xóa thông báo lỗi khi người dùng bắt đầu nhập
-            $('#old_password, #password, #password_confirmation').on('input', function() {
-                $(this).next('.text-danger').text(''); // Xóa nội dung lỗi ngay sau trường input
-            });
-
-            // Gửi form bằng AJAX
-            $('#changePasswordForm').on('submit', function(e) {
-                e.preventDefault();
-
-                // Xóa tất cả thông báo lỗi trước đó
-                $('#old_password_error, #password_error, #password_confirmation_error').text('');
-                $('.alert-success').remove(); // Xóa thông báo thành công trước đó nếu có
-
-                let formData = {
-                    old_password: $('#old_password').val(),
-                    password: $('#password').val(),
-                    password_confirmation: $('#password_confirmation').val(),
-                    _token: '{{ csrf_token() }}',
-                };
-
-                $.ajax({
-                    url: '{{ route('my-account.changePasswordAjax') }}',
-                    type: 'PUT',
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            // Tải lại trang khi đổi mật khẩu thành công
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr) {
-                        // Kiểm tra nếu có lỗi xác thực
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            if (errors.old_password) {
-                                $('#old_password_error').text(errors.old_password[
-                                    0]); // Hiển thị lỗi cho mật khẩu hiện tại
-                            }
-                            if (errors.password) {
-                                $('#password_error').text(errors.password[
-                                    0]); // Hiển thị lỗi cho mật khẩu mới
-                            }
-                            if (errors.password_confirmation) {
-                                $('#password_confirmation_error').text(errors
-                                    .password_confirmation[0]
-                                ); // Hiển thị lỗi cho xác nhận mật khẩu
-                            }
-                        } else if (xhr.status === 400) {
-                            // Xử lý lỗi mật khẩu hiện tại không chính xác
-                            $('#old_password_error').text(xhr.responseJSON.error);
-                        }
-                    },
-                });
-            });
-        });
-    </script>
 
 @endsection
 
@@ -620,6 +559,98 @@
         new DataTable("#pointHistory", {
             order: [
             ]
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Xóa thông báo lỗi khi người dùng nhập vào các input trong form đổi mật khẩu
+            $('#old_password, #password, #password_confirmation').on('input', function() {
+                $(this).next('.text-danger').text(''); // Xóa nội dung lỗi ngay sau trường input
+            });
+
+            // AJAX cho cập nhật tài khoản
+            $('#updateAccountForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                // Xóa tất cả thông báo lỗi trước đó
+                $('.text-danger').remove();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload(); // Tải lại trang nếu cập nhật thành công
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            for (let field in errors) {
+                                let inputField = $(`[name="${field}"]`);
+                                inputField.next('.text-danger').remove(); // Xóa lỗi cũ nếu có
+                                inputField.after(`<span class="text-danger">${errors[field][0]}</span>`);
+                            }
+                        } else {
+                            alert("Lỗi: " + xhr.responseJSON.message);
+                        }
+                    }
+                });
+            });
+
+            // AJAX cho đổi mật khẩu
+            $('#changePasswordForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = {
+                    old_password: $('#old_password').val(),
+                    password: $('#password').val(),
+                    password_confirmation: $('#password_confirmation').val(),
+                    _token: '{{ csrf_token() }}',
+                };
+
+                // Xóa tất cả thông báo lỗi trước đó
+                $('#old_password_error, #password_error, #password_confirmation_error').text('');
+
+                $.ajax({
+                    url: '{{ route('my-account.changePasswordAjax') }}',
+                    type: 'PUT',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload(); // Tải lại trang nếu đổi mật khẩu thành công
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            // Hiển thị thông báo lỗi cụ thể cho từng input
+                            if (errors.old_password) {
+                                $('#old_password').next('.text-danger').remove();
+                                $('#old_password').after(`<span class="text-danger">${errors.old_password[0]}</span>`);
+                            }
+                            if (errors.password) {
+                                $('#password').next('.text-danger').remove();
+                                $('#password').after(`<span class="text-danger">${errors.password[0]}</span>`);
+                            }
+                            if (errors.password_confirmation) {
+                                $('#password_confirmation').next('.text-danger').remove();
+                                $('#password_confirmation').after(`<span class="text-danger">${errors.password_confirmation[0]}</span>`);
+                            }
+                        } else if (xhr.status === 400) {
+                            $('#old_password').next('.text-danger').remove();
+                            $('#old_password').after(`<span class="text-danger">${xhr.responseJSON.error}</span>`);
+                        }
+                    },
+                });
+            });
         });
     </script>
 @endsection

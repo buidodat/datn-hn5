@@ -18,7 +18,7 @@ class Contact extends Model
     ];
 
     const STATUS = [
-        'Chưa xử lí',
-        'Đã xử lí',
+        'pending' => 'Chưa xử lí',
+        'resolved' => 'Đã xử lí',
     ];
 }

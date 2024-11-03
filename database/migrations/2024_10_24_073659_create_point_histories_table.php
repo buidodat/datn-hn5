@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('points');
             $table->string('type');
             $table->date('expiry_date')->nullable();
+            $table->boolean('processed')->default(false);
             $table->timestamps();
         });
     }

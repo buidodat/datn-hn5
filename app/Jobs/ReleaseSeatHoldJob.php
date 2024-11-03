@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\SeatStatusChange;
 use App\Events\SeatRelease;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -48,7 +49,7 @@ class ReleaseSeatHoldJob implements ShouldQueue
                 ->lockForUpdate()
                 ->get();
 
-            $now = Carbon::now();
+            $now = Carbon::now('Asia/Ho_Chi_Minh');
             $expiredSeatIds = [];
 
             foreach ($seats as $seat) {
@@ -66,7 +67,9 @@ class ReleaseSeatHoldJob implements ShouldQueue
                     $expiredSeatIds[] = $seat->seat_id;
 
                     // Phát sự kiện giải phóng ghế
-                    event(new SeatRelease($seat->seat_id, $this->showtimeId));
+                    broadcast(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'))->toOthers();
+                    // event(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'));
+                    // event(new SeatRelease($seat->seat_id, $this->showtimeId));
                 }
             }
 

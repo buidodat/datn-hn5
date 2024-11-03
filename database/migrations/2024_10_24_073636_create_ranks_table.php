@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total_spent')->unique();
             $table->unsignedInteger('ticket_percentage');
             $table->unsignedInteger('combo_percentage');
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
     }
