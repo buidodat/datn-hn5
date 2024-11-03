@@ -55,7 +55,7 @@
                             <!--end col-->
 
                             <!--end col-->
-                            @if (Auth::user()->cinema_id == '')
+                            @if (Auth::user()->hasRole('System Admin'))
                                 <div class="col-xxl-2 col-sm-4">
                                     <div>
                                         <select name="branch_id" id="branch" class="form-select">

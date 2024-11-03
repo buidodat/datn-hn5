@@ -91,7 +91,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Auth::user()->cinema_id == '')
+                            @if (Auth::user()->hasRole('System Admin'))
                                 <div class="row gy-4">
                                     <div class="col-md-4">
                                         <div class="mb-3">

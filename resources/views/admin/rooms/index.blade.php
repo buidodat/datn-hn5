@@ -62,7 +62,7 @@
                 <div class="card-body pt-0">
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
-                        @if (Auth::user()->cinema_id == '')
+                        @if (Auth::user()->hasRole('System Admin'))
                             <li class="nav-item">
                                 <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
                                     aria-selected="true">
@@ -433,7 +433,7 @@
                                 <span class="text-danger mt-3" id="createNameError"></span> <!-- Thêm thông báo lỗi -->
                             </div>
 
-                            @if (Auth::user()->cinema_id == '')
+                            @if (Auth::user()->hasRole('System Admin'))
                                 <div class="col-md-5 mb-3">
                                     <label for="branchId" class="form-label"><span class="text-danger">*</span> Chi
                                         Nhánh</label>
@@ -516,29 +516,29 @@
                                     placeholder="Poly 202">
                                 <span class="text-danger mt-3" id="updateNameError"></span>
                             </div>
-                            {{-- @if (Auth::user()->cinema_id == '') --}}
-                            <div class="col-md-5 mb-3">
-                                <label for="updateBranchId" class="form-label"><span class="text-danger">*</span> Chi
-                                    Nhánh</label>
-                                <select class="form-select" id="updateBranchId" name="branch_id"
-                                    onchange="loadCinemas('updateBranchId', 'updateCinemaId')" required>
-                                    <option value="" disabled selected>Chọn chi nhánh</option>
-                                    @foreach ($branches as $branch)
-                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger mt-3" id="updateBranchError"></span>
-                            </div>
+                            @if (Auth::user()->hasRole('System Admin'))
+                                <div class="col-md-5 mb-3">
+                                    <label for="updateBranchId" class="form-label"><span class="text-danger">*</span> Chi
+                                        Nhánh</label>
+                                    <select class="form-select" id="updateBranchId" name="branch_id"
+                                        onchange="loadCinemas('updateBranchId', 'updateCinemaId')" required>
+                                        <option value="" disabled selected>Chọn chi nhánh</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger mt-3" id="updateBranchError"></span>
+                                </div>
 
-                            <div class="col-md-7 mb-3">
-                                <label for="updateCinemaId" class="form-label"><span class="text-danger">*</span> Rạp
-                                    Chiếu</label>
-                                <select class="form-select" id="updateCinemaId" name="cinema_id" required>
-                                    <option value="" disabled selected>Chọn rạp chiếu</option>
-                                </select>
-                                <span class="text-danger mt-3" id="updateCinemaError"></span>
-                            </div>
-                            {{-- @endif --}}
+                                <div class="col-md-7 mb-3">
+                                    <label for="updateCinemaId" class="form-label"><span class="text-danger">*</span> Rạp
+                                        Chiếu</label>
+                                    <select class="form-select" id="updateCinemaId" name="cinema_id" required>
+                                        <option value="" disabled selected>Chọn rạp chiếu</option>
+                                    </select>
+                                    <span class="text-danger mt-3" id="updateCinemaError"></span>
+                                </div>
+                            @endif
 
                             <div class="col-md-6 mb-3">
                                 <label for="updateTypeRoomId" class="form-label"><span class="text-danger">*</span> Loại
