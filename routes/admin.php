@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
 
@@ -48,10 +49,18 @@ Route::resource('payments', PaymentController::class);
 
 Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
 Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
-Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class);
-route::post('tickets/{ticket}/update-status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-Route::get('tickets/{ticket}/print', [\App\Http\Controllers\Admin\TicketController::class, 'print'])->name('tickets.print');
-Route::get('tickets/{ticket}/print-combo', [\App\Http\Controllers\Admin\TicketController::class, 'printCombo'])->name('tickets.printCombo');
+//resource ticket
+Route::resource('tickets', TicketController::class);
+
+//in ve
+Route::get('tickets/{ticket}/print', [TicketController::class, 'print'])->name('tickets.print');
+Route::get('tickets/{ticket}/print-combo', [TicketController::class, 'printCombo'])->name('tickets.printCombo');
+//scan ve
+Route::get('admin/tickets/scan', [TicketController::class, 'scan'])->name('tickets.scan');
+Route::post('tickets/process-scan', [TicketController::class, 'processScan'])->name('tickets.processScan');
+//chuyen trang thai ve khi in
+//route::post('tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+Route::post('tickets/{ticket}/confirm-print', [TicketController::class, 'confirmPrint'])->name('tickets.confirmPrint');
 
 Route::resource('contacts', ContactController::class);
 Route::resource('movies', MovieController::class);

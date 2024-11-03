@@ -29,18 +29,49 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h5 class="card-title flex-grow-1 mb-0">Order: #{{ $ticket->id }}</h5>
+                        <h5 class="card-title flex-grow-1 mb-0"></h5>
                         <div class="flex-shrink-0">
-                            @if($ticket->status == 'Đã suất vé')
-                                <a href="{{ route('admin.tickets.print', $ticket) }}">
-                                    <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                            class="ri-download-2-fill align-middle me-1"></i> In vé</button>
-                                </a>
-                                <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
-                                    <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                            class="ri-download-2-fill align-middle me-1"></i> In combo</button>
-                                </a>
-                            @endif
+                            {{--<a href="{{ route('admin.tickets.print', $ticket) }}">
+                                <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                        class="ri-download-2-fill align-middle me-1"></i> In vé
+                                </button>
+                            </a>--}}
+                            {{--<a href="{{ route('admin.tickets.printCombo', $ticket) }}">
+                                <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                        class="ri-download-2-fill align-middle me-1"></i> In combo
+                                </button>
+                            </a>--}}
+                            <!-- Static Backdrop -->
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <i class="ri-download-2-fill align-middle me-1"></i> In vé
+                            </button>
+                            <!-- staticBackdrop Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                 role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body text-center p-5">
+                                            {{--<lord-icon
+                                                src="https://cdn.lordicon.com/lupuorrc.json"
+                                                trigger="loop"
+                                                colors="primary:#121331,secondary:#08a88a"
+                                                style="width:120px;height:120px">
+                                            </lord-icon>--}}
+
+                                            <div class="mt-4">
+                                                <h4 class="mb-3">Xác nhận in vé</h4>
+                                                <p class="text-muted mb-4"> Vui lòng xác nhận khi truy cập vào trang in vé</p>
+                                                <div class="hstack gap-2 justify-content-center">
+                                                    <a href="{{ route('admin.tickets.print', $ticket) }}" id="confirmPrintBtn" class="btn btn-success">Xác
+                                                        nhận</a>
+                                                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
+                                                       data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Hủy</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,18 +202,18 @@
                 </div>
             </div>
             <!--end card-->
-            <div class="card">
+            {{--<div class="card">
                 <div class="card-header">
                     <div class="d-sm-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
-                        {{--<div class="flex-shrink-0 mt-2 mt-sm-0">
+                        --}}{{--<div class="flex-shrink-0 mt-2 mt-sm-0">
                             <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
                                     class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
                                 tin</a>
                             <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
                                     class="mdi mdi-archive-remove-outline align-middle me-1"></i>
                                 Hủy</a>
-                        </div>--}}
+                        </div>--}}{{--
                     </div>
                 </div>
                 <div class="card-body">
@@ -268,19 +299,19 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        {{--<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                        --}}{{--<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                             <div class="accordion-body ms-2 ps-5 pt-0">
                                                 <h6 class="mb-1">Your Item has been picked up by courier partner</h6>
                                                 <p class="text-muted mb-0">Fri, 17 Dec 2021 - 9:45AM</p>
                                             </div>
-                                        </div>--}}
+                                        </div>--}}{{--
                                     </div>
                                 @endif
                             @endif
 
 
 
-                            {{--<div class="accordion-item border-0">
+                            --}}{{--<div class="accordion-item border-0">
                                 <div class="accordion-header" id="headingThree">
                                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                         <div class="d-flex align-items-center">
@@ -302,8 +333,8 @@
                                         <p class="text-muted mb-0">Sat, 18 Dec 2021 - 4.54PM</p>
                                     </div>
                                 </div>
-                            </div>--}}
-                            {{--<div class="accordion-item border-0">
+                            </div>--}}{{--
+                            --}}{{--<div class="accordion-item border-0">
                                 <div class="accordion-header" id="headingFour">
                                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseFour" aria-expanded="false">
                                         <div class="d-flex align-items-center">
@@ -334,12 +365,12 @@
                                         </div>
                                     </a>
                                 </div>
-                            </div>--}}
+                            </div>--}}{{--
                         </div>
                         <!--end accordion-->
                     </div>
                 </div>
-            </div>
+            </div>--}}
             <!--end card-->
         </div>
         <!--end col-->
@@ -350,17 +381,28 @@
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
                         <div class="flex-shrink-0">
                             <span href="javascript:void(0);"
-                                  class="badge bg-primary-subtle text-primary fs-11">{{ $ticket->status }}</span>
+                                  class="badge bg-primary-subtle text-primary fs-11">
+{{--                                {{ $ticket->status }}--}}
+
+                                @if($ticket->status == 'Chưa suất vé')
+                                    Chưa suất vé
+                                @elseif($ticket->status == 'Đã suất vé')
+                                    Đã suất vé <br>
+                                    <span>({{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('H:i - j/n/Y') }})</span>
+                                @elseif($ticket->status == 'Đã hết hạn')
+                                    Đã hết hạn <br>
+                                    <span>{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('H:i - j/n/Y') }}</span>
+                                @endif
+
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="text-center">
-                        {{--<img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
-                             alt="">--}}
-                       <div class="d-flex justify-content-center">{!! $barcode !!}</div>
-                        <p class="text-muted mb-0 mt-2"><b>{{ $ticket->code }}</b></p>
 
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center">{!! $barcode !!}</div>
+                        <p class="text-muted mb-0 mt-2"><b>{{ $ticket->code }}</b></p>
                     </div>
                 </div>
             </div>
@@ -450,11 +492,12 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-shrink-0">
-                            <p class="text-muted mb-0">Transactions:</p>
+                            <p class="text-muted mb-0">Thanh toán vào lúc:</p>
                         </div>
                         <div class="flex-grow-1 ms-2">
-                            <h6 class="mb-0">#VLZ124561278124</h6>
+                            <h6 class="mb-0">{{ \Carbon\Carbon::parse($ticket->created_at)->locale('vi')->translatedFormat('H:i - j/n/Y') }}</h6>
                         </div>
+
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-shrink-0">
@@ -533,6 +576,36 @@
         CKEDITOR.replace("content", {
             width: "100%",
             height: "750px"
+        });
+    </script>
+    <script>
+        document.getElementById('confirmPrintBtn').addEventListener('click', function() {
+            fetch('{{ route("admin.tickets.confirmPrint", $ticket) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ confirm: 'yes' })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modal.hide();
+
+                    // Kiểm tra và hiển thị thông báo nếu vé đã suất trước đó
+                    if (data.hasPrinted) {
+                        alert(data.message);  // Hiển thị thông báo rằng vé đã được suất
+                    } else {
+                        alert(data.message);  // Hiển thị thông báo suất vé thành công
+                    }
+
+                    window.location.href = '{{ route("admin.tickets.print", $ticket) }}';
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra khi xử lý yêu cầu');
+                });
         });
     </script>
 @endsection
