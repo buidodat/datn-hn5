@@ -149,6 +149,7 @@
 } */
 .title-choose-seat a {
     font-size: 20px;
+    font-weight: 700;
 }
 
 .border.my-3 {
@@ -322,7 +323,7 @@
 
 .container-screen .legend div {
     /* margin: 0px 20px; */
-    padding: 0px 12px;
+    padding: 0px 9px;
     display: flex;
     align-items: center;
     border-right: 1px solid rgb(222, 222, 222);
@@ -374,7 +375,7 @@
 
 .info-movie div ul li:not(.info-movie div ul li:first-child) {
     /* padding: 12px; */
-    margin: 15px 20px 0px 20px;
+    margin: 18px 28px 0px 28px;
     display: flex;
     justify-content: space-between;
 }
@@ -382,8 +383,9 @@
 .total-price-choose-seat {
     margin: 18px 20px 0px 20px;
     padding-right: 10px;
-    display: flex;
-    justify-content: flex-end;
+    /* display: flex; */
+    text-align: center;
+    /* justify-content: flex-end; */
     margin-bottom: 23px;
 }
 
@@ -392,10 +394,20 @@
 }
 
 .total-price-choose-seat button {
+    margin: 15px;
     padding: 10px 30px;
     background-color: #ff7307;
     color: white;
     border: 0px;
+    border-radius: 5px;
+}
+
+.cam{
+    color: #ff7c18;
+}
+.cam:hover{
+    color: #142166;
+
 }
 
 /* Hết css trang chọn ghế */
