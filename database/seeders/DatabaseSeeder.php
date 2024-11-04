@@ -74,12 +74,12 @@ class DatabaseSeeder extends Seeder
             false,
         ];
 
-        $ratings = array_column(Movie::VERSIONS, 'name');
-
+        $ratings = [ 'P',  'T13', 'T16', 'T18', 'K'];
 
         for ($i = 0; $i < 35; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
             $endDate = fake()->dateTimeBetween($releaseDate, now()->addMonths(5));
+            $rating = $ratings[array_rand($ratings)];
             $movie = DB::table('movies')->insertGetId([
                 'name' => $name = fake()->unique()->name(),
                 'slug' => Str::slug($name),
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
-                'rating' => $ratings[rand(0, 2)],
+                'rating' => $rating,
                 'duration' => fake()->numberBetween(60, 180),
                 'release_date' => $releaseDate,
                 'end_date' => $endDate,
@@ -697,7 +697,7 @@ class DatabaseSeeder extends Seeder
                     'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => fake()->randomElement(['Chưa suất vé', 'Đã suất vé']),
+                    'status' => fake()->randomElement(['Chưa suất vé']),
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
                     'created_at' => now(),

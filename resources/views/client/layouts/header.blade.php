@@ -55,7 +55,7 @@
             <div class="logo">
                 <div class="img-logo">
                     <a href="/">
-                        <img src="{{ asset('theme/client/images/header/logo6.svg') }}" alt="logo" />
+                        <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="logo" />
                     </a>
                 </div>
                 <div class="choose-cinemas">

@@ -7,6 +7,9 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 - php artisan migrate
 - php artisan storage:link
 - Chạy câu lệnh: "composer install" để dùng được gói Laravel UI
+- npm run build 
+- php artisan queue:work
+- php artisan schedule:work (chạy lịch kiểm tra sinh nhật)
 
 
 1. Cấu hình queue 
@@ -23,10 +26,17 @@ Các bạn kéo code về thì làm theo các bước sau rồi mới chạy cod
 3. Đăng nhập bằng google 
 - Laragon -> setting -> general -> hostname template: {name}.me
 ![img.png](img.png)
-
 Cho ai bị lỗi: 
 - php artisan optimize:clear
 - xóa cache trên máy (ctrl shìt r)
+
+4. Quét QR 
+- vào laragon -> chuột phải -> apache -> ssl -> enabled -> stop laragon -> start lại
+- nếu chưa có https: 
++ php artisan optimize:clear
++ tắt trình duyệt / đổi trình duyệt
++ tắt máy bật lại
+![img_1.png](img_1.png)
 
 CÁC CỔNG THANH TOÁN
 1. VNPAY

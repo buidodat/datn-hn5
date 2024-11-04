@@ -96,6 +96,11 @@
                                     <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
                                 </div>
                             </div>
+                            <div class="col-xxl-2 col-sm-4">
+                                <div>
+                                    <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
+                                </div>
+                            </div>
                             <!--end col-->
                         </div>
                         <!--end row-->
@@ -117,14 +122,14 @@
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead class='table-light'>
-                            <tr>
-                                <th>Code phim</th>
-                                <th>Thông tin người dùng</th>
-                                <th class="text-center">Hình ảnh</th>
-                                <th>Thông tin vé</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
-                            </tr>
+                        <tr>
+                            <th>Mã vé</th>
+                            <th>Thông tin người dùng</th>
+                            <th class="text-center">Hình ảnh</th>
+                            <th>Thông tin vé</th>
+                            {{--<th>Trạng thái</th>--}}
+                            <th>Chức năng(Phân quyền)</th>
+                        </tr>
                         </thead>
                         <tbody id="ticket-table-body">
                             @foreach ($tickets as $code => $groupTickets)
@@ -195,54 +200,48 @@
                                                     @case('Đã suất vé')
                                                         <span class="badge bg-success">Đã suất vé</span>
                                                     @break
-                                                @endswitch
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
-                                                {{ $showtimeStart }} ~ {{ $showtimeEnd }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
-                                                {{ $ticket->expiry->format('H:i, d/m/Y') }}</li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        @if (Auth::user()->can('Sửa hóa đơn'))
-                                            <select class="form-select" data-original-status="{{ $ticket->status }}"
-                                                data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
-                                                {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                                <option value="Chưa suất vé"
-                                                    {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác nhận
-                                                </option>
-                                                <option value="Đã suất vé"
-                                                    {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất
-                                                </option>
-                                                @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
-                                                    <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
-                                                @endif
-                                            </select>
-                                        @else
-                                        
-                                            @if ($ticket->status == 'Chưa suất vé')
-                                                Chờ xác nhận
-                                            @elseif($ticket->status == 'Đã suất vé')
-                                                Hoàn tất
-                                            @elseif($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
-                                                Đã hết hạn
-                                            @endif
+                                            @endswitch
+                                        </li>
+                                        <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span> {{ $showtimeStart }}
+                                            ~ {{ $showtimeEnd }}</li>
+                                        <li class="nav-item mb-1"><span
+                                                class="fw-semibold">Thời hạn sử dụng:</span> {{ $ticket->expiry->format('H:i, d/m/Y') }}
+                                        </li>
+                                    </ul>
+                                </td>
+                               {{-- <td>
+                                    <select class="form-select" data-original-status="{{ $ticket->status }}"
+                                            data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
+                                        {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
+                                        <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác
+                                            nhận
+                                        </option>
+                                        <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
+                                        @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                            <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
                                         @endif
-                                        {{-- @can('Sửa hóa đơn')
-                                        @endcan --}}
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.tickets.show', $ticket) }}">
-                                            <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i
-                                                    class="fas fa-eye"></i></button>
-                                        </a>
+                                    </select>
+                                </td>--}}
+                                <td>
+                                    <a href="{{ route('admin.tickets.show', $ticket) }}">
+                                        <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i class="fas fa-eye"></i>
+                                        </button>
+                                    </a>
+                                    {{--@if($ticket->status == 'Đã suất vé')
                                         <a href="{{ route('admin.tickets.print', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                                    class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</button>
+                                                    class="ri-download-2-fill align-middle me-1"></i> In vé
+                                            </button>
                                         </a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                        <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
+                                            <button title="print" class="btn btn-success btn-sm" type="button"><i
+                                                    class="ri-download-2-fill align-middle me-1"></i> In combo
+                                            </button>
+                                        </a>
+                                    @endif--}}
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
 
                     </table>
@@ -270,29 +269,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
+            order: []
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         //cập nhật trạng thái
-        function changeStatus(e) {
+        /*function changeStatus(e) {
             if (confirm("Bạn có chắc chắn muốn thay đổi trạng thái vé không?")) {
                 var ticketId = e.getAttribute('data-ticket-id');
                 var newStatus = e.value;
 
                 fetch(`/admin/tickets/${ticketId}/update-status`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            status: newStatus
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
                     })
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
