@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\SiteSetting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -932,6 +933,29 @@ class DatabaseSeeder extends Seeder
         if ($user) {
             $user->assignRole('Nhân viên');
         }
+
+        // Cấu hình website
+        SiteSetting::create([
+            'website_logo' => 'theme/client/images/Logo_Poly_Cinemas.png',
+            'site_name' => 'Website Đặt Vé Xem Phim Poly Cinemas',
+            'brand_name' => 'Công Ty Phim Việt Nam Poly Cinemas',
+            'slogan' => 'Hãy đặt vé Xem phim ngay!',
+            'phone' => '0123456789',
+            'email' => 'polycinemas@poly.cinemas',
+            'headquarters' => 'Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội',
+            'business_license' => '123456789',
+            'working_hours' => '7:00 - 22:00',
+            'facebook_link' => 'https://facebook.com/',
+            'youtube_link' => 'https://youtube.com/',
+            'instagram_link' => 'https://instagram.com/',
+            'privacy_policy_url' => 'Link Chính sách bảo mật',
+            'terms_of_service_url' => 'Link Điều khoản Dịch vụ',
+            'introduction' => 'Giới thiệu về website đặt vé xem phim Poly Cinemas...',
+            'copyright' => 'Bản quyền © 2024 Poly Cinemas',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
     }
 
     private function generateSeatStructure()

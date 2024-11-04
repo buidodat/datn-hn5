@@ -4,23 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSiteSettingsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('site_settings', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function up()
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
@@ -41,6 +27,11 @@ return new class extends Migration
             $table->text('introduction')->nullable(); // Phần giới thiệu
             $table->string('copyright')->nullable(); // Bản quyền
             $table->timestamps(); // Thời gian tạo và cập nhật
-        });                    
+        });
     }
-};
+
+    public function down()
+    {
+        Schema::dropIfExists('site_settings');
+    }
+}
