@@ -286,7 +286,7 @@ class PaymentController extends Controller
                                 'combo_id' => $comboId,
                                 'price' => $price * $quantity,  // Nhân giá với số lượng
                                 'quantity' => $quantity,
-                                'status' => 'Chưa lấy đồ ăn',
+                                // 'status' => 'Chưa lấy đồ ăn',
                             ]);
                         }
                     }
@@ -554,7 +554,7 @@ class PaymentController extends Controller
                                 'combo_id' => $comboId,
                                 'price' => $price * $quantity,  // Nhân giá với số lượng
                                 'quantity' => $quantity,
-                                'status' => 'Chưa lấy đồ ăn',
+                                // 'status' => 'Chưa lấy đồ ăn',
                             ]);
                         }
                     }
@@ -734,7 +734,7 @@ class PaymentController extends Controller
         }
 
         // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ
-        try {
+        // try {
             DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo) {
                 // Tạo ticket
                 $ticket = Ticket::create($dataTicket);
@@ -778,7 +778,7 @@ class PaymentController extends Controller
                             'combo_id' => $comboId,
                             'price' => $price * $quantity,
                             'quantity' => $quantity,
-                            'status' => 'Chưa lấy đồ ăn',
+                            // 'status' => 'Chưa lấy đồ ăn',
                         ]);
                     }
                 }
@@ -844,9 +844,9 @@ class PaymentController extends Controller
             });
 
             return redirect()->route('home')->with('success', 'Thanh toán thành công!');
-        } catch (\Exception $e) {
-            return redirect()->route('home')
-                ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
-        }
+        // } catch (\Exception $e) {
+        //     return redirect()->route('home')
+        //         ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
+        // }
     }
 }

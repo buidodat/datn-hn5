@@ -12,7 +12,7 @@ class ResetMembership extends Command
      *
      * @var string
      */
-    protected $signature = 'membership:rese';
+    protected $signature = 'membership:reset';
 
     /**
      * The console command description.
