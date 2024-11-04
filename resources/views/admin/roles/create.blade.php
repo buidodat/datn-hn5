@@ -79,9 +79,9 @@
                             <div class="card-body box-permission-role">
                                 <div class="row mb-2">
                                     <div class="col-md-6">
-                                        <label for="name" class="form-label col-12">
-                                            <span class="text-danger">*</span> Chọn Quyền
-                                        </label>
+                                        <p for="name" class="form-label col-12">
+                                            {{-- <span class="text-danger">*</span> Chọn Quyền --}}
+                                        </p>
                                        
                                         @error('permissions')
                                             <span class="text-danger">{{ $message }}</span>

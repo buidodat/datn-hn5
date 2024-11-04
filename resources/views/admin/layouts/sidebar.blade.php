@@ -329,8 +329,6 @@
                                     </li>
                                 @endcan
 
-
-
                                 @canany(['Danh sách tài khoản', 'Thêm tài khoản', 'Sửa tài khoản', 'Xóa tài khoản'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.users.index') }}" class="nav-link menu-link"
@@ -359,7 +357,7 @@
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
-                            <i class="ri-account-circle-line"></i>
+                            <i class=" las la-asterisk"></i>
                             <span data-key="t-landing">Phân quyền</span>
                         </a>
                         <div class="menu-dropdown collapse" id="permissions" style="">
@@ -368,7 +366,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('admin.permissions.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
+                                        data-key="t-horizontal"><i class="las la-user-plus"></i> <span
                                             data-key="t-layouts">Danh sách quyền</span></a>
                                 </li>
 
@@ -383,7 +381,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
-                                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">Gán vai
+                                        <i class="las la-users"></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
                                 </li>
 
