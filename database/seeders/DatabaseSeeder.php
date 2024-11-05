@@ -738,7 +738,7 @@ class DatabaseSeeder extends Seeder
                         'combo_id' => fake()->randomElement($comboIds),
                         'price' => fake()->numberBetween(50, 200) * 1000,
                         'quantity' => fake()->numberBetween(1, 5),
-                        'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
+                        // 'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);

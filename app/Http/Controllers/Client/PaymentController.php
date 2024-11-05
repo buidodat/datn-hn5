@@ -554,7 +554,7 @@ class PaymentController extends Controller
                                 'combo_id' => $comboId,
                                 'price' => $price * $quantity,  // Nhân giá với số lượng
                                 'quantity' => $quantity,
-                                'status' => 'Chưa lấy đồ ăn',
+                                // 'status' => 'Chưa lấy đồ ăn',
                             ]);
                         }
                     }
@@ -778,7 +778,7 @@ class PaymentController extends Controller
                             'combo_id' => $comboId,
                             'price' => $price * $quantity,
                             'quantity' => $quantity,
-                            'status' => 'Chưa lấy đồ ăn',
+                            // 'status' => 'Chưa lấy đồ ăn',
                         ]);
                     }
                 }
