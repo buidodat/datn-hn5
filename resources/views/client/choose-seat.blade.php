@@ -9,8 +9,9 @@
         <div class="container container-choose-seat">
             <div class="row">
                 <div class="mb-3 title-choose-seat">
-                    <a href="#">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
-                        href="#">{{ $showtime->movie->name }}</a>
+                    <a href="/" class="cam">Trang chủ </a> <strong>></strong> <a href="#" class="cam">Đặt vé
+                    </a> <strong>></strong> <a href="/movies/{{ $showtime->movie->slug }}"
+                        class="cam">{{ $showtime->movie->name }}</a>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="st_dtts_left_main_wrapper float_left">
@@ -150,42 +151,55 @@
                                             </div>
 
                                         </li>
-                                        <li>Thể loại: <span class="bold">{{ $showtime->movie->category }}</span></li>
-                                        <li> Thời lượng: <span class="bold">{{ $showtime->movie->duration }}
-                                                phút</span>
+                                        <li>
+                                            <span><i class="fa fa-tags icons"></i> Thể loại</span>
+                                            <span class="bold">{{ $showtime->movie->category }}</span>
                                         </li>
-                                        <hr>
-                                        <li> Rạp chiếu: <span class="bold">{{ $showtime->room->cinema->name }}</span>
+                                        <li>
+                                            <span><i class="fa fa-clock-o icons"></i> Thời lượng</span>
+                                            <span class="bold">{{ $showtime->movie->duration }} phút</span>
                                         </li>
-                                        <li> Ngày chiếu: <span
+                                        <hr style="border: 0; border-top: 2px dashed #7f7d7d; margin: 20px 0; ">
+                                        <li>
+                                            <span><i class="fa-solid fa-landmark"></i> Rạp chiếu</span>
+                                            <span class="bold">{{ $showtime->room->cinema->name }}</span>
+                                        </li>
+                                        <li>
+                                            <span><i class="fa-regular fa-calendar-days"></i> Ngày chiếu</span>
+                                            <span
                                                 class="bold">{{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</span>
                                         </li>
-                                        <li> Giờ chiếu: <span
+                                        <li>
+                                            <span><i class="fa fa-clock-o icons"></i> Giờ chiếu</span>
+                                            <span
                                                 class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
                                         </li>
-                                        <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span></li>
-                                        <li>Ghế ngồi: <span id="selected-seats" class="bold"></span></li>
+                                        <li>
+                                            <span><i class="fa-solid fa-desktop"></i> Phòng chiếu</span>
+                                            <span class="bold">{{ $showtime->room->name }}</span>
+                                        </li>
+                                        <li>
+                                            <span><i class="fa-solid fa-cubes"></i> Ghế ngồi</span>
+                                            <span id="selected-seats" class="bold"></span>
+                                        </li>
                                     </ul>
                                 </div>
 
-                                <div class="total-price-choose-seat float_left">
-                                    <div class="total-price-choose-seat float_left">
-                                        <form action="{{ route('save-information', $showtime->id) }}" method="POST"
-                                            id="checkout-form">
-                                            @csrf
-                                            <input type="hidden" name="showtimeId" value="{{ $showtime->id }}"
-                                                id="showtime-id">
-                                            <input type="hidden" name="seatId" id="hidden-seat-ids">
-                                            <input type="hidden" name="selected_seats_name"
-                                                id="hidden-selected-seats-name">
-                                            <input type="hidden" name="total_price" id="hidden-total-price">
-                                            <!-- Thêm id vào input hidden để cập nhật remainingSeconds bằng JS -->
-                                            <input type="hidden" name="remainingSeconds" id="remaining-seconds"
-                                                value="{{ $remainingSeconds }}">
-                                            <button id="submit-button" type="submit">Tiếp tục</button>
-                                        </form>
+                                <div class="total-price-choose-seat">
+                                    <form action="{{ route('save-information', $showtime->id) }}" method="POST"
+                                        id="checkout-form">
+                                        @csrf
+                                        <input type="hidden" name="showtimeId" value="{{ $showtime->id }}"
+                                            id="showtime-id">
+                                        <input type="hidden" name="seatId" id="hidden-seat-ids">
+                                        <input type="hidden" name="selected_seats_name" id="hidden-selected-seats-name">
+                                        <input type="hidden" name="total_price" id="hidden-total-price">
+                                        <!-- Thêm id vào input hidden để cập nhật remainingSeconds bằng JS -->
+                                        <input type="hidden" name="remainingSeconds" id="remaining-seconds"
+                                            value="{{ $remainingSeconds }}">
+                                        <button id="submit-button" type="submit">Tiếp tục</button>
+                                    </form>
 
-                                    </div>
                                 </div>
 
                             </div>
@@ -197,6 +211,11 @@
     </div>
 
 @endsection
+
+@section('styles')
+    <link rel="stylesheet" type="text/css" href="{{ asset('theme/client/css/choose-seat.checkout.css') }}" />
+@endsection
+
 @section('scripts')
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
