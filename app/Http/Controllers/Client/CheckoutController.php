@@ -20,9 +20,18 @@ class CheckoutController extends Controller
     //
     public function checkout()
     {
-        // dd(session()->all());
 
-        //lấy dữ liệu trong session
+
+
+        //Nếu tồn tại session thì hủy
+
+        if (session()->has('customer')) {
+            session()->forget('customer'); // customer ở đây có thể là user_id hoặc có thể là staff_id
+        }
+        if (session()->has('payment_point')) {
+            session()->forget('payment_point');
+        }
+
         $checkoutData = session()->get('checkout_data', []);
 
         // Tính lại thời gian còn lại

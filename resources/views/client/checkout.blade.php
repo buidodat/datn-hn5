@@ -792,7 +792,6 @@
                                                 value="{{ strtoupper(\Str::random(10)) }}">
                                             <input type="hidden" name="user_id" id="userId"
                                                 value="{{ Auth::user()->id }}">
-                                            <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
                                             <input type="hidden" name="price_seat" id="price-seat"
                                                 value="{{ $checkoutData['total_price'] }}">
                                             <input type="hidden" name="price_combo" id="price-combo">
@@ -927,8 +926,6 @@
             // Sự kiện áp dụng điểm
             $('#apply-point').on('click', function() {
                 const usePoints = parseInt($('#use_points').val().trim()) || 0;
-                const userId = $('#userId').val();
-
                 if (usePoints > 0) {
                     $.post({
                         url: '{{ route('apply-point') }}',
@@ -937,7 +934,6 @@
                         },
                         data: {
                             use_points: usePoints,
-                            user_id: userId
                         },
                         success: function(response) {
                             $('#point-discount').val(response.point_discount);
@@ -995,6 +991,8 @@
                                 $('#points-membership').text(data.points);
                                 $('#form-membership').hide();
                                 $('#change-membership').show();
+                                console.log(data.customer);
+
                             }
                             $('#error-membership').empty();
                         },
@@ -1012,14 +1010,31 @@
 
             // Sự kiện thay đổi membership
             $('#change-membership').on('click', function() {
-                handleCancelPoint();
-                $('#form-membership').show();
-                $('#info-membership').empty();
-                $('#error-membership').empty();
-                $('#data_membership').val('');
-                $('#points-membership').text('{{ auth()->user()->membership->points }}');
-                $('#userId').val({{ auth()->user()->id }});
-                $(this).hide();
+                // Gọi API xóa session
+                console.log('xóa session');
+
+                $.ajax({
+                    url: '{{ route('cancel-membership') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE', // Phương thức DELETE
+                    success: function(response) {
+                        console.log(response); // Xử lý phản hồi thành công
+                        handleCancelPoint();
+                        $('#form-membership').show();
+                        $('#info-membership').empty();
+                        $('#error-membership').empty();
+                        $('#data_membership').val('');
+                        $('#points-membership').text('{{ auth()->user()->membership->points }}');
+                        $('#userId').val({{ auth()->user()->id }});
+                        $('#change-membership').hide(); // Ẩn nút đổi thành viên
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseJSON.message); // Xử lý lỗi
+                        $('#error-membership').text(xhr.responseJSON.message); // Hiển thị thông báo lỗi
+                    }
+                });
             });
 
             // Sử dụng voucher

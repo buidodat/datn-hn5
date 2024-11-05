@@ -652,6 +652,10 @@ class PaymentController extends Controller
         $showtimeId = $request->showtime_id;
         $showtime = Showtime::findOrFail($showtimeId);
         $authId = auth()->id();
+        $customerId = $authId;
+        if(session()->has('customer')){
+            $customerId = session('customer');
+        }
 
         // 3. Kiểm tra ghế tồn tại trong suất chiếu và tính tổng giá ghế
         $seatShowtimes = DB::table('seat_showtimes')
@@ -694,7 +698,7 @@ class PaymentController extends Controller
             'cinema_id' => $showtime->cinema_id,
             'room_id' => $showtime->room_id,
             'movie_id' => $showtime->movie_id,
-            'user_id' => $dataUsePoint['user_id'] ?? $authId,
+            'user_id' => $customerId,
             'staff_id' => $authId,
             'payment_name' => $request->payment_name,
             'voucher_code' => $voucher->code ?? null,
@@ -734,7 +738,7 @@ class PaymentController extends Controller
         }
 
         // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ
-        // try {
+        try {
             DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo) {
                 // Tạo ticket
                 $ticket = Ticket::create($dataTicket);
@@ -844,9 +848,9 @@ class PaymentController extends Controller
             });
 
             return redirect()->route('home')->with('success', 'Thanh toán thành công!');
-        // } catch (\Exception $e) {
-        //     return redirect()->route('home')
-        //         ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
-        // }
+        } catch (\Exception $e) {
+            return redirect()->route('home')
+                ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
+        }
     }
 }
