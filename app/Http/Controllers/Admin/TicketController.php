@@ -33,7 +33,6 @@ class TicketController extends Controller
     public function index(Request $request)
     {
 
-
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('id');
         if (Auth::user()->cinema_id != "") {

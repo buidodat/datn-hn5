@@ -31,24 +31,82 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-4">
+            <form action="{{ route('admin.permissions.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Thêm mới Quyền</h5>
+                    </div>
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session()->has('error'))
+                        <div class="alert alert-success">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <div class="card-body">
+                        <div class="live-preview">
+                            <div class="row gy-4">
+                                <div class="col-md-12 ">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="name" class="form-label "> <span class="text-danger">*</span>Tên
+                                                Quyền:
+                                            </label>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                value="{{ old('name') }}" placeholder="Vd: Thêm phim">
+                                            <div class="mt-2">
+                                                @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="row mt-2 mx-0">
+                                                <span class="text-muted">Lưu ý: Tên quyền phải đặt theo cấu trúc: ví dụ:
+                                                    Danh sách phim ,
+                                                    Thêm phim ,
+                                                    Sửa phim ,
+                                                    Xóa phim
+                                                </span>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end row-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                {{-- <a href="{{ route('admin.permissions.index') }}" class="btn btn-info">Danh sách</a> --}}
+                                <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách Quyền</h5>
-                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    {{-- <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a> --}}
                 </div>
 
-                @if (session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
-                @if (session()->has('error'))
-                    <div class="alert alert-success">
-                        {{ session('error') }}
-                    </div>
-                @endif
 
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"

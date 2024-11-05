@@ -20,12 +20,23 @@
 		top: 0;
 		left: -100%;
 	}
+
+	.container-header-buttom .main-menu li a {
+		color: white;
+		display: block;
+		font-weight: 500;
+		padding: 24px 6px !important;
+		font-size: 11px;
+		font-family: sans-serif;
+	}
+
 }
 
 @media (max-width: 1199px) and (min-width: 767px) {
 	.prs_video_navi_overlay_wrapper a {
 		top: 38%;
 	}
+
 }
 
 @media (max-width: 1199px) and (min-width: 991px) {
@@ -302,6 +313,15 @@
 
 	.st_purchase_img {
 		display: none;
+	}
+
+	.container-header-buttom .main-menu li a {
+		color: white;
+		display: block;
+		font-weight: 500;
+		padding: 24px 6px;
+		font-size: 11px;
+		font-family: sans-serif;
 	}
 }
 
@@ -788,6 +808,7 @@
 	.sub-menu li a {
 		font-size: 9px !important;
 	}
+
 	.menu-cinema {
 		display: none;
 		box-shadow: 0 0 5px;
@@ -797,17 +818,19 @@
 		top: 0px;
 		right: -90px;
 	}
+
 	.menu-cinema li a {
 		font-size: 9px;
 	}
+
 	.sub-menu-respon li a {
-        color: rgb(42, 42, 42);
-        display: block;
-        padding: 5px 11px;
-        border-bottom: 1px solid rgb(195, 195, 195);
-        text-align: left;
-        font-size: 10px;
-    }
+		color: rgb(42, 42, 42);
+		display: block;
+		padding: 5px 11px;
+		border-bottom: 1px solid rgb(195, 195, 195);
+		text-align: left;
+		font-size: 10px;
+	}
 }
 
 @media (max-width: 1199px) {
@@ -867,6 +890,7 @@
 		position: relative;
 		z-index: 1;
 	}
+
 }
 
 @media (max-width: 767px) {
@@ -1025,14 +1049,15 @@
 		display: none !important;
 		content: " ";
 	}
+
 	.sub-menu-respon li a {
-        color: rgb(42, 42, 42);
-        display: block;
-        padding: 5px 11px;
-        border-bottom: 1px solid rgb(195, 195, 195);
-        text-align: left;
-        font-size: 10px;
-    }
+		color: rgb(42, 42, 42);
+		display: block;
+		padding: 5px 11px;
+		border-bottom: 1px solid rgb(195, 195, 195);
+		text-align: left;
+		font-size: 10px;
+	}
 }
 
 @media (max-width: 380px) {
@@ -1393,7 +1418,7 @@
 		border-top: 2px solid rgb(255, 77, 0);
 		position: absolute;
 		z-index: 5;
-		width: 160px ;
+		width: 160px;
 		background-color: white;
 		box-shadow: 0 0 5px;
 	}
@@ -1404,7 +1429,7 @@
 		align-items: center;
 		padding-right: 10px;
 		justify-content: space-between;
-		padding: 9px 12px ;
+		padding: 9px 12px;
 		cursor: pointer;
 	}
 
@@ -1412,7 +1437,8 @@
 		color: white;
 		display: block;
 		font-weight: 500;
-		padding: 20px 11px !important;
+		padding: 24px 6px !important;
+		font-size: 11px;
 		font-family: sans-serif;
 	}
 
@@ -1434,7 +1460,8 @@
 	}
 }
 
-@media (max-width: 769px) {
+/* @media (max-width: 769px) { */
+@media (max-width: 839px) {
 	.prs_slidebar_wrapper {
 		display: none;
 	}
