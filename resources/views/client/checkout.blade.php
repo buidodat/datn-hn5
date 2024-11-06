@@ -12,8 +12,10 @@
                 <div class="container container-choose-seat">
                     <div class="row">
                         <div class="mb-3 title-choose-seat">
-                            <a href="/">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
-                                href="">{{ $showtime->movie->name }}</a>
+                            <a href="/" class="cam">Trang chủ </a> <strong>></strong> <a href="#"
+                                class="cam">Đặt vé
+                            </a> <strong>></strong> <a href="/movies/{{ $showtime->movie->slug }}"
+                                class="cam">{{ $showtime->movie->name }}</a>
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 box-checkout">
                             <div class="st_dtts_left_main_wrapper float_left">
@@ -170,8 +172,7 @@
                                                                 <input type="text" name="voucher_code" id="voucher_code"
                                                                     placeholder="Nhập mã voucher">
 
-                                                                <button type="button" id="apply-voucher-btn"
-                                                                    class='btn btn-danger'>Xác nhận
+                                                                <button type="button" id="apply-voucher-btn">Xác nhận
                                                                 </button>
                                                             </div>
                                                             <div id="voucher-response">
@@ -206,8 +207,7 @@
                                                                         <td>= <b><span id='point_discount'>0</span></b> Vnđ
                                                                         </td>
                                                                         <td style="width: 20%">
-                                                                            <button type="button" class='btn btn-danger'
-                                                                                id="apply-point">Đổi
+                                                                            <button type="button" id="apply-point">Đổi
                                                                                 điểm</button>
                                                                             <button type="button" id="cancel-point"
                                                                                 class='btn'
@@ -222,7 +222,7 @@
 
                                             </div>
                                         </div>
-               
+
                                         <div class="total-price-checkout">
                                             <div>
                                                 <p>Tổng tiền:</p>
@@ -257,7 +257,7 @@
                                             </div>
                                             <div class="payment-checkout">
                                                 <div>
-                                                    <p>Chọn thẻ thanh toán</p>
+                                                    <p class="bold">Chọn thẻ thanh toán</p>
                                                 </div>
                                                 <hr>
                                                 <div class="img-payment-checkout">
@@ -322,55 +322,67 @@
                                                     </div>
 
                                                 </li>
-                                                <li>Thể loại: <span class="bold">{{ $showtime->movie->category }}</span>
+                                                <li>
+                                                    <span><i class="fa fa-tags icons"></i> Thể loại</span>
+                                                    <span class="bold">{{ $showtime->movie->category }}</span>
                                                 </li>
-                                                <li> Thời lượng: <span class="bold">{{ $showtime->movie->duration }}
-                                                        phút</span>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o icons"></i> Thời lượng</span>
+                                                    <span class="bold">{{ $showtime->movie->duration }} phút</span>
                                                 </li>
-                                                <hr>
-                                                <li> Rạp chiếu: <span
-                                                        class="bold">{{ $showtime->room->cinema->name }}</span>
+                                                <hr style="border: 0; border-top: 2px dashed #7f7d7d; margin: 20px 0; ">
+                                                <li>
+                                                    <span><i class="fa-solid fa-landmark"></i> Rạp chiếu</span>
+                                                    <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                                 </li>
-                                                <li> Ngày chiếu: <span
+                                                <li>
+                                                    <span><i class="fa-regular fa-calendar-days"></i> Ngày chiếu</span>
+                                                    <span
                                                         class="bold">{{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</span>
                                                 </li>
-                                                <li> Giờ chiếu: <span
+                                                <li>
+                                                    <span><i class="fa fa-clock-o icons"></i> Giờ chiếu</span>
+                                                    <span
                                                         class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
                                                 </li>
-                                                <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span>
+                                                <li>
+                                                    <span><i class="fa-solid fa-desktop"></i> Phòng chiếu</span>
+                                                    <span class="bold">{{ $showtime->room->name }}</span>
                                                 </li>
-                                                <li>Ghế ngồi: <span id="selected-seats"
+                                                <li>
+                                                    <span><i class="fa-solid fa-cubes"></i> Ghế ngồi</span>
+                                                    <span id="selected-seats"
                                                         class="bold">{{ $checkoutData['selected_seats_name'] }}</span>
                                                 </li>
                                             </ul>
                                         </div>
 
-                                        <div class="total-price-choose-seat float_left">
-                                            <div class="total-price-choose-seat float_left">
-                                                {{--  ticket --}}
-                                                <input type="hidden" name="code"
-                                                    value="{{ strtoupper(\Str::random(10)) }}">
-                                                <input type="hidden" name="user_id" id="userId"
-                                                    value="{{ Auth::user()->id }}">
+                                        <div class="total-price-choose-seat">
+                                            {{--  ticket --}}
+                                            <input type="hidden" name="code"
+                                                value="{{ strtoupper(\Str::random(10)) }}">
+                                            <input type="hidden" name="user_id" id="userId"
+                                                value="{{ Auth::user()->id }}">
 
-                                                <input type="hidden" name="price_seat" id="price-seat"
-                                                    value="{{ $checkoutData['total_price'] }}">
-                                                <input type="hidden" name="price_combo" id="price-combo">
-                                                <input type="hidden" name="point_discount" id="point-discount">
-                                                <input type="hidden" name="total_discount" id="total-discount">
-                                                <input type="hidden" name="voucher_discount" id="voucher-discount">
-                                                <input type="hidden" name="total_price" id="total-price-payment">
+                                            <input type="hidden" name="price_seat" id="price-seat"
+                                                value="{{ $checkoutData['total_price'] }}">
+                                            <input type="hidden" name="price_combo" id="price-combo">
+                                            <input type="hidden" name="point_discount" id="point-discount">
+                                            <input type="hidden" name="total_discount" id="total-discount">
+                                            <input type="hidden" name="voucher_discount" id="voucher-discount">
+                                            <input type="hidden" name="total_price" id="total-price-payment">
 
-                                                {{-- ticketseat --}}
-                                                <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
-                                                @foreach ($checkoutData['seat_ids'] as $seatId)
-                                                    <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
-                                                @endforeach
+                                            {{-- ticketseat --}}
+                                            <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
+                                            @foreach ($checkoutData['seat_ids'] as $seatId)
+                                                <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
+                                            @endforeach
 
-                                                <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
-                                                <button type="submit" id="btnPayment">Tiếp tục</button>
-                                            </div>
+                                            <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
+
+                                            <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -386,8 +398,10 @@
                 <div class="container container-choose-seat">
                     <div class="row">
                         <div class="mb-3 title-choose-seat">
-                            <a href="/">Trang chủ ></a> <a href="#">Đặt vé ></a> <a
-                                href="">{{ $showtime->movie->name }}</a>
+                            <a href="/" class="cam">Trang chủ </a> <strong>></strong> <a href="#"
+                                class="cam">Đặt vé
+                            </a> <strong>></strong> <a href="/movies/{{ $showtime->movie->slug }}"
+                                class="cam">{{ $showtime->movie->name }}</a>
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 box-checkout">
                             <div class="st_dtts_left_main_wrapper float_left">
@@ -737,55 +751,66 @@
                                                     </div>
 
                                                 </li>
-                                                <li>Thể loại: <span class="bold">{{ $showtime->movie->category }}</span>
+                                                <li>
+                                                    <span><i class="fa fa-tags icons"></i> Thể loại</span>
+                                                    <span class="bold">{{ $showtime->movie->category }}</span>
                                                 </li>
-                                                <li> Thời lượng: <span class="bold">{{ $showtime->movie->duration }}
-                                                        phút</span>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o icons"></i> Thời lượng</span>
+                                                    <span class="bold">{{ $showtime->movie->duration }} phút</span>
                                                 </li>
-                                                <hr>
-                                                <li> Rạp chiếu: <span
-                                                        class="bold">{{ $showtime->room->cinema->name }}</span>
+                                                <hr style="border: 0; border-top: 2px dashed #7f7d7d; margin: 20px 0; ">
+                                                <li>
+                                                    <span><i class="fa-solid fa-landmark"></i> Rạp chiếu</span>
+                                                    <span class="bold">{{ $showtime->room->cinema->name }}</span>
                                                 </li>
-                                                <li> Ngày chiếu: <span
+                                                <li>
+                                                    <span><i class="fa-regular fa-calendar-days"></i> Ngày chiếu</span>
+                                                    <span
                                                         class="bold">{{ \Carbon\Carbon::parse($showtime->date)->format('d/m/Y') }}</span>
                                                 </li>
-                                                <li> Giờ chiếu: <span
+                                                <li>
+                                                    <span><i class="fa fa-clock-o icons"></i> Giờ chiếu</span>
+                                                    <span
                                                         class="bold">{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}</span>
                                                 </li>
-                                                <li> Phòng chiếu: <span class="bold">{{ $showtime->room->name }}</span>
+                                                <li>
+                                                    <span><i class="fa-solid fa-desktop"></i> Phòng chiếu</span>
+                                                    <span class="bold">{{ $showtime->room->name }}</span>
                                                 </li>
-                                                <li>Ghế ngồi: <span id="selected-seats"
+                                                <li>
+                                                    <span><i class="fa-solid fa-cubes"></i> Ghế ngồi</span>
+                                                    <span id="selected-seats"
                                                         class="bold">{{ $checkoutData['selected_seats_name'] }}</span>
                                                 </li>
                                             </ul>
                                         </div>
 
-                                        <div class="total-price-choose-seat float_left">
-                                            <div class="total-price-choose-seat float_left">
-                                                {{--  ticket --}}
-                                                <input type="hidden" name="code"
-                                                    value="{{ strtoupper(\Str::random(10)) }}">
-                                                <input type="hidden" name="user_id" id="userId"
-                                                    value="{{ Auth::user()->id }}">
-                                                <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
-                                                <input type="hidden" name="price_seat" id="price-seat"
-                                                    value="{{ $checkoutData['total_price'] }}">
-                                                <input type="hidden" name="price_combo" id="price-combo">
-                                                <input type="hidden" name="voucher_discount" id="voucher-discount">
-                                                <input type="hidden" name="point_discount" id="point-discount">
-                                                <input type="hidden" name="total_discount" id="total-discount">
-                                                <input type="hidden" name="total_price" id="total-price-payment">
+                                        <div class="total-price-choose-seat ">
+                                            {{--  ticket --}}
+                                            <input type="hidden" name="code"
+                                                value="{{ strtoupper(\Str::random(10)) }}">
+                                            <input type="hidden" name="user_id" id="userId"
+                                                value="{{ Auth::user()->id }}">
+                                            <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
+                                            <input type="hidden" name="price_seat" id="price-seat"
+                                                value="{{ $checkoutData['total_price'] }}">
+                                            <input type="hidden" name="price_combo" id="price-combo">
+                                            <input type="hidden" name="voucher_discount" id="voucher-discount">
+                                            <input type="hidden" name="point_discount" id="point-discount">
+                                            <input type="hidden" name="total_discount" id="total-discount">
+                                            <input type="hidden" name="total_price" id="total-price-payment">
 
 
-                                                {{-- ticketseat --}}
-                                                <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
-                                                @foreach ($checkoutData['seat_ids'] as $seatId)
-                                                    <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
-                                                @endforeach
+                                            {{-- ticketseat --}}
+                                            <input type="hidden" name="showtime_id" value="{{ $showtime->id }}">
+                                            @foreach ($checkoutData['seat_ids'] as $seatId)
+                                                <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
+                                            @endforeach
 
-                                                <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
-                                                <button type="submit" id="btnPayment">Tiếp tục</button>
-                                            </div>
+                                            <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
+
+                                            <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>
                                     </div>
                                 </div>

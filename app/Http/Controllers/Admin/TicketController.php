@@ -278,10 +278,7 @@ class TicketController extends Controller
             return $ticketSeat->price;
         });
         $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
-        $totalPriceSeat = $this->calculateTotalSeatPrice($ticket);
-        $totalComboPrice = $this->calculateTotalComboPrice($ticket);
-        $ratingDescription = $this->getRatingDescription($oneTicket->movie->rating ?? '');
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','totalComboPrice','ratingDescription','users', 'oneTicket', 'totalPriceSeat','barcode'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','barcode'));
     }
 
     /**
