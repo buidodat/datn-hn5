@@ -32,8 +32,6 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-
-
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('id');
         if (Auth::user()->cinema_id != "") {
@@ -280,7 +278,10 @@ class TicketController extends Controller
             return $ticketSeat->price;
         });
         $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','barcode'));
+        $totalPriceSeat = $this->calculateTotalSeatPrice($ticket);
+        $totalComboPrice = $this->calculateTotalComboPrice($ticket);
+        $ratingDescription = $this->getRatingDescription($oneTicket->movie->rating ?? '');
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','totalComboPrice','ratingDescription','users', 'oneTicket', 'totalPriceSeat','barcode'));
     }
 
     /**

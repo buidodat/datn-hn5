@@ -3,7 +3,116 @@
 @section('title')
     Thông tin vé
 @endsection
+@section('style-libs')
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
 
+        .ticket-container1 {
+            width: 300px;
+            background-color: #ffe5e5;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .ticket-container2 {
+            width: 300px;
+            background-color: #ffe5e5;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .ticket-container3 {
+            width: 300px;
+            background-color: #ffe5e5;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .ticket-header h2 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d63384;
+        }
+
+        .ticket-info {
+            font-size: 14px;
+        }
+
+        .ticket-info p {
+            margin-bottom: 5px;
+        }
+
+        .ticket-info strong {
+            font-weight: bold;
+        }
+
+        .ticket-info .highlight {
+            font-weight: bold;
+            color: #d63384;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .ticket-container1, .ticket-container1 * {
+                visibility: visible;
+            }
+            .ticket-container2, .ticket-container2 * {
+                visibility: visible;
+            }
+            .ticket-container3, .ticket-container3 * {
+                visibility: visible;
+            }
+
+            .ticket-container1 {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%; /* Chiếm toàn bộ chiều rộng trang in */
+                margin: 0; /* Loại bỏ lề */
+                border: none; /* Loại bỏ viền */
+                box-shadow: none; /* Loại bỏ bóng */
+            }
+            .ticket-container2 {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%; /* Chiếm toàn bộ chiều rộng trang in */
+                margin: 0; /* Loại bỏ lề */
+                border: none; /* Loại bỏ viền */
+                box-shadow: none; /* Loại bỏ bóng */
+            }
+            .ticket-container3 {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%; /* Chiếm toàn bộ chiều rộng trang in */
+                margin: 0; /* Loại bỏ lề */
+                border: none; /* Loại bỏ viền */
+                box-shadow: none; /* Loại bỏ bóng */
+            }
+
+            @page {
+                size: auto; /*  Tự động điều chỉnh khổ giấy */
+                margin: 10mm; /* Lề 10mm cho tất cả các cạnh */
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+@endsection
 @section('content')
 
     <div class="row">
@@ -30,17 +139,8 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0"></h5>
+
                         <div class="flex-shrink-0">
-                            {{--<a href="{{ route('admin.tickets.print', $ticket) }}">
-                                <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                        class="ri-download-2-fill align-middle me-1"></i> In vé
-                                </button>
-                            </a>--}}
-                            {{--<a href="{{ route('admin.tickets.printCombo', $ticket) }}">
-                                <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                        class="ri-download-2-fill align-middle me-1"></i> In combo
-                                </button>
-                            </a>--}}
                             <!-- Static Backdrop -->
                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 <i class="ri-download-2-fill align-middle me-1"></i> In vé
@@ -51,13 +151,6 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-body text-center p-5">
-                                            {{--<lord-icon
-                                                src="https://cdn.lordicon.com/lupuorrc.json"
-                                                trigger="loop"
-                                                colors="primary:#121331,secondary:#08a88a"
-                                                style="width:120px;height:120px">
-                                            </lord-icon>--}}
-
                                             <div class="mt-4">
                                                 <h4 class="mb-3">Xác nhận in vé</h4>
                                                 <p class="text-muted mb-4"> Vui lòng xác nhận khi truy cập vào trang in vé</p>
@@ -73,6 +166,568 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{--<div class="flex-shrink-0">
+                            <!-- Button to open modal -->
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <i class="ri-download-2-fill align-middle me-1"></i> In vé modal
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                 role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body text-center p-5">
+                                            <div class="d-flex justify-content-around">
+                                                <div class="ticket-container1">
+                                                    <div>
+                                                        <div class="flex-shrink-0 no-print">
+                                                            <button onclick="window.print()" class="btn btn-success btn-sm">
+                                                                <i class="ri-download-2-fill align-middle me-1"></i> In hóa đơn
+                                                            </button>
+                                                        </div>
+
+                                                        --}}{{-- Header Information --}}{{--
+                                                        <div class="ticket-header">
+                                                            <h2>Hóa đơn chi tiết</h2>
+                                                        </div>
+
+                                                        --}}{{-- Company Information --}}{{--
+                                                        <div class="ticket-info border-bottom-dashed">
+                                                            <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                            <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                            <p>mst: 012147901412</p>
+                                                        </div>
+
+                                                        --}}{{-- Cinema Information --}}{{--
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</strong></p>
+                                                            <p>Thời gian: {{ $ticket->ticketSeats->first()->showtime->start_time }}</p>
+                                                        </div>
+
+                                                        --}}{{-- Movie Information --}}{{--
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            <p><strong>{{ $ticket->movie->name }} ({{ $ticket->movie->movieVersions->first()->name }})</strong></p>
+                                                            <p>
+                                                                <strong>
+                                                                    {{ $ticket->movie->rating }}
+                                                                    @if($ratingDescription)
+                                                                        <span>({{ $ratingDescription }})</span>
+                                                                    @endif
+                                                                </strong>
+                                                            </p>
+                                                            <p><strong>Phòng:</strong> {{ $ticket->room->name }}</p>
+                                                            <p><strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}</p>
+                                                        </div>
+
+                                                        --}}{{-- Combo Information --}}{{--
+                                                        @if($ticket->ticketCombos->isNotEmpty())
+                                                            <div class="ticket-info border-bottom-dashed mt-2">
+                                                                @foreach($ticket->ticketCombos as $ticketCombo)
+                                                                    <p>
+                                                                        <strong>
+                                                                            {{ $ticketCombo->combo->name }} x {{ $ticketCombo->quantity }}
+                                                                            ({{ number_format($ticketCombo->combo->price * $ticketCombo->quantity) }} vnđ)
+                                                                        </strong>
+                                                                    </p>
+                                                                    <ul>
+                                                                        @foreach($ticketCombo->combo->food as $food)
+                                                                            <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+
+                                                        --}}{{-- Price Summary --}}{{--
+                                                        <div class="ticket-info mt-2">
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Giá vé:</strong></span>
+                                                                <span><strong>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Giá combo:</strong></span>
+                                                                <span><strong>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Giảm giá:</strong></span>
+                                                                <span><strong>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Thành tiền:</strong></span>
+                                                                <span><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                        </div>
+
+                                                        --}}{{-- Barcode --}}{{--
+                                                        <div class="mt-4 border-top-double">
+                                                            <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <p><strong>{{ $ticket->code }}</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ticket-container2">
+                                                    <div>
+                                                        <div class="flex-shrink-0 no-print">
+                                                            @if($ticket->status == 'Đã suất vé')
+                                                                <a href="#" class="btn btn-success btn-sm"
+                                                                   onclick="window.print()"><i
+                                                                        class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                                                            @endif
+                                                        </div>
+                                                        <div class="ticket-header">
+                                                            <h2>HÓA ĐƠN ĐỒ ĂN</h2>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed">
+                                                            <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                            <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                            <p>mst: 012147901412</p>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}  </strong></p>
+                                                            <p>Thời gian: {{ $ticket->ticketCombos->first()->created_at }}</p>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            @foreach ($ticket->ticketCombos as $ticketCombo)
+                                                                @php
+                                                                    $combo = $ticketCombo->combo;
+                                                                @endphp
+
+                                                                <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
+                                                                        ( {{ number_format($combo->price * $ticketCombo->quantity) }}
+                                                                        vnđ )</b></p>
+
+                                                                <ul>
+                                                                    @foreach ($combo->food as $food)
+                                                                        <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="ticket-info mt-2">
+                                                            <p><strong>Tổng cộng:</strong> {{ number_format($ticket->ticketCombos->sum(function ($ticketCombo) {
+                return $ticketCombo->combo->price * $ticketCombo->quantity;
+            }), 0, ',', '.') }} vnđ</p>
+
+                                                        </div>
+                                                        <div class="mt-4 border-top-double">
+                                                            <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <p><strong>{{ $ticket->code }}</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ticket-container3">
+                                                    <div>
+                                                        <div class="flex-shrink-0 no-print">
+                                                            <a href="#" class="btn btn-success btn-sm"
+                                                               onclick="window.print()"><i
+                                                                    class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                                                        </div>
+                                                        <div class="ticket-header">
+                                                            <h2>Hóa đơn vé</h2>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed">
+                                                            <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                            <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                            <p>mst: 012147901412</p>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}  </strong></p>
+                                                            <p>Thời gian: {{ $ticket->ticketSeats->first()->showtime->start_time }}</p>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            <p><strong>{{ $ticket->movie->name }} ({{ $ticket->movie->movieVersions->first()->name }})</strong></p>
+                                                            @php
+                                                                $rating = $ticket->movie->rating;
+                                                                $description = null;
+
+                                                                if ($rating == 'P') {
+                                                                    $description = 'Mọi độ tuổi';
+                                                                } elseif ($rating == 'T13') {
+                                                                    $description = 'Dưới 13 tuổi và có người bảo hộ đi kèm';
+                                                                } elseif ($rating == 'T16') {
+                                                                    $description = '13+';
+                                                                } elseif ($rating == 'T18') {
+                                                                    $description = '16+';
+                                                                } elseif ($rating == 'K') {
+                                                                    $description = '18+';
+                                                                }
+                                                            @endphp
+                                                            <p><strong>{{ $ticket->movie->rating }} @if ($description)
+                                                                        <span>({{ $description }})</span>
+                                                                    @endif</strong></p>
+
+
+                                                            <p><strong>Phòng:</strong> {{ $ticket->room->name }}</p>
+                                                            <p><strong>Ghế:</strong>
+                                                                {{ implode(', ', $ticket->ticketSeats->pluck('seat.name')->toArray()) }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            @foreach ($ticket->ticketCombos as $ticketCombo)
+                                                                @php
+                                                                    $combo = $ticketCombo->combo;
+                                                                @endphp
+
+                                                                <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
+                                                                        ( {{ number_format($combo->price * $ticketCombo->quantity) }}
+                                                                        vnđ )</b></p>
+
+                                                                <ul>
+                                                                    @foreach ($combo->food as $food)
+                                                                        <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endforeach
+                                                        </div>
+
+                                                        <div class="ticket-info mt-2">
+                                                            <div class="d-flex justify-content-between">
+                    <span>
+                        <strong>Giá vé:</strong>
+                    </span>
+                                                                <span><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                    <span>
+                        <strong>Giá combo:</strong>
+                    </span>
+                                                                <span><strong>{{ number_format($ticket->ticketCombos->sum(function ($ticketCombo) {
+                return $ticketCombo->combo->price * $ticketCombo->quantity;
+            }), 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Giảm giá:</strong> </span>
+                                                                <span><strong>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span><strong>Thành tiền:</strong> </span>
+                                                                <span><strong>{{ number_format($ticket->price, 0, ',', '.') }} VND</strong></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-4 border-top-double">
+                                                            <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <p><strong>{{ $ticket->code }}</strong></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Ticket Details End -->
+
+                                            <div class="hstack gap-2 justify-content-center mt-3">
+                                                <button class="btn btn-success" onclick="window.print()">Xác nhận in</button>
+                                                <button class="btn btn-link link-success fw-medium" data-bs-dismiss="modal">
+                                                    <i class="ri-close-line me-1 align-middle"></i> Hủy
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>--}}
+
+                        <!-- Toggle Between Modals -->
+                        <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#firstmodal">In vé</button>
+                        <!-- First modal dialog -->
+                        <div class="modal fade" id="firstmodal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body text-center p-5">
+                                        <lord-icon
+                                            src="https://cdn.lordicon.com/tdrtiskw.json"
+                                            trigger="loop"
+                                            colors="primary:#f7b84b,secondary:#405189"
+                                            style="width:130px;height:130px">
+                                        </lord-icon>
+                                        <div class="mt-4 pt-4">
+                                            <h4>Xác nhận in vé!</h4>
+                                            <p class="text-muted"> Xác nhận sẽ thay đổi trạng thái.</p>
+                                            <!-- Toogle to second dialog -->
+                                            <button class="btn btn-warning" data-bs-target="#secondmodal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                Xác nhận
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Second modal dialog -->
+                        <div class="modal fade" id="secondmodal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body text-center p-5">
+                                        <div class="d-flex justify-content-around">
+                                            <div class="ticket-container1">
+                                                <div>
+                                                    <div class="flex-shrink-0 no-print">
+                                                        <button onclick="window.print()" class="btn btn-success btn-sm">
+                                                            <i class="ri-download-2-fill align-middle me-1"></i> In hóa đơn
+                                                        </button>
+                                                    </div>
+
+ Header Information
+
+                                                    <div class="ticket-header">
+                                                        <h2>Hóa đơn chi tiết</h2>
+                                                    </div>
+
+ Company Information
+
+                                                    <div class="ticket-info border-bottom-dashed">
+                                                        <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                        <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                        <p>mst: 012147901412</p>
+                                                    </div>
+
+ Cinema Information
+
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</strong></p>
+                                                        <p>Thời gian: {{ $ticket->ticketSeats->first()->showtime->start_time }}</p>
+                                                    </div>
+
+ Movie Information
+
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        <p><strong>{{ $ticket->movie->name }} ({{ $ticket->movie->movieVersions->first()->name }})</strong></p>
+                                                        <p>
+                                                            <strong>
+                                                                {{ $ticket->movie->rating }}
+                                                                @if($ratingDescription)
+                                                                    <span>({{ $ratingDescription }})</span>
+                                                                @endif
+                                                            </strong>
+                                                        </p>
+                                                        <p><strong>Phòng:</strong> {{ $ticket->room->name }}</p>
+                                                        <p><strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}</p>
+                                                    </div>
+
+ Combo Information
+
+                                                    @if($ticket->ticketCombos->isNotEmpty())
+                                                        <div class="ticket-info border-bottom-dashed mt-2">
+                                                            @foreach($ticket->ticketCombos as $ticketCombo)
+                                                                <p>
+                                                                    <strong>
+                                                                        {{ $ticketCombo->combo->name }} x {{ $ticketCombo->quantity }}
+                                                                        ({{ number_format($ticketCombo->combo->price * $ticketCombo->quantity) }} vnđ)
+                                                                    </strong>
+                                                                </p>
+                                                                <ul>
+                                                                    @foreach($ticketCombo->combo->food as $food)
+                                                                        <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+
+ Price Summary
+
+                                                    <div class="ticket-info mt-2">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Giá vé:</strong></span>
+                                                            <span><strong>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Giá combo:</strong></span>
+                                                            <span><strong>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Giảm giá:</strong></span>
+                                                            <span><strong>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Thành tiền:</strong></span>
+                                                            <span><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                    </div>
+
+ Barcode
+
+                                                    <div class="mt-4 border-top-double">
+                                                        <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                        <div class="d-flex justify-content-center">
+                                                            <p><strong>{{ $ticket->code }}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ticket-container2">
+                                                <div>
+                                                    <div class="flex-shrink-0 no-print">
+                                                        @if($ticket->status == 'Đã suất vé')
+                                                            <a href="#" class="btn btn-success btn-sm"
+                                                               onclick="window.print()"><i
+                                                                    class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="ticket-header">
+                                                        <h2>HÓA ĐƠN ĐỒ ĂN</h2>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed">
+                                                        <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                        <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                        <p>mst: 012147901412</p>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}  </strong></p>
+                                                        <p>Thời gian: {{ $ticket->ticketCombos->first()->created_at }}</p>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        @foreach ($ticket->ticketCombos as $ticketCombo)
+                                                            @php
+                                                                $combo = $ticketCombo->combo;
+                                                            @endphp
+
+                                                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
+                                                                    ( {{ number_format($combo->price * $ticketCombo->quantity) }}
+                                                                    vnđ )</b></p>
+
+                                                            <ul>
+                                                                @foreach ($combo->food as $food)
+                                                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endforeach
+                                                    </div>
+                                                    <div class="ticket-info mt-2">
+                                                        <p><strong>Tổng cộng:</strong> {{ number_format($ticket->ticketCombos->sum(function ($ticketCombo) {
+                return $ticketCombo->combo->price * $ticketCombo->quantity;
+            }), 0, ',', '.') }} vnđ</p>
+
+                                                    </div>
+                                                    <div class="mt-4 border-top-double">
+                                                        <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                        <div class="d-flex justify-content-center">
+                                                            <p><strong>{{ $ticket->code }}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ticket-container3">
+                                                <div>
+                                                    <div class="flex-shrink-0 no-print">
+                                                        <a href="#" class="btn btn-success btn-sm"
+                                                           onclick="window.print()"><i
+                                                                class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
+                                                    </div>
+                                                    <div class="ticket-header">
+                                                        <h2>Hóa đơn vé</h2>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed">
+                                                        <p><strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $ticket->cinema->branch->name }}</strong></p>
+                                                        <p>Địa chỉ: 1 Quang Trung - {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</p>
+                                                        <p>mst: 012147901412</p>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        <p><strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}  </strong></p>
+                                                        <p>Thời gian: {{ $ticket->ticketSeats->first()->showtime->start_time }}</p>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        <p><strong>{{ $ticket->movie->name }} ({{ $ticket->movie->movieVersions->first()->name }})</strong></p>
+                                                        @php
+                                                            $rating = $ticket->movie->rating;
+                                                            $description = null;
+
+                                                            if ($rating == 'P') {
+                                                                $description = 'Mọi độ tuổi';
+                                                            } elseif ($rating == 'T13') {
+                                                                $description = 'Dưới 13 tuổi và có người bảo hộ đi kèm';
+                                                            } elseif ($rating == 'T16') {
+                                                                $description = '13+';
+                                                            } elseif ($rating == 'T18') {
+                                                                $description = '16+';
+                                                            } elseif ($rating == 'K') {
+                                                                $description = '18+';
+                                                            }
+                                                        @endphp
+                                                        <p><strong>{{ $ticket->movie->rating }} @if ($description)
+                                                                    <span>({{ $description }})</span>
+                                                                @endif</strong></p>
+
+
+                                                        <p><strong>Phòng:</strong> {{ $ticket->room->name }}</p>
+                                                        <p><strong>Ghế:</strong>
+                                                            {{ implode(', ', $ticket->ticketSeats->pluck('seat.name')->toArray()) }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="ticket-info border-bottom-dashed mt-2">
+                                                        @foreach ($ticket->ticketCombos as $ticketCombo)
+                                                            @php
+                                                                $combo = $ticketCombo->combo;
+                                                            @endphp
+
+                                                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
+                                                                    ( {{ number_format($combo->price * $ticketCombo->quantity) }}
+                                                                    vnđ )</b></p>
+
+                                                            <ul>
+                                                                @foreach ($combo->food as $food)
+                                                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endforeach
+                                                    </div>
+
+                                                    <div class="ticket-info mt-2">
+                                                        <div class="d-flex justify-content-between">
+                    <span>
+                        <strong>Giá vé:</strong>
+                    </span>
+                                                            <span><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                    <span>
+                        <strong>Giá combo:</strong>
+                    </span>
+                                                            <span><strong>{{ number_format($ticket->ticketCombos->sum(function ($ticketCombo) {
+                return $ticketCombo->combo->price * $ticketCombo->quantity;
+            }), 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Giảm giá:</strong> </span>
+                                                            <span><strong>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span><strong>Thành tiền:</strong> </span>
+                                                            <span><strong>{{ number_format($ticket->price, 0, ',', '.') }} VND</strong></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-4 border-top-double">
+                                                        <div class="d-flex justify-content-center mt-2">{!! $barcode !!}</div>
+                                                        <div class="d-flex justify-content-center">
+                                                            <p><strong>{{ $ticket->code }}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hstack gap-2 justify-content-center mt-3">
+                                            <button class="btn btn-success" onclick="window.print()">Xác nhận in</button>
+                                            <button class="btn btn-link link-success fw-medium" data-bs-dismiss="modal">
+                                                <i class="ri-close-line me-1 align-middle"></i> Hủy
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -578,7 +1233,7 @@
             height: "750px"
         });
     </script>
-    <script>
+    {{--<script>
         document.getElementById('confirmPrintBtn').addEventListener('click', function() {
             fetch('{{ route("admin.tickets.confirmPrint", $ticket) }}', {
                 method: 'POST',
@@ -607,5 +1262,5 @@
                     alert('Có lỗi xảy ra khi xử lý yêu cầu');
                 });
         });
-    </script>
+    </script>--}}
 @endsection
