@@ -1026,13 +1026,15 @@
                         $('#info-membership').empty();
                         $('#error-membership').empty();
                         $('#data_membership').val('');
-                        $('#points-membership').text('{{ auth()->user()->membership->points }}');
+                        $('#points-membership').text(
+                            '{{ auth()->user()->membership->points }}');
                         $('#userId').val({{ auth()->user()->id }});
                         $('#change-membership').hide(); // Ẩn nút đổi thành viên
                     },
                     error: function(xhr) {
                         console.error(xhr.responseJSON.message); // Xử lý lỗi
-                        $('#error-membership').text(xhr.responseJSON.message); // Hiển thị thông báo lỗi
+                        $('#error-membership').text(xhr.responseJSON
+                            .message); // Hiển thị thông báo lỗi
                     }
                 });
             });
@@ -1069,15 +1071,50 @@
 
             // Sự kiện hủy voucher
             $(document).on('click', '#cancel-voucher-btn', function() {
-                $('#voucher_code').val('');
-                $('#voucher-response').empty();
-                $('#voucher-discount').val(0);
-                calculateTotal();
-                $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
+                cancelVoucher();
             });
 
+            function cancelVoucher() {
+                $.ajax({
+                    url: '{{ route('cancelVoucher') }}', // Đường dẫn đến API của bạn
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Xóa các giá trị trên giao diện khi hủy voucher thành công
+                        $('#voucher_code').val('');
+                        $('#voucher-response').empty();
+                        $('#voucher-discount').val(0);
+                        calculateTotal();
+                        $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
+                    },
+                    error: function(xhr, status, error) {
+                        // Xử lý khi có lỗi
+                        console.log('Error clearing voucher session: ', error);
+                    }
+                });
+            }
+            cancelVoucher();
             setupQuantityButtons(); // Thiết lập sự kiện cho nút tăng/giảm
             calculateComboPrice(); // Tính toán giá combo khi trang được tải
+        });
+
+
+
+
+
+
+
+
+        ///Ngăn chặn gửi form thông thường
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngừng hành động mặc định (gửi form)
+        });
+        // Chỉ gửi form khi bấm vào nút có id="btnPayment"
+        document.getElementById('btnPayment').addEventListener('click', function() {
+            // Gửi form khi bấm nút thanh toán
+            document.getElementById('payment-form').submit();
         });
     </script>
 

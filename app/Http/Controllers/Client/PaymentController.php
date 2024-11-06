@@ -65,12 +65,31 @@ class PaymentController extends Controller
 
         // 5. Xác thực và tính giá voucher
         $voucherDiscount = 0;
-        $voucher = Voucher::where('code', $request->voucher_code)->first();
-        $currentDateTime = now()->setTimezone('Asia/Ho_Chi_Minh');
-        if ($voucher && $voucher->is_active && $voucher->quantity > 0 && $currentDateTime->between($voucher->start_date_time, $voucher->end_date_time)) {
-            $voucherDiscount = $voucher->discount;
-        }
+        $voucher =   null;
+        if (session()->has('payment_voucher')) {
+            try {
+                $voucher = DB::transaction(function () use (&$voucherDiscount, &$voucherCode) {
+                    // Khóa bản ghi voucher để tránh xung đột
+                    $voucher = Voucher::where('id', session('payment_voucher.voucher_id'))
+                        ->lockForUpdate()
+                        ->first();
 
+                    // Kiểm tra nếu voucher tồn tại và có số lượng lớn hơn 0
+                    if ($voucher && $voucher->quantity > 0) {
+                        $voucherDiscount = $voucher->discount;
+                        $voucherCode = $voucher->code;
+                        $voucher->decrement('quantity');
+
+                        return $voucher;
+                    } else {
+                        throw new \Exception('Rất tiếc, mã voucher bạn sử dụng đã đạt giới hạn. Xin vui lòng sử dụng mã khác.'); // Ném ra exception nếu voucher không hợp lệ
+                    }
+                });
+            } catch (\Exception $e) {
+                return redirect()->route('checkout')
+                    ->with('error', $e->getMessage());
+            }
+        }
         // 6. Tính giảm giá từ điểm tích lũy (nếu có trong session)
         $dataUsePoint = session('payment_point', []);
         $pointDiscount = $dataUsePoint['point_discount'] ?? 0;
@@ -99,7 +118,7 @@ class PaymentController extends Controller
 
         try {
             // Nếu không có ghế nào hết thời gian giữ, tiếp tục với transaction
-            DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request, $voucherDiscount, $totalPayment, $pointDiscount, $dataUsePoint, $priceSeat, $priceCombo) {
+            DB::transaction(function () use ($seatIds, $showtimeId, $userId, $request, $voucherDiscount, $totalPayment, $pointDiscount, $dataUsePoint, $priceSeat, $priceCombo, $voucher) {
                 // Gia hạn thời gian giữ chỗ thêm 15 phút
                 DB::table('seat_showtimes')
                     ->whereIn('seat_id', $seatIds)
@@ -114,8 +133,8 @@ class PaymentController extends Controller
                         'code' => $request->code,
                         'user_id' => $request->user_id,
                         'payment_name' => $request->payment_name,
-                        'voucher_code' => $request->voucher_code ?? null,
-                        'voucher_discount' => $voucherDiscount,
+                        'voucher_code' => $voucher->code ?? null,
+                        'voucher_discount' => $voucher->discount ?? null,
                         'point_use' => $dataUsePoint['use_points'] ?? null,
                         'point_discount' => $pointDiscount,
                         'total_price' => $totalPayment,
@@ -327,6 +346,26 @@ class PaymentController extends Controller
 
                     if ($newRank && $newRank->id != $membership->rank_id) {
                         $membership->update(['rank_id' => $newRank->id]);
+                    }
+                    if(session()->has('payment_voucher')){
+                        $voucher = Voucher::find(session('payment_voucher.voucher_id'));
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
+
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
+                        }
                     }
 
                     // // lưu voucher lượt sd voucher
@@ -595,7 +634,27 @@ class PaymentController extends Controller
                     if ($newRank && $newRank->id != $membership->rank_id) {
                         $membership->update(['rank_id' => $newRank->id]);
                     }
+                    
+                    if(session()->has('payment_voucher')){
+                        $voucher = Voucher::find(session('payment_voucher.voucher_id'));
+                        if ($voucher) {
+                            $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
+                                ->where('voucher_id', $voucher->id)
+                                ->first();
 
+                            if ($userVoucher) {
+                                // Nếu đã tồn tại, tăng usage_count
+                                $userVoucher->increment('usage_count');
+                            } else {
+                                // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                                UserVoucher::create([
+                                    'user_id' => $paymentData['user_id'],
+                                    'voucher_id' => $voucher->id,
+                                    'usage_count' => 1,
+                                ]);
+                            }
+                        }
+                    }
                     // // lưu voucher lượt sd voucher
                     // if ($paymentData['voucher_code'] != null) {
                     //     $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
@@ -638,6 +697,7 @@ class PaymentController extends Controller
 
     public function paymentAdmin(Request $request)
     {
+        // dd(session()->all());
         // 1. Xác thực dữ liệu đầu vào
         $request->validate([
             'seat_id' => 'required|array',
@@ -653,7 +713,7 @@ class PaymentController extends Controller
         $showtime = Showtime::findOrFail($showtimeId);
         $authId = auth()->id();
         $customerId = $authId;
-        if(session()->has('customer')){
+        if (session()->has('customer')) {
             $customerId = session('customer');
         }
 
@@ -677,10 +737,30 @@ class PaymentController extends Controller
 
         // 5. Xác thực và tính giá voucher
         $voucherDiscount = 0;
-        $voucher = Voucher::where('code', $request->voucher_code)->first();
-        $currentDateTime = now()->setTimezone('Asia/Ho_Chi_Minh');
-        if ($voucher && $voucher->is_active && $voucher->quantity > 0 && $currentDateTime->between($voucher->start_date_time, $voucher->end_date_time)) {
-            $voucherDiscount = $voucher->discount;
+        $voucher =   null;
+        if (session()->has('payment_voucher')) {
+            try {
+                $voucher = DB::transaction(function () use (&$voucherDiscount, &$voucherCode) {
+                    // Khóa bản ghi voucher để tránh xung đột
+                    $voucher = Voucher::where('id', session('payment_voucher.voucher_id'))
+                        ->lockForUpdate()
+                        ->first();
+
+                    // Kiểm tra nếu voucher tồn tại và có số lượng lớn hơn 0
+                    if ($voucher && $voucher->quantity > 0) {
+                        $voucherDiscount = $voucher->discount;
+                        $voucherCode = $voucher->code;
+                        $voucher->decrement('quantity');
+
+                        return $voucher;
+                    } else {
+                        throw new \Exception('Rất tiếc, mã voucher bạn sử dụng đã đạt giới hạn. Xin vui lòng sử dụng mã khác.'); // Ném ra exception nếu voucher không hợp lệ
+                    }
+                });
+            } catch (\Exception $e) {
+                return redirect()->route('checkout')
+                    ->with('error', $e->getMessage());
+            }
         }
 
         // 6. Tính giảm giá từ điểm tích lũy (nếu có trong session)
@@ -701,7 +781,7 @@ class PaymentController extends Controller
             'user_id' => $customerId,
             'staff_id' => $authId,
             'payment_name' => $request->payment_name,
-            'voucher_code' => $voucher->code ?? null,
+            'voucher_code' => $voucherCode ?? null,
             'voucher_discount' => $voucherDiscount,
             'point_use' => $dataUsePoint['use_points'] ?? null,
             'point_discount' => $pointDiscount,
@@ -730,16 +810,15 @@ class PaymentController extends Controller
                 ]);
             foreach ($seatIds as $seatId) {
                 // event(new SeatRelease($seatId, $showtimeId));
-                broadcast(new SeatStatusChange($seatId, $showtimeId,'available'))->toOthers();
-
+                broadcast(new SeatStatusChange($seatId, $showtimeId, 'available'))->toOthers();
             }
             return redirect()->route('choose-seat', $showtimeId)
                 ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
         }
 
         // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ
-        try {
-            DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo) {
+        // try {
+            DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo,$voucher,$customerId) {
                 // Tạo ticket
                 $ticket = Ticket::create($dataTicket);
 
@@ -768,8 +847,7 @@ class PaymentController extends Controller
                         ]);
 
                     // event(new SeatSold($seatId, $showtimeId));
-                    broadcast(new SeatStatusChange($seatId, $showtimeId,'sold'))->toOthers();
-
+                    broadcast(new SeatStatusChange($seatId, $showtimeId, 'sold'))->toOthers();
                 }
 
                 // Tạo ticket_combo
@@ -825,32 +903,31 @@ class PaymentController extends Controller
                 }
 
                 // lưu voucher lượt sd voucher
-                // if ($voucher->code != null) {
-                //     $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
-                //     if ($voucher) {
-                //         $userVoucher = UserVoucher::where('user_id', $paymentData['user_id'])
-                //             ->where('voucher_id', $voucher->id)
-                //             ->first();
 
-                //         if ($userVoucher) {
-                //             // Nếu đã tồn tại, tăng usage_count
-                //             $userVoucher->increment('usage_count');
-                //         } else {
-                //             // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
-                //             UserVoucher::create([
-                //                 'user_id' => $paymentData['user_id'],
-                //                 'voucher_id' => $voucher->id,
-                //                 'usage_count' => 1,
-                //             ]);
-                //         }
-                //     }
-                // }
+                if ($voucher) {
+                    $userVoucher = UserVoucher::where('user_id', $customerId)
+                        ->where('voucher_id', $voucher->id)
+                        ->first();
+
+                    if ($userVoucher) {
+                        // Nếu đã tồn tại, tăng usage_count
+                        $userVoucher->increment('usage_count');
+                    } else {
+                        // Nếu chưa tồn tại, tạo bản ghi mới với usage_count = 1
+                        UserVoucher::create([
+                            'user_id' => $customerId,
+                            'voucher_id' => $voucher->id,
+                            'usage_count' => 1,
+                        ]);
+                    }
+                }
+
             });
 
             return redirect()->route('home')->with('success', 'Thanh toán thành công!');
-        } catch (\Exception $e) {
-            return redirect()->route('home')
-                ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
-        }
+        // } catch (\Exception $e) {
+        //     return redirect()->back()
+        //         ->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại.');
+        // }
     }
 }

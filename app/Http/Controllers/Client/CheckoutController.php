@@ -24,13 +24,8 @@ class CheckoutController extends Controller
 
 
         //Nếu tồn tại session thì hủy
+        session()->forget(['customer', 'payment_voucher', 'payment_point']); // customer có thể là id khách hàng hoặc id admin
 
-        if (session()->has('customer')) {
-            session()->forget('customer'); // customer ở đây có thể là user_id hoặc có thể là staff_id
-        }
-        if (session()->has('payment_point')) {
-            session()->forget('payment_point');
-        }
 
         $checkoutData = session()->get('checkout_data', []);
 
@@ -124,7 +119,12 @@ class CheckoutController extends Controller
         if ($voucher->discount == 0) {
             return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
         }
-
+        $paymentVoucher = [
+            'voucher_id' => $voucher->id,
+            'voucher_code' => $voucher->code,
+            'voucher_discount' => $voucher->discount,
+        ];
+        session(['payment_voucher' => $paymentVoucher]);
         return response()->json([
             'success' => 'Voucher hợp lệ!',
             'id' => $voucher->id,
@@ -163,5 +163,9 @@ class CheckoutController extends Controller
     //        return response()->json(['success' => 'Hủy voucher thành công!']);
     //    }
 
-
+    public function cancelVoucher()
+    {
+        session()->forget('payment_voucher');
+        return response()->json(['success' => true]);
+    }
 }
