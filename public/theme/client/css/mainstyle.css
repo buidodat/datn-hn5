@@ -1811,5 +1811,7 @@ div text {
 .points-info{
     margin-bottom: 20px;
 }
-
+.no-scroll {
+    overflow-y: hidden !important;
+}
 

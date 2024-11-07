@@ -792,7 +792,6 @@
                                                 value="{{ strtoupper(\Str::random(10)) }}">
                                             <input type="hidden" name="user_id" id="userId"
                                                 value="{{ Auth::user()->id }}">
-                                            <input type="hidden" name="staff_id" value="{{ Auth::user()->id }}">
                                             <input type="hidden" name="price_seat" id="price-seat"
                                                 value="{{ $checkoutData['total_price'] }}">
                                             <input type="hidden" name="price_combo" id="price-combo">
@@ -927,8 +926,6 @@
             // Sự kiện áp dụng điểm
             $('#apply-point').on('click', function() {
                 const usePoints = parseInt($('#use_points').val().trim()) || 0;
-                const userId = $('#userId').val();
-
                 if (usePoints > 0) {
                     $.post({
                         url: '{{ route('apply-point') }}',
@@ -937,7 +934,6 @@
                         },
                         data: {
                             use_points: usePoints,
-                            user_id: userId
                         },
                         success: function(response) {
                             $('#point-discount').val(response.point_discount);
@@ -995,6 +991,8 @@
                                 $('#points-membership').text(data.points);
                                 $('#form-membership').hide();
                                 $('#change-membership').show();
+                                console.log(data.customer);
+
                             }
                             $('#error-membership').empty();
                         },
@@ -1012,14 +1010,33 @@
 
             // Sự kiện thay đổi membership
             $('#change-membership').on('click', function() {
-                handleCancelPoint();
-                $('#form-membership').show();
-                $('#info-membership').empty();
-                $('#error-membership').empty();
-                $('#data_membership').val('');
-                $('#points-membership').text('{{ auth()->user()->membership->points }}');
-                $('#userId').val({{ auth()->user()->id }});
-                $(this).hide();
+                // Gọi API xóa session
+                console.log('xóa session');
+
+                $.ajax({
+                    url: '{{ route('cancel-membership') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'DELETE', // Phương thức DELETE
+                    success: function(response) {
+                        console.log(response); // Xử lý phản hồi thành công
+                        handleCancelPoint();
+                        $('#form-membership').show();
+                        $('#info-membership').empty();
+                        $('#error-membership').empty();
+                        $('#data_membership').val('');
+                        $('#points-membership').text(
+                            '{{ auth()->user()->membership->points }}');
+                        $('#userId').val({{ auth()->user()->id }});
+                        $('#change-membership').hide(); // Ẩn nút đổi thành viên
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseJSON.message); // Xử lý lỗi
+                        $('#error-membership').text(xhr.responseJSON
+                            .message); // Hiển thị thông báo lỗi
+                    }
+                });
             });
 
             // Sử dụng voucher
@@ -1054,15 +1071,56 @@
 
             // Sự kiện hủy voucher
             $(document).on('click', '#cancel-voucher-btn', function() {
-                $('#voucher_code').val('');
-                $('#voucher-response').empty();
-                $('#voucher-discount').val(0);
-                calculateTotal();
-                $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
+                cancelVoucher();
             });
 
+            function cancelVoucher() {
+                $.ajax({
+                    url: '{{ route('cancelVoucher') }}', // Đường dẫn đến API của bạn
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Xóa các giá trị trên giao diện khi hủy voucher thành công
+                        $('#voucher_code').val('');
+                        $('#voucher-response').empty();
+                        $('#voucher-discount').val(0);
+                        calculateTotal();
+                        $('#apply-voucher-btn, #voucher_code').prop('readonly', false);
+                    },
+                    error: function(xhr, status, error) {
+                        // Xử lý khi có lỗi
+                        console.log('Error clearing voucher session: ', error);
+                    }
+                });
+            }
+            cancelVoucher();
             setupQuantityButtons(); // Thiết lập sự kiện cho nút tăng/giảm
             calculateComboPrice(); // Tính toán giá combo khi trang được tải
+        });
+
+
+
+
+
+        document.querySelectorAll('#payment-form input').forEach(input => {
+            input.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Ngăn gửi form khi nhấn Enter
+                }
+            });
+        });
+
+
+        ///Ngăn chặn gửi form thông thường
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngừng hành động mặc định (gửi form)
+        });
+        // Chỉ gửi form khi bấm vào nút có id="btnPayment"
+        document.getElementById('btnPayment').addEventListener('click', function() {
+            // Gửi form khi bấm nút thanh toán
+            document.getElementById('payment-form').submit();
         });
     </script>
 

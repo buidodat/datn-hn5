@@ -280,6 +280,7 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script>
         var movieId = {{ $movie->id }};
