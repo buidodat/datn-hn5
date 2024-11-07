@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
@@ -156,3 +157,8 @@ Route::prefix('ranks')
     });
 
 // Lưu ý: chưa check middleware hết được
+
+
+// thống kê
+Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
+

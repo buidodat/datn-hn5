@@ -56,7 +56,7 @@ class LoginFacebookController extends Controller
             }
        
         } catch (Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             // return redirect()->intended('http://datn-hn5.test');
             
         }
