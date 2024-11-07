@@ -1104,7 +1104,13 @@
 
 
 
-
+        document.querySelectorAll('#payment-form input').forEach(input => {
+            input.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Ngăn gửi form khi nhấn Enter
+                }
+            });
+        });
 
 
         ///Ngăn chặn gửi form thông thường
