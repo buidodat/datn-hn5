@@ -37,8 +37,11 @@ class MembershipController extends Controller
 
                 ], Response::HTTP_UNPROCESSABLE_ENTITY); // 422
             }
-
-            $membership = Membership::where('user_id',$request->user_id)->first();
+            $userId = auth()->id();
+            if (session()->has('customer')) {
+                $userId = session('customer');
+            }
+            $membership = Membership::where('user_id', $userId)->first();
 
             // Kiểm tra xem số điểm sử dụng có lớn hơn số điểm hiện có không
             if ($membership->points < $request->use_points) {
@@ -48,14 +51,14 @@ class MembershipController extends Controller
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
             $point_discount = $request->use_points * Membership::CONVERSION_RATE;
-           $paymentPoint = [
-            'user_id'=>$request->user_id,
-            'membership_code'=>$membership->code,
-            'total_points'=>$membership->points,
-            'use_points'=>$request->use_points,
-            'point_discount' =>$point_discount
-           ];
-           session(['payment_point' => $paymentPoint]);
+            $paymentPoint = [
+                'user_id' => $userId,
+                'membership_code' => $membership->code,
+                'total_points' => $membership->points,
+                'use_points' => $request->use_points,
+                'point_discount' => $point_discount
+            ];
+            session(['payment_point' => $paymentPoint]);
             return response()->json([
                 'success' => true,
                 'use_points' => $request->use_points,
@@ -70,7 +73,8 @@ class MembershipController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    public function cancelPoint(Request $request){
+    public function cancelPoint(Request $request)
+    {
         $request->session()->forget('payment_point');
         return response()->json(['message' => 'Hủy sử dụng điểm thành công.']);
     }

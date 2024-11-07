@@ -21,7 +21,7 @@ class LoginFacebookController extends Controller
     {
         return Socialite::driver('facebook')->redirect();
     }
-           
+
     /**
      * Create a new controller instance.
      *
@@ -29,19 +29,19 @@ class LoginFacebookController extends Controller
      */
     public function handleFacebookCallback()
     {
-        try {
-        
+        // try {
+
             $user = Socialite::driver('facebook')->user();
-         
+
             $finduser = User::where('service_id', $user->id)->first();
             // $finduser = User::where('email', $user->email)->first();
-         
+
             if($finduser){
-         
+
                 Auth::login($finduser);
-       
+
                 return redirect()->intended('/');
-         
+
             }else{
                 $newUser = User::updateOrCreate(['email' => $user->email],[
                         'name' => $user->name,
@@ -49,17 +49,17 @@ class LoginFacebookController extends Controller
                         'password' => encrypt('123456789'),
                         'service_name' => 'facebook',
                     ]);
-        
+
                 Auth::login($newUser);
-        
+
                 return redirect()->intended('/');
             }
-       
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            // return redirect()->intended('http://datn-hn5.test');
-            
-        }
+
+        // } catch (Exception $e) {
+        //     // dd($e->getMessage());
+        //     // return redirect()->intended('http://datn-hn5.test');
+
+        // }
     }
 }
 

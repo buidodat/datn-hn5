@@ -32,6 +32,12 @@ class Ticket extends Model
         ['value' => 'cancelled', 'label' => 'Đã hết hạn'],
     ];
 
+    //Trạng thái vé
+    const ISSUED = 'Đã suất vé';
+    const NOT_ISSUED = 'Chưa suất vé';
+    const EXPIRED = 'Đã hết';
+
+
     public function user()
     {
         return $this->belongsTo(User::class);

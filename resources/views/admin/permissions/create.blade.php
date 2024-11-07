@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+{{-- @extends('admin.layouts.master')
 
 @section('title')
     Thêm mới Quyền hạn
@@ -96,4 +96,4 @@
             <!--end col-->
         </div>
     </form>
-@endsection
+@endsection --}}

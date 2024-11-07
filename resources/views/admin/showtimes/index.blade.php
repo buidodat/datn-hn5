@@ -137,6 +137,10 @@
                                         $startTime = \Carbon\Carbon::parse($showtime->start_time);
                                         $endTime = \Carbon\Carbon::parse($showtime->end_time);
 
+                                        $movieReleaseDate = \Carbon\Carbon::parse($showtime->movie->release_date);
+                                        $movieEndDate = \Carbon\Carbon::parse($showtime->movie->end_date);
+                                        $isSpecialShowtime = !$startTime->between($movieReleaseDate, $movieEndDate);
+
                                         //sắp chiếu
                                         $upComing = $timeNow < $startTime->format('d-m-Y H:i:s');
 
@@ -155,7 +159,7 @@
                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
                                         <td>
-                                            @if ($showtime->movie->is_special == 1)
+                                            @if ($showtime->movie->is_special == 1 || $isSpecialShowtime)
                                                 <p class="mb-0 ">
                                                     {!! Str::limit($showtime->movie->name, 40) !!}
                                                     <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
@@ -189,21 +193,12 @@
                                         @endif
 
                                         <td>
-
                                             <div class="form-check form-switch form-switch-success d-inline-block">
                                                 <input class="form-check-input switch-is-active changeActive"
                                                     name="is_active" type="checkbox" role="switch"
                                                     data-showtime-id="{{ $showtime->id }}" @checked($showtime->is_active)
                                                     onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                             </div>
-
-
-                                            {{-- <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    name="is_active"
-                                                    @if ($showtime->is_active) checked disabled @endif
-                                                    data-id="{{ $showtime->id }}">
-                                            </div> --}}
 
                                             @if ($showtime->is_active == 1)
                                                 @if ($showing)
@@ -220,11 +215,6 @@
                                                     </span>
                                                 @endif
                                             @endif
-                                            {{-- @if ($showtime->movie->is_special == 1)
-                                                <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
-                                                </span>
-                                            @endif --}}
-
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.showtimes.show', $showtime) }}">
@@ -262,15 +252,12 @@
                         </div>
                     </div>
 
-                    <!-- Phân trang -->
-
-
                 </div>
 
 
             </div>
-        </div><!--end col-->
-    </div><!--end row-->
+        </div>
+    </div>
 @endsection
 
 

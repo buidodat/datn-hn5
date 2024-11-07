@@ -45,5 +45,5 @@
 <script src="{{ asset('theme/client/js/custom.js') }}"></script>
 <script src="{{ asset('theme/client/js/mainjs.js') }}"></script>
 <script src="{{ asset('theme/client/js/my-account.js') }}"></script>
-<script src="{{ asset('theme/client/js/trailler.js') }}"></script>
+
 <!--main js file end-->

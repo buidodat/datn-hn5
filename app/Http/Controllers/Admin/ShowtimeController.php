@@ -204,7 +204,6 @@ class ShowtimeController extends Controller
                             }
                         }
 
-
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
                             'room_id' => $request->room_id,
@@ -241,7 +240,7 @@ class ShowtimeController extends Controller
 
                         SeatShowtime::insert($seatShowtimes);
 
-                        //startTime cho suất chiếu mới
+                        //startTime suất chiếu mới
                         $startTime = $endTime;
 
                         // Làm tròn startTime đến số đẹp chia hết cho 5
@@ -298,7 +297,6 @@ class ShowtimeController extends Controller
                                 'price' => $price
                             ];
                         }
-
                         SeatShowtime::insert($seatShowtimes);
                     }
                 }
@@ -311,8 +309,6 @@ class ShowtimeController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
-
 
 
     public function show(string $id)

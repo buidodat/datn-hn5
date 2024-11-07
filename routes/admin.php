@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Admin\StatisticalController;
+use App\Http\Controllers\Admin\SlideShowController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Admin\TypeRoomController;
 use App\Http\Controllers\Admin\TypeSeatController;
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VoucherController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,20 +41,35 @@ Route::resource('cinemas', CinemaController::class);
 // Payment
 Route::resource('payments', PaymentController::class);
 
-Route::resource('slideshows', \App\Http\Controllers\Admin\SlideShowController::class);
-Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
+Route::resource('slideshows', SlideShowController::class);
+Route::resource('vouchers', VoucherController::class);
 //resource ticket
 Route::resource('tickets', TicketController::class);
 
 //in ve
 Route::get('tickets/{ticket}/print', [TicketController::class, 'print'])->name('tickets.print');
-Route::get('tickets/{ticket}/print-combo', [TicketController::class, 'printCombo'])->name('tickets.printCombo');
-//scan ve
+// Route::get('tickets/{ticket}/print-combo', [TicketController::class, 'printCombo'])->name('tickets.printCombo');
+// //scan ve
 Route::get('admin/tickets/scan', [TicketController::class, 'scan'])->name('tickets.scan');
 Route::post('tickets/process-scan', [TicketController::class, 'processScan'])->name('tickets.processScan');
-//chuyen trang thai ve khi in
-//route::post('tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-Route::post('tickets/{ticket}/confirm-print', [TicketController::class, 'confirmPrint'])->name('tickets.confirmPrint');
+// //chuyen trang thai ve khi in
+// //route::post('tickets/{ticket}/update-status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+
+
+
+// Quản lý Hóa đơn
+Route::prefix('tickets')
+    ->as('tickets.')
+    ->group(function () {
+        Route::get('/',                   [TicketController::class, 'index'])->name('index');
+        Route::get('{ticket}',                   [TicketController::class, 'show'])->name('show');
+        Route::post('{ticket}/confirm', [TicketController::class, 'confirm'])->name('confirm');
+    });
+
+
+
+
+
 
 Route::resource('contacts', ContactController::class);
 
