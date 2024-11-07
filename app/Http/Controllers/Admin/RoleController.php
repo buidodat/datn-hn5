@@ -14,14 +14,11 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-
     const PATH_VIEW = 'admin.roles.';
     const PATH_UPLOAD = 'roles';
     public function index()
     {
         $roles = Role::with('permissions')->latest('id')->get();
-
-
         return view(self::PATH_VIEW . __FUNCTION__, compact('roles'));
     }
 
@@ -47,7 +44,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        //
+        
         try {
             $role = Role::create([
                 'name' => $request->name,

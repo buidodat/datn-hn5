@@ -887,9 +887,9 @@ class DatabaseSeeder extends Seeder
             'Sửa tài khoản',
             'Xóa tài khoản',
             'Danh sách thống kê',
-            'Thêm thống kê',
-            'Sửa thống kê',
-            'Xóa thống kê',
+            // 'Thêm thống kê',
+            // 'Sửa thống kê',
+            // 'Xóa thống kê',
         ];
 
         // Tạo các quyền từ danh sách
@@ -912,7 +912,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
-        // Gán vai trò cho User với ID = 1
+ 
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -921,13 +921,13 @@ class DatabaseSeeder extends Seeder
         $managerRole = Role::findByName('Quản lý cơ sở', 'web');
         $managerRole->givePermissionTo(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh', 'Danh sách rạp', 'Thêm rạp']);
 
-        // Gán vai trò cho User với ID = 2
+
         $user = User::find(2);
         if ($user) {
             $user->assignRole('Quản lý cơ sở');
         }
 
-        // Gán vai trò Nhân viên cho User với ID = 6
+        
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');
