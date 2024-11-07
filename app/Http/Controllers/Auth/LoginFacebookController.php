@@ -29,7 +29,7 @@ class LoginFacebookController extends Controller
      */
     public function handleFacebookCallback()
     {
-        // try {
+        try {
 
             $user = Socialite::driver('facebook')->user();
 
@@ -55,11 +55,11 @@ class LoginFacebookController extends Controller
                 return redirect()->intended('/');
             }
 
-        // } catch (Exception $e) {
-        //     // dd($e->getMessage());
-        //     // return redirect()->intended('http://datn-hn5.test');
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            // return redirect()->intended('http://datn-hn5.test');
 
-        // }
+        }
     }
 }
 
