@@ -561,7 +561,7 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-01',
-                'type' => 'admin',
+                'type' => 'member',
                 'cinema_id' => 1,
             ],
             [
@@ -912,7 +912,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
- 
+
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -927,7 +927,7 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('Quản lý cơ sở');
         }
 
-        
+
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');
