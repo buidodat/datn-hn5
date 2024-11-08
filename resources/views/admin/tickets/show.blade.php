@@ -28,112 +28,119 @@
                 <h2 class="invoice-title">Hóa đơn chi tiết</h2>
 
                 <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
+                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
                     MST: 012147901412
                     <hr>
-                    <strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</strong><br>
-                    Thời gian đặt vé: {{ $ticket->created_at }}
+                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Thời gian đặt vé: {{ $oneTicket->created_at }}
                     <hr>
                     @php
-                        $ticketSeat = $ticket->ticketSeats()->first();
-                        //    $rating = App\Models\Movie::getRatingByName($ticketSeat->movie->rating);
-                        $rating = App\Models\Movie::getRatingByName($ticket->movie->rating);
-
+                        $ticketSeat = $oneTicket->ticketSeats()->first();
+                        $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
                     @endphp
-                    <strong>{{ $ticket->movie->name }} ({{ $ticketSeat->showtime->format }}) </strong><br>
+                    <strong>{{ $oneTicket->movie->name }} ({{ $ticketSeat->showtime->format }}) </strong><br>
                     ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
                     <strong>Phòng:</strong> {{ $ticket->room->name }} <br>
-                    <strong>Ghế:</strong>
-                    {{ $ticket->ticketSeats->map(function ($ticketSeat) {
-                            return $ticketSeat->seat->name;
-                        })->implode(', ') }}
+                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
                     <hr>
 
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
+                    <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
+                    <div><span>Giá combo:</span><span>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</span></div>
+                    <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</span></div>
+                    <div><strong>Thành tiền:</strong><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></div>
                 </div>
 
                 <div class="barcode">
-
+                    {!! $barcode !!}
                 </div>
-                <div class="invoice-code">HD071124-0001</div>
+                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
         </div>
+
+        {{--hoa don combo--}}
         <div class="invoice-container">
             <div class="invoice-content">
                 <h2 class="invoice-title">Hóa đơn combo</h2>
 
                 <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
+                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
                     mst: 012147901412
                     <hr>
-                    <strong>Poly Cinemas Hà Đông - Hà nội</strong><br>
-                    Thời gian: 2024-11-09 17:31:00
+                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Thời gian: {{ $oneTicket->created_at }}
                     <hr>
-                    <strong>Ivory Bruen (Lồng Tiếng)</strong><br>
-                    K (18+)<br>
-                    <strong>Phòng:</strong> L202<br>
-                    <strong>Ghế:</strong> G7, G6
+                    <div class="ticket-info border-bottom-dashed mt-2">
+                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                            @php
+                                $combo = $ticketCombo->combo;
+                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
+                                $totalPrice = $price * $ticketCombo->quantity;
+                            @endphp
+
+                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }} vnđ)</b></p>
+
+                            <ul>
+                                @foreach ($combo->food as $food)
+                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                @endforeach
+                            </ul>
+                        @endforeach
+                    </div>
                     <hr>
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
+                    <div><strong>Thành tiền:</strong><strong>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</strong></div>
                 </div>
 
                 <div class="barcode">
-
+                    {!! $barcode !!}
                 </div>
-                <div class="invoice-code">HD071124-0001</div>
+                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
-
-
         </div>
+
+        {{--hoa don ve--}}
         <div class="invoice-container">
             <div class="invoice-content">
                 <h2 class="invoice-title">Vé xem phim</h2>
 
                 <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
+                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
                     mst: 012147901412
                     <hr>
-                    <strong>Poly Cinemas Hà Đông - Hà nội</strong><br>
-                    Thời gian: 2024-11-09 17:31:00
+                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Thời gian: {{ $oneTicket->created_at }}
                     <hr>
-                    <strong>Ivory Bruen (Lồng Tiếng)</strong><br>
-                    K (18+)<br>
-                    <strong>Phòng:</strong> L202<br>
-                    <strong>Ghế:</strong> G7, G6
+                    @php
+                        $ticketSeat = $oneTicket->ticketSeats()->first();
+                        $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
+                    @endphp
+                    <strong>{{ $oneTicket->movie->name }} ({{ $ticketSeat->showtime->format }})</strong><br>
+                    ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
+                    <strong>Phòng:</strong> {{ $ticket->room->name }}<br>
+                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
                     <hr>
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
+                    <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
+                    <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</span></div>
+                    <div><strong>Thành tiền:</strong><strong>{{ number_format($totalPriceSeat - $ticket->voucher_discount, 0, ',', '.') }} VND</strong></div>
                 </div>
 
                 <div class="barcode">
-
+                    {!! $barcode !!}
                 </div>
-                <div class="invoice-code">HD071124-0001</div>
+                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
-
-
         </div>
-
     </div>
 
     <div class="row">
