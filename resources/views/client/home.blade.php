@@ -49,6 +49,12 @@
                                                         <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                    @endif
 
                                                     @php
                                                         $url = $movie->img_thumbnail;
@@ -92,7 +98,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
@@ -134,10 +140,16 @@
                                             <div class="prs_upcom_movie_box_wrapper">
                                                 <div class="prs_upcom_movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot"
+                                                            src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
-
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                    @endif
                                                     @php
                                                         $url = $movie->img_thumbnail;
 
@@ -175,7 +187,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
@@ -220,6 +232,13 @@
                                                             src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}"
+                                                            alt="">
+                                                    @endif
 
                                                     @php
                                                         $url = $movie->img_thumbnail;
@@ -258,7 +277,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
@@ -298,7 +317,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="prs_heading_section_wrapper">
-                        <h2>Các tin tức nổi bật</h2>
+                        <h2>Tin tức & ưu đãi</h2>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -320,7 +339,8 @@
                                                 style="width: 100%; height: 100%; object-fit: cover;" />
                                             <div class="prs_ft_btn_wrapper">
                                                 <ul>
-                                                    <li><a href="{{ route('posts.show', $postItem->slug) }}">Xem chi tiết</a></li>
+                                                    <li><a href="{{ route('posts.show', $postItem->slug) }}">Xem chi
+                                                            tiết</a></li>
                                                 </ul>
                                             </div>
                                         </div>

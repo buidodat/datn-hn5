@@ -772,7 +772,7 @@
 	}
 
 	.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-		color: black;
+
 		display: block;
 		padding: 3px 12px !important;
 		border: 2px solid #989898;
@@ -1409,7 +1409,7 @@
 	}
 
 	.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-		color: red;
+
 		font-size: 10px !important;
 	}
 
@@ -1443,7 +1443,7 @@
 	}
 
 	.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-		color: black;
+
 		display: block;
 		padding: 6px 12px !important;
 		border: 2px solid #989898;
@@ -1553,7 +1553,7 @@
 	}
 
 	.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-		color: black;
+
 		display: block;
 		padding: 5px 12px !important;
 		border: 2px solid #989898;
@@ -1562,7 +1562,7 @@
 	}
 
 	.choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-		color: red;
+
 		font-size: 10px !important;
 	}
 

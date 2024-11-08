@@ -46,7 +46,12 @@
                                                         <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
-
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                    @endif
                                                     @php
                                                         $url = $movie->img_thumbnail;
 
@@ -88,7 +93,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
@@ -115,10 +120,16 @@
                                             <div class="prs_upcom_movie_box_wrapper">
                                                 <div class="prs_upcom_movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot"
+                                                            src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
-
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                    @endif
                                                     @php
                                                         $url = $movie->img_thumbnail;
 
@@ -156,7 +167,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
@@ -186,6 +197,12 @@
                                                             src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
+                                                    @php
+                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                    @endphp
+                                                    @if ($imageTag)
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                    @endif
 
                                                     @php
                                                         $url = $movie->img_thumbnail;
@@ -224,7 +241,7 @@
                                                         ->exists();
                                                 @endphp
 
-                                               <div class='buy-ticket-movie'>
+                                                <div class='buy-ticket-movie'>
                                                     @if ($hasShowtimeInNextWeek)
                                                         <button onclick="openModalMovieScrening({{ $movie->id }})"
                                                             class="buy-ticket-btn">MUA VÉ</button>
