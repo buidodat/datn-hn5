@@ -1,4 +1,4 @@
-@extends('client.layouts.master')
+{{-- @extends('client.layouts.master')
 
 @section('title')
     Chính sách
@@ -109,6 +109,56 @@
     </div>
 
 
-    {{-- @include('client.showtime') --}}
+    @include('client.showtime')
     <!-- st slider sidebar wrapper End -->
+@endsection --}}
+
+@extends('client.layouts.master')
+
+@section('title')
+    Chính sách bảo mật
+@endsection
+
+@section('content')
+@php
+    // Truy vấn dữ liệu từ bảng SiteSetting
+    use App\Models\SiteSetting;
+    $settings = SiteSetting::first();
+@endphp
+
+<div class="policy-wrapper">
+    <div class="policy-container">
+        <div class="policy-main-content">
+            <!-- Ảnh đại diện và nội dung chính sách -->
+                @if($settings->privacy_policy_image)
+                {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                @if(Str::startsWith($settings->privacy_policy_image, 'theme/client/images/'))
+                    <img src="{{ asset($settings->privacy_policy_image) }}" alt="privacy_policy_image" class="policy-logo">
+                @else
+                    <img src="{{ Storage::url($settings->privacy_policy_image) }}" alt="privacy_policy_image" class="policy-logo">
+                @endif
+                @else
+                    {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                    <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="privacy_policy_image" class="policy-logo">
+                @endif
+            <h3>Chính sách bảo mật</h3>
+            <p>{!! $settings->privacy_policy !!}</p>
+
+
+            <!-- Thông tin liên hệ hỗ trợ -->
+            <h4>Liên hệ hỗ trợ</h4>
+            <p><strong>Email hỗ trợ:</strong> {{ $settings->email}}</p>
+            <p><strong>Hotline:</strong> {{ $settings->phone}}</p>
+            <p><strong>Giờ làm việc:</strong> {{ $settings->working_hours}}</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .policy-wrapper { margin-top: 120px; margin-bottom: 20px; }
+    .policy-container { width: 80%; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; padding: 20px; }
+    .policy-main-content img.policy-logo { width: 100%; height: 400px; display: block; margin-bottom: 20px; }
+    .policy-main-content h3 { margin-bottom: 15px; }
+    .policy-main-content p { margin-bottom: 15px; line-height: 1.6; }
+</style>
 @endsection
