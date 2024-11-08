@@ -1,54 +1,3 @@
-{{-- <!-- resources/views/statistical/revenue.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thống kê doanh thu theo từng bộ phim</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <h2>Thống kê doanh thu theo từng bộ phim</h2>
-    <canvas id="revenueChart" width="400" height="200"></canvas>
-
-    <script>
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        const revenueData = {
-            labels: @json($revenueByMovies->pluck('name')),
-            datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: @json($revenueByMovies->pluck('total_revenue')),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        new Chart(ctx, {
-            type: 'bar', // Biểu đồ cột
-            data: revenueData,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Doanh thu (VNĐ)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Tên phim'
-                        }
-                    }
-                }
-            }
-        });
-    </script>
-</body>
-</html> --}}
 @extends('admin.layouts.master')
 
 @section('title')
@@ -59,141 +8,100 @@
     <div class="row">
         <div class="col">
             <div class="h-100">
-
                 <div class="row">
-                    <div class="col-xl-8">
-                        <div class="card">
-                            <div class="card-header border-0 align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu của phim</h4>
-                                <div>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        ALL
-                                    </button>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        1M
-                                    </button>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        6M
-                                    </button>
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        1Y
-                                    </button>
+                    <div class="col-md-10">
+                        <form action="{{ route('admin.statistical.revenue') }}" method="GET">
+                            {{-- TÌm kiếm --}}
+                            <div class="row">
+                                @if (Auth::user()->hasRole('System Admin'))
+                                    <div class="col-md-2">
+                                        <select name="branch_id" id="branch" class="form-select">
+                                            <option value="">Chi nhánh</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}">
+                                                    {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
+                                                    {{ $branch->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <select name="cinema_id" id="cinema" class="form-select">
+                                            <option value="">Chọn Rạp</option>
+                                        </select>
+                                    </div>
+                                @else
+                                    <div class="col-md-2">
+                                        <label for="">Lọc theo ngày:</label>
+                                    </div>
+                                @endif
+
+
+                                <div class="col-md-3">
+                                    <input type="datetime-local" name="date" class="form-control">
                                 </div>
+
+                                <div class="col-md-3">
+                                    <input type="datetime-local" name="date" class="form-control">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" name="btnSearch" type="submit">Lọc</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-md-2" align="right">
+                        <a href="{{ route('admin.statistical.revenue') }}" class="btn btn-primary mb-3 ">Tổng quan</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header border-0 align-items-center">
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu của phim</h4>
                             </div><!-- end card header -->
 
                             <div class="card-header p-0 border-0 bg-light-subtle">
                                 <div class="row g-0 text-center">
-                                    <div class="col-6 col-sm-3">
+                                    <div class="col-6 col-sm-4">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="7585">0</span>
+                                            <h5 class="mb-1"><span class="counter-value" data-target="20">0</span>
                                             </h5>
-                                            <p class="text-muted mb-0">Orders</p>
+                                            <p class="text-muted mb-0">Tổng phim</p>
                                         </div>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-6 col-sm-3">
+                                    <div class="col-6 col-sm-4">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1">$<span class="counter-value" data-target="22.89">0</span>k
+                                            <h5 class="mb-1"><span class="counter-value" data-target="150">0</span>
                                             </h5>
-                                            <p class="text-muted mb-0">Earnings</p>
+                                            <p class="text-muted mb-0">Tổng hóa đơn</p>
                                         </div>
                                     </div>
                                     <!--end col-->
-                                    <div class="col-6 col-sm-3">
+                                    <div class="col-6 col-sm-4">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="367">0</span>
+                                            <h5 class="mb-1"><span class="counter-value" data-target="20000000">0</span>VND
                                             </h5>
-                                            <p class="text-muted mb-0">Refunds</p>
+                                            <p class="text-muted mb-0">Tổng doanh thu</p>
                                         </div>
                                     </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-3">
-                                        <div class="p-3 border border-dashed border-start-0 border-end-0">
-                                            <h5 class="mb-1 text-success"><span class="counter-value"
-                                                    data-target="18.92">0</span>%</h5>
-                                            <p class="text-muted mb-0">Conversation Ratio</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
                                 </div>
                             </div><!-- end card header -->
 
-                            <canvas id="revenueChart"></canvas>
+                            <canvas id="revenueChart" height="460"></canvas>
 
                         </div><!-- end card -->
                     </div><!-- end col -->
-                    
-
-                    <div class="col-xl-4">
-                        <!-- card -->
-                        <div class="card card-height-100">
-                            <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
-                                <div class="flex-shrink-0">
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        Export Report
-                                    </button>
-                                </div>
-                            </div><!-- end card header -->
-
-                            <!-- card body -->
-                            <div class="card-body">
-
-                                <div id="sales-by-locations" data-colors='["--vz-light", "--vz-success", "--vz-primary"]'
-                                    style="height: 269px" dir="ltr"></div>
-
-                                <div class="px-2 py-2 mt-1">
-                                    <p class="mb-1">Canada <span class="float-end">75%</span></p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Greenland <span class="float-end">47%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 47%" aria-valuenow="47" aria-valuemin="0" aria-valuemax="47">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Russia <span class="float-end">82%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="82">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end card body -->
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
                 </div>
 
                 <div class="row">
                     <div class="col-xl-4">
                         <div class="card card-height-100">
-                            <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Store Visits by Source</h4>
-                                <div class="flex-shrink-0">
-                                    <div class="dropdown card-header-dropdown">
-                                        <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <span class="text-muted">Report<i
-                                                    class="mdi mdi-chevron-down ms-1"></i></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="#">Download
-                                                Report</a>
-                                            <a class="dropdown-item" href="#">Export</a>
-                                            <a class="dropdown-item" href="#">Import</a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card-header align-items-center">
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo khung giờ chiếu </h4>
                             </div><!-- end card header -->
 
                             <div class="card-body">
@@ -385,52 +293,91 @@
     </div>
 @endsection
 
-
-@section('script-libs')
-    <!-- apexcharts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.0/dayjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.0/plugin/quarterOfYear.min.js"></script>
-
-    <!-- apexcharts init -->
-    <script src="{{ asset('theme/admin/assets/js/pages/apexcharts-column.init.js') }}"></script>
-@endsection
-
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('revenueChart').getContext('2d');
-    const revenueData = {
-        labels: @json($revenueByMovies->pluck('name')),
-        datasets: [{
-            label: 'Doanh thu (VNĐ)',
-            data: @json($revenueByMovies->pluck('total_revenue')),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Lấy giá trị branchId và cinemaId từ Laravel
+            // var selectedBranchId = "{{ old('branch_id', '') }}";
+            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
-    new Chart(ctx, {
-        type: 'bar', // Biểu đồ cột
-        data: revenueData,
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Doanh thu (VNĐ)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Tên phim'
+            // Xử lý sự kiện thay đổi chi nhánh
+            $('#branch').on('change', function() {
+                var branchId = $(this).val();
+                var cinemaSelect = $('#cinema');
+                cinemaSelect.empty();
+                cinemaSelect.append('<option value="">Chọn Rạp</option>');
+
+                if (branchId) {
+                    $.ajax({
+                        url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
+                        method: 'GET',
+                        success: function(data) {
+                            $.each(data, function(index, cinema) {
+                                cinemaSelect.append('<option value="' + cinema.id +
+                                    '" >' + cinema.name + '</option>');
+                            });
+
+                            // Chọn lại cinema nếu có selectedCinemaId
+                            if (selectedCinemaId) {
+                                cinemaSelect.val(selectedCinemaId);
+                                // selectedCinemaId = false;
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
+            // if (selectedBranchId) {
+            //     $('#branch').val(selectedBranchId).trigger('change');
+
+            // }
+        });
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueData = {
+            labels: @json($revenueByMovies->pluck('name')),
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: @json($revenueByMovies->pluck('total_revenue')),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar', // Biểu đồ cột
+            data: revenueData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Doanh thu (VNĐ)',
+                            font: {
+                                size: 14 // Tăng cỡ chữ tại đây
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tên phim',
+                            font: {
+                                size: 14 // Tăng cỡ chữ tại đây
+                            }
+                        }
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 @endsection
