@@ -22,8 +22,11 @@ class CreateSiteSettingsTable extends Migration
             $table->string('facebook_link')->nullable(); // Link Facebook
             $table->string('youtube_link')->nullable(); // Link YouTube
             $table->string('instagram_link')->nullable(); // Link Instagram
-            $table->string('privacy_policy_url')->nullable(); // Link Chính sách Bảo mật
-            $table->string('terms_of_service_url')->nullable(); // Link Điều khoản Dịch vụ
+            $table->string('privacy_policy_image')->nullable(); // Ảnh đại diện cho Chính sách Bảo mật
+            $table->string('privacy_policy')->nullable(); // Chính sách Bảo mật
+            $table->string('terms_of_service_image')->nullable(); // Ảnh đại diện cho Điều khoản Dịch vụ
+            $table->string('terms_of_service')->nullable(); // Điều khoản Dịch vụ
+            $table->string('introduction_image')->nullable(); // Ảnh đại diện cho Phần giới thiệu
             $table->text('introduction')->nullable(); // Phần giới thiệu
             $table->string('copyright')->nullable(); // Bản quyền
             $table->timestamps(); // Thời gian tạo và cập nhật

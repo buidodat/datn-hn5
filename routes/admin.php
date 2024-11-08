@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
+use App\Http\Controllers\Admin\SiteSettingController;
 
 use App\Http\Controllers\Admin\TypeSeatController;
 
@@ -156,3 +157,7 @@ Route::prefix('ranks')
     });
 
 // Lưu ý: chưa check middleware hết được
+
+// Cấu hình Website
+// 1. Quản lý
+Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
