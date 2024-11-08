@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CinemaController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\MyAccountController;
@@ -31,10 +32,10 @@ use App\Http\Controllers\Admin\VoucherController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-});
-
+// Route::get('/', function () {
+//     return view('admin.dashboard');
+// });
+Route::get('/', [DashboardController::class, 'dashboard'])->name('/');
 // City
 Route::resource('branches', BranchController::class);
 // Cinema
@@ -70,13 +71,10 @@ Route::prefix('tickets')
 
 
 
-
-
 Route::resource('contacts', ContactController::class);
 
-// Route::group(['middleware' => ['auth', 'checkPermission:manage movies']], function () {
+
 Route::resource('movies', MovieController::class);
-// });
 
 
 // Route::resource('type-rooms', TypeRoomController::class);
@@ -107,9 +105,8 @@ Route::prefix('seat-templates')
 
 Route::resource('posts', PostController::class);
 
-// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách suất chiếu']], function () {
 Route::resource('showtimes', ShowtimeController::class);
-// });
+
 
 Route::get('ticket-price', [TicketPriceController::class, 'index'])->name('ticket-price');
 Route::post('ticket-update', [TicketPriceController::class, 'update'])->name('ticket-update');
@@ -125,12 +122,8 @@ Route::resource('combos', ComboController::class);
 Route::resource('type_seats', TypeSeatController::class);
 //user
 
-// Route::group(['middleware' => ['auth', 'checkPermission:Danh sách tài khoản']], function () {
 Route::resource('users', UserController::class);
-// });
-// Route::group(['middleware' => ['auth', 'checkPermission:Quản lý tài khoản']], function () {
 
-// });
 
 
 Route::put('users/reset-password/{user}', [UserController::class, 'resetPassword'])->name('users.password.reset');
@@ -152,12 +145,6 @@ Route::prefix('book-tickets')
         // Route::put('{seatTemplate}/update',   [SeatTemplateController::class, 'update'])->name('update');
     });
 
-// Phân quyền
-
-// Route::resource('permissions', PermissionController::class);
-// Route::resource('roles', RoleController::class);
-// Route::resource('assign-roles', AssignRolesController::class);
-
 Route::group(['middleware' => 'CheckSystemAdmin'], function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('roles', RoleController::class);
@@ -177,4 +164,4 @@ Route::prefix('ranks')
 
 // thống kê
 Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
-
+Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
