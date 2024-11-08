@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.site-settings.update') }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -177,8 +177,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            {{-- <textarea class="form-control" rows="5" name="privacy_policy" placeholder="Nhập nội dung Chính Sách Bảo Mật">{{ $settings->privacy_policy }}</textarea> --}}
-                            <textarea class="form-control" cols="50" rows="30" name="privacy_policy">{{ $settings->privacy_policy }}</textarea>
+                            <textarea class="form-control" rows="5" name="privacy_policy" placeholder="Nhập nội dung Chính Sách Bảo Mật">{{ $settings->privacy_policy }}</textarea>
                         </div>
                     </div>
                 </div>
