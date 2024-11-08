@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Cập nhật cấu hình website
+    Cập nhật Site Settings
 @endsection
 
 @section('content')
@@ -12,10 +12,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0"> Cập nhật cấu hình website</h4>
+                    <h4 class="mb-sm-0">Cập nhật Site Settings</h4>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.site-settings.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Cập nhật</li>
                         </ol>
                     </div>
@@ -45,51 +45,51 @@
                         <div class="row gy-4">
                             <div class="col-md-6">
                                 <label for="site_name" class="form-label">Tên Website</label>
-                                <input type="text" class="form-control" id="site_name" name="site_name" >
+                                <input type="text" class="form-control" id="site_name" name="site_name" value="{{ $settings->site_name }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="brand_name" class="form-label">Tên Thương Hiệu</label>
-                                <input type="text" class="form-control" id="brand_name" name="brand_name" >
+                                <input type="text" class="form-control" id="brand_name" name="brand_name" value="{{ $settings->brand_name }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="slogan" class="form-label">Khẩu hiệu</label>
-                                <input type="text" class="form-control" id="slogan" name="slogan" >
+                                <input type="text" class="form-control" id="slogan" name="slogan" value="{{ $settings->slogan }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">Số Điện Thoại</label>
-                                <input type="text" class="form-control" id="phone" name="phone" >
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{ $settings->phone }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" >
+                                <input type="email" class="form-control" id="email" name="email" value="{{ $settings->email }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="headquarters" class="form-label">Trụ Sở Chính</label>
-                                <input type="text" class="form-control" id="headquarters" name="headquarters" >
+                                <input type="text" class="form-control" id="headquarters" name="headquarters" value="{{ $settings->headquarters }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="business_license" class="form-label">Giấy Phép Kinh Doanh</label>
-                                <input type="text" class="form-control" id="business_license" name="business_license" >
+                                <input type="text" class="form-control" id="business_license" name="business_license" value="{{ $settings->business_license }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="working_hours" class="form-label">Thời Gian Làm Việc</label>
-                                <input type="text" class="form-control" id="working_hours" name="working_hours" >
+                                <input type="text" class="form-control" id="working_hours" name="working_hours" value="{{ $settings->working_hours }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="facebook_link" class="form-label">Link Facebook</label>
-                                <input type="text" class="form-control" id="facebook_link" name="facebook_link" >
+                                <input type="text" class="form-control" id="facebook_link" name="facebook_link" value="{{ $settings->facebook_link }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="youtube_link" class="form-label">Link YouTube</label>
-                                <input type="text" class="form-control" id="youtube_link" name="youtube_link" >
+                                <input type="text" class="form-control" id="youtube_link" name="youtube_link" value="{{ $settings->youtube_link }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="instagram_link" class="form-label">Link Instagram</label>
-                                <input type="text" class="form-control" id="instagram_link" name="instagram_link" >
+                                <input type="text" class="form-control" id="instagram_link" name="instagram_link" value="{{ $settings->instagram_link }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="copyright" class="form-label">Bản Quyền</label>
-                                <input type="text" class="form-control" id="copyright" name="copyright" >
+                                <input type="text" class="form-control" id="copyright" name="copyright" value="{{ $settings->copyright }}">
                             </div>
                         </div>
                     </div>
@@ -103,25 +103,65 @@
                         <div class="mb-3">
                             <label for="website_logo" class="form-label">Logo Website</label>
                             <input type="file" name="website_logo" class="form-control">
-             
+                            @if($settings->website_logo)
+                            {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                            @if(Str::startsWith($settings->website_logo, 'theme/client/images/'))
+                                <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                            @else
+                                <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                            @endif
+                            @else
+                                {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="Logo Mặc định" style="max-width: 100px;">
+                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label for="privacy_policy_image" class="form-label">Ảnh Chính Sách Bảo Mật</label>
                             <input type="file" name="privacy_policy_image" class="form-control">
-               
+                            @if($settings->privacy_policy_image)
+                            {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                            @if(Str::startsWith($settings->privacy_policy_image, 'theme/client/images/'))
+                                <img src="{{ asset($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 100px;">
+                            @else
+                                <img src="{{ Storage::url($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 100px;">
+                            @endif
+                            @else
+                                {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="privacy_policy_image" style="max-width: 100px;">
+                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label for="terms_of_service_image" class="form-label">Ảnh Điều Khoản Dịch Vụ</label>
                             <input type="file" name="terms_of_service_image" class="form-control">
-             
+                            @if($settings->terms_of_service_image)
+                            {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                            @if(Str::startsWith($settings->terms_of_service_image, 'theme/client/images/'))
+                                <img src="{{ asset($settings->terms_of_service_image) }}" alt="Website Logo" style="max-width: 100px;">
+                            @else
+                                <img src="{{ Storage::url($settings->terms_of_service_image) }}" alt="terms_of_service_image" style="max-width: 100px;">
+                            @endif
+                            @else
+                                {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="terms_of_service_image" style="max-width: 100px;">
+                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label for="introduction_image" class="form-label">Ảnh Giới Thiệu</label>
                             <input type="file" name="introduction_image" class="form-control">
-                    
+                            @if($settings->introduction_image)
+                            {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                            @if(Str::startsWith($settings->introduction_image, 'theme/client/images/'))
+                                <img src="{{ asset($settings->introduction_image) }}" alt="introduction_image" style="max-width: 100px;">
+                            @else
+                                <img src="{{ Storage::url($settings->introduction_image) }}" alt="introduction_image" style="max-width: 100px;">
+                            @endif
+                            @else
+                                {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="introduction_image" style="max-width: 100px;">
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -137,7 +177,8 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <textarea class="form-control" rows="5" name="privacy_policy" placeholder="Nhập nội dung Chính Sách Bảo Mật"></textarea>
+                            {{-- <textarea class="form-control" rows="5" name="privacy_policy" placeholder="Nhập nội dung Chính Sách Bảo Mật">{{ $settings->privacy_policy }}</textarea> --}}
+                            <textarea class="form-control" cols="50" rows="30" name="privacy_policy">{{ $settings->privacy_policy }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -153,7 +194,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <textarea class="form-control" rows="5" name="terms_of_service" placeholder="Nhập nội dung Điều Khoản Dịch Vụ"></textarea>
+                            <textarea class="form-control" rows="5" name="terms_of_service" placeholder="Nhập nội dung Điều Khoản Dịch Vụ">{{ $settings->terms_of_service }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -169,11 +210,31 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <textarea class="form-control" rows="5" name="introduction" placeholder="Nhập nội dung Giới Thiệu"></textarea>
+                            <textarea class="form-control" rows="5" name="introduction" placeholder="Nhập nội dung Giới Thiệu">{{ $settings->introduction }}</textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+@endsection
+
+@section('script-libs')
+    <script src="https:////cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace("privacy_policy", {
+            width: "100%",
+            height: "750px"
+        });
+
+        CKEDITOR.replace("terms_of_service", {
+            width: "100%",
+            height: "750px"
+        });
+
+        CKEDITOR.replace("introduction", {
+            width: "100%",
+            height: "750px"
+        });
+    </script>
 @endsection
