@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Cập nhật Site Settings
+    Cập nhật cấu hình website
 @endsection
 
 @section('content')
@@ -12,10 +12,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Cập nhật Site Settings</h4>
+                    <h4 class="mb-sm-0">Cập nhật cấu hình website</h4>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.site-settings.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Cập nhật</li>
                         </ol>
                     </div>
@@ -31,6 +30,11 @@
         <div class="row">
             <div class="col-lg-6 text-center">
                 <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            </div>
+            <div class="col-lg-6 text-center">
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmResetModal">
+                    Đặt lại về mặc định
+                </button>
             </div>
         </div><br>
 
@@ -216,6 +220,31 @@
             </div>
         </div>
     </form>
+    
+    <!-- Modal xác nhận -->
+    <div class="modal fade" id="confirmResetModal" tabindex="-1" aria-labelledby="confirmResetModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmResetModalLabel">Xác nhận Đặt lại</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn đặt lại về giao diện mặc định không?<br>
+                    Hành động này không thể hoàn tác.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    
+                    <!-- Form đặt lại -->
+                    <form action="{{ route('admin.site-settings.reset') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Đặt lại về mặc định</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script-libs')

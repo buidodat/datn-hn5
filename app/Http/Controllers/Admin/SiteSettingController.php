@@ -74,4 +74,13 @@ class SiteSettingController extends Controller
         }
     }    
 
+    // 2. Đặt lại cài đặt về giá trị mặc định
+
+    public function resetToDefault()
+    {
+        $settings = SiteSetting::first();
+        $settings->resetToDefault();
+
+        return redirect()->back()->with('success', 'Đã đặt lại cài đặt về giá trị mặc định!');
+    }
 }
