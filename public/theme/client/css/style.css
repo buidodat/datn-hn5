@@ -34,7 +34,6 @@ html {
 	line-height: 23px;
 	color: #333;
 	padding-right: 0 !important;
-	overflow-x: hidden;
 }
 
 body::-webkit-scrollbar-track {

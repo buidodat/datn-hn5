@@ -63,8 +63,9 @@ Route::prefix('seat-templates')
 
 
 Route::middleware('web')->group(function () {
-    Route::post('membership/apply-point', [MembershipController::class, 'applyPoint'])->name('apply-point');
     Route::post('get-membership',       [APIController::class, 'getMembership'])->name('get-membership');
+    Route::delete('cancel-membership',       [APIController::class, 'cancelMembership'])->name('cancel-membership');
+    Route::post('membership/apply-point', [MembershipController::class, 'applyPoint'])->name('apply-point');
     Route::post('membership/cancel-point',       [MembershipController::class, 'cancelPoint'])->name('cancel-point');
 });
 

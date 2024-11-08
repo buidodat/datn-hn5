@@ -7,14 +7,14 @@
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
       background-color: rgba(0, 0, 0, 0.8);
     }
 
     /* Modal content */
     .modal-content-trailer {
       background-color: #fff;
-      margin: 10% auto;
+      margin: 5% auto;
       padding: 20px;
       border-radius: 5px;
       width: 80%;
