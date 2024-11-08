@@ -936,8 +936,8 @@ class DatabaseSeeder extends Seeder
 
         // Cấu hình website
         SiteSetting::create([
-            'website_logo' => 'theme/client/images/Logo_Poly_Cinemas.png',
-            'site_name' => 'Website Đặt Vé Xem Phim Poly Cinemas',
+            'website_logo' => 'theme/client/images/header/logo7.svg',
+            'site_name' => 'Poly Cinemas',
             'brand_name' => 'Công Ty Phim Việt Nam Poly Cinemas',
             'slogan' => 'Hãy đặt vé Xem phim ngay!',
             'phone' => '0123456789',
@@ -948,11 +948,11 @@ class DatabaseSeeder extends Seeder
             'facebook_link' => 'https://facebook.com/',
             'youtube_link' => 'https://youtube.com/',
             'instagram_link' => 'https://instagram.com/',
-            'privacy_policy_image' => 'theme/client/images/Logo_Poly_Cinemas.png',
+            'privacy_policy_image' => 'theme/client/images/header/logo7.svg',
             'privacy_policy' => 'Đây là chính sách bảo mật',
-            'terms_of_service_image'=> 'theme/client/images/Logo_Poly_Cinemas.png',
+            'terms_of_service_image'=> 'theme/client/images/header/logo7.svg',
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
-            'introduction_image' => 'theme/client/images/Logo_Poly_Cinemas.png',
+            'introduction_image' => 'theme/client/images/header/logo7.svg',
             'introduction' => 'Giới thiệu về website đặt vé xem phim Poly Cinemas...',
             'copyright' => 'Bản quyền © 2024 Poly Cinemas',
             'created_at' => now(),

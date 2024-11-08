@@ -116,7 +116,7 @@
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="Logo Mặc định" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="max-width: 100px;">
                             @endif
                         </div>
 
@@ -132,7 +132,7 @@
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="privacy_policy_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="privacy_policy_image" style="max-width: 100px;">
                             @endif
                         </div>
 
@@ -148,7 +148,7 @@
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="terms_of_service_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="terms_of_service_image" style="max-width: 100px;">
                             @endif
                         </div>
 
@@ -164,7 +164,7 @@
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/Logo_Poly_Cinemas.png') }}" alt="introduction_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="introduction_image" style="max-width: 100px;">
                             @endif
                         </div>
                     </div>
