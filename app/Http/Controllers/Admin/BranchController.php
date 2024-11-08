@@ -54,11 +54,13 @@ class BranchController extends Controller
 
     public function edit(Branch $branch)
     {
+        
         return view(self::PATH_VIEW . __FUNCTION__, compact('branch'));
     }
 
     public function update(UpdateBranchRequest $request, Branch $branch)
     {
+
         try {
             $data = $request->all();
             $data['slug'] = Str::slug($data['name']);
@@ -72,6 +74,7 @@ class BranchController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+
     }
 
     public function destroy(Branch $branch)

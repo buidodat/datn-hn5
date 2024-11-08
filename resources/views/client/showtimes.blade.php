@@ -169,11 +169,11 @@
                                         <div class="movie-detail-content">
                                             <h1 class="movie-title"><a href="movies/{{ $validShowtimes->first()->movie->slug }}" class="xanh-fpt1">{{ $validShowtimes->first()->movie->name }}</a></h1>
                                             <ul class="movie-info">
-                                                <span style="margin-right: 5px">
-                                                    <i class="fa fa-tags icons"></i>{{ $validShowtimes->first()->movie->category }}
+                                                <span style="margin-right: 15px">
+                                                    <i class="fa fa-tags icons"></i> {{ $validShowtimes->first()->movie->category }}
                                                 </span>
                                                <span>
-                                                <i class="fa fa-clock-o icons"></i>{{ $validShowtimes->first()->movie->duration }} phút
+                                                <i class="fa fa-clock-o icons"></i> {{ $validShowtimes->first()->movie->duration }} phút
                                                </span>
                                             </ul>
                                             <!-- Lịch chiếu phim -->

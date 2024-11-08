@@ -86,55 +86,52 @@ class APIController extends Controller
     //lấy thông tin membership
     public function getMembership(Request $request)
     {
-        // Lấy dữ liệu từ request có thể là email hoặc mã thẻ thành viên
+        // Lấy dữ liệu từ request (email hoặc mã thẻ thành viên)
         $dataMembership = $request->input('data_membership');
 
-        // Tìm thông tin thành viên dựa trên mã thành viên
+        // Tìm thông tin thành viên theo mã thẻ hoặc email
         $membership = Membership::where('code', $dataMembership)->first();
+        $user = null;
 
-        // Nếu tìm thấy membership
         if ($membership) {
             $user = User::find($membership->user_id);
+        } else {
+            $user = User::where('email', $dataMembership)->first();
 
+            // Nếu tìm thấy user theo email, lấy membership tương ứng
             if ($user) {
-                return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'phone' => $user->phone,
-                        'membership_code' => $membership->code,
-                        'rank' => $membership->rank,
-                        'points' => $membership->points,
-                    ]
-                ]);
+                $membership = Membership::where('user_id', $user->id)->first();
             }
         }
 
-        // Nếu không tìm thấy bằng mã thành viên, tìm kiếm bằng email
-        $user = User::where('email', $dataMembership)->first();
-
-        if ($user) {
-            // Tìm thông tin thành viên bằng user_id
-            $membership = Membership::where('user_id', $user->id)->first();
-
-            if ($membership) {
-                return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'phone' => $user->phone,
-                        'membership_code' => $membership->code,
-                        'rank' => $membership->rank,
-                        'points' => $membership->points,
-                        'user_id'=>$user->id
-                    ]
-                ]);
-            }
+        // Nếu tìm thấy thông tin user và membership
+        if ($user && $membership) {
+            session()->put('customer', $user->id);
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'membership_code' => $membership->code,
+                    'rank' => $membership->rank,
+                    'points' => $membership->points,
+                    'user_id' => $user->id,
+                    'customer' => session('customer'),
+                ]
+            ]);
         }
 
-        // Nếu không tìm thấy cả hai trường hợp
+        // Trả về nếu không tìm thấy thông tin
         return response()->json(['success' => false, 'message' => 'Thông tin không hợp lệ.'], 404);
+    }
+    public function cancelMembership(Request $request)
+    {
+        if (session()->has('customer')) {
+            session()->forget('customer');
+        }
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

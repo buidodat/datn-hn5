@@ -396,29 +396,26 @@
 .total-price-choose-seat button {
     margin: 23px 3px 18px 3px;
     padding: 10px 25px;
-    /* background-color: #ff7307; */
-    /* background-image: linear-gradient(90deg, #daa67f, #ff7307); */
-    background-image: linear-gradient(90deg, #ff7307, #ffb780);
+    background-image: linear-gradient(90deg, #5e689d, #192041);
     color: white;
     border: 0px;
     border-radius: 5px;
 }
 .total-price-choose-seat button:hover{
-    background-image: linear-gradient(90deg, #ffb780, #ff7307);
-    /* background-image: linear-gradient(90deg, #ea6600, #ffd1ad); */
+    background-image: linear-gradient(90deg, #151d44, #5e689d);
 }
 
 .total-price-choose-seat a {
     margin: 23px 3px 18px 3px;
     padding: 12px 25px;
     /* background-color: #142166; */
-    background-image: linear-gradient(90deg, #5e689d, #192041);
+    background-image: linear-gradient(90deg, #ff7307, #f79b55);
     color: white;
     border: 0px;
     border-radius: 5px;
 }
 .total-price-choose-seat a:hover{
-    background-image: linear-gradient(90deg, #151d44, #5e689d);
+    background-image: linear-gradient(90deg, #ffb780, #ff7307);
 }
 
 .cam{
@@ -1811,5 +1808,7 @@ div text {
 .points-info{
     margin-bottom: 20px;
 }
-
+.no-scroll {
+    overflow-y: hidden !important;
+}
 
