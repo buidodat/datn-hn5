@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatTemplateController;
 use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Admin\StatisticalController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\TicketPriceController;
 use App\Http\Controllers\Admin\TypeRoomController;
@@ -152,7 +153,8 @@ Route::prefix('ranks')
         Route::post('', [RankController::class, 'store'])->name('store');
         Route::get('{rank}/delete', [RankController::class, 'destroy'])->name('destroy');
         Route::put('{rank}/update', [RankController::class, 'update'])->name('update');
-
     });
 
-// Lưu ý: chưa check middleware hết được
+Route::resource('statistical', StatisticalController::class);
+
+

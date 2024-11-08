@@ -4,7 +4,7 @@
             <div class="d-flex">
                 <!-- LOGO -->
                 <div class="navbar-brand-box horizontal-logo">
-                    <a href="#" class="logo logo-dark">
+                    <a href="/" class="logo logo-dark">
                         <span class="logo-sm">
                             <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" height="22">
                         </span>
@@ -13,8 +13,9 @@
                                 height="17">
                         </span>
                     </a>
+                    
 
-                    <a href="#" class="logo logo-light">
+                    <a href="/" class="logo logo-light">
                         <span class="logo-sm">
                             <img src="{{ asset('theme/client/images/header/P.svg') }}" alt=""
                                 height="22">

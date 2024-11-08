@@ -8,19 +8,16 @@
                 <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt="" height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
-                    height="40px">
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="#" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt=""
-                    height="30">
+                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt="" height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
-                    height="40px">
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -389,7 +386,10 @@
                         </div>
                     </li>
                 @endif
-
+                <li class="nav-item">
+                    <a href="{{ route('admin.statistical.index') }}" class="nav-link menu-link"
+                        data-key="t-horizontal"><i class="las la-users"></i> <span data-key="t-layouts">Thống kê</span></a>
+                </li>
 
 
             </ul>
