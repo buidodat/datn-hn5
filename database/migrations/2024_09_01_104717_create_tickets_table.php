@@ -4,6 +4,7 @@ use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\Payment;
 use App\Models\Room;
+use App\Models\Showtime;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Database\Migrations\Migration;
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(Room::class);
             $table->foreignIdFor(Movie::class);
+            $table->foreignIdFor(Showtime::class);
             $table->string('voucher_code')->nullable();
             $table->unsignedInteger('voucher_discount')->nullable();
             $table->unsignedInteger('point_use')->nullable();
