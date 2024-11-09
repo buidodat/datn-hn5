@@ -15,8 +15,8 @@ class StatisticalController extends Controller
         $branches = Branch::all();
 
         // doanh thu theo phim
-        $startDate = '2024-11-4';
-        $endDate = '2024-11-20';
+        $startDate = '2024-11-01';
+        $endDate = '2024-11-30';
 
         $revenueByMovies = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
             ->whereBetween('tickets.created_at', [$startDate, $endDate])
@@ -35,6 +35,7 @@ class StatisticalController extends Controller
         $revenueTimeSlot = [];
         foreach ($timeSlots as $slot) {
             $totalRevenue = Ticket::join('showtimes', 'tickets.showtime_id', '=', 'showtimes.id')
+                ->whereBetween('tickets.created_at', [$startDate, $endDate])
                 ->whereTime('showtimes.start_time', '>=', $slot['start'])
                 ->whereTime('showtimes.start_time', '<', $slot['end'])
                 ->sum('tickets.total_price');
