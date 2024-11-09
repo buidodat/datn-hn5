@@ -21,7 +21,7 @@ class Voucher extends Model
         'is_publish',
         'type',
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active'=>'boolean'
     ];
     public function users()

@@ -13,7 +13,7 @@ class Payment extends Model
         'description',
         'is_active',
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active'=>'boolean'
     ];
     public function tickets()

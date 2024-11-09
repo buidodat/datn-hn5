@@ -12,6 +12,7 @@ class PointHistory extends Model
         'membership_id',
         'points',
         'type',
+        'description',
         'expiry_date',
         'processed'
     ];
