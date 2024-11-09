@@ -27,7 +27,24 @@ class StatisticalController extends Controller
             ->groupBy('movies.id', 'movies.name')
             ->get();
 
-        return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches'));
+        // Thống kê doanh thu theo Ngày/Tháng/Năm
+        $dailyRevenue = Ticket::selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
+            ->groupBy('date')->orderBy('date', 'asc')->get();
+        $weeklyRevenue = Ticket::selectRaw("WEEK(created_at) as week, SUM(total_price) as total_revenue")
+            ->groupBy('week')->orderBy('week', 'asc')->get();
+        $monthlyRevenue = Ticket::selectRaw("MONTH(created_at) as month, SUM(total_price) as total_revenue")
+            ->groupBy('month')->orderBy('month', 'asc')->get();
+        $yearlyRevenue = Ticket::selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
+            ->groupBy('year')->orderBy('year', 'asc')->get();
+
+        //THống kê theo rạp 
+        $revenueByCinema = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
+            ->select('cinemas.name as cinema_name', DB::raw('SUM(tickets.total_price) as total_revenue'))
+            ->groupBy('cinemas.name')
+            ->orderBy('total_revenue', 'desc')
+            ->get();
+
+        return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue', 'revenueByCinema'));
     }
 
 
@@ -64,6 +81,6 @@ class StatisticalController extends Controller
 
         $filteredRevenue = $query->sum('total_price');
 
-        return view('admin.statisticals.ticketsRevenue', compact('todayRevenue', 'weekRevenue', 'monthRevenue', 'yearRevenue', 'dailyRevenue', 'cinemaRevenue','filteredRevenue'));
+        return view('admin.statisticals.ticketsRevenue', compact('todayRevenue', 'weekRevenue', 'monthRevenue', 'yearRevenue', 'dailyRevenue', 'cinemaRevenue', 'filteredRevenue'));
     }
 }

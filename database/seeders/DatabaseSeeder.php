@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
             false,
         ];
 
-        $ratings = [ 'P',  'T13', 'T16', 'T18', 'K'];
+        $ratings = ['P',  'T13', 'T16', 'T18', 'K'];
 
         for ($i = 0; $i < 35; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
@@ -593,10 +593,10 @@ class DatabaseSeeder extends Seeder
         // Chèn tất cả người dùng vào cơ sở dữ liệu
         User::insert($users);
         $dataRanks = [
-            ['name'=>'Nhựa',        'total_spent'=>0,         'ticket_percentage'=>5,     'combo_percentage'=>3 , 'is_default'=>1],
-            ['name'=>'Vàng',        'total_spent'=>2000000,   'ticket_percentage'=>7,     'combo_percentage'=>5, 'is_default'=>0],
-            ['name'=>'Cao thủ',     'total_spent'=>5000000,   'ticket_percentage'=>10,    'combo_percentage'=>7, 'is_default'=>0],
-            ['name'=>'Chiến tướng', 'total_spent'=>10000000,  'ticket_percentage'=>15,    'combo_percentage'=>10, 'is_default'=>0],
+            ['name' => 'Nhựa',        'total_spent' => 0,         'ticket_percentage' => 5,     'combo_percentage' => 3, 'is_default' => 1],
+            ['name' => 'Vàng',        'total_spent' => 2000000,   'ticket_percentage' => 7,     'combo_percentage' => 5, 'is_default' => 0],
+            ['name' => 'Cao thủ',     'total_spent' => 5000000,   'ticket_percentage' => 10,    'combo_percentage' => 7, 'is_default' => 0],
+            ['name' => 'Chiến tướng', 'total_spent' => 10000000,  'ticket_percentage' => 15,    'combo_percentage' => 10, 'is_default' => 0],
         ];
         Rank::insert($dataRanks);
         // Tạo một bản ghi thành viên cho mỗi người dùng
@@ -605,7 +605,7 @@ class DatabaseSeeder extends Seeder
             if ($user) {
                 Membership::create([
                     'user_id' => $user->id,
-                    'rank_id' =>1,
+                    'rank_id' => 1,
                     'code' => Membership::codeMembership(),
                 ]);
             }
@@ -682,10 +682,23 @@ class DatabaseSeeder extends Seeder
         $comboIds = DB::table('combos')->pluck('id')->toArray();
         $userIds = User::pluck('id')->toArray(); // Lấy tất cả ID của người dùng từ bảng users
 
+        $today = Carbon::now();
+
+        // Xác định ngày bắt đầu là 6 tháng trước
+        $startDate = Carbon::now()->subMonths(6);
+
+        // Tổng số tháng cần phân bổ
+        $totalMonths = $today->diffInMonths($startDate);
+
         foreach ($userIds as $userId) {
             $expiryDate = Carbon::now()->addMonth();
 
             for ($i = 0; $i < 2; $i++) {
+                $randomMonth = rand(0, $totalMonths);  // Chọn tháng ngẫu nhiên
+                $randomDay = rand(1, 28);  // Chọn ngày ngẫu nhiên trong tháng (28 để tránh vượt quá số ngày của các tháng)
+
+                // Tạo ngày ngẫu nhiên theo tháng và năm
+                $randomDate = $startDate->copy()->addMonths($randomMonth)->day($randomDay);
                 $ticketId = DB::table('tickets')->insertGetId([
                     'user_id' => $userId,
                     'cinema_id' => fake()->randomElement($cinemaIds),
@@ -702,8 +715,8 @@ class DatabaseSeeder extends Seeder
                     'status' => 'Chưa xuất vé',
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'created_at' => $randomDate,  // Gán ngày ngẫu nhiên
+                    'updated_at' => $randomDate,  // Gán lại ngày updated_at tương tự
                 ]);
 
                 $showtimeId = DB::table('tickets')->where('id', $ticketId)->value('showtime_id');
@@ -979,7 +992,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
- 
+
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -994,7 +1007,7 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('Quản lý cơ sở');
         }
 
-        
+
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');

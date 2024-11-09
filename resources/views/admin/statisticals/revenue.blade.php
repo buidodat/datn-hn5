@@ -83,7 +83,8 @@
                                     <!--end col-->
                                     <div class="col-6 col-sm-4">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="20000000">0</span>VND
+                                            <h5 class="mb-1"><span class="counter-value"
+                                                    data-target="20000000">0</span>VND
                                             </h5>
                                             <p class="text-muted mb-0">Tổng doanh thu</p>
                                         </div>
@@ -286,7 +287,56 @@
                         </div> <!-- .card-->
                     </div> <!-- .col-->
                 </div> <!-- end row-->
-                
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            {{-- <div class="card-header border-0 align-items-center">
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày</h4>
+                                <div>
+                                    <label for="timeRangeSelect">Chọn phạm vi thời gian:</label>
+                                    <select id="timeRangeSelect" class="form-select">
+                                        <option value="daily">Theo ngày</option>
+                                        <option value="weekly">Theo tuần</option>
+                                        <option value="monthly">Theo tháng</option>
+                                        <option value="yearly">Theo năm</option>
+                                    </select>
+                                </div>
+                            </div> --}}
+
+
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày</h4>
+                                <div class="flex-shrink-0">
+                                    <select id="timeRangeSelect" class="form-select">
+                                        <option value="daily">Theo ngày</option>
+                                        <option value="weekly">Theo tuần</option>
+                                        <option value="monthly">Theo tháng</option>
+                                        <option value="yearly">Theo năm</option>
+                                    </select>
+                                </div>
+                            </div><!-- end card header -->
+                            <!-- end card header -->
+
+                            <canvas id="revenueChartDaily" style="width: 300px; height: 120px;"></canvas>
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header border-0 align-items-center">
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo rạp</h4>
+                            </div><!-- end card header -->
+
+                            <canvas id="revenueChartCinema" style="width: 300px; height: 100px;"></canvas>
+                        </div><!-- end card -->
+                    </div><!-- end col -->
+                </div>
+
             </div> <!-- end .h-100-->
 
         </div> <!-- end col -->
@@ -339,6 +389,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Biểu đồ theo phim
         const ctx = document.getElementById('revenueChart').getContext('2d');
         const revenueData = {
             labels: @json($revenueByMovies->pluck('name')),
@@ -378,6 +429,133 @@
                     }
                 }
             }
+        });
+
+        //Biểu đồ theo ngày tháng năm
+        const revenueChartCanvas = document.getElementById('revenueChartDaily').getContext('2d');
+        const timeRangeSelect = document.getElementById('timeRangeSelect');
+
+        const revenueData2 = {
+            daily: {
+                labels: @json($dailyRevenue->pluck('date')),
+                datasets: [{
+                    label: 'Doanh thu theo ngày',
+                    data: @json($dailyRevenue->pluck('total_revenue')),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu nền mới
+                    borderColor: 'rgba(255, 99, 132, 1)', // Màu viền mới
+                    borderWidth: 1
+                }]
+            },
+            weekly: {
+                labels: @json($weeklyRevenue->pluck('week')),
+                datasets: [{
+                    label: 'Doanh thu theo tuần',
+                    data: @json($weeklyRevenue->pluck('total_revenue')),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            monthly: {
+                labels: @json($monthlyRevenue->pluck('month')),
+                datasets: [{
+                    label: 'Doanh thu theo tháng',
+                    data: @json($monthlyRevenue->pluck('total_revenue')),
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            yearly: {
+                labels: @json($yearlyRevenue->pluck('year')),
+                datasets: [{
+                    label: 'Doanh thu theo năm',
+                    data: @json($yearlyRevenue->pluck('total_revenue')),
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            }
+        };
+
+        let revenueChart = new Chart(revenueChartCanvas, {
+            type: 'bar',
+            data: revenueData2.daily, // Hiển thị theo ngày mặc định
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Doanh thu (VNĐ)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Thời gian'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Cập nhật biểu đồ khi thay đổi phạm vi thời gian
+        timeRangeSelect.addEventListener('change', function() {
+            const selectedRange = timeRangeSelect.value;
+            revenueChart.data = revenueData2[selectedRange];
+            revenueChart.update();
+        });
+
+
+        //Biểu đồ theo rạp
+        document.addEventListener('DOMContentLoaded', function() {
+            const revenueDataCinema = {
+                labels: @json($revenueByCinema->pluck('cinema_name')), // Lấy danh sách tên rạp
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: @json($revenueByCinema->pluck('total_revenue')), // Lấy doanh thu của từng rạp
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const ctx = document.getElementById('revenueChartCinema').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: revenueDataCinema,
+                options: {
+                    indexAxis: 'y', // Hiển thị biểu đồ cột ngang
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Doanh thu (VNĐ)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Rạp'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
         });
     </script>
 @endsection
