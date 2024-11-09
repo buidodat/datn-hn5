@@ -70,7 +70,7 @@ Route::post('/update-seat', [ChooseSeatController::class, 'updateSeat'])->name('
 
 Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
-route::post('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
+route::delete('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
 route::post('payment', [PaymentController::class, 'payment'])->name('payment');
 route::post('payment-admin', [PaymentController::class, 'paymentAdmin'])->name('payment-admin');

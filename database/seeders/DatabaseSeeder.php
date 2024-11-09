@@ -675,54 +675,50 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+
         // tickets
         $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
         $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
         $movieIds = DB::table('movies')->pluck('id')->toArray();
         $comboIds = DB::table('combos')->pluck('id')->toArray();
-        $userIds = range(1, 6);
+        $userIds = User::pluck('id')->toArray(); // Lấy tất cả ID của người dùng từ bảng users
 
         foreach ($userIds as $userId) {
-            // Giới hạn trong 1 tháng
             $expiryDate = Carbon::now()->addMonth();
 
             for ($i = 0; $i < 2; $i++) {
-                // Fake ticket data
                 $ticketId = DB::table('tickets')->insertGetId([
                     'user_id' => $userId,
                     'cinema_id' => fake()->randomElement($cinemaIds),
                     'room_id' => DB::table('rooms')->inRandomOrder()->value('id'),
                     'movie_id' => fake()->randomElement($movieIds),
+                    'showtime_id' => fake()->randomElement($showtimeIds),
                     'voucher_code' => null,
                     'voucher_discount' => null,
+                    'point_use' => fake()->numberBetween(0, 500),
+                    'point_discount' => fake()->numberBetween(0, 100),
                     'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => fake()->randomElement(['Chưa suất vé']),
+                    'status' => 'Chưa xuất vé',
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
 
-                // Lấy showtime ngẫu nhiên
-                $showtime_id = fake()->randomElement($showtimeIds);
-                $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-
-                // Ghế theo phòng
-                $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
+                $showtimeId = DB::table('tickets')->where('id', $ticketId)->value('showtime_id');
+                $roomId = DB::table('showtimes')->where('id', $showtimeId)->value('room_id');
+                $seatIds = DB::table('seats')->where('room_id', $roomId)->orderBy('id')->pluck('id')->toArray();
 
                 $seatCount = ($i == 0) ? 3 : 1;
                 $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
                 $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
-
                 $price = fake()->numberBetween(50, 200) * 1000;
 
                 foreach ($selectedSeats as $seatId) {
-                    // Fake ticket_seats data
                     DB::table('ticket_seats')->insert([
                         'ticket_id' => $ticketId,
-                        'showtime_id' => $showtime_id,
                         'seat_id' => $seatId,
                         'price' => $price,
                         'created_at' => now(),
@@ -730,7 +726,6 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
 
-                // Fake combos cho mỗi ticket
                 $comboCount = fake()->numberBetween(1, 3);
 
                 for ($j = 0; $j < $comboCount; $j++) {
@@ -739,13 +734,85 @@ class DatabaseSeeder extends Seeder
                         'combo_id' => fake()->randomElement($comboIds),
                         'price' => fake()->numberBetween(50, 200) * 1000,
                         'quantity' => fake()->numberBetween(1, 5),
-                        'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
             }
         }
+
+        // LỰC CMT
+        // // tickets
+        // $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
+        // $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
+        // $movieIds = DB::table('movies')->pluck('id')->toArray();
+        // $comboIds = DB::table('combos')->pluck('id')->toArray();
+        // $userIds = range(1, 6);
+
+        // foreach ($userIds as $userId) {
+        //     // Giới hạn trong 1 tháng
+        //     $expiryDate = Carbon::now()->addMonth();
+
+        //     for ($i = 0; $i < 2; $i++) {
+        //         // Fake ticket data
+        //         $ticketId = DB::table('tickets')->insertGetId([
+        //             'user_id' => $userId,
+        //             'cinema_id' => fake()->randomElement($cinemaIds),
+        //             'room_id' => DB::table('rooms')->inRandomOrder()->value('id'),
+        //             'movie_id' => fake()->randomElement($movieIds),
+        //             'voucher_code' => null,
+        //             'voucher_discount' => null,
+        //             'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
+        //             'code' => fake()->regexify('[A-Za-z0-9]{10}'),
+        //             'total_price' => fake()->numberBetween(50, 200) * 1000,
+        //             'status' => fake()->randomElement(['Chưa suất vé']),
+        //             'staff' => fake()->randomElement(['admin', 'member']),
+        //             'expiry' => $expiryDate,
+        //             'created_at' => now(),
+        //             'updated_at' => now(),
+        //         ]);
+
+        //         // Lấy showtime ngẫu nhiên
+        //         $showtime_id = fake()->randomElement($showtimeIds);
+        //         $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
+
+        //         // Ghế theo phòng
+        //         $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
+
+        //         $seatCount = ($i == 0) ? 3 : 1;
+        //         $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
+        //         $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
+
+        //         $price = fake()->numberBetween(50, 200) * 1000;
+
+        //         foreach ($selectedSeats as $seatId) {
+        //             // Fake ticket_seats data
+        //             DB::table('ticket_seats')->insert([
+        //                 'ticket_id' => $ticketId,
+        //                 'showtime_id' => $showtime_id,
+        //                 'seat_id' => $seatId,
+        //                 'price' => $price,
+        //                 'created_at' => now(),
+        //                 'updated_at' => now(),
+        //             ]);
+        //         }
+
+        //         // Fake combos cho mỗi ticket
+        //         $comboCount = fake()->numberBetween(1, 3);
+
+        //         for ($j = 0; $j < $comboCount; $j++) {
+        //             DB::table('ticket_combos')->insert([
+        //                 'ticket_id' => $ticketId,
+        //                 'combo_id' => fake()->randomElement($comboIds),
+        //                 'price' => fake()->numberBetween(50, 200) * 1000,
+        //                 'quantity' => fake()->numberBetween(1, 5),
+        //                 // 'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
+        //                 'created_at' => now(),
+        //                 'updated_at' => now(),
+        //             ]);
+        //         }
+        //     }
+        // }
 
 
 
@@ -888,9 +955,9 @@ class DatabaseSeeder extends Seeder
             'Sửa tài khoản',
             'Xóa tài khoản',
             'Danh sách thống kê',
-            'Thêm thống kê',
-            'Sửa thống kê',
-            'Xóa thống kê',
+            // 'Thêm thống kê',
+            // 'Sửa thống kê',
+            // 'Xóa thống kê',
         ];
 
         // Tạo các quyền từ danh sách
@@ -913,7 +980,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
-        // Gán vai trò cho User với ID = 1
+ 
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -922,13 +989,13 @@ class DatabaseSeeder extends Seeder
         $managerRole = Role::findByName('Quản lý cơ sở', 'web');
         $managerRole->givePermissionTo(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh', 'Danh sách rạp', 'Thêm rạp']);
 
-        // Gán vai trò cho User với ID = 2
+
         $user = User::find(2);
         if ($user) {
             $user->assignRole('Quản lý cơ sở');
         }
 
-        // Gán vai trò Nhân viên cho User với ID = 6
+        
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');

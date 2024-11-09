@@ -1,9 +1,9 @@
 hr {
     border: 0;
     /* Loại bỏ đường viền mặc định */
-    border-top: 3px solid rgb(214, 213, 213);
+    border-top: 1px solid rgb(214, 213, 213);
     /* Đặt màu và độ dày của đường */
-    margin: 30px 0;
+    margin: 20px 0;
     /* Tùy chỉnh khoảng cách trên và dưới */
     width: 100%;
     /* Chiều rộng của hr */
@@ -30,7 +30,7 @@ hr {
     cursor: pointer;
     font-size: 18px;
     font-weight: normal;
-    color: rgb(46, 46, 46);
+    color: #23316e;
     padding: 10px 10px;
     margin: 0 16px;
     flex: 0 1 auto;
@@ -62,7 +62,7 @@ hr {
 .movie-info {
     list-style: none;
     padding: 0;
-    margin-top: 15px;
+    margin-top: 8px;
 }
 
 .movie-info li {
@@ -72,14 +72,15 @@ hr {
 
 /* Style cho phần lịch chiếu */
 .showtime-section {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .showtime-title {
-    font-size: 19px;
+    font-size: 17px;
     font-weight: bold;
     margin-bottom: 15px;
-}
+    color: #212d64;
+} 
 
 .showtime-list {
     display: flex;
@@ -118,4 +119,15 @@ hr {
 .p-1 {
     text-align: center;
     font-size: 30px;
+}
+.xanh-fpt1 {
+    color: #23316e;
+}
+.xanh-fpt1:hover {
+    color: #ff7307;
+}
+.icons{
+    font-size: 15px;
+    color: #1f3180;
+
 }

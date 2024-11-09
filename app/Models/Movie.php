@@ -50,10 +50,15 @@ class Movie extends Model
     const RATINGS = [
         ['id' => 1, 'name' => 'P', 'description' => 'Phim được phép phổ biến đến người xem ở mọi độ tuổi.'],
         ['id' => 2, 'name' => 'T13', 'description' => 'Phim được phổ biến đến người xem dưới 13 tuổi và có người bảo hộ đi kèm.'],
-        ['id' => 3, 'name' => 'T16', 'description' => 'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên (13+).'],
-        ['id' => 4, 'name' => 'T18', 'description' => 'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên (16+).'],
-        ['id' => 5, 'name' => 'K', 'description' => 'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên (18+).'],
+        ['id' => 3, 'name' => 'T16', 'description' => 'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên.'],
+        ['id' => 4, 'name' => 'T18', 'description' => 'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên.'],
+        ['id' => 5, 'name' => 'K', 'description' => 'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên.'],
     ];
+
+    public static function getRatingByName($name)
+    {
+        return collect(self::RATINGS)->firstWhere('name', $name);
+    }
     public function movieVersions()
     {
         return $this->hasMany(MovieVersion::class);

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
+
 class TicketController extends Controller
 {
     /**
@@ -32,7 +33,6 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-
 
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('id');
@@ -54,7 +54,7 @@ class TicketController extends Controller
             // lọc theo created_at, vì khác định dạng date vs timestamp
             $tickets = $tickets->whereBetween('created_at', [
                 Carbon::parse($date)->startOfDay(),         // 00:00:00 ngày ý
-                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý
+                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý 
             ]);
         }
 
@@ -117,22 +117,23 @@ class TicketController extends Controller
         return response()->json(['success' => true]);
     }*/
 
-    public function confirmPrint(Request $request, $id)
+
+
+    public function confirm(Request $request, Ticket $ticket)
     {
-        $ticket = Ticket::findOrFail($id);
-        $hasPrinted = $ticket->status === 'Đã suất vé';
-
-        // Nếu chưa suất vé trước đó, cập nhật trạng thái
-        if ($request->input('confirm') === 'yes' && !$hasPrinted) {
-            $ticket->status = 'Đã suất vé';
-            $ticket->save();
+        if($ticket->status== Ticket::NOT_ISSUED && $ticket->expiry > now()){
+            $ticket->update([
+                'status'=>Ticket::ISSUED
+            ]);
         }
-
+        session()->flash('confirm',true);
+     
         return response()->json([
             'success' => true,
-            'hasPrinted' => $hasPrinted,
-            'message' => $hasPrinted ? 'Lưu ý: Vé đã được suất trước đó.' : 'Vé đã được suất thành công.'
+            'message' => 'Thay đổi trạng thái thành công!'
         ]);
+
+
     }
 
     /*public function print(Ticket $ticket)
@@ -165,7 +166,9 @@ class TicketController extends Controller
             'ratingDescription' => $this->getRatingDescription($ticket->movie->rating)
         ];
 
-        return view(self::PATH_VIEW . 'print', $viewData);
+        return view(self::PATH_VIEW . 'order', $viewData);
+        // Tải về file PDF
+
     }
 
     private function calculateTotalSeatPrice(Ticket $ticket): float
@@ -274,6 +277,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
+
         $oneTicket = Ticket::with(['movie','room','ticketCombos.combo','ticketSeats.showtime','ticketSeats'])->findOrFail($ticket->id);
         $users = $ticket->user()->first();
         $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {

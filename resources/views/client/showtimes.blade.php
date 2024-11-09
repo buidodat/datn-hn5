@@ -115,7 +115,7 @@
 
                             @if ($validMoviesForDate->isNotEmpty())
                                 <div data-day="{{ $date['day_id'] }}"
-                                    class="xanh-fpt movieScrening-date-item {{ !$firstActiveSet ? 'active' : '' }} ">
+                                    class="xanh-fpt1 movieScrening-date-item {{ !$firstActiveSet ? 'active' : '' }} ">
                                     {{ $date['date_label'] }}
                                 </div>
                                 @php
@@ -161,18 +161,20 @@
                                 @endphp
 
                                 @if ($validShowtimes->isNotEmpty() && $validShowtimes->first() && $validShowtimes->first()->movie)
-                                    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8" style="margin-bottom: 30px">
-                                        <div class="col-md-4 image-movie-detail">
+                                    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8" style="margin-bottom: 20px">
+                                        <div class="col-md-3 image-movie-detail">
                                             <img src="{{ $validShowtimes->first()->movie->img_thumbnail }}"
                                                 class="movie-poster">
                                         </div>
                                         <div class="movie-detail-content">
-                                            <h1 class="movie-title xanh-fpt">{{ $validShowtimes->first()->movie->name }}</h1>
+                                            <h1 class="movie-title"><a href="movies/{{ $validShowtimes->first()->movie->slug }}" class="xanh-fpt1">{{ $validShowtimes->first()->movie->name }}</a></h1>
                                             <ul class="movie-info">
-                                                <li><strong>Thể loại:</strong>
-                                                    {{ $validShowtimes->first()->movie->category }}</li>
-                                                <li><strong>Thời lượng:</strong>
-                                                    {{ $validShowtimes->first()->movie->duration }} phút</li>
+                                                <span style="margin-right: 15px">
+                                                    <i class="fa fa-tags icons"></i> {{ $validShowtimes->first()->movie->category }}
+                                                </span>
+                                               <span>
+                                                <i class="fa fa-clock-o icons"></i> {{ $validShowtimes->first()->movie->duration }} phút
+                                               </span>
                                             </ul>
                                             <!-- Lịch chiếu phim -->
                                             <div class="showtime-section">

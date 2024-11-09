@@ -14,6 +14,7 @@ class Ticket extends Model
         'cinema_id',
         'room_id',
         'movie_id',
+        'showtime_id',
         'payment_name',
         'voucher_code',
         'voucher_discount',
@@ -31,6 +32,12 @@ class Ticket extends Model
         ['value' => 'confirmed', 'label' => 'Đã suất vé'],
         ['value' => 'cancelled', 'label' => 'Đã hết hạn'],
     ];
+
+    //Trạng thái vé
+    const ISSUED = 'Đã suất vé';
+    const NOT_ISSUED = 'Chưa suất vé';
+    const EXPIRED = 'Đã hết';
+
 
     public function user()
     {
