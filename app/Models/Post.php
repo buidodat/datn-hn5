@@ -18,7 +18,7 @@ class Post extends Model
         'is_active',
         'view_count',
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active'=>'boolean'
     ];
 

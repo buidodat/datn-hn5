@@ -16,7 +16,7 @@ class Seat extends Model
         'name',
         'is_active',
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active' => 'boolean'
     ];
 

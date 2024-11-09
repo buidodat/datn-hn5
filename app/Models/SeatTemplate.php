@@ -19,7 +19,7 @@ class SeatTemplate extends Model
         'is_publish'
     ];
 
-    protected $cast = [
+    protected $casts = [
         'is_publish' => 'boolean',
         'is_active' => 'boolean',
         'seat_structure' => 'array'

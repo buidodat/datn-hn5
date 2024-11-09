@@ -48,11 +48,11 @@ class Movie extends Model
     //     'K'
     // ];
     const RATINGS = [
-        ['id' => 1, 'name' => 'P', 'description' => 'Phim được phép phổ biến đến người xem ở mọi độ tuổi.'],
-        ['id' => 2, 'name' => 'T13', 'description' => 'Phim được phổ biến đến người xem dưới 13 tuổi và có người bảo hộ đi kèm.'],
-        ['id' => 3, 'name' => 'T16', 'description' => 'Phim được phổ biến đến người xem từ đủ 13 tuổi trở lên.'],
-        ['id' => 4, 'name' => 'T18', 'description' => 'Phim được phổ biến đến người xem từ đủ 16 tuổi trở lên.'],
-        ['id' => 5, 'name' => 'K', 'description' => 'Phim được phổ biến đến người xem từ đủ 18 tuổi trở lên.'],
+        ['id' => 1, 'name' => 'P', 'description' => 'Phim được phổ  biến rộng rãi đến mọi đối tượng.'],
+        ['id' => 2, 'name' => 'T13', 'description' => 'Phim được phổ biến đến khán giả từ đủ 13 tuổi trở lên.'],
+        ['id' => 3, 'name' => 'T16', 'description' => 'Phim được phổ biến đến khán giả từ đủ 16 tuổi trở lên.'],
+        ['id' => 4, 'name' => 'T18', 'description' => 'Phim được phổ biến đến khán giả từ đủ 18 tuổi trở lên.'],
+        ['id' => 5, 'name' => 'K', 'description' => 'Phim được phổ biến đến khán giả dưới 13 tuổi và có người bảo hộ đi cùng.'],
     ];
 
     public static function getRatingByName($name)
@@ -79,4 +79,23 @@ class Movie extends Model
     {
         return $this->hasMany(Showtime::class);
     }
+
+
+    public static function   getImageTagRating($rating) {
+        switch ($rating) {
+            case 'P':
+                return asset('images/tags/tag-p.png');
+            case 'K':
+                return asset('images/tags/tag-k.png');
+            case 'T13':
+                return asset('images/tags/tag-t13.png');
+            case 'T16':
+                return asset('images/tags/tag-t16.png');
+            case 'T18':
+                return asset('images/tags/tag-t18.png');
+            default:
+                return null; // Trả về null nếu rating không khớp với các case
+        }
+    }
+
 }

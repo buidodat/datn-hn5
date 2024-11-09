@@ -15,6 +15,7 @@ use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Rank;
+use App\Models\Ticket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -75,7 +76,7 @@ class DatabaseSeeder extends Seeder
             false,
         ];
 
-        $ratings = [ 'P',  'T13', 'T16', 'T18', 'K'];
+        $ratings = ['P',  'T13', 'T16', 'T18', 'K'];
 
         for ($i = 0; $i < 35; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
@@ -307,7 +308,7 @@ class DatabaseSeeder extends Seeder
         $typeSeats = [
             ['name' => 'Ghế Thường', 'price' => 50000],
             ['name' => 'Ghế Vip', 'price' => 75000],
-            ['name' => 'Ghế Đôi', 'price' => 110000],
+            ['name' => 'Ghế Đôi', 'price' => 120000],
         ];
         DB::table('type_seats')->insert($typeSeats);
 
@@ -594,10 +595,10 @@ class DatabaseSeeder extends Seeder
         // Chèn tất cả người dùng vào cơ sở dữ liệu
         User::insert($users);
         $dataRanks = [
-            ['name'=>'Nhựa',        'total_spent'=>0,         'ticket_percentage'=>5,     'combo_percentage'=>3 , 'is_default'=>1],
-            ['name'=>'Vàng',        'total_spent'=>2000000,   'ticket_percentage'=>7,     'combo_percentage'=>5, 'is_default'=>0],
-            ['name'=>'Cao thủ',     'total_spent'=>5000000,   'ticket_percentage'=>10,    'combo_percentage'=>7, 'is_default'=>0],
-            ['name'=>'Chiến tướng', 'total_spent'=>10000000,  'ticket_percentage'=>15,    'combo_percentage'=>10, 'is_default'=>0],
+            ['name' => 'Member',       'total_spent' => 0,         'ticket_percentage' => 5,     'combo_percentage' => 3,  'is_default' => 1],
+            ['name' => 'Gold',         'total_spent' => 1000000,   'ticket_percentage' => 7,     'combo_percentage' => 5,  'is_default' => 0],
+            ['name' => 'Platinum',     'total_spent' => 3000000,   'ticket_percentage' => 10,    'combo_percentage' => 7,  'is_default' => 0],
+            ['name' => 'Diamond',      'total_spent' => 5000000,   'ticket_percentage' => 15,    'combo_percentage' => 10, 'is_default' => 0],
         ];
         Rank::insert($dataRanks);
         // Tạo một bản ghi thành viên cho mỗi người dùng
@@ -606,7 +607,7 @@ class DatabaseSeeder extends Seeder
             if ($user) {
                 Membership::create([
                     'user_id' => $user->id,
-                    'rank_id' =>1,
+                    'rank_id' => 1,
                     'code' => Membership::codeMembership(),
                 ]);
             }
@@ -700,7 +701,7 @@ class DatabaseSeeder extends Seeder
                     'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => 'Chưa xuất vé',
+                    'status' => Ticket::NOT_ISSUED,
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
                     'created_at' => now(),
@@ -980,7 +981,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
- 
+
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -995,7 +996,7 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('Quản lý cơ sở');
         }
 
-        
+
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');
