@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create('ticket_seats', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Ticket::class);
-            $table->foreignIdFor(Showtime::class);
+            // $table->foreignIdFor(Showtime::class);
             $table->foreignIdFor(Seat::class);
             /*$table->string('code')->comment('Mã từ bảng Vé tickets');*/
             $table->unsignedInteger('price');
