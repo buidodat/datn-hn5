@@ -14,6 +14,7 @@ class Ticket extends Model
         'cinema_id',
         'room_id',
         'movie_id',
+        'showtime_id',
         'payment_name',
         'voucher_code',
         'voucher_discount',

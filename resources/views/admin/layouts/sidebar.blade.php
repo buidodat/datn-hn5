@@ -8,19 +8,16 @@
                 <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt="" height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
-                    height="40px">
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="#" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt=""
-                    height="30">
+                <img src="{{ asset('theme/client/images/header/P3.svg') }}" alt="" height="30">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px"
-                    height="40px">
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="" width="187px" height="40px">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -36,6 +33,35 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#chart" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="chart">
+                        <i class="ri-bar-chart-grouped-fill"></i>
+                        <span data-key="t-landing">Thống Kê</span>
+                    </a>
+                    <div class="menu-dropdown collapse" id="chart" style="">
+                        <ul class="nav nav-sm flex-column">
+                            {{-- Thống kê --}}
+                            <li class="nav-item">
+                                <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
+                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                    <span data-key="t-dashboards">Dashboard</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="menu-dropdown collapse" id="chart" style="">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.statistical.revenue')}}" class="nav-link menu-link" data-key="t-horizontal">
+                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                    <span data-key="t-dashboards">Doanh Thu</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
                 {{-- Menu mới --}}
                 @canany([
