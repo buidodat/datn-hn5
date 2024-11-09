@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
             false,
         ];
 
-        $ratings = [ 'P',  'T13', 'T16', 'T18', 'K'];
+        $ratings = ['P',  'T13', 'T16', 'T18', 'K'];
 
         for ($i = 0; $i < 35; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
@@ -593,10 +593,10 @@ class DatabaseSeeder extends Seeder
         // Chèn tất cả người dùng vào cơ sở dữ liệu
         User::insert($users);
         $dataRanks = [
-            ['name'=>'Nhựa',        'total_spent'=>0,         'ticket_percentage'=>5,     'combo_percentage'=>3 , 'is_default'=>1],
-            ['name'=>'Vàng',        'total_spent'=>2000000,   'ticket_percentage'=>7,     'combo_percentage'=>5, 'is_default'=>0],
-            ['name'=>'Cao thủ',     'total_spent'=>5000000,   'ticket_percentage'=>10,    'combo_percentage'=>7, 'is_default'=>0],
-            ['name'=>'Chiến tướng', 'total_spent'=>10000000,  'ticket_percentage'=>15,    'combo_percentage'=>10, 'is_default'=>0],
+            ['name' => 'Member',       'total_spent' => 0,         'ticket_percentage' => 5,     'combo_percentage' => 3,  'is_default' => 1],
+            ['name' => 'Gold',         'total_spent' => 1000000,   'ticket_percentage' => 7,     'combo_percentage' => 5,  'is_default' => 0],
+            ['name' => 'Platinum',     'total_spent' => 3000000,   'ticket_percentage' => 10,    'combo_percentage' => 7,  'is_default' => 0],
+            ['name' => 'Diamond',      'total_spent' => 5000000,   'ticket_percentage' => 15,    'combo_percentage' => 10, 'is_default' => 0],
         ];
         Rank::insert($dataRanks);
         // Tạo một bản ghi thành viên cho mỗi người dùng
@@ -605,7 +605,7 @@ class DatabaseSeeder extends Seeder
             if ($user) {
                 Membership::create([
                     'user_id' => $user->id,
-                    'rank_id' =>1,
+                    'rank_id' => 1,
                     'code' => Membership::codeMembership(),
                 ]);
             }
@@ -912,7 +912,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::findByName('System Admin', 'web');
         $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
 
- 
+
         $user = User::find(1);
         if ($user) {
             $user->assignRole('System Admin');
@@ -927,7 +927,7 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('Quản lý cơ sở');
         }
 
-        
+
         $user = User::find(6);
         if ($user) {
             $user->assignRole('Nhân viên');

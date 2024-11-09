@@ -35,7 +35,8 @@ class Ticket extends Model
     //Trạng thái vé
     const ISSUED = 'Đã suất vé';
     const NOT_ISSUED = 'Chưa suất vé';
-    const EXPIRED = 'Đã hết';
+    const EXPIRED = 'Đã hết hạn';
+    const CANCELED = 'Đã hủy';
 
 
     public function user()

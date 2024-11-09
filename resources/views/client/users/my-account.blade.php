@@ -292,93 +292,95 @@
 
                     {{-- Hành trình điện ảnh --}}
                     <div id="cinema-journey" class="tab-pane fade"> {{-- fade --}}
-                       <div class="row">
+                        <div class="row">
                             <div class="col-md-12">
-                                <table class='table table-bordered dt-responsive nowrap table-striped align-middle '
-                                id="transactionHistory" width="100%">
-                                <thead class='xanh-fpt'>
-                                    <tr>
-                                        <th>Mã đặt vé</th>
-                                        <th>Phim</th>
-                                        <th>Thời gian chiếu</th>
-                                        <th>Rạp </th>
-                                        <th>Ghế</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Thao tác</th>
+                                <table class='table table-bordered dt-responsive nowrap align-middle '
+                                    id="transactionHistory" width="100%">
+                                    <thead class='xanh-fpt'>
+                                        <tr>
+                                            <th>Mã đặt vé </th>
+                                            <th>Thông tin vé</th>
+                                            <th>Thao tác</th>
 
-                                </thead>
-                                <tbody>
-                                    @if ($tickets->count() > 0)
-                                        @foreach ($tickets as $ticket)
-                                            @php
-                                                // Nhóm các ticketMovie theo movie_id
-                                                $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
-                                            @endphp
+                                    </thead>
+                                    <tbody>
+                                        @if ($tickets->count() > 0)
+                                            @foreach ($tickets as $ticket)
+                                                @php
+                                                    // Nhóm các ticketMovie theo movie_id
+                                                    $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
+                                                @endphp
 
-                                            @foreach ($ticketSeatsByMovie as $ticketSeats)
-                                                <tr>
-                                                    <td>{{ $ticket->code }}</td>
-                                                    <td>
+                                                @foreach ($ticketSeatsByMovie as $ticketSeats)
+                                                    <tr>
+                                                        <td>{{ $ticket->code }}</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    @php
+                                                                        // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
 
-                                                        @php
-                                                            // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
+                                                                        $url = $ticket->movie->img_thumbnail;
 
-                                                            $url = $ticket->movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-                                                        @endphp
+                                                                        if (!\Str::contains($url, 'http')) {
+                                                                            $url = Storage::url($url);
+                                                                        }
+                                                                    @endphp
 
 
-                                                        <img width="130px" src="{{ $url }}"
-                                                            alt="movie_img" />
-                                                        <p class="bold" align='left'>
-                                                            {{ $ticket->movie->name }}
-                                                        </p>
-                                                    </td>
-                                                    <td>
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
-                                                        <br />
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
-                                                        ~
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $ticket->cinema->name }} -
-                                                        {{ $ticket->room->name }}
-                                                    </td>
+                                                                    <img width="130px" src="{{ $url }}"
+                                                                        alt="movie_img" />
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <h3 class="movie-name-history">
+                                                                        {{ $ticket->movie->name }}</h3>
+                                                                    <b>Thời gian chiếu:</b>
+                                                                    {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
+                                                                    {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
+                                                                    <br>
+                                                                    <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
+                                                                    {{ $ticket->room->name }}
+                                                                    <br>
+                                                                    <b>Ghế ngồi:</b>
+                                                                    {{ implode(', ', $ticketSeats->pluck('seat.name')->toArray()) }}
+                                                                    <br>
+                                                                    <b>Trạng thái:</b> {{ $ticket->status }}
+                                                                    <br>
+                                                                    <b>Tổng tiền thanh toán:</b>
+                                                                    {{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                                    VNĐ
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                                <button class="btn btn-info">Chi tiết</button>
+                                                                <form action="">
+                                                                    <button class="btn btn-danger" >Hủy</button>
+                                                                </form>
+
+                                                            {{-- href="detail-ticket/{{ $ticket->id }}" --}}
 
 
-                                                    <td>
-                                                        {{ implode(', ', $ticketSeats->pluck('seat.name')->toArray()) }}
-                                                    </td>
-
-
-                                                    <td>{{ $ticket->status }}</td>
-                                                    <td>
-                                                        {{ number_format($ticket->total_price, 0, ',', '.') }}đ
-                                                    </td>
-                                                    <td>
-                                                        {{-- href="detail-ticket/{{ $ticket->id }}" --}}
-                                                        <a href="{{ route('ticketDetail', $ticket->id) }}"
+                                                            {{-- <button class="btn btn-info">Xem chi tiết</button> --}}
+                                                            {{-- <a href="{{ route('ticketDetail', $ticket->id) }}"
                                                             class="bold btn-detail-ticket">
                                                             Chi tiết
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                        </a> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="8">Bạn chưa có giao dịch nào !</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                                        @else
+                                            <tr>
+                                                <td colspan="8">Bạn chưa có giao dịch nào !</td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
                             </div>
-                       </div>
+                        </div>
 
 
 
@@ -648,25 +650,25 @@
                                 $('#old_password').next('.text-danger').remove();
                                 $('#old_password').after(
                                     `<span class="text-danger">${errors.old_password[0]}</span>`
-                                    );
+                                );
                             }
                             if (errors.password) {
                                 $('#password').next('.text-danger').remove();
                                 $('#password').after(
                                     `<span class="text-danger">${errors.password[0]}</span>`
-                                    );
+                                );
                             }
                             if (errors.password_confirmation) {
                                 $('#password_confirmation').next('.text-danger').remove();
                                 $('#password_confirmation').after(
                                     `<span class="text-danger">${errors.password_confirmation[0]}</span>`
-                                    );
+                                );
                             }
                         } else if (xhr.status === 400) {
                             $('#old_password').next('.text-danger').remove();
                             $('#old_password').after(
                                 `<span class="text-danger">${xhr.responseJSON.error}</span>`
-                                );
+                            );
                         }
                     },
                 });

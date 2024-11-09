@@ -75,7 +75,7 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 20) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
                                                     <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
@@ -169,7 +169,7 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 20) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
                                                     <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
@@ -259,7 +259,7 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 20) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
                                                     <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}
                                                     </p>

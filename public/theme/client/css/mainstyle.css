@@ -1580,8 +1580,10 @@ ul.dropdown {
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
 }
-.choose-cinemas {
-
+.movie-name-history{
+    margin: 10px auto;
+    color: #434f89;
+    font-weight: 600;
 }
 .choose-cinemas .default-base {
 
