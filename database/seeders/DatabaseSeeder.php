@@ -684,10 +684,23 @@ class DatabaseSeeder extends Seeder
         $comboIds = DB::table('combos')->pluck('id')->toArray();
         $userIds = User::pluck('id')->toArray(); // Lấy tất cả ID của người dùng từ bảng users
 
+        $today = Carbon::now();
+
+        // Xác định ngày bắt đầu là 6 tháng trước
+        $startDate = Carbon::now()->subMonths(6);
+
+        // Tổng số tháng cần phân bổ
+        $totalMonths = $today->diffInMonths($startDate);
+
         foreach ($userIds as $userId) {
             $expiryDate = Carbon::now()->addMonth();
 
             for ($i = 0; $i < 2; $i++) {
+                $randomMonth = rand(0, $totalMonths);  // Chọn tháng ngẫu nhiên
+                $randomDay = rand(1, 28);  // Chọn ngày ngẫu nhiên trong tháng (28 để tránh vượt quá số ngày của các tháng)
+
+                // Tạo ngày ngẫu nhiên theo tháng và năm
+                $randomDate = $startDate->copy()->addMonths($randomMonth)->day($randomDay);
                 $ticketId = DB::table('tickets')->insertGetId([
                     'user_id' => $userId,
                     'cinema_id' => fake()->randomElement($cinemaIds),
@@ -704,8 +717,8 @@ class DatabaseSeeder extends Seeder
                     'status' => Ticket::NOT_ISSUED,
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'created_at' => $randomDate,  // Gán ngày ngẫu nhiên
+                    'updated_at' => $randomDate,  // Gán lại ngày updated_at tương tự
                 ]);
 
                 $showtimeId = DB::table('tickets')->where('id', $ticketId)->value('showtime_id');

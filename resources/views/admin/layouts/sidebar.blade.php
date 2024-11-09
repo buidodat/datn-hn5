@@ -51,16 +51,29 @@
                             </li>
                         </ul>
                     </div>
+                    {{-- <div class="menu-dropdown collapse" id="chart" style="">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.statistical.ticketsRevenue') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal">
+                                    
+                                    <span data-key="t-dashboards">Theo Hóa đơn</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div> --}}
                     <div class="menu-dropdown collapse" id="chart" style="">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.statistical.revenue')}}" class="nav-link menu-link" data-key="t-horizontal">
+                                <a href="{{ route('admin.statistical.revenue') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal">
                                     {{-- <i class="ri-dashboard-2-line"></i> --}}
                                     <span data-key="t-dashboards">Doanh Thu</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+
                 </li>
 
                 {{-- Menu mới --}}
@@ -108,7 +121,8 @@
                                 @canany(['Danh sách phòng chiếu', 'Thêm phòng chiếu', 'Sửa phòng chiếu', 'Xóa phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
+                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span
+                                                data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
@@ -436,7 +450,6 @@
                         </div>
                     </li>
                 @endif
-
 
 
             </ul>
