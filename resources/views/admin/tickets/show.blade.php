@@ -39,12 +39,29 @@
                         $ticketSeat = $oneTicket->ticketSeats()->first();
                         $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
                     @endphp
-                    <strong>{{ $oneTicket->movie->name }} ({{ $ticketSeat->showtime->format }}) </strong><br>
+                    <strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->showtime->format }}) </strong><br>
                     ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
                     <strong>Phòng:</strong> {{ $ticket->room->name }} <br>
                     <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
                     <hr>
+                    <div class="ticket-info border-bottom-dashed border-top-dashed mt-2">
+                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                            @php
+                                $combo = $ticketCombo->combo;
+                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
+                                $totalPrice = $price * $ticketCombo->quantity;
+                            @endphp
 
+                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }} vnđ)</b></p>
+
+                            <ul>
+                                @foreach ($combo->food as $food)
+                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                @endforeach
+                            </ul>
+                        @endforeach
+                    </div>
+                    <hr>
                 </div>
 
                 <div class="invoice-summary">
@@ -106,9 +123,11 @@
         </div>
 
         {{--hoa don ve--}}
+        @foreach($oneTicket->ticketSeats as $seat)
         <div class="invoice-container">
             <div class="invoice-content">
                 <h2 class="invoice-title">Vé xem phim</h2>
+
 
                 <div class="invoice-details">
                     <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
@@ -122,10 +141,10 @@
                         $ticketSeat = $oneTicket->ticketSeats()->first();
                         $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
                     @endphp
-                    <strong>{{ $oneTicket->movie->name }} ({{ $ticketSeat->showtime->format }})</strong><br>
+                    <strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->showtime->format }})</strong><br>
                     ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
                     <strong>Phòng:</strong> {{ $ticket->room->name }}<br>
-                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
+                    <strong>Ghế:</strong> {{ $seat->seat->name }}
                     <hr>
                 </div>
 
@@ -139,8 +158,10 @@
                     {!! $barcode !!}
                 </div>
                 <div class="invoice-code">{{ $oneTicket->code }}</div>
+
             </div>
         </div>
+        @endforeach
     </div>
 
     <div class="row">
@@ -234,11 +255,11 @@
                                     </td>
                                     <td colspan="1">
                                         <p> {{ $oneTicket->room->name }}</p>
-                                        <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->date)->format('d-m-Y') }}
+                                        <p> {{ \Carbon\Carbon::parse($oneTicket->showtime->date)->format('d-m-Y') }}
                                         </p>
-                                        <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
+                                        <p> {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }}
                                             ~
-                                            {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}
+                                            {{ \Carbon\Carbon::parse($oneTicket->showtime->end_time)->format('H:i') }}
                                         </p>
                                     </td>
                                     <td colspan="1">
