@@ -50,50 +50,86 @@
                             <div class="col-md-6">
                                 <label for="site_name" class="form-label">Tên Website</label>
                                 <input type="text" class="form-control" id="site_name" name="site_name" value="{{ $settings->site_name }}">
+                                @error("site_name")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="brand_name" class="form-label">Tên Thương Hiệu</label>
                                 <input type="text" class="form-control" id="brand_name" name="brand_name" value="{{ $settings->brand_name }}">
+                                @error("brand_name")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="slogan" class="form-label">Khẩu hiệu</label>
                                 <input type="text" class="form-control" id="slogan" name="slogan" value="{{ $settings->slogan }}">
+                                @error("slogan")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">Số Điện Thoại</label>
                                 <input type="text" class="form-control" id="phone" name="phone" value="{{ $settings->phone }}">
+                                @error("phone")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" value="{{ $settings->email }}">
+                                @error("email")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="headquarters" class="form-label">Trụ Sở Chính</label>
                                 <input type="text" class="form-control" id="headquarters" name="headquarters" value="{{ $settings->headquarters }}">
+                                @error("headquarters")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="business_license" class="form-label">Giấy Phép Kinh Doanh</label>
                                 <input type="text" class="form-control" id="business_license" name="business_license" value="{{ $settings->business_license }}">
+                                @error("business_license")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="working_hours" class="form-label">Thời Gian Làm Việc</label>
                                 <input type="text" class="form-control" id="working_hours" name="working_hours" value="{{ $settings->working_hours }}">
+                                @error("working_hours")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="facebook_link" class="form-label">Link Facebook</label>
                                 <input type="text" class="form-control" id="facebook_link" name="facebook_link" value="{{ $settings->facebook_link }}">
+                                @error("facebook_link")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="youtube_link" class="form-label">Link YouTube</label>
                                 <input type="text" class="form-control" id="youtube_link" name="youtube_link" value="{{ $settings->youtube_link }}">
+                                @error("youtube_link")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="instagram_link" class="form-label">Link Instagram</label>
                                 <input type="text" class="form-control" id="instagram_link" name="instagram_link" value="{{ $settings->instagram_link }}">
+                                @error("instagram_link")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="copyright" class="form-label">Bản Quyền</label>
                                 <input type="text" class="form-control" id="copyright" name="copyright" value="{{ $settings->copyright }}">
+                                @error("copyright")
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -118,6 +154,10 @@
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
                                 <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="max-width: 100px;">
                             @endif
+
+                            @error("website_logo")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -134,6 +174,10 @@
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
                                 <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="privacy_policy_image" style="max-width: 100px;">
                             @endif
+
+                            @error("privacy_policy_image")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -150,6 +194,10 @@
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
                                 <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="terms_of_service_image" style="max-width: 100px;">
                             @endif
+
+                            @error("terms_of_service_image")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
@@ -166,6 +214,10 @@
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
                                 <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="introduction_image" style="max-width: 100px;">
                             @endif
+
+                            @error("introduction_image")
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -183,6 +235,9 @@
                         <div class="mb-3">
                             <textarea class="form-control" rows="5" name="privacy_policy" placeholder="Nhập nội dung Chính Sách Bảo Mật">{{ $settings->privacy_policy }}</textarea>
                         </div>
+                        @error("privacy_policy")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -199,6 +254,9 @@
                         <div class="mb-3">
                             <textarea class="form-control" rows="5" name="terms_of_service" placeholder="Nhập nội dung Điều Khoản Dịch Vụ">{{ $settings->terms_of_service }}</textarea>
                         </div>
+                        @error("terms_of_service")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -215,6 +273,9 @@
                         <div class="mb-3">
                             <textarea class="form-control" rows="5" name="introduction" placeholder="Nhập nội dung Giới Thiệu">{{ $settings->introduction }}</textarea>
                         </div>
+                        @error("introduction")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>

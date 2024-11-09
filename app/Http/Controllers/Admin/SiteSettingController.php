@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\SiteSetting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\UpdateSiteSettingsRequest;
 
 class SiteSettingController extends Controller
 {
@@ -17,7 +18,7 @@ class SiteSettingController extends Controller
         return view('admin.site-settings.index', compact('settings'));
     }
 
-    public function update(Request $request)
+    public function update(UpdateSiteSettingsRequest $request, SiteSetting $settings)
     {
         try {
             // Lấy bản ghi đầu tiên của SiteSetting
