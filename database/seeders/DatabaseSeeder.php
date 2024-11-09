@@ -15,6 +15,7 @@ use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Rank;
+use App\Models\Ticket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -306,7 +307,7 @@ class DatabaseSeeder extends Seeder
         $typeSeats = [
             ['name' => 'Ghế Thường', 'price' => 50000],
             ['name' => 'Ghế Vip', 'price' => 75000],
-            ['name' => 'Ghế Đôi', 'price' => 110000],
+            ['name' => 'Ghế Đôi', 'price' => 120000],
         ];
         DB::table('type_seats')->insert($typeSeats);
 
@@ -699,7 +700,7 @@ class DatabaseSeeder extends Seeder
                     'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
                     'code' => fake()->regexify('[A-Za-z0-9]{10}'),
                     'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => 'Chưa xuất vé',
+                    'status' => Ticket::NOT_ISSUED,
                     'staff' => fake()->randomElement(['admin', 'member']),
                     'expiry' => $expiryDate,
                     'created_at' => now(),

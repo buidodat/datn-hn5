@@ -13,7 +13,7 @@ class Branch extends Model
         'slug',
         'is_active'
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active'=>'boolean'
     ];
 

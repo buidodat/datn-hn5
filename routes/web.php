@@ -94,7 +94,7 @@ Route::put('/my-account/update', [UserController::class, 'update'])->name('my-ac
 Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
 
 //Hủy vé
-Route::get('my-account/transaction/{showtime}/cancel', [TicketController::class, 'cancel'])->name('my-account.transaction.cancel');
+Route::put('my-account/transaction/{ticket}/cancel', [TicketController::class, 'cancel'])->name('my-account.transaction.cancel');
 
 // // User - Lịch sử mua hàng
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');

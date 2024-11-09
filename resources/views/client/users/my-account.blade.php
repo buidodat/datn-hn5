@@ -335,8 +335,8 @@
                                                                     <h3 class="movie-name-history">
                                                                         {{ $ticket->movie->name }}</h3>
                                                                     <b>Thời gian chiếu:</b>
-                                                                    {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
-                                                                    {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
+                                                                    {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
+                                                                    {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
                                                                     <br>
                                                                     <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
                                                                     {{ $ticket->room->name }}
@@ -356,8 +356,10 @@
                                                         <td>
 
                                                                 <button class="btn btn-info">Chi tiết</button>
-                                                                <form action="">
-                                                                    <button class="btn btn-danger" >Hủy</button>
+                                                                <form action="{{ route('my-account.transaction.cancel',$ticket) }}" method="post">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button type='submit' class="btn btn-danger" >Hủy</button>
                                                                 </form>
 
                                                             {{-- href="detail-ticket/{{ $ticket->id }}" --}}
@@ -551,6 +553,8 @@
 @endsection
 
 @section('script-libs')
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
