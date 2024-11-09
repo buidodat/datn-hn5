@@ -176,7 +176,6 @@ Route::prefix('ranks')
 
 // Lưu ý: chưa check middleware hết được
 
-<<<<<<< HEAD
 // Cấu hình Website
 // 1. Quản lý
 Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
@@ -184,9 +183,7 @@ Route::put('site-settings/update', [SiteSettingController::class, 'update'])->na
 
 // 2. Đặt lại về mặc định 
 Route::post('site-settings/reset', [SiteSettingController::class, 'resetToDefault'])->name('site-settings.reset');
-=======
 
 // thống kê
 Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
 
->>>>>>> d3a86b756954f47676628d5265ae10ac96d9ce35
