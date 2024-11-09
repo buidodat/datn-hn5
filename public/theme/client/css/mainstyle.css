@@ -1316,7 +1316,7 @@
 .movie-name-home  {
     margin-top: 8px;
     margin-bottom: 5px;
-    letter-spacing: -0.7px;
+    letter-spacing: -1px;
     font-weight: 600;
     font-size: 20px;
     max-width: 225px;
@@ -1337,6 +1337,13 @@
     top: 0px;
     right: 0px;
     width: 65px !important;
+    height: auto !important;
+}
+.tag-rating{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 55px !important;
     height: auto !important;
 }
 .text-bold{
@@ -1555,7 +1562,6 @@ ul.dropdown {
     margin: 0px;
     padding: 0px;
     border-radius: 15px;
-    box-shadow: 0 0 5px;
 }
 
 .mingcute--down-line {
@@ -1571,18 +1577,22 @@ ul.dropdown {
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
 }
-
+.movie-name-history{
+    margin: 10px auto;
+    color: #434f89;
+    font-weight: 600;
+}
 .choose-cinemas .default-base {
 
     text-align: center;
 }
 
 .choose-cinemas .dropdown {
-    background-color: rgb(237, 237, 237);
+    background-color: #ff8528
 }
 
 .choose-cinemas .dropdown li.default-base a:not(.sub-menu li a) {
-    color: black;
+    color:white;
     display: block;
     padding: 8px 12px;
     /* border: 2px solid #989898; */
@@ -1592,7 +1602,7 @@ ul.dropdown {
 }
 
 .choose-cinemas .dropdown li.default-base:hover a:not(.sub-menu li a) {
-    color: #ff7307;
+    box-shadow: 0 0 5px pink;
 }
 
 .choose-cinemas .default-base:hover .sub-menu {
@@ -1606,7 +1616,6 @@ ul.dropdown {
     z-index: 5;
     width: 185px;
     background-color: white;
-    box-shadow: 0 0 5px;
 }
 
 .sub-menu li {
@@ -1624,7 +1633,7 @@ ul.dropdown {
 }
 
 .sub-menu li:hover {
-    background-color: #ff7307;
+    background-color: #ff8528;
 }
 
 .sub-menu li:hover a:not(.menu-cinema li a) {
@@ -1640,13 +1649,13 @@ ul.dropdown {
 }
 
 .menu-cinema {
+    border-top: 2px solid rgb(255, 77, 0);
     display: none;
-    box-shadow: 0 0 5px;
     position: absolute;
     background-color: white;
     width: 185px;
-    top: 0px;
-    right: -186px;
+    top: -2px;
+    right: -185px;
 }
 
 .menu-cinema li:hover a {

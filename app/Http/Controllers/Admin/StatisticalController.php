@@ -18,14 +18,39 @@ class StatisticalController extends Controller
         $branches = Branch::all();
 
 
-        $startDate = '2024-11-4';
-        $endDate = '2024-11-10';
+        // doanh thu theo phim
+        $startDate = '2023-11-01';
+        $endDate = '2024-11-30';
 
         $revenueByMovies = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
             ->whereBetween('tickets.created_at', [$startDate, $endDate])
             ->select('movies.name', DB::raw('SUM(tickets.total_price) as total_revenue'))
             ->groupBy('movies.id', 'movies.name')
             ->get();
+
+        //doanh thu theo khung giờ chiếu
+        $timeSlots = [
+            ['start' => '09:00:00', 'end' => '13:00:00', 'label' => '9:00 - 13:00'],
+            ['start' => '13:00:00', 'end' => '18:00:00', 'label' => '13:00 - 18:00'],
+            ['start' => '18:00:00', 'end' => '24:00:00', 'label' => '18:00 - 24:00'],
+        ];
+
+        $revenueTimeSlot = [];
+        foreach ($timeSlots as $slot) {
+            $totalRevenue = Ticket::join('showtimes', 'tickets.showtime_id', '=', 'showtimes.id')
+                ->whereBetween('tickets.created_at', [$startDate, $endDate])
+                ->whereTime('showtimes.start_time', '>=', $slot['start'])
+                ->whereTime('showtimes.start_time', '<', $slot['end'])
+                ->sum('tickets.total_price');
+
+            $revenueTimeSlot[] = [
+                'label' => $slot['label'],
+                'revenue' => (float)$totalRevenue, // Chuyển sang kiểu số thực
+            ];
+        }
+
+        // dd($revenueByMovies);
+
 
         // Thống kê doanh thu theo Ngày/Tháng/Năm
         $dailyRevenue = Ticket::selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
@@ -44,43 +69,6 @@ class StatisticalController extends Controller
             ->orderBy('total_revenue', 'desc')
             ->get();
 
-        return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue', 'revenueByCinema'));
-    }
-
-
-    public function ticketsRevenue(Request $request)
-    {
-        // Doanh thu tổng quan
-        $todayRevenue = Ticket::whereDate('created_at', Carbon::today())->sum('total_price');
-
-        $weekRevenue = Ticket::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('total_price');
-
-        $monthRevenue = Ticket::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('total_price');
-
-        $yearRevenue = Ticket::whereYear('created_at', Carbon::now()->year)->sum('total_price');
-
-        // Doanh thu theo ngày trong tháng hiện tại
-        $dailyRevenue = Ticket::selectRaw('DATE(created_at) as date, SUM(total_price) as total_price')
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->get();
-
-        // Doanh thu theo cơ sở (cinema_id)
-        $cinemaRevenue = Ticket::selectRaw('cinema_id, SUM(total_price) as total_price')
-            ->groupBy('cinema_id')
-            ->get();
-
-        // Lọc
-        $query = Ticket::query();
-
-        if ($request->filled('from_date') && $request->filled('to_date')) {
-            $query->whereBetween('created_at', [$request->from_date, $request->to_date]);
-        }
-
-        $filteredRevenue = $query->sum('total_price');
-
-        return view('admin.statisticals.ticketsRevenue', compact('todayRevenue', 'weekRevenue', 'monthRevenue', 'yearRevenue', 'dailyRevenue', 'cinemaRevenue', 'filteredRevenue'));
+        return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue', 'revenueByCinema', 'revenueTimeSlot'));
     }
 }

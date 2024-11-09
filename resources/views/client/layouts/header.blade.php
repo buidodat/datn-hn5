@@ -50,10 +50,24 @@
     </div>
     <div class="header-buttom ">
         <div class="container-header-buttom">
-            <div class="logo">
+            {{-- <div class="logo"> --}}
                 <div class="img-logo">
+                    @php
+                        $settings = App\Models\SiteSetting::first();
+                    @endphp
                     <a href="/">
-                        <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="logo" />
+                        {{-- <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="logo" /> --}}
+                        @if($settings->website_logo)
+                        {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                        @if(Str::startsWith($settings->website_logo, 'theme/client/images/'))
+                            <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="height: 80px;">
+                        @else
+                            <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="height: 80px;">
+                        @endif
+                        @else
+                            {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                            <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="height: 80px;">
+                        @endif
                     </a>
                 </div>
                 <div class="choose-cinemas">
@@ -106,7 +120,7 @@
                     </div>
 
                 </div>
-            </div>
+            {{-- </div> --}}
 
             <div class="main-menu">
                 <ul>

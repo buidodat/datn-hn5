@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->unique();
-            $table->foreignIdFor(Rank::class)->default($this->getDefaultRankId());
+            $table->foreignIdFor(Rank::class)->default(1);
             $table->string('code')->unique();
             $table->unsignedBigInteger('points')->default(0);
             $table->unsignedBigInteger('total_spent')->default(0);
@@ -31,8 +31,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('memberships');
     }
-    private function getDefaultRankId()
-    {
-        return Rank::where('total_spent', 0)->value('id');
-    }
+
 };

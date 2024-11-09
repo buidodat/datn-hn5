@@ -15,6 +15,7 @@ use App\Http\Controllers\Client\PaymentController;
 use App\Http\Controllers\Client\PostController;
 use App\Http\Controllers\Client\MoMoPaymentController;
 use App\Http\Controllers\Client\MovieController;
+use App\Http\Controllers\Client\TicketController;
 use App\Http\Controllers\Client\TicketPriceController;
 use App\Models\Room;
 use App\Models\Seat;
@@ -91,6 +92,9 @@ Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
 Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
+
+//Hủy vé
+Route::put('my-account/transaction/{ticket}/cancel', [TicketController::class, 'cancel'])->name('my-account.transaction.cancel');
 
 // // User - Lịch sử mua hàng
 Route::get('ticket-detail/{id}', [UserController::class, 'ticketDetail'])->name('ticketDetail');

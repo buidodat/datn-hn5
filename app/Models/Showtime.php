@@ -19,8 +19,10 @@ class Showtime extends Model
         'end_time',
         'is_active',
     ];
-    protected $cast = [
-        'is_active' => 'boolean'
+    protected $casts = [
+        'is_active' => 'boolean',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
 
     public function room()
@@ -40,7 +42,7 @@ class Showtime extends Model
     public function seats()
     {
         return $this->belongsToMany(Seat::class, 'seat_showtimes', 'showtime_id', 'seat_id')
-            ->withPivot('status', 'price','user_id')
+            ->withPivot('status', 'price', 'user_id')
             ->withTimestamps();
     }
     public function ticketSeats()
