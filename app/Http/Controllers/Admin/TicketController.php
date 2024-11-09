@@ -54,7 +54,7 @@ class TicketController extends Controller
             // lọc theo created_at, vì khác định dạng date vs timestamp
             $tickets = $tickets->whereBetween('created_at', [
                 Carbon::parse($date)->startOfDay(),         // 00:00:00 ngày ý
-                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý
+                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý 
             ]);
         }
 
