@@ -379,6 +379,27 @@
                     </li>
                 @endcanany
 
+                {{-- @canany(['']) --}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
+                            role="button" aria-expanded="false" aria-controls="siteSetting">
+                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
+                        </a>
+                        <div class="menu-dropdown collapse" id="siteSetting" style="">
+                            <ul class="nav nav-sm flex-column">
+
+                                {{-- @canany(['']) --}}
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
+                                            data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
+                                                data-key="t-layouts">Quản lý</span></a>
+                                    </li>
+                                {{-- @endcan --}}
+                            </ul>
+                        </div>
+                    </li>
+                {{-- @endcanany --}}
+
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
