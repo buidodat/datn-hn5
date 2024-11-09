@@ -51,17 +51,17 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="menu-dropdown collapse" id="chart" style="">
+                    {{-- <div class="menu-dropdown collapse" id="chart" style="">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="{{ route('admin.statistical.ticketsRevenue') }}" class="nav-link menu-link"
                                     data-key="t-horizontal">
-                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                    
                                     <span data-key="t-dashboards">Theo Hóa đơn</span>
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                     <div class="menu-dropdown collapse" id="chart" style="">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
