@@ -803,21 +803,20 @@ class PaymentController extends Controller
         }
 
         // 10. Xử lý ghế hết thời gian giữ chỗ
-        if ($hasExpiredSeats) {
-            DB::table('seat_showtimes')
-                ->whereIn('seat_id', $seatIds)
-                ->where('showtime_id', $showtimeId)
-                ->update([
-                    'status' => 'available',
-                    'user_id' => null,
-                    'hold_expires_at' => null,
-                ]);
-            foreach ($seatIds as $seatId) {
-                // event(new SeatRelease($seatId, $showtimeId));
-                broadcast(new SeatStatusChange($seatId, $showtimeId, 'available'))->toOthers();
+        $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
+        foreach ($seatShowtimes as $seatShowtime) {
+            // Kiểm tra xem có ghế xem có đủ tiêu chuẩn để đc bấm nút tiếp tục hay không
+            if ($seatShowtime->hold_expires_at < now() || $seatShowtime->user_id != $authId || $seatShowtime->status != 'hold') {
+                $hasExpiredSeats = true; // Đánh dấu có ghế hết thời gian giữ chỗ
+                break; // Dừng vòng lặp khi tìm thấy ghế hết thời gian giữ
             }
+        }
+
+        if ($hasExpiredSeats) {
+            // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
+            // Chuyển hướng về trang chọn ghế với thông báo lỗi
             return redirect()->route('choose-seat', $showtimeId)
-                ->with('error', 'Một hoặc nhiều ghế đã hết thời gian giữ chỗ. Vui lòng chọn lại ghế.');
+                ->with('error', 'Ghế đã hết thời gian giữ chỗ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
         }
 
         // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ

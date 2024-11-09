@@ -14,8 +14,9 @@ class StatisticalController extends Controller
     {
         $branches = Branch::all();
 
-        $startDate = '2024-11-4';
-        $endDate = '2024-11-10';
+        // doanh thu theo phim
+        $startDate = '2024-11-01';
+        $endDate = '2024-11-30';
 
         $revenueByMovies = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
             ->whereBetween('tickets.created_at', [$startDate, $endDate])
@@ -23,6 +24,30 @@ class StatisticalController extends Controller
             ->groupBy('movies.id', 'movies.name')
             ->get();
 
-        return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches'));
+
+        //doanh thu theo khung giờ chiếu
+        $timeSlots = [
+            ['start' => '09:00:00', 'end' => '13:00:00', 'label' => '9:00 - 13:00'],
+            ['start' => '13:00:00', 'end' => '18:00:00', 'label' => '13:00 - 18:00'],
+            ['start' => '18:00:00', 'end' => '24:00:00', 'label' => '18:00 - 24:00'],
+        ];
+
+        $revenueTimeSlot = [];
+        foreach ($timeSlots as $slot) {
+            $totalRevenue = Ticket::join('showtimes', 'tickets.showtime_id', '=', 'showtimes.id')
+                ->whereBetween('tickets.created_at', [$startDate, $endDate])
+                ->whereTime('showtimes.start_time', '>=', $slot['start'])
+                ->whereTime('showtimes.start_time', '<', $slot['end'])
+                ->sum('tickets.total_price');
+
+            $revenueTimeSlot[] = [
+                'label' => $slot['label'],
+                'revenue' => (float)$totalRevenue, // Chuyển sang kiểu số thực
+            ];
+        }
+
+        // dd($revenueTimeSlot);
+
+        return view('admin.statisticals.revenue', compact('branches', 'revenueByMovies', 'revenueTimeSlot'));
     }
 }
