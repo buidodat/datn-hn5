@@ -25,7 +25,6 @@
                                 <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
                                 <li>
 
-
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
@@ -34,7 +33,6 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-
 
                                 </li>
                             </ul>
@@ -52,10 +50,24 @@
     </div>
     <div class="header-buttom ">
         <div class="container-header-buttom">
-            <div class="logo">
+            {{-- <div class="logo"> --}}
                 <div class="img-logo">
+                    @php
+                        $settings = App\Models\SiteSetting::first();
+                    @endphp
                     <a href="/">
-                        <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="logo" />
+                        {{-- <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="logo" /> --}}
+                        @if($settings->website_logo)
+                        {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
+                        @if(Str::startsWith($settings->website_logo, 'theme/client/images/'))
+                            <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="height: 80px;">
+                        @else
+                            <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="height: 80px;">
+                        @endif
+                        @else
+                            {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
+                            <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="height: 80px;">
+                        @endif
                     </a>
                 </div>
                 <div class="choose-cinemas">
@@ -69,11 +81,12 @@
                                 @php
                                     $selectedCinema = App\Models\Cinema::find(session('cinema_id'));
                                 @endphp
-                                <a href="#">Poly {{ $selectedCinema->name }} <i class="fa-solid fa-chevron-down"></i></a>
+                                <a href="#">Poly {{ $selectedCinema->name }} <i
+                                        class="fa-solid fa-chevron-down"></i></a>
                                 <ul class="sub-menu">
                                     @foreach ($branches as $branch)
                                         <li class="li-branch">
-                                            <a href="#">{{ $branch->name }}</a>       {{--   Hà Nội, HCM --}}
+                                            <a href="#">{{ $branch->name }}</a> {{--   Hà Nội, HCM --}}
                                             <span><i class="fa-solid fa-chevron-right"></i></span>
                                             <ul class="menu-cinema">
                                                 @if ($branch->cinemas->isEmpty())
@@ -82,16 +95,16 @@
                                                     @foreach ($branch->cinemas as $cinema)
                                                         <li>
                                                             <a>
-                                                                <form action="{{ route('change-cinema') }}" method="POST"
-                                                                style="display:inline;">
-                                                                @csrf
-                                                                <input type="hidden" name="cinema_id"
-                                                                    value="{{ $cinema->id }}">
-                                                                <button type="submit"
-                                                                    style="background:none;border:none;text-align:left;cursor:pointer;">
-                                                                    Poly {{ $cinema->name }}
-                                                                </button>
-                                                            </form>
+                                                                <form action="{{ route('change-cinema') }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    <input type="hidden" name="cinema_id"
+                                                                        value="{{ $cinema->id }}">
+                                                                    <button type="submit"
+                                                                        style="background:none;border:none;text-align:left;cursor:pointer;">
+                                                                        Poly {{ $cinema->name }}
+                                                                    </button>
+                                                                </form>
                                                             </a>
 
                                                         </li>
@@ -107,7 +120,7 @@
                     </div>
 
                 </div>
-            </div>
+            {{-- </div> --}}
 
             <div class="main-menu">
                 <ul>
@@ -121,7 +134,7 @@
                         <a href="{{ route('policy') }}">Chính sách</a>
                     </li>
                     <li>
-                        <a href="{{ route('ticket-price')}}">Giá vé</a>
+                        <a href="{{ route('ticket-price') }}">Giá vé</a>
                     </li>
                     <li>
                         <a href="{{ route('posts') }}">Tin tức</a>
@@ -143,23 +156,24 @@
                         <a><i class="fa-solid fa-bars"></i></a>
                         <ul class="sub-menu-respon">
                             <li>
-                                <a href="{{ route('showtimes') }}"><i class="fa-solid fa-calendar-days"></i> Lịch chiếu theo rạp</a>
+                                <a href="{{ route('showtimes') }}"><i class="fa-solid fa-calendar-days"></i> Lịch chiếu
+                                    theo rạp</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa-solid fa-film"></i> Phim</a>
+                                <a href="{{ route('movies.index') }}"><i class="fa-solid fa-film"></i> Phim</a>
                             </li>
                             <li>
                                 <a href="{{ route('policy') }}"><i class="fa-solid fa-building-shield"></i> Chính
                                     sách</a>
                             </li>
                             <li>
-                                <a href=""><i class="fa-solid fa-money-bill"></i> Giá vé</a>
+                                <a href="{{ route('ticket-price') }}"><i class="fa-solid fa-money-bill"></i> Giá vé</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa-regular fa-newspaper"></i> Tin tức</a>
+                                <a href="{{ route('posts') }}"><i class="fa-regular fa-newspaper"></i> Tin tức</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa-regular fa-address-card"></i> Liên hệ</a>
+                                <a href="{{ route('contact') }}"><i class="fa-regular fa-address-card"></i> Liên hệ</a>
                             </li>
                             <li>
                                 <a href=""><i class="fa-regular fa-user"></i> Thành viên</a>
