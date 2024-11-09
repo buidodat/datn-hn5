@@ -139,7 +139,7 @@
                                     if (!\Str::contains($url, 'http')) {
                                         $url = Storage::url($url);
                                     }
-                                    $showtime = $ticket->ticketSeats->first()?->showtime;
+                                    $showtime = $ticket->showtime;
                                     $showtimeStart = $showtime
                                         ? \Carbon\Carbon::parse($showtime->start_time)->format('H:i')
                                         : 'Không có';
@@ -159,8 +159,8 @@
                                             </li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Email:</span>
                                                 {{ $ticket->user->email }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span>
-                                                {{ $ticket->user->phone }}</li>
+                                            {{--<li class="nav-item mb-1"><span class="fw-semibold">Số điện thoại:</span>
+                                                {{ $ticket->user->phone }}</li>--}}
                                             <li class="nav-item mb-1"><span class="fw-semibold">Phương thức thanh
                                                     toán:</span> {{ $ticket->payment_name }}</li>
                                         </ul>
@@ -181,9 +181,7 @@
                                                 {{ $ticket->room->name }}
                                             </li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Ghế:</span>
-                                                @foreach ($ticket->ticketSeats as $ticketSeat)
-                                                    {{ $ticketSeat->seat->name }}
-                                                @endforeach
+                                                {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
                                             </li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Tổng tiền:</span>
                                                 {{ number_format($ticket->total_price) }} VNĐ</li>
