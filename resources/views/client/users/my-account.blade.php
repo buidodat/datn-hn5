@@ -27,11 +27,9 @@
                 <a href="#cinema-journey" aria-controls="trand" role="tab" data-toggle="tab">
                     <div class="my-account-tab" role="presentation">LỊCH SỬ GIAO DỊCH</div>
                 </a>
+
                 <a href="#">
-                    <div class="my-account-tab">ĐIỂM POLY</div>
-                </a>
-                <a href="#">
-                    <div class="my-account-tab">VOUCHER</div>
+                    <div class="my-account-tab">VOUCHER CỦA TÔI</div>
                 </a>
             </div>
 
@@ -39,7 +37,8 @@
                 <div class="tab-content">
                     {{-- Thông tin tài khoản --}}
                     <div id="my-account" class="tab-pane active"> {{-- active --}}
-                        <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data" id="updateAccountForm">
+                        <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data"
+                            id="updateAccountForm">
                             @csrf
                             @method('PUT')
 
@@ -184,56 +183,68 @@
                                             </div>
                                         </div> --}}
 
-                                    <div class="progress-wrapper">
-                                        <div class="progress-info">
-                                            <span>Số tiền đã chi tiêu</span>
-                                            <span class="amount">
-                                                {{ number_format($user->membership->total_spent, 0, ',', '.') }} <strong>VND</strong>
-                                            </span>
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <span>Số tiền đã chi tiêu</span>
+                                                <span class="amount">
+                                                    {{ number_format($user->membership->total_spent, 0, ',', '.') }}
+                                                    <strong>VND</strong>
+                                                </span>
+                                            </div>
+
+                                            @php
+                                                $maxAmount = $ranks->max('total_spent');
+                                                // Tính toán phần trăm tiến độ dựa trên maxAmount
+                                                $progress = min(
+                                                    ($user->membership->total_spent / $maxAmount) * 100,
+                                                    100,
+                                                );
+                                            @endphp
+
+                                            <div class="progress-bar-container">
+                                                <div class="progress-bar-fill {{ $progress >= 100 ? 'full' : '' }}"
+                                                    style="width: {{ $progress }}%;"></div>
+                                            </div>
+
+                                            <div class="milestone-container">
+                                                @foreach ($ranks as $index => $rank)
+                                                    <div class="milestone"
+                                                        style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
+                                                        <span>{{ $rank['name'] }}</span>
+                                                        <span>{{ number_format($rank['total_spent'], 0, ',', '.') }}
+                                                            VND</span>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
 
-                                        @php
-                                            $maxAmount = $ranks->max('total_spent');
-                                            // Tính toán phần trăm tiến độ dựa trên maxAmount
-                                            $progress = min(($user->membership->total_spent / $maxAmount) * 100, 100);
-                                        @endphp
 
-                                        <div class="progress-bar-container">
-                                            <div class="progress-bar-fill {{ $progress >= 100 ? 'full' : '' }}" style="width: {{ $progress }}%;"></div>
-                                        </div>
 
-                                        <div class="milestone-container">
-                                            @foreach ($ranks as $index => $rank)
-                                                <div class="milestone" style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
-                                                    <span>{{ $rank['name'] }}</span>
-                                                    <span>{{ number_format($rank['total_spent'], 0, ',', '.') }} VND</span>
-                                                </div>
-                                            @endforeach
+
+                                    </div>
+                                    <div class="col-md-3 d-flex justify-content-center">
+                                        <div style="margin: 0 auto; text-align: center;">
+                                            {!! $barcode = DNS1D::getBarcodeHTML($user->membership->code, 'C128', 2.4, 100) !!}
+                                            <p style="font-size: 16px; margin: 3px auto">{{ $user->membership->code }}</p>
                                         </div>
                                     </div>
 
-
-
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div style='width: 100%;text-align: center;font-size: 20px'>
-                                            {!! $barcode = DNS1D::getBarcodeSVG($user->membership->code, 'C128', 2.4, 130) !!}
-                                        </div>
-                                    </div>
                                     <div class="col-md-12">
                                         <div class="points-info">
                                             <div><span class="span_label">Điểm đã tích lũy:</span> <span
-                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_ACCUMULATED)->sum('points'), 0, ',', '.')}}
+                                                    class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_ACCUMULATED)->sum('points'), 0, ',', '.') }}
                                                     điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã sử dụng:</span> <span
-                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.')}} điểm</span>
+                                                    class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.') }}
+                                                    điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã hết hạn:</span> <span
-                                                    class='bold'>{{  number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.')}} điểm</span>
+                                                    class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.') }}
+                                                    điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm hiện có:</span> <span class='bold'>{{  number_format($user->membership->points, 0, ',', '.')}}
+                                            <div><span class="span_label">Điểm hiện có:</span> <span
+                                                    class='bold'>{{ number_format($user->membership->points, 0, ',', '.') }}
                                                     điểm</span></div>
 
                                         </div>
@@ -260,14 +271,15 @@
                                         <tbody>
                                             @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
                                                 <tr>
-                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i')  }}</td>
+                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i') }}</td>
                                                     <td>
                                                         {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
-                                                        ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
-                                                        : '- ' . number_format($pointHistory->points, 0, ',', '.')}}
+                                                            ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
+                                                            : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
                                                     </td>
                                                     <td>{{ $pointHistory->type }}</td>
-                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}</td>
+                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -280,95 +292,100 @@
 
                     {{-- Hành trình điện ảnh --}}
                     <div id="cinema-journey" class="tab-pane fade"> {{-- fade --}}
-                        <div class="cinema-journey-container">
-                            <table class="cinema-journey-table" id="transactionHistory">
-                                <thead class="cinema-journey-thead">
-                                    <tr>
-                                        <th class="cinema-journey-th">Mã Đặt vé</th>
-                                        <th class="cinema-journey-th">Phim</th>
-                                        <th class="cinema-journey-th">Giờ Chiếu</th> {{-- Ngày - Giờ chiếu -> giờ kết thúc
-                                    --}}
-                                        <th class="cinema-journey-th">Rạp </th> {{-- Tên Rạp - Tên phòng --}}
-                                        <th class="cinema-journey-th">Ghế</th>
-                                        <th class="cinema-journey-th">Trạng Thái</th>
-                                        <th class="cinema-journey-th">Tổng tiền</th>
-                                        <th class="cinema-journey-th">Thao tác</th>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class='table table-bordered dt-responsive nowrap align-middle '
+                                    id="transactionHistory" width="100%">
+                                    <thead class='xanh-fpt'>
+                                        <tr>
+                                            <th>Mã đặt vé </th>
+                                            <th>Thông tin vé</th>
+                                            <th>Thao tác</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody class="cinema-journey-tbody">
-                                    @if ($tickets->count() > 0)
-                                        @foreach ($tickets as $ticket)
-                                            @php
-                                                // Nhóm các ticketMovie theo movie_id
-                                                $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
-                                            @endphp
+                                    </thead>
+                                    <tbody>
+                                        @if ($tickets->count() > 0)
+                                            @foreach ($tickets as $ticket)
+                                                @php
+                                                    // Nhóm các ticketMovie theo movie_id
+                                                    $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
+                                                @endphp
 
-                                            @foreach ($ticketSeatsByMovie as $ticketSeats)
-                                                <tr>
-                                                    <td class="cinema-journey-td">{{ $ticket->code }}</td>
-                                                    <td class="cinema-journey-td">
+                                                @foreach ($ticketSeatsByMovie as $ticketSeats)
+                                                    <tr>
+                                                        <td>{{ $ticket->code }}</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    @php
+                                                                        // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
 
-                                                        @php
-                                                            // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
+                                                                        $url = $ticket->movie->img_thumbnail;
 
-                                                            $url = $ticket->movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-                                                        @endphp
+                                                                        if (!\Str::contains($url, 'http')) {
+                                                                            $url = Storage::url($url);
+                                                                        }
+                                                                    @endphp
 
 
-                                                        <img class="cinema-journey-movie-poster"
-                                                            src="{{ $url }}" alt="movie_img" />
-                                                        <p class="cinema-journey-movie-title" align='left'>
-                                                            {{ $ticket->movie->name }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="cinema-journey-td">
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
-                                                        <br />
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
-                                                        -
-                                                        {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
-                                                    </td>
-                                                    <td class="cinema-journey-td">
-                                                        {{ $ticket->cinema->name }} -
-                                                        {{ $ticket->room->name }}
-                                                    </td>
+                                                                    <img width="130px" src="{{ $url }}"
+                                                                        alt="movie_img" />
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <h3 class="movie-name-history">
+                                                                        {{ $ticket->movie->name }}</h3>
+                                                                    <b>Thời gian chiếu:</b>
+                                                                    {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
+                                                                    {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
+                                                                    <br>
+                                                                    <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
+                                                                    {{ $ticket->room->name }}
+                                                                    <br>
+                                                                    <b>Ghế ngồi:</b>
+                                                                    {{ implode(', ', $ticketSeats->pluck('seat.name')->toArray()) }}
+                                                                    <br>
+                                                                    <b>Trạng thái:</b> {{ $ticket->status }}
+                                                                    <br>
+                                                                    <b>Tổng tiền thanh toán:</b>
+                                                                    {{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                                    VNĐ
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+
+                                                                <button class="btn btn-info">Chi tiết</button>
+                                                                <form action="{{ route('my-account.transaction.cancel',$ticket) }}" method="post">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button type='submit' class="btn btn-danger" >Hủy</button>
+                                                                </form>
+
+                                                            {{-- href="detail-ticket/{{ $ticket->id }}" --}}
 
 
-                                                    <td class="cinema-journey-td">
-                                                        @foreach ($ticketSeats as $item)
-                                                            {{ $item->seat->name }}
-                                                        @endforeach
-                                                    </td>
-
-                                                    <td class="cinema-journey-td">{{ $ticket->status }}</td>
-                                                    <td class="cinema-journey-td">
-                                                        {{ number_format($ticket->total_price, 0, ',', '.') }}đ
-                                                    </td>
-                                                    <td class="cinema-journey-td">
-                                                        {{-- href="detail-ticket/{{ $ticket->id }}" --}}
-                                                        <a href="{{ route('ticketDetail', $ticket->id) }}"
+                                                            {{-- <button class="btn btn-info">Xem chi tiết</button> --}}
+                                                            {{-- <a href="{{ route('ticketDetail', $ticket->id) }}"
                                                             class="bold btn-detail-ticket">
                                                             Chi tiết
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                        </a> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             @endforeach
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td class="cinema-journey-td" colspan="8">Bạn chưa có giao dịch nào !</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-
-                            {{ $tickets->links() }}
+                                        @else
+                                            <tr>
+                                                <td colspan="8">Bạn chưa có giao dịch nào !</td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+
+
+
                     </div>
 
                     {{-- Chi tiết giao dịch --}}
@@ -536,6 +553,8 @@
 @endsection
 
 @section('script-libs')
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -551,14 +570,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#transactionHistory", {
-            order: [
-            ]
+            order: []
         });
     </script>
     <script>
         new DataTable("#pointHistory", {
-            order: [
-            ]
+            order: []
         });
     </script>
 
@@ -595,7 +612,8 @@
                             for (let field in errors) {
                                 let inputField = $(`[name="${field}"]`);
                                 inputField.next('.text-danger').remove(); // Xóa lỗi cũ nếu có
-                                inputField.after(`<span class="text-danger">${errors[field][0]}</span>`);
+                                inputField.after(
+                                    `<span class="text-danger">${errors[field][0]}</span>`);
                             }
                         } else {
                             alert("Lỗi: " + xhr.responseJSON.message);
@@ -634,19 +652,27 @@
                             // Hiển thị thông báo lỗi cụ thể cho từng input
                             if (errors.old_password) {
                                 $('#old_password').next('.text-danger').remove();
-                                $('#old_password').after(`<span class="text-danger">${errors.old_password[0]}</span>`);
+                                $('#old_password').after(
+                                    `<span class="text-danger">${errors.old_password[0]}</span>`
+                                );
                             }
                             if (errors.password) {
                                 $('#password').next('.text-danger').remove();
-                                $('#password').after(`<span class="text-danger">${errors.password[0]}</span>`);
+                                $('#password').after(
+                                    `<span class="text-danger">${errors.password[0]}</span>`
+                                );
                             }
                             if (errors.password_confirmation) {
                                 $('#password_confirmation').next('.text-danger').remove();
-                                $('#password_confirmation').after(`<span class="text-danger">${errors.password_confirmation[0]}</span>`);
+                                $('#password_confirmation').after(
+                                    `<span class="text-danger">${errors.password_confirmation[0]}</span>`
+                                );
                             }
                         } else if (xhr.status === 400) {
                             $('#old_password').next('.text-danger').remove();
-                            $('#old_password').after(`<span class="text-danger">${xhr.responseJSON.error}</span>`);
+                            $('#old_password').after(
+                                `<span class="text-danger">${xhr.responseJSON.error}</span>`
+                            );
                         }
                     },
                 });

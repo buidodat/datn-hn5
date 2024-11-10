@@ -17,7 +17,7 @@ class Room extends Model
         'is_active',
         'is_publish'
     ];
-    protected $cast = [
+    protected $casts = [
         'is_active' => 'boolean',
         'is_publish' => 'boolean',
     ];

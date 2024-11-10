@@ -55,7 +55,7 @@
 }
 
 .barcode {
-    margin: 15px 0;
+    margin: 30px 0 0 0;
     text-align: center; /* Center-aligns content within the barcode div */
     display: flex;
     justify-content: center;

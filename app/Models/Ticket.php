@@ -27,6 +27,10 @@ class Ticket extends Model
         'staff'
     ];
 
+    protected $casts = [
+        'expiry' => 'datetime',
+    ];
+
     const STATUS = [
         ['value' => 'pending', 'label' => 'Chưa suất vé'],
         ['value' => 'confirmed', 'label' => 'Đã suất vé'],
@@ -36,9 +40,13 @@ class Ticket extends Model
     //Trạng thái vé
     const ISSUED = 'Đã suất vé';
     const NOT_ISSUED = 'Chưa suất vé';
-    const EXPIRED = 'Đã hết';
+    const EXPIRED = 'Đã hết hạn';
+    const CANCELED = 'Đã hủy';
 
+    // Được hủy vé trước suất chiếu bao nhiêu phút
+    const CANCELLATION_DEADLINE_MINUTES = 30;
 
+    const REFUND_POINTS_PERCENTAGE  = 1; //Tỷ lệ hoàn trả điểm 1= 100% , 0.8 = 50%
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -79,7 +87,10 @@ class Ticket extends Model
     {
         return $this->belongsTo(Movie::class);
     }
-
+    public function showtime()
+    {
+        return $this->belongsTo(Showtime::class);
+    }
 
     //Hàm tạo mã vé: ví dụ hôm này là ngày 20/10/2024 thì hóa đơn sẽ có dạng HD201024-0001 , HD201024-0002,...
     public static function generateTicketCode()

@@ -58,19 +58,19 @@ class TicketController extends Controller
         }
 
         // Cập nhật trạng thái vé hết hạn
-        $now = Carbon::now();
+        /*$now = Carbon::now();
         Ticket::where('expiry', '<', $now)
             ->where('status', '!=', 'Đã hết hạn')
-            ->update(['status' => 'Đã hết hạn']);
+            ->update(['status' => 'Đã hết hạn']);*/
 
         $tickets = $tickets->get()->groupBy('code');
 
         //định dạng expiry để so sánh
-        foreach ($tickets as $key => $group) {
+        /*foreach ($tickets as $key => $group) {
             foreach ($group as $ticket) {
                 $ticket->expiry = Carbon::parse($ticket->expiry);
             }
-        }
+        }*/
 
         $barcodes = [];
         foreach ($tickets as $code => $group) {
@@ -183,6 +183,14 @@ class TicketController extends Controller
             ]);
         }
 
+        if (now()->greaterThan($ticket->expiry)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vé này đã hết hạn.',
+                'options' => true
+            ]);
+        }
+
         switch ($ticket->status) {
             case 'Chưa suất vé':
 //                $ticket->status = 'Đã suất vé';
@@ -200,12 +208,12 @@ class TicketController extends Controller
                         'options' => true
                     ]);
 
-                case 'Đã hết hạn':
+                /*case 'Đã hết hạn':
                     return response()->json([
                         'success' => false,
                         'message' => 'Vé này đã hết hạn.',
                         'options' => true
-                    ]);
+                    ]);*/
 
                 default:
                     return response()->json([

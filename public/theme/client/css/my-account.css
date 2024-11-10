@@ -220,7 +220,7 @@
         max-height: 100%;
         object-fit: cover;
         display: block;
-    }  
+    }
 
     input[type="file"] {
         display: none;
@@ -232,7 +232,7 @@
         gap: 10px;
         align-items: flex-start;
     }
-    
+
     .my-account-form-group {
         flex: 1;
         min-width: 45%; /* Điều chỉnh để không chiếm hết chiều rộng khi thu nhỏ */
@@ -240,79 +240,7 @@
 
 
     /* Hành trình điện ảnh */
-    /* ========================================================= */
-    .cinema-journey-container {
-        width: 100%;
-        margin: 0 auto;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    .cinema-journey-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-
-    .cinema-journey-thead {
-        background-color: #f8f8f8;
-    }
-
-    .cinema-journey-th,
-    .cinema-journey-td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #ddd;
-    }
-
-    .cinema-journey-th {
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 14px;
-    }
-
-    .cinema-journey-td {
-        font-size: 14px;
-    }
-
-    .cinema-journey-movie-poster {
-        width: 100px;
-        height: auto;
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .cinema-journey-movie-title {
-        font-weight: bold;
-    }
-
-    .cinema-journey-td p {
-        margin: 0;
-        padding: 0;
-    }
-
-    .cinema-journey-td:nth-child(2) {
-        text-align: center;
-    }
-
-    .cinema-journey-td:nth-child(5),
-    .cinema-journey-td:nth-child(6) {
-        text-align: center;
-    }
-
-    .cinema-journey-td:nth-child(7),
-    .cinema-journey-td:nth-child(8) {
-        text-align: center;
-    }
-
-    .cinema-journey-tbody tr {
-        background-color: #fff;
-    }
-
-    .cinema-journey-tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
+   
     /* Css lịch sử giao dịch */
 
     .row.mb-3.title-detail {
@@ -404,100 +332,6 @@
     /* Css paginate trang lịch sử giao dịch */
 
 
-    .cinema-journey-container {
-        text-align: center;
-        margin-top: 25px;
-    }
-
-    .cinema-journey-container .d-flex.justify-content-between.flex-fill.d-sm-none {
-        display: none;
-    }
-
-    .cinema-journey-container p.small.text-muted {
-        display: none;
-    }
-
-    .cinema-journey-container .pagination {
-        padding: 0px;
-        margin: 0px;
-    }
-
-    .cinema-journey-container .page-link {
-
-
-        border-color: hsl(0, 0%, 87%);
-        margin: 0px;
-        color: #000000;
-        background: #ffffff;
-        font-size: 16px;
-        border: 1px solid #e7e7e7;
-        text-transform: uppercase;
-        transition: all 0.5s;
-        width: 30px;
-        height: 30px;
-        line-height: 20px;
-        border-radius: 0px !important;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-        text-align: center;
-        margin-right: 10px;
-        margin-top: 0px !important;
-        padding-left: 10px;
-    }
-
-
-    /* .cinema-journey-container .page-link:hover {
-    background-color: #ff9344 !important;
-} */
-
-    .cinema-journey-container .pagination>li:first-child>a {
-        /* border-radius: 10px !important; */
-        background: white;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-        width: 30px;
-        height: 30px;
-        color: #192041;
-        line-height: 17px;
-    }
-
-    .cinema-journey-container .pagination>li:last-child>a {
-        background: white;
-        border: 1px solid #ccc;
-        margin-left: 0px;
-        width: 30px;
-        height: 30px;
-        text-align: center;
-        line-height: 15px;
-        margin-left: 0px !important;
-        /* margin-left: 10px; */
-
-        color: #192041;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px;
-    }
-
-    .cinema-journey-container .pagination>li>a:hover {
-        background: #ccc;
-    }
-
-    .cinema-journey-container th {
-        color: #192041;
-    }
-
-    .cinema-journey-container td {
-        color: #192041;
-    }
-
-    .cinema-journey-container .btn-detail-ticket {
-        color: #1e264f;
-    }
-
-    .cinema-journey-container .btn-detail-ticket:hover {
-        color: #ff7307;
-    }
 
     .xanh-fpt {
         color: #192041;
