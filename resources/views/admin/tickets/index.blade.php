@@ -101,50 +101,30 @@
                                     <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
                                 </div>
                             </div>
-                            <!-- Nút mở modal -->
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal">
-                                        Quét mã
-                                    </button>
-                                </div>
-                            </div>
 
-                            <!-- Modal quét mã -->
-                            <div class="modal fade" id="scanModal" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
-                                <div class="">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="scanModalLabel">Quét mã vạch</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div id="camera" style="width: 640px; height: 480px; border: 1px solid gray; margin: 0 auto;"></div>
-                                            <p id="result">Kết quả: <span id="barcode-result"></span></p>
-                                            <div id="error-message" style="color: red; margin-top: 10px;"></div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="scanAnotherBtn">Quét lại mã khác</button>
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="live-preview">
                                 <div>
                                     <!-- center modal -->
-                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Center Modal</button>
-                                    <div class="modal fade bs-example-modal-center" tabindex="-1" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal"
+                                            data-bs-target=".bs-example-modal-center">Quét QR
+                                    </button>
+                                    <div class="modal fade bs-example-modal-center" id="scanModal" tabindex="-1"
+                                         aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content" style="width: 680px; max-width: 100%;">
+                                            <div class="modal-content" style="width: 680px; ">
                                                 <div class="modal-body text-center">
-                                                    <div id="camera" style="width: 640px; height: 480px; border: 1px solid gray; margin: 0 auto;"></div>
+                                                    <div id="camera"
+                                                         style="width: 640px; height: 360px; border: 1px solid gray; margin: 0 auto;"></div>
                                                     <div class="mt-4">
-                                                        <h4 class="mb-3">Oops something went wrong!</h4>
-                                                        <p class="text-muted mb-4"> The transfer was not successfully received by us. the email of the recipient wasn't correct.</p>
+                                                        <h4 class="mb-3">Đưa mã vạch vào camera để quét</h4>
+                                                        {{--<div id="message-result" style="color: #26ee26; margin-top: 10px;"></div>--}}
+                                                        <div id="barcode-result" style="color: #eed223; margin-top: 10px;"></div>
+                                                        <div id="error-message" style="color: red; margin-top: 10px;"></div>
                                                         <div class="hstack gap-2 justify-content-center">
-                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                            <a href="javascript:void(0);" class="btn btn-danger">Try Again</a>
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng
+                                                            </button>
+                                                            <button type="button" class="btn btn-warning" id="scanAnotherBtn">Quét lại
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -323,6 +303,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+            integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         new DataTable("#example", {
             order: []
@@ -410,5 +393,96 @@
 
             // }
         });
+
+        /*modal quét qr*/
+        document.addEventListener("DOMContentLoaded", function () {
+            const scanModal = document.getElementById('scanModal');
+            const scanAnotherBtn = document.getElementById("scanAnotherBtn");
+            const errorMessage = document.getElementById("error-message");
+            const barcodeResult = document.getElementById("barcode-result");
+
+            // Khởi tạo sự kiện mở modal
+            scanModal.addEventListener('shown.bs.modal', startScanner);
+            scanModal.addEventListener('hidden.bs.modal', function () {
+                stopScanner();
+                clearBarcodeResult();
+            });
+
+            // Hàm khởi động Quagga
+            function startScanner() {
+                Quagga.init({
+                    inputStream: {
+                        type: "LiveStream",
+                        target: document.querySelector("#camera"),
+                        constraints: {
+                            width: 640,
+                            height: 380,
+                            facingMode: "user" // Thay đổi thành "environment" neeus sử dụng camera sau
+                        }
+                    },
+                    decoder: {
+                        readers: ["code_128_reader"]
+                    }
+                }, function (err) {
+                    if (err) {
+                        console.log("Lỗi: ", err);
+                        errorMessage.innerText = "Không thể truy cập camera, vui lòng kiểm tra quyền truy cập!";
+                        return;
+                    }
+                    Quagga.start();
+                });
+
+                Quagga.onDetected(detectedCode);
+            }
+
+            // Hàm dừng Quagga
+            function stopScanner() {
+                Quagga.stop();
+                Quagga.offDetected(detectedCode);
+            }
+
+            // Hàm xử lý mã quét được
+            function detectedCode(result) {
+                const code = result.codeResult.code;
+                barcodeResult.innerText = code; // Hiển thị mã vạch quét được
+                stopScanner(); // Dừng scanner sau khi đọc được mã
+
+                // Gửi mã code qua AJAX
+                fetch('{{ route("admin.tickets.processScan") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({code: code})
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        if (data.success && data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Lỗi:", error);
+                        errorMessage.innerText = 'Lỗi kết nối, vui lòng thử lại sau!';
+                    });
+            }
+
+            // Hàm xóa mã vạch và thông báo lỗi
+            function clearBarcodeResult() {
+                barcodeResult.innerText = ""; // Xóa mã vạch quét được khi mở lại modal
+                errorMessage.innerText = ""; // Xóa thông báo lỗi nếu có
+            }
+
+            // Xử lý khi bấm nút "Quét lại mã khác"
+            scanAnotherBtn.addEventListener("click", function () {
+                barcodeResult.innerText = ""; // Xóa mã quét được trước đó
+                errorMessage.innerText = ""; // Xóa thông báo lỗi
+                startScanner(); // Bắt đầu quét lại
+            });
+        });
+
+
     </script>
 @endsection
