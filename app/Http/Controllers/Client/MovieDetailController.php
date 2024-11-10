@@ -47,14 +47,12 @@ class MovieDetailController extends Controller
         $movie = Movie::where('slug', $slug)->firstOrFail();
 
         // Kiểm tra vé
-        $ticketSeat = TicketSeat::where('movie_id', $movie->id)
-            ->whereHas('ticket', function($query) {
-                $query->where('user_id', Auth::id())
-                    ->where('status', 'Hoàn thành');
-            })
+        $ticket = Ticket::where('movie_id', $movie->id)
+            ->where('user_id', Auth::id())
+            ->where('status', 'Đã suất vé')
             ->first();
 
-        if (!$ticketSeat) {
+        if (!$ticket) {
             return back()->with('error', 'Bạn cần xem bộ phim để có thể đánh giá.');
         }
 

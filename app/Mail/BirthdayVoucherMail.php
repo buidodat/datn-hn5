@@ -39,10 +39,10 @@ class BirthdayVoucherMail extends Mailable
     public function content(): Content
     {
         $content = new Content(
-            view: 'emails.birthday-voucher',
+            view: 'admin.emails.birthday-voucher',
             with: [
-                'userName' => $this->user->name,
-                'voucherCode' => $this->voucher->code,
+                'name' => $this->user->name,
+                'code' => $this->voucher->code,
             ],
         );
 
