@@ -18,17 +18,16 @@
     <body>
         <div class="container" style="margin-top: 70px; margin-bottom: 100px;">
             <div class="my-account-tabs">
-                <a href="#my-account" aria-controls="best" role="tab" data-toggle="tab">
+                <a href="#my-account" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab my-account-active" role="presentation">THÔNG TIN TÀI KHOẢN</div>
                 </a>
-                <a href="#membership" role="tab" data-toggle="tab">
+                <a href="#membership" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab">THẺ THÀNH VIÊN</div>
                 </a>
-                <a href="#cinema-journey" aria-controls="trand" role="tab" data-toggle="tab">
+                <a href="#cinema-journey" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab" role="presentation">LỊCH SỬ GIAO DỊCH</div>
                 </a>
-
-                <a href="#">
+                <a href="#voucher" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab">VOUCHER CỦA TÔI</div>
                 </a>
             </div>
@@ -36,7 +35,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     {{-- Thông tin tài khoản --}}
-                    <div id="my-account" class="tab-pane active"> {{-- active --}}
+                    <div id="my-account" class="tab-pane fade" role="tabpanel" class="item-content"> {{-- active --}}
                         <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data"
                             id="updateAccountForm">
                             @csrf
@@ -139,7 +138,8 @@
                             </div>
                         </form>
                     </div>
-                    <div id="membership" class="tab-pane fade"> {{-- fade --}}
+                    <div id="membership" class="tab-pane fade" role="tabpanel" class="item-content">
+                        {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
                                 <div class='row-header'>
@@ -291,7 +291,8 @@
 
 
                     {{-- Hành trình điện ảnh --}}
-                    <div id="cinema-journey" class="tab-pane fade"> {{-- fade --}}
+                    <div id="cinema-journey" class="tab-pane fade" role="tabpanel" class="item-content">
+                        {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
                                 <table class='table table-bordered dt-responsive nowrap align-middle '
@@ -355,12 +356,14 @@
                                                         </td>
                                                         <td>
 
-                                                                <button class="btn btn-info">Chi tiết</button>
-                                                                <form action="{{ route('my-account.transaction.cancel',$ticket) }}" method="post">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <button type='submit' class="btn btn-danger" >Hủy</button>
-                                                                </form>
+                                                            <button class="btn btn-info">Chi tiết</button>
+                                                            <form
+                                                                action="{{ route('my-account.transaction.cancel', $ticket) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type='submit' class="btn btn-danger">Hủy</button>
+                                                            </form>
 
                                                             {{-- href="detail-ticket/{{ $ticket->id }}" --}}
 
@@ -390,7 +393,7 @@
 
                     {{-- Chi tiết giao dịch --}}
 
-                    <div id="detail-ticket" class="tab-pane fade">
+                    <div id="detail-ticket" class="tab-pane fade" role="tabpanel" class="item-content">
                         <div class="row mb-3 title-detail">
                             <h3>Chi tiết giao dịch #4811201174585152</h3>
                         </div>
@@ -553,7 +556,6 @@
 @endsection
 
 @section('script-libs')
-
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -677,6 +679,35 @@
                     },
                 });
             });
+        });
+    </script>
+
+    <script>
+        const divTabLinks = document.querySelectorAll('.tab-link div');
+        const itemContents = document.querySelectorAll('.item-content');
+
+
+        function activateTab(hash) {
+            // Tắt tất cả các tab và nội dung
+            divTabLinks.forEach(link => link.classList.remove('my-account-active'));
+            itemContents.forEach(content => content.classList.remove('in', 'active'));
+
+            // Kích hoạt tab và nội dung tương ứng với hash
+            const activeDiv = document.querySelector(`a[href="${hash}"] div`);
+            const activeContent = document.querySelector(hash);
+
+            if (activeDiv && activeContent) {
+                activeDiv.classList.add('my-account-active'); // Thêm lớp 'active' và 'my-account' vào tab
+                activeContent.classList.add('in', 'active');
+
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash || '#my-account'; // Mặc định tab "THÔNG TIN TÀI KHOẢN"
+            activateTab(hash);
+
+
         });
     </script>
 @endsection
