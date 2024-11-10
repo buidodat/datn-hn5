@@ -33,7 +33,6 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
             ->latest('id');
         if (Auth::user()->cinema_id != "") {
@@ -54,24 +53,24 @@ class TicketController extends Controller
             // lọc theo created_at, vì khác định dạng date vs timestamp
             $tickets = $tickets->whereBetween('created_at', [
                 Carbon::parse($date)->startOfDay(),         // 00:00:00 ngày ý
-                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý 
+                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý
             ]);
         }
 
         // Cập nhật trạng thái vé hết hạn
-        $now = Carbon::now();
+        /*$now = Carbon::now();
         Ticket::where('expiry', '<', $now)
             ->where('status', '!=', 'Đã hết hạn')
-            ->update(['status' => 'Đã hết hạn']);
+            ->update(['status' => 'Đã hết hạn']);*/
 
         $tickets = $tickets->get()->groupBy('code');
 
         //định dạng expiry để so sánh
-        foreach ($tickets as $key => $group) {
+        /*foreach ($tickets as $key => $group) {
             foreach ($group as $ticket) {
                 $ticket->expiry = Carbon::parse($ticket->expiry);
             }
-        }
+        }*/
 
         $barcodes = [];
         foreach ($tickets as $code => $group) {
@@ -117,17 +116,15 @@ class TicketController extends Controller
         return response()->json(['success' => true]);
     }*/
 
-
-
     public function confirm(Request $request, Ticket $ticket)
     {
-        if($ticket->status== Ticket::NOT_ISSUED && $ticket->expiry > now()){
+        if($ticket->status == Ticket::NOT_ISSUED && $ticket->expiry > now()){
             $ticket->update([
                 'status'=>Ticket::ISSUED
             ]);
         }
         session()->flash('confirm',true);
-     
+
         return response()->json([
             'success' => true,
             'message' => 'Thay đổi trạng thái thành công!'
@@ -137,17 +134,6 @@ class TicketController extends Controller
     }
 
     /*public function print(Ticket $ticket)
-    {
-        $oneTicket = Ticket::with(['movie.movieVersions','room','ticketCombos','ticketSeats.seat','cinema.branch'])->findOrFail($ticket->id);
-        $users = $ticket->user()->first();
-        $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
-            return $ticketSeat->seat->typeSeat->price;
-        });
-        $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','users','totalPriceSeat','barcode'));
-    }*/
-    public function print(Ticket $ticket)
     {
         $ticket->load([
             'movie.movieVersions',
@@ -168,40 +154,14 @@ class TicketController extends Controller
 
         return view(self::PATH_VIEW . 'order', $viewData);
         // Tải về file PDF
+    }*/
+    /*public function printCombo(Ticket $ticket)
+        {
+            $oneTicket = Ticket::with(['ticketCombos','cinema.branch'])->findOrFail($ticket->id);
+            $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
+            return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','barcode'));
+        }*/
 
-    }
-
-    private function calculateTotalSeatPrice(Ticket $ticket): float
-    {
-        return $ticket->ticketSeats->sum(function ($ticketSeat) {
-            return $ticketSeat->seat->typeSeat->price;
-        });
-    }
-
-    private function calculateTotalComboPrice(Ticket $ticket): float
-    {
-        return $ticket->ticketCombos->sum(function ($ticketCombo) {
-            return $ticketCombo->combo->price * $ticketCombo->quantity;
-        });
-    }
-
-    private function getRatingDescription(string $rating): string
-    {
-        return match ($rating) {
-            'P' => 'Mọi độ tuổi',
-            'T13' => 'Dưới 13 tuổi và có người bảo hộ đi kèm',
-            'T16' => '13+',
-            'T18' => '16+',
-            'K' => '18+',
-            default => ''
-        };
-    }
-    public function printCombo(Ticket $ticket)
-    {
-        $oneTicket = Ticket::with(['ticketCombos','cinema.branch'])->findOrFail($ticket->id);
-        $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket','barcode'));
-    }
     public function scan()
     {
         return view(self::PATH_VIEW . __FUNCTION__);
@@ -219,7 +179,15 @@ class TicketController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Mã vé không hợp lệ.',
-                 'options' => true
+                'options' => true
+            ]);
+        }
+
+        if (now()->greaterThan($ticket->expiry)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vé này đã hết hạn.',
+                'options' => true
             ]);
         }
 
@@ -240,12 +208,12 @@ class TicketController extends Controller
                         'options' => true
                     ]);
 
-                case 'Đã hết hạn':
+                /*case 'Đã hết hạn':
                     return response()->json([
                         'success' => false,
                         'message' => 'Vé này đã hết hạn.',
                         'options' => true
-                    ]);
+                    ]);*/
 
                 default:
                     return response()->json([
@@ -277,14 +245,11 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-
-        $oneTicket = Ticket::with(['movie','room','ticketCombos.combo','ticketSeats.showtime','ticketSeats'])->findOrFail($ticket->id);
-        $users = $ticket->user()->first();
-        $totalPriceSeat = $ticket->ticketSeats->sum(function ($ticketSeat) {
-            return $ticketSeat->price;
-        });
-        $barcode = DNS1D::getBarcodeHTML($oneTicket->code, 'C128', 1.5, 50);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'users', 'oneTicket', 'totalPriceSeat','barcode'));
+        $oneTicket = $ticket->load(['ticketCombos.combo', 'ticketSeats.showtime']);
+        $totalPriceSeat = $ticket->ticketSeats->sum('price');
+        $totalComboPrice = $ticket->ticketCombos->sum('price');
+        $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket', 'totalPriceSeat','barcode','totalComboPrice'));
     }
 
     /**

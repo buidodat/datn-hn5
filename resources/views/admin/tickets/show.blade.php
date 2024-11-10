@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -27,112 +28,140 @@
                 <h2 class="invoice-title">Hóa đơn chi tiết</h2>
 
                 <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
+                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
                     MST: 012147901412
                     <hr>
-                    <strong>Poly Cinemas {{ $ticket->cinema->name }} - {{ $ticket->cinema->branch->name }}</strong><br>
-                    Thời gian đặt vé: {{ $ticket->created_at }}
+                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Thời gian đặt vé: {{ $oneTicket->created_at }}
                     <hr>
                     @php
-                        $ticketSeat = $ticket->ticketSeats()->first();
-                        //    $rating = App\Models\Movie::getRatingByName($ticketSeat->movie->rating);
-                        $rating = App\Models\Movie::getRatingByName($ticket->movie->rating);
-
+                        $ticketSeat = $oneTicket->ticketSeats()->first();
+                        $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
                     @endphp
-                    <strong>{{ $ticket->movie->name }} ({{ $ticketSeat->showtime->format }}) </strong><br>
+                    <strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->showtime->format }}) </strong><br>
                     ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
                     <strong>Phòng:</strong> {{ $ticket->room->name }} <br>
-                    <strong>Ghế:</strong>
-                    {{ $ticket->ticketSeats->map(function ($ticketSeat) {
-                            return $ticketSeat->seat->name;
-                        })->implode(', ') }}
+                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
                     <hr>
+                    <div class="ticket-info border-bottom-dashed border-top-dashed mt-2">
+                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                            @php
+                                $combo = $ticketCombo->combo;
+                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
+                                $totalPrice = $price * $ticketCombo->quantity;
+                            @endphp
 
+                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }} vnđ)</b></p>
+
+                            <ul>
+                                @foreach ($combo->food as $food)
+                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                @endforeach
+                            </ul>
+                        @endforeach
+                    </div>
+                    <hr>
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
+                    <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
+                    <div><span>Giá combo:</span><span>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</span></div>
+                    <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</span></div>
+                    <div><strong>Thành tiền:</strong><strong>{{ number_format($ticket->total_price, 0, ',', '.') }} VND</strong></div>
                 </div>
 
                 <div class="barcode">
-
+                    {!! $barcode !!}
                 </div>
-                <div class="invoice-code">HD071124-0001</div>
+                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
         </div>
+
+        {{--hoa don combo--}}
         <div class="invoice-container">
             <div class="invoice-content">
                 <h2 class="invoice-title">Hóa đơn combo</h2>
 
                 <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
+                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
                     mst: 012147901412
                     <hr>
-                    <strong>Poly Cinemas Hà Đông - Hà nội</strong><br>
-                    Thời gian: 2024-11-09 17:31:00
+                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                    Thời gian: {{ $oneTicket->created_at }}
                     <hr>
-                    <strong>Ivory Bruen (Lồng Tiếng)</strong><br>
-                    K (18+)<br>
-                    <strong>Phòng:</strong> L202<br>
-                    <strong>Ghế:</strong> G7, G6
+                    <div class="ticket-info border-bottom-dashed mt-2">
+                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                            @php
+                                $combo = $ticketCombo->combo;
+                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
+                                $totalPrice = $price * $ticketCombo->quantity;
+                            @endphp
+
+                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }} vnđ)</b></p>
+
+                            <ul>
+                                @foreach ($combo->food as $food)
+                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                @endforeach
+                            </ul>
+                        @endforeach
+                    </div>
                     <hr>
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
+                    <div><strong>Thành tiền:</strong><strong>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</strong></div>
                 </div>
 
                 <div class="barcode">
-
+                    {!! $barcode !!}
                 </div>
-                <div class="invoice-code">HD071124-0001</div>
+                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
-
-
-        </div>
-        <div class="invoice-container">
-            <div class="invoice-content">
-                <h2 class="invoice-title">Vé xem phim</h2>
-
-                <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại Hà nội</strong><br>
-                    Địa chỉ: 1 Quang Trung - Hà Đông - Hà nội<br>
-                    mst: 012147901412
-                    <hr>
-                    <strong>Poly Cinemas Hà Đông - Hà nội</strong><br>
-                    Thời gian: 2024-11-09 17:31:00
-                    <hr>
-                    <strong>Ivory Bruen (Lồng Tiếng)</strong><br>
-                    K (18+)<br>
-                    <strong>Phòng:</strong> L202<br>
-                    <strong>Ghế:</strong> G7, G6
-                    <hr>
-                </div>
-
-                <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>150.000 VND</span></div>
-                    <div><span>Giá combo:</span><span>0 VND</span></div>
-                    <div><span>Giảm giá:</span><span>0 VND</span></div>
-                    <div><strong>Thành tiền:</strong><strong>250.000 VND</strong></div>
-                </div>
-
-                <div class="barcode">
-
-                </div>
-                <div class="invoice-code">HD071124-0001</div>
-            </div>
-
-
         </div>
 
+        {{--hoa don ve--}}
+        @foreach($oneTicket->ticketSeats as $seat)
+            <div class="invoice-container">
+                <div class="invoice-content">
+                    <h2 class="invoice-title">Vé xem phim</h2>
+
+
+                    <div class="invoice-details">
+                        <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
+                        Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
+                        mst: 012147901412
+                        <hr>
+                        <strong>Poly Cinemas {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}</strong><br>
+                        Thời gian: {{ $oneTicket->created_at }}
+                        <hr>
+                        @php
+                            $ticketSeat = $oneTicket->ticketSeats()->first();
+                            $rating = App\Models\Movie::getRatingByName($oneTicket->movie->rating);
+                        @endphp
+                        <strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->showtime->format }})</strong><br>
+                        ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
+                        <strong>Phòng:</strong> {{ $ticket->room->name }}<br>
+                        <strong>Ghế:</strong> {{ $seat->seat->name }}
+                        <hr>
+                    </div>
+
+                    <div class="invoice-summary">
+                        <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
+                        <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</span></div>
+                        <div><strong>Thành tiền:</strong><strong>{{ number_format($totalPriceSeat - $ticket->voucher_discount, 0, ',', '.') }} VND</strong></div>
+                    </div>
+
+                    <div class="barcode">
+                        {!! $barcode !!}
+                    </div>
+                    <div class="invoice-code">{{ $oneTicket->code }}</div>
+
+                </div>
+            </div>
+        @endforeach
     </div>
 
     <div class="row">
@@ -141,28 +170,21 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h5 class="card-title flex-grow-1 mb-0"></h5>
+
                         <div class="flex-shrink-0">
-                            {{-- <a href="{{ route('admin.tickets.print', $ticket) }}">
-                                <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                        class="ri-download-2-fill align-middle me-1"></i> In vé
-                                </button>
-                            </a> --}}
-                            {{-- <a href="{{ route('admin.tickets.printCombo', $ticket) }}">
-                                <button title="print" class="btn btn-success btn-sm" type="button"><i
-                                        class="ri-download-2-fill align-middle me-1"></i> In combo
-                                </button>
-                            </a> --}}
                             <!-- Static Backdrop -->
+                            @if (now()->lt($ticket->expiry))
                             <button type="button" class="btn btn-success btn-sm"
-                                {{ $ticket->status == App\Models\Ticket::ISSUED ? 'onclick=printInvoice()' : ' ' }}
-                                data-bs-toggle="modal" data-bs-target="#confirmTicket">
+                                    {{ $ticket->status == App\Models\Ticket::ISSUED ? 'onclick=printInvoice()' : ' ' }}
+                                    data-bs-toggle="modal" data-bs-target="#confirmTicket">
                                 <i class="ri-download-2-fill align-middle me-1"></i> In vé
                             </button>
+                            @endif
                             <!-- confirmTicket Modal -->
                             @if ($ticket->status == App\Models\Ticket::NOT_ISSUED)
                                 <div class="modal fade" id="confirmTicket" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" role="dialog"
-                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                     data-bs-keyboard="false" tabindex="-1" role="dialog"
+                                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-body text-center p-5">
@@ -173,12 +195,11 @@
                                                     </p>
                                                     <div class="hstack gap-2 justify-content-center">
                                                         <a id="confirmPrintBtn" class="btn btn-success"
-                                                            data-bs-dismiss="modal">Xác
+                                                           data-bs-dismiss="modal">Xác
                                                             nhận</a>
                                                         <a class="btn btn-link link-success fw-medium"
-                                                            data-bs-dismiss="modal"><i
+                                                           data-bs-dismiss="modal"><i
                                                                 class="ri-close-line me-1 align-middle"></i> Hủy</a>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,308 +215,139 @@
                     <div class="table-responsive table-card">
                         <table class="table table-nowrap align-middle table-borderless mb-0">
                             <thead class="table-light text-muted">
-                                <tr>
-                                    <th scope="col">Phim</th>
-                                    <th scope="col">Suất chiếu</th>
-                                    <th scope="col">Combo</th>
-                                    <th scope="col">Vé</th>
-                                    <th scope="col" class="text-end">Giá tiền</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">Phim</th>
+                                <th scope="col">Suất chiếu</th>
+                                <th scope="col">Combo</th>
+                                <th scope="col">Vé</th>
+                                <th scope="col" class="text-end">Giá tiền</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="1">
+                            <tr>
+                                <td colspan="1">
+                                    @php
+                                        $img = $oneTicket->first();
+                                        $url = $img->movie->img_thumbnail;
+                                        if (!\Str::contains($url, 'http')) {
+                                            $url = Storage::url($url);
+                                        }
+                                    @endphp
+                                    <div style="display: flex; justify-content: center">
+                                        @if (!empty($img->movie->img_thumbnail))
+                                            <img src="{{ $url }}" alt="Movie Thumbnail" width="50px">
+                                        @else
+                                            No image!
+                                        @endif
+                                    </div>
+                                    <div style="display: flex; justify-content: center">
+                                        <p class="mt-2"><b>{{ $oneTicket->movie->name }}</b></p>
+                                    </div>
+                                </td>
+                                <td colspan="1">
+                                    <p> {{ $oneTicket->room->name }}</p>
+                                    <p> {{ \Carbon\Carbon::parse($oneTicket->showtime->date)->format('d-m-Y') }}
+                                    </p>
+                                    <p> {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }}
+                                        ~
+                                        {{ \Carbon\Carbon::parse($oneTicket->showtime->end_time)->format('H:i') }}
+                                    </p>
+                                </td>
+                                <td colspan="1">
+                                    @foreach ($ticket->ticketCombos as $ticketCombo)
                                         @php
-                                            $img = $oneTicket->first();
-                                            $url = $img->movie->img_thumbnail;
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
+                                            $combo = $ticketCombo->combo;
+                                            $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price; // Kiểm tra price_sale
+                                            $totalPrice = $price * $ticketCombo->quantity;
                                         @endphp
-                                        <div style="display: flex; justify-content: center">
-                                            @if (!empty($img->movie->img_thumbnail))
-                                                <img src="{{ $url }}" alt="Movie Thumbnail" width="50px">
-                                            @else
-                                                No image!
-                                            @endif
-                                        </div>
-                                        <div style="display: flex; justify-content: center">
-                                            <p class="mt-2"><b>{{ $oneTicket->movie->name }}</b></p>
-                                        </div>
-                                    </td>
-                                    <td colspan="1">
-                                        <p> {{ $oneTicket->room->name }}</p>
-                                        <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->date)->format('d-m-Y') }}
+
+                                        <span><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}</b></span>
+                                        <p>{{ number_format($totalPrice, 0, ',', '.') }} vnđ</p>
+                                        {{-- <ul>
+                                        @foreach ($combo->food as $food)
+                                            <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                        @endforeach
+                                    </ul> --}}
+                                    @endforeach
+                                </td>
+                                <td colspan="1" class="fw-medium align-content-start">
+                                    @foreach ($ticket->ticketSeats as $ticketSeat)
+                                        <p class="fs-15">-
+                                            <span class="link-primary">{{ $ticketSeat->seat->name }} </span>
+                                            (<span>{{ $ticketSeat->seat->typeSeat->name }}</span>)
                                         </p>
-                                        <p> {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->start_time)->format('H:i') }}
-                                            ~
-                                            {{ \Carbon\Carbon::parse($oneTicket->ticketSeats->first()->showtime->end_time)->format('H:i') }}
-                                        </p>
-                                    </td>
-                                    <td colspan="1">
-                                        @foreach ($ticket->ticketCombos as $ticketCombo)
-                                            @php
-                                                $combo = $ticketCombo->combo;
-                                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price; // Kiểm tra price_sale
-                                                $totalPrice = $price * $ticketCombo->quantity;
-                                            @endphp
+                                    @endforeach
+                                </td>
+                                <td colspan="1" class="fw-medium text-end align-content-start">
+                                    @foreach ($ticket->ticketSeats as $ticketSeat)
+                                        <p class="fs-15">{{ number_format($ticketSeat->price, 0, ',', '.') }}
+                                            vnđ</p>
+                                    @endforeach
+                                </td>
+                            </tr>
+                            <tr class="border-top border-top-dashed">
+                                <td colspan="4"></td>
+                                <td colspan="1" class="fw-medium p-0">
+                                    <table class="table table-borderless mb-0">
+                                        <tbody>
+                                        <tr>
+                                            <td>Tiền vé:</td>
+                                            <td class="text-end">
+                                                {{ number_format($totalPriceSeat, 0, ',', '.') }}vnđ
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tiền combos:</td>
+                                            <td class="text-end">
+                                                @php
+                                                    $totalComboPrice = 0;
+                                                @endphp
 
-                                            <span><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}</b></span>
-                                            <p>{{ number_format($totalPrice, 0, ',', '.') }} vnđ</p>
-                                            {{-- <ul>
-                                            @foreach ($combo->food as $food)
-                                                <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
-                                            @endforeach
-                                        </ul> --}}
-                                        @endforeach
-                                    </td>
-                                    <td colspan="1" class="fw-medium align-content-start">
-                                        @foreach ($ticket->ticketSeats as $ticketSeat)
-                                            <p class="fs-15">-
-                                                <span class="link-primary">{{ $ticketSeat->seat->name }} </span>
-                                                (<span>{{ $ticketSeat->seat->typeSeat->name }}</span>)
-                                            </p>
-                                        @endforeach
-                                    </td>
-                                    <td colspan="1" class="fw-medium text-end align-content-start">
-                                        @foreach ($ticket->ticketSeats as $ticketSeat)
-                                            <p class="fs-15">{{ number_format($ticketSeat->price, 0, ',', '.') }}
-                                                vnđ</p>
-                                        @endforeach
-                                    </td>
-                                </tr>
-                                <tr class="border-top border-top-dashed">
-                                    <td colspan="4"></td>
-                                    <td colspan="1" class="fw-medium p-0">
-                                        <table class="table table-borderless mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Tiền vé:</td>
-                                                    <td class="text-end">
-                                                        {{ number_format($totalPriceSeat, 0, ',', '.') }}vnđ
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Tiền combos:</td>
-                                                    <td class="text-end">
-                                                        @php
-                                                            $totalComboPrice = 0;
-                                                        @endphp
+                                                @foreach ($ticket->ticketCombos as $ticketCombo)
+                                                    @php
+                                                        $price =
+                                                            $ticketCombo->combo->price_sale > 0
+                                                                ? $ticketCombo->combo->price_sale
+                                                                : $ticketCombo->combo->price;
+                                                        $totalComboPrice += $price * $ticketCombo->quantity;
+                                                    @endphp
+                                                @endforeach
 
-                                                        @foreach ($ticket->ticketCombos as $ticketCombo)
-                                                            @php
-                                                                $price =
-                                                                    $ticketCombo->combo->price_sale > 0
-                                                                        ? $ticketCombo->combo->price_sale
-                                                                        : $ticketCombo->combo->price;
-                                                                $totalComboPrice += $price * $ticketCombo->quantity;
-                                                            @endphp
-                                                        @endforeach
+                                                {{ number_format($totalComboPrice, 0, ',', '.') }} vnđ
 
-                                                        {{ number_format($totalComboPrice, 0, ',', '.') }} vnđ
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giảm giá <span
+                                                    class="text-muted">{{ $ticket->voucher_code ? '(' . $ticket->voucher_code . ')' : '' }}</span>:
+                                            </td>
+                                            <td class="text-end">
+                                                {{ $ticket->voucher_discount > 0 ? '-' . number_format($ticket->voucher_discount, 0, ',', '.') . ' vnđ' : '0' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Điểm :</td>
+                                            <td class="text-end">0</td>
+                                        </tr>
 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Giảm giá <span
-                                                            class="text-muted">{{ $ticket->voucher_code ? '(' . $ticket->voucher_code . ')' : '' }}</span>:
-                                                    </td>
-                                                    <td class="text-end">
-                                                        {{ $ticket->voucher_discount > 0 ? '-' . number_format($ticket->voucher_discount, 0, ',', '.') . ' vnđ' : '0' }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Điểm :</td>
-                                                    <td class="text-end">0</td>
-                                                </tr>
-
-                                                <tr class="border-top border-top-dashed">
-                                                    <th scope="row">Thành tiền :</th>
-                                                    <th class="text-end">
-                                                        {{ number_format($ticket->total_price, 0, ',', '.') }}
-                                                        vnđ
-                                                    </th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
+                                        <tr class="border-top border-top-dashed">
+                                            <th scope="row">Thành tiền :</th>
+                                            <th class="text-end">
+                                                {{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                vnđ
+                                            </th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <!--end card-->
-            {{-- <div class="card">
-                <div class="card-header">
-                    <div class="d-sm-flex align-items-center">
-                        <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
-                        --}}{{-- <div class="flex-shrink-0 mt-2 mt-sm-0">
-                            <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"><i
-                                    class="ri-map-pin-line align-middle me-1"></i> Sửa lại thông
-                                tin</a>
-                            <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"><i
-                                    class="mdi mdi-archive-remove-outline align-middle me-1"></i>
-                                Hủy</a>
-                        </div> --}}{{--
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="profile-timeline">
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingOne">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                       href="#collapseOne" aria-expanded="true"
-                                       aria-controls="collapseOne">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-success rounded-circle">
-                                                    <i class="ri-shopping-bag-line"></i>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-15 mb-0 fw-semibold">Đã thanh toán - <span
-                                                        class="fw-normal">{{ \Carbon\Carbon::parse($ticket->created_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div id="collapseOne" class="accordion-collapse collapse show"
-                                     aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body ms-2 ps-5 pt-0">
-                                        <h6 class="mb-1">Chờ lấy vé</h6>
 
-                                        @if ($ticket->status != 'Chưa suất vé')
-                                            <p class="text-muted"></p>
-                                            @if ($ticket->status == 'Đã suất vé' && new DateTime() < new DateTime($ticket->expiry))
-                                                <h6 class="mb-1">Đã suất vé</h6>
-                                                <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
-                                            @else
-                                                <h6 class="mb-1">Đã hết hạn</h6>
-                                                <p class="text-muted mb-0">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</p>
-                                            @endif
-                                        @endif
-
-                                    </div>
-                                </div>
-                            </div>
-                            @if ($ticket->status !== 'Chưa suất vé')
-                                @if ($ticket->status == 'Đã suất vé')
-                                    <div class="accordion-item border-0">
-                                        <div class="accordion-header" id="headingTwo">
-                                            <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                               href="#collapseTwo" aria-expanded="false"
-                                               aria-controls="collapseTwo">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0 avatar-xs">
-                                                        <div class="avatar-title bg-success rounded-circle">
-                                                            <i class=" ri-checkbox-circle-fill"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="fs-15 mb-1 fw-semibold">Hoàn thành - <span
-                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="accordion-item border-0">
-                                        <div class="accordion-header" id="headingTwo">
-                                            <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                               href="#collapseTwo" aria-expanded="false"
-                                               aria-controls="collapseTwo">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-shrink-0 avatar-xs">
-                                                        <div class="avatar-title bg-danger rounded-circle">
-                                                            <i class="ri-close-circle-fill"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="fs-15 mb-1 fw-semibold">Hủy - <span
-                                                                class="fw-normal">{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('l, j/n/Y - H:i') }}</span>
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        --}}{{-- <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body ms-2 ps-5 pt-0">
-                                                <h6 class="mb-1">Your Item has been picked up by courier partner</h6>
-                                                <p class="text-muted mb-0">Fri, 17 Dec 2021 - 9:45AM</p>
-                                            </div>
-                                        </div> --}}{{--
-                                    </div>
-                                @endif
-                            @endif
-
-
-
-                            --}}{{-- <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingThree">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-success rounded-circle">
-                                                    <i class="ri-truck-line"></i>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-15 mb-1 fw-semibold">Shipping - <span class="fw-normal">Thu, 16 Dec 2021</span></h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body ms-2 ps-5 pt-0">
-                                        <h6 class="fs-14">RQK Logistics - MFDS1400457854</h6>
-                                        <h6 class="mb-1">Your item has been shipped.</h6>
-                                        <p class="text-muted mb-0">Sat, 18 Dec 2021 - 4.54PM</p>
-                                    </div>
-                                </div>
-                            </div> --}}{{--
-                            --}}{{-- <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingFour">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseFour" aria-expanded="false">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-light text-success rounded-circle">
-                                                    <i class="ri-takeaway-fill"></i>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-14 mb-0 fw-semibold">Hủy</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="accordion-item border-0">
-                                <div class="accordion-header" id="headingFive">
-                                    <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="#collapseFile" aria-expanded="false">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar-xs">
-                                                <div class="avatar-title bg-light text-success rounded-circle">
-                                                    <i class="mdi mdi-package-variant"></i>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="fs-14 mb-0 fw-semibold">Quá hạn</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div> --}}{{--
-                        </div>
-                        <!--end accordion-->
-                    </div>
-                </div>
-            </div> --}}
-            <!--end card-->
         </div>
         <!--end col-->
         <div class="col-xl-3">
@@ -504,16 +356,16 @@
                     <div class="d-flex">
                         <h5 class="card-title flex-grow-1 mb-0">Trạng thái vé</h5>
                         <div class="flex-shrink-0">
-                            <span href="javascript:void(0);" class="badge bg-primary-subtle text-primary fs-11">
-
-                                @if ($ticket->status == 'Chưa suất vé')
+                            <span href="javascript:void(0);" class="badge fs-11
+        {{ now()->greaterThan($ticket->expiry) ? 'bg-warning-subtle text-danger' : 'bg-primary-subtle text-primary' }}">
+                                @if (now()->greaterThan($ticket->expiry))
+                                    Đã hết hạn <br>
+                                    <span>{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('H:i - j/n/Y') }}</span>
+                                @elseif ($ticket->status == 'Chưa suất vé')
                                     Chưa suất vé
                                 @elseif($ticket->status == 'Đã suất vé')
                                     Đã suất vé <br>
                                     <span>({{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('H:i - j/n/Y') }})</span>
-                                @elseif($ticket->status == 'Đã hết hạn')
-                                    Đã hết hạn <br>
-                                    <span>{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('H:i - j/n/Y') }}</span>
                                 @endif
 
                             </span>
@@ -555,7 +407,7 @@
 
                                     @if (!empty($user->img_thumbnail))
                                         <img src="{{ $url }}" alt="Movie Thumbnail" width="50px"
-                                            class="avatar-sm rounded">
+                                             class="avatar-sm rounded">
                                     @else
                                         No image!
                                     @endif
@@ -684,14 +536,14 @@
         }
     </script>
     <script>
-        document.getElementById('confirmPrintBtn').addEventListener('click', function() {
+        document.getElementById('confirmPrintBtn').addEventListener('click', function () {
             fetch('{{ route('admin.tickets.confirm', $ticket) }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {
@@ -707,7 +559,7 @@
     </script>
     <script>
         @if (session('confirm'))
-            printInvoice();
+        printInvoice();
         @endif
     </script>
 @endsection

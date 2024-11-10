@@ -563,7 +563,7 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-01',
-                'type' => 'admin',
+                'type' => 'member',
                 'cinema_id' => 1,
             ],
             [
