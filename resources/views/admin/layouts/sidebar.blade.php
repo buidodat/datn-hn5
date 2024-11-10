@@ -121,8 +121,7 @@
                                 @canany(['Danh sách phòng chiếu', 'Thêm phòng chiếu', 'Sửa phòng chiếu', 'Xóa phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span
-                                                data-key="t-layouts">Quản
+                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
@@ -354,20 +353,10 @@
                         <a class="nav-link menu-link collapsed" href="#user-report" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="user-report">
                             <i class="ri-account-circle-line"></i>
-                            <span data-key="t-landing">Tài khoản và Báo cáo</span>
+                            <span data-key="t-landing">Tài khoản và Liên hệ</span>
                         </a>
                         <div class="menu-dropdown collapse" id="user-report" style="">
                             <ul class="nav nav-sm flex-column">
-
-
-                                @canany(['Danh sách liên hệ', 'Thêm liên hệ', 'Sửa liên hệ', 'Xóa liên hệ'])
-                                    {{-- Quản lí Liên hệ --}}
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.contacts.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
-                                                data-key="t-layouts">Liên hệ</span></a>
-                                    </li>
-                                @endcan
 
                                 @canany(['Danh sách tài khoản', 'Thêm tài khoản', 'Sửa tài khoản', 'Xóa tài khoản'])
                                     <li class="nav-item">
@@ -377,41 +366,50 @@
                                                 khoản</span></a>
                                     </li>
                                 @endcan
+                                @canany(['Danh sách liên hệ', 'Thêm liên hệ', 'Sửa liên hệ', 'Xóa liên hệ'])
+                                    {{-- Quản lí Liên hệ --}}
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.contacts.index') }}" class="nav-link menu-link"
+                                            data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
+                                                data-key="t-layouts">Liên hệ</span></a>
+                                    </li>
+                                @endcan
 
 
-                                @canany(['Danh sách thống kê', 'Thêm thống kê', 'Sửa thống kê', 'Xóa thống kê'])
-                                    {{-- Thống kê --}}
+
+
+                                {{-- @canany(['Danh sách thống kê', 'Thêm thống kê', 'Sửa thống kê', 'Xóa thống kê'])
                                     <li class="nav-item">
                                         <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
                                             <i class="ri-dashboard-2-line"></i>
                                             <span data-key="t-dashboards">Thống Kê</span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                             </ul>
                         </div>
                     </li>
                 @endcanany
 
                 {{-- @canany(['']) --}}
-                    <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="siteSetting">
-                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
-                        </a>
-                        <div class="menu-dropdown collapse" id="siteSetting" style="">
-                            <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="siteSetting">
+                        <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
+                    </a>
+                    <div class="menu-dropdown collapse" id="siteSetting" style="">
+                        <ul class="nav nav-sm flex-column">
 
-                                {{-- @canany(['']) --}}
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
-                                                data-key="t-layouts">Quản lý</span></a>
-                                    </li>
-                                {{-- @endcan --}}
-                            </ul>
-                        </div>
-                    </li>
+                            {{-- @canany(['']) --}}
+                            <li class="nav-item">
+                                <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
+                                    data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
+                                        data-key="t-layouts">Quản lý</span></a>
+                            </li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </div>
+                </li>
                 {{-- @endcanany --}}
 
                 @if (auth()->user()->hasRole('System Admin'))
@@ -424,12 +422,11 @@
                         <div class="menu-dropdown collapse" id="permissions" style="">
                             <ul class="nav nav-sm flex-column">
 
-
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('admin.permissions.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal"><i class="las la-users"></i> <span
                                             data-key="t-layouts">Danh sách quyền</span></a>
-                                </li>
+                                </li> --}}
 
                                 <li class="nav-item">
                                     <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
