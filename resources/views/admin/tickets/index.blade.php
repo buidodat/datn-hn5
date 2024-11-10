@@ -96,13 +96,13 @@
                                     <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
                                 </div>
                             </div>
-                            <div class="col-xxl-2 col-sm-4">
+                            {{--<div class="col-xxl-2 col-sm-4">
                                 <div>
                                     <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
                                 </div>
-                            </div>
+                            </div>--}}
 
-                            <div class="live-preview">
+                            <div class="col-xxl-3 text-end">
                                 <div>
                                     <!-- center modal -->
                                     <button type="button" class="btn btn-primary " data-bs-toggle="modal"
