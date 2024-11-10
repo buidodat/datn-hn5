@@ -66,7 +66,7 @@
                         @endif
                         @else
                             {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                            <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="height: 80px;">
+                            <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="Logo Mặc định" style="height: 80px;">
                         @endif
                     </a>
                 </div>
