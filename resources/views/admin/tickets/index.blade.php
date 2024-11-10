@@ -101,6 +101,59 @@
                                     <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
                                 </div>
                             </div>
+                            <!-- Nút mở modal -->
+                            <div class="col-xxl-2 col-sm-4">
+                                <div>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal">
+                                        Quét mã
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Modal quét mã -->
+                            <div class="modal fade" id="scanModal" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
+                                <div class="">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="scanModalLabel">Quét mã vạch</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="camera" style="width: 640px; height: 480px; border: 1px solid gray; margin: 0 auto;"></div>
+                                            <p id="result">Kết quả: <span id="barcode-result"></span></p>
+                                            <div id="error-message" style="color: red; margin-top: 10px;"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="scanAnotherBtn">Quét lại mã khác</button>
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="live-preview">
+                                <div>
+                                    <!-- center modal -->
+                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target=".bs-example-modal-center">Center Modal</button>
+                                    <div class="modal fade bs-example-modal-center" tabindex="-1" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content" style="width: 680px; max-width: 100%;">
+                                                <div class="modal-body text-center">
+                                                    <div id="camera" style="width: 640px; height: 480px; border: 1px solid gray; margin: 0 auto;"></div>
+                                                    <div class="mt-4">
+                                                        <h4 class="mb-3">Oops something went wrong!</h4>
+                                                        <p class="text-muted mb-4"> The transfer was not successfully received by us. the email of the recipient wasn't correct.</p>
+                                                        <div class="hstack gap-2 justify-content-center">
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                            <a href="javascript:void(0);" class="btn btn-danger">Try Again</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </div>
+                            </div>
+
                             <!--end col-->
                         </div>
                         <!--end row-->
