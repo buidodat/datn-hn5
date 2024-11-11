@@ -23,15 +23,25 @@ class UserController extends Controller
 {
     // Thông tin tài khoản
     const PATH_UPLOAD = 'my-account';
-    public function edit()
+    public function edit(string $page = 'my-account')
     {
+        $pages = [
+            'my-account',
+            'membership',
+            'cinema-journey',
+        ];
+
+        // Kiểm tra nếu $page không nằm trong mảng $pages, gán lại $page là 'my-account'
+        if (!in_array($page, $pages)) {
+            $page = 'my-account';
+        }
         $userID = Auth::user()->id;
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
         $ranks = Rank::orderBy('total_spent', 'asc')->get();
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
-        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks'));
+        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page'));
     }
 
     public function update(UpdateUserRequest $request)

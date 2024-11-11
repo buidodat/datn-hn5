@@ -16,16 +16,16 @@
 @section('content')
 
     <body>
-        <div class="container" style="margin-top: 70px; margin-bottom: 100px;">
+        <div class="container" style="margin-top: 50px; margin-bottom: 100px;">
             <div class="my-account-tabs">
                 <a href="#my-account" role="tab" data-toggle="tab" class="tab-link">
-                    <div class="my-account-tab my-account-active" role="presentation">THÔNG TIN TÀI KHOẢN</div>
+                    <div class="my-account-tab {{ $page=='my-account' ? 'my-account-active' : '' }}" role="presentation">THÔNG TIN TÀI KHOẢN</div>
                 </a>
                 <a href="#membership" role="tab" data-toggle="tab" class="tab-link">
-                    <div class="my-account-tab">THẺ THÀNH VIÊN</div>
+                    <div class="my-account-tab {{ $page=='membership' ? 'my-account-active' : '' }}">THẺ THÀNH VIÊN</div>
                 </a>
                 <a href="#cinema-journey" role="tab" data-toggle="tab" class="tab-link">
-                    <div class="my-account-tab" role="presentation">LỊCH SỬ GIAO DỊCH</div>
+                    <div class="my-account-tab {{ $page=='cinema-journey' ? 'my-account-active' : '' }}" role="presentation">LỊCH SỬ GIAO DỊCH</div>
                 </a>
                 <a href="#voucher" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab">VOUCHER CỦA TÔI</div>
@@ -35,7 +35,7 @@
             <div class="col-md-12">
                 <div class="tab-content">
                     {{-- Thông tin tài khoản --}}
-                    <div id="my-account" class="tab-pane fade" role="tabpanel" class="item-content"> {{-- active --}}
+                    <div id="my-account" class="tab-pane  {{ $page=='my-account' ? 'in active' : 'fade' }} item-content" role="tabpanel"> {{-- active --}}
                         <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data"
                             id="updateAccountForm">
                             @csrf
@@ -138,7 +138,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="membership" class="tab-pane fade" role="tabpanel" class="item-content">
+                    <div id="membership" class="tab-pane  {{ $page=='membership' ? 'in active' : 'fade' }} item-content" role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
@@ -291,7 +291,7 @@
 
 
                     {{-- Hành trình điện ảnh --}}
-                    <div id="cinema-journey" class="tab-pane fade" role="tabpanel" class="item-content">
+                    <div id="cinema-journey" class="tab-pane  {{ $page=='cinema-journey' ? 'in active' : 'fade' }} item-content" role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
@@ -306,227 +306,69 @@
 
                                     </thead>
                                     <tbody>
-
                                         @foreach ($tickets as $ticket)
-                                            @php
-                                                // Nhóm các ticketMovie theo movie_id
-                                                $ticketSeatsByMovie = $ticket->ticketSeats->groupBy('movie_id');
-                                            @endphp
+                                            <tr>
+                                                <td>{{ $ticket->code }}</td>
+                                                <td>
+                                                    @php
+                                                        // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
+                                                        $url = $ticket->movie->img_thumbnail;
 
-                                            @foreach ($ticketSeatsByMovie as $ticketSeats)
-                                                <tr>
-                                                    <td>{{ $ticket->code }}</td>
-                                                    <td>
-
-                                                        @php
-                                                            // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
-
-                                                            $url = $ticket->movie->img_thumbnail;
-
-                                                            if (!\Str::contains($url, 'http')) {
-                                                                $url = Storage::url($url);
-                                                            }
-                                                        @endphp
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
+                                                    @endphp
+                                                   
+                                                        <img width="100% " src="{{ $url }}" alt="movie_img" />
 
 
-                                                            <img width="100% " src="{{ $url }}"
-                                                            alt="movie_img" />
+                                                </td>
+                                                <td>
+                                                    <h3 class="movie-name-history">
+                                                        <a
+                                                            href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">{{ $ticket->movie->name }}</a>
+                                                    </h3>
+                                                    <b>Ngày chiếu:</b>
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
+                                                    <br>
+                                                    <b>Giờ chiếu: </b>
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
+                                                    ~
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->end_time)->format('H:i') }}
+                                                    <br>
+                                                    <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
+                                                    {{ $ticket->room->name }}
+                                                    <br>
+                                                    <b>Ghế ngồi:</b>
+                                                    {{ implode(', ', $ticket->ticketSeats->pluck('seat.name')->toArray()) }}
+                                                    <br>
+                                                    <b>Trạng thái:</b> {{ $ticket->status }}
+                                                    <br>
+                                                    <b>Tổng tiền thanh toán:</b>
+                                                    {{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                    VNĐ
 
-
-
-
-
-                                                    </td>
-                                                    <td>
-                                                        <h3 class="movie-name-history">
-                                                            <a
-                                                                href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">{{ $ticket->movie->name }}</a>
-                                                        </h3>
-                                                        <b>Ngày chiếu:</b>
-                                                        {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
-                                                        <br>
-                                                        <b>Giờ chiếu: </b>
-                                                        {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }} ~   {{ \Carbon\Carbon::parse($ticket->showtime->end_time)->format('H:i') }}
-                                                        <br>
-                                                        <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
-                                                        {{ $ticket->room->name }}
-                                                        <br>
-                                                        <b>Ghế ngồi:</b>
-                                                        {{ implode(', ', $ticketSeats->pluck('seat.name')->toArray()) }}
-                                                        <br>
-                                                        <b>Trạng thái:</b> {{ $ticket->status }}
-                                                        <br>
-                                                        <b>Tổng tiền thanh toán:</b>
-                                                        {{ number_format($ticket->total_price, 0, ',', '.') }}
-                                                        VNĐ
-                            </div>
-                            </td>
-                            <td>
-
-                                <div style="display: flex; gap: 5px">
-                                    <a href="{{ route('ticketDetail', $ticket->id) }}">
-                                        <button class="btn btn-info">Chi tiết</button>
-                                    </a>
-                                    {{-- @php
-                                                                    $deadlineCancel = Carbon\Carbon::parse($ticket->showtime->start_time)->subMinutes(
-                                                                        App\Models\Ticket::CANCELLATION_DEADLINE_MINUTES,
-                                                                    );
-                                                                @endphp
-
-                                                                @if ($ticket->status == App\Models\Ticket::NOT_ISSUED && now() < $deadlineCancel)
-                                                                    <form
-                                                                        action="{{ route('my-account.transaction.cancel', $ticket) }}"
-                                                                        method="post" class='mx-2'>
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        <button type='submit' onclick="return confirm('Sau khi hủy vé bạn sẽ được hoàn điểm có giá trị tương ứng với số tiền. Bạn có chắc chắn muốn hủy ?')"
-                                                                            class="btn btn-danger">Hủy</button>
-                                                                    </form>
-                                                                @endif --}}
-                                </div>
-
-                            </td>
-                            </tr>
-                            @endforeach
-                            @endforeach
-
-                            </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-
-
-                </div>
-
-                {{-- Chi tiết giao dịch --}}
-
-                <div id="detail-ticket" class="tab-pane fade" role="tabpanel" class="item-content">
-                    <div class="row mb-3 title-detail">
-                        <h3>Chi tiết giao dịch #4811201174585152</h3>
-                    </div>
-                    <div class="content-detail">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="code-qr">
-                                    <p class="text-img bold">Mã quét</p>
-
-                                    <p><b>Ngày mua hàng:</b> 09/09/2024</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}" alt="">
-                            </div>
-                        </div>
-
-                        <div class="box-address">
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <div class="address-detail">
-                                        <b>Địa chỉ thanh toán</b>
-                                        <p>NGuyễn Viết Sơn</p>
-                                        <p>Xã Tiên Phương, huyện Chương Mỹ, Hà Nội</p>
-                                        <p>sonnvph33874@fpt.edu.vn</p>
-                                        <p>0987654321</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="payment-checkout-detail">
-                                        <b>Phương thức thanh toán</b>
-                                        <p>MOMO - 65k/vé</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="row info-detail">
-
-                            <div class="col-md-12">
-                                <div>
-                                    <b> Thông tin giao dịch</b>
-                                </div>
-                                <div>
-                                    <button>In hóa đơn</button>
-                                </div>
-
-                            </div>
-
-
-
-
-                        </div>
-
-                        <div class="row box-detail-history">
-                            <div class="row">
-                                <div class="col-md-12" align='center'>
-                                    CHI TIẾT GIAO DỊCH
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="table-history">
-                            <div class="row">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Phim</th>
-                                            <th>Suất chiếu</th>
-                                            <th>Vé</th>
-                                            <th>Combo</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Vây hãm trên không</td>
-                                            <td>
-                                                <b>Poly Mỹ đình</b> <br>
-                                                <p>Poly Room 01</p>
-                                                <p>09/09/2024</p>
-                                                <p>20:50 - 22:33</p>
-                                            </td>
-                                            <td>
-                                                <b>VIP</b>
-                                                <p>E1, E2</p>
-                                                <p>130.000đ</p> {{-- 65k x 2 --}}
-                                            </td>
-                                            <td>
-                                                <b>Combo Poly 49k x 3</b>
-                                                <p>147.000đ</p> {{-- 49k x 3 --}}
-                                            </td>
-                                            <td>
-                                                <p>277.000đ</p>
-                                            </td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <th colspan="5" class="total-detail" align="right">Tổng cộng:
-                                                277.000đ</th>
-                                        </tr>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; gap: 5px">
+                                                        <a href="{{ route('ticketDetail', $ticket->id) }}">
+                                                            <button class="btn btn-info">Chi tiết</button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
-                                    {{-- <tfoot>
-
-                                    </tfoot> --}}
                                 </table>
-                                <div class="back-list-history">
-                                    <a href="#cinema-journey" aria-controls="trand" role="tab" data-toggle="tab">
-                                        << Trở về</a>
-                                </div>
-
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-        </div>
     </body>
+
+
 
     <div class="my-account-overlay" id="overlay">
         <div class="my-account-modal" id="changePasswordForm">
@@ -580,7 +422,7 @@
             order: [],
             columnDefs: [{
                 targets: 1,
-                width: "150px"
+                width: "120px"
             }]
         });
     </script>
@@ -693,38 +535,36 @@
     </script>
 
     <script>
-        const divTabLinks = document.querySelectorAll('.tab-link div');
-        const itemContents = document.querySelectorAll('.item-content');
+        // const divTabLinks = document.querySelectorAll('.tab-link div');
+        // const itemContents = document.querySelectorAll('.item-content');
 
 
-        function activateTab(hash) {
-            // Tắt tất cả các tab và nội dung
-            divTabLinks.forEach(link => link.classList.remove('my-account-active'));
-            itemContents.forEach(content => content.classList.remove('in', 'active'));
+        // function activateTab(hash) {
+        //     // Tắt tất cả các tab và nội dung
+        //     divTabLinks.forEach(link => link.classList.remove('my-account-active'));
+        //     itemContents.forEach(content => content.classList.remove('in', 'active'));
+        //     console.log(itemContents);
 
-            // Kích hoạt tab và nội dung tương ứng với hash
-            const activeDiv = document.querySelector(`a[href="${hash}"] div`);
-            const activeContent = document.querySelector(hash);
+        //     // Kích hoạt tab và nội dung tương ứng với hash
+        //     const activeDiv = document.querySelector(`a[href="${hash}"] div`);
+        //     const activeContent = document.querySelector(hash);
 
-            if (activeDiv && activeContent) {
-                activeDiv.classList.add('my-account-active'); // Thêm lớp 'active' và 'my-account' vào tab
-                activeContent.classList.add('in', 'active');
+        //     if (activeDiv && activeContent) {
+        //         activeDiv.classList.add('my-account-active'); // Thêm lớp 'active' và 'my-account' vào tab
+        //         activeContent.classList.add('in', 'active');
 
-            }
-        }
+        //     }
+        // }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const hash = window.location.hash || '#my-account'; // Mặc định tab "THÔNG TIN TÀI KHOẢN"
-            activateTab(hash);
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const hash = window.location.hash || '#my-account'; // Mặc định tab "THÔNG TIN TÀI KHOẢN"
+        //     activateTab(hash);
+        // });
+        // window.addEventListener('hashchange', function() {
 
+        //     const hash = window.location.hash || '#my-account';
+        //     activateTab(hash);
+        // });
 
-        });
-        document.querySelectorAll('.tab-link').forEach(tab => {
-            tab.addEventListener('click', function(event) {
-                const hash = this.getAttribute('href');
-                // Thay đổi hash trên URL mà không reload trang
-                window.history.pushState(null, null, hash);
-            });
-        });
     </script>
 @endsection
