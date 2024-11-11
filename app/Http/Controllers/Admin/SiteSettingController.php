@@ -11,6 +11,12 @@ use App\Http\Requests\Admin\UpdateSiteSettingsRequest;
 
 class SiteSettingController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('can:Cấu hình website')->only('index', 'update', 'resetToDefault');
+    }
     // 1. Quản lý Trang chủ
     public function index()
     {
@@ -23,15 +29,15 @@ class SiteSettingController extends Controller
         try {
             // Lấy bản ghi đầu tiên của SiteSetting
             $settings = SiteSetting::first();
-    
+
             // Kiểm tra nếu không có thì tạo mới
             if (!$settings) {
                 $settings = SiteSetting::create(SiteSetting::defaultSettings());
             }
-    
+
             // Lấy tất cả dữ liệu từ request
             $dataSiteSetting = $request->except(['_token', '_method']);
-    
+
             // Kiểm tra nếu có file ảnh mới cho website_logo
             if ($request->hasFile('website_logo')) {
                 if ($settings->website_logo && Storage::exists($settings->website_logo)) {
@@ -45,14 +51,14 @@ class SiteSettingController extends Controller
                     $dataSiteSetting['website_logo'] = 'theme/client/images/Logo_Poly_Cinemas.png';
                 }
             }
-    
+
             // Kiểm tra và cập nhật từng ảnh đại diện mới nếu có
             $images = [
                 'introduction_image',
                 'terms_of_service_image',
                 'privacy_policy_image'
             ];
-    
+
             foreach ($images as $imageField) {
                 if ($request->hasFile($imageField)) {
                     if ($settings->$imageField && Storage::exists($settings->$imageField)) {
@@ -63,17 +69,17 @@ class SiteSettingController extends Controller
                     $dataSiteSetting[$imageField] = $path;
                 }
             }
-    
+
             // Cập nhật các trường khác
             $settings->update($dataSiteSetting);
-    
+
             return redirect()
                 ->back()
                 ->with('success', 'Cập nhật thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         }
-    }    
+    }
 
     // 2. Đặt lại cài đặt về giá trị mặc định
 
