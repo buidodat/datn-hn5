@@ -395,6 +395,9 @@ class PaymentController extends Controller
                     Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
+                $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+                session()->forget($timeKey);
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -425,7 +428,12 @@ class PaymentController extends Controller
             broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'))->toOthers();
         }
 
+        // xóa session
+        $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+        session()->forget($timeKey);
         session()->forget('payment_data');
+
         return redirect()->route('home')->with('error', 'Thanh toán thất bại hoặc đã hủy.');
     }
 
@@ -683,6 +691,9 @@ class PaymentController extends Controller
                     Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
+                $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+                session()->forget($timeKey);
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -924,6 +935,11 @@ class PaymentController extends Controller
                     ]);
                 }
             }
+
+            $timeKey = 'timeData.' . $showtimeId;
+
+            session()->forget($timeKey);
+            session()->forget('payment_data');
         });
 
         return redirect()->route('home')->with('success', 'Thanh toán thành công!');
