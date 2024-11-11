@@ -139,7 +139,7 @@
                 @endif
                 @else
                     {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                    <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="privacy_policy_image" class="policy-logo">
+                    <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="privacy_policy_image" class="policy-logo">
                 @endif
             <p>{!! $settings->privacy_policy !!}</p>
 

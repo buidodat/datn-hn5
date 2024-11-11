@@ -16,6 +16,7 @@ class HomeController extends Controller
     // const PATH_VIEW = 'client.';
     // const PATH_UPLOAD = 'home';
 
+ 
     public function home()
     {
         $slideShow = Slideshow::query()->where('is_active', 1)->get();

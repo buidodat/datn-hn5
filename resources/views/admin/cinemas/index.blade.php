@@ -79,10 +79,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="">
+                                        {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button">
                                                 <i class="fas fa-eye"></i></button>
-                                        </a>
+                                        </a> --}}
                                         <a href="{{ route('admin.cinemas.edit', $item) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button">
                                                 <i class="fas fa-edit"></i></button>
