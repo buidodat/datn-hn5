@@ -80,7 +80,9 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user']));
+        $roles = Role::all();
+        $cinemas = Cinema::where('is_active', '1')->first('branch_id')->get();
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user', 'roles', 'cinemas']));
     }
 
     /**
@@ -91,9 +93,10 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
+        $roles = Role::all();
         $cinemas = Cinema::where('is_active', '1')->first('branch_id')->get();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user', 'cinemas']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'user', 'cinemas', 'roles']));
     }
 
     /**
@@ -115,6 +118,13 @@ class UserController extends Controller
             // Nếu có ảnh mới và ảnh mới khác với ảnh cũ, xóa ảnh cũ khỏi hệ thống
             if (!empty($ImgThumbnailCurrent) && ($dataMovie['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
                 Storage::delete($ImgThumbnailCurrent);
+            }
+
+            if ($request->has('role_id')) {
+                $user->roles()->sync($request->role_id);
+            } else {
+                // Nếu không có vai trò nào được chọn, xóa tất cả vai trò hiện tại
+                $user->roles()->detach();
             }
 
             return redirect()
