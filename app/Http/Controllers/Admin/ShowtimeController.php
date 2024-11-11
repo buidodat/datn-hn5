@@ -31,6 +31,7 @@ class ShowtimeController extends Controller
         $this->middleware('can:Thêm suất chiếu')->only(['create', 'store']);
         $this->middleware('can:Sửa suất chiếu')->only(['edit', 'update']);
         $this->middleware('can:Xóa suất chiếu')->only('destroy');
+        $this->middleware('can:Xem chi tiết suất chiếu')->only('show');
     }
 
     public function index(Request $request)

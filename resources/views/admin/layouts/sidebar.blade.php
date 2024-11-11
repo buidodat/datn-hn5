@@ -136,25 +136,9 @@
                 @endcanany
 
 
-                @canany([
-                    'Danh sách phim',
-                    'Thêm phim',
-                    'Sửa phim',
-                    'Xem chi tiết phim',
-                    'Danh sách suất chiếu',
-                    'Thêm
-                    suất chiếu',
-                    'Sửa suất chiếu',
-                    'Xóa suất chiếu',
-                    'Xem chi tiết suất chiếu',
-                    'Danh sách hóa đơn',
-                    'Quét
-                    hóa đơn',
-                    'Danh sách đặt vé',
-                    'Thêm đặt vé',
-                    'Sửa đặt vé',
-                    'Xóa đặt vé',
-                    ])
+                @canany(['Danh sách phim', 'Thêm phim', 'Sửa phim', 'Xem chi tiết phim', 'Danh sách suất chiếu', 'Thêm
+                    suất chiếu', 'Sửa suất chiếu', 'Xóa suất chiếu', 'Xem chi tiết suất chiếu', 'Danh sách hóa đơn', 'Quét
+                    hóa đơn', 'Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#manageMovies" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="manageMovies">

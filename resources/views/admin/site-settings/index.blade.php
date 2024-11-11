@@ -142,17 +142,17 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="website_logo" class="form-label">Logo Website</label>
-                            <input type="file" name="website_logo" class="form-control">
+                            <input type="file" name="website_logo" class="form-control"><br>
                             @if($settings->website_logo)
                             {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
                             @if(Str::startsWith($settings->website_logo, 'theme/client/images/'))
-                                <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                                <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="max-width: 200px;">
                             @else
-                                <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                                <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="max-width: 200px;">
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="Logo Mặc định" style="max-width: 200px;">
                             @endif
 
                             @error("website_logo")
@@ -162,17 +162,17 @@
 
                         <div class="mb-3">
                             <label for="privacy_policy_image" class="form-label">Ảnh Chính Sách Bảo Mật</label>
-                            <input type="file" name="privacy_policy_image" class="form-control">
+                            <input type="file" name="privacy_policy_image" class="form-control"><br>
                             @if($settings->privacy_policy_image)
                             {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
                             @if(Str::startsWith($settings->privacy_policy_image, 'theme/client/images/'))
-                                <img src="{{ asset($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 100px;">
+                                <img src="{{ asset($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 200px;">
                             @else
-                                <img src="{{ Storage::url($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 100px;">
+                                <img src="{{ Storage::url($settings->privacy_policy_image) }}" alt="privacy_policy_image" style="max-width: 200px;">
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="privacy_policy_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="privacy_policy_image" style="max-width: 200px;">
                             @endif
 
                             @error("privacy_policy_image")
@@ -182,17 +182,17 @@
 
                         <div class="mb-3">
                             <label for="terms_of_service_image" class="form-label">Ảnh Điều Khoản Dịch Vụ</label>
-                            <input type="file" name="terms_of_service_image" class="form-control">
+                            <input type="file" name="terms_of_service_image" class="form-control"><br>
                             @if($settings->terms_of_service_image)
                             {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
                             @if(Str::startsWith($settings->terms_of_service_image, 'theme/client/images/'))
-                                <img src="{{ asset($settings->terms_of_service_image) }}" alt="Website Logo" style="max-width: 100px;">
+                                <img src="{{ asset($settings->terms_of_service_image) }}" alt="Website Logo" style="max-width: 200px;">
                             @else
-                                <img src="{{ Storage::url($settings->terms_of_service_image) }}" alt="terms_of_service_image" style="max-width: 100px;">
+                                <img src="{{ Storage::url($settings->terms_of_service_image) }}" alt="terms_of_service_image" style="max-width: 200px;">
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="terms_of_service_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="terms_of_service_image" style="max-width: 200px;">
                             @endif
 
                             @error("terms_of_service_image")
@@ -202,17 +202,17 @@
 
                         <div class="mb-3">
                             <label for="introduction_image" class="form-label">Ảnh Giới Thiệu</label>
-                            <input type="file" name="introduction_image" class="form-control">
+                            <input type="file" name="introduction_image" class="form-control"><br>
                             @if($settings->introduction_image)
                             {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
                             @if(Str::startsWith($settings->introduction_image, 'theme/client/images/'))
-                                <img src="{{ asset($settings->introduction_image) }}" alt="introduction_image" style="max-width: 100px;">
+                                <img src="{{ asset($settings->introduction_image) }}" alt="introduction_image" style="max-width: 200px;">
                             @else
-                                <img src="{{ Storage::url($settings->introduction_image) }}" alt="introduction_image" style="max-width: 100px;">
+                                <img src="{{ Storage::url($settings->introduction_image) }}" alt="introduction_image" style="max-width: 200px;">
                             @endif
                             @else
                                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="introduction_image" style="max-width: 100px;">
+                                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="introduction_image" style="max-width: 200px;">
                             @endif
 
                             @error("introduction_image")

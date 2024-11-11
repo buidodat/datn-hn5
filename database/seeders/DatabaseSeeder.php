@@ -1050,7 +1050,7 @@ class DatabaseSeeder extends Seeder
 
         // Cấu hình website
         SiteSetting::create([
-            'website_logo' => 'theme/client/images/header/logo7.svg',
+            'website_logo' => 'theme/client/images/header/P.svg',
             'site_name' => 'Poly Cinemas',
             'brand_name' => 'Công Ty Phim Việt Nam Poly Cinemas',
             'slogan' => 'Hãy đặt vé Xem phim ngay!',
@@ -1062,7 +1062,7 @@ class DatabaseSeeder extends Seeder
             'facebook_link' => 'https://facebook.com/',
             'youtube_link' => 'https://youtube.com/',
             'instagram_link' => 'https://instagram.com/',
-            'privacy_policy_image' => 'theme/client/images/header/logo7.svg',
+            'privacy_policy_image' => 'theme/client/images/header/P.svg',
             'privacy_policy' => '
                 <b>Chào mừng Quý khách hàng đến với Hệ thống Bán Vé Online của chuỗi Rạp Chiếu Phim POLY CINEMAS!</b>
                 <p>Xin cảm ơn và chúc Quý khách hàng có những giây phút xem phim tuyệt vời tại POLY CINEMAS!</p>
@@ -1123,9 +1123,9 @@ class DatabaseSeeder extends Seeder
                         viên để thông báo và xác nhận.</li>
                     <li></li>
                 </ul>',
-            'terms_of_service_image' => 'theme/client/images/header/logo7.svg',
+            'terms_of_service_image'=> 'theme/client/images/header/P.svg',
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
-            'introduction_image' => 'theme/client/images/header/logo7.svg',
+            'introduction_image' => 'theme/client/images/header/P.svg',
             'introduction' => '
             <p>F5 Poly Media được thành lập bởi doanh nhân F5 Poly Cinemas (F5 Poly Beta) vào cuối năm 2014 với sứ mệnh "Mang trải nghiệm điện ảnh với mức giá hợp lý cho mọi người dân Việt Nam".</p>
             <p>Với thiết kế độc đáo, trẻ trung, F5 Poly Cinemas mang đến trải nghiệm điện ảnh chất lượng với chi phí đầu tư và vận hành tối ưu - nhờ việc chọn địa điểm phù hợp, tận dụng tối đa diện tích, bố trí khoa học, nhằm duy trì giá vé xem phim trung bình chỉ từ 40,000/1 vé - phù hợp với đại đa số người dân Việt Nam.</p>

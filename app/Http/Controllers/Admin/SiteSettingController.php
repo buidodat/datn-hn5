@@ -86,6 +86,23 @@ class SiteSettingController extends Controller
     public function resetToDefault()
     {
         $settings = SiteSetting::first();
+
+        // Danh sách các trường ảnh cần kiểm tra và xóa
+        $images = [
+            'website_logo',
+            'introduction_image',
+            'terms_of_service_image',
+            'privacy_policy_image'
+        ];
+
+        // Kiểm tra và xóa từng file nếu có
+        foreach ($images as $imageField) {
+            if ($settings->$imageField && Storage::exists($settings->$imageField)) {
+                Storage::delete($settings->$imageField);
+            }
+        }
+
+        // Đặt lại cài đặt về giá trị mặc định
         $settings->resetToDefault();
 
         return redirect()->back()->with('success', 'Đã đặt lại cài đặt về giá trị mặc định!');
