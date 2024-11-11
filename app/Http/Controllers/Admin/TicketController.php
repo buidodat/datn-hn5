@@ -23,6 +23,7 @@ class TicketController extends Controller
      */
 
     const PATH_VIEW = 'admin.tickets.';
+
     public function __construct()
     {
         $this->middleware('can:Danh sách hóa đơn')->only('index');
@@ -33,7 +34,7 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room',  'ticketSeats.showtime'])
+        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'ticketSeats.showtime'])
             ->latest('id');
         if (Auth::user()->cinema_id != "") {
             $tickets = $tickets->where('cinema_id', Auth::user()->cinema_id);
@@ -78,7 +79,7 @@ class TicketController extends Controller
         }
         $cinemas = Cinema::all();
         $branches = Branch::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('tickets', 'cinemas', 'branches','barcodes'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('tickets', 'cinemas', 'branches', 'barcodes'));
     }
 
 
@@ -118,12 +119,12 @@ class TicketController extends Controller
 
     public function confirm(Request $request, Ticket $ticket)
     {
-        if($ticket->status == Ticket::NOT_ISSUED && $ticket->expiry > now()){
+        if ($ticket->status == Ticket::NOT_ISSUED && $ticket->expiry > now()) {
             $ticket->update([
-                'status'=>Ticket::ISSUED
+                'status' => Ticket::ISSUED
             ]);
         }
-        session()->flash('confirm',true);
+        session()->flash('confirm', true);
 
         return response()->json([
             'success' => true,
@@ -172,58 +173,47 @@ class TicketController extends Controller
     {
         $ticketCode = $request->input('code');
 
-        // Kiểm tra mã vé có tồn tại không
         $ticket = Ticket::where('code', $ticketCode)->first();
 
         if (!$ticket) {
             return response()->json([
                 'success' => false,
                 'message' => 'Mã vé không hợp lệ.',
-                'options' => true
             ]);
         }
 
-        if (now()->greaterThan($ticket->expiry)) {
+        $now = Carbon::now();
+        if ($now > $ticket->expiry) {
             return response()->json([
                 'success' => false,
                 'message' => 'Vé này đã hết hạn.',
-                'options' => true
             ]);
         }
 
         switch ($ticket->status) {
             case 'Chưa suất vé':
-//                $ticket->status = 'Đã suất vé';
-//                $ticket->save();
                 return response()->json([
                     'success' => true,
                     'message' => 'QR code đã được xử lý thành công!',
                     'redirect_url' => route('admin.tickets.show', $ticket)
                 ]);
 
-                case 'Đã suất vé':
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Vé này đã được suất rồi.',
-                        'options' => true
-                    ]);
+            case 'Đã suất vé':
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Vé này đã được suất rồi.',
+                    'redirect_url' => route('admin.tickets.show', $ticket)
+                ]);
 
-                /*case 'Đã hết hạn':
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Vé này đã hết hạn.',
-                        'options' => true
-                    ]);*/
-
-                default:
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Vé không hợp lệ.',
-                        'options' => true
-                    ]);
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vé không hợp lệ.',
+                ]);
         }
 
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -249,7 +239,7 @@ class TicketController extends Controller
         $totalPriceSeat = $ticket->ticketSeats->sum('price');
         $totalComboPrice = $ticket->ticketCombos->sum('price');
         $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);
-        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket','oneTicket', 'totalPriceSeat','barcode','totalComboPrice'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('ticket', 'oneTicket', 'totalPriceSeat', 'barcode', 'totalComboPrice'));
     }
 
     /**
