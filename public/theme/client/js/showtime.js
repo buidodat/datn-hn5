@@ -44,7 +44,7 @@ function updateModalContent(data) {
     let dateShowtimes = '<div class="listMovieScrening-date">';
     data.dates.forEach((date, index) => {
         dateShowtimes += `
-            <div class="movieScrening-date-item ${index === 0 ? 'active' : ''}" data-day="${date.day_id}">
+            <div class=" xanh-fpt  movieScrening-date-item ${index === 0 ? 'active' : ''}" data-day="${date.day_id}">
                 ${date.date_label}
             </div>`;
     });
@@ -120,7 +120,7 @@ function updateModalContent(data) {
     modalBody.innerHTML += showtimesHTML;
 
     // Nếu không có suất chiếu nào
-    
+
 
     // Gắn sự kiện cho việc chọn ngày
     const dateItems = document.querySelectorAll('.movieScrening-date-item');

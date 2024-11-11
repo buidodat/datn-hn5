@@ -10,6 +10,7 @@
     font-size: 23px;
     font-weight: bold;
     text-transform: uppercase;
+
 }
 
 .modalMovieScrening-content {
@@ -115,15 +116,16 @@
     cursor: pointer;
     font-size: 18px;
     font-weight: normal;
-    color: #666;
+    color: #23316e;
     padding: 10px 8px;
     margin: 5px 20px;
+    font-weight: 600;
 
 
 }
 
 .listMovieScrening-date div.active {
-    color: #000;
+    color: #ff7307;
     font-weight: bold;
     border-bottom: 3px solid #ff7307;
 }
@@ -227,6 +229,8 @@
 }
 .version-movie{
     margin: 20px 0 ;
+    font-weight: 600;
+    color: #23316e;
 }
 
 .list-showtimes {
@@ -235,20 +239,21 @@
     gap: 10px;
 }
 
-.showtime-item-start-time {
 
-    width: 102px;
+.showtime-item-start-time {
+    padding: 10px 0px;
     text-align: center;
-    padding: 8px 18px;
-    border: 1px solid #ccc;
-    font-size: 1.1em;
-    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    background-color: #f1f1f1;
+    position: relative;
+    font-weight: 600;
 }
 
 .showtime-item-start-time:hover {
-    background-color: #f0f0f0;
+    color: #ff7307;
 }
 
 .showtime-room-version {
