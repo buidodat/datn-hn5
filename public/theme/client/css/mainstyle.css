@@ -1579,6 +1579,9 @@ ul.dropdown {
 }
 .movie-name-history{
     margin: 10px auto;
+
+}
+.movie-name-history a{
     color: #434f89;
     font-weight: 600;
 }

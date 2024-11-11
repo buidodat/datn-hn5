@@ -56,7 +56,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('admin.statistical.ticketsRevenue') }}" class="nav-link menu-link"
                                     data-key="t-horizontal">
-                                    
+
                                     <span data-key="t-dashboards">Theo Hóa đơn</span>
                                 </a>
                             </li>
@@ -139,6 +139,11 @@
                                             <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                                     </li>
                                 @endcan
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
+                                        <span data-key="t-layouts">Thẻ thành viên</span></a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -200,7 +205,7 @@
                                     </li>
                                 @endcan
 
-                                @canany(['Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
+                                {{-- @canany(['Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -208,7 +213,7 @@
                                             <span data-key="t-dashboards">Đặt vé</span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                             </ul>
                         </div>
                     </li>
