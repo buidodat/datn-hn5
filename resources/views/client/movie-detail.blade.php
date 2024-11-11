@@ -75,8 +75,20 @@
                                                     ->exists();
                                             @endphp
 
-                                            <div class="buttons">
+                                            {{-- <div class="buttons">
                                                 <button class="watch-trailer" id='openModalBtn-trailer'>Xem
+                                                    Trailer
+                                                </button>
+                                                @if ($hasShowtimeInNextWeek)
+                                                    <button class="buy-ticket"
+                                                        onclick="openModalMovieScrening({{ $movie->id }})">Mua Vé Ngay
+                                                    </button>
+                                                @endif
+                                            </div> --}}
+                                            <div class="buttons">
+                                                <button  class="watch-trailer open-trailer-btn"
+                                                data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                data-movie-name="{{ $movie->name }}">Xem
                                                     Trailer
                                                 </button>
                                                 @if ($hasShowtimeInNextWeek)
@@ -261,21 +273,13 @@
             </div>
         </div>
     </div>
-    <div id="trailerModal-trailer" class="modal-trailer">
-        <div class="modal-content-trailer">
-            <span class="close-trailer">&times;</span>
-            <h2>TRAILER - {{ $movie->name }}</h2>
-            <hr>
-            <div class="video-container-trailer">
-                <iframe src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video"
-                    allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
 
 
 
-    @include('client.modal-movie-screning')
+
+    @include('client.modals.movie-trailler')
+
+    @include('client.modals.movie-screning')
     <!-- st slider sidebar wrapper End -->
 @endsection
 
