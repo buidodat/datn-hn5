@@ -42,11 +42,11 @@
                                             <p class="text-img bold">Mã quét</p>
 
                                             <p><b>Ngày mua hàng:</b>
-                                                {{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y H:i') }}
+                                                {{ $ticket->created_at->format('d/m/Y H:i') }}
                                             </p> <br>
                                             {{-- {!! $barcode !!} --}}
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="col-md-6">
                                         {{-- ảnh mã qr --}}
                                         {{-- <img width="150px" src="{{ asset('theme/client/images/img-qr.png') }}"
@@ -83,7 +83,7 @@
                                             <b> Thông tin giao dịch</b>
                                         </div>
                                         {{-- <div>
-                                  
+
                                             <button onclick="window.print()">In hóa đơn</button>
                                         </div> --}}
                                     </div>
@@ -124,11 +124,11 @@
                                                             <b> {{ $ticket->cinema->name }}
                                                             </b> <br>
                                                             <p> {{ $ticket->room->name }}</p>
-                                                            <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->date)->format('d/m/Y') }}
+                                                            <p> {{ Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
                                                             </p>
-                                                            <p> {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->start_time)->format('H:i') }}
+                                                            <p> {{ Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
                                                                 -
-                                                                {{ \Carbon\Carbon::parse($ticketSeats->first()->showtime->end_time)->format('H:i') }}
+                                                                {{ Carbon\Carbon::parse($ticket->showtime->end_time)->format('H:i') }}
                                                             </p>
                                                         </td>
 
@@ -204,12 +204,10 @@
                                                     <tr>
                                                         <th colspan="5" class="total-detail xanh-fpt" align="right">
 
-                                                            Voucher: -
-                                                            @if ($ticket->voucher_discount != '')
-                                                                {{ number_format($ticket->voucher_discount, 0, ',', '.') }}đ
+
+                                                            @if ($ticket->voucher_discount)
+                                                            Voucher: - {{ number_format($ticket->voucher_discount, 0, ',', '.') }}đ
                                                                 <br>
-                                                            @else
-                                                                0đ <br>
                                                             @endif
 
                                                             Tổng
