@@ -428,6 +428,11 @@ class PaymentController extends Controller
             broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'))->toOthers();
         }
 
+        if($paymentData['voucher_code'] != null){
+            $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+            $voucher->increment('quantity');
+        }
+
         // xóa session
         $timeKey = 'timeData.' . $paymentData['showtime_id'];
 
