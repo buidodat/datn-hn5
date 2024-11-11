@@ -34,47 +34,38 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-                <li class="nav-item">
-                    <a class="nav-link menu-link collapsed" href="#chart" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="chart">
-                        <i class="ri-bar-chart-grouped-fill"></i>
-                        <span data-key="t-landing">Thống Kê</span>
-                    </a>
-                    <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            {{-- Thống kê --}}
-                            <li class="nav-item">
-                                <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
-                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
-                                    <span data-key="t-dashboards">Dashboard</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    {{-- <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.statistical.ticketsRevenue') }}" class="nav-link menu-link"
-                                    data-key="t-horizontal">
-                                    
-                                    <span data-key="t-dashboards">Theo Hóa đơn</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div> --}}
-                    <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.statistical.revenue') }}" class="nav-link menu-link"
-                                    data-key="t-horizontal">
-                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
-                                    <span data-key="t-dashboards">Doanh Thu</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
+                    {{-- Dashboard --}}
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
+                            <i class="ri-dashboard-2-line"></i>
+                            <span data-key="t-dashboards">Dashboard</span>
+                        </a>
+                    </li>
+                @endif
 
-                </li>
+                @canany(['Danh sách thống kê'])
+                    <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="#chart" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="chart">
+                            <i class="ri-bar-chart-grouped-fill"></i>
+                            <span data-key="t-landing">Thống Kê</span>
+                        </a>
+
+
+                        <div class="menu-dropdown collapse" id="chart" style="">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.statistical.revenue') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal">
+                                        {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                        <span data-key="t-dashboards">Doanh Thu</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
 
                 {{-- Menu mới --}}
                 @canany([
@@ -85,12 +76,12 @@
                     'Danh sách rạp',
                     'Thêm rạp',
                     'Sửa rạp',
-                    'Xóa rạp',
+
                     'Danh sách phòng chiếu',
                     'Thêm phòng chiếu',
                     'Sửa phòng chiếu',
-                    'Xóa
-                    phòng chiếu',
+                    'Xóa phòng chiếu',
+                    'Xem chi tiết phòng chiếu',
                     'Danh sách mẫu sơ đồ ghế',
                     'Thêm mẫu sơ đồ ghế',
                     'Sửa mẫu sơ đồ ghế',
@@ -111,18 +102,18 @@
                                                 data-key="t-layouts">Quản lý chi nhánh</span></a>
                                     </li>
                                 @endcan
-                                @canany(['Danh sách rạp', 'Thêm rạp', 'Sửa rạp', 'Xóa rạp'])
+                                @canany(['Danh sách rạp', 'Thêm rạp', 'Sửa rạp'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.cinemas.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"> <i class=" ri-store-3-fill"></i> <span
                                                 data-key="t-layouts">Quản lý Rạp</span></a>
                                     </li>
                                 @endcan
-                                @canany(['Danh sách phòng chiếu', 'Thêm phòng chiếu', 'Sửa phòng chiếu', 'Xóa phòng chiếu'])
+                                @canany(['Danh sách phòng chiếu', 'Thêm phòng chiếu', 'Sửa phòng chiếu', 'Xóa phòng chiếu',
+                                    'Xem chi tiết phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span
-                                                data-key="t-layouts">Quản
+                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
@@ -149,15 +140,15 @@
                     'Danh sách phim',
                     'Thêm phim',
                     'Sửa phim',
-                    'Xóa phim',
+                    'Xem chi tiết phim',
                     'Danh sách suất chiếu',
-                    'Thêm suất chiếu',
+                    'Thêm
+                    suất chiếu',
                     'Sửa suất chiếu',
                     'Xóa suất chiếu',
+                    'Xem chi tiết suất chiếu',
                     'Danh sách hóa đơn',
-                    'Thêm hóa đơn',
-                    'Sửa hóa đơn',
-                    'Xóa
+                    'Quét
                     hóa đơn',
                     'Danh sách đặt vé',
                     'Thêm đặt vé',
@@ -172,7 +163,7 @@
                         <div class="menu-dropdown collapse" id="manageMovies" style="">
                             <ul class="nav nav-sm flex-column">
 
-                                @canany(['Danh sách phim', 'Thêm phim', 'Sửa phim', 'Xóa phim'])
+                                @canany(['Danh sách phim', 'Thêm phim', 'Sửa phim', 'Xem chi tiết phim'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.movies.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="mdi mdi-movie-open-outline"></i> <span
@@ -181,7 +172,14 @@
                                     </li>
                                 @endcan
 
-                                @canany(['Danh sách suất chiếu', 'Thêm suất chiếu', 'Sửa suất chiếu', 'Xóa suất chiếu'])
+                                @canany([
+                                    'Danh sách suất chiếu',
+                                    'Thêm suất chiếu',
+                                    'Sửa suất chiếu',
+                                    'Xóa suất chiếu',
+                                    'Xem
+                                    chi tiết suất chiếu',
+                                    ])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.showtimes.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class=" ri-slideshow-3-fill"></i> <span
@@ -191,7 +189,7 @@
                                     </li>
                                 @endcan
 
-                                @canany(['Danh sách hóa đơn', 'Thêm hóa đơn', 'Sửa hóa đơn', 'Xóa hóa đơn'])
+                                @canany(['Danh sách hóa đơn', 'Quét hóa đơn'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -234,10 +232,6 @@
                     'Thêm thanh toán',
                     'Sửa thanh toán',
                     'Xóa thanh toán',
-                    'Danh sách giá',
-                    'Thêm giá',
-                    'Sửa giá',
-                    'Xóa giá',
                     ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#service" data-bs-toggle="collapse" role="button"
@@ -285,7 +279,8 @@
                                     </li>
                                 @endcan
 
-                                @canany(['Danh sách giá', 'Thêm giá', 'Sửa giá', 'Xóa giá'])
+                                @canany(['Danh sách giá', 'Sửa giá'])
+
                                     {{-- Giá vé --}}
                                     <li class="nav-item">
                                         <a class="nav-link menu-link" href="{{ route('admin.ticket-price') }}">
@@ -333,41 +328,16 @@
                 @endcanany
 
 
-
-
-                @canany([
-                    'Danh sách liên hệ',
-                    'Thêm liên hệ',
-                    'Sửa liên hệ',
-                    'Xóa liên hệ',
-                    'Danh sách tài khoản',
-                    'Thêm tài khoản',
-                    'Sửa tài khoản',
-                    'Xóa tài khoản',
-                    'Danh sách thống kê',
-                    'Thêm thống kê',
-                    'Sửa thống kê',
-                    'Xóa
-                    thống kê',
-                    ])
+                @canany(['Danh sách liên hệ', 'Sửa liên hệ', 'Danh sách tài khoản', 'Thêm tài khoản', 'Sửa tài khoản',
+                    'Xóa tài khoản'])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#user-report" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="user-report">
                             <i class="ri-account-circle-line"></i>
-                            <span data-key="t-landing">Tài khoản và Báo cáo</span>
+                            <span data-key="t-landing">Tài khoản và Liên hệ</span>
                         </a>
                         <div class="menu-dropdown collapse" id="user-report" style="">
                             <ul class="nav nav-sm flex-column">
-
-
-                                @canany(['Danh sách liên hệ', 'Thêm liên hệ', 'Sửa liên hệ', 'Xóa liên hệ'])
-                                    {{-- Quản lí Liên hệ --}}
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.contacts.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
-                                                data-key="t-layouts">Liên hệ</span></a>
-                                    </li>
-                                @endcan
 
                                 @canany(['Danh sách tài khoản', 'Thêm tài khoản', 'Sửa tài khoản', 'Xóa tài khoản'])
                                     <li class="nav-item">
@@ -377,42 +347,21 @@
                                                 khoản</span></a>
                                     </li>
                                 @endcan
-
-
-                                @canany(['Danh sách thống kê', 'Thêm thống kê', 'Sửa thống kê', 'Xóa thống kê'])
-                                    {{-- Thống kê --}}
+                                @canany(['Danh sách liên hệ', 'Sửa liên hệ'])
+                                    {{-- Quản lí Liên hệ --}}
                                     <li class="nav-item">
-                                        <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
-                                            <i class="ri-dashboard-2-line"></i>
-                                            <span data-key="t-dashboards">Thống Kê</span>
-                                        </a>
+                                        <a href="{{ route('admin.contacts.index') }}" class="nav-link menu-link"
+                                            data-key="t-horizontal"><i class="ri-contacts-book-2-line"></i> <span
+                                                data-key="t-layouts">Liên hệ</span></a>
                                     </li>
                                 @endcan
+
                             </ul>
                         </div>
                     </li>
                 @endcanany
 
-                {{-- @canany(['']) --}}
-                    <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="siteSetting">
-                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
-                        </a>
-                        <div class="menu-dropdown collapse" id="siteSetting" style="">
-                            <ul class="nav nav-sm flex-column">
 
-                                {{-- @canany(['']) --}}
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
-                                                data-key="t-layouts">Quản lý</span></a>
-                                    </li>
-                                {{-- @endcan --}}
-                            </ul>
-                        </div>
-                    </li>
-                {{-- @endcanany --}}
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
@@ -424,13 +373,6 @@
                         <div class="menu-dropdown collapse" id="permissions" style="">
                             <ul class="nav nav-sm flex-column">
 
-
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.permissions.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"><i class="las la-users"></i> <span
-                                            data-key="t-layouts">Danh sách quyền</span></a>
-                                </li>
-
                                 <li class="nav-item">
                                     <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
@@ -439,17 +381,38 @@
                                             trò</span></a>
                                 </li>
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>
                     </li>
                 @endif
+
+                @canany(['Cấu hình website'])
+                    <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
+                            role="button" aria-expanded="false" aria-controls="siteSetting">
+                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
+                        </a>
+                        <div class="menu-dropdown collapse" id="siteSetting" style="">
+                            <ul class="nav nav-sm flex-column">
+
+                                {{-- @canany(['']) --}}
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
+                                            data-key="t-layouts">Quản lý</span></a>
+                                </li>
+                                {{-- @endcan --}}
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
 
 
             </ul>

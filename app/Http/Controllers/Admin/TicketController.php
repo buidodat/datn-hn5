@@ -30,6 +30,8 @@ class TicketController extends Controller
         $this->middleware('can:Thêm hóa đơn')->only(['create', 'store']);
         $this->middleware('can:Sửa hóa đơn')->only(['edit', 'update']);
         $this->middleware('can:Xóa hóa đơn')->only('destroy');
+        $this->middleware('can:Quét hóa đơn')->only('scan', 'processScan');
+        $this->middleware('can:Xem chi tiết hóa đơn')->only('show');
     }
 
     public function index(Request $request)

@@ -11,6 +11,12 @@ use App\Http\Requests\Admin\UpdateSiteSettingsRequest;
 
 class SiteSettingController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('can:Cấu hình website')->only('index', 'update', 'resetToDefault');
+    }
     // 1. Quản lý Trang chủ
     public function index()
     {
@@ -76,7 +82,7 @@ class SiteSettingController extends Controller
     }
 
     // 2. Đặt lại cài đặt về giá trị mặc định
-    
+
     public function resetToDefault()
     {
         $settings = SiteSetting::first();

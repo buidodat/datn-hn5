@@ -13,6 +13,10 @@ use Carbon\Carbon;
 
 class StatisticalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Danh sách thống kê')->only('revenue');
+    }
     public function revenue()
     {
         $branches = Branch::all();

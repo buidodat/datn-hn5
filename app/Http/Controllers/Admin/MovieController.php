@@ -26,6 +26,7 @@ class MovieController extends Controller
         $this->middleware('can:Thêm phim')->only(['create', 'store']);
         $this->middleware('can:Sửa phim')->only(['edit', 'update']);
         $this->middleware('can:Xóa phim')->only('destroy');
+        $this->middleware('can:Xem chi tiết phim')->only('show');
     }
 
     public function index()
