@@ -69,12 +69,10 @@
                                     <td>
                                         @if ($item->permissions->isNotEmpty())
                                             @foreach ($item->permissions->take(3) as $permission)
-                                                
                                                 <span
                                                     class="badge bg-success-subtle text-success text-uppercase">{{ $permission->name }}</span>
                                             @endforeach
                                             @if ($item->permissions->count() > 3)
-                                                
                                                 <span
                                                     class="badge bg-info-subtle text-info text-uppercase">+{{ $item->permissions->count() - 3 }}
                                                     quyền khác</span>
@@ -85,23 +83,25 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="d-flex">
+                                        @if ($item->name != 'System Admin')
+                                            <div class="d-flex">
 
-                                            <a class="mx-1" href="{{ route('admin.roles.edit', $item) }}">
-                                                <button title="" class="btn btn-warning btn-sm " type="button"><i
-                                                        class="fas fa-edit"></i></button>
-                                            </a>
-                                            {{-- Xóa --}}
+                                                <a class="mx-1" href="{{ route('admin.roles.edit', $item) }}">
+                                                    <button title="" class="btn btn-warning btn-sm " type="button"><i
+                                                            class="fas fa-edit"></i></button>
+                                                </a>
+                                                {{-- Xóa --}}
 
-                                            <form action="{{ route('admin.roles.destroy', $item) }}" method="post"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                        class="ri-delete-bin-7-fill"></i></button>
-                                            </form>
-                                        </div>
+                                                <form action="{{ route('admin.roles.destroy', $item) }}" method="post"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                            class="ri-delete-bin-7-fill"></i></button>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

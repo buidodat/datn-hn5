@@ -99,7 +99,7 @@
             @endif
             @else
                 {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="introduction_image" class="introduce-logo">
+                <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="introduction_image" class="introduce-logo">
             @endif
             <p>{!! $settings->introduction !!}</p>
 

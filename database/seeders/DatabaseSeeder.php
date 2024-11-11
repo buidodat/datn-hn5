@@ -872,33 +872,6 @@ class DatabaseSeeder extends Seeder
         }
 
 
-
-        // $permissions = [
-        //     ['name' => 'Danh sách chi nhánh', 'slug' => 'branch.list', 'guard_name' => 'web'],
-        //     ['name' => 'Thêm chi nhánh', 'slug' => 'branch.add', 'guard_name' => 'web'],
-        //     ['name' => 'Sửa chi nhánh', 'slug' => 'branch.edit', 'guard_name' => 'web'],
-        //     ['name' => 'Xóa chi nhánh', 'slug' => 'branch.delete', 'guard_name' => 'web'],
-
-        //     ['name' => 'Danh sách rạp', 'slug' => 'cinema.list', 'guard_name' => 'web'],
-        //     ['name' => 'Thêm rạp', 'slug' => 'cinema.add', 'guard_name' => 'web'],
-        //     ['name' => 'Sửa rạp', 'slug' => 'cinema.edit', 'guard_name' => 'web'],
-        //     ['name' => 'Xóa rạp', 'slug' => 'cinema.delete', 'guard_name' => 'web'],
-
-        //     ['name' => 'Danh sách phòng chiếu', 'slug' => 'room.list', 'guard_name' => 'web'],
-        //     ['name' => 'Thêm phòng chiếu', 'slug' => 'room.add', 'guard_name' => 'web'],
-        //     ['name' => 'Sửa phòng chiếu', 'slug' => 'room.edit', 'guard_name' => 'web'],
-        //     ['name' => 'Xóa phòng chiếu', 'slug' => 'room.delete', 'guard_name' => 'web'],
-
-        //     ['name' => 'Danh sách phim', 'slug' => 'movie.list', 'guard_name' => 'web'],
-        //     ['name' => 'Thêm phim', 'slug' => 'movie.add', 'guard_name' => 'web'],
-        //     ['name' => 'Sửa phim', 'slug' => 'movie.edit', 'guard_name' => 'web'],
-        //     ['name' => 'Xóa phim', 'slug' => 'movie.delete', 'guard_name' => 'web'],
-
-        //     ['name' => 'Danh sách suất chiếu', 'slug' => 'showtime.list', 'guard_name' => 'web'],
-        //     ['name' => 'Thêm suất chiếu', 'slug' => 'showtime.add', 'guard_name' => 'web'],
-        //     ['name' => 'Sửa suất chiếu', 'slug' => 'showtime.edit', 'guard_name' => 'web'],
-        //     ['name' => 'Xóa suất chiếu', 'slug' => 'showtime.delete', 'guard_name' => 'web'],
-        // ];
         $permissions = [
             'Danh sách chi nhánh',
             'Thêm chi nhánh',
@@ -907,11 +880,12 @@ class DatabaseSeeder extends Seeder
             'Danh sách rạp',
             'Thêm rạp',
             'Sửa rạp',
-            'Xóa rạp',
+            // 'Xóa rạp',
             'Danh sách phòng chiếu',
             'Thêm phòng chiếu',
             'Sửa phòng chiếu',
             'Xóa phòng chiếu',
+            'Xem chi tiết phòng chiếu',
             'Danh sách mẫu sơ đồ ghế',
             'Thêm mẫu sơ đồ ghế',
             'Sửa mẫu sơ đồ ghế',
@@ -919,19 +893,23 @@ class DatabaseSeeder extends Seeder
             'Danh sách phim',
             'Thêm phim',
             'Sửa phim',
-            'Xóa phim',
+            // 'Xóa phim',
+            'Xem chi tiết phim',
             'Danh sách suất chiếu',
             'Thêm suất chiếu',
             'Sửa suất chiếu',
             'Xóa suất chiếu',
+            'Xem chi tiết suất chiếu',
             'Danh sách hóa đơn',
-            'Thêm hóa đơn',
-            'Sửa hóa đơn',
-            'Xóa hóa đơn',
-            'Danh sách đặt vé',
-            'Thêm đặt vé',
-            'Sửa đặt vé',
-            'Xóa đặt vé',
+            'Quét hóa đơn',
+            // 'Thêm hóa đơn',
+            // 'Sửa hóa đơn',
+            // 'Xóa hóa đơn',
+            'Xem chi tiết hóa đơn',
+            // 'Danh sách đặt vé',
+            // 'Thêm đặt vé',
+            // 'Sửa đặt vé',
+            // 'Xóa đặt vé',
             'Danh sách đồ ăn',
             'Thêm đồ ăn',
             'Sửa đồ ăn',
@@ -949,9 +927,9 @@ class DatabaseSeeder extends Seeder
             'Sửa thanh toán',
             'Xóa thanh toán',
             'Danh sách giá',
-            'Thêm giá',
+            // 'Thêm giá',
             'Sửa giá',
-            'Xóa giá',
+            // 'Xóa giá',
             'Danh sách bài viết',
             'Thêm bài viết',
             'Sửa bài viết',
@@ -961,14 +939,16 @@ class DatabaseSeeder extends Seeder
             'Sửa slideshows',
             'Xóa slideshows',
             'Danh sách liên hệ',
-            'Thêm liên hệ',
+            // 'Thêm liên hệ',
             'Sửa liên hệ',
-            'Xóa liên hệ',
+            // 'Xóa liên hệ',
             'Danh sách tài khoản',
             'Thêm tài khoản',
             'Sửa tài khoản',
             'Xóa tài khoản',
+            'Cấu hình website',
             'Danh sách thống kê',
+
             // 'Thêm thống kê',
             // 'Sửa thống kê',
             // 'Xóa thống kê',
@@ -987,37 +967,90 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($roles as $roleName) {
-            Role::create(['name' => $roleName, 'guard_name' => 'web']);
+            Role::create(['name' => $roleName]);
         }
 
         // Gán tất cả quyền cho System Admin
-        $adminRole = Role::findByName('System Admin', 'web');
-        $adminRole->givePermissionTo(Permission::where('guard_name', 'web')->get()); // Gán tất cả quyền cho System Admin
+        $adminRole = Role::findByName('System Admin');
+        $adminRole->syncPermissions(Permission::all());
 
 
         $user = User::find(1);
-        if ($user) {
-            $user->assignRole('System Admin');
-        }
+        $user->assignRole('System Admin');
 
-        $managerRole = Role::findByName('Quản lý cơ sở', 'web');
-        $managerRole->givePermissionTo(['Danh sách chi nhánh', 'Thêm chi nhánh', 'Sửa chi nhánh', 'Xóa chi nhánh', 'Danh sách rạp', 'Thêm rạp']);
+
+        $managerRole = Role::findByName('Quản lý cơ sở');
+        $managerRole->givePermissionTo([
+            'Danh sách phòng chiếu',
+            'Thêm phòng chiếu',
+            'Sửa phòng chiếu',
+            'Xóa phòng chiếu',
+            'Xem chi tiết phòng chiếu',
+
+            'Danh sách mẫu sơ đồ ghế',
+            'Thêm mẫu sơ đồ ghế',
+            'Sửa mẫu sơ đồ ghế',
+            'Xóa mẫu sơ đồ ghế',
+
+            'Danh sách phim',
+            'Xem chi tiết phim',
+
+            'Danh sách suất chiếu',
+            'Thêm suất chiếu',
+            'Sửa suất chiếu',
+            'Xóa suất chiếu',
+            'Xem chi tiết suất chiếu',
+
+            'Danh sách hóa đơn',
+            'Quét hóa đơn',
+            'Xem chi tiết hóa đơn',
+
+            'Danh sách đồ ăn',
+            'Danh sách combo',
+            'Danh sách vouchers',
+
+            'Danh sách thanh toán',
+            'Danh sách bài viết',
+            'Danh sách slideshows',
+            'Danh sách liên hệ',
+            'Sửa liên hệ',
+
+            'Danh sách tài khoản',
+            // 'Thêm tài khoản',
+            // 'Sửa tài khoản',
+            // 'Xóa tài khoản',
+            // 'Cấu hình website',
+            'Danh sách thống kê',
+        ]);
+
+        $managerRole = Role::findByName('Nhân viên');
+        $managerRole->givePermissionTo([
+            'Danh sách hóa đơn',
+            'Quét hóa đơn',
+            'Xem chi tiết hóa đơn',
+        ]);
 
 
         $user = User::find(2);
-        if ($user) {
-            $user->assignRole('Quản lý cơ sở');
-        }
-
+        $user->assignRole('Quản lý cơ sở');
+        $user = User::find(3);
+        $user->assignRole('Quản lý cơ sở');
+        $user = User::find(4);
+        $user->assignRole('Quản lý cơ sở');
 
         $user = User::find(6);
-        if ($user) {
-            $user->assignRole('Nhân viên');
-        }
+        $user->assignRole('Quản lý cơ sở');
+        $user = User::find(7);
+        $user->assignRole('Quản lý cơ sở');
+
+
+        $user = User::find(5);
+        $user->assignRole('Nhân viên');
+
 
         // Cấu hình website
         SiteSetting::create([
-            'website_logo' => 'theme/client/images/header/logo7.svg',
+            'website_logo' => 'theme/client/images/header/P.svg',
             'site_name' => 'Poly Cinemas',
             'brand_name' => 'Công Ty Phim Việt Nam Poly Cinemas',
             'slogan' => 'Hãy đặt vé Xem phim ngay!',
@@ -1029,7 +1062,7 @@ class DatabaseSeeder extends Seeder
             'facebook_link' => 'https://facebook.com/',
             'youtube_link' => 'https://youtube.com/',
             'instagram_link' => 'https://instagram.com/',
-            'privacy_policy_image' => 'theme/client/images/header/logo7.svg',
+            'privacy_policy_image' => 'theme/client/images/header/P.svg',
             'privacy_policy' => '
                 <b>Chào mừng Quý khách hàng đến với Hệ thống Bán Vé Online của chuỗi Rạp Chiếu Phim POLY CINEMAS!</b>
                 <p>Xin cảm ơn và chúc Quý khách hàng có những giây phút xem phim tuyệt vời tại POLY CINEMAS!</p>
@@ -1090,9 +1123,11 @@ class DatabaseSeeder extends Seeder
                         viên để thông báo và xác nhận.</li>
                     <li></li>
                 </ul>',
-            'terms_of_service_image'=> 'theme/client/images/header/logo7.svg',
+
+            'terms_of_service_image'=> 'theme/client/images/header/P.svg',
+
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
-            'introduction_image' => 'theme/client/images/header/logo7.svg',
+            'introduction_image' => 'theme/client/images/header/P.svg',
             'introduction' => '
             <p>F5 Poly Media được thành lập bởi doanh nhân F5 Poly Cinemas (F5 Poly Beta) vào cuối năm 2014 với sứ mệnh "Mang trải nghiệm điện ảnh với mức giá hợp lý cho mọi người dân Việt Nam".</p>
             <p>Với thiết kế độc đáo, trẻ trung, F5 Poly Cinemas mang đến trải nghiệm điện ảnh chất lượng với chi phí đầu tư và vận hành tối ưu - nhờ việc chọn địa điểm phù hợp, tận dụng tối đa diện tích, bố trí khoa học, nhằm duy trì giá vé xem phim trung bình chỉ từ 40,000/1 vé - phù hợp với đại đa số người dân Việt Nam.</p>
@@ -1103,7 +1138,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
     }
 
     private function generateSeatStructure()

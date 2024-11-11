@@ -27,6 +27,7 @@ class RoomController extends Controller
         $this->middleware('can:Thêm phòng chiếu')->only(['create', 'store']);
         $this->middleware('can:Sửa phòng chiếu')->only(['edit', 'update']);
         $this->middleware('can:Xóa phòng chiếu')->only('destroy');
+        $this->middleware('can:Xem chi tiết phòng chiếu')->only('show');
     }
     public function index()
     {

@@ -34,13 +34,13 @@
                                 @if($settings->website_logo)
                                 {{-- Kiểm tra xem có phải là ảnh mặc định hay không --}}
                                 @if(Str::startsWith($settings->website_logo, 'theme/client/images/'))
-                                    <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                                    <img src="{{ asset($settings->website_logo) }}" alt="Website Logo" style="max-width: 150px;">
                                 @else
-                                    <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="max-width: 100px;">
+                                    <img src="{{ Storage::url($settings->website_logo) }}" alt="Website Logo" style="max-width: 150px;">
                                 @endif
                                 @else
                                     {{-- Hiển thị ảnh mặc định nếu không có ảnh nào --}}
-                                    <img src="{{ asset('theme/client/images/header/logo7.svg') }}" alt="Logo Mặc định" style="max-width: 100px;">
+                                    <img src="{{ asset('theme/client/images/header/P.svg') }}" alt="Logo Mặc định" style="max-width: 150px;">
                                 @endif
                             </a>
                         </li>
