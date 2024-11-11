@@ -661,7 +661,7 @@
     <!-- prs patner slider Start -->
 
 
-    @include('client.modal-movie-screning')
+    @include('client.modals.movie-screning')
 @endsection
 
 

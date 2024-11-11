@@ -4,6 +4,7 @@ function openModalMovieScrening(movieId) {
     modalMovieScrening.style.display = "block"; // Mở modal
     // Lưu movie_id vào modal
     modalMovieScrening.setAttribute('data-movie-id', movieId);
+    document.body.classList.add("no-scroll");
 
     // Gửi AJAX để lấy dữ liệu xuất chiếu của phim
     const routeApi = `${APP_URL}/api/movie/${movieId}/showtimes`;
@@ -26,6 +27,7 @@ const spanClose = document.getElementsByClassName("closeModalMovieScrening")[0];
 spanClose.onclick = function () {
     const modalMovieScrening = document.getElementById("modalMovieScrening");
     modalMovieScrening.style.display = "none"; // Đóng modal
+    document.body.classList.remove("no-scroll")
 }
 
 // Đóng modal khi nhấn bên ngoài modal
@@ -33,6 +35,7 @@ window.onclick = function (event) {
     const modalMovieScrening = document.getElementById("modalMovieScrening");
     if (event.target == modalMovieScrening) {
         modalMovieScrening.style.display = "none"; // Đóng modal
+        document.body.classList.remove("no-scroll")
     }
 }
 
@@ -44,43 +47,13 @@ function updateModalContent(data) {
     let dateShowtimes = '<div class="listMovieScrening-date">';
     data.dates.forEach((date, index) => {
         dateShowtimes += `
-            <div class=" xanh-fpt  movieScrening-date-item ${index === 0 ? 'active' : ''}" data-day="${date.day_id}">
+            <div class="movieScrening-date-item ${index === 0 ? 'active' : ''}" data-day="${date.day_id}">
                 ${date.date_label}
             </div>`;
     });
     dateShowtimes += '</div>';
     modalBody.innerHTML += dateShowtimes;
 
-    // Tạo HTML cho nội dung suất chiếu
-    // let showtimesHTML = '';
-    // let hasShowtimes = false; // Biến kiểm tra xem có suất chiếu không
-
-    // data.dates.forEach((date, index) => {
-    //     showtimesHTML += `
-    //         <div class="movieScrening-list-showtime-day" id="${date.day_id}" style="display: ${index === 0 ? 'block' : 'none'};">`;
-
-    //     date.showtimes.forEach((showtimeFormats) => {
-    //         showtimesHTML += `
-    //             <div class="movieScrening-showtime-version">
-    //                 <h4 class="version-movie">2D phụ đề</h4>
-    //                 <div class="list-showtimes">`;
-    //         showtimeFormats.forEach(showtime => {
-    //             showtimesHTML += `
-    //                     <div class="showtime-item">
-    //                         <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.id}'">
-    //                             ${showtime.start_time}
-    //                         </div>
-    //                         <div class="empty-seat-showtime">150 ghế trống</div>
-    //                     </div>`;
-    //         });
-    //     });
-
-    //     showtimesHTML += `
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>`;
-    // });
 
     let showtimesHTML = ''; // Khởi tạo biến chứa HTML
 

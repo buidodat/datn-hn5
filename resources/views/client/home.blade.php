@@ -43,8 +43,8 @@
                                 <div class="row" id="movie-list1">
                                     @foreach ($moviesUpcoming as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
+                                            <div class="movie_box_wrapper">
+                                                <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
                                                         <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
@@ -55,7 +55,6 @@
                                                     @if ($imageTag)
                                                         <img class="tag-rating" src="{{ $imageTag }}" alt="">
                                                     @endif
-
                                                     @php
                                                         $url = $movie->img_thumbnail;
 
@@ -68,7 +67,14 @@
                                                     <div class='img_thumbnail_movie'>
                                                         <img src="{{ $url }}" alt="movie_img" />
                                                     </div>
-
+                                                    <div class='movie_img_trailer'>
+                                                        <div class='animation-icon open-trailer-btn'
+                                                            data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                            data-movie-name="{{ $movie->name }}">
+                                                            <img src="{{ asset('theme/client/images/index_III/icon.png') }}"
+                                                                alt="img">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
@@ -77,14 +83,9 @@
                                                         <a
                                                             href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
-                                                    <p><span class='text-bold'>Ngày khởi chiếu:</span>
-                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
-                                                    </p>
-
-
 
                                                 </div>
 
@@ -137,8 +138,8 @@
                                     {{-- @dd($moviesShowing) --}}
                                     @foreach ($moviesShowing as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
+                                            <div class="movie_box_wrapper">
+                                                <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
                                                         <img class="is_hot"
                                                             src="{{ asset('theme/client/images/hot.png') }}"
@@ -162,7 +163,14 @@
                                                     <div class='img_thumbnail_movie'>
                                                         <img src="{{ $url }}" alt="movie_img" />
                                                     </div>
-
+                                                    <div class='movie_img_trailer'>
+                                                        <div class='animation-icon open-trailer-btn'
+                                                            data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                            data-movie-name="{{ $movie->name }}">
+                                                            <img src="{{ asset('theme/client/images/index_III/icon.png') }}"
+                                                                alt="img">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
@@ -225,8 +233,8 @@
                                 <div class="row" id="movie-list3">
                                     @foreach ($moviesSpecial as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="prs_upcom_movie_box_wrapper">
-                                                <div class="prs_upcom_movie_img_box">
+                                            <div class="movie_box_wrapper">
+                                                <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
                                                         <img class="is_hot"
                                                             src="{{ asset('theme/client/images/hot.png') }}"
@@ -239,7 +247,6 @@
                                                         <img class="tag-rating" src="{{ $imageTag }}"
                                                             alt="">
                                                     @endif
-
                                                     @php
                                                         $url = $movie->img_thumbnail;
 
@@ -252,7 +259,14 @@
                                                     <div class='img_thumbnail_movie'>
                                                         <img src="{{ $url }}" alt="movie_img" />
                                                     </div>
-
+                                                    <div class='movie_img_trailer'>
+                                                        <div class='animation-icon open-trailer-btn'
+                                                            data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                            data-movie-name="{{ $movie->name }}">
+                                                            <img src="{{ asset('theme/client/images/index_III/icon.png') }}"
+                                                                alt="img">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
@@ -261,10 +275,10 @@
                                                         <a
                                                             href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}
-                                                    </p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
+
                                                 </div>
 
 
@@ -544,12 +558,13 @@
         </div> --}}
 
 
-
-    @include('client.modal-movie-screning')
+    @include('client.modals.movie-trailler')
+    @include('client.modals.movie-screning')
 @endsection
 
 @section('scripts')
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
+    <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
 @endsection
 
 @section('style-libs')
