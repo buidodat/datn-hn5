@@ -48,7 +48,7 @@
                             <div class="prs_contact_input_wrapper">
                                 <label for="user_contact" class="form-label">Họ và tên:</label>
                                 <input type="text" class="form-control" id="user_contact" name="user_contact" placeholder="Nhập họ và tên">
-                                <span class="text-danger"></span> 
+                                <span class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -76,7 +76,7 @@
                             <div class="prs_contact_input_wrapper">
                                 <label for="content" class="form-label">Nội dung:</label>
                                 <textarea class="form-control " rows="3" id="content" name="content" placeholder="Nhập nội dung"></textarea>
-                                 <span class="text-danger"></span> 
+                                 <span class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -142,7 +142,7 @@
     </style>
 @endsection
 
-@section('style-libs')
+@section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>

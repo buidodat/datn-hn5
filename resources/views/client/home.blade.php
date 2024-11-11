@@ -565,9 +565,6 @@
 @section('scripts')
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
-@endsection
-
-@section('style-libs')
     {{-- <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}"> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -662,5 +659,7 @@
                     .catch(error => console.error('Error:', error));
             })
         });
+
     </script>
 @endsection
+
