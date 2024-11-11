@@ -9,6 +9,7 @@ use App\Models\Cinema;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -25,8 +26,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('cinema')->latest('type')->get();
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users',));
+        $roles = Role::all();
+        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'roles'));
     }
 
     /**
@@ -37,8 +38,9 @@ class UserController extends Controller
         $typeAdmin = User::TYPE_ADMIN;
         $typeMember = User::TYPE_MEMBER;
         $genders = User::GENDERS;
+        $roles = Role::all();
         $cinemas = Cinema::where('is_active', '1')->first('branch_id')->get();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'cinemas']));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['typeAdmin', 'typeMember', 'genders', 'cinemas', 'roles']));
     }
 
     /**
@@ -54,7 +56,13 @@ class UserController extends Controller
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
             }
 
-            User::create($dataUser);
+            // Tạo người dùng mới
+            $user = User::create($dataUser);
+
+            // Gán vai trò cho người dùng
+            if ($request->has('role_id')) {
+                $user->assignRole($request->role_id);
+            }
 
             return redirect()
                 ->route('admin.users.index')

@@ -136,9 +136,25 @@
                 @endcanany
 
 
-                @canany(['Danh sách phim', 'Thêm phim', 'Sửa phim', 'Xem chi tiết phim', 'Danh sách suất chiếu', 'Thêm
-                    suất chiếu', 'Sửa suất chiếu', 'Xóa suất chiếu', 'Xem chi tiết suất chiếu', 'Danh sách hóa đơn', 'Quét
-                    hóa đơn', 'Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
+                @canany([
+                    'Danh sách phim',
+                    'Thêm phim',
+                    'Sửa phim',
+                    'Xem chi tiết phim',
+                    'Danh sách suất chiếu',
+                    'Thêm
+                    suất chiếu',
+                    'Sửa suất chiếu',
+                    'Xóa suất chiếu',
+                    'Xem chi tiết suất chiếu',
+                    'Danh sách hóa đơn',
+                    'Quét
+                    hóa đơn',
+                    'Danh sách đặt vé',
+                    'Thêm đặt vé',
+                    'Sửa đặt vé',
+                    'Xóa đặt vé',
+                    ])
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#manageMovies" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="manageMovies">
@@ -345,26 +361,7 @@
                     </li>
                 @endcanany
 
-                @canany(['Cấu hình website'])
-                    <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="siteSetting">
-                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
-                        </a>
-                        <div class="menu-dropdown collapse" id="siteSetting" style="">
-                            <ul class="nav nav-sm flex-column">
 
-                                {{-- @canany(['']) --}}
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
-                                            data-key="t-layouts">Quản lý</span></a>
-                                </li>
-                                {{-- @endcan --}}
-                            </ul>
-                        </div>
-                    </li>
-                @endcanany
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
@@ -395,6 +392,27 @@
                         </div>
                     </li>
                 @endif
+
+                @canany(['Cấu hình website'])
+                    <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
+                            role="button" aria-expanded="false" aria-controls="siteSetting">
+                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
+                        </a>
+                        <div class="menu-dropdown collapse" id="siteSetting" style="">
+                            <ul class="nav nav-sm flex-column">
+
+                                {{-- @canany(['']) --}}
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
+                                            data-key="t-layouts">Quản lý</span></a>
+                                </li>
+                                {{-- @endcan --}}
+                            </ul>
+                        </div>
+                    </li>
+                @endcanany
 
 
             </ul>

@@ -17,7 +17,10 @@
                             <a href="#"> Xin chào: {{ Auth::user()->name }} <i
                                     class="fa-solid fa-chevron-down"></i></a>
                             <ul class="sub-menu-account">
-                                <li><a href=""><i class="fa-regular fa-user"></i> Truy cập trang quản trị</a></li>
+                                @if (Auth::user()->type == 'admin')
+                                    <li><a href="/admin"><i class="fa-regular fa-user"></i> Truy cập trang quản trị</a>
+                                    </li>
+                                @endif
                                 <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
                                         tài khoản</a></li>
                                 <li><a href=""><i class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
