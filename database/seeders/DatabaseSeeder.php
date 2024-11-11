@@ -1123,7 +1123,9 @@ class DatabaseSeeder extends Seeder
                         viên để thông báo và xác nhận.</li>
                     <li></li>
                 </ul>',
+
             'terms_of_service_image'=> 'theme/client/images/header/P.svg',
+
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
             'introduction_image' => 'theme/client/images/header/P.svg',
             'introduction' => '

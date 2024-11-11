@@ -109,7 +109,6 @@
                                                                 </button>
                                                             </form>
                                                         </a>
-
                                                     </li>
                                                 @endforeach
                                             @endif
