@@ -202,49 +202,51 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Vai trò</label>
-                                                        <select class="js-example-basic-multiple" name="role_id[]"
-                                                            multiple="multiple">
-                                                            {{-- <option value="">Chọn vai trò</option> --}}
-                                                            @foreach ($roles as $role)
-                                                                @if ($role->name != 'System Admin')
-                                                                    <option value="{{ $role->id }}"
-                                                                        {{ $user->roles->contains($role) ? 'selected' : '' }}
-                                                                        title="">
-                                                                        {{ $role->name }}
+                                                @if ($user->type == 'admin')
+                                                    <div class="col-lg-3 col-md-3">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Vai trò</label>
+                                                            <select class="js-example-basic-multiple" name="role_id[]"
+                                                                multiple="multiple">
+                                                                {{-- <option value="">Chọn vai trò</option> --}}
+                                                                @foreach ($roles as $role)
+                                                                    @if ($role->name != 'System Admin')
+                                                                        <option value="{{ $role->id }}"
+                                                                            {{ $user->roles->contains($role) ? 'selected' : '' }}
+                                                                            title="">
+                                                                            {{ $role->name }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                            @error('gender')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3">
+
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Tại</label>
+                                                            <select name="cinema_id" id="" class="form-select">
+                                                                @foreach ($cinemas as $cinema)
+                                                                    <option value="{{ $cinema->id }}"
+                                                                        @if ($user->cinema_id == $cinema->id) selected @endif>
+                                                                        {{ $cinema->name }}
                                                                     </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                        @error('gender')
-                                                            <div class='mt-1'>
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            </div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-3">
+                                                                @endforeach
 
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Tại</label>
-                                                        <select name="cinema_id" id="" class="form-select">
-                                                            @foreach ($cinemas as $cinema)
-                                                                <option value="{{ $cinema->id }}"
-                                                                    @if ($user->cinema_id == $cinema->id) selected @endif>
-                                                                    {{ $cinema->name }}
-                                                                </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                        @error('cinema_id')
-                                                            <div class='mt-1'>
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            </div>
-                                                        @enderror
+                                                            </select>
+                                                            @error('cinema_id')
+                                                                <div class='mt-1'>
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                </div>
+                                                            @enderror
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Địa chỉ</label>

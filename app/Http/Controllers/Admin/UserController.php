@@ -25,9 +25,10 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = User::with('cinema')->latest('type')->get();
+        $admin = User::where('type', 'admin')->with('cinema')->get();
+        $users = User::where('type', 'member')->with('cinema')->get();
         $roles = Role::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('users', 'roles'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('admin', 'roles','users'));
     }
 
     /**

@@ -48,106 +48,227 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Họ và tên</th>
-                                <th>Hình ảnh</th>
-                                <th>Email</th>
-                                {{-- <th>Số điện thoại</th> --}}
-                                {{-- <th>Ngày sinh</th> --}}
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
 
-                                <th>Chức danh</th>
-                                <th>Vai trò</th>
-                                <th>Tại</th>
-                                <th>Chức năng</th>
-                            </tr>
-                        <tbody>
-                            @foreach ($users as $i => $user)
-                                <tr>
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>
-                                        @php
-                                            $url = $user->img_thumbnail;
+                        <li class="nav-item">
+                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#admin" role="tab"
+                                aria-selected="false">
+                                Quản trị viên
 
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#users" role="tab"
+                                aria-selected="false">
+                                Khách hàng
 
-                                        @endphp
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#usersLock" role="tab"
+                                aria-selected="false">
+                                Tài khoản bị khóa
 
-                                        @if (!empty($user->img_thumbnail))
-                                            <img src="{{ $url }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image "
-                                                alt="user-profile-image">
-                                        @else
-                                            {{-- <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="card-body tab-content ">
+                        {{-- Tất cả ok rồi --}}
+                        <div class="tab-pane active" id="admin" role="tabpanel">
+
+                            <table id="example"
+                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                                style="width:100%" id="tableAdmin">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Họ và tên</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Email</th>
+                                        {{-- <th>Số điện thoại</th> --}}
+                                        {{-- <th>Ngày sinh</th> --}}
+
+                                        <th>Chức danh</th>
+                                        <th>Vai trò</th>
+                                        <th>Tại</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                <tbody>
+                                    @foreach ($admin as $i => $item)
+                                        <tr>
+                                            <td>{{ $item->id }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>
+                                                @php
+                                                    $url = $item->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+
+                                                @endphp
+
+                                                @if (!empty($item->img_thumbnail))
+                                                    <img src="{{ $url }}"
+                                                        class="rounded-circle avatar-lg img-thumbnail user-profile-image "
+                                                        alt="user-profile-image">
+                                                @else
+                                                    {{-- <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
                                                 class="rounded-circle avatar-lg img-thumbnail user-profile-image"
                                                 alt="user-profile-image"> --}}
-                                                {{-- Trống --}}
-                                        @endif
+                                                    {{-- Trống --}}
+                                                @endif
 
-                                    </td>
-                                    <td>{{ $user->email }}
-                                    </td>
-                                    {{-- <td>{{ $user->phone }}</td>
+                                            </td>
+                                            <td>{{ $item->email }}
+                                            </td>
+                                            {{-- <td>{{ $item->phone }}</td>
+                                    <td>{{ Carbon\Carbon::parse($item->birthday)->format('d/m/Y') ?? 'null' }}</td> --}}
+
+                                            <td>
+                                                @if ($item->type == App\Models\User::TYPE_ADMIN)
+                                                    <span class="badge badge-gradient-success">Quản trị viên</span>
+                                                @else
+                                                    <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
+                                                        hàng</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($item->roles->isNotEmpty())
+                                                    @foreach ($item->roles as $role)
+                                                        <span class="badge bg-primary">{{ $role->name }}</span>
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($item->cinema != '')
+                                                    {{ $item->cinema->name }}
+                                                @else
+                                                    Tất cả
+                                                @endif
+                                            </td>
+
+
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{ route('admin.users.show', $item) }}">
+                                                        <button title="xem" class="btn btn-success btn-sm "
+                                                            type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @if ($item->name != 'System Admin')
+                                                        <a href="{{ route('admin.users.edit', $item) }}">
+                                                            <button title="xem" class="btn btn-warning btn-sm mx-1 "
+                                                                type="button"><i class="fas fa-edit"></i></button>
+                                                        </a>
+                                                        <form action="{{ route('admin.users.destroy', $item) }}"
+                                                            method="POST" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Bạn có muốn xóa không')">
+                                                                <i class="ri-delete-bin-7-fill"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        
+                        <div class="tab-pane " id="users" role="tabpanel">
+
+                            <table id="example"
+                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                                style="width:100%" id="tableUsers">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Họ và tên</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Email</th>
+                                        {{-- <th>Số điện thoại</th> --}}
+                                        {{-- <th>Ngày sinh</th> --}}
+
+                                        <th>Chức danh</th>
+
+                                        <th>Chức năng</th>
+                                    </tr>
+                                <tbody>
+                                    @foreach ($users as $i => $user)
+                                        <tr>
+                                            <td>{{ $user->id }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>
+                                                @php
+                                                    $url = $user->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+
+                                                @endphp
+
+                                                @if (!empty($user->img_thumbnail))
+                                                    <img src="{{ $url }}"
+                                                        class="rounded-circle avatar-lg img-thumbnail user-profile-image "
+                                                        alt="user-profile-image">
+                                                @else
+                                                    {{-- Trống --}}
+                                                @endif
+
+                                            </td>
+                                            <td>{{ $user->email }}
+                                            </td>
+                                            {{-- <td>{{ $user->phone }}</td>
                                     <td>{{ Carbon\Carbon::parse($user->birthday)->format('d/m/Y') ?? 'null' }}</td> --}}
 
-                                    <td>
-                                        @if ($user->type == App\Models\User::TYPE_ADMIN)
-                                            <span class="badge badge-gradient-success">Quản trị viên</span>
-                                        @else
-                                            <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
-                                                hàng</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($user->roles->isNotEmpty())
-                                            @foreach ($user->roles as $role)
-                                                <span class="badge bg-primary">{{ $role->name }}</span>
-                                            @endforeach
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($user->cinema != '')
-                                            {{ $user->cinema->name }}
-                                        @else
-                                            Tất cả
-                                        @endif
-                                    </td>
+                                            <td>
+                                                @if ($user->type == App\Models\User::TYPE_ADMIN)
+                                                    <span class="badge badge-gradient-success">Quản trị viên</span>
+                                                @else
+                                                    <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
+                                                        hàng</span>
+                                                @endif
+                                            </td>
 
 
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('admin.users.show', $user) }}">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a>
-                                            @if ($user->name != 'System Admin')
-                                                <a href="{{ route('admin.users.edit', $user) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm mx-1 "
-                                                        type="button"><i class="fas fa-edit"></i></button>
-                                                </a>
-                                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
-                                                    class="d-inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Bạn có muốn xóa không')">
-                                                        <i class="ri-delete-bin-7-fill"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
 
-                        </tbody>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{ route('admin.users.show', $user) }}">
+                                                        <button title="xem" class="btn btn-success btn-sm "
+                                                            type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @if ($user->name != 'System Admin')
+                                                        <a href="{{ route('admin.users.edit', $user) }}">
+                                                            <button title="xem" class="btn btn-warning btn-sm mx-1 "
+                                                                type="button"><i class="fas fa-edit"></i></button>
+                                                        </a>
+                                                        <form action="{{ route('admin.users.destroy', $user) }}"
+                                                            method="POST" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Bạn có muốn xóa không')">
+                                                                <i class="ri-delete-bin-7-fill"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                    </table>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div><!--end col-->

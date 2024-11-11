@@ -381,12 +381,12 @@
                                             trò</span></a>
                                 </li>
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>
