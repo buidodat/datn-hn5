@@ -68,14 +68,15 @@ class TicketController extends Controller
 
 
                 });
-                return redirect()->back()->with('success', 'Hủy vé thành công!');
+
+                return redirect()->to(route('my-account.edit') .'#cinema-journey')->with('success', 'Hủy vé thành công!');
             }else{
-                return redirect()->back()->with('error', 'Hủy vé không thành công, đã có lôi sảy ra trong quá trình hủy!');
+                return redirect()->to(route('my-account.edit') .'#cinema-journey')->with('error', 'Hủy vé không thành công, đã có lôi sảy ra trong quá trình hủy!');
             }
 
 
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Hủy vé không thành công, đã có lôi sảy ra trong quá trình hủy!');
+            return redirect()->to(route('my-account.edit') .'#cinema-journey')->with('error', 'Hủy vé không thành công, đã có lôi sảy ra trong quá trình hủy!');
         }
     }
 }
