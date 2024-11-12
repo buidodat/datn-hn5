@@ -167,7 +167,7 @@ Route::prefix('ranks')
 Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
 Route::put('site-settings/update', [SiteSettingController::class, 'update'])->name('site-settings.update');
 
-// 2. Đặt lại về mặc định 
+// 2. Đặt lại về mặc định
 Route::post('site-settings/reset', [SiteSettingController::class, 'resetToDefault'])->name('site-settings.reset');
 
 // thống kê

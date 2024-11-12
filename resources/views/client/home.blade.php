@@ -1,3 +1,4 @@
+
 @extends('client.layouts.master')
 
 @section('title')
@@ -43,38 +44,71 @@
                                 <div class="row" id="movie-list1">
                                     @foreach ($moviesUpcoming as $movie)
                                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
-                                            <div class="movie_box_wrapper">
-                                                <div class="movie_img_box">
-                                                    @if ($movie->is_hot == '1')
-                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
-                                                            alt="">
-                                                    @endif
-                                                    @php
-                                                        $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
-                                                    @endphp
-                                                    @if ($imageTag)
-                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
-                                                    @endif
-                                                    @php
-                                                        $url = $movie->img_thumbnail;
+                                            <div class="prs_upcom_movie_box_wrapper">
+                                                <div class="movie_box_wrapper">
+                                                    <div class="movie_img_box">
+                                                        @if ($movie->is_hot == '1')
+                                                            <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                                alt="">
+                                                        @endif
+                                                        @php
+                                                            $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                                        @endphp
+                                                        @if ($imageTag)
+                                                            <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                                        @endif
+                                                        @php
+                                                            $url = $movie->img_thumbnail;
 
-                                                        if (!\Str::contains($url, 'http')) {
-                                                            $url = Storage::url($url);
-                                                        }
+                                                            if (!\Str::contains($url, 'http')) {
+                                                                $url = Storage::url($url);
+                                                            }
 
-                                                    @endphp
+                                                        @endphp
 
-                                                    <div class='img_thumbnail_movie'>
-                                                        <img src="{{ $url }}" alt="movie_img" />
-                                                    </div>
-                                                    <div class='movie_img_trailer'>
-                                                        <div class='animation-icon open-trailer-btn'
-                                                            data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
-                                                            data-movie-name="{{ $movie->name }}">
-                                                            <img src="{{ asset('theme/client/images/index_III/icon.png') }}"
-                                                                alt="img">
+                                                        <div class='img_thumbnail_movie'>
+                                                            <img src="{{ $url }}" alt="movie_img" />
+                                                        </div>
+                                                        <div class='movie_img_trailer'>
+                                                            <div class='animation-icon open-trailer-btn'
+                                                                data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                                data-movie-name="{{ $movie->name }}">
+                                                                <img src="{{ asset('theme/client/images/index_III/icon.png') }}"
+                                                                    alt="img">
+                                                            </div>
                                                         </div>
                                                     </div>
+
+
+                                                    <div class="content-movie">
+                                                        <h3 class="movie-name-home">
+                                                            <a
+                                                                href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                        </h3>
+                                                        <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                        <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
+                                                            phút </p>
+
+                                                    </div>
+
+
+                                                    @php
+                                                        // Kiểm tra có suất chiếu trong 7 ngày tới tại cinema_id
+                                                        $hasShowtimeInNextWeek = $movie
+                                                            ->showtimes()
+                                                            ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
+                                                            ->whereBetween('start_time', [$currentNow, $endDate])
+                                                            ->exists();
+                                                    @endphp
+
+                                                    <div class='buy-ticket-movie'>
+                                                        @if ($hasShowtimeInNextWeek)
+                                                            <button onclick="openModalMovieScrening({{ $movie->id }})"
+                                                                class="buy-ticket-btn">MUA VÉ</button>
+                                                        @endif
+                                                    </div>
+
+
                                                 </div>
 
 
@@ -83,9 +117,14 @@
                                                         <a
                                                             href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
+                                                    <p><span class='text-bold'>Ngày khởi chiếu:</span>
+                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                    </p>
+
+
 
                                                 </div>
 
@@ -141,8 +180,7 @@
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot"
-                                                            src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
                                                     @php
@@ -236,16 +274,14 @@
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot"
-                                                            src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
                                                     @php
                                                         $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
                                                     @endphp
                                                     @if ($imageTag)
-                                                        <img class="tag-rating" src="{{ $imageTag }}"
-                                                            alt="">
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
                                                     @endif
                                                     @php
                                                         $url = $movie->img_thumbnail;
@@ -565,10 +601,12 @@
 @section('scripts')
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
-    {{-- <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}"> --}}
+@endsection
+
+@section('style-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+    {{-- <script>
         // Ajax load xem thêm 3 tab
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -659,7 +697,5 @@
                     .catch(error => console.error('Error:', error));
             })
         });
-
-    </script>
+    </script> --}}
 @endsection
-
