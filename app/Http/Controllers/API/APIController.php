@@ -73,8 +73,8 @@ class APIController extends Controller
         }
 
         foreach ($showtimes as $showtime) {
-            $showtime->start_time = Carbon::parse($showtime->start_time)->format('H:i'); // Định dạng HH:mm
-            $showtime->end_time = Carbon::parse($showtime->end_time)->format('H:i'); // Định dạng HH:mm
+            $showtime->start_time = \Carbon\Carbon::parse($showtime->start_time)->format('H:i');
+            $showtime->end_time = \Carbon\Carbon::parse($showtime->end_time)->format('H:i');
         }
 
         return response()->json($showtimes);
