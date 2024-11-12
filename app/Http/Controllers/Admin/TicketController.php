@@ -36,7 +36,7 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'ticketSeats.showtime'])
+        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'showtime'])
             ->latest('id');
         if (Auth::user()->cinema_id != "") {
             $tickets = $tickets->where('cinema_id', Auth::user()->cinema_id);
@@ -60,20 +60,7 @@ class TicketController extends Controller
             ]);
         }
 
-        // Cập nhật trạng thái vé hết hạn
-        /*$now = Carbon::now();
-        Ticket::where('expiry', '<', $now)
-            ->where('status', '!=', 'Đã hết hạn')
-            ->update(['status' => 'Đã hết hạn']);*/
-
         $tickets = $tickets->get()->groupBy('code');
-
-        //định dạng expiry để so sánh
-        /*foreach ($tickets as $key => $group) {
-            foreach ($group as $ticket) {
-                $ticket->expiry = Carbon::parse($ticket->expiry);
-            }
-        }*/
 
         $barcodes = [];
         foreach ($tickets as $code => $group) {
@@ -237,7 +224,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = $ticket->load(['ticketCombos.combo', 'ticketSeats.showtime']);
+        $oneTicket = $ticket->load(['ticketCombos.combo', 'showtime']);
         $totalPriceSeat = $ticket->ticketSeats->sum('price');
         $totalComboPrice = $ticket->ticketCombos->sum('price');
         $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);
