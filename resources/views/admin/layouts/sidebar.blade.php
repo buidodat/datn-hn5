@@ -365,7 +365,14 @@
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
+                            data-key="t-horizontal">
+                            <i class="las la-user-plus"></i>
+                            <span data-key="t-dashboards">Phân quyền</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="{{ route('admin.roles.index') }}" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
                             <i class=" las la-asterisk"></i>
                             <span data-key="t-landing">Phân quyền</span>
@@ -381,16 +388,16 @@
                                             trò</span></a>
                                 </li>
 
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li> --}}
+                                </li>
 
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                 @endif
 
                 @canany(['Cấu hình website'])

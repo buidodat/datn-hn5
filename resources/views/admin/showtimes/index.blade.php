@@ -50,36 +50,38 @@
                     <div class="row">
                         <div class="col-md-8">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
-                                {{-- TÌm kiếm --}}
                                 <div class="row">
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
-                                            <select name="branch_id" id="branch" class="form-select">
+                                            <select name="branch_id" id="branch" class="form-select"
+                                                >
                                                 <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">
-                                                        {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
-                                                        {{ $branch->name }}</option>
+                                                    <option value="{{ $branch->id }}"
+                                                        {{ $branch->id == $branchId ? 'selected' : '' }}>
+                                                        {{ $branch->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
 
                                         <div class="col-md-3">
-                                            <select name="cinema_id" id="cinema" class="form-select">
+                                            <select name="cinema_id" id="cinema" class="form-select"
+                                                onchange="this.form.submit()">
                                                 <option value="">Chọn Rạp</option>
+                                                @foreach ($cinemas as $cinema)
+                                                    <option value="{{ $cinema->id }}"
+                                                        {{ $cinema->id == $cinemaId ? 'selected' : '' }}>
+                                                        {{ $cinema->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
-                                        </div>
-                                    @else
-                                        <div class="col-md-2">
-                                            <label for="">Lọc theo ngày:</label>
                                         </div>
                                     @endif
 
-
                                     <div class="col-md-3">
-                                        {{-- <label for="">Ngày chiếu:</label> --}}
-                                        <input type="date" name="date" id="" class="form-control"
-                                            value="{{ request('date', now()->format('Y-m-d')) }}">
+                                        <input type="date" name="date" class="form-control"
+                                            value="{{ $date }}" onchange="this.form.submit()">
                                     </div>
 
                                     <div class="col-md-3">
@@ -102,157 +104,140 @@
                     </div>
                 @endif
 
-
                 <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead>
                             <tr>
-                                {{-- <th>#</th> --}}
-                                <th>Thời gian</th>
-                                <th>Tên phim</th>
-                                <th>Tên phòng</th>
-                                <th>Định dạng</th>
-                                <th>Số ghế</th>
-                                <th>Ngày chiếu</th>
-                                <th>Hoạt động</th>
-                                <th>Chức năng</th>
+                                <th></th>
+                                <th>PHIM</th>
+                                <th>THỜI LƯỢNG</th>
+                                <th>THỂ LOẠI</th>
+                                <th>ĐỊNH DẠNG</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                // Nhóm suất chiếu theo tên phòng và ngày chiếu
-                                $groupByShowtimes = $showtimes->groupBy(function ($showtime) {
-                                    return $showtime->room->name . '_' . $showtime->date;
-                                });
-                            @endphp
-
-                            @foreach ($groupByShowtimes as $key => $times)
+                            @foreach ($showtimes->groupBy('movie_id', 'format') as $movieId => $showtimesByMovie)
                                 @php
-                                    $rowCount = $times->count(); // Số suất chiếu trong nhóm phòng + ngày chiếu
+                                    $movie = $showtimesByMovie->first()->movie;
+
                                 @endphp
-
-                                @foreach ($times as $i => $showtime)
-                                    @php
-                                        $startTime = \Carbon\Carbon::parse($showtime->start_time);
-                                        $endTime = \Carbon\Carbon::parse($showtime->end_time);
-
-                                        $movieReleaseDate = \Carbon\Carbon::parse($showtime->movie->release_date);
-                                        $movieEndDate = \Carbon\Carbon::parse($showtime->movie->end_date);
-                                        $isSpecialShowtime = !$startTime->between($movieReleaseDate, $movieEndDate);
-
-                                        //sắp chiếu
-                                        $upComing = $timeNow < $startTime->format('d-m-Y H:i:s');
-
-                                        //đang chiếu
-                                        $showing =
-                                            $timeNow >= $startTime->format('d-m-Y H:i:s') &&
-                                            $timeNow < $endTime->format('d-m-Y H:i:s');
-                                        //đã chiếu
-                                        $ended =
-                                            $timeNow > $startTime->format('d-m-Y H:i:s') &&
-                                            $timeNow > $endTime->format('d-m-Y H:i:s');
-
-                                    @endphp
-                                    <tr>
-                                        {{-- <td>{{ $i + 1 }}</td> --}}
-                                        <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }} -
-                                            {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}</td>
-                                        <td>
-                                            @if ($showtime->movie->is_special == 1 || $isSpecialShowtime)
-                                                <p class="mb-0 ">
-                                                    {!! Str::limit($showtime->movie->name, 40) !!}
-                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
-                                                    </span>
-
-                                                </p>
-                                            @else
-                                                <p class="mb-0">{!! Str::limit($showtime->movie->name, 40) !!}</p>
-                                            @endif
-
-                                        </td>
-
-                                        @if ($i == 0)
-                                            <!-- Nếu là hàng đầu tiên của nhóm, hiển thị tên phòng và ngày chiếu -->
-                                            <td rowspan="{{ $rowCount }}">
-                                                <b>{{ $showtime->room->cinema->name }} - {{ $showtime->room->name }}</b>
-                                            </td>
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ $showtime->format }}
-                                            </td>
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                / {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
-
-                                                ghế
-                                            </td>
-
-                                            <td rowspan="{{ $rowCount }}">
-                                                {{ \Carbon\Carbon::parse($showtime->date)->format('d-m-Y') }}
-                                            </td>
+                                <tr class="movie-row">
+                                    <td class="plusShowtime">
+                                        <button class="toggle-button btn btn-link"><b>+</b></button>
+                                    </td>
+                                    <td>
+                                        <b>
+                                            {{ $movie->name }}
+                                        </b>
+                                        @if ($movie->is_special == 1)
+                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
+                                            </span>
+                                        @else
                                         @endif
 
-                                        <td>
-                                            <div class="form-check form-switch form-switch-success d-inline-block">
-                                                <input class="form-check-input switch-is-active changeActive"
-                                                    name="is_active" type="checkbox" role="switch"
-                                                    data-showtime-id="{{ $showtime->id }}" @checked($showtime->is_active)
-                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                            </div>
+                                        {{-- @if ($isSpecialMovie)
+                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt</span>
+                                        @endif --}}
+                                    </td>
+                                    <td>{{ $movie->duration }} phút</td>
+                                    <td>{{ $movie->category }}</td>
+                                    <td>{{ $showtimesByMovie->first()->format }}</td>
+                                </tr>
 
-                                            @if ($showtime->is_active == 1)
-                                                @if ($showing)
-                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">Đang
-                                                        chiếu
-                                                    </span>
-                                                @elseif($ended)
-                                                    <span class="badge bg-primary-subtle text-primary text-uppercase">Đã
-                                                        chiếu
-                                                    </span>
-                                                @else
-                                                    <span class="badge bg-warning-subtle text-warning text-uppercase">Sắp
-                                                        chiếu
-                                                    </span>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.showtimes.show', $showtime) }}">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a>
+                                <tr class="showtime-row" style="display: none;">
+                                    <td colspan="6" class="table-showtime-row">
+                                        <table class="table table-sm table-bordered">
+                                            <thead>
+                                                <tr class="bg-light">
+                                                    <th><input type="checkbox" name="" id=""></th>
+                                                    <th>THỜI GIAN</th>
+                                                    <th>PHÒNG</th>
+                                                    <th>CHỖ NGỒI</th>
+                                                    <th class="status-showtime">TRẠNG THÁI</th>
+                                                    <th>CHỨC NĂNG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($showtimesByMovie as $showtime)
+                                                    <tr>
+                                                        <td class="inputCheckBoxShowtimes"><input type="checkbox"
+                                                                name="" id=""></td>
+                                                        <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
+                                                            -
+                                                            {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
+                                                        </td>
+                                                        <td>{{ $showtime->room->name }}</td>
+                                                        <td>
+                                                            {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
+                                                            /
+                                                            {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                class="form-check form-switch form-switch-success d-inline-block">
+                                                                <input
+                                                                    class="form-check-input switch-is-active changeActive"
+                                                                    name="is_active" type="checkbox" role="switch"
+                                                                    data-showtime-id="{{ $showtime->id }}"
+                                                                    @checked($showtime->is_active)
+                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                                <button title="xem" class="btn btn-success btn-sm "
+                                                                    type="button"><i class="fas fa-eye"></i></button></a>
 
-                                            @if ($showtime->is_active == 0)
-                                                <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                    <button title="xem" class="btn btn-warning btn-sm" type="button"><i
-                                                            class="fas fa-edit"></i></button>
-                                                </a>
+                                                            @if ($showtime->is_active == 0)
+                                                                <a href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                                    <button title="sửa" class="btn btn-warning btn-sm"
+                                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                                </a>
 
-                                                <form action="{{ route('admin.showtimes.destroy', $showtime) }}"
-                                                    method="post" class="d-inline-block">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                        <i class="ri-delete-bin-7-fill"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                                                <form
+                                                                    action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                                    method="post" class="d-inline-block">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                        <i class="ri-delete-bin-7-fill"></i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <div class="d-flex justify-content-between">
+                                                            <form action="" method="post" class="d-inline-block">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                    Xóa tất cả
+                                                                </button>
+                                                            </form>
+                                                            <a href="" class="px-5">
+                                                                <button title="thay đổi" class="btn btn-primary btn-sm"
+                                                                    type="button">Thay đổi trạng thái tất cả</button>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
                             @endforeach
-
                         </tbody>
                     </table>
-                    <div class="row">
-                        <div class="col-md-6">
-                        </div>
-                        <div class="col-md-6" align='center'>
-                            {{ $showtimes->links() }}
-                        </div>
-                    </div>
-
                 </div>
+
 
 
             </div>
@@ -288,8 +273,8 @@
     <script>
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ Laravel
-            // var selectedBranchId = "{{ old('branch_id', '') }}";
-            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
+            var selectedBranchId = "{{ old('branch_id', '') }}";
+            var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
             // Xử lý sự kiện thay đổi chi nhánh
             $('#branch').on('change', function() {
@@ -311,7 +296,7 @@
                             // Chọn lại cinema nếu có selectedCinemaId
                             if (selectedCinemaId) {
                                 cinemaSelect.val(selectedCinemaId);
-                                // selectedCinemaId = false;
+                                selectedCinemaId = false;
                             }
                         }
                     });
@@ -319,13 +304,12 @@
             });
 
             // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
-            // if (selectedBranchId) {
-            //     $('#branch').val(selectedBranchId).trigger('change');
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
 
-            // }
+            }
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('.changeActive').on('change', function() {
                 let showtimeId = $(this).data('showtime-id');
@@ -349,6 +333,20 @@
                         console.error(error);
                     }
                 });
+            });
+        });
+
+        $(document).ready(function() {
+            $('.toggle-button').click(function() {
+                // Tìm hàng suất chiếu liền kề và chuyển đổi hiển thị
+                $(this).closest('tr').next('.showtime-row').toggle();
+
+
+                if ($(this).text() === '+') {
+                    $(this).text('-');
+                } else {
+                    $(this).text('+');
+                }
             });
         });
     </script>

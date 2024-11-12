@@ -1,3 +1,32 @@
+td.table-showtime {
+    padding: 0px;
+    padding-bottom: 20px;
+}
+.status-showtime {
+    width: 120px;
+}
+
+.inputCheckBoxShowtimes {
+    width: 36px;
+}
+
+td.table-showtime-row {
+    /* padding: 0px; */
+    /* padding-top: 10px; */
+    /* border-top: 0px; */
+    text-align: center;
+}
+td.table-showtime-row  table thead {
+    height: 35px;
+}
+td.plusShowtime {
+    width: 25px;
+}
+td.plusShowtime .toggle-button {
+    /* width: 24px; */
+    padding: 6px;
+}
+
 .card-left {
     height: 96.6%;
 
