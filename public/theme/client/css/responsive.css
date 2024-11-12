@@ -529,10 +529,10 @@
 	}
 
 	.giu-cho-checkout>div:last-child {
-		flex-grow: 3;
-		text-align: right;
+		/* flex-grow: 3;
+		text-align: right; */
 		font-size: 1em !important;
-		color: #e74c3c;
+		/* color: #e74c3c; */
 	}
 
 	.info-movie div ul li h3 {
@@ -1205,10 +1205,10 @@
 	}
 
 	.giu-cho-checkout>div:last-child {
-		flex-grow: 3;
-		text-align: right;
+		/* flex-grow: 3;
+		text-align: right; */
 		font-size: 1em !important;
-		color: #e74c3c;
+		/* color: #e74c3c; */
 	}
 
 	.box-checkout .box-combo-uu-dai .quantity-input {

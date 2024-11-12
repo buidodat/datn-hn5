@@ -196,3 +196,5 @@ Route::get('hihi/{id}', function () {
     $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
+
+
