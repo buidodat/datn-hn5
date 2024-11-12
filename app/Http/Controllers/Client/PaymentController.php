@@ -147,7 +147,7 @@ class PaymentController extends Controller
                 ]);
 
                 // Dispatch job để giải phóng ghế sau 15 phút
-                ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId)->delay(now()->addMinutes(15));
+                ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId, $voucher->code ?? null)->delay(now()->addMinutes(15));
             });
 
             // Chuyển hướng tới trang thanh toán
@@ -395,6 +395,9 @@ class PaymentController extends Controller
                     Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
+                $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+                session()->forget($timeKey);
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -425,7 +428,17 @@ class PaymentController extends Controller
             broadcast(new SeatStatusChange($seatId, $paymentData['showtime_id'], 'available'))->toOthers();
         }
 
+        if($paymentData['voucher_code'] != null){
+            $voucher = Voucher::where('code', $paymentData['voucher_code'])->first();
+            $voucher->increment('quantity');
+        }
+
+        // xóa session
+        $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+        session()->forget($timeKey);
         session()->forget('payment_data');
+
         return redirect()->route('home')->with('error', 'Thanh toán thất bại hoặc đã hủy.');
     }
 
@@ -683,6 +696,9 @@ class PaymentController extends Controller
                     Mail::to($ticket->user->email)->send(new TicketInvoiceMail($ticket));
                 });
 
+                $timeKey = 'timeData.' . $paymentData['showtime_id'];
+
+                session()->forget($timeKey);
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -924,6 +940,11 @@ class PaymentController extends Controller
                     ]);
                 }
             }
+
+            $timeKey = 'timeData.' . $showtimeId;
+
+            session()->forget($timeKey);
+            session()->forget('payment_data');
         });
 
         return redirect()->route('home')->with('success', 'Thanh toán thành công!');

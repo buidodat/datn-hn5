@@ -465,7 +465,7 @@ class ChooseSeatController extends Controller
             // Phát sự kiện sau khi transaction hoàn tất
             if ($action === 'hold') {
                 broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'hold'))->toOthers();
-                ReleaseSeatHoldJob::dispatch([$seatData->seat_id], $showtimeId)->delay($holdExpiresAt);
+                ReleaseSeatHoldJob::dispatch([$seatData->seat_id], $showtimeId, null)->delay($holdExpiresAt);
             } elseif ($action === 'release') {
                 broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'available'))->toOthers();
             }
