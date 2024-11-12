@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách liên hệ</h5>
-                    <a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">Thêm mới</a>
+                    {{-- <a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">Thêm mới</a> --}}
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -53,9 +53,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Họ tên</th>
+                                {{-- <th>Họ tên</th>
                                 <th>Email</th>
-                                <th>Số điện thoại</th>
+                                <th>Số điện thoại</th> --}}
+                                <th>Thông tin liên hệ</th>
                                 <th>Tiêu đề</th>
                                 <th>Nội dung</th>
                                 <th>Ngày tạo</th>
@@ -67,9 +68,14 @@
                             @foreach ($contacts as $contact)
                                 <tr>
                                     <td>{{ $contact->id }}</td>
-                                    <td>{{ $contact->user_contact }}</td>
+                                    {{-- <td>{{ $contact->user_contact }}</td>
                                     <td>{{ $contact->email }}</td>
-                                    <td>{{ $contact->phone }}</td>
+                                    <td>{{ $contact->phone }}</td> --}}
+                                    <td>
+                                        <strong>Họ tên:</strong> {{ $contact->user_contact }}<br>
+                                        <strong>Email:</strong> {{ $contact->email }}<br>
+                                        <strong>SĐT:</strong> {{ $contact->phone }}
+                                    </td>
                                     <td>{{ $contact->title }}</td>
                                     <td>{{ $contact->content }}</td>
                                     <td>{{ $contact->created_at }}</td>                                  

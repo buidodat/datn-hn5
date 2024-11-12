@@ -66,6 +66,10 @@ class ContactController extends Controller
 
     public function edit(Contact $contact){
         $status = Contact::STATUS;
+        // Loại bỏ 'Chưa xử lí' nếu trạng thái hiện tại là 'Đã xử lí'
+        if ($contact->status === 'resolved') {
+            unset($status['pending']);
+        }
         return view(self::PATH_VIEW . __FUNCTION__, compact('contact','status'));
     }
 
