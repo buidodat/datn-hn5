@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Cinema;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,5 +75,28 @@ class StatisticalController extends Controller
             ->get();
 
         return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue', 'revenueByCinema', 'revenueTimeSlot'));
+    }
+
+    public function cinemaRevenue()
+    {
+        $startDate = Carbon::parse('2023-10-01'); // Ngày bắt đầu
+        $endDate = Carbon::parse('2024-10-31');   // Ngày kết thúc
+
+        $statistics = Ticket::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('cinema_id, SUM(total_price) as total_revenue, COUNT(id) as total_tickets')
+            ->with('cinema:id,name') 
+            ->groupBy('cinema_id')
+            ->orderBy('total_revenue', 'desc') 
+            ->get();
+
+
+        //THống kê theo rạp 
+        $revenueByCinema = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
+            ->select('cinemas.name as cinema_name', DB::raw('SUM(tickets.total_price) as total_revenue'))
+            ->groupBy('cinemas.name')
+            ->orderBy('total_revenue', 'desc')
+            ->get();
+
+        return view('admin.statisticals.cinemaRevenue', compact('revenueByCinema', 'statistics'));
     }
 }

@@ -34,8 +34,8 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-               
-                    
+
+
                 @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
                     {{-- Dashboard --}}
                     <li class="nav-item">
@@ -62,6 +62,14 @@
                                         data-key="t-horizontal">
                                         {{-- <i class="ri-dashboard-2-line"></i> --}}
                                         <span data-key="t-dashboards">Doanh Thu</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.statistical.cinemaRevenue') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal">
+                                        {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                        <span data-key="t-dashboards">Doanh Thu Theo Rạp</span>
                                     </a>
                                 </li>
                             </ul>
