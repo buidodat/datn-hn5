@@ -126,7 +126,7 @@
                                                     </div>
                                                     <div>
 
-                                                        <a class="cursor-pointer text-primary small openUpdateRankModal"
+                                                        <a class="cursor-pointer text-info small openUpdateRankModal"
                                                             data-rank-id="{{ $rank->id }}"
                                                             data-rank-name="{{ $rank->name }}"
                                                             data-rank-total-spent="{{ $rank->total_spent }}"

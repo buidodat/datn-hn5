@@ -613,6 +613,8 @@
     margin: 20px auto 10px auto;
     color:#434f89;
     font-weight: 600;
+    letter-spacing: -1px !important;
+    font-family: Oswald !important;
 }
 
 
@@ -1031,7 +1033,7 @@
 .box-checkout .payment-checkout .img-payment-checkout {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
 }
 
 .box-checkout .payment-checkout img {
@@ -1087,10 +1089,10 @@
 }
 
 .giu-cho-checkout>div:last-child {
-    flex-grow: 3;
-    text-align: right;
-    font-size: 1.2em;
-    color: #f1761d;
+    /* flex-grow: 3;
+    text-align: right; */
+    font-size: 1.1em;
+    /* color: #f1761d; */
     /* Màu đỏ cho thời gian còn lại */
 }
 
@@ -1304,7 +1306,9 @@
 
 
 /* Css trang home */
-
+.content-movie{
+    letter-spacing: -0.3px;
+}
 .content-movie p{
     color:#192041;
     font-size: 15px;
@@ -1314,18 +1318,19 @@
 }
 
 .movie-name-home  {
-    margin-top: 8px;
+    padding-top: 10px;
+    padding-top: 10px;
     margin-bottom: 5px;
-    letter-spacing: -1px;
     font-weight: 600;
     font-size: 20px;
-    max-width: 225px;
-    height: 23px;
+    height: 35px;
     overflow: hidden;
 }
 
 .movie-name-home a
 {
+    letter-spacing: -1px !important;
+    font-family: Oswald !important;
     color: #434f89;
 }
 .movie-name-home a:hover {

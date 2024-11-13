@@ -42,4 +42,27 @@ class Seat extends Model
                     ->withPivot('status','price','user_id')
                     ->withTimestamps();
     }
+
+    public static function getTotalSeat($room_id, $is_active = null)
+    {
+        $totalSeat = 0;
+        $query = Seat::where('room_id', $room_id);
+
+        if (!is_null($is_active)) {
+            $query->where('is_active', $is_active);
+        }
+
+        $seats = $query->get();
+
+        foreach ($seats as $seat) {
+            if ($seat->type_seat_id == 3) {
+                $totalSeat += 2; // Ghế đôi có 2 chỗ ngồi
+            } else {
+                $totalSeat += 1; // Các loại ghế khác có 1 chỗ ngồi
+            }
+        }
+
+        return $totalSeat;
+    }
+
 }

@@ -34,45 +34,8 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-                <li class="nav-item">
-                    <a class="nav-link menu-link collapsed" href="#chart" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false" aria-controls="chart">
-                        <i class="ri-bar-chart-grouped-fill"></i>
-                        <span data-key="t-landing">Thống Kê</span>
-                    </a>
-                    <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            {{-- Thống kê --}}
-                            <li class="nav-item">
-                                <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
-                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
-                                    <span data-key="t-dashboards">Dashboard</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    {{-- <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.statistical.ticketsRevenue') }}" class="nav-link menu-link"
-                                    data-key="t-horizontal">
-
-                                    <span data-key="t-dashboards">Theo Hóa đơn</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div> --}}
-                    <div class="menu-dropdown collapse" id="chart" style="">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.statistical.revenue') }}" class="nav-link menu-link"
-                                    data-key="t-horizontal">
-                                    {{-- <i class="ri-dashboard-2-line"></i> --}}
-                                    <span data-key="t-dashboards">Doanh Thu</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+               
+                    
                 @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
                     {{-- Dashboard --}}
                     <li class="nav-item">
@@ -409,7 +372,14 @@
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
+                            data-key="t-horizontal">
+                            <i class="las la-user-plus"></i>
+                            <span data-key="t-dashboards">Phân quyền</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="{{ route('admin.roles.index') }}" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
                             <i class=" las la-asterisk"></i>
                             <span data-key="t-landing">Phân quyền</span>
@@ -425,16 +395,16 @@
                                             trò</span></a>
                                 </li>
 
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li> --}}
+                                </li>
 
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                 @endif
 
                 @canany(['Cấu hình website'])

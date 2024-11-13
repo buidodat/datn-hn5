@@ -47,6 +47,20 @@
 
 <body>
 
+    @php
+         $not_issued = App\Models\Ticket::NOT_ISSUED;
+         $expired = App\Models\Ticket::EXPIRED;
+        //  dd($not_issued, $expired);
+
+        App\Models\Ticket::query()->
+        where([
+            ['status', $not_issued],
+            ['expiry', '<', now()]
+        ])->update([
+            'status' => $expired
+        ]);
+    @endphp
+
     <!-- Begin page -->
     <div id="layout-wrapper">
 
@@ -99,12 +113,12 @@
         </div>
     </div>
 
-    <div class="customizer-setting d-none d-md-block">
+    {{-- <div class="customizer-setting d-none d-md-block">
         <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
             data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
             <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Theme Settings -->
 
