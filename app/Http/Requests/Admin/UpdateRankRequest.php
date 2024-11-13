@@ -32,7 +32,7 @@ class UpdateRankRequest extends FormRequest
 
         // Nếu không phải là bản ghi mặc định, yêu cầu `total_spent`
         if (!$this->route('rank')->is_default) {
-            $rules['total_spent'] = ['required', 'integer', 'min:0', 'unique:ranks,total_spent,' . $this->route('rank')->id];
+            $rules['total_spent'] = ['required', 'integer', 'min:500000','max:5000000', 'regex:/^\d*00000$/', 'unique:ranks,total_spent,' . $this->route('rank')->id];
         }
 
         return $rules;
@@ -47,7 +47,9 @@ class UpdateRankRequest extends FormRequest
             'name.unique' => 'Tên cấp bậc đã tồn tại, vui lòng chọn tên khác.',
             'total_spent.required' => 'Vui lòng nhập tổng chi tiêu.',
             'total_spent.integer' => 'Tổng chi tiêu phải là một số nguyên.',
-            'total_spent.min' => 'Tổng chi tiêu tối thiểu phải bằng 0 VNĐ.',
+            'total_spent.min' => 'Tổng chi tiêu tối thiểu phải bằng 500.000 VNĐ.',
+            'total_spent.max' => 'Tổng chi tiêu không được quá 5.000.000 VNĐ.',
+            'total_spent.regex' => 'Tổng chi tiêu chia hết cho 100.000.',
             'total_spent.unique' => 'Tổng chi tiêu đã tồn tại cho cấp bậc khác.',
             'ticket_percentage.required' => 'Vui lòng nhập phần trăm tích điểm vé.',
             'ticket_percentage.integer' => 'Phần trăm tích điểm vé phải là một số nguyên.',

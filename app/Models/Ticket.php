@@ -44,7 +44,7 @@ class Ticket extends Model
     const CANCELED = 'Đã hủy';
 
     // Được hủy vé trước suất chiếu bao nhiêu phút
-    const CANCELLATION_DEADLINE_MINUTES = 30;
+    const CANCELLATION_DEADLINE_MINUTES = 60;
 
     const REFUND_POINTS_PERCENTAGE  = 1; //Tỷ lệ hoàn trả điểm 1= 100% , 0.8 = 50%
     public function user()

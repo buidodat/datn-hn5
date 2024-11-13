@@ -89,7 +89,7 @@ Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('m
 Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 
 // User - Thông tin tài khoản
-Route::get('my-account', [UserController::class, 'edit'])->name('my-account.edit');
+Route::get('my-account/{page?}', [UserController::class, 'edit'])->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
 Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
 
@@ -196,3 +196,5 @@ Route::get('hihi/{id}', function () {
     $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
+
+

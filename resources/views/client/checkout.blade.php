@@ -262,16 +262,18 @@
                                                 <hr>
                                                 <div class="img-payment-checkout">
                                                     <div>
-                                                        <input type="radio" name="payment_name" value="vnpay" checked>
-                                                        <img src="{{ asset('theme/client/images/index_III/vi-vnpay.webp') }}"
-                                                            alt="">
-                                                        <label for="">Ví VnPay</label>
+                                                        <input type="radio" id="radio1" name="payment_name"
+                                                            value="vnpay" checked>
+                                                        <label for="radio1" style="margin-right: 5px"><img
+                                                                src="{{ asset('theme/client/images/index_III/vi-vnpay.webp') }}"
+                                                                alt="">Ví VnPay</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name="payment_name" value="momo">
-                                                        <img src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
-                                                            alt="">
-                                                        <label for="">Ví MoMo</label>
+                                                        <input type="radio" id="radio2" name="payment_name"
+                                                            value="momo">
+                                                        <label for="radio2"><img
+                                                                src="{{ asset('theme/client/images/index_III/vi-momo.ico') }}"
+                                                                alt=""> Ví MoMo</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,11 +281,20 @@
                                         {{-- 10p --}}
                                         <div class="giu-cho-checkout">
                                             <div>
-                                                <p>Vui lòng kiểm tra thông tin đầy đủ trước khi qua bước tiếp theo. <br>
-                                                    *Vé mua rồi không hoàn trả lại dưới mọi hình thức.</p>
+                                                <div>
+                                                    <label for="checkbox" style="margin: 0; font-weight: 100">
+                                                        <input type="checkbox" id="checkbox">
+                                                        Tôi đồng ý với điều khoản sử dụng và mua vé,
+                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
+                                                            tại đây.</span>
+                                                    </label>
+
+                                                    @include('client.layouts.components.modal-clause')
+
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p>Thời gian còn lại:</p>
+                                            <div style="display: flex">
+                                                <p style="margin-right: 5px">Thời gian còn lại: </p>
                                                 <p id="timer" class="bold">
                                                     {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
                                             </div>
@@ -708,11 +719,20 @@
                                         {{-- 10p --}}
                                         <div class="giu-cho-checkout">
                                             <div>
-                                                <p>Vui lòng kiểm tra thông tin đầy đủ trước khi qua bước tiếp theo. <br>
-                                                    *Vé mua rồi không hoàn trả lại dưới mọi hình thức.</p>
+                                                <div>
+                                                    <label for="checkbox" style="margin: 0; font-weight: 100">
+                                                        <input type="checkbox" id="checkbox">
+                                                        Tôi đồng ý với điều khoản sử dụng và mua vé,
+                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
+                                                            tại đây.</span>
+                                                    </label>
+
+                                                    @include('client.layouts.components.modal-clause')
+
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p>Thời gian còn lại:</p>
+                                            <div style="display: flex">
+                                                <p style="margin-right: 5px">Thời gian còn lại: </p>
                                                 <p id="timer" class="bold">
                                                     {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
                                             </div>
@@ -1119,8 +1139,13 @@
         });
         // Chỉ gửi form khi bấm vào nút có id="btnPayment"
         document.getElementById('btnPayment').addEventListener('click', function() {
-            // Gửi form khi bấm nút thanh toán
-            document.getElementById('payment-form').submit();
+            // Kiểm tra xem checkbox đã được chọn hay chưa
+            if (!document.getElementById('checkbox').checked) {
+                alert('Bạn chưa chọn đồng ý với điều kiện và điều khoản của chúng tôi.');
+            } else {
+                // Gửi form khi checkbox đã được chọn
+                document.getElementById('payment-form').submit();
+            }
         });
     </script>
 
@@ -1161,5 +1186,14 @@
                 window.location.href = '/'; // Điều hướng về trang chủ ("/")
             }
         }, 1000); // Cập nhật mỗi giây
+    </script>
+
+
+    <script>
+        const showModal = document.getElementById("showModal");
+        // Hiển thị modal khi bấm vào "tại đây"
+        showModal.onclick = function() {
+            modal.style.display = "flex";
+        }
     </script>
 @endsection

@@ -193,8 +193,7 @@
 
         <div class="footer">
             <p><span class="highlight">Poly Cinemas Việt Nam</span></p>
-            {{-- <p>Lầu 2, 72B Thành Thái, Phường 14, Quận 10, TP.HCM</p> --}}
-            {{-- <p>Email hỗ trợ: <a href="mailto:hoidap@cgv.vn">hoidap@cgv.vn</a></p> --}}
+       
             <p>Hotline: 1900 6017</p>
         </div>
     </div>
