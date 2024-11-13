@@ -14,7 +14,7 @@
                             <div class="row">
                                 @if (Auth::user()->hasRole('System Admin'))
                                     <div class="col-md-2">
-                                        <select name="branch_id" id="branch" class="form-select">
+                                        <select name="branch_id" id="branch" class="form-select py-2 px-2">
                                             <option value="">Tất cả chi nhánh</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}"

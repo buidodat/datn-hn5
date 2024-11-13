@@ -34,6 +34,11 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
+<<<<<<< HEAD
+=======
+               
+                    
+>>>>>>> 2fa7453c11f41188c1603fd3d8584c1b2f5e1c8c
                 @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
                     {{-- Dashboard --}}
                     <li class="nav-item">
@@ -412,7 +417,14 @@
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
+                            data-key="t-horizontal">
+                            <i class="las la-user-plus"></i>
+                            <span data-key="t-dashboards">Phân quyền</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="{{ route('admin.roles.index') }}" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
                             <i class=" las la-asterisk"></i>
                             <span data-key="t-landing">Phân quyền</span>
@@ -428,16 +440,16 @@
                                             trò</span></a>
                                 </li>
 
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li> --}}
+                                </li>
 
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                 @endif
 
                 @canany(['Cấu hình website'])

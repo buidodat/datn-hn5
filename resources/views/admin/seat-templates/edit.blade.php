@@ -36,180 +36,220 @@
         <div class="row">
 
             <div class="col-lg-9">
-                <div class="card card-left">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
-                    </div><!-- end card header -->
-                    <div class="card-body mb-3">
+                <div class="row">
+                    {{-- <div class="card ">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Thông tin mẫu sơ đồ ghế</h4>
+                        </div><!-- end card header -->
+                        <div class="card-body">
+                            <div class="live-preview">
+                                <div class="row">
+                                    <div class="col-md-8 mb-2">
+                                        <label for="name" class="form-label "><span class="text-danger">*</span> Tên
+                                            mẫu:</label>
+                                        <input type="text" class="form-control" value="{{ $seatTemplate->name }}"
+                                            name='name'>
+                                    </div>
 
-                        @php
-                            $rowRegular = App\Models\SeatTemplate::ROW_REGULAR;
-                            $rowDouble = App\Models\SeatTemplate::ROW_DOUBLE;
-                            $regularRows = range(0, $rowRegular - 1); // Các hàng ghế thường
-
-                            $doubleRows =
-                                $rowDouble > 0 ? range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1) : []; // Các hàng ghế đôi
-                            $doubleRows = range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1);
-                            $vipRows = range($seatTemplate->row_regular, $matrix['max_row'] - $rowDouble - 1);
-                        @endphp
-                        @if (!$seatTemplate->is_publish)
-                            <input type="hidden" name="seat_structure" id="seatStructure">
-                            <input type="hidden" name="action" id="formAction">
-                            <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
-                                <tbody>
-                                    @for ($row = 0; $row < $matrix['max_row']; $row++)
+                                    <div class="col-md-4 mb-2">
+                                        <label for="branchId" class="form-label">
+                                            Ma trận ghế:</label>
                                         @php
-                                            $rowClass = '';
-                                            $isAllRegular = $isAllVip = $isAllDouble = false;
-
-                                            if (in_array($row, $regularRows)) {
-                                                $rowTypeSeat = 1;
-                                                $rowClass = 'light-orange'; // Ghế thường
-                                                $isAllRegular = true;
-                                            } elseif (in_array($row, $doubleRows)) {
-                                                $rowClass = 'light-pink'; // Ghế đôi
-                                                $rowTypeSeat = 3;
-                                                $isAllDouble = true;
-                                            } else {
-                                                $rowClass = 'light-blue'; // Ghế VIP
-                                                $isAllVip = true;
-                                                $rowTypeSeat = 2;
-                                            }
+                                            $matrixSeatTemplate = App\Models\SeatTemplate::getMatrixById($seatTemplate->matrix_id,);
                                         @endphp
-                                        <tr data-row-type-seat={{ $rowTypeSeat }}>
-                                            <td class="box-item">{{ chr(65 + $row) }}</td>
-                                            @for ($col = 0; $col < $matrix['max_col']; $col++)
-                                                @php
-                                                    // Kiểm tra xem ô hiện tại có trong seatMap không
-                                                    $seatType =
-                                                        isset($seatMap[chr(65 + $row)]) &&
-                                                        isset($seatMap[chr(65 + $row)][$col + 1])
-                                                            ? $seatMap[chr(65 + $row)][$col + 1]
-                                                            : null;
-                                                @endphp
-                                                @if ($seatType == 3)
-                                                    <!-- Nếu là ghế đôi -->
-                                                    <td class="box-item border-1 {{ $rowClass }}"
-                                                        data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}
-                                                        colspan="2">
-                                                        <div class="box-item-seat" data-type-seat-id="3">
-                                                            <!-- 3 cho ghế đôi -->
-                                                            <img src="{{ asset('svg/seat-double.svg') }}" class='seat'
-                                                                width="90%">
-                                                        </div>
-                                                    </td>
-                                                    <td class="box-item border-1 {{ $rowClass }}" style="display: none;"
-                                                        data-row="{{ chr(65 + $row) }}" data-col={{ $col + 2 }}
-                                                        data-type-seat-id="3">
-                                                        <div class="box-item-seat" data-type-seat-id="3">
-                                                            <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
-                                                                width="60%">
-                                                        </div>
-                                                    </td>
-                                                    @php $col++; @endphp
-                                                @else
-                                                    <td class="box-item border-1 {{ $rowClass }}"
-                                                        data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}>
-                                                        <div class="box-item-seat"
-                                                            data-type-seat-id="{{ $seatType ?? (in_array($row, $regularRows) ? 1 : (in_array($row, $doubleRows) ? 3 : 2)) }}">
-                                                            @switch($seatType)
-                                                                @case(1)
-                                                                    <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                @break
 
-                                                                @case(2)
-                                                                    <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                @break
+                                        <input type="text"
+                                            value="{{ $matrixSeatTemplate['name'] }}" disabled class='form-control'>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label for="description" class="form-label">
+                                            <span class="text-danger">*</span> Mô tả:</label>
+                                        <textarea name="description" id="" cols="30" rows="2" class='form-control'>{{ $seatTemplate->description }}</textarea>
 
-                                                                @default
-                                                                    <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
-                                                                        width="60%">
-                                                            @endswitch
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            @endfor
-                                            <td class='box-item border-1'>
-                                                <button type="button" class="btn btn-info btn-select-all btn-sm "
-                                                    data-row="{{ chr(65 + $row) }}"> <i
-                                                        class="ri-add-line align-bottom"></i></button>
-                                            </td>
-                                            <td class='box-item border-1'>
-                                                <button type="button" class="btn btn-danger btn-remove-all btn-sm "
-                                                    data-row="{{ chr(65 + $row) }}"> <i
-                                                        class="mdi mdi-trash-can-outline "></i></button>
-
-                                            </td>
-
-                                        </tr>
-                                    @endfor
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="srceen w-75 mx-auto mb-4">
-                                Màn Hình Chiếu
+                                    </div>
+                                </div>
                             </div>
-                            <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
-                                <tbody>
-                                    @for ($row = 0; $row < $matrix['max_row']; $row++)
-                                        <tr>
-                                            <td class="box-item">{{ chr(65 + $row) }}</td>
-                                            @for ($col = 0; $col < $matrix['max_col']; $col++)
-                                                @php
-                                                    // Kiểm tra xem ô hiện tại có trong seatMap không
-                                                    $seatType =
-                                                        isset($seatMap[chr(65 + $row)]) &&
-                                                        isset($seatMap[chr(65 + $row)][$col + 1])
-                                                            ? $seatMap[chr(65 + $row)][$col + 1]
-                                                            : null;
-                                                @endphp
-                                                @if ($seatType == 3)
-                                                    <!-- Nếu là ghế đôi -->
-                                                    <td class="box-item" colspan="2">
-                                                        <div class="seat-item">
-                                                            <!-- 3 cho ghế đôi -->
-                                                            <img src="{{ asset('svg/seat-double.svg') }}" class='seat'
-                                                                width="100%">
-                                                            <span
-                                                                class="seat-label-double">{{ chr(65 + $row) . ($col + 1) }}
-                                                                {{ chr(65 + $row) . ($col + 2) }}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="box-item" style="display: none;">
-                                                        <div class="seat-item">
-                                                            <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
-                                                                width="60%">
-                                                        </div>
-                                                    </td>
-                                                    @php $col++; @endphp
-                                                @else
-                                                    <td class="box-item">
-                                                        <div class="seat-item">
-                                                            @switch($seatType)
-                                                                @case(1)
-                                                                    <img src="{{ asset('svg/seat-regular.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                    <span class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
-                                                                @break
+                        </div>
+                    </div> --}}
+                    <div class="card">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
+                        </div><!-- end card header -->
+                        <div class="card-body mb-3">
 
-                                                                @case(2)
-                                                                    <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
-                                                                        width="100%">
-                                                                    <span class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
-                                                                @break
-                                                            @endswitch
+                            @php
+                                $rowRegular = App\Models\SeatTemplate::ROW_REGULAR;
+                                $rowDouble = App\Models\SeatTemplate::ROW_DOUBLE;
+                                $regularRows = range(0, $rowRegular - 1); // Các hàng ghế thường
 
-                                                        </div>
-                                                    </td>
-                                                @endif
-                                            @endfor
-                                        </tr>
-                                    @endfor
-                                </tbody>
-                            </table>
-                        @endif
+                                $doubleRows =
+                                    $rowDouble > 0
+                                        ? range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1)
+                                        : []; // Các hàng ghế đôi
+                                $doubleRows = range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1);
+                                $vipRows = range($seatTemplate->row_regular, $matrix['max_row'] - $rowDouble - 1);
+                            @endphp
+                            @if (!$seatTemplate->is_publish)
+                                <input type="hidden" name="seat_structure" id="seatStructure">
+                                <input type="hidden" name="action" id="formAction">
+                                <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
+                                    <tbody>
+                                        @for ($row = 0; $row < $matrix['max_row']; $row++)
+                                            @php
+                                                $rowClass = '';
+                                                $isAllRegular = $isAllVip = $isAllDouble = false;
+
+                                                if (in_array($row, $regularRows)) {
+                                                    $rowTypeSeat = 1;
+                                                    $rowClass = 'light-orange'; // Ghế thường
+                                                    $isAllRegular = true;
+                                                } elseif (in_array($row, $doubleRows)) {
+                                                    $rowClass = 'light-pink'; // Ghế đôi
+                                                    $rowTypeSeat = 3;
+                                                    $isAllDouble = true;
+                                                } else {
+                                                    $rowClass = 'light-blue'; // Ghế VIP
+                                                    $isAllVip = true;
+                                                    $rowTypeSeat = 2;
+                                                }
+                                            @endphp
+                                            <tr data-row-type-seat={{ $rowTypeSeat }}>
+                                                <td class="box-item">{{ chr(65 + $row) }}</td>
+                                                @for ($col = 0; $col < $matrix['max_col']; $col++)
+                                                    @php
+                                                        // Kiểm tra xem ô hiện tại có trong seatMap không
+                                                        $seatType =
+                                                            isset($seatMap[chr(65 + $row)]) &&
+                                                            isset($seatMap[chr(65 + $row)][$col + 1])
+                                                                ? $seatMap[chr(65 + $row)][$col + 1]
+                                                                : null;
+                                                    @endphp
+                                                    @if ($seatType == 3)
+                                                        <!-- Nếu là ghế đôi -->
+                                                        <td class="box-item border-1 {{ $rowClass }}"
+                                                            data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}
+                                                            colspan="2">
+                                                            <div class="box-item-seat" data-type-seat-id="3">
+                                                                <!-- 3 cho ghế đôi -->
+                                                                <img src="{{ asset('svg/seat-double.svg') }}" class='seat'
+                                                                    width="90%">
+                                                            </div>
+                                                        </td>
+                                                        <td class="box-item border-1 {{ $rowClass }}"
+                                                            style="display: none;" data-row="{{ chr(65 + $row) }}"
+                                                            data-col={{ $col + 2 }} data-type-seat-id="3">
+                                                            <div class="box-item-seat" data-type-seat-id="3">
+                                                                <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
+                                                                    width="60%">
+                                                            </div>
+                                                        </td>
+                                                        @php $col++; @endphp
+                                                    @else
+                                                        <td class="box-item border-1 {{ $rowClass }}"
+                                                            data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}>
+                                                            <div class="box-item-seat"
+                                                                data-type-seat-id="{{ $seatType ?? (in_array($row, $regularRows) ? 1 : (in_array($row, $doubleRows) ? 3 : 2)) }}">
+                                                                @switch($seatType)
+                                                                    @case(1)
+                                                                        <img src="{{ asset('svg/seat-regular.svg') }}"
+                                                                            class='seat' width="100%">
+                                                                    @break
+
+                                                                    @case(2)
+                                                                        <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
+                                                                            width="100%">
+                                                                    @break
+
+                                                                    @default
+                                                                        <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
+                                                                            width="60%">
+                                                                @endswitch
+                                                            </div>
+                                                        </td>
+                                                    @endif
+                                                @endfor
+                                                <td class='box-item border-1'>
+                                                    <button type="button" class="btn btn-info btn-select-all btn-sm "
+                                                        data-row="{{ chr(65 + $row) }}"> <i
+                                                            class="ri-add-line align-bottom"></i></button>
+                                                </td>
+                                                <td class='box-item border-1'>
+                                                    <button type="button" class="btn btn-danger btn-remove-all btn-sm "
+                                                        data-row="{{ chr(65 + $row) }}"> <i
+                                                            class="mdi mdi-trash-can-outline "></i></button>
+
+                                                </td>
+
+                                            </tr>
+                                        @endfor
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="srceen w-75 mx-auto mb-4">
+                                    Màn Hình Chiếu
+                                </div>
+                                <table class="table-chart-chair table-none align-middle mx-auto text-center mb-5">
+                                    <tbody>
+                                        @for ($row = 0; $row < $matrix['max_row']; $row++)
+                                            <tr>
+                                                <td class="box-item">{{ chr(65 + $row) }}</td>
+                                                @for ($col = 0; $col < $matrix['max_col']; $col++)
+                                                    @php
+                                                        // Kiểm tra xem ô hiện tại có trong seatMap không
+                                                        $seatType =
+                                                            isset($seatMap[chr(65 + $row)]) &&
+                                                            isset($seatMap[chr(65 + $row)][$col + 1])
+                                                                ? $seatMap[chr(65 + $row)][$col + 1]
+                                                                : null;
+                                                    @endphp
+                                                    @if ($seatType == 3)
+                                                        <!-- Nếu là ghế đôi -->
+                                                        <td class="box-item" colspan="2">
+                                                            <div class="seat-item">
+                                                                <!-- 3 cho ghế đôi -->
+                                                                <img src="{{ asset('svg/seat-double.svg') }}"
+                                                                    class='seat' width="100%">
+                                                                <span
+                                                                    class="seat-label-double">{{ chr(65 + $row) . ($col + 1) }}
+                                                                    {{ chr(65 + $row) . ($col + 2) }}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="box-item" style="display: none;">
+                                                            <div class="seat-item">
+                                                                <img src="{{ asset('svg/seat-add.svg') }}" class='seat'
+                                                                    width="60%">
+                                                            </div>
+                                                        </td>
+                                                        @php $col++; @endphp
+                                                    @else
+                                                        <td class="box-item">
+                                                            <div class="seat-item">
+                                                                @switch($seatType)
+                                                                    @case(1)
+                                                                        <img src="{{ asset('svg/seat-regular.svg') }}"
+                                                                            class='seat' width="100%">
+                                                                        <span
+                                                                            class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
+                                                                    @break
+
+                                                                    @case(2)
+                                                                        <img src="{{ asset('svg/seat-vip.svg') }}" class='seat'
+                                                                            width="100%">
+                                                                        <span
+                                                                            class="seat-label">{{ chr(65 + $row) . $col + 1 }}</span>
+                                                                    @break
+                                                                @endswitch
+
+                                                            </div>
+                                                        </td>
+                                                    @endif
+                                                @endfor
+                                            </tr>
+                                        @endfor
+                                    </tbody>
+                                </table>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -479,7 +519,7 @@
                                     tdElement.colSpan = 2; // Tăng colSpan
                                     nextTd.style.display = 'none'; // Ẩn ghế bên phải
                                     img.src =
-                                    "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
+                                        "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
                                     img.style.width = "90%"; // Đặt lại kích thước
                                     i++; // Bỏ qua ghế bên phải vì đã ghép đôi
                                 } else if (i > 0 && canMakeDoubleSeat(seats[i - 1].closest('td'))) {
@@ -489,7 +529,7 @@
                                     tdElement.style.display = 'none'; // Ẩn ghế hiện tại
                                     var previousImg = previousTd.querySelector('img');
                                     previousImg.src =
-                                    "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
+                                        "{{ asset('svg/seat-double.svg') }}"; // Cập nhật hình ảnh ghế đôi
                                     previousImg.style.width = "90%"; // Đặt lại kích thước
                                 }
                             }

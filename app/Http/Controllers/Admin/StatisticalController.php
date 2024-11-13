@@ -121,7 +121,7 @@ class StatisticalController extends Controller
         $branches = Branch::all();
 
         // Lấy giá trị mặc định cho start_date và end_date (1 tháng gần nhất)
-        $startDate = $request->input('start_date', Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d\TH:i'));
+        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d\TH:i'));
         $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d\TH:i'));
 
         // Khởi tạo query cho doanh thu theo phim
