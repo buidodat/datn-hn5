@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Cinema;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,23 +116,59 @@ class StatisticalController extends Controller
     }
 
 
-    public function statisticalMovies()
+    public function statisticalMovies(Request $request)
     {
-
         $branches = Branch::all();
 
-        // doanh thu theo phim
-        $startDate = '2023-11-01';
-        $endDate = '2024-11-30';
+        // Lấy giá trị mặc định cho start_date và end_date (1 tháng gần nhất)
+        $startDate = $request->input('start_date', Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d\TH:i'));
+        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d\TH:i'));
 
-        $revenueByMovies = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
-            ->whereBetween('tickets.created_at', [$startDate, $endDate])
+        // Khởi tạo query cho doanh thu theo phim
+        $query = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
             ->select('movies.name', DB::raw('SUM(tickets.total_price) as total_revenue'))
-            ->groupBy('movies.id', 'movies.name')
-            ->get();
+            ->groupBy('movies.id', 'movies.name');
 
-        return view('admin.statisticals.statistical-movies', compact('revenueByMovies', 'branches'));
+        // Áp dụng lọc theo chi nhánh nếu có
+        if ($request->has('branch_id') && $request->input('branch_id') != '') {
+            $cinemaIds = Cinema::where('branch_id', $request->input('branch_id'))->pluck('id');
+            $query->whereIn('tickets.cinema_id', $cinemaIds);
+        }
+
+        // Áp dụng lọc theo rạp nếu có
+        if ($request->has('cinema_id') && $request->input('cinema_id') != '') {
+            $query->where('tickets.cinema_id', $request->input('cinema_id'));
+        }
+
+        // Áp dụng lọc theo ngày nếu có
+        if (
+            $request->has('start_date') && $request->has('end_date') &&
+            $request->input('start_date') != '' && $request->input('end_date') != ''
+        ) {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+        } else {
+            // Nếu không có start_date và end_date, mặc định lấy 1 tháng gần nhất
+            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+        }
+
+        // Lấy kết quả doanh thu theo phim
+        $revenueByMovies = $query->get();
+        // dd($revenueByMovies->toArray());
+
+
+        // Thống kê tổng phim
+        $totalMovies = $revenueByMovies->count('name');
+        // dd($totalMovies);
+
+        // Thống kê tổng doanh thu
+        $totalRevenue = $revenueByMovies->sum('total_revenue');
+        // dd($totalRevenue);
+
+        return view('admin.statisticals.statistical-movies', compact('revenueByMovies', 'branches', 'startDate', 'endDate', 'totalMovies', 'totalRevenue'));
     }
+
 
     public function statisticalTickets()
     {
