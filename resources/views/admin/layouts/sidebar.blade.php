@@ -66,6 +66,17 @@
                         <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.statistical-cinemas') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal">
+                                        <span data-key="t-dashboards">Thống kê rạp</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="menu-dropdown collapse" id="chart" style="">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.statistical-movies') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <span data-key="t-dashboards">Thống kê phim</span>
@@ -85,7 +96,7 @@
                             </ul>
                         </div>
 
-                        <div class="menu-dropdown collapse" id="chart" style="">
+                        {{-- <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.statistical.revenue') }}" class="nav-link menu-link"
@@ -94,7 +105,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </li>
                 @endcanany
 

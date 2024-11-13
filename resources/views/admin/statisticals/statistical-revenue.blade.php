@@ -10,7 +10,7 @@
             <div class="h-100">
                 <div class="row">
                     <div class="col-md-10">
-                        <form action="{{ route('admin.statistical.revenue') }}" method="GET">
+                        <form action="" method="GET">
                             {{-- TÌm kiếm --}}
                             <div class="row">
                                 @if (Auth::user()->hasRole('System Admin'))
@@ -54,7 +54,7 @@
 
                     </div>
                     <div class="col-md-2" align="right">
-                        <a href="{{ route('admin.statistical.revenue') }}" class="btn btn-primary mb-3 ">Tổng quan</a>
+                        <a href="" class="btn btn-primary mb-3 ">Tổng quan</a>
                     </div>
                 </div>
 

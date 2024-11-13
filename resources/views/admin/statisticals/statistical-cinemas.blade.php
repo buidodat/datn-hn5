@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thống kê phim
+    Thống kê rạp
 @endsection
 
 @section('content')
@@ -57,47 +57,19 @@
                         <a href="" class="btn btn-primary mb-3 ">Tổng quan</a>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header border-0 align-items-center">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu của phim</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo rạp</h4>
                             </div><!-- end card header -->
 
-                            <div class="card-header p-0 border-0 bg-light-subtle">
-                                <div class="row g-0 text-center">
-                                    <div class="col-6 col-sm-4">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="20">0</span>
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng phim</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-4">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="150">0</span>
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng hóa đơn</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-4">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value"
-                                                    data-target="20000000">0</span>VND
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng doanh thu</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- end card header -->
-
-                            <canvas id="revenueChartByMovies" height="460"></canvas>
-
+                            <canvas id="revenueChartCinema" style="width: 300px; height: 100px;"></canvas>
                         </div><!-- end card -->
                     </div><!-- end col -->
-                </div>               
+                </div>
+
             </div> <!-- end .h-100-->
 
         </div> <!-- end col -->
@@ -157,46 +129,51 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
-        // thống kê doanh thu theo phim
-        const revenueChartByMovies = document.getElementById('revenueChartByMovies').getContext('2d');
-        const revenueChartByMoviesData = {
-            labels: @json($revenueByMovies->pluck('name')),
-            datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: @json($revenueByMovies->pluck('total_revenue')),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        };
 
-        new Chart(revenueChartByMovies, {
-            type: 'bar', // Biểu đồ cột
-            data: revenueChartByMoviesData,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Doanh thu (VNĐ)',
-                            font: {
-                                size: 14 // Tăng cỡ chữ tại đây
+        //Biểu đồ theo rạp
+        document.addEventListener('DOMContentLoaded', function() {
+            const revenueDataCinema = {
+                labels: @json($revenueByCinema->pluck('cinema_name')), // Lấy danh sách tên rạp
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: @json($revenueByCinema->pluck('total_revenue')), // Lấy doanh thu của từng rạp
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const ctx = document.getElementById('revenueChartCinema').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: revenueDataCinema,
+                options: {
+                    indexAxis: 'y', // Hiển thị biểu đồ cột ngang
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Doanh thu (VNĐ)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Rạp'
                             }
                         }
                     },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Tên phim',
-                            font: {
-                                size: 14 // Tăng cỡ chữ tại đây
-                            }
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
-            }
+            });
+
+
         });
     </script>
 @endsection
