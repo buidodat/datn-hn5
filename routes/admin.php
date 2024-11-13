@@ -171,5 +171,7 @@ Route::put('site-settings/update', [SiteSettingController::class, 'update'])->na
 Route::post('site-settings/reset', [SiteSettingController::class, 'resetToDefault'])->name('site-settings.reset');
 
 // thống kê
+Route::get('/statistical-movies', [StatisticalController::class, 'statisticalMovies'])->name('statistical-movies');
+
 Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
 Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');

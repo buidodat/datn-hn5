@@ -17,6 +17,7 @@ class StatisticalController extends Controller
     {
         $this->middleware('can:Danh sách thống kê')->only('revenue');
     }
+
     public function revenue()
     {
         $branches = Branch::all();
@@ -74,5 +75,24 @@ class StatisticalController extends Controller
             ->get();
 
         return view('admin.statisticals.revenue', compact('revenueByMovies', 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue', 'revenueByCinema', 'revenueTimeSlot'));
+    }
+
+
+    public function statisticalMovies(){
+        $branches = Branch::all();
+
+
+        // doanh thu theo phim
+        $startDate = '2023-11-01';
+        $endDate = '2024-11-30';
+
+        $revenueByMovies = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
+            ->whereBetween('tickets.created_at', [$startDate, $endDate])
+            ->select('movies.name', DB::raw('SUM(tickets.total_price) as total_revenue'))
+            ->groupBy('movies.id', 'movies.name')
+            ->get();
+
+        return view('admin.statisticals.statistical-movies', compact('revenueByMovies', 'branches'));
+
     }
 }
