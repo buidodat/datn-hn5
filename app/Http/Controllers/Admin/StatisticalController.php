@@ -128,4 +128,23 @@ class StatisticalController extends Controller
 
         return view('admin.statisticals.statistical-tickets', compact('revenueTimeSlot', 'branches'));
     }
+
+
+    public function statisticalRevenue(){
+
+        $branches = Branch::all();
+
+        // Thống kê doanh thu theo Ngày/Tháng/Năm
+        $dailyRevenue = Ticket::selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
+            ->groupBy('date')->orderBy('date', 'asc')->get();
+        $weeklyRevenue = Ticket::selectRaw("WEEK(created_at) as week, SUM(total_price) as total_revenue")
+            ->groupBy('week')->orderBy('week', 'asc')->get();
+        $monthlyRevenue = Ticket::selectRaw("MONTH(created_at) as month, SUM(total_price) as total_revenue")
+            ->groupBy('month')->orderBy('month', 'asc')->get();
+        $yearlyRevenue = Ticket::selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
+            ->groupBy('year')->orderBy('year', 'asc')->get();
+
+
+        return view('admin.statisticals.statistical-revenue', compact( 'branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue'));
+    }
 }

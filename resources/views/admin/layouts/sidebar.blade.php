@@ -55,6 +55,17 @@
                         <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
+                                    <a href="{{ route('admin.statistical-revenue') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal">
+                                        <span data-key="t-dashboards">Thống kê doanh thu</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="menu-dropdown collapse" id="chart" style="">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.statistical-movies') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <span data-key="t-dashboards">Thống kê phim</span>
