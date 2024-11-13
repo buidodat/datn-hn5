@@ -34,11 +34,8 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-<<<<<<< HEAD
-=======
                
                     
->>>>>>> 2fa7453c11f41188c1603fd3d8584c1b2f5e1c8c
                 @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
                     {{-- Dashboard --}}
                     <li class="nav-item">
