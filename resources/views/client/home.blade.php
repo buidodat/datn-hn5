@@ -1,3 +1,4 @@
+
 @extends('client.layouts.master')
 
 @section('title')
@@ -81,11 +82,16 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}   </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
+                                                    <p><span class='text-bold'>Ngày khởi chiếu:</span>
+                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                    </p>
+
+
 
                                                 </div>
 
@@ -108,6 +114,7 @@
 
 
                                             </div>
+
                                         </div>
                                     @endforeach
                                 </div>
@@ -141,8 +148,7 @@
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot"
-                                                            src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
                                                     @php
@@ -177,9 +183,9 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
 
@@ -236,16 +242,14 @@
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
-                                                        <img class="is_hot"
-                                                            src="{{ asset('theme/client/images/hot.png') }}"
+                                                        <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
                                                             alt="">
                                                     @endif
                                                     @php
                                                         $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
                                                     @endphp
                                                     @if ($imageTag)
-                                                        <img class="tag-rating" src="{{ $imageTag }}"
-                                                            alt="">
+                                                        <img class="tag-rating" src="{{ $imageTag }}" alt="">
                                                     @endif
                                                     @php
                                                         $url = $movie->img_thumbnail;
@@ -273,7 +277,7 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
                                                     <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
@@ -359,7 +363,7 @@
                                             </div>
                                         </div>
                                         <div class="prs_feature_img_cont">
-                                            <h2>{!! Str::limit($postItem->title, 30) !!}</h2>
+                                            <h2>{!! Str::limit($postItem->title, 28) !!}</h2>
                                             <br>
                                             <div class="prs_ft_small_cont_center">
                                                 {!! Str::limit($postItem->description, 70) !!}
@@ -565,10 +569,12 @@
 @section('scripts')
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
     <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
-    {{-- <link rel="stylesheet" href="{{ asset('theme/admin/assets/css/mainstyle.css') }}"> --}}
+@endsection
+
+@section('style-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+    {{-- <script>
         // Ajax load xem thêm 3 tab
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -659,7 +665,5 @@
                     .catch(error => console.error('Error:', error));
             })
         });
-
-    </script>
+    </script> --}}
 @endsection
-

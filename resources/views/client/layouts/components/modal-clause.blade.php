@@ -23,7 +23,7 @@
             background-color: #fff;
             border-radius: 4px;
             width: 80%;
-            max-width: 600px;
+            max-width: 800px;
             text-align: left;
             color: #333;
             max-height: 100%;
@@ -169,7 +169,8 @@
 
 
 
-                <p style="padding-bottom: 0px">6. Theo quy định của Cục Điện Ảnh, một số phim sẽ không dành cho khán giả dưới 13, hoặc 16, hoặc 18
+                <p style="padding-bottom: 0px">6. Theo quy định của Cục Điện Ảnh, một số phim sẽ không dành cho khán giả
+                    dưới 13, hoặc 16, hoặc 18
                     tuổi. Khi đến lấy vé tại quầy vé, nhân viên có thể yêu cầu Quý khách hàng xuất trình giấy tờ tùy
                     thân (Giấy khai sinh, Căn cước công dân, Thẻ học sinh, Thẻ sinh viên, Bằng lái xe hoặc các giấy tờ
                     tùy thân khác) để xác định độ tuổi chính xác của Quý khách hàng. Quý khách hàng vui lòng lưu ý và
@@ -179,19 +180,23 @@
                     Cinemas áp dụng quy định về khung giờ chiếu phim cho trẻ em, áp dụng cho toàn bộ hệ thống rạp chiếu
                     phim như sau:</p>
 
-                <li>Giờ chiếu phim cho trẻ em dưới 13 tuổi tại tất cả các cụm rạp Poly Cinemas kết thúc trước 22 giờ.</li>
-                <li>Giờ chiếu phim cho trẻ em dưới 16 tuổi tại tất cả các cụm rạp Poly Cinemas kết thúc trước 23 giờ.</li>
+                <li>Giờ chiếu phim cho trẻ em dưới 13 tuổi tại tất cả các cụm rạp Poly Cinemas kết thúc trước 22 giờ.
+                </li>
+                <li>Giờ chiếu phim cho trẻ em dưới 16 tuổi tại tất cả các cụm rạp Poly Cinemas kết thúc trước 23 giờ.
+                </li>
                 <p>
                     Lưu ý, Ban Quản Lý tại các cụm rạp chiếu phim Poly Cinemas có quyền kiểm tra và từ chối yêu cầu xem
                     phim của Quý khách hàng nếu Quý khách hàng không tuân thủ quy định về độ tuổi xem phim.</p>
 
 
 
-                <p style="padding-bottom: 0px">7. Vì một số sự cố kỹ thuật bất khả kháng, suất chiếu có thể bị hủy để đảm bảo an toàn tối đa cho
+                <p style="padding-bottom: 0px">7. Vì một số sự cố kỹ thuật bất khả kháng, suất chiếu có thể bị hủy để
+                    đảm bảo an toàn tối đa cho
                     khách hàng, Poly Cinemas sẽ thực hiện hoàn trả số tiền giao dịch về tài khoản mà Quý khách đã thực
                     hiện mua vé. Poly Cinemas sẽ liên hệ với Quý khách qua các thông tin liên hệ trong Thông tin thành
                     viên để thông báo và xác nhận.</p>
-                <p style="padding-bottom: 0px">Sau khi đã xác nhận, tùy theo từng loại tài khoản mà Quý khách sử dụng và tùy theo chính sách của các ngân hàng mà việc hoàn tiền sẽ có thời gian khác nhau:</p>
+                <p style="padding-bottom: 0px">Sau khi đã xác nhận, tùy theo từng loại tài khoản mà Quý khách sử dụng và
+                    tùy theo chính sách của các ngân hàng mà việc hoàn tiền sẽ có thời gian khác nhau:</p>
                 <li>Ví điện tử: 5-10 ngày làm việc</li>
                 <li>Thẻ nội địa: 3-5 ngày làm việc</li>
             </div>
@@ -208,12 +213,14 @@
         // Đóng modal khi bấm vào nút đóng
         closeModal.onclick = function() {
             modal.style.display = "none";
+            document.body.classList.remove('no-scroll');
         }
 
         // Đóng modal khi bấm ra ngoài modal
         window.onclick = function(event) {
             if (event.target === modal) {
                 modal.style.display = "none";
+                document.body.classList.remove('no-scroll');
             }
         }
     </script>

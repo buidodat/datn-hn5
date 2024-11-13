@@ -105,26 +105,26 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa mẫu sơ đồ ghế')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateSeatTemplateModal"
                                                                 data-seat-template-id="{{ $item->id }}"
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
-                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                                data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
-                                                            ghế</a>
+
 
 
                                                         @if (!$item->is_publish)
                                                             @can('Xóa mẫu sơ đồ ghế')
-                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                    bỏ</a>
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
                                                         @endif
                                                     </div>
@@ -180,17 +180,18 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa mẫu sơ đồ ghế')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateSeatTemplateModal"
                                                                 data-seat-template-id="{{ $item->id }}"
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
-                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                                data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
-                                                            ghế</a>
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -247,25 +248,25 @@
                                                 <div class='seat-template-name'>
                                                     <div class='mb-1 fs-6'> {{ $item->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small"
+                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa mẫu sơ đồ ghế')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateSeatTemplateModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateSeatTemplateModal"
                                                                 data-seat-template-id="{{ $item->id }}"
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
-                                                                data-is-publish={{ $item->is_publish }}>Chỉnh sửa</a>
+                                                                data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.seat-templates.edit', $item) }}">Sơ đồ
-                                                            ghế</a>
+
 
 
                                                         @if (!$item->is_publish)
                                                             @can('Xóa mẫu sơ đồ ghế')
-                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                    bỏ</a>
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
                                                         @endif
                                                     </div>

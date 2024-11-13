@@ -1141,7 +1141,7 @@
         document.getElementById('btnPayment').addEventListener('click', function() {
             // Kiểm tra xem checkbox đã được chọn hay chưa
             if (!document.getElementById('checkbox').checked) {
-                alert('Bạn chưa chọn đồng ý với điều kiện và điều khoản của chúng tôi.');
+                alert('Bạn chưa đồng ý với điều kiện và điều khoản của chúng tôi.');
             } else {
                 // Gửi form khi checkbox đã được chọn
                 document.getElementById('payment-form').submit();
@@ -1194,6 +1194,7 @@
         // Hiển thị modal khi bấm vào "tại đây"
         showModal.onclick = function() {
             modal.style.display = "flex";
+            document.body.classList.add('no-scroll');
         }
     </script>
 @endsection

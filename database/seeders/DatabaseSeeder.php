@@ -54,16 +54,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //20 bản ghi movie và 40 bản ghi movie_version
-        $img_thumbnails = [
-            'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f27%2f400x633%2D13%2D093512%2D270824%2D67.jpg',
-            'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f08%2fscreenshot%2D2024%2D08%2D08%2D151702%2D151742%2D080824%2D61.png',
-            'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f16%2f400x633%2D5%2D161700%2D160824%2D33.jpg',
-            'https://files.betacorp.vn/media%2fimages%2f2024%2f08%2f21%2fposter%2Dhellboy%2D105547%2D210824%2D98.jpg',
-        ];
         $url_youtubes = [
             'VmJ4oB3Xguo',
             'XuX2HKeMkVw',
-            'SGg9DxLFCtc'
+            'SGg9DxLFCtc','m6MF1MqsDhc','dNwuFYhwTAk','4oxoPMxBO6s','b1Yqng0uSWM','IK-eb2AbKQ','Tx5JuN-5n8U','kMjlJkmt5nk','gTo9JwsmjT4','4rgYUipGJNo'
         ];
         $booleans = [
             true,
@@ -77,16 +71,59 @@ class DatabaseSeeder extends Seeder
         ];
 
         $ratings = ['P',  'T13', 'T16', 'T18', 'K'];
+        $categories = [
+            "Hành động, kịch tính",
+            "Phiêu lưu, khám phá",
+            "Kinh dị",
+            "Khoa học viễn tưởng",
+            "Tình cảm",
+            "Hài hước",
+            "Kịch, Hồi Hộp",
+            "Hoạt hình",
+            "Tâm lý",
+            "Âm nhạc, phiêu lưu",
+        ];
+        $movieNames =  [
+            "Moana 2: Hành Trình Của Moana",
+            "Thợ Săn Thủ Lĩnh",
+            "Nhím Sonic III",
+            "Spring Garden: Ai Oán Trong Vườn Xuân",
+            "Tee Yod: Quỷ Ăn Tạng II",
+            "Vùng Đất Bị Nguyền Rủa",
+            "Gladiator: Võ Sĩ Giác Đấu II",
+            "Elli và Bí Ẩn Chiếc Tàu Ma",
+            "Sắc Màu Của Hạnh Phúc",
+            "OZI: Phi Vụ Rừng Xanh",
+            "Tee Yod: Quỷ Ăn Tạng",
+            "Venom: Kèo Cuối",
+            "Ngày Xưa Có Một Chuyện Tình",
+            "Cười Xuyên Biên Giới",
+            "Thiên Đường Quả Báo",
+            "Cu Li Không Bao Giờ Khóc",
+            "RED ONE: Mật mã đỏ",
+            "Vây Hãm Tại Đài Bắc",
+            'Học Viện Anh Hùng',
+            "Linh Miêu",
+            'Công Tử Bạc Liêu',
+            "CAPTAIN AMERICA: BRAVE NEW WORLD",
+            "Địa Đạo: Mặt Trời Trong Bóng Tối",
+            "Thám Tử Kiên: Kỳ Án Không Đầu",
+            'Mufasa: Vua Sư Tử'
+        ];
 
-        for ($i = 0; $i < 35; $i++) {
+
+        for ($i = 0; $i < 25; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
             $endDate = fake()->dateTimeBetween($releaseDate, now()->addMonths(5));
             $rating = $ratings[array_rand($ratings)];
+            $x = ($i % 21) + 1;
+
+            $img = "images/movies/". $x . ".png";
             $movie = DB::table('movies')->insertGetId([
-                'name' => $name = fake()->unique()->name(),
-                'slug' => Str::slug($name),
-                'category' => fake()->word,
-                'img_thumbnail' => $img_thumbnails[rand(0, 3)],
+                'name' => $movieNames[$i],
+                'slug' => Str::slug($movieNames[$i]),
+                'category' =>  $categories[array_rand($categories)],
+                'img_thumbnail' => asset($img),
                 'description' => Str::limit(fake()->paragraph, 250),
                 'director' => fake()->name,
                 'cast' => fake()->name(),
@@ -167,14 +204,29 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['P201', 'L202', 'P303', 'P404'];
 
         // Tạo template ghế
-        $seatTemplate = SeatTemplate::create([
-            'name' => 'Template standard',
-            'description' => 'Mẫu sơ đồ ghế tiêu chuẩn gồm 4 hàng ghế thường , 6 hàng ghế vip, 2 hàng ghế đôi',
+         SeatTemplate::create([
+            'name' => 'Template Standard',
+            'description' => 'Mẫu sơ đồ ghế tiêu chuẩn.',
             'matrix_id' => 1, // ID matrix ví dụ
-            'seat_structure' => json_encode($this->generateSeatStructure()), // Cấu trúc ghế
+            'seat_structure' => $this->generateSeatStructure1(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
             'is_active' => 1, // Đang hoạt động
         ]);
+         SeatTemplate::create([
+            'name' => 'Template Large' ,
+            'description' => 'Mẫu sơ đồ ghế lớn.',
+            'matrix_id' => 3, // ID matrix ví dụ
+            'seat_structure' => $this->generateSeatStructure2(), // Cấu trúc ghế
+            'is_publish' => 1, // Đã publish
+            'is_active' => 1, // Đang hoạt động
+        ]);
+        function randomSeatTemplateId() {
+            // Tạo một số ngẫu nhiên từ 1 đến 100
+            $randomNumber = rand(1, 100);
+
+            // Xác suất 80% cho '1' và 20% cho '2'
+            return ($randomNumber <= 80) ? 1 : 2;
+        }
 
         foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
             // Lấy branch_id từ cinema_id
@@ -186,13 +238,15 @@ class DatabaseSeeder extends Seeder
                     'cinema_id' => $cinema_id,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
                     'name' => $room, // Tên phòng
-                    'seat_template_id' => $seatTemplate->id, // ID template ghế vừa tạo
+                    'seat_template_id' => randomSeatTemplateId(), // ID template ghế vừa tạo
                     'is_active' => 1,
+                    'is_publish' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
 
-                // Lấy cấu trúc ghế từ seat_template
+                $seatTemplateId = DB::table('rooms')->where('id', $roomId)->value('seat_template_id');
+                $seatTemplate = SeatTemplate::find($seatTemplateId);
                 $seatStructure = json_decode($seatTemplate->seat_structure, true);
 
                 $dataSeats = []; // Mảng lưu trữ ghế
@@ -1140,46 +1194,18 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 
-    private function generateSeatStructure()
+    private function generateSeatStructure1()
     {
-        $structure = [];
 
         // 4 hàng đầu tiên: Ghế thường
-        for ($y = 1; $y <= 4; $y++) {  // Hàng từ 1 đến 4
-            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
-                $structure[] = [
-                    'coordinates_x' => $x, // Cột
-                    'coordinates_y' => chr(64 + $y), // Hàng: A, B, C, D
-                    'type_seat_id' => 1, // Ghế thường
-                ];
-            }
-        }
+        $structure = "[{\"coordinates_x\":\"2\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"E\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"L\",\"type_seat_id\":\"3\"}]";
+        return $structure;
+    }
+    private function generateSeatStructure2()
+    {
 
-        // 7 hàng tiếp theo: Ghế VIP
-        for ($y = 5; $y <= 11; $y++) {  // Hàng từ 5 đến 11
-            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
-                $structure[] = [
-                    'coordinates_x' => $x, // Cột
-                    'coordinates_y' => chr(64 + $y), // Hàng: E, F, G, H, I, J, K
-                    'type_seat_id' => 2, // Ghế VIP
-                ];
-            }
-        }
-
-        // Hàng cuối cùng: Ghế đôi
-        for ($y = 12; $y <= 12; $y++) {  // Hàng 12
-            for ($x = 1; $x <= 12; $x++) {  // Cột từ 1 đến 12
-                if ($x % 2 == 0) {
-                    continue; // Chỉ giữ ghế lẻ (L1, L3, L5,...)
-                }
-                $structure[] = [
-                    'coordinates_x' => $x, // Cột
-                    'coordinates_y' => 'L', // Hàng: L1, L3,...
-                    'type_seat_id' => 3, // Ghế đôi
-                ];
-            }
-        }
-
+        // 4 hàng đầu tiên: Ghế thường
+        $structure = "[{\"coordinates_x\":\"2\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"A\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"B\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"C\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"D\",\"type_seat_id\":\"1\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"F\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"G\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"H\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"I\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"J\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"K\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"2\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"3\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"5\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"6\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"8\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"9\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"11\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"12\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"14\",\"coordinates_y\":\"L\",\"type_seat_id\":\"2\"},{\"coordinates_x\":\"1\",\"coordinates_y\":\"N\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"4\",\"coordinates_y\":\"N\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"7\",\"coordinates_y\":\"N\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"10\",\"coordinates_y\":\"N\",\"type_seat_id\":\"3\"},{\"coordinates_x\":\"13\",\"coordinates_y\":\"N\",\"type_seat_id\":\"3\"}]";
         return $structure;
     }
 }
