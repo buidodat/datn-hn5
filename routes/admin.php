@@ -173,3 +173,5 @@ Route::post('site-settings/reset', [SiteSettingController::class, 'resetToDefaul
 // thống kê
 Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
 Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
+
+

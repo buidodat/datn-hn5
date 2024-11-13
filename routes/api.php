@@ -34,6 +34,9 @@ Route::get('rooms/{movieId}',              [APIController::class, 'getRooms']);
 Route::get('movieVersions/{movieId}',      [APIController::class, 'getMovieVersion']);
 Route::get('getMovieDuration/{movieId}',   [APIController::class, 'getMovieDuration']);
 Route::get('typeRooms/{typeRoomId}',       [APIController::class, 'getTypeRooms']);
+Route::post('showtimes/deleteSelected', [APIController::class, 'deleteSelected'])->name('showtimes.deleteSelected');
+Route::post('showtimes/changeStatusSelected', [APIController::class, 'changeStatusSelected'])->name('showtimes.changeStatusSelected');
+
 
 Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
 
