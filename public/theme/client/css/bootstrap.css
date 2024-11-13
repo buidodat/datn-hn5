@@ -1620,6 +1620,16 @@ pre code {
 
 }
 
+/* .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+
+  .row {
+    overflow: hidden;
+  } */
 .row-bad {
     margin-right: -15px;
     margin-left: -15px;

@@ -127,33 +127,29 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small "
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa phòng chiếu')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateRoomModal"
                                                                 data-room-id="{{ $room->id }}"
                                                                 data-room-name="{{ $room->name }}"
                                                                 data-branch-id="{{ $room->branch_id }}"
                                                                 data-cinema-id="{{ $room->cinema_id }}"
                                                                 data-type-room-id="{{ $room->type_room_id }}"
                                                                 data-seat-template-id="{{ $room->seat_template_id }}"
-                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                                sửa</a>
+                                                                data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
-                                                            ghế</a>
+
 
 
                                                         @if (!$room->is_publish)
                                                             @can('Xóa phòng chiếu')
-                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                    bỏ</a>
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
                                                         @endif
 
 
@@ -162,8 +158,12 @@
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->where('is_active', true)->count() }}
-                                                / {{ $room->seats->count() }} chỗ ngồi</td>
+                                            @php
+                                                $seatActive = App\Models\Seat::getTotalSeat($room->id);
+                                                $seatBroken = App\Models\Seat::getTotalSeat($room->id, 0);
+                                            @endphp
+                                            <td>{{ $seatActive - $seatBroken }}
+                                                / {{ $seatActive }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -206,30 +206,26 @@
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small "
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa phòng chiếu')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateRoomModal"
                                                                 data-room-id="{{ $room->id }}"
                                                                 data-room-name="{{ $room->name }}"
                                                                 data-branch-id="{{ $room->branch_id }}"
                                                                 data-cinema-id="{{ $room->cinema_id }}"
                                                                 data-type-room-id="{{ $room->type_room_id }}"
                                                                 data-seat-template-id="{{ $room->seat_template_id }}"
-                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                                sửa</a>
+                                                                data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
-                                                            ghế</a>
+
                                                         @if (!$room->is_publish)
                                                             @can('Xóa phòng chiếu')
-                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                    bỏ</a>
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
                                                         @endif
 
                                                     </div>
@@ -237,8 +233,13 @@
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->where('is_active', true)->count() }}
-                                                / {{ $room->seats->count() }} chỗ ngồi</td>
+
+                                            @php
+                                                $totalSeat = App\Models\Seat::getTotalSeat($room->id);
+                                                $seatBroken = App\Models\Seat::getTotalSeat($room->id, 0);
+                                            @endphp
+                                            <td>{{ $totalSeat - $seatBroken }}
+                                                / {{ $totalSeat }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -274,38 +275,34 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
-            return $query->where('cinema_id', Auth::user()->cinema_id);
-        }) as $index => $room)
+                                            return $query->where('cinema_id', Auth::user()->cinema_id);
+                                        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
                                                 <div class='room-name'>
                                                     <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                     <div>
+                                                        <a class=" cursor-pointer text-primary small "
+                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
+                                                            ghế</a>
                                                         @can('Sửa phòng chiếu')
-                                                            <a class="cursor-pointer link-opacity-75-hover link-opacity-50 openUpdateRoomModal"
+                                                            <a class="cursor-pointer text-info small mx-1 openUpdateRoomModal"
                                                                 data-room-id="{{ $room->id }}"
                                                                 data-room-name="{{ $room->name }}"
                                                                 data-branch-id="{{ $room->branch_id }}"
                                                                 data-cinema-id="{{ $room->cinema_id }}"
                                                                 data-type-room-id="{{ $room->type_room_id }}"
                                                                 data-seat-template-id="{{ $room->seat_template_id }}"
-                                                                data-is-publish={{ $room->is_publish }}>Chỉnh
-                                                                sửa</a>
+                                                                data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
-                                                        <a class=" link-opacity-75-hover link-opacity-50  mx-1"
-                                                            href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
-                                                            ghế</a>
+
                                                         @if (!$room->is_publish)
                                                             @can('Xóa phòng chiếu')
-                                                                <a class="link-opacity-75-hover link-opacity-50"
+                                                                <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa
-                                                                    bỏ</a>
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
-                                                        @else
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
                                                         @endif
 
                                                     </div>
@@ -313,8 +310,12 @@
                                             </td>
                                             <td>{{ $room->cinema->name }}</td>
                                             <td>{{ $room->typeRoom->name }}</td>
-                                            <td>{{ $room->seats->where('is_active', true)->count() }}
-                                                / {{ $room->seats->count() }} chỗ ngồi</td>
+                                            @php
+                                                $seatActive = App\Models\Seat::getTotalSeat($room->id);
+                                                $seatBroken = App\Models\Seat::getTotalSeat($room->id, 0);
+                                            @endphp
+                                            <td>{{ $seatActive - $seatBroken }}
+                                                / {{ $seatActive }} chỗ ngồi</td>
                                             <td>
                                                 {!! $room->is_publish == 1
                                                     ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -359,17 +360,28 @@
                                                     <div class='room-name'>
                                                         <div class='mb-1 fs-6'> {{ $room->name }}</div>
                                                         <div>
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.show', $room) }}">Chi tiết</a>
-                                                            @can('Sửa phòng chiếu')
-                                                                <a
-                                                                    class="cursor-pointer link-opacity-75-hover link-opacity-50 mx-1">Chỉnh
-                                                                    sửa</a>
-                                                            @endcan
-                                                            <a class=" link-opacity-75-hover link-opacity-50 "
-                                                                href="{{ route('admin.rooms.edit', $room) }}">Sơ
-                                                                đồ
+                                                            <a class=" cursor-pointer text-primary small "
+                                                                href="{{ route('admin.rooms.edit', $room) }}">Sơ đồ
                                                                 ghế</a>
+                                                            @can('Sửa phòng chiếu')
+                                                                <a class="cursor-pointer text-info small mx-1 openUpdateRoomModal"
+                                                                    data-room-id="{{ $room->id }}"
+                                                                    data-room-name="{{ $room->name }}"
+                                                                    data-branch-id="{{ $room->branch_id }}"
+                                                                    data-cinema-id="{{ $room->cinema_id }}"
+                                                                    data-type-room-id="{{ $room->type_room_id }}"
+                                                                    data-seat-template-id="{{ $room->seat_template_id }}"
+                                                                    data-is-publish={{ $room->is_publish }}>Sửa</a>
+                                                            @endcan
+
+                                                            @if (!$room->is_publish)
+                                                                @can('Xóa phòng chiếu')
+                                                                    <a class="cursor-pointer text-danger small"
+                                                                        href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                        onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                                @endcan
+                                                            @endif
+
                                                         </div>
                                                     </div>
                                                 </td>

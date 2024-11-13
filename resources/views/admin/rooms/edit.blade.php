@@ -294,11 +294,11 @@
                                         <th colspan='2' class="text-center">
                                             @if ($room->is_publish)
                                                 Tổng
-                                                {{ $room->seats->where('is_active', true)->count() }}
+                                                {{ $totalSeat - $seatBroken }}
                                                 /
-                                                {{ $room->seats->count() }} chỗ ngồi
+                                                {{ $totalSeat }} chỗ ngồi
                                             @else
-                                                Tổng {{ $room->seats->count() }} chỗ ngồi
+                                                Tổng {{ $totalSeat  }} chỗ ngồi
                                             @endif
                                         </th>
 
