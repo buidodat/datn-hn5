@@ -1031,7 +1031,7 @@
 .box-checkout .payment-checkout .img-payment-checkout {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
 }
 
 .box-checkout .payment-checkout img {
@@ -1087,10 +1087,10 @@
 }
 
 .giu-cho-checkout>div:last-child {
-    flex-grow: 3;
-    text-align: right;
-    font-size: 1.2em;
-    color: #f1761d;
+    /* flex-grow: 3;
+    text-align: right; */
+    font-size: 1.1em;
+    /* color: #f1761d; */
     /* Màu đỏ cho thời gian còn lại */
 }
 
@@ -1320,7 +1320,7 @@
     font-weight: 600;
     font-size: 20px;
     max-width: 225px;
-    height: 27px;
+    height: 23px;
     overflow: hidden;
 }
 
@@ -1579,6 +1579,9 @@ ul.dropdown {
 }
 .movie-name-history{
     margin: 10px auto;
+
+}
+.movie-name-history a{
     color: #434f89;
     font-weight: 600;
 }
@@ -1820,4 +1823,69 @@ div text {
 .no-scroll {
     overflow-y: hidden !important;
 }
+
+
+
+
+
+.movie_img_trailer {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: flip 0.6s ease-in-out;
+    border-radius: 10px;
+    display: flex;  /* Dùng Flexbox để căn giữa */
+    justify-content: center;  /* Căn giữa theo chiều ngang */
+    align-items: center;  /* Căn giữa theo chiều dọc */
+
+}
+.movie_img_trailer  div {
+    cursor: pointer;
+    width: 25%;
+    border-radius: 100%;
+    box-shadow: 0 0 0 0 rgba(225, 225, 225, 0.6);
+    animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+.movie_img_trailer img {
+    width: 100%;
+}
+
+.movie_img_box:hover .movie_img_trailer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	opacity: 1;
+    transition: flip 0.6s ease-in-out;
+}
+
+.movie_img_box {
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+.movie_img_box  .img_thumbnail_movie img{
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.movie_box_wrapper {
+	float: left;
+	width: 100%;
+	margin-bottom: 40px;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
 

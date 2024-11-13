@@ -12,7 +12,6 @@
             @endphp
             <h2 class="cinema-title">Rạp Poly {{ $cinema->name }}</h2>
         </div>
-
         <div class="modalMovieScrening-body">
 
             <div class="listMovieScrening-date" id="date-showtimes">

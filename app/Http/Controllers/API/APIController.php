@@ -54,6 +54,26 @@ class APIController extends Controller
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
 
+    public function deleteSelected(Request $request)
+    {
+        $showtimeIds = $request->input('showtime_ids');
+        Showtime::whereIn('id', $showtimeIds)->delete();
+        return response()->json(['message' => 'Xóa thành công !']);
+    }
+
+    public function changeStatusSelected(Request $request)
+    {
+        $showtimeIds = $request->input('showtime_ids');
+        $showtimes = Showtime::whereIn('id', $showtimeIds)->get();
+
+        foreach ($showtimes as $showtime) {
+            $showtime->is_active = !$showtime->is_active;  // Toggle trạng thái
+            $showtime->save();
+        }
+
+        return response()->json(['message' => 'Cập nhật trạng thái thành công']);
+    }
+
 
     public function getShowtimesByRoom(Request $request)
     {
@@ -73,8 +93,8 @@ class APIController extends Controller
         }
 
         foreach ($showtimes as $showtime) {
-            $showtime->start_time = Carbon::parse($showtime->start_time)->format('H:i'); // Định dạng HH:mm
-            $showtime->end_time = Carbon::parse($showtime->end_time)->format('H:i'); // Định dạng HH:mm
+            $showtime->start_time = \Carbon\Carbon::parse($showtime->start_time)->format('H:i');
+            $showtime->end_time = \Carbon\Carbon::parse($showtime->end_time)->format('H:i');
         }
 
         return response()->json($showtimes);

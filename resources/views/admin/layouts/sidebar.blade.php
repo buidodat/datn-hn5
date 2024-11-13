@@ -34,6 +34,8 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
+               
+                    
                 @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
                     {{-- Dashboard --}}
                     <li class="nav-item">
@@ -130,6 +132,11 @@
                                             <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                                     </li>
                                 @endcan
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
+                                        <span data-key="t-layouts">Thẻ thành viên</span></a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -198,7 +205,7 @@
                                     </li>
                                 @endcan
 
-                                @canany(['Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
+                                {{-- @canany(['Danh sách đặt vé', 'Thêm đặt vé', 'Sửa đặt vé', 'Xóa đặt vé'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.book-tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
@@ -206,7 +213,7 @@
                                             <span data-key="t-dashboards">Đặt vé</span>
                                         </a>
                                     </li>
-                                @endcan
+                                @endcan --}}
                             </ul>
                         </div>
                     </li>
@@ -365,7 +372,14 @@
 
                 @if (auth()->user()->hasRole('System Admin'))
                     <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#permissions" data-bs-toggle="collapse"
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link menu-link"
+                            data-key="t-horizontal">
+                            <i class="las la-user-plus"></i>
+                            <span data-key="t-dashboards">Phân quyền</span>
+                        </a>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link menu-link collapsed" href="{{ route('admin.roles.index') }}" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="permissions">
                             <i class=" las la-asterisk"></i>
                             <span data-key="t-landing">Phân quyền</span>
@@ -381,16 +395,16 @@
                                             trò</span></a>
                                 </li>
 
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a href="{{ route('admin.assign-roles.index') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
                                         <i class="las la-user-plus  "></i> <span data-key="t-layouts">Gán vai
                                             trò</span></a>
-                                </li> --}}
+                                </li>
 
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                 @endif
 
                 @canany(['Cấu hình website'])

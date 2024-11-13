@@ -78,7 +78,7 @@
                         {{-- Tất cả ok rồi --}}
                         <div class="tab-pane active" id="admin" role="tabpanel">
 
-                            <table id="example"
+                            <table
                                 class="table table-bordered dt-responsive nowrap table-striped align-middle"
                                 style="width:100%" id="tableAdmin">
                                 <thead>
@@ -90,7 +90,7 @@
                                         {{-- <th>Số điện thoại</th> --}}
                                         {{-- <th>Ngày sinh</th> --}}
 
-                                        <th>Chức danh</th>
+                                        {{-- <th>Chức danh</th> --}}
                                         <th>Vai trò</th>
                                         <th>Tại</th>
                                         <th>Chức năng</th>
@@ -127,14 +127,14 @@
                                             {{-- <td>{{ $item->phone }}</td>
                                     <td>{{ Carbon\Carbon::parse($item->birthday)->format('d/m/Y') ?? 'null' }}</td> --}}
 
-                                            <td>
+                                            {{-- <td>
                                                 @if ($item->type == App\Models\User::TYPE_ADMIN)
                                                     <span class="badge badge-gradient-success">Quản trị viên</span>
                                                 @else
                                                     <span class="badge rounded-pill bg-primary-subtle text-primary">Khách
                                                         hàng</span>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 @if ($item->roles->isNotEmpty())
                                                     @foreach ($item->roles as $role)
@@ -180,10 +180,10 @@
 
                             </table>
                         </div>
-                        
+
                         <div class="tab-pane " id="users" role="tabpanel">
 
-                            <table id="example"
+                            <table 
                                 class="table table-bordered dt-responsive nowrap table-striped align-middle"
                                 style="width:100%" id="tableUsers">
                                 <thead>
@@ -291,9 +291,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#example", {
+        new DataTable("#tableAdmin", {
             order: [
-                [6, 'desc']
+                [0, 'desc']
+
+            ]
+        });
+
+        new DataTable("#tableUsers", {
+            order: [
+                [0, 'desc']
 
             ]
         });

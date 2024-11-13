@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Events\SeatStatusChange;
 use App\Events\SeatRelease;
+use App\Models\Voucher;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class ReleaseSeatHoldJob implements ShouldQueue
 {
@@ -20,6 +22,8 @@ class ReleaseSeatHoldJob implements ShouldQueue
     public $seatIds;
     public $showtimeId;
 
+    public $voucherCode;
+
     /**
      * Create a new job instance.
      *
@@ -27,10 +31,11 @@ class ReleaseSeatHoldJob implements ShouldQueue
      * @param mixed $showtimeId
      * @return void
      */
-    public function __construct(array $seatIds, $showtimeId)
+    public function __construct(array $seatIds, $showtimeId, $voucherCode)
     {
         $this->seatIds = $seatIds;
         $this->showtimeId = $showtimeId;
+        $this->voucherCode = $voucherCode;
     }
 
     /**
@@ -70,6 +75,13 @@ class ReleaseSeatHoldJob implements ShouldQueue
                     broadcast(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'))->toOthers();
                     // event(new SeatStatusChange($seat->seat_id, $this->showtimeId, 'available'));
                     // event(new SeatRelease($seat->seat_id, $this->showtimeId));
+                }
+            }
+
+            if ($this->voucherCode != null) {
+                $voucher = Voucher::where('code', $this->voucherCode)->first();
+                if ($voucher) {
+                    $voucher->increment('quantity');
                 }
             }
 
