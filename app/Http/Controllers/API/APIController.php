@@ -54,6 +54,13 @@ class APIController extends Controller
         return response()->json(['error' => 'Không tìm thấy phim'], 404);
     }
 
+    public function deleteSelected(Request $request)
+    {
+        $showtimeIds = $request->input('showtime_ids');
+        Showtime::whereIn('id', $showtimeIds)->delete();
+        return response()->json(['message' => 'Xóa thành công !']);
+    }
+
 
     public function getShowtimesByRoom(Request $request)
     {

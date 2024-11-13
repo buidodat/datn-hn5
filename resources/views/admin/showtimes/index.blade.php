@@ -53,8 +53,7 @@
                                 <div class="row">
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
-                                            <select name="branch_id" id="branch" class="form-select"
-                                                >
+                                            <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}"
@@ -150,7 +149,8 @@
                                         <table class="table table-sm table-bordered">
                                             <thead>
                                                 <tr class="bg-light">
-                                                    <th><input type="checkbox" name="" id=""></th>
+                                                    <th><input type="checkbox" id="select-all-{{ $movieId }}"
+                                                            class="select-all-movie"></th>
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
                                                     <th>CHỖ NGỒI</th>
@@ -161,8 +161,11 @@
                                             <tbody>
                                                 @foreach ($showtimesByMovie as $showtime)
                                                     <tr>
-                                                        <td class="inputCheckBoxShowtimes"><input type="checkbox"
-                                                                name="" id=""></td>
+                                                        <td class="inputCheckBoxShowtimes">
+                                                            <input type="checkbox"
+                                                                class="select-showtime movie-{{ $movieId }}"
+                                                                data-showtime-id="{{ $showtime->id }}">
+                                                        </td>
                                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                                             -
                                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
@@ -217,14 +220,16 @@
                                                             <form action="" method="post" class="d-inline-block">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                <button type="submit" id="delete-all"
+                                                                    class="btn btn-danger btn-sm">
                                                                     Xóa tất cả
                                                                 </button>
                                                             </form>
                                                             <a href="" class="px-5">
-                                                                <button title="thay đổi" class="btn btn-primary btn-sm"
-                                                                    type="button">Thay đổi trạng thái tất cả</button>
+                                                                <button id="change-status-all" title="thay đổi"
+                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái tất
+                                                                    cả</button>
+
                                                             </a>
                                                         </div>
                                                     </td>
@@ -346,6 +351,60 @@
                     $(this).text('-');
                 } else {
                     $(this).text('+');
+                }
+            });
+        });
+
+
+
+        $(document).ready(function() {
+            // Chức năng chọn tất cả
+            $(document).ready(function() {
+                // Chức năng chọn tất cả cho từng phim
+                $('.select-all-movie').on('click', function() {
+                    var movieId = $(this).attr('id').split('-')[
+                        2]; // Lấy movieId từ ID của checkbox
+                    var isChecked = $(this).prop('checked');
+                    $('.movie-' + movieId).prop('checked', isChecked);
+                });
+
+                // Kiểm tra nếu tất cả checkbox trong từng phim được chọn hoặc bỏ chọn
+                $('.select-showtime').on('change', function() {
+                    var movieId = $(this).attr('class').match(/movie-(\d+)/)[
+                        1]; // Lấy movieId từ class
+                    var allChecked = $('.movie-' + movieId).length === $('.movie-' + movieId +
+                        ':checked').length;
+                    $('#select-all-' + movieId).prop('checked', allChecked);
+                });
+            });
+
+
+            $('#delete-all').on('click', function(e) {
+                e.preventDefault();
+                var selectedIds = [];
+                $('.select-showtime:checked').each(function() {
+                    selectedIds.push($(this).data('showtime-id'));
+                });
+
+                if (selectedIds.length === 0) {
+                    alert('Vui lòng chọn ít nhất một suất chiếu!');
+                    return;
+                }
+
+                if (confirm('Bạn chắc chắn muốn xóa tất cả các suất chiếu đã chọn?')) {
+                    $.ajax({
+                        url: '{{ route('showtimes.deleteSelected') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            showtime_ids: selectedIds
+                        },
+                        success: function(response) {
+                            // Xử lý sau khi xóa thành công
+                            location.reload();
+                            // alert(response.message);
+                        }
+                    });
                 }
             });
         });
