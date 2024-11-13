@@ -73,6 +73,9 @@ Route::prefix('tickets')
 
 
 Route::resource('contacts', ContactController::class);
+Route::patch('contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.updateStatus');
+
+Route::get('contacts/{contact}', [ContactController::class, 'show']);
 
 
 Route::resource('movies', MovieController::class);
