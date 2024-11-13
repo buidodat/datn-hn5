@@ -407,6 +407,35 @@
                     });
                 }
             });
+
+            // Chức năng thay đổi trạng thái tất cả
+            $('#change-status-all').on('click', function(e) {
+                e.preventDefault();
+                var selectedIds = [];
+                $('.select-showtime:checked').each(function() {
+                    selectedIds.push($(this).data('showtime-id'));
+                });
+
+                if (selectedIds.length === 0) {
+                    alert('Vui lòng chọn ít nhất một suất chiếu!');
+                    return;
+                }
+
+                if (confirm('Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn?')) {
+                    $.ajax({
+                        url: '{{ route('showtimes.changeStatusSelected') }}', // Add your change status route
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            showtime_ids: selectedIds
+                        },
+                        success: function(response) {
+                            // Cập nhật trạng thái thành công
+                            location.reload();
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection
