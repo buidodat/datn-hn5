@@ -10,48 +10,42 @@
             <div class="h-100">
                 <div class="row">
                     <div class="col-md-10">
-                        <form action="" method="GET">
-                            {{-- TÌm kiếm --}}
+                        <form action="{{ route('admin.statistical-cinemas') }}" method="GET">
                             <div class="row">
                                 @if (Auth::user()->hasRole('System Admin'))
                                     <div class="col-md-2">
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chi nhánh</option>
+                                        <select name="branch_id" id="branch" class="form-select py-2 px-2">
+                                            <option value="">Tất cả chi nhánh</option>
                                             @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
-                                                    {{ $branch->name }}</option>
+                                                <option value="{{ $branch->id }}"
+                                                    {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                                    {{ $branch->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
-
                                     <div class="col-md-2">
                                         <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn Rạp</option>
+                                            <option value="">Tất cả rạp</option>
+                                            {{-- Populate cinemas based on selected branch using AJAX --}}
                                         </select>
                                     </div>
-                                @else
-                                    <div class="col-md-2">
-                                        <label for="">Lọc theo ngày:</label>
-                                    </div>
                                 @endif
-
-
                                 <div class="col-md-3">
-                                    <input type="datetime-local" name="date" class="form-control">
+                                    <input type="datetime-local" name="start_date" class="form-control"
+                                        value="{{ old('start_date', $startDate) }}">
                                 </div>
-
                                 <div class="col-md-3">
-                                    <input type="datetime-local" name="date" class="form-control">
+                                    <input type="datetime-local" name="end_date" class="form-control"
+                                        value="{{ old('end_date', $endDate) }}">
                                 </div>
-
                                 <div class="col-md-2">
                                     <button class="btn btn-success" type="submit">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc</button>
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc
+                                    </button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                     <div class="col-md-2" align="right">
                         <a href="" class="btn btn-primary mb-3 ">Tổng quan</a>
@@ -129,7 +123,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
-
         //Biểu đồ theo rạp
         document.addEventListener('DOMContentLoaded', function() {
             const revenueDataCinema = {

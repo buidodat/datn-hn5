@@ -63,13 +63,13 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('admin.statistical.cinemaRevenue') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
-                                        {{-- <i class="ri-dashboard-2-line"></i> --}}
+                                       
                                         <span data-key="t-dashboards">Doanh Thu Theo Rạp</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
 

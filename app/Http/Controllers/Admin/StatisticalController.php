@@ -99,21 +99,47 @@ class StatisticalController extends Controller
     }
 
 
-    public function statisticalCinemas()
+    public function statisticalCinemas(Request $request)
     {
-
         $branches = Branch::all();
+        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d\TH:i'));
+        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d\TH:i'));
 
-        //THống kê theo rạp 
-        $revenueByCinema = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
+        // Khởi tạo query thống kê doanh thu theo rạp
+        $query = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
             ->select('cinemas.name as cinema_name', DB::raw('SUM(tickets.total_price) as total_revenue'))
-            ->groupBy('cinemas.name')
-            ->orderBy('total_revenue', 'desc')
-            ->get();
+            ->groupBy('cinemas.id', 'cinemas.name')
+            ->orderBy('total_revenue', 'desc');
 
+        // Áp dụng lọc theo chi nhánh nếu có
+        if ($request->has('branch_id') && $request->input('branch_id') != '') {
+            $cinemaIds = Cinema::where('branch_id', $request->input('branch_id'))->pluck('id');
+            $query->whereIn('tickets.cinema_id', $cinemaIds);
+        }
 
-        return view('admin.statisticals.statistical-cinemas', compact('branches', 'revenueByCinema'));
+        // Áp dụng lọc theo rạp nếu có
+        if ($request->has('cinema_id') && $request->input('cinema_id') != '') {
+            $query->where('tickets.cinema_id', $request->input('cinema_id'));
+        }
+
+        // Áp dụng lọc theo ngày nếu có
+        if (
+            $request->has('start_date') && $request->has('end_date') &&
+            $request->input('start_date') != '' && $request->input('end_date') != ''
+        ) {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+        } else {
+            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+        }
+
+        // Lấy kết quả doanh thu theo rạp
+        $revenueByCinema = $query->get();
+
+        return view('admin.statisticals.statistical-cinemas', compact('branches', 'revenueByCinema', 'startDate', 'endDate'));
     }
+
 
 
     public function statisticalMovies(Request $request)
@@ -205,26 +231,27 @@ class StatisticalController extends Controller
         return view('admin.statisticals.statistical-tickets', compact('revenueTimeSlot', 'branches'));
     }
 
-    public function cinemaRevenue()
-    {
-        $startDate = Carbon::parse('2023-10-01'); // Ngày bắt đầu
-        $endDate = Carbon::parse('2024-10-31');   // Ngày kết thúc
+    // của sơn bỏ
+    // public function cinemaRevenue()
+    // {
+    //     $startDate = Carbon::parse('2023-10-01'); // Ngày bắt đầu
+    //     $endDate = Carbon::parse('2024-10-31');   // Ngày kết thúc
 
-        $statistics = Ticket::whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('cinema_id, SUM(total_price) as total_revenue, COUNT(id) as total_tickets')
-            ->with('cinema:id,name') 
-            ->groupBy('cinema_id')
-            ->orderBy('total_revenue', 'desc') 
-            ->get();
+    //     $statistics = Ticket::whereBetween('created_at', [$startDate, $endDate])
+    //         ->selectRaw('cinema_id, SUM(total_price) as total_revenue, COUNT(id) as total_tickets')
+    //         ->with('cinema:id,name') 
+    //         ->groupBy('cinema_id')
+    //         ->orderBy('total_revenue', 'desc') 
+    //         ->get();
 
 
-        //THống kê theo rạp 
-        $revenueByCinema = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
-            ->select('cinemas.name as cinema_name', DB::raw('SUM(tickets.total_price) as total_revenue'))
-            ->groupBy('cinemas.name')
-            ->orderBy('total_revenue', 'desc')
-            ->get();
+    //     //THống kê theo rạp 
+    //     $revenueByCinema = Ticket::join('cinemas', 'tickets.cinema_id', '=', 'cinemas.id')
+    //         ->select('cinemas.name as cinema_name', DB::raw('SUM(tickets.total_price) as total_revenue'))
+    //         ->groupBy('cinemas.name')
+    //         ->orderBy('total_revenue', 'desc')
+    //         ->get();
 
-        return view('admin.statisticals.cinemaRevenue', compact('revenueByCinema', 'statistics'));
-    }
+    //     return view('admin.statisticals.cinemaRevenue', compact('revenueByCinema', 'statistics'));
+    // }
 }
