@@ -148,7 +148,7 @@
                                                     @else
                                                         <td class="box-item">
                                                             <div class="seat-item change-active">
-                                                                @switch($seat && $seat->type_seat_id)
+                                                                @switch($seat->type_seat_id ?? "")
                                                                     @case(1)
                                                                         <img src="{{ $seat->is_active == 1 ? asset('svg/seat-regular.svg') : asset('svg/seat-regular-broken.svg') }}"
                                                                             class='seat' width="100%">

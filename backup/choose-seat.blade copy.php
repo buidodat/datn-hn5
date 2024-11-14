@@ -41,66 +41,58 @@
                                                         <tbody>
                                                             @for ($row = 0; $row < $matrixSeat['max_row']; $row++)
                                                                 <tr>
-                                                                    {{-- cột hàng ghế A,B,C --}}
-                                                                    {{-- <td class="row-seat">
-                                                                        {{ chr(65 + $row) }}
-                                                                    </td> --}}
                                                                     @for ($col = 0; $col < $matrixSeat['max_col']; $col++)
-                                                                        @php
-                                                                            $seat =
-                                                                                isset($seatMap[chr(65 + $row)]) &&
-                                                                                isset(
-                                                                                    $seatMap[chr(65 + $row)][$col + 1],
-                                                                                )
-                                                                                    ? $seatMap[chr(65 + $row)][$col + 1]
-                                                                                    : null;
+                                                                        @foreach ($showtime->room->seats as $seat)
+                                                                            @if ($seat->coordinates_x === $col + 1 && $seat->coordinates_y === chr(65 + $row))
+                                                                                @php
+                                                                                    $seatData = $seat->showtimes
+                                                                                        ->where('id', $showtime->id)
+                                                                                        ->first()->pivot;
+                                                                                    $seatStatus = $seatData->status;
+                                                                                    $seatPrice = $seatData->price;
+                                                                                @endphp
 
-                                                                        @endphp
-
-                                                                        @if ($seat && $seat->type_seat_id == 3)
-                                                                            <!-- Nếu là ghế đôi -->
-                                                                            <td class="row-seat" colspan="2">
-                                                                                <span data-seat-id="{{ $seat->id }}"
-                                                                                    data-seat-price="{{ $seat->pivot->price }}"
-                                                                                    data-type="3"
-                                                                                    class="game-icons--sofa seat-double seat  span-seat {{ $seat->pivot->status }}"
-                                                                                    id="seat-{{ $seat->id }}">
-
-                                                                                    <span
-                                                                                        class="seat-label">{{ chr(65 + $row) . ($col + 1) }}
-                                                                                        {{ chr(65 + $row) . ($col + 2) }}</span>
-                                                                                </span>
-                                                                            </td>
-                                                                            @php $col++; @endphp
-                                                                        @else
-                                                                            <td class="row-seat">
-                                                                                    @switch($seat->type_seat_id ?? "")
-                                                                                        @case(1)
-                                                                                            <span data-seat-id="{{ $seat->id }}"
-                                                                                                data-seat-price="{{ $seat->pivot->price }}"
-                                                                                                data-type="1"
-                                                                                                class="solar--sofa-3-bold seat span-seat {{  $seat->pivot->status }}"
-                                                                                                id="seat-{{ $seat->id }}">
-                                                                                                <span
-                                                                                                    class="seat-label">{{ $seat->name }}</span>
-                                                                                            </span>
-                                                                                        @break
-
-                                                                                        @case(2)
+                                                                                @if ($seat->type_seat_id == 1)
+                                                                                    <td class="row-seat">
+                                                                                        <span
+                                                                                            data-seat-id="{{ $seat->id }}"
+                                                                                            data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="1"
+                                                                                            class="solar--sofa-3-bold seat span-seat {{ $seatStatus }}"
+                                                                                            id="seat-{{ $seat->id }}">
                                                                                             <span
-                                                                                                data-seat-id="{{ $seat->id }}"
-                                                                                                data-seat-price="{{ $seat->pivot->price }}"
-                                                                                                data-type="2"
-                                                                                                class="mdi--love-seat text-muted seat span-seat {{  $seat->pivot->status }}"
-                                                                                                id="seat-{{ $seat->id }}">
-                                                                                                <span
-                                                                                                    class="seat-label">{{ $seat->name }}</span>
-                                                                                            </span>
-                                                                                        @break
-                                                                                    @endswitch
-
-                                                                            </td>
-                                                                        @endif
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                @endif
+                                                                                @if ($seat->type_seat_id == 2)
+                                                                                    <td class="row-seat">
+                                                                                        <span
+                                                                                            data-seat-id="{{ $seat->id }}"
+                                                                                            data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="2"
+                                                                                            class="mdi--love-seat text-muted seat span-seat {{ $seatStatus }}"
+                                                                                            id="seat-{{ $seat->id }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                @endif
+                                                                                @if ($seat->type_seat_id == 3)
+                                                                                    <td class="row-seat" colspan="2">
+                                                                                        <span
+                                                                                            data-seat-id="{{ $seat->id }}"
+                                                                                            data-seat-price="{{ $seatPrice }}"
+                                                                                            data-type="3"
+                                                                                            class="game-icons--sofa seat-double seat span-seat {{ $seatStatus }}"
+                                                                                            id="seat-{{ $seat->id }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    </td>
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
                                                                     @endfor
                                                                 </tr>
                                                             @endfor
