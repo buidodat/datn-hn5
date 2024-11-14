@@ -1,38 +1,29 @@
-.image-movie-detail img {
+.image-movie-detail .img_movie {
     width: 100%;
     height: 100%;
-    -webkit-border-top-right-radius: 10px;
-    -moz-border-top-right-radius: 10px;
-    border-top-right-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
-    -moz-border-top-left-radius: 10px;
-    border-top-left-radius: 10px;
-    -webkit-border-bottom-right-radius: 10px;
-    -moz-border-bottom-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    -moz-border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    object-fit: cover;
+    border-radius: 10px;
 
 }
+.image-movie-detail .is_hot {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 65px !important;
+    height: auto !important;
+
+}
+.image-movie-detail .tag-rating{
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 60px !important;
+    height: auto !important;
+}
+
 .image-movie-detail{
-    margin: 0 auto;
-    justify-content: center;
-    padding: 10px;
-    -webkit-border-top-right-radius: 10px;
-    -moz-border-top-right-radius: 10px;
-    border-top-right-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
-    -moz-border-top-left-radius: 10px;
-    border-top-left-radius: 10px;
-    -webkit-border-bottom-right-radius: 10px;
-    -moz-border-bottom-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    -moz-border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    object-fit: cover;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 .xanh-fpt {
@@ -1344,7 +1335,7 @@
     width: 65px !important;
     height: auto !important;
 }
-.tag-rating{
+.tab-content .tag-rating{
     position: absolute;
     top: 5px;
     left: 5px;

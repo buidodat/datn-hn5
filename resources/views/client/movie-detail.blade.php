@@ -19,15 +19,28 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row ">
-                                    <div class="col-md-4 image-movie-detail">
-                                        @php
-                                            $url = $movie->img_thumbnail;
+                                    <div class="col-md-4">
+                                        <div class='image-movie-detail'>
+                                            @if ($movie->is_hot == '1')
+                                                <img class="is_hot" src="{{ asset('theme/client/images/hot.png') }}"
+                                                    alt="">
+                                            @endif
+                                            @php
+                                                $imageTag = App\Models\Movie::getImageTagRating($movie->rating);
+                                            @endphp
+                                            @if ($imageTag)
+                                                <img class="tag-rating" src="{{ $imageTag }}" alt="">
+                                            @endif
+                                            @php
+                                                $url = $movie->img_thumbnail;
 
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-                                        @endphp
-                                        <img src="{{ $url }}" alt="" height="">
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+                                            @endphp
+                                            <img class="img_movie" src="{{ $url }}" alt="" height="">
+                                        </div>
+
                                     </div>
                                     <div class="col-md-8 ">
                                         <div class="movie-detail-content">
@@ -43,7 +56,11 @@
                                             <div class="details ">
                                                 <ul>
                                                     <li>
+                                                        @php
+                                                            $rating = App\Models\Movie::getRatingByName($movie->rating);
+                                                        @endphp
                                                         <strong>Phân loại:</strong> {{ $movie->rating }}
+                                                        ({{ $rating['description'] }})
                                                     </li>
 
                                                     <li>
@@ -56,13 +73,11 @@
                                                         <strong>Thể loại:</strong> {{ $movie->category }}
                                                     </li>
                                                     <li>
-                                                        <strong>Khởi chiếu:</strong> {{ $movie->release_date }}
+                                                        <strong>Khởi chiếu:</strong>
+                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
                                                     </li>
                                                     <li>
                                                         <strong>Thời lượng:</strong> {{ $movie->duration }} phút
-                                                    </li>
-                                                    <li>
-                                                        <strong>Ngôn ngữ:</strong> Vietsub
                                                     </li>
                                                 </ul>
                                             </div>
@@ -86,9 +101,9 @@
                                                 @endif
                                             </div> --}}
                                             <div class="buttons">
-                                                <button  class="watch-trailer open-trailer-btn"
-                                                data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
-                                                data-movie-name="{{ $movie->name }}">Xem
+                                                <button class="watch-trailer open-trailer-btn"
+                                                    data-trailer-url="https://www.youtube.com/embed/{{ $movie->trailer_url }}"
+                                                    data-movie-name="{{ $movie->name }}">Xem
                                                     Trailer
                                                 </button>
                                                 @if ($hasShowtimeInNextWeek)
