@@ -10,47 +10,46 @@
             <div class="h-100">
                 <div class="row">
                     <div class="col-md-10">
-                        <form action="" method="GET">
-                            {{-- TÌm kiếm --}}
+                        <form action="{{ route('admin.statistical-revenue') }}" method="GET">
                             <div class="row">
                                 @if (Auth::user()->hasRole('System Admin'))
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chi nhánh</option>
+                                            <option value="">Tất cả chi nhánh</option>
                                             @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    {{-- {{ request('branch_id') == $branch->id ? 'selected' : '' }} --}}
-                                                    {{ $branch->name }}</option>
+                                                <option value="{{ $branch->id }}"
+                                                    {{ $branch->id == $branchId ? 'selected' : '' }}>
+                                                    {{ $branch->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn Rạp</option>
+                                            <option value="">Tất cả Rạp chiếu</option>
                                         </select>
-                                    </div>
-                                @else
-                                    <div class="col-md-2">
-                                        <label for="">Lọc theo ngày:</label>
                                     </div>
                                 @endif
 
-
-                                <div class="col-md-3">
-                                    <input type="datetime-local" name="date" class="form-control">
+                                <div class="col-md-2">
+                                    <input type="date" name="start_date" class="form-control"
+                                        value="{{ request('start_date', $startDate) }}">
                                 </div>
 
-                                <div class="col-md-3">
-                                    <input type="datetime-local" name="date" class="form-control">
+                                <div class="col-md-2">
+                                    <input type="date" name="end_date" class="form-control"
+                                        value="{{ request('end_date', $endDate) }}">
                                 </div>
 
                                 <div class="col-md-2">
                                     <button class="btn btn-success" type="submit">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc</button>
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc
+                                    </button>
                                 </div>
                             </div>
                         </form>
+
 
                     </div>
                     <div class="col-md-2" align="right">
@@ -61,30 +60,17 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
-                            {{-- <div class="card-header border-0 align-items-center">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày</h4>
-                                <div>
-                                    <label for="timeRangeSelect">Chọn phạm vi thời gian:</label>
-                                    <select id="timeRangeSelect" class="form-select">
-                                        <option value="daily">Theo ngày</option>
-                                        <option value="weekly">Theo tuần</option>
-                                        <option value="monthly">Theo tháng</option>
-                                        <option value="yearly">Theo năm</option>
-                                    </select>
-                                </div>
-                            </div> --}}
-
 
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày</h4>
-                                <div class="flex-shrink-0">
+                                {{-- <div class="flex-shrink-0">
                                     <select id="timeRangeSelect" class="form-select">
                                         <option value="daily">Theo ngày</option>
                                         <option value="weekly">Theo tuần</option>
                                         <option value="monthly">Theo tháng</option>
                                         <option value="yearly">Theo năm</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </div><!-- end card header -->
                             <!-- end card header -->
 
@@ -108,42 +94,69 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Lấy giá trị branchId và cinemaId từ Laravel
-            // var selectedBranchId = "{{ old('branch_id', '') }}";
-            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
+            // Lấy giá trị branchId và cinemaId từ phía server
+            var selectedBranchId = "{{ request('branch_id', '') }}";
+            var selectedCinemaId = "{{ request('cinema_id', '') }}";
+            var isLoading = false; // Cờ để kiểm tra trạng thái đang tải
 
             // Xử lý sự kiện thay đổi chi nhánh
             $('#branch').on('change', function() {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
+
+                // Đặt lại giá trị của dropdown rạp về mặc định khi chọn chi nhánh khác
                 cinemaSelect.empty();
-                cinemaSelect.append('<option value="">Chọn Rạp</option>');
 
                 if (branchId) {
-                    $.ajax({
-                        url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
-                        method: 'GET',
-                        success: function(data) {
-                            $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option value="' + cinema.id +
-                                    '" >' + cinema.name + '</option>');
-                            });
+                    if (!isLoading) {
+                        isLoading = true; // Đánh dấu đang tải dữ liệu
+                        cinemaSelect.html(
+                            '<option value="">Đang tải...</option>'); // Hiển thị "Đang tải..."
 
-                            // Chọn lại cinema nếu có selectedCinemaId
-                            if (selectedCinemaId) {
-                                cinemaSelect.val(selectedCinemaId);
-                                // selectedCinemaId = false;
+                        $.ajax({
+                            url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
+                            method: 'GET',
+                            success: function(data) {
+                                cinemaSelect.empty();
+                                cinemaSelect.append(
+                                    '<option value="">Tất cả rạp</option>'
+                                ); // Hiển thị "Tất cả rạp" sau khi tải
+
+                                $.each(data, function(index, cinema) {
+                                    cinemaSelect.append('<option value="' + cinema.id +
+                                        '">' + cinema.name + '</option>');
+                                });
+
+                                // Chọn lại rạp nếu có selectedCinemaId và branchId khớp
+                                if (selectedCinemaId && branchId == selectedBranchId) {
+                                    cinemaSelect.val(selectedCinemaId);
+                                }
+                                isLoading = false; // Kết thúc quá trình tải
+                            },
+                            error: function() {
+                                cinemaSelect.html(
+                                    '<option value="">Không thể tải danh sách rạp</option>');
+                                isLoading = false; // Kết thúc quá trình tải
                             }
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    cinemaSelect.empty();
+                    cinemaSelect.append('<option value="">Tất cả rạp</option>');
                 }
             });
 
-            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
-            // if (selectedBranchId) {
-            //     $('#branch').val(selectedBranchId).trigger('change');
-
-            // }
+            // Kích hoạt thay đổi chi nhánh để load rạp nếu có selectedBranchId
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
+            } else {
+                // Nếu không có selectedBranchId, hiển thị "Tất cả rạp"
+                var cinemaSelect = $('#cinema');
+                if (!cinemaSelect.val()) { // Kiểm tra nếu không có giá trị rạp nào được chọn
+                    cinemaSelect.empty();
+                    cinemaSelect.append('<option value="">Tất cả rạp</option>');
+                }
+            }
         });
     </script>
 
@@ -152,57 +165,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
-
-        //Biểu đồ theo ngày tháng năm
         const revenueChartCanvas = document.getElementById('revenueChartDaily').getContext('2d');
-        const timeRangeSelect = document.getElementById('timeRangeSelect');
 
-        const revenueData2 = {
-            daily: {
-                labels: @json($dailyRevenue->pluck('date')),
-                datasets: [{
-                    label: 'Doanh thu theo ngày',
-                    data: @json($dailyRevenue->pluck('total_revenue')),
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu nền mới
-                    borderColor: 'rgba(255, 99, 132, 1)', // Màu viền mới
-                    borderWidth: 1
-                }]
-            },
-            weekly: {
-                labels: @json($weeklyRevenue->pluck('week')),
-                datasets: [{
-                    label: 'Doanh thu theo tuần',
-                    data: @json($weeklyRevenue->pluck('total_revenue')),
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            monthly: {
-                labels: @json($monthlyRevenue->pluck('month')),
-                datasets: [{
-                    label: 'Doanh thu theo tháng',
-                    data: @json($monthlyRevenue->pluck('total_revenue')),
-                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                    borderColor: 'rgba(255, 159, 64, 1)',
-                    borderWidth: 1
-                }]
-            },
-            yearly: {
-                labels: @json($yearlyRevenue->pluck('year')),
-                datasets: [{
-                    label: 'Doanh thu theo năm',
-                    data: @json($yearlyRevenue->pluck('total_revenue')),
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1
-                }]
-            }
+        const revenueData = {
+            labels: @json($revenueData->pluck('date')), // Hoặc là week, month, year tùy `time_range`
+            datasets: [{
+                label: 'Doanh thu',
+                data: @json($revenueData->pluck('total_revenue')),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
         };
 
         let revenueChart = new Chart(revenueChartCanvas, {
             type: 'bar',
-            data: revenueData2.daily, // Hiển thị theo ngày mặc định
+            data: revenueData,
             options: {
                 responsive: true,
                 scales: {
@@ -226,13 +204,6 @@
                     }
                 }
             }
-        });
-
-        // Cập nhật biểu đồ khi thay đổi phạm vi thời gian
-        timeRangeSelect.addEventListener('change', function() {
-            const selectedRange = timeRangeSelect.value;
-            revenueChart.data = revenueData2[selectedRange];
-            revenueChart.update();
         });
     </script>
 @endsection

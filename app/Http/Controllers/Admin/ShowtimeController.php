@@ -36,7 +36,7 @@ class ShowtimeController extends Controller
 
     public function index(Request $request)
     {
-       
+
 
         // $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
         // if ($user->cinema_id != "") {
@@ -63,7 +63,7 @@ class ShowtimeController extends Controller
 
         $branches = Branch::all();
         $user = auth()->user();
-       
+
         $defaultBranchId = 1;
         $defaultCinemaId = 1;
         $defaultDate = now()->format('Y-m-d');

@@ -16,7 +16,7 @@ class StatisticalController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:Danh sách thống kê')->only('revenue');
+        $this->middleware('can:Danh sách thống kê')->only('statisticalRevenue', 'statisticalCinemas', 'statisticalMovies', 'statisticalTickets');
     }
 
     // public function revenue()
@@ -79,24 +79,65 @@ class StatisticalController extends Controller
     // }
 
 
-    public function statisticalRevenue()
+    public function statisticalRevenue(Request $request)
     {
-
         $branches = Branch::all();
+        $branchId = $request->input('branch_id');
+        $cinemaId = $request->input('cinema_id');
 
-        // Thống kê doanh thu theo Ngày/Tháng/Năm
-        $dailyRevenue = Ticket::selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
+        // Lọc danh sách cinema theo branch đã chọn (nếu có)
+        $cinemas = $branchId ? Cinema::where('branch_id', $branchId)->get() : Cinema::all();
+
+
+        $timeRange = $request->input('time_range', 'daily');
+        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d'));
+
+        // Khởi tạo doanh thu dựa trên lựa chọn lọc
+        $query = Ticket::whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate);
+        // whereBetween('created_at', [$startDate, $endDate]);
+
+        if ($cinemaId) {
+            $query->where('cinema_id', $cinemaId);
+        }
+
+        $revenueData = [];
+        if ($timeRange == 'daily') {
+            $revenueData = $query->selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
+                ->groupBy('date')
+                ->orderBy('date', 'asc')
+                ->get();
+        } elseif ($timeRange == 'weekly') {
+            $revenueData = $query->selectRaw("WEEK(created_at) as week, SUM(total_price) as total_revenue")
+                ->groupBy('week')
+                ->orderBy('week', 'asc')
+                ->get();
+        } elseif ($timeRange == 'monthly') {
+            $revenueData = $query->selectRaw("MONTH(created_at) as month, YEAR(created_at) as year, SUM(total_price) as total_revenue")
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
+        } elseif ($timeRange == 'yearly') {
+            $revenueData = $query->selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
+                ->groupBy('year')
+                ->orderBy('year', 'asc')
+                ->get();
+        }
+
+        $dailyRevenue = $query->selectRaw("DATE(created_at) as date, SUM(total_price) as total_revenue")
             ->groupBy('date')->orderBy('date', 'asc')->get();
-        $weeklyRevenue = Ticket::selectRaw("WEEK(created_at) as week, SUM(total_price) as total_revenue")
+        $weeklyRevenue = $query->selectRaw("WEEK(created_at) as week, SUM(total_price) as total_revenue")
             ->groupBy('week')->orderBy('week', 'asc')->get();
-        $monthlyRevenue = Ticket::selectRaw("MONTH(created_at) as month, SUM(total_price) as total_revenue")
+        $monthlyRevenue = $query->selectRaw("MONTH(created_at) as month, SUM(total_price) as total_revenue")
             ->groupBy('month')->orderBy('month', 'asc')->get();
-        $yearlyRevenue = Ticket::selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
+        $yearlyRevenue = $query->selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
             ->groupBy('year')->orderBy('year', 'asc')->get();
 
-
-        return view('admin.statisticals.statistical-revenue', compact('branches', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue'));
+        return view('admin.statisticals.statistical-revenue', compact('cinemas', 'branches', 'branchId', 'cinemaId', 'revenueData', 'timeRange', 'startDate', 'endDate', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue'));
     }
+
 
 
     public function statisticalCinemas(Request $request)
