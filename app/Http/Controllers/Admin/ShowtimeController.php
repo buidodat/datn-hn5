@@ -206,6 +206,12 @@ class ShowtimeController extends Controller
                     ->where('date', $request->date)
                     ->get();
 
+                $dateShowtime = Carbon::parse($request->date);
+                if (!$dateShowtime->between($movie->release_date, $movie->end_date)) {
+                    // dd('ko nằm trong khoảng này');
+                    $movie->is_special = "1";
+                    $movie->save();
+                }
 
                 if ($request->has('auto_generate_showtimes')) {
                     // 

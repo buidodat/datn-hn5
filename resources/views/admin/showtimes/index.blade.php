@@ -65,8 +65,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <select name="cinema_id" id="cinema" class="form-select"
-                                                onchange="this.form.submit()">
+                                            <select name="cinema_id" id="cinema" class="form-select">
                                                 <option value="">Chọn Rạp</option>
                                                 @foreach ($cinemas as $cinema)
                                                     <option value="{{ $cinema->id }}"
@@ -80,7 +79,7 @@
 
                                     <div class="col-md-3">
                                         <input type="date" name="date" class="form-control"
-                                            value="{{ $date }}" onchange="this.form.submit()">
+                                            value="{{ $date }}">
                                     </div>
 
                                     <div class="col-md-3">
@@ -104,7 +103,7 @@
                 @endif
 
                 <div class="card-body">
-                    
+
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead>
@@ -221,26 +220,28 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
+                                                        @if ($showtime->is_active == 0)
+                                                            <div class="d-flex justify-content-between">
 
-                                                        <div class="d-flex justify-content-between">
-                                                            {{-- @if ($showtime->is_active == 0) --}}
-                                                            <form action="" method="post" class="d-inline-block">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button type="submit" id="delete-all"
-                                                                    class="btn btn-danger btn-sm">
-                                                                    Xóa tất cả
-                                                                </button>
-                                                            </form>
-                                                            {{-- @endif --}}
-                                                            <a href="" class="px-5">
-                                                                <button id="change-status-all" title="thay đổi"
-                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái
-                                                                    tất
-                                                                    cả</button>
+                                                                <form action="" method="post"
+                                                                    class="d-inline-block">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit" id="delete-all"
+                                                                        class="btn btn-danger btn-sm">
+                                                                        Xóa tất cả
+                                                                    </button>
+                                                                </form>
 
-                                                            </a>
-                                                        </div>
+                                                                <a href="" class="px-5">
+                                                                    <button id="change-status-all" title="thay đổi"
+                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                        tất
+                                                                        cả</button>
+
+                                                                </a>
+                                                            </div>
+                                                        @endif
 
                                                     </td>
                                                 </tr>
