@@ -32,7 +32,7 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -41,7 +41,7 @@
                         </ul>
 
                     </div>
-                @endif
+                @endif --}}
             </div>
             <div class="col-lg-9">
                 <div class="card">
@@ -89,6 +89,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             @if (Auth::user()->hasRole('System Admin'))
                                 <div class="row gy-4">
                                     <div class="col-md-4">
@@ -186,20 +187,25 @@
                             </div>
                             <div class="form-group">
                                 <label>
-                                    <input type="checkbox" id="auto-generate-showtimes" name="auto_generate_showtimes">
+                                    <input type="checkbox" id="auto-generate-showtimes" name="auto_generate_showtimes"
+                                        {{ old('auto_generate_showtimes') ? 'checked' : '' }}>
                                     Tự động thêm các suất chiếu trong ngày
                                 </label>
                             </div>
 
                             <div class="row" id="auto-showtime-settings" style="display: none;">
-                                <div class="col-md-6 mb-1">
+                                <div class="col-md-4 mb-1">
+                                    <span class='text-danger'>*</span>
                                     <label for="start_hour">Giờ mở cửa:</label>
-                                    <input type="time" id="start_hour" name="start_hour" class="form-control">
-                                </div> 
+                                    <input type="time" id="start_hour" name="start_hour" class="form-control"
+                                        value="{{ old('start_hour') }}">
+                                </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <span class='text-danger'>*</span>
                                     <label for="end_hour">Giờ đóng cửa:</label>
-                                    <input type="time" id="end_hour" name="end_hour" class="form-control">
+                                    <input type="time" id="end_hour" name="end_hour" class="form-control"
+                                        value="{{ old('end_hour') }}">
                                 </div>
                             </div>
 
@@ -233,8 +239,6 @@
                                             @enderror
 
                                         </div>
-
-
 
                                     </div>
                                 </div>
@@ -277,9 +281,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
 
                 <!--end col-->
@@ -304,11 +305,12 @@
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        //Ajax select tên Rạp theo chi nhánh
+        //ajax load tên Rạp theo chi nhánh
         $(document).ready(function() {
             var selectedBranchId = "{{ old('branch_id', '') }}";
             var selectedCinemaId = "{{ old('cinema_id', '') }}";
-            // Xử lý sự kiện thay đổi chi nhánh
+            var selectedRoomId = "{{ old('room_id', '') }}";
+
             $('#branch').on('change', function() {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
@@ -321,58 +323,45 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option  value="' + cinema.id +
+                                cinemaSelect.append('<option value="' + cinema.id +
                                     '">' + cinema.name + '</option>');
                             });
 
-                            // Chọn lại cinema nếu có selectedCinemaId
+
                             if (selectedCinemaId) {
-                                cinemaSelect.val(selectedCinemaId);
+                                cinemaSelect.val(selectedCinemaId).trigger(
+                                    'change');
                                 selectedCinemaId = false;
                             }
                         }
                     });
                 }
             });
-            // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
+
+
             if (selectedBranchId) {
                 $('#branch').val(selectedBranchId).trigger('change');
-
             }
 
-        });
 
-        // Ajax select Phòng theo tên Rạp
-        $(document).ready(function() {
-            var selectedCinemaId = "{{ old('cinema_id', '') }}";
-            var selectedRoomId = "{{ old('room_id', '') }}";
-            // Xử lý sự kiện thay đổi chi nhánh
             $('#cinema').on('change', function() {
                 var cinemaId = $(this).val();
                 var roomSelect = $('#room');
                 roomSelect.empty();
                 roomSelect.append('<option value="">Chọn phòng</option>');
 
-
                 if (cinemaId) {
                     $.ajax({
                         url: "{{ env('APP_URL') }}/api/rooms/" + cinemaId,
                         method: 'GET',
                         success: function(data) {
-                            // console.log(data);
                             $.each(data, function(index, room) {
-
-                                // console.log(room);
-                                const roomCapacity = room.total_seats;
-
-                                roomSelect.append('<option value="' + room.id +
-                                    '" >' + room.name + ' - ' + room
-                                    .type_room_name + ' - ' + roomCapacity +
-                                    ' ghế </option>');
-
-
+                                roomSelect.append('<option value="' + room.id + '">' +
+                                    room.name + ' - ' + room.type_room_name +
+                                    ' - ' + room.total_seats + ' ghế</option>');
                             });
-                            //
+
+
                             if (selectedRoomId) {
                                 roomSelect.val(selectedRoomId);
                                 selectedRoomId = false;
@@ -380,15 +369,14 @@
                         }
                     });
                 }
-
             });
-
 
 
             if (selectedCinemaId) {
                 $('#cinema').val(selectedCinemaId).trigger('change');
             }
         });
+
 
         // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
         $(document).ready(function() {
@@ -430,52 +418,52 @@
 
         // Ajax đổ Suất chiếu đang có theo Phòng
         $(document).ready(function() {
-            var roomId, selectedDate;
+            var roomId = $('#room').val() || "{{ old('room_id') }}";
+            var selectedDate = $('#date').val() || "{{ old('date') }}";
+
+            if (roomId && selectedDate) {
+                loadShowtimes(roomId, selectedDate);
+            }
 
             // Xử lý sự kiện thay đổi phòng
             $('#room').on('change', function() {
                 roomId = $(this).val();
-                loadShowtimes();
+                loadShowtimes(roomId, selectedDate);
             });
 
             // Xử lý sự kiện thay đổi ngày chiếu
             $('#date').on('change', function() {
                 selectedDate = $(this).val();
-                loadShowtimes();
+                loadShowtimes(roomId, selectedDate);
             });
 
-            function loadShowtimes() {
-                if (roomId && selectedDate) {
-                    var listShowtimes = $('#listShowtimes');
-                    listShowtimes.empty();
+            function loadShowtimes(roomId, selectedDate) {
+                var listShowtimes = $('#listShowtimes');
+                listShowtimes.empty();
 
-                    $.ajax({
-                        url: "{{ env('APP_URL') }}/api/getShowtimesByRoom",
-                        method: 'GET',
-                        data: {
-                            room_id: roomId,
-                            date: selectedDate
-                        },
-                        success: function(data) {
-                            if (data.status === 'error') {
-                                // Hiển thị thông báo nếu không có suất chiếu
-                                listShowtimes.append('<tr><td colspan="2">' + data.message +
-                                    '</td></tr>');
-                            } else {
-                                $.each(data, function(index, showtime) {
-                                    var startTime = showtime.start_time;
-                                    var endTime = showtime.end_time;
-                                    var roomName = showtime.room.name;
+                $.ajax({
+                    url: "{{ env('APP_URL') }}/api/getShowtimesByRoom",
+                    method: 'GET',
+                    data: {
+                        room_id: roomId,
+                        date: selectedDate
+                    },
+                    success: function(data) {
+                        if (data.status === 'error') {
+                            listShowtimes.append('<tr><td colspan="2">' + data.message + '</td></tr>');
+                        } else {
+                            $.each(data, function(index, showtime) {
+                                var startTime = showtime.start_time;
+                                var endTime = showtime.end_time;
+                                var roomName = showtime.room.name;
 
-                                    // Đổ dữ liệu vào bảng
-                                    listShowtimes.append('<tr><td>' + startTime + ' - ' +
-                                        endTime +
-                                        '</td><td>' + roomName + '</td></tr>');
-                                });
-                            }
+                                // Đổ dữ liệu vào bảng
+                                listShowtimes.append('<tr><td>' + startTime + ' - ' + endTime +
+                                    '</td><td>' + roomName + '</td></tr>');
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 
@@ -631,25 +619,34 @@
             }
         }
 
-        // Lắng nghe sự kiện thay đổi start_time cho tất cả các suất chiếu
+        // Sk thay đổi start_time cho tất cả các suất chiếu
         $(document).on('change', 'input[name="start_time[]"]', function() {
             const currentRow = $(this).closest('.showtime-row');
             checkTimeOrder(currentRow); // Gọi hàm kiểm tra khi có thay đổi
         });
 
 
-        // JavaScript để hiển thị/ẩn các input giờ mở và đóng cửa khi chọn checkbox
-        document.getElementById('auto-generate-showtimes').addEventListener('change', function() {
+        // Js để hiển thị/ẩn các input giờ mở và đóng cửa khi chọn checkbox
+        document.addEventListener('DOMContentLoaded', function() {
             const showtimeSettings = document.getElementById('auto-showtime-settings');
             const addStartTime = document.getElementById('add-start-time');
-            if (this.checked) {
+            const autoGenerateCheckbox = document.getElementById('auto-generate-showtimes');
+
+            // Hiển thị auto-showtime-settings nếu checkbox được chọn
+            if (autoGenerateCheckbox.checked) {
                 showtimeSettings.style.display = 'block';
                 addStartTime.style.display = 'none';
-
-            } else {
-                showtimeSettings.style.display = 'none';
-                addStartTime.style.display = 'block';
             }
+
+            autoGenerateCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    showtimeSettings.style.display = 'block';
+                    addStartTime.style.display = 'none';
+                } else {
+                    showtimeSettings.style.display = 'none';
+                    addStartTime.style.display = 'block';
+                }
+            });
         });
     </script>
 @endsection

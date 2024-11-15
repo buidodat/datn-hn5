@@ -127,7 +127,21 @@
                                     </td>
                                     <td>
                                         <b>
-                                            {{ $movie->name }}
+                                            @php
+                                                $url = $movie->img_thumbnail;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            @if (!empty($movie->img_thumbnail))
+                                                <img src="{{ $url }}" alt="" width="50px" height="60px" class="img-thumbnail"> 
+                                            @else
+                                                No image ! 
+                                            @endif
+
+                                             {{ $movie->name }}
                                         </b>
                                         @if ($movie->is_special == 1)
                                             <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
@@ -135,9 +149,7 @@
                                         @else
                                         @endif
 
-                                        {{-- @if ($isSpecialMovie)
-                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt</span>
-                                        @endif --}}
+
                                     </td>
                                     <td>{{ $movie->duration }} phút</td>
                                     <td>{{ $movie->category }}</td>
