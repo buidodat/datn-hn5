@@ -40,6 +40,7 @@ class RoomController extends Controller
             $cinemas = Cinema::where('id', Auth::user()->cinema_id)->get();
         }
 
+
         $seatTemplates = SeatTemplate::where('is_publish', 1)
             ->where('is_active', 1)
             ->pluck('name', 'id')
@@ -67,10 +68,13 @@ class RoomController extends Controller
         }
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         $typeSeats = TypeSeat::pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seatMap', 'matrixSeat', 'typeSeats'));
+        $totalSeat = Seat::getTotalSeat($room->id);
+        $seatBroken = Seat::getTotalSeat($room->id,0);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seatMap', 'matrixSeat', 'typeSeats','totalSeat','seatBroken'));
     }
     public function update(Request $request, Room $room)
     {
+
         try {
             DB::transaction(function () use ($request, $room) {
                 if ($request->action == "publish" && !$room->is_publish) {
@@ -99,7 +103,7 @@ class RoomController extends Controller
 
                     foreach ($seats as $seat) {
                         $seat->update([
-                            'is_active' => $dataSeats[$seat->id],
+                            'is_active' => $dataSeats[$seat->id] ?? 0,
                         ]);
                     }
                 }

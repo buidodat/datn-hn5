@@ -57,7 +57,7 @@ class RoomController extends Controller
             'seat_template_id' => 'required|exists:seat_templates,id',
         ];
 
-        
+
         if (empty(Auth::user()->cinema_id)) {
             $rules['branch_id'] = 'required|exists:branches,id';
             $rules['cinema_id'] = 'required|exists:cinemas,id';

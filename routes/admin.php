@@ -73,6 +73,9 @@ Route::prefix('tickets')
 
 
 Route::resource('contacts', ContactController::class);
+Route::patch('contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.updateStatus');
+
+Route::get('contacts/{contact}', [ContactController::class, 'show']);
 
 
 Route::resource('movies', MovieController::class);
@@ -167,11 +170,18 @@ Route::prefix('ranks')
 Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
 Route::put('site-settings/update', [SiteSettingController::class, 'update'])->name('site-settings.update');
 
-// 2. Đặt lại về mặc định 
+// 2. Đặt lại về mặc định
 Route::post('site-settings/reset', [SiteSettingController::class, 'resetToDefault'])->name('site-settings.reset');
 
 // thống kê
-Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
-Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
+Route::get('/statistical-movies', [StatisticalController::class, 'statisticalMovies'])->name('statistical-movies');
+Route::get('/statistical-tickets', [StatisticalController::class, 'statisticalTickets'])->name('statistical-tickets');
+Route::get('/statistical-revenue', [StatisticalController::class, 'statisticalRevenue'])->name('statistical-revenue');
+Route::get('/statistical-cinemas', [StatisticalController::class, 'statisticalCinemas'])->name('statistical-cinemas');
+
+// Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
+// Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
+Route::get('/statistical/cinemaRevenue', [StatisticalController::class, 'cinemaRevenue'])->name('statistical.cinemaRevenue');
+
 
 

@@ -37,8 +37,7 @@ class ShowtimeController extends Controller
 
     public function index(Request $request)
     {
-        $branches = Branch::all();
-        $user = auth()->user();
+
 
         // $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
         // if ($user->cinema_id != "") {
@@ -63,26 +62,19 @@ class ShowtimeController extends Controller
         //     'date' => $request->date
         // ]);
 
+        $branches = Branch::all();
+        $user = auth()->user();
 
-        // Thiết lập giá trị mặc định cho Hà Nội, Hà Đông, và ngày hiện tại
         $defaultBranchId = 1;
         $defaultCinemaId = 1;
         $defaultDate = now()->format('Y-m-d');
 
-        // Lấy các giá trị tìm kiếm từ request, nếu không có thì dùng giá trị mặc định
         $branchId = $request->input('branch_id', $defaultBranchId);
         $cinemaId = $request->input('cinema_id', $defaultCinemaId);
         $date = $request->input('date', $defaultDate);
 
         // Tải danh sách chi nhánh và rạp
         $cinemas = Cinema::where('branch_id', $branchId)->get();
-
-        // Lọc danh sách suất chiếu dựa trên branch_id, cinema_id và date
-        // $showtimes = Showtime::where('branch_id', $branchId)
-        //     ->where('cinema_id', $cinemaId)
-        //     ->whereDate('date', $date)
-        //     ->with('movie')
-        //     ->get();
 
 
         $showtimes = Showtime::where('cinema_id', $cinemaId)
@@ -215,6 +207,12 @@ class ShowtimeController extends Controller
                     ->where('date', $request->date)
                     ->get();
 
+                $dateShowtime = Carbon::parse($request->date);
+                if (!$dateShowtime->between($movie->release_date, $movie->end_date)) {
+                    // dd('ko nằm trong khoảng này');
+                    $movie->is_special = "1";
+                    $movie->save();
+                }
 
                 if ($request->has('auto_generate_showtimes')) {
                     //
