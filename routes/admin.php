@@ -181,6 +181,7 @@ Route::get('/statistical-cinemas', [StatisticalController::class, 'statisticalCi
 
 // Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
 // Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
+Route::get('/statistical/cinemaRevenue', [StatisticalController::class, 'cinemaRevenue'])->name('statistical.cinemaRevenue');
 
 
 
