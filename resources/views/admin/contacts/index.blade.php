@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách liên hệ</h5>
-                    <a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">Thêm mới</a>
+                    {{-- <a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">Thêm mới</a> --}}
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -53,9 +53,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
+                                <th>Thông tin liên hệ</th>
                                 <th>Tiêu đề</th>
                                 <th>Nội dung</th>
                                 <th>Ngày tạo</th>
@@ -67,25 +65,37 @@
                             @foreach ($contacts as $contact)
                                 <tr>
                                     <td>{{ $contact->id }}</td>
-                                    <td>{{ $contact->user_contact }}</td>
-                                    <td>{{ $contact->email }}</td>
-                                    <td>{{ $contact->phone }}</td>
-                                    <td>{{ $contact->title }}</td>
-                                    <td>{{ $contact->content }}</td>
-                                    <td>{{ $contact->created_at }}</td>                                  
-                                    <td>{!! $contact->status == 'pending' ? 
-                                        '<span class="badge bg-danger-subtle text-danger text-uppercase">Chưa xử lí</span>'
-                                        : '<span class="badge bg-success-subtle text-success text-uppercase">Đã xử lí</span>' !!}
+                                    <td>
+                                        <strong>Họ tên:</strong> {{ $contact->user_contact }}<br>
+                                        <strong>Email:</strong> {{ $contact->email }}<br>
+                                        <strong>SĐT:</strong> {{ $contact->phone }}
                                     </td>
+                                    <td>{{ $contact->title }}</td>
+                                    <td>
+                                        <div>
+                                            {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }}
+                                        </div>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($contact->created_at)->format('d/m/Y, H:i:s') }}</td>                          
+                                    <td>
+                                        <select class="form-select status-select" data-id="{{ $contact->id }}" {{ $contact->status == 'resolved' ? 'disabled' : '' }} >
+                                            <option value="pending" {{ $contact->status == 'pending' ? 'selected' : '' }}>Chưa xử lí</option>
+                                            <option value="resolved" {{ $contact->status == 'resolved' ? 'selected' : '' }}>Đã xử lí</option>
+                                        </select>
+                                    </td> 
                                     <td>    
                                         {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
+                                        
+                                        <button class="btn btn-info btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                            <i class="fas fa-eye"></i> Xem
+                                        </button>
 
-                                        <a href="{{ route('admin.contacts.edit', $contact)}}">
+                                        {{-- <a href="{{ route('admin.contacts.edit', $contact)}}">
                                             <button title="Sửa" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
-                                        </a>
+                                        </a> --}}
                                         {{-- <form action="{{route('admin.contacts.destroy', $contact)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
@@ -102,8 +112,24 @@
             </div>
         </div><!--end col-->
     </div><!--end row-->
-@endsection
+    <!-- Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Thông tin liên hệ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="contactDetails">
+                        <!-- Thông tin liên hệ sẽ được tải vào đây qua AJAX -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+@endsection
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -124,6 +150,64 @@
             order: [
                 [0, 'desc']
             ]
+        });
+    </script>
+    <script>
+        $(document).on('change', '.status-select', function () {
+        let contactId = $(this).data('id');
+        let newStatus = $(this).val();
+
+        if (newStatus === 'resolved') {
+            if (!confirm('Bạn có chắc chắn muốn chuyển trạng thái sang "Đã xử lí"?')) {
+                // Nếu người dùng không xác nhận, đặt lại trạng thái về trạng thái trước đó
+                $(this).val('pending');
+                return;
+            }
+            $(this).prop('disabled', true); // Vô hiệu hóa dropdown nếu trạng thái là 'Đã xử lí'
+        }
+
+        $.ajax({
+            url: `/admin/contacts/${contactId}/status`,
+            type: 'PATCH',
+            data: {
+                status: newStatus,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function (response) {
+                alert(response.success);
+            },
+            error: function (xhr) {
+                alert('Cập nhật trạng thái thất bại.');
+            }
+        });
+    });
+    </script>
+    <script>
+        $(document).on('click', '.view-contact', function() {
+            var contactId = $(this).data('id');
+    
+            // Gửi AJAX để lấy thông tin liên hệ
+            $.ajax({
+                url: '/admin/contacts/' + contactId, // Route để lấy thông tin chi tiết liên hệ
+                type: 'GET',
+                success: function(response) {
+                    // Hiển thị thông tin vào modal
+                    var contact = response.contact;
+                    var contactDetails = `
+                        <p><strong>Họ và tên:</strong> ${contact.user_contact}</p>
+                        <p><strong>Email:</strong> ${contact.email}</p>
+                        <p><strong>Số điện thoại:</strong> ${contact.phone}</p>
+                        <p><strong>Tiêu đề:</strong> ${contact.title}</p>
+                        <p><strong>Nội dung:</strong> ${contact.content}</p>
+                        <p><strong>Ngày tạo:</strong> ${new Date(contact.created_at).toLocaleString('en-GB')}</p> <!-- Chuyển đổi ngày giờ -->
+                        <p><strong>Trạng thái:</strong> ${contact.status == 'pending' ? 'Chưa xử lí' : 'Đã xử lí'}</p>
+                    `;
+                    $('#contactDetails').html(contactDetails);
+                },
+                error: function() {
+                    alert('Không thể tải thông tin liên hệ.');
+                }
+            });
         });
     </script>
 @endsection
