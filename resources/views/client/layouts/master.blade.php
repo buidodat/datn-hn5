@@ -47,7 +47,7 @@
             'status' => $expired
         ]);
     @endphp
-    
+
     <!-- preloader Start -->
     <div id="preloader">
         <div id="status">
