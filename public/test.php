@@ -1,244 +1,298 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>In vé</title>
-    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi Tiết Giao Dịch</title>
+  <style>
+    /* Cấu trúc Modal */
+    .modal-ticket-detail {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(25, 32, 65, 0.6); /* #192041 */
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
 
-        .ticket-container {
-            width: 300px;
-            background-color: #ffe5e5;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            page-break-inside: avoid; /* Tránh việc chia vé ra thành 2 trang */
-        }
+    .modal-content-ticket-detail {
+      background-color: white;
+      width: 90%; /* Tăng độ rộng để có không gian bên trái và phải */
+      max-width: 1100px; /* Mở rộng chiều rộng tối đa */
+      border-radius: 15px; /* Tăng bo góc để trông mềm mại hơn */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      font-family: Arial, sans-serif;
+      position: relative;
+      padding: 20px; /* Tăng padding bên trong */
+      overflow-y: auto;
+      margin-left: 5%; /* Thêm khoảng cách từ trái */
+      margin-right: 5%; /* Thêm khoảng cách từ phải */
+    }
 
-        .ticket-header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    /* Header Modal */
+    .modal-header-ticket-detail {
+      background-color: #434f89; /* #434f89 */
+      color: white;
+      padding: 15px 20px; /* Tăng padding */
+      font-size: 20px; /* Tăng kích thước chữ */
+      font-weight: bold;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .ticket-header h2 {
-            font-size: 18px;
-            font-weight: bold;
-            color: #d63384;
-        }
+    .close-btn-ticket-detail {
+      color: white;
+      font-size: 32px; /* Tăng kích thước chữ đóng */
+      cursor: pointer;
+    }
 
-        .ticket-info {
-            font-size: 14px;
-        }
+    .modal-body-ticket-detail {
+      padding: 20px; /* Tăng padding */
+    }
 
-        .ticket-info p {
-            margin-bottom: 5px;
-        }
+    /* Thông tin chính */
+    .info-block-ticket-detail {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px; /* Tăng margin-bottom */
+      font-size: 16px; /* Tăng font-size */
+    }
 
-        .ticket-info strong {
-            font-weight: bold;
-        }
+    /* Mã vạch */
+    .barcode-ticket-detail img {
+      max-width: 90%; /* Giảm kích thước mã vạch */
+      border-radius: 10px;
+    }
 
-        .ticket-info .highlight {
-            font-weight: bold;
-            color: #d63384;
-        }
+    /* Cấu trúc bảng giao dịch */
+    .transaction-details-ticket-detail table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px; /* Tăng khoảng cách trên bảng */
+    }
 
-        .tickets-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
+    .transaction-details-ticket-detail th, .transaction-details-ticket-detail td {
+      padding: 12px; /* Tăng padding */
+      border: 1px solid #ddd;
+      text-align: left;
+    }
 
-        .tickets-group .ticket-container {
-            width: 45%; /* Hai vé trong một hàng */
-            margin-bottom: 10px;
-        }
+    .transaction-details-ticket-detail th {
+      background-color: #ff7307; /* #ff7307 */
+      color: white;
+      font-weight: normal;
+    }
 
-        /* Styles cho phần in */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
+    .transaction-details-ticket-detail td {
+      font-size: 14px; /* Tăng font-size */
+      background-color: #f9f9f9;
+    }
 
-            .ticket-page,
-            .ticket-page * {
-                visibility: visible;
-            }
+    .transaction-details-ticket-detail tr:hover {
+      background-color: #f1f1f1;
+    }
 
-            .ticket-page {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                margin: 0;
-                border: none;
-                box-shadow: none;
-            }
+    /* Tổng cộng */
+    .payment-summary-ticket-detail {
+      font-size: 18px; /* Tăng font-size */
+      font-weight: bold;
+      background-color: #f0f4f7;
+      border-radius: 15px;
+      margin-top: 20px;
+      padding: 20px; /* Tăng padding */
+    }
 
-            @page {
-                size: auto;
-                margin: 10mm;
-            }
+    .payment-summary-ticket-detail div {
+      margin-bottom: 12px; /* Tăng margin-bottom */
+    }
 
-            .no-print {
-                display: none;
-            }
+    .payment-summary-ticket-detail .amount {
+      color: #ff7307; /* #ff7307 */
+      font-weight: bold;
+    }
 
-            .tickets-group {
-                page-break-before: always; /* Tạo tờ mới trước mỗi nhóm vé */
-            }
-        }
-    </style>
+    .payment-summary-ticket-detail .discounts {
+      color: #151b39; /* #151b39 */
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .modal-content-ticket-detail {
+        width: 90%;
+        padding: 15px; /* Giảm padding */
+      }
+
+      .info-block-ticket-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 14px; /* Giảm font-size */
+      }
+
+      .info-block-ticket-detail div {
+        margin-bottom: 8px;
+        width: 100%;
+      }
+
+      .modal-header-ticket-detail {
+        font-size: 18px;
+        padding: 12px 15px;
+      }
+
+      .transaction-details-ticket-detail table, .transaction-details-ticket-detail th, .transaction-details-ticket-detail td {
+        font-size: 12px; /* Giảm font-size */
+        padding: 8px; /* Giảm padding */
+      }
+
+      .payment-summary-ticket-detail {
+        padding: 15px; /* Giảm padding */
+      }
+
+      .barcode-ticket-detail img {
+        max-width: 80%;
+        margin: 0 auto;
+      }
+    }
+
+    /* Responsive cho các màn hình nhỏ hơn */
+    @media (max-width: 480px) {
+      .modal-header-ticket-detail {
+        font-size: 16px;
+        padding: 10px 12px;
+      }
+
+      .transaction-details-ticket-detail table, .transaction-details-ticket-detail th, .transaction-details-ticket-detail td {
+        font-size: 10px; /* Giảm font-size */
+        padding: 6px; /* Giảm padding */
+      }
+
+      .payment-summary-ticket-detail {
+        padding: 12px; /* Giảm padding */
+      }
+
+      .payment-summary-ticket-detail .amount {
+        font-size: 16px;
+      }
+
+      .payment-summary-ticket-detail .discounts {
+        font-size: 14px;
+      }
+    }
+
+  </style>
 </head>
 <body>
-    <div class="no-print">
-        <button onclick="printTickets()" class="btn btn-success btn-sm">
-            In tất cả vé
-        </button>
-    </div>
 
-    <!-- Tạo 2 nhóm vé -->
-    <div id="tickets">
-        <!-- Tờ 1 (4 vé đầu tiên) -->
-        <div class="ticket-page">
-            <div class="tickets-group">
-                <!-- Vé 1 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 1 - Ghế: A1, A2</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
+  <!-- Nút mở Modal -->
+  <button class="open-modal-btn-ticket-detail" id="showTicketDetail">Xem chi tiết giao dịch</button>
 
-                <!-- Vé 2 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 1 - Ghế: A3, A4</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
+  <!-- Modal -->
+  <div id="transactionModal" class="modal-ticket-detail">
+    <div class="modal-content-ticket-detail">
+      <div class="modal-header-ticket-detail">
+        <span>Chi tiết giao dịch #aO2PBFGR6Y</span>
+        <span class="close-btn-ticket-detail" id="closeTicketDetail">&times;</span>
+      </div>
 
-                <!-- Vé 3 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 1 - Ghế: A5, A6</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-
-                <!-- Vé 4 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 1 - Ghế: A7, A8</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-            </div>
+      <div class="modal-body-ticket-detail">
+        <!-- Thông tin giao dịch -->
+        <div class="info-block-ticket-detail">
+          <div>
+            <strong>Mã giao dịch:</strong> #aO2PBFGR6Y<br>
+            <strong>Ngày mua hàng:</strong> 18/06/2024 16:00
+          </div>
+          <div class="barcode-ticket-detail">
+            <img src="https://dummyimage.com/300x80/000/fff.png&text=Barcode" alt="Barcode">
+          </div>
         </div>
 
-        <!-- Tờ 2 (4 vé còn lại) -->
-        <div class="ticket-page">
-            <div class="tickets-group">
-                <!-- Vé 5 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 2 - Ghế: B1, B2</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-
-                <!-- Vé 6 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 2 - Ghế: B3, B4</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-
-                <!-- Vé 7 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 2 - Ghế: B5, B6</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-
-                <!-- Vé 8 -->
-                <div class="ticket-container">
-                    <div class="ticket-header">
-                        <h2>Hóa đơn</h2>
-                    </div>
-                    <div class="ticket-info">
-                        <p><strong>Chi nhánh: Hà Đông</strong></p>
-                        <p>Địa chỉ: 1 Quang Trung</p>
-                        <p>Phim: Avatar 2 (3D)</p>
-                        <p>Phòng: 2 - Ghế: B7, B8</p>
-                        <p><strong>Giá vé: 150.000 VND</strong></p>
-                    </div>
-                </div>
-            </div>
+        <!-- Địa chỉ và phương thức thanh toán -->
+        <div class="info-block-ticket-detail">
+          <div>
+            <strong>Địa chỉ thanh toán:</strong><br>
+            System Admin<br>
+            Bích Hòa, Thanh Oai, Hà Nội<br>
+            admin@fpt.edu.vn<br>
+            0332295555
+          </div>
+          <div>
+            <strong>Phương thức thanh toán:</strong><br>
+            Zalopay
+          </div>
         </div>
-    </div>
 
-    <script>
-        // In tất cả vé sử dụng printJS
-        function printTickets() {
-            printJS({
-                printable: 'tickets',
-                type: 'html',
-                targetStyles: ['*'],
-                style: '@page { size: A4; margin: 10mm; }',
-            });
-        }
-    </script>
+        <!-- Bảng thông tin giao dịch -->
+        <div class="transaction-details-ticket-detail">
+          <h3 style="color: #434f89;">Thông tin giao dịch</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Phim</th>
+                <th>Suất chiếu</th>
+                <th>Ghế</th>
+                <th>Combo</th>
+                <th>Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Địa Đạo: Mặt Trời Trong Bóng Tối</td>
+                <td>Mỹ Đình<br>P404<br>18/11/2024<br>14:37 - 16:24</td>
+                <td>Ghế Vip: H6<br>83.000 đ</td>
+                <td>
+                  Combo Snack x 3<br>
+                  Combo Mixed x 3<br>
+                  Combo Drink x 5
+                </td>
+                <td>518.000 đ</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tổng tiền và các khoản giảm giá -->
+        <div class="payment-summary-ticket-detail">
+          <div>
+            <strong>Tổng tiền:</strong> 300.000 đ
+          </div>
+          <div class="discounts">
+            <strong>Voucher:</strong> -20.000 đ<br>
+            <strong>Điểm Poly:</strong> -10.000 đ
+          </div>
+          <div class="amount">
+            <strong>Tổng tiền đã thanh toán:</strong> 270.000 đ
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const showModalTicketDetail = document.getElementById("showTicketDetail");
+    const closeModalTicketDetail = document.getElementById("closeTicketDetail");
+    showModalTicketDetail.addEventListener("click", function() {
+        document.getElementById("transactionModal").style.display = "flex";
+        });
+        closeModalTicketDetail.addEventListener("click", function() {
+        document.getElementById("transactionModal").style.display = "none";
+        });
+
+    function closeModal() {
+      document.getElementById("transactionModal").style.display = "none";
+    }
+    // Đóng modal khi người dùng nhấn bên ngoài modal
+    window.onclick = function(event) {
+      if (event.target == document.getElementById("transactionModal")) {
+        closeModal();
+      }
+    }
+  </script>
+
 </body>
 </html>

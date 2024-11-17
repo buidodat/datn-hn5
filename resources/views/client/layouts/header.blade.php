@@ -24,7 +24,7 @@
                                 <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
                                         tài khoản</a></li>
                                 <li><a href="{{ route('my-account.edit','membership') }}"  ><i class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
-                                <li><a href="{{ route('my-account.edit','cinema-journey') }}" ><i class="fa-regular fa-paper-plane"></i>Lịch sử giao dịch</a></li>
+                                <li><a href="{{ route('my-account.edit','cinema-journey') }}" ><i class="fa-regular fa-paper-plane"></i> Lịch sử giao dịch</a></li>
                                 {{-- <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li> --}}
                                 <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
                                 <li>
