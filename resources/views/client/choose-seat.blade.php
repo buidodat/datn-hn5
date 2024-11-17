@@ -21,6 +21,9 @@
                                     <div class="list-seats"><span class="mdi--love-seat text-muted"></span>
                                         <span class="status-seat">Ghế trống</span>
                                     </div>
+                                    <div class="list-seats"><span class="mdi--love-seat text-locked"></span>
+                                        <span class="status-seat">Ghế hỏng</span>
+                                    </div>
                                     <div class="list-seats"><span class="mdi--love-seat text-primary"></span>
                                         <span class="status-seat">Ghế đang chọn</span>
                                     </div>
@@ -63,7 +66,7 @@
                                                                                 <span data-seat-id="{{ $seat->id }}"
                                                                                     data-seat-price="{{ $seat->pivot->price }}"
                                                                                     data-type="3"
-                                                                                    class="game-icons--sofa seat-double seat  span-seat {{ $seat->pivot->status }}"
+                                                                                    class="game-icons--sofa seat-double seat span-seat {{ $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
                                                                                     id="seat-{{ $seat->id }}">
 
                                                                                     <span
@@ -79,7 +82,7 @@
                                                                                             <span data-seat-id="{{ $seat->id }}"
                                                                                                 data-seat-price="{{ $seat->pivot->price }}"
                                                                                                 data-type="1"
-                                                                                                class="solar--sofa-3-bold seat span-seat {{  $seat->pivot->status }}"
+                                                                                                class="solar--sofa-3-bold seat span-seat {{  $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
                                                                                                 id="seat-{{ $seat->id }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>
@@ -91,7 +94,7 @@
                                                                                                 data-seat-id="{{ $seat->id }}"
                                                                                                 data-seat-price="{{ $seat->pivot->price }}"
                                                                                                 data-type="2"
-                                                                                                class="mdi--love-seat text-muted seat span-seat {{  $seat->pivot->status }}"
+                                                                                                class="mdi--love-seat text-muted seat span-seat {{  $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
                                                                                                 id="seat-{{ $seat->id }}">
                                                                                                 <span
                                                                                                     class="seat-label">{{ $seat->name }}</span>

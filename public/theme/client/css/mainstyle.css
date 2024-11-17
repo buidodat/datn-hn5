@@ -41,6 +41,32 @@
 .cam-fpt {
     color: #ff7307;
 }
+
+.text-muted {
+    color: #bebebe;
+}
+
+.text-locked {
+    position: relative;
+    color: #bebebe;
+}
+
+.text-locked::before,
+.text-locked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%; /* Chiều dài của dấu X */
+    height: 2px; /* Độ dày của dấu X */
+    background-color: rgb(128, 127, 127); /* Màu của dấu X */
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.text-locked::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .text-warning {
     color: rgb(228, 228, 5);
 }
@@ -333,6 +359,29 @@
     margin-bottom: 5px;
 
 }
+
+
+.seat-is_active {
+    position: relative;
+    pointer-events: none; /* Cấm click */
+}
+
+.seat-is_active::before,
+.seat-is_active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 2px;
+    background-color: rgb(128, 127, 127); /* Màu của dấu X */
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.seat-is_active::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 
 .container-screen .legend {
     margin-top: 20px;
