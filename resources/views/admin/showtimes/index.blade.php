@@ -65,8 +65,7 @@
                                         </div>
 
                                         <div class="col-md-3">
-                                            <select name="cinema_id" id="cinema" class="form-select"
-                                                onchange="this.form.submit()">
+                                            <select name="cinema_id" id="cinema" class="form-select">
                                                 <option value="">Chọn Rạp</option>
                                                 @foreach ($cinemas as $cinema)
                                                     <option value="{{ $cinema->id }}"
@@ -80,7 +79,7 @@
 
                                     <div class="col-md-3">
                                         <input type="date" name="date" class="form-control"
-                                            value="{{ $date }}" onchange="this.form.submit()">
+                                            value="{{ $date }}">
                                     </div>
 
                                     <div class="col-md-3">
@@ -104,6 +103,7 @@
                 @endif
 
                 <div class="card-body">
+
                     <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
                         style="width:100%;">
                         <thead>
@@ -112,11 +112,11 @@
                                 <th>PHIM</th>
                                 <th>THỜI LƯỢNG</th>
                                 <th>THỂ LOẠI</th>
-                                <th>ĐỊNH DẠNG</th>
+                                {{-- <th>ĐỊNH DẠNG</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($showtimes->groupBy('movie_id', 'format') as $movieId => $showtimesByMovie)
+                            @foreach ($showtimes->groupBy('movie_id') as $movieId => $showtimesByMovie)
                                 @php
                                     $movie = $showtimesByMovie->first()->movie;
 
@@ -141,7 +141,7 @@
                                     </td>
                                     <td>{{ $movie->duration }} phút</td>
                                     <td>{{ $movie->category }}</td>
-                                    <td>{{ $showtimesByMovie->first()->format }}</td>
+                                    {{-- <td>{{ $showtimesByMovie->first()->format }}</td> --}}
                                 </tr>
 
                                 <tr class="showtime-row" style="display: none;">
@@ -154,6 +154,7 @@
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
                                                     <th>CHỖ NGỒI</th>
+                                                    <th>ĐỊNH DẠNG</th>
                                                     <th class="status-showtime">TRẠNG THÁI</th>
                                                     <th>CHỨC NĂNG</th>
                                                 </tr>
@@ -175,6 +176,9 @@
                                                             {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
                                                             /
                                                             {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $showtime->format }}
                                                         </td>
                                                         <td>
                                                             <div
@@ -215,23 +219,30 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="6">
-                                                        <div class="d-flex justify-content-between">
-                                                            <form action="" method="post" class="d-inline-block">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button type="submit" id="delete-all"
-                                                                    class="btn btn-danger btn-sm">
-                                                                    Xóa tất cả
-                                                                </button>
-                                                            </form>
-                                                            <a href="" class="px-5">
-                                                                <button id="change-status-all" title="thay đổi"
-                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái tất
-                                                                    cả</button>
+                                                    <td colspan="7">
+                                                        @if ($showtime->is_active == 0)
+                                                            <div class="d-flex justify-content-between">
 
-                                                            </a>
-                                                        </div>
+                                                                <form action="" method="post"
+                                                                    class="d-inline-block">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit" id="delete-all"
+                                                                        class="btn btn-danger btn-sm">
+                                                                        Xóa tất cả
+                                                                    </button>
+                                                                </form>
+
+                                                                <a href="" class="px-5">
+                                                                    <button id="change-status-all" title="thay đổi"
+                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                        tất
+                                                                        cả</button>
+
+                                                                </a>
+                                                            </div>
+                                                        @endif
+
                                                     </td>
                                                 </tr>
                                             </tfoot>
