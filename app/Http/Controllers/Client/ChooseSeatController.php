@@ -437,8 +437,10 @@ class ChooseSeatController extends Controller
             DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
                 // Tìm ghế trong showtime và kiểm tra trạng thái
                 $seatShowtime = DB::table('seat_showtimes')
-                    ->where('seat_id', $seatId)
-                    ->where('showtime_id', $showtimeId)
+                    ->join('seats', 'seats.id', '=', 'seat_showtimes.seat_id')
+                    ->where('seat_showtimes.seat_id', $seatId)
+                    ->where('seat_showtimes.showtime_id', $showtimeId)
+                    ->where('seats.is_active', 1)
                     ->lockForUpdate()
                     ->first();
 

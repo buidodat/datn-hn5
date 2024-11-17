@@ -385,8 +385,7 @@
 
                 seatsInRow.forEach((seat, index) => {
                     const seatType = seat.getAttribute('data-type'); // Lấy loại ghế từ data-type
-                    if (seat.classList.contains('selected') && seatType !==
-                        '3') { // Bỏ qua ghế đôi hoặc ghế có type=3
+                    if (seat.classList.contains('selected') && seatType !== '3') { // Bỏ qua ghế đôi hoặc ghế có type=3
                         selectedIndexes.push(index);
                     }
                 });
@@ -398,8 +397,8 @@
                         const emptySeatIndex = selectedIndexes[i] + 1;
                         const emptySeat = seatsInRow[emptySeatIndex];
 
-                        // Bỏ qua nếu ghế ở giữa có trạng thái sold hoặc hold
-                        if (!emptySeat.classList.contains('sold') && !emptySeat.classList.contains('hold')) {
+                        // Bỏ qua nếu ghế ở giữa có trạng thái sold hoặc hold/ ghế hỏng
+                        if (!emptySeat.classList.contains('sold') && !emptySeat.classList.contains('hold') && !emptySeat.classList.contains('seat-is_active')) {
                             isSoleSeatIssue = true;
                             soleSeatsMessage += emptySeat.querySelector('.seat-label').textContent + ' ';
                         }
@@ -427,22 +426,24 @@
                     const lastSeat = seatsInRow[seatsInRow.length - 1];
                     const beforeLastSeat = seatsInRow[seatsInRow.length - 2];
 
-                    // Bỏ qua nếu ghế đầu là ghế đôi, có type=3 hoặc có trạng thái sold/hold
+                    // Bỏ qua nếu ghế đầu là ghế đôi, có type=3 hoặc có trạng thái sold/hold, ghế hỏng
                     if (!firstSeat.classList.contains('selected') &&
                         secondSeat.classList.contains('selected') &&
                         firstSeat.getAttribute('data-type') !== '3' &&
                         !firstSeat.classList.contains('sold') &&
-                        !firstSeat.classList.contains('hold')) {
+                        !firstSeat.classList.contains('hold') &&
+                        !firstSeat.classList.contains('seat-is_active')) {
                         isEdgeSeatIssue = true;
                         edgeSeatsMessage += firstSeat.querySelector('.seat-label').textContent + ' ';
                     }
-
-                    // Bỏ qua nếu ghế cuối là ghế đôi, có type=3 hoặc có trạng thái sold/hold
+                    
+                    // Bỏ qua nếu ghế cuối là ghế đôi, có type=3 hoặc có trạng thái sold/hold, ghế hỏng
                     if (!lastSeat.classList.contains('selected') &&
                         beforeLastSeat.classList.contains('selected') &&
                         lastSeat.getAttribute('data-type') !== '3' &&
                         !lastSeat.classList.contains('sold') &&
-                        !lastSeat.classList.contains('hold')) {
+                        !lastSeat.classList.contains('hold') &&
+                        !lastSeat.classList.contains('seat-is_active')) {
                         isEdgeSeatIssue = true;
                         edgeSeatsMessage += lastSeat.querySelector('.seat-label').textContent + ' ';
                     }
