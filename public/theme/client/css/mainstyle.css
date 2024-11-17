@@ -32,6 +32,32 @@
 .cam-fpt {
     color: #ff7307;
 }
+
+.text-muted {
+    color: #bebebe;
+}
+
+.text-locked {
+    position: relative;
+    color: #bebebe;
+}
+
+.text-locked::before,
+.text-locked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%; /* Chiều dài của dấu X */
+    height: 2px; /* Độ dày của dấu X */
+    background-color: rgb(128, 127, 127); /* Màu của dấu X */
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.text-locked::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .text-warning {
     color: rgb(228, 228, 5);
 }
@@ -194,7 +220,11 @@
 }
 
 .row-seat {
-    text-align: center;
+    /* text-align: center; */
+    width:40px;
+    height:25px;
+    max-width:40px;
+    max-height:30px;
 }
 
 .container-screen .row {
@@ -239,8 +269,8 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 96px;
-    height: 48px;
+    width: 100%;
+    height: 45px;
     text-align: center;
     font-size: 20px;
     /* Điều chỉnh kích thước font nếu cần */
@@ -252,16 +282,17 @@
 }
 
 .seat-label {
-    position: absolute;
+    /* position: absolute;
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 11px;
+    font-size: 10px;
     color: rgb(69, 68, 68);
     pointer-events: none;
     font-weight: bold;
-    z-index: 10;
-    word-spacing: 0.8em;
+    z-index: 1;
+    word-spacing: 0.5em;
+    margin-top: 2px; */
 
     -webkit-user-select: none;
     /* Chrome, Safari, Opera */
@@ -271,6 +302,23 @@
     /* Internet Explorer/Edge */
     user-select: none;
     /* Non-prefixed version, hiện đại hơn */
+
+    position: absolute;
+    /* Đặt vị trí tuyệt đối cho phần tử */
+    top: 40%;
+    /* Căn giữa theo chiều dọc */
+    left: 50%;
+    /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Đưa phần tử trở lại giữa chính xác */
+    font-size: 9px;
+    /* Kích thước của văn bản */
+    font-weight: 500;
+    /* Thêm các thuộc tính khác như padding, background-color nếu cần */
+    color: #2a2a2a;
+    word-spacing: 1.2em;
+    width: 66px;
+    font-weight: bold;
 
 }
 
@@ -302,6 +350,29 @@
     margin-bottom: 5px;
 
 }
+
+
+.seat-is_active {
+    position: relative;
+    pointer-events: none; /* Cấm click */
+}
+
+.seat-is_active::before,
+.seat-is_active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 2px;
+    background-color: rgb(128, 127, 127); /* Màu của dấu X */
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.seat-is_active::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 
 .container-screen .legend {
     margin-top: 20px;

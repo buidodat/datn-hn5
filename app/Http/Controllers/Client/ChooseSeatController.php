@@ -14,6 +14,7 @@ use App\Events\SeatHold;
 use App\Events\SeatStatusChange;
 use App\Jobs\ReleaseSeatHoldJob;
 use App\Models\SeatShowtime;
+use App\Models\SeatTemplate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -88,10 +89,21 @@ class ChooseSeatController extends Controller
 
     public function show(string $id)
     {
-        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie'])->findOrFail($id);
-        $showtime->room->seats;
-        $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
-        $matrixSeat = Room::MATRIXS[$matrixKey];
+        // $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie'])->findOrFail($id);
+        // $showtime->room->seats;
+        // $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
+        // $matrixSeat = Room::MATRIXS[$matrixKey];
+
+        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
+        $matrixSeat = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
+        $seats =  $showtime->seats;
+
+        $seatMap = [];
+        foreach ($seats as $seat) {
+            $seatMap[$seat->coordinates_y][$seat->coordinates_x] = $seat;
+        }
+
+        // dd($seatMap);
 
         // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
         DB::table('seat_showtimes')
@@ -160,7 +172,7 @@ class ChooseSeatController extends Controller
         // Hiển thị thời gian còn lại
         // echo "Thời gian còn lại cho suất chiếu $id: " . gmdate("i:s", $remainingSeconds);
 
-        return view('client.choose-seat', compact('showtime', 'matrixSeat', 'selectedSeats', 'remainingSeconds'));
+        return view('client.choose-seat', compact('showtime', 'matrixSeat', 'seatMap', 'selectedSeats', 'remainingSeconds'));
     }
 
 
@@ -425,8 +437,10 @@ class ChooseSeatController extends Controller
             DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
                 // Tìm ghế trong showtime và kiểm tra trạng thái
                 $seatShowtime = DB::table('seat_showtimes')
-                    ->where('seat_id', $seatId)
-                    ->where('showtime_id', $showtimeId)
+                    ->join('seats', 'seats.id', '=', 'seat_showtimes.seat_id')
+                    ->where('seat_showtimes.seat_id', $seatId)
+                    ->where('seat_showtimes.showtime_id', $showtimeId)
+                    ->where('seats.is_active', 1)
                     ->lockForUpdate()
                     ->first();
 
