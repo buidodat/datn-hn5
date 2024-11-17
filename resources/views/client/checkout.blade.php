@@ -284,10 +284,11 @@
                                                 <div>
                                                     <label for="checkbox" style="margin: 0; font-weight: 100">
                                                         <input type="checkbox" id="checkbox">
-                                                        Tôi đồng ý với điều khoản sử dụng và mua vé,
-                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
-                                                            tại đây.</span>
+                                                        Tôi đồng ý với điều khoản sử dụng và mua vé.
                                                     </label>
+                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng và mua vé, 
+                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
+                                                        tại đây.</span></p>
 
                                                     @include('client.layouts.components.modal-clause')
 
@@ -722,10 +723,11 @@
                                                 <div>
                                                     <label for="checkbox" style="margin: 0; font-weight: 100">
                                                         <input type="checkbox" id="checkbox">
-                                                        Tôi đồng ý với điều khoản sử dụng và mua vé,
-                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
-                                                            tại đây.</span>
+                                                        Tôi đồng ý với điều khoản sử dụng và mua vé.
                                                     </label>
+                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng và mua vé, 
+                                                        <span id="showModal" style="color: #ff7307; cursor: pointer;">
+                                                        tại đây.</span></p>
 
                                                     @include('client.layouts.components.modal-clause')
 

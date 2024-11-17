@@ -130,7 +130,7 @@ class PaymentController extends Controller
                 // Lưu thông tin thanh toán vào session
                 session([
                     'payment_data' => [
-                        'code' => $request->code,
+                        'code' => Ticket::generateTicketCode(),
                         'user_id' => $request->user_id,
                         'payment_name' => $request->payment_name,
                         'voucher_code' => $voucher->code ?? null,
