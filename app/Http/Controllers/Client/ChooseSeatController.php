@@ -105,6 +105,11 @@ class ChooseSeatController extends Controller
 
         // dd($seatMap);
 
+        // nếu hết giờ start_time < thời gian hiện tại thì chuyển về trang chủ
+        if($showtime->start_time < now()){
+            return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
+        }
+
         // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
         DB::table('seat_showtimes')
             ->where('showtime_id', $id)

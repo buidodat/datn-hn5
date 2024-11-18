@@ -162,7 +162,7 @@
 
                                 @if ($validShowtimes->isNotEmpty() && $validShowtimes->first() && $validShowtimes->first()->movie)
                                     <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8" style="margin-bottom: 20px">
-                                        <div class="col-md-3 image-movie-detail">
+                                        <div class="col-md-3">
                                             <img src="{{ $validShowtimes->first()->movie->img_thumbnail }}"
                                                 class="movie-poster">
                                         </div>
