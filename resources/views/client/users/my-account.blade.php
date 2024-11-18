@@ -308,7 +308,12 @@
                                     <tbody>
                                         @foreach ($tickets as $ticket)
                                             <tr>
-                                                <td>{{ $ticket->code }}</td>
+
+                                                <td>{{ $ticket->code }}
+                                                   <div>
+                                                     @include('client.modals.ticket-detail', ['ticket'=>$ticket])
+                                                   </div>
+                                                </td>
                                                 <td>
                                                     @php
                                                         // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
@@ -318,7 +323,7 @@
                                                             $url = Storage::url($url);
                                                         }
                                                     @endphp
-                                                   
+
                                                         <img width="100% " src="{{ $url }}" alt="movie_img" />
 
 
@@ -351,12 +356,16 @@
                                                 </td>
                                                 <td>
                                                     <div style="display: flex; gap: 5px">
-                                                        <a href="{{ route('ticketDetail', $ticket->id) }}">
-                                                            <button class="btn btn-info">Chi tiết</button>
-                                                        </a>
+
+                                                            <button class="btn btn-info" onclick="showTicketDetail('{{ $ticket->code }}')" >Chi tiết</button>
+
+
                                                     </div>
                                                 </td>
+
+
                                             </tr>
+
                                         @endforeach
                                     </tbody>
                                 </table>

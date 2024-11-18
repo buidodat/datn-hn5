@@ -31,7 +31,7 @@
     padding: 0 20px;
     overflow-y: auto;
     /* Thêm cuộn dọc */
-    max-height: 70vh;
+    max-height: 58vh;
     /* Chiều cao tối đa cho nội dung modal */
     margin-bottom: 30px;
     min-height: 55vh;
@@ -237,7 +237,7 @@
 
 
 .showtime-item-start-time {
-    padding: 10px 0px;
+    padding: 10px 20px;
     text-align: center;
     border: none;
     border-radius: 5px;
