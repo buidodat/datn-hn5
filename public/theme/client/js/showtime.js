@@ -76,8 +76,9 @@ function updateModalContent(data) {
                         <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.id}'">
                             ${new Date(showtime.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
-                        <div class="empty-seat-showtime">150 ghế trống</div> <!-- Giả định số ghế trống -->
+
                     </div>`;
+                    // <div class="empty-seat-showtime">150 ghế trống</div> Giả định số ghế trống
             });
 
             showtimesHTML += `
