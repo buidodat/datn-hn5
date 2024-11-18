@@ -13,7 +13,7 @@
                                 height="17">
                         </span>
                     </a>
-                    
+
 
                     <a href="/" class="logo logo-light">
                         <span class="logo-sm">
@@ -154,6 +154,7 @@
                     </div>
                 </div>
 
+                @include('admin.layouts.components.modal-qr')
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
