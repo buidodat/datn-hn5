@@ -127,6 +127,21 @@
                                     </td>
                                     <td>
                                         <b>
+                                            @php
+                                                $url = $movie->img_thumbnail;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            @if (!empty($movie->img_thumbnail))
+                                                <img src="{{ $url }}" alt="" width="50px" height="60px"
+                                                    class="img-thumbnail">
+                                            @else
+                                                No image !
+                                            @endif
+
                                             {{ $movie->name }}
                                         </b>
                                         @if ($movie->is_special == 1)
@@ -135,9 +150,7 @@
                                         @else
                                         @endif
 
-                                        {{-- @if ($isSpecialMovie)
-                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt</span>
-                                        @endif --}}
+
                                     </td>
                                     <td>{{ $movie->duration }} phút</td>
                                     <td>{{ $movie->category }}</td>
@@ -163,9 +176,11 @@
                                                 @foreach ($showtimesByMovie as $showtime)
                                                     <tr>
                                                         <td class="inputCheckBoxShowtimes">
-                                                            <input type="checkbox"
-                                                                class="select-showtime movie-{{ $movieId }}"
-                                                                data-showtime-id="{{ $showtime->id }}">
+                                                            @if ($showtime->is_active == 0)
+                                                                <input type="checkbox"
+                                                                    class="select-showtime movie-{{ $movieId }}"
+                                                                    data-showtime-id="{{ $showtime->id }}">
+                                                            @endif
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                                             -
@@ -188,7 +203,8 @@
                                                                     name="is_active" type="checkbox" role="switch"
                                                                     data-showtime-id="{{ $showtime->id }}"
                                                                     @checked($showtime->is_active)
-                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                                    @if ($showtime->is_active) disabled @endif
+                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')">
                                                             </div>
                                                         </td>
                                                         <td>
@@ -432,7 +448,9 @@
                     return;
                 }
 
-                if (confirm('Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn?')) {
+                if (confirm(
+                        'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa'
+                    )) {
                     $.ajax({
                         url: '{{ route('showtimes.changeStatusSelected') }}', // Add your change status route
                         type: 'POST',
