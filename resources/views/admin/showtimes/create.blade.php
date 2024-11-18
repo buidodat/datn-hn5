@@ -634,17 +634,17 @@
 
             // Hiển thị auto-showtime-settings nếu checkbox được chọn
             if (autoGenerateCheckbox.checked) {
-                showtimeSettings.style.display = 'block';
+                showtimeSettings.style.display = 'flex';
                 addStartTime.style.display = 'none';
             }
 
             autoGenerateCheckbox.addEventListener('change', function() {
                 if (this.checked) {
-                    showtimeSettings.style.display = 'block';
+                    showtimeSettings.style.display = 'flex';
                     addStartTime.style.display = 'none';
                 } else {
                     showtimeSettings.style.display = 'none';
-                    addStartTime.style.display = 'block';
+                    addStartTime.style.display = 'flex';
                 }
             });
         });
