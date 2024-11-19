@@ -390,7 +390,7 @@
                                                 <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
                                             @endforeach
 
-                                            <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
+                                            <a href="{{ route('choose-seat', $showtime->slug) }}">Quay lại</a>
 
                                             <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>
@@ -829,7 +829,7 @@
                                                 <input type="hidden" name="seat_id[]" value="{{ $seatId }}">
                                             @endforeach
 
-                                            <a href="{{ route('choose-seat', $showtime->id) }}">Quay lại</a>
+                                            <a href="{{ route('choose-seat', $showtime->slug) }}">Quay lại</a>
 
                                             <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>

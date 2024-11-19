@@ -15,6 +15,7 @@ use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Rank;
+use App\Models\Showtime;
 use App\Models\Ticket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -339,6 +340,7 @@ class DatabaseSeeder extends Seeder
                         DB::table('showtimes')->insert([
                             'cinema_id' => $cinema->cinema_id,  // Lưu cinema_id
                             'room_id' => $room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $format, // Format kết hợp type_room và movie_version
                             'movie_version_id' => $movie_version_id,
                             'movie_id' => $movie->movie_id,

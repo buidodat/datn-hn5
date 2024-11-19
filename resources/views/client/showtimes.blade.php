@@ -195,7 +195,7 @@
                                                             <h4 class="showtime-title">{{ $format }}</h4>
                                                             <div class="showtime-list">
                                                                 @foreach ($validTimes as $showtime)
-                                                                    <a href="{{ route('choose-seat', $showtime->id) }}"
+                                                                    <a href="{{ route('choose-seat', $showtime->slug) }}"
                                                                         class="showtime-btn">
                                                                         {{ \Carbon\Carbon::parse($showtime['start_time'], 'Asia/Ho_Chi_Minh')->format('H:i') }}
                                                                     </a>

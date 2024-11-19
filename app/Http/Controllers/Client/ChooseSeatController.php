@@ -87,14 +87,15 @@ class ChooseSeatController extends Controller
     // }
 
 
-    public function show(string $id)
+    public function show(string $slug)
     {
+
         // $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie'])->findOrFail($id);
         // $showtime->room->seats;
         // $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
         // $matrixSeat = Room::MATRIXS[$matrixKey];
 
-        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
+        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->where('slug', $slug)->first();
         $matrixSeat = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
 
@@ -112,7 +113,7 @@ class ChooseSeatController extends Controller
 
         // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
         DB::table('seat_showtimes')
-            ->where('showtime_id', $id)
+            ->where('showtime_id', $showtime->id)
             ->where(function ($query) {
                 $query->where('user_id', 0)
                     ->orWhereNull('user_id')
@@ -131,7 +132,7 @@ class ChooseSeatController extends Controller
 
         // Lấy danh sách ghế được giữ bởi user hiện tại cho suất chiếu này
         $userId = auth()->id(); // Lấy user ID
-        $selectedSeats = SeatShowtime::where('showtime_id', $id)
+        $selectedSeats = SeatShowtime::where('showtime_id', $showtime->id)
             ->where('user_id', $userId)
             ->where('status', 'hold')
             ->where('hold_expires_at', '>=', now())
@@ -141,7 +142,7 @@ class ChooseSeatController extends Controller
         // dd($selectedSeats);
 
         $now = Carbon::now('Asia/Ho_Chi_Minh');
-        $timeKey = 'timeData.' . $id; // Khóa chung cho cả end_time 
+        $timeKey = 'timeData.' . $showtime->id; // Khóa chung cho cả end_time 
 
         // Kiểm tra session
         if (session()->has($timeKey)) {
