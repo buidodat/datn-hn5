@@ -197,12 +197,12 @@ class ChooseSeatController extends Controller
             ->where('showtime_id', $showtimeId)
             ->get();
 
-        $hasExpiredSeats = false; // Biến đánh dấu 
+        $hasExpiredSeats = false; // Biến đánh dấu
         foreach ($seatShowtimes as $seatShowtime) {
             // Kiểm tra xem có ghế xem có đủ tiêu chuẩn để đc bấm nút tiếp tục hay không
             if ($seatShowtime->hold_expires_at < now() || $seatShowtime->user_id != $userId || $seatShowtime->status != 'hold') {
-                $hasExpiredSeats = true; // Đánh dấu có ghế 
-                break; // Dừng vòng lặp khi tìm thấy ghế 
+                $hasExpiredSeats = true; // Đánh dấu có ghế
+                break; // Dừng vòng lặp khi tìm thấy ghế
             }
         }
 
