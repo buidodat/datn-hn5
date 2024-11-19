@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class MovieDetailController extends Controller
 {
-    public function show(string $slug){
+    public function show(string $slug)
+    {
         $currentNow = now();
         $endDate = now()->addDays(7);
 
-        $movie = Movie::where('slug',$slug)->firstOrFail();
+        $movie = Movie::where('slug', $slug)->firstOrFail();
 
         $userReviewed = false;
         if (Auth::check()) {
@@ -27,8 +28,9 @@ class MovieDetailController extends Controller
                 $userReviewed = true;
             }
         }
-        return view('client.movie-detail' , compact('movie','userReviewed','currentNow','endDate'));
+        return view('client.movie-detail', compact('movie', 'userReviewed', 'currentNow', 'endDate'));
     }
+
     public function getComments($movieId)
     {
         $movie = Movie::findOrFail($movieId);
@@ -37,6 +39,7 @@ class MovieDetailController extends Controller
 
         return response()->json($listBinhLuan);
     }
+
     public function addReview(Request $request, string $slug)
     {
         $request->validate([
