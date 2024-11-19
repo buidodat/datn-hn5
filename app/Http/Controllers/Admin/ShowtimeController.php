@@ -351,7 +351,7 @@ class ShowtimeController extends Controller
 
         $soldSeats = $showtime->seats()->wherePivot('status', 'sold')->pluck('seats.id')->toArray();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix', 'seats','soldSeats'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix', 'seats', 'soldSeats'));
     }
 
 
@@ -375,10 +375,11 @@ class ShowtimeController extends Controller
         $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
         $branches = Branch::where('is_active', '1')->get();
 
+        $movieDuration = $showtime->movie->duration;
 
 
         $cleaningTime = Showtime::CLEANINGTIME;
-        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
     }
 
     /**

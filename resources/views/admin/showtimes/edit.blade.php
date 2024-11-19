@@ -60,10 +60,15 @@
                                         <label for="title" class="form-label ">Tên phim:</label>
                                         <select name="movie_id" id="movie" class="form-select">
                                             <option value="">Chọn</option>
-                                            @foreach ($movies as $item)
+                                            {{-- @foreach ($movies as $item)
                                                 <option value="{{ $item->id }}"
                                                     @if ($item->id == $showtime->movieVersion->movie->id) selected @endif>{{ $item->name }}
                                                 </option>
+                                            @endforeach --}}
+
+                                            @foreach ($movies as $item)
+                                                <option value="{{ $item->id }}" @selected($item->id == old('movie_id', $showtime->movie_id ?? ''))>
+                                                    {{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('movie_id')
@@ -80,8 +85,8 @@
                                             <option value="">Chọn</option>
 
 
-                                            <option value="{{ $showtime->movieVersion->id }}" selected>
-                                                {{ $showtime->movieVersion->name }}</option>
+                                            {{-- <option value="{{ $showtime->movieVersion->id }}" selected>
+                                                {{ $showtime->movieVersion->name }}</option> --}}
                                         </select>
                                         @error('movie_version_id')
                                             <div class='mt-1'>
@@ -98,11 +103,16 @@
                                             <label for="title" class="form-label ">Tên Chi Nhánh:</label>
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chọn</option>
-                                                @foreach ($branches as $item)
+                                                {{-- @foreach ($branches as $item)
                                                     <option value="{{ $item->id }}"
                                                         @if ($item->id == $showtime->room->cinema->branch->id) selected @endif>
                                                         {{ $item->name }}</option>
+                                                @endforeach --}}
+                                                @foreach ($branches as $item)
+                                                    <option value="{{ $item->id }}" @selected($item->id == old('branch_id', $showtime->cinema->branch_id ?? ''))>
+                                                        {{ $item->name }}</option>
                                                 @endforeach
+
                                             </select>
                                             @error('cinema_id')
                                                 <div class='mt-1'>
@@ -116,8 +126,8 @@
                                             <label for="title" class="form-label ">Tên Rạp:</label>
                                             <select name="cinema_id" id="cinema" class="form-select">
                                                 <option value="">Chọn</option>
-                                                <option value="{{ $showtime->room->cinema->id }}" selected>
-                                                    {{ $showtime->room->cinema->name }}</option>
+                                                {{-- <option value="{{ $showtime->room->cinema->id }}" selected>
+                                                    {{ $showtime->room->cinema->name }}</option> --}}
                                             </select>
                                             @error('cinema_id')
                                                 <div class='mt-1'>
@@ -132,11 +142,11 @@
                                             <select name="room_id" id="room" class="form-select">
                                                 <option value="">Chọn</option>
 
-                                                <option value="{{ $showtime->room->id }}" selected>
+                                                {{-- <option value="{{ $showtime->room->id }}" selected>
                                                     {{ $showtime->room->name }} - {{ $showtime->room->typeRoom->name }} -
                                                     {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
                                                     ghế
-                                                </option>
+                                                </option> --}}
 
                                             </select>
                                             @error('room_id')
@@ -215,6 +225,18 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
+                                <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
             </div>
             <div class="col-lg-3">
                 <div class="row">
@@ -240,9 +262,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
 
                 <div class="row">
@@ -272,17 +291,7 @@
         </div>
 
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
-                    </div>
-                </div>
-            </div>
-            <!--end col-->
-        </div>
+
     </form>
 @endsection
 
@@ -292,7 +301,13 @@
     <script>
         //Ajax select tên Rạp theo chi nhánh
         $(document).ready(function() {
-            // Xử lý sự kiện thay đổi chi nhánh
+            var selectedBranchId = "{{ old('branch_id', $showtime->cinema->branch_id ?? '') }}";
+            var selectedCinemaId = "{{ old('cinema_id', $showtime->cinema_id ?? '') }}";
+            var selectedRoomId = "{{ old('room_id', $showtime->room_id ?? '') }}";
+            var selectedMovieId = "{{ old('movie_id', $showtime->movie_id ?? '') }}";
+            var selectedMovieVersionId = "{{ old('movie_version_id', $showtime->movie_version_id ?? '') }}";
+
+            // Load Cinemas when Branch changes
             $('#branch').on('change', function() {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
@@ -305,19 +320,19 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, cinema) {
-                                cinemaSelect.append('<option  value="' + cinema.id +
+                                cinemaSelect.append('<option value="' + cinema.id +
                                     '">' + cinema.name + '</option>');
                             });
+                            if (selectedCinemaId) {
+                                cinemaSelect.val(selectedCinemaId).trigger('change');
+                                selectedCinemaId = false;
+                            }
                         }
                     });
                 }
-
             });
-        });
 
-        // Ajax select Phòng theo tên Rạp
-        $(document).ready(function() {
-            // Xử lý sự kiện thay đổi chi nhánh
+            // Load Rooms when Cinema changes
             $('#cinema').on('change', function() {
                 var cinemaId = $(this).val();
                 var roomSelect = $('#room');
@@ -329,31 +344,24 @@
                         url: "{{ env('APP_URL') }}/api/rooms/" + cinemaId,
                         method: 'GET',
                         success: function(data) {
+
                             $.each(data, function(index, room) {
-                                // roomSelect.append('<option  value="' + room.id +
-                                //     '">' + room.name + '</option>');
-
-
-                                const roomCapacity = room.total_seats;
-
-                                roomSelect.append('<option value="' + room.id +
-                                    '" >' + room.name + ' - ' + room
-                                    .type_room_name + ' - ' + roomCapacity +
-                                    ' ghế </option>');
+                                roomSelect.append('<option value="' + room.id + '">' +
+                                    room.name + ' - ' + room.type_room_name +
+                                    ' - ' + room.total_seats + ' ghế</option>');
                             });
+                            if (selectedRoomId) {
+                                roomSelect.val(selectedRoomId);
+                                selectedRoomId = false;
+                            }
                         }
                     });
                 }
-
             });
-        });
 
-
-        // Ajax select Phiên bản phim (Vietsub, thueyets minh, lồng tiếng) theo phim
-        $(document).ready(function() {
-            // Sự kiện thay đổi movie_id thì tên name (Bảng movie_version )thay đổi theo
+            // Load Movie Versions when Movie changes
             $('#movie').on('change', function() {
-                var movieId = $(this).val(); //lấy giá trị của chính nó
+                var movieId = $(this).val();
                 var movieVersionSelect = $('#movie_version');
                 movieVersionSelect.empty();
                 movieVersionSelect.append('<option value="">Chọn phiên bản</option>');
@@ -364,19 +372,33 @@
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, movieVersion) {
-                                movieVersionSelect.append('<option  value="' +
-                                    movieVersion
-                                    .id +
-                                    '">' + movieVersion.name + '</option>');
+                                movieVersionSelect.append('<option value="' +
+                                    movieVersion.id + '">' + movieVersion.name +
+                                    '</option>');
                             });
+                            if (selectedMovieVersionId) {
+                                movieVersionSelect.val(selectedMovieVersionId);
+                                selectedMovieVersionId = false;
+                            }
                         }
                     });
                 }
-
             });
+
+            // Trigger load data on page load
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
+            }
+            if (selectedMovieId) {
+                $('#movie').val(selectedMovieId).trigger('change');
+            }
         });
 
 
+
+
+
+        //ajax load suất chiếu đang có
         $(document).ready(function() {
             var roomId = $('#room').val() || "{{ old('room_id', $showtime->room_id ?? '') }}";
             var selectedDate = $('#date').val() || "{{ old('date', $showtime->date ?? '') }}";
@@ -434,37 +456,49 @@
 
 
 
-        const cleaningTime = {{ $cleaningTime }}
+
+
+        const cleaningTime = {{ $cleaningTime }};
         // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
         $(document).ready(function() {
             let movieDuration = 0;
 
-
+            // Khi chọn phim, lấy thời lượng phim qua API
             $('#movie').on('change', function() {
-                var movieId = $(this).val();
+                const movieId = $(this).val();
                 if (movieId) {
                     $.ajax({
                         url: "{{ env('APP_URL') }}/api/getMovieDuration/" + movieId,
                         method: 'GET',
                         success: function(data) {
                             if (data.duration) {
-                                movieDuration = parseInt(data.duration); // Lưu lại thời lg
+                                movieDuration = parseInt(data
+                                    .duration); // Cập nhật thời lượng phim
                                 updateEndTime(
-                                    movieDuration
-                                ); //Gán vào hàm update end time
+                                    movieDuration); // Gọi lại hàm cập nhật thời gian kết thúc
                             }
+                        },
+                        error: function() {
+                            console.error("Không thể lấy thời lượng phim.");
                         }
                     });
+                } else {
+                    movieDuration = 0; // Nếu không chọn phim, đặt thời lượng về 0
                 }
             });
 
-            //Cập nhật lại thời gian kết thúc khi start_time thay đổi
+            // Cập nhật giờ kết thúc khi giờ bắt đầu thay đổi
             $('#start_time').on('change', function() {
-                updateEndTime(movieDuration); //Truyền thời lg phim 
+                if (movieDuration > 0) {
+                    updateEndTime(movieDuration); // Chỉ cập nhật nếu có thời lượng phim
+                } else {
+                    // alert("Vui lòng chọn phim trước để tính giờ kết thúc!");
+                    const movieDuration = {{ $movieDuration ?? 'null' }};
+                    updateEndTime(movieDuration);
+                }
             });
 
-
-            // Chức năng cập nhật thời gian kết thúc dựa trên thời lượng phim và thời gian bắt đầu
+            // Hàm cập nhật giờ kết thúc
             function updateEndTime(duration) {
                 const startTime = document.getElementById('start_time').value;
                 if (startTime && duration) {
@@ -472,18 +506,16 @@
                     let startTimeDate = new Date();
                     startTimeDate.setHours(parseInt(hours), parseInt(minutes));
 
-                    // Thêm thời lg phim và thời gian dọn dẹp (15 phút)
+                    // Tính tổng thời gian
                     let totalMinutes = duration + cleaningTime;
                     startTimeDate.setMinutes(startTimeDate.getMinutes() + totalMinutes);
 
-                    // Lấy thời gian kết thúc được định dạng
+                    // Định dạng giờ kết thúc
                     let endHours = String(startTimeDate.getHours()).padStart(2, '0');
                     let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
                     const endTime = `${endHours}:${endMinutes}`;
 
-                    console.log(endTime);
-
-                    // Gán vào ô thời gian kết thúc
+                    // Gán giá trị vào ô giờ kết thúc
                     document.getElementById('end_time').value = endTime;
                 }
             }
