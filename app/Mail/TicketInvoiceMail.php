@@ -24,10 +24,10 @@ class TicketInvoiceMail extends Mailable implements ShouldQueue
     public function __construct(Ticket $ticket)
     {
         // Load các mối quan hệ liên quan tới vé
-        $this->ticket = $ticket->load(['user','ticketSeats.showtime', 'ticketSeats.seat', 'ticketCombos.combo']);
+        $this->ticket = $ticket->load(['user','showtime', 'ticketSeats.seat', 'ticketCombos.combo']);
         // $this->ticket = $ticket->load(['user', 'showtime', 'ticketSeats.seat', 'ticketCombos.combo']);
         $this->user = $this->ticket->user;           // Người dùng đặt vé
-        $this->showtime = $this->ticket->ticketSeats->first()->showtime ?? null; // Chọn suất chiếu từ ghế đầu tiên
+        $this->showtime = $this->ticket->showtime; // Chọn suất chiếu từ ghế đầu tiên
         $this->seats = $this->ticket->ticketSeats;   // Các ghế đã đặt
         $this->combos = $this->ticket->ticketCombos; // Các combo đã mua
 

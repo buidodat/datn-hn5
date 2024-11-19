@@ -61,7 +61,7 @@ Route::prefix('movies')
 // lịch chiếu theo rạp
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
-Route::get('choose-seat/{slug}', [ChooseSeatController::class, 'show'])->name('choose-seat');
+Route::get('choose-seat/{slug}', [ChooseSeatController::class, 'show'])->middleware('verified')->name('choose-seat');
 Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
 
 // Route giữ ghế cho người dùng
