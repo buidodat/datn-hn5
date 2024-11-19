@@ -226,9 +226,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
+                                            <label class="form-check-label" for="is_active">Trạng thái hoạt động</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
                                                     name="is_active" @checked($showtime->is_active == 1)>
@@ -241,6 +241,31 @@
                         </div>
                     </div>
 
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <label for="">Suất chiếu đang có:</label>
+                                <table class="table table-bordered dt-responsive nowrap align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Phòng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="listShowtimes">
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--end col-->
@@ -350,6 +375,63 @@
 
             });
         });
+
+
+        $(document).ready(function() {
+            var roomId = $('#room').val() || "{{ old('room_id', $showtime->room_id ?? '') }}";
+            var selectedDate = $('#date').val() || "{{ old('date', $showtime->date ?? '') }}";
+
+            // Gọi hàm loadShowtimes khi trang được tải
+            if (roomId && selectedDate) {
+                loadShowtimes(roomId, selectedDate);
+            }
+
+            // Xử lý sự kiện thay đổi phòng
+            $('#room').on('change', function() {
+                roomId = $(this).val();
+                loadShowtimes(roomId, selectedDate);
+            });
+
+            // Xử lý sự kiện thay đổi ngày chiếu
+            $('#date').on('change', function() {
+                selectedDate = $(this).val();
+                loadShowtimes(roomId, selectedDate);
+            });
+
+            // Hàm load danh sách suất chiếu
+            function loadShowtimes(roomId, selectedDate) {
+                var listShowtimes = $('#listShowtimes');
+                listShowtimes.empty(); // Xóa dữ liệu cũ
+
+                $.ajax({
+                    url: "{{ env('APP_URL') }}/api/getShowtimesByRoom",
+                    method: 'GET',
+                    data: {
+                        room_id: roomId,
+                        date: selectedDate
+                    },
+                    success: function(data) {
+                        if (data.status === 'error') {
+                            listShowtimes.append('<tr><td colspan="2">' + data.message + '</td></tr>');
+                        } else {
+                            $.each(data, function(index, showtime) {
+                                var startTime = showtime.start_time;
+                                var endTime = showtime.end_time;
+                                var roomName = showtime.room.name;
+
+                                // Đổ dữ liệu vào bảng
+                                listShowtimes.append('<tr><td>' + startTime + ' - ' + endTime +
+                                    '</td><td>' + roomName + '</td></tr>');
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        listShowtimes.append('<tr><td colspan="2">Không thể tải dữ liệu.</td></tr>');
+                    }
+                });
+            }
+        });
+
 
 
         const cleaningTime = {{ $cleaningTime }}

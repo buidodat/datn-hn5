@@ -413,20 +413,6 @@ class ShowtimeController extends Controller
             $showtime->update($dataShowtimes);
 
 
-            // $seats = Seat::where('room_id', $room->id)->get(); // Lấy tất cả ghế trong phòng
-
-            // foreach ($seats as $seat) {
-
-            //     $dataSeatShowtime = [
-            //         'showtime_id' => $showtime->id,
-            //         'seat_id' => $seat->id,
-            //         'status' => 'available'
-            //     ];
-
-            //     SeatShowtime::where('id', $seat->id)->update($dataSeatShowtime);
-            // }
-
-
             return redirect()
                 ->route('admin.showtimes.index')
                 ->with('success', 'Cập nhật thành công!');

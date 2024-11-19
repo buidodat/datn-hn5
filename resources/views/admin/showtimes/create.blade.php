@@ -416,7 +416,7 @@
             }
         });
 
-        // Ajax đổ Suất chiếu đang có theo Phòng
+        // Ajax đổ Suất chiếu đang có theo Phòng và Ngày
         $(document).ready(function() {
             var roomId = $('#room').val() || "{{ old('room_id') }}";
             var selectedDate = $('#date').val() || "{{ old('date') }}";
