@@ -396,8 +396,6 @@
 
 
 
-
-
         //ajax load suất chiếu đang có
         $(document).ready(function() {
             var roomId = $('#room').val() || "{{ old('room_id', $showtime->room_id ?? '') }}";

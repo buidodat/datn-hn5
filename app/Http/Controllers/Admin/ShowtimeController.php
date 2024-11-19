@@ -283,9 +283,16 @@ class ShowtimeController extends Controller
                         }
                     }
                 } else {
+
                     // Thêm suất chiếu theo cách thủ công
                     foreach ($request->start_time as $i => $startTimeChild) {
                         $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
+
+                        // Kiểm tra nếu thời gian chiếu nằm trong quá khứ
+                        if ($startTime->isPast()) {
+                            return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
+                        }
+
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
                         foreach ($existingShowtimes as $showtime) {
