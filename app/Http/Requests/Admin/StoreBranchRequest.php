@@ -21,19 +21,17 @@ class StoreBranchRequest extends FormRequest
      */
     public function rules(): array
     {
-        $branchesId = $this->route('branches') ? $this->route('branches')->id : null;
         return [
-            // 'name' => 'required|unique:branches,name' . $branchesId,
-            'name' => 'required|unique:branches,name,' . $branchesId . '|min:3|max:50'
+            'name' => 'required|unique:branches|min:3|max:50'
         ];
     }
 
     public function messages(): array{
         return [
-            'name.required' => 'Tên chi nhánh bạn chưa nhập.',
-            'name.unique' => 'Tên chi nhánh này đã tồn tại, vui lòng chọn tên khác.',
-            'name.min' => 'Tên chi nhánh phải có ít nhất 3 ký tự.',
-            'name.max' => 'Tên chi nhánh không được dài quá 50 ký tự.',
+            'name.required' => 'Vui lòng nhập tên chi nhánh.',
+            'name.unique' => 'Tên chi nhánh đã tồn tại, vui lòng chọn tên khác.',
+            'name.min' => 'Tên chi nhánh phải tối thiểu phải có 3 ký tự.',
+            'name.max' => 'Tên chi nhánh không được vượt quá 50 ký tự.',
         ];
     }
 }

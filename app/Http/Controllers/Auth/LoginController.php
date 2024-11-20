@@ -35,6 +35,13 @@ class LoginController extends Controller
      *
      * @return void
      */
+
+     public function __construct()
+     {
+         $this->middleware('guest')->except('logout');
+         $this->middleware('auth')->only('logout');
+     }
+
     public function showFormLogin()
     {
         return view('auth.login');
@@ -43,9 +50,16 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required', 'email', 'exists:users,email'],
+            'password' => ['required', 'min:8'],
+        ], [
+            'email.required' => 'Bạn chưa nhập email.',
+            'email.email' => 'Địa chỉ email không hợp lệ.',
+            'email.exists' => 'Email không tồn tại trong hệ thống.',
+            'password.required' => 'Bạn chưa nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ]);
+
 
         $remember = $request->has('remember');
 
@@ -60,7 +74,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Tài khoản hoặc Mật khẩu sai, vui lòng nhập lại.',
         ])->onlyInput('email');
     }
 
@@ -73,5 +87,3 @@ class LoginController extends Controller
         return redirect('/');
     }
 }
-
-

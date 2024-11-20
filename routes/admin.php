@@ -37,8 +37,16 @@ use Illuminate\Support\Facades\Auth;
 //     return view('admin.dashboard');
 // });
 Route::get('/', [DashboardController::class, 'dashboard'])->name('/');
-// City
-Route::resource('branches', BranchController::class);
+// Quản lý chi nhánh
+Route::prefix('branches')
+    ->as('branches.')
+    ->group(function () {
+        Route::get('/',                       [BranchController::class, 'index'])->name('index');
+        Route::post('/',                      [BranchController::class, 'store'])->name('store');
+        Route::get('{branch}/delete',       [BranchController::class, 'destroy'])->name('destroy');
+        Route::put('{branch}/update',       [BranchController::class, 'update'])->name('update');
+    });
+
 // Cinema
 Route::resource('cinemas', CinemaController::class);
 // Payment

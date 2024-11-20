@@ -82,7 +82,7 @@
                                         <p for="name" class="form-label col-12">
                                             {{-- <span class="text-danger">*</span> Chọn Quyền --}}
                                         </p>
-                                       
+
                                         @error('permissions')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -158,7 +158,6 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
             ]
         });
 

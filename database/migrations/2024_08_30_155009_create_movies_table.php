@@ -26,10 +26,10 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('trailer_url')->nullable();
             $table->unsignedInteger('surcharge')->nullable()->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->boolean('is_hot')->default(false);
-            $table->boolean('is_show_home')->default(true);
             $table->boolean('is_special')->default(false);
+            $table->boolean('is_publish')->default(false);
             $table->timestamps();
         });
     }

@@ -171,7 +171,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $room->id }}" @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
@@ -247,7 +247,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $room->id }}" @checked($room->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
@@ -275,8 +275,8 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
-                                            return $query->where('cinema_id', Auth::user()->cinema_id);
-                                        }) as $index => $room)
+            return $query->where('cinema_id', Auth::user()->cinema_id);
+        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
@@ -323,7 +323,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         @checked($room->is_active) disabled>
                                                 </div>
@@ -396,7 +396,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="form-check form-switch form-switch-success">
-                                                        <input class="form-check-input switch-is-active channge-is-active"
+                                                        <input class="form-check-input switch-is-active changeActive"
                                                             name="is_active" type="checkbox" role="switch"
                                                             data-id="{{ $room->id }}" @checked($room->is_active)
                                                             onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
@@ -765,38 +765,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{-- cập nhật active phòng chiếu --}}
-    <script>
-        $(document).ready(function() {
-            $('.channge-is-active ').on('change', function() {
-                // Lấy ID của room từ thuộc tính 'data-id'
-                let roomId = $(this).data('id');
-                // Lấy trạng thái hiện tại của checkbox
-                let isActive = $(this).is(':checked') ? 1 : 0;
-
-                // Gửi yêu cầu AJAX
-                $.ajax({
-                    url: '{{ route('rooms.update-active') }}', // URL để cập nhật trạng thái (sẽ tạo sau)
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}', // Bảo vệ CSRF
-                        id: roomId,
-                        is_active: isActive
-                    },
-                    success: function(response) {
-                        // Hiển thị thông báo thành công
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Xử lý lỗi khi yêu cầu không thành công
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -813,27 +781,118 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#tableAllRoom", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-        new DataTable("#tableIsPublish", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-        new DataTable("#tableIsDraft", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-        @foreach ($cinemas as $cinema)
-            new DataTable("#tableCinemaID{{ $cinema->id }}", {
-                order: [
-                    [0, 'desc']
-                ]
+        $(document).ready(function() {
+            // Khởi tạo DataTable cho các bảng cố định
+            let tableAllRoom = new DataTable("#tableAllRoom", {
+                order: []
             });
-        @endforeach
+
+            let tableIsPublish = new DataTable("#tableIsPublish", {
+                order: []
+            });
+
+            let tableIsDraft = new DataTable("#tableIsDraft", {
+                order: []
+            });
+
+            // Khởi tạo đối tượng cinemaTables để chứa các DataTable của các cinema
+            let cinemaTables = {};
+
+            // Lặp qua tất cả các cinema và khởi tạo DataTable cho mỗi cinema
+            @foreach ($cinemas as $cinema)
+                cinemaTables["tableCinemaID{{ $cinema->id }}"] = new DataTable(
+                    "#tableCinemaID{{ $cinema->id }}", {
+                        order: []
+                    });
+            @endforeach
+
+            // Xử lý sự kiện change cho checkbox .changeActive
+            $(document).on('change', '.changeActive', function() {
+                let roomId = $(this).data('id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
+
+                // Gửi yêu cầu AJAX để thay đổi trạng thái
+                $.ajax({
+                    url: '{{ route('rooms.update-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: roomId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            let table;
+
+                            // Kiểm tra bảng cố định
+                            if (tableId === 'tableAllRoom') {
+                                table = tableAllRoom;
+                            } else if (tableId === 'tableIsPublish') {
+                                table = tableIsPublish;
+                            } else if (tableId === 'tableIsDraft') {
+                                table = tableIsDraft;
+                            }
+                            // Kiểm tra bảng động cho cinema
+                            else if (cinemaTables[tableId]) {
+                                table = cinemaTables[tableId];
+                            }
+
+                            // Nếu tìm được table, tiến hành cập nhật trạng thái
+                            if (table) {
+                                let statusHtml = response.data.is_active ?
+                                    `<div class="form-check form-switch form-switch-success">
+                                        <input class="form-check-input switch-is-active changeActive"
+                                            type="checkbox" data-id="${roomId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                    </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                    `<div class="form-check form-switch form-switch-success">
+                                        <input class="form-check-input switch-is-active changeActive"
+                                            type="checkbox" data-id="${roomId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                    </div><span class='small text-secondary'>Dừng hoạt động</span>`;
+
+                                updateStatusInTable(table, roomId, statusHtml);
+
+                                // Cập nhật trạng thái cho các bảng còn lại
+                                if (tableId !== 'tableAllRoom') {
+                                    updateStatusInTable(tableAllRoom, roomId, statusHtml);
+                                }
+                                if (tableId !== 'tableIsPublish') {
+                                    updateStatusInTable(tableIsPublish, roomId, statusHtml);
+                                }
+                                if (tableId !== 'tableIsDraft') {
+                                    updateStatusInTable(tableIsDraft, roomId, statusHtml);
+                                }
+
+                                // Cập nhật các bảng cho các cinema trong vòng lặp
+                                @foreach ($cinemas as $cinema)
+                                    if (tableId !== 'tableCinemaID{{ $cinema->id }}') {
+                                        updateStatusInTable(cinemaTables["tableCinemaID{{ $cinema->id }}"],
+                                            roomId, statusHtml);
+                                    }
+                                @endforeach
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+    
+            });
+
+            // Hàm cập nhật trạng thái trong bảng
+            function updateStatusInTable(table, roomId, statusHtml) {
+                // Cập nhật trạng thái trong bảng
+                table.rows().every(function() {
+                    let row = this.node();
+                    let rowId = $(row).find('.changeActive').data('id');
+                    if (rowId === roomId) {
+                        table.cell(row, 6).data(statusHtml).draw(false);
+                    }
+                });
+            }
+        });
     </script>
+
 @endsection

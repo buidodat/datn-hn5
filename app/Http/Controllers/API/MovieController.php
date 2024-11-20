@@ -65,7 +65,7 @@ class MovieController extends Controller
             $movie->is_active = $request->is_active;
             $movie->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.']);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$movie]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }
@@ -82,7 +82,7 @@ class MovieController extends Controller
             $movie->is_hot = $request->is_hot;
             $movie->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.']);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$movie]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }
