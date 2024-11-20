@@ -33,14 +33,31 @@ class StoreShowtimeRequest extends FormRequest
                 }),
             ],
             'movie_id' => 'required',
-            // 'cinema_id' => 'required',
+            'cinema_id' => 'required',
             // 'branch_id' => 'required',
             'movie_version_id' => 'required|exists:movie_versions,id',
             'date' => 'required|date|after_or_equal:today',
-            // 'start_time' => 'required|before:end_time',
-            // 'end_time' => 'required|after:start_time',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'start_time.*' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    $currentTime = \Carbon\Carbon::now()->format('H:i'); // Lấy giờ hiện tại
+                    if ($value <= $currentTime) {
+                        $fail("Giờ chiếu phải lớn hơn giờ hiện tại.");
+                    }
+                },
+            ],
+            // 'end_time' => 'required',
+
+            'start_hour' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    $currentTime = \Carbon\Carbon::now()->format('H:i'); // Lấy giờ hiện tại
+                    if ($value <= $currentTime) {
+                        $fail('Giờ mở cửa phải lớn hơn giờ hiện tại.');
+                    }
+                },
+            ],
+            'end_hour' => 'nullable|after:start_hour',
 
         ];
     }
@@ -61,10 +78,13 @@ class StoreShowtimeRequest extends FormRequest
             'date.after_or_equal' => 'Ngày chiếu phải từ hôm nay trở đi.',
             'start_time.required' => 'Vui lòng chọn giờ chiếu.',
             'start_time.date_format' => 'Giờ chiếu không hợp lệ (định dạng phải là HH:MM).',
+            'start_time.after' => 'Giờ chiếu phải lớn hơn thời gian hiện tại.',
             'start_time.before' => 'Giờ chiếu phải trước giờ kết thúc.',
             'end_time.required' => 'Vui lòng nhập giờ kết thúc.',
             'end_time.date_format' => 'Giờ kết thúc không hợp lệ (định dạng phải là HH:MM).',
             'end_time.after' => 'Giờ kết thúc phải sau giờ chiếu.',
+            'end_hour.required' => "Vui lòng nhập giờ đóng cửa",
+            'end_hour.after' => 'Giờ đóng cửa phải lớn hơn giờ mở cửa',
         ];
     }
 }

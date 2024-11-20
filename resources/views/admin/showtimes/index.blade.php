@@ -162,8 +162,13 @@
                                         <table class="table table-sm table-bordered">
                                             <thead>
                                                 <tr class="bg-light">
-                                                    <th><input type="checkbox" id="select-all-{{ $movieId }}"
-                                                            class="select-all-movie"></th>
+                                                    <th>
+
+                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                            class="select-all-movie">
+
+                                                    </th>
+
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
                                                     <th>CHỖ NGỒI</th>
@@ -236,28 +241,27 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-                                                        @if ($showtime->is_active == 0)
-                                                            <div class="d-flex justify-content-between">
+                                                        {{-- @if ($showtime->is_active == 0) --}}
+                                                        <div class="d-flex justify-content-between">
 
-                                                                <form action="" method="post"
-                                                                    class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit" id="delete-all"
-                                                                        class="btn btn-danger btn-sm">
-                                                                        Xóa tất cả
-                                                                    </button>
-                                                                </form>
+                                                            <form action="" method="post" class="d-inline-block">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" id="delete-all"
+                                                                    class="btn btn-danger btn-sm">
+                                                                    Xóa tất cả
+                                                                </button>
+                                                            </form>
 
-                                                                <a href="" class="px-5">
-                                                                    <button id="change-status-all" title="thay đổi"
-                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
-                                                                        tất
-                                                                        cả</button>
+                                                            <a href="" class="px-5">
+                                                                <button id="change-status-all" title="thay đổi"
+                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                    tất
+                                                                    cả</button>
 
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                            </a>
+                                                        </div>
+                                                        {{-- @endif --}}
 
                                                     </td>
                                                 </tr>
