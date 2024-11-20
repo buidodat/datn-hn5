@@ -46,11 +46,11 @@
                         </li>
                         <li>
                             <span style="color: rgba(255, 255, 255, 0.57);">Trang mạng xã hội</span> <br>
-                            <a href="{{ $settings->facebook_link }}"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
+                            <a href="{{ $settings->facebook_link }}" target="_blank"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
                                     class="fa fa-facebook"></i></a>
-                            <a href="{{ $settings->youtube_link }}"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
+                            <a href="{{ $settings->youtube_link }}" target="_blank"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
                                     class="fa fa-youtube-play"></i></a>
-                            <a href="{{ $settings->instagram_link }}"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
+                            <a href="{{ $settings->instagram_link }}" target="_blank"><i style="color: #ffffff; font-size: 20px;margin: 6% 3%;"
                                 class="fa fa-instagram"></i></a>
                         </li>
                     </ul>
@@ -93,6 +93,10 @@
                 <div class="prs_footer_cont1_wrapper prs_footer_cont1_wrapper_3">
                     <h2>Thông tin website</h2>
                     <ul>
+                        <li>
+                            <span>Trụ sở chính:</span> &nbsp;&nbsp;
+                            <span>{{ $settings->headquarters}}</span>
+                        </li>
                         <li>
                             <span>Email:</span> &nbsp;&nbsp;
                             <span>{{ $settings->email}}</span>
