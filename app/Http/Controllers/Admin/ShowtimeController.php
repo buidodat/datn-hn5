@@ -236,6 +236,7 @@ class ShowtimeController extends Controller
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
                             'room_id' => $request->room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $typeRoom->name . ' ' . $movieVersion->name,
                             'movie_version_id' => $request->movie_version_id,
                             'movie_id' => $request->movie_id,
@@ -304,6 +305,7 @@ class ShowtimeController extends Controller
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
                             'room_id' => $request->room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $typeRoom->name . ' ' . $movieVersion->name,
                             'movie_version_id' => $request->movie_version_id,
                             'movie_id' => $request->movie_id,

@@ -61,7 +61,7 @@ Route::prefix('movies')
 // lịch chiếu theo rạp
 Route::get('showtimes', [ShowtimeController::class, 'show'])->name('showtimes');
 
-Route::get('choose-seat/{id}', [ChooseSeatController::class, 'show'])->name('choose-seat');
+Route::get('choose-seat/{slug}', [ChooseSeatController::class, 'show'])->middleware('verified')->name('choose-seat');
 Route::post('save-information/{id}', [ChooseSeatController::class, 'saveInformation'])->name('save-information');
 
 // Route giữ ghế cho người dùng
@@ -69,7 +69,7 @@ Route::post('/update-seat', [ChooseSeatController::class, 'updateSeat'])->name('
 // Route::post('/hold-seats', [ChooseSeatController::class, 'holdSeats'])->name('hold-seats');
 // Route::post('/release-seats', [ChooseSeatController::class, 'releaseSeats'])->name('release-seats');
 
-Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::get('checkout/{slug}', [CheckoutController::class, 'checkout'])->middleware('verified')->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
 route::delete('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
 
@@ -89,7 +89,7 @@ Route::post('momo-notify', [PaymentController::class, 'notifyPayment'])->name('m
 Route::post('zalopay-payment', [PaymentController::class, 'zaloPayPayment']);
 
 // User - Thông tin tài khoản
-Route::get('my-account/{page?}', [UserController::class, 'edit'])->name('my-account.edit');
+Route::get('my-account/{page?}', [UserController::class, 'edit'])->middleware('auth')->name('my-account.edit');
 Route::put('/my-account/update', [UserController::class, 'update'])->name('my-account.update');
 Route::put('/change-password-ajax', [UserController::class, 'changePasswordAjax'])->name('my-account.changePasswordAjax');
 

@@ -11,6 +11,7 @@ class Showtime extends Model
     protected $fillable = [
         'cinema_id',
         'room_id',
+        'slug',
         'format',
         'movie_version_id',
         'movie_id',
@@ -22,7 +23,7 @@ class Showtime extends Model
     protected $casts = [
         // 'date'=>'date',
         'is_active' => 'boolean',
-       
+
     ];
 
     public function room()
@@ -59,4 +60,17 @@ class Showtime extends Model
 
     // Thời gian dọn phòng: 15p
     const CLEANINGTIME = '15';
+
+
+    public static function generateCustomRandomString()
+    {
+        $part1 = bin2hex(random_bytes(18)); // Tạo 36 ký tự hex (18 byte)
+        $part2 = bin2hex(random_bytes(18)); // Tạo 36 ký tự hex (18 byte)
+
+        // Chia nhỏ chuỗi theo định dạng yêu cầu
+        $formattedPart1 = substr($part1, 0, 8) . '-' . substr($part1, 8, 4) . '-' . substr($part1, 12, 4) . '-' . substr($part1, 16, 4) . '-' . substr($part1, 20);
+        $formattedPart2 = substr($part2, 0, 8) . '-' . substr($part2, 8, 4) . '-' . substr($part2, 12, 4) . '-' . substr($part2, 16, 4) . '-' . substr($part2, 20);
+
+        return $formattedPart1 . '-' . $formattedPart2;
+    }
 }

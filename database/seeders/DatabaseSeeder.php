@@ -16,6 +16,7 @@ use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Rank;
+use App\Models\Showtime;
 use App\Models\Ticket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -340,6 +341,7 @@ class DatabaseSeeder extends Seeder
                         DB::table('showtimes')->insert([
                             'cinema_id' => $cinema->cinema_id,  // Lưu cinema_id
                             'room_id' => $room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $format, // Format kết hợp type_room và movie_version
                             'movie_version_id' => $movie_version_id,
                             'movie_id' => $movie->movie_id,
@@ -557,7 +559,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-
+        
 
         //tạo 5 bản ghỉ user type admin
         $users = [
@@ -565,6 +567,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'System Admin',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
                 'phone' => '0332295555',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'admin@fpt.edu.vn',
                 'password' => Hash::make('admin@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
@@ -577,6 +580,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Trương Công Lực',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
                 'phone' => '0332293871',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'luctcph37171@fpt.edu.vn',
                 'password' => Hash::make('luctcph37171@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
@@ -589,6 +593,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Hà Đắc Hiếu',
                 'img_thumbnail' => 'theme/admin/assets/images/users/user-dummy-img.jpg',
                 'phone' => '0975098710',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'hieuhdph36384@fpt.edu.vn',
                 'password' => Hash::make('hieuhdph36384@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
@@ -601,6 +606,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Đặng Phú An',
                 'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
                 'phone' => '0378633611',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'andpph31859@fpt.edu.vn',
                 'password' => Hash::make('andpph31859@fpt.edu.vn'),
                 'address' => 'Văn Chấn, Yên Bái.',
@@ -613,6 +619,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'An Dang Phu',
                 'img_thumbnail' => '',
                 'phone' => '0378633611',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'anpx123@gmail.com',
                 'password' => Hash::make('anpx123@gmail.com'),
                 'address' => 'Văn Chấn, Yên Bái.',
@@ -625,6 +632,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Nguyễn Viết Sơn',
                 'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Ac_8W5oiz3UQ7kNvgE477pl&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ajp6VrKXh1BJ4nvrLvN-bbm&oh=00_AYCMP6yTzIhdGeGsW8knCmMkdI3IBd1wi_dlZwVKIfdn6w&oe=670D6BD1',
                 'phone' => '0973657594',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'sonnvph33874@fpt.edu.vn',
                 'password' => Hash::make('sonnvph33874@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
@@ -637,6 +645,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Bùi Đỗ Đạt',
                 'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
                 'phone' => '0965263725',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'datbdph38211@fpt.edu.vn',
                 'password' => Hash::make('datbdph38211@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',

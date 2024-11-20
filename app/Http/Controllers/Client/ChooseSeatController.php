@@ -87,14 +87,15 @@ class ChooseSeatController extends Controller
     // }
 
 
-    public function show(string $id)
+    public function show(string $slug)
     {
+
         // $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie'])->findOrFail($id);
         // $showtime->room->seats;
         // $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));
         // $matrixSeat = Room::MATRIXS[$matrixKey];
 
-        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->findOrFail($id);
+        $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->where('slug', $slug)->first();
         $matrixSeat = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
 
@@ -105,9 +106,14 @@ class ChooseSeatController extends Controller
 
         // dd($seatMap);
 
+        // nếu hết giờ start_time < thời gian hiện tại thì chuyển về trang chủ
+        if($showtime->start_time < now()){
+            return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
+        }
+
         // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
         DB::table('seat_showtimes')
-            ->where('showtime_id', $id)
+            ->where('showtime_id', $showtime->id)
             ->where(function ($query) {
                 $query->where('user_id', 0)
                     ->orWhereNull('user_id')
@@ -126,7 +132,7 @@ class ChooseSeatController extends Controller
 
         // Lấy danh sách ghế được giữ bởi user hiện tại cho suất chiếu này
         $userId = auth()->id(); // Lấy user ID
-        $selectedSeats = SeatShowtime::where('showtime_id', $id)
+        $selectedSeats = SeatShowtime::where('showtime_id', $showtime->id)
             ->where('user_id', $userId)
             ->where('status', 'hold')
             ->where('hold_expires_at', '>=', now())
@@ -136,7 +142,7 @@ class ChooseSeatController extends Controller
         // dd($selectedSeats);
 
         $now = Carbon::now('Asia/Ho_Chi_Minh');
-        $timeKey = 'timeData.' . $id; // Khóa chung cho cả end_time
+        $timeKey = 'timeData.' . $showtime->id; // Khóa chung cho cả end_time 
 
         // Kiểm tra session
         if (session()->has($timeKey)) {
@@ -185,6 +191,10 @@ class ChooseSeatController extends Controller
         $seatIds = explode(',', $request->seatId); // Chuỗi ghế thành mảng
         $userId = auth()->id();
 
+        $slug = Showtime::where('id',$showtimeId)->pluck('slug')->first();
+
+        // dd($slug);
+
         // Kiểm tra ghế, bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
         $seatShowtimes = DB::table('seat_showtimes')
             ->whereIn('seat_id', $seatIds)
@@ -206,17 +216,17 @@ class ChooseSeatController extends Controller
         }
 
         session()->put([
-            'checkout_data' => [
+            "checkout_data.$showtimeId" => [
                 'showtime_id' => $request->showtimeId,
                 'seat_ids' => $seatIds,
                 'selected_seats_name' => $request->selected_seats_name, // Tên ghế thành mảng
                 'total_price' => $request->total_price,
                 'remainingSeconds' => $request->remainingSeconds,
-                'lastUpdated' => now() // lưu thời gian hiện tại lúc bấm nút tiếp tục
+                'lastUpdated' => now(), // lưu thời gian hiện tại lúc bấm nút tiếp tục
             ]
         ]);
 
-        return redirect()->route('checkout');
+        return redirect()->route('checkout', ['slug' => $slug]);
     }
 
     // public function holdSeats(Request $request)
