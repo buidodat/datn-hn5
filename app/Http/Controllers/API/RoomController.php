@@ -356,11 +356,15 @@ class RoomController extends Controller
     {
         try {
             $room = Room::findOrFail($request->id);
-
-            $room->is_active = $request->is_active;
-            $room->save();
-
-            return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.']);
+            if($room->is_publish){
+                $room->update([
+                    'is_active' => $request->is_active
+                ]);
+                return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.','data'=>$room]);
+            } else {
+                // Nếu template chưa được publish, trả về thông báo lỗi
+                return response()->json(['success' => false, 'message' => 'Template chưa được publish.']);
+            }
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }

@@ -146,7 +146,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active updat-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $item->id }}" @checked($item->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
@@ -212,7 +212,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active updat-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $item->id }}" @checked($item->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
@@ -287,7 +287,7 @@
                                             </td>
                                             <td>
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active updat-active"
+                                                    <input class="form-check-input switch-is-active changeActive"
                                                         name="is_active" type="checkbox" role="switch"
                                                         data-id="{{ $item->id }}" @checked($item->is_active)
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
@@ -525,46 +525,9 @@
         }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- cập nhật active phòng chiếu --}}
-    <script>
-        $(document).ready(function() {
-            $('.updat-active ').on('change', function() {
-                // Lấy ID của room từ thuộc tính 'data-id'
-                let seatTemplateId = $(this).data('id');
-                // Lấy trạng thái hiện tại của checkbox
-                let isActive = $(this).is(':checked') ? 1 : 0;
-
-                // Gửi yêu cầu AJAX
-                const url = APP_URL + `/api/seat-templates/update-active/` + seatTemplateId;
-                $.ajax({
-                    url: url, // URL để cập nhật trạng thái (sẽ tạo sau)
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}', // Bảo vệ CSRF
-                        is_active: isActive
-                    },
-                    success: function(response) {
-                        // Hiển thị thông báo thành công
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Xử lý lỗi khi yêu cầu không thành công
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -575,20 +538,97 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#tableAllSeatTemplate", {
-            order: [
-                [0, 'desc']
-            ]
+        $(document).ready(function() {
+            // Khởi tạo DataTable
+            let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
+                order: []
+            });
+
+            let tableIsPublish = new DataTable("#tableIsPublish", {
+                order: []
+            });
+
+            let tableIsDraft = new DataTable("#tableIsDraft", {
+                order: []
+            });
+
+            // Xử lý sự kiện change cho checkbox .changeActive
+            $(document).on('change', '.changeActive', function() {
+                let seatTemplateId = $(this).data('id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
+
+                // Gửi yêu cầu AJAX để thay đổi trạng thái
+                $.ajax({
+                    url: '{{ route('seat-templates.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: seatTemplateId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            let table;
+
+
+                            // Tùy vào ID của bảng mà chọn đúng đối tượng DataTable
+                            if (tableId === 'tableAllSeatTemplate') {
+                                table = tableAllSeatTemplate;
+                            } else if (tableId === 'tableIsPublish') {
+                                table = tableIsPublish;
+                            } else if (tableId === 'tableIsDraft') {
+                                table = tableIsDraft;
+                            }
+
+                            // Cập nhật cột trạng thái (cột thứ 6) trong dòng này
+                            let row = table.row($(`[data-id="${seatTemplateId}"]`).closest(
+                                'tr'));
+                            console.log(row);
+
+                            let statusHtml = response.data.is_active ?
+                                `<div class="form-check form-switch form-switch-success">
+                            <input class="form-check-input switch-is-active changeActive"
+                                type="checkbox" data-id="${seatTemplateId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                        </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                `<div class="form-check form-switch form-switch-success">
+                            <input class="form-check-input switch-is-active changeActive"
+                                type="checkbox" data-id="${seatTemplateId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                        </div><span class='small text-secondary'>Dừng hoạt động</span>`;
+
+                            updateStatusInTable(table, seatTemplateId, statusHtml);
+
+                            // Cập nhật trạng thái cho các bảng còn lại
+                            if (tableId !== 'tableAllSeatTemplate') {
+                                updateStatusInTable(tableAllSeatTemplate, seatTemplateId,
+                                statusHtml);
+                            }
+                            if (tableId !== 'tableIsPublish') {
+                                updateStatusInTable(tableIsPublish, seatTemplateId, statusHtml);
+                            }
+                            if (tableId !== 'tableIsDraft') {
+                                updateStatusInTable(tableIsDraft, seatTemplateId, statusHtml);
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+                    }
+                });
+                console.log('Đã thay đổi trạng thái active');
+            });
         });
-        new DataTable("#tableIsPublish", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-        new DataTable("#tableIsDraft", {
-            order: [
-                [0, 'desc']
-            ]
-        });
+
+        function updateStatusInTable(table, seatTemplateId, statusHtml) {
+            // Cập nhật trạng thái trong bảng
+            table.rows().every(function() {
+                let row = this.node();
+                let rowId = $(row).find('.changeActive').data('id');
+                if (rowId === seatTemplateId) {
+                    table.cell(row, 5).data(statusHtml).draw(false);
+                }
+            });
+        }
     </script>
 @endsection

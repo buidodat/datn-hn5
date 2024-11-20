@@ -183,7 +183,7 @@
 
                         <div class="tab-pane " id="users" role="tabpanel">
 
-                            <table 
+                            <table
                                 class="table table-bordered dt-responsive nowrap table-striped align-middle"
                                 style="width:100%" id="tableUsers">
                                 <thead>
@@ -293,14 +293,14 @@
     <script>
         new DataTable("#tableAdmin", {
             order: [
-                [0, 'desc']
+
 
             ]
         });
 
         new DataTable("#tableUsers", {
             order: [
-                [0, 'desc']
+    
 
             ]
         });
