@@ -461,22 +461,20 @@
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="siteSetting">
-                            <i class="ri-file-list-3-line"></i><span data-key="t-landing">Cấu hình Website</span>
+                            <i class="fa fa-cogs"></i> <span data-key="t-landing">Cấu hình Website</span>
                         </a>
-                        <div class="menu-dropdown collapse" id="siteSetting" style="">
+                        <div class="menu-dropdown collapse" id="siteSetting">
                             <ul class="nav nav-sm flex-column">
-
-                                {{-- @canany(['']) --}}
                                 <li class="nav-item">
                                     <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
-                                            data-key="t-layouts">Quản lý</span></a>
+                                        data-key="t-horizontal">
+                                        <i class="fa fa-tools"></i> <span data-key="t-layouts">Quản lý</span>
+                                    </a>
                                 </li>
-                                {{-- @endcan --}}
                             </ul>
                         </div>
                     </li>
-                @endcanany
+                @endcanany            
 
 
             </ul>
