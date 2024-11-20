@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,12 @@ use Spatie\Permission\Models\Permission;
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('policy', [HomeController::class, 'policy'])->name('policy');
 
+// Route gửi lại email xác thực
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Email xác thực đã được gửi.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::prefix('movies')
     ->as('movies.')
@@ -196,5 +204,7 @@ Route::get('hihi/{id}', function () {
     $ticket = Ticket::find(3); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
+
+
 
 

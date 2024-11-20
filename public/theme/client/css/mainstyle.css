@@ -2069,3 +2069,60 @@ div text {
         font-size: 14px;
     }
 }
+
+/* Style Verify email header */
+
+.verify-email-header {
+    background-color: #d0d0d0;
+}
+
+.container-verify-email {
+    margin: 0px auto;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    font-size: 14px;
+}
+
+.container-verify-email div p {
+
+    color: #d77534;
+}
+
+.container-verify-email div p i {
+    padding-right: 5px;
+}
+
+.container-verify-email div button {
+    padding: 4px 11px;
+    background-color: #b1b1b1;
+    border: 0px;
+    border-radius: 4px;
+    font-size: 13px;
+    /* color: #d77534; */
+    color: #333;
+    transition: all 0.5s;
+}
+
+.container-verify-email div button:hover {
+    background-color: #e7762b;
+    color: whitesmoke;
+
+}
+
+.container-verify-email div a i {
+    color: #d77534;
+
+    padding-left: 10px;
+}
+
+.verify-email-header {
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.verify-email-header.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
