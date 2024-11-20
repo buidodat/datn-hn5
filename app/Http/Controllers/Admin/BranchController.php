@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBranchRequest;
 use App\Http\Requests\Admin\UpdateBranchRequest;
 use App\Models\Branch;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 // use GuzzleHttp\Client; // Call api
 
@@ -37,11 +38,11 @@ class BranchController extends Controller
     public function store(StoreBranchRequest $request)
     {
         try {
-            $data = $request->all();
-            $data['slug'] = Str::slug($data['name']);
-            $data['is_active'] ??= 0;
-
-            Branch::query()->create($data);
+            $dataBranch = [
+                'name' =>$request->name,
+                'slug' => Str::slug($request->name)
+            ];
+            Branch::create($dataBranch);
 
             return redirect()
                 ->route('admin.branches.index')
@@ -54,7 +55,7 @@ class BranchController extends Controller
 
     public function edit(Branch $branch)
     {
-        
+
         return view(self::PATH_VIEW . __FUNCTION__, compact('branch'));
     }
 
@@ -62,33 +63,34 @@ class BranchController extends Controller
     {
 
         try {
-            $data = $request->all();
-            $data['slug'] = Str::slug($data['name']);
-            $data['is_active'] ??= 0;
+            $dataBranch = [
+                'name' =>$request->name,
+                'slug' => Str::slug($request->name)
+            ];
+            $branch->update($dataBranch);
 
-            $branch->update($data);
-
-            return redirect()
-                ->back()
-                ->with('success', 'Cập nhật thành công!');
+            session()->flash('success', 'Thao tác thành công');
+            return response()->json(['message' => "Thao tác thành công"], Response::HTTP_OK); // 200
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return response()->json(['error' => $th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR); // 500
         }
-
     }
 
     public function destroy(Branch $branch)
     {
         try {
             if ($branch->cinemas()->count() > 0) {
-                return back()->with('error', 'Không thể xóa chi nhánh vì có rạp đang sử dụng chi nhánh này');
+                return redirect()
+                ->route('admin.branches.index')->with('error', 'Không thể xóa chi nhánh vì có rạp đang sử dụng chi nhánh này');
             }
 
             $branch->delete();
 
-            return back()->with('success', 'Xóa chi nhánh thành công');
+            return redirect()
+                ->route('admin.branches.index')->with('success', 'Xóa chi nhánh thành công');
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return redirect()
+                ->route('admin.branches.index')->with('error', $th->getMessage());
         }
     }
 }

@@ -61,7 +61,7 @@ Route::prefix('seat-templates')
     ->group(function () {
         Route::post('store',                        [SeatTemplateController::class, 'store']);
         Route::put('{seatTemplate}',                [SeatTemplateController::class, 'update']);
-        Route::post('update-active/{seatTemplate}', [SeatTemplateController::class, 'updateActive']);
+        Route::post('change-active', [SeatTemplateController::class, 'changeActive'])->name('change-active');
     });
 
 
