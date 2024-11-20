@@ -22,7 +22,8 @@ class Voucher extends Model
         'type',
     ];
     protected $casts = [
-        'is_active'=>'boolean'
+        'is_active'=>'boolean',
+        'end_date_time' => 'datetime',
     ];
     public function users()
     {

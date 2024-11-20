@@ -9,6 +9,7 @@ use App\Models\Ticket;
 use App\Models\TicketMovie;
 use App\Models\TicketSeat;
 use App\Models\User;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,7 @@ class UserController extends Controller
             'my-account',
             'membership',
             'cinema-journey',
+            'my-voucher'
         ];
 
         // Kiểm tra nếu $page không nằm trong mảng $pages, gán lại $page là 'my-account'
@@ -39,9 +41,10 @@ class UserController extends Controller
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
         $ranks = Rank::orderBy('total_spent', 'asc')->get();
+        $vouchers = Voucher::query()->where('is_publish' , 1)->where('is_active',1)->get();
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
-        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page'));
+        return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page','vouchers'));
     }
 
     public function update(UpdateUserRequest $request)
