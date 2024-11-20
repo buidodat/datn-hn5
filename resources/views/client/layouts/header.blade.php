@@ -23,8 +23,10 @@
                                 @endif
                                 <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
                                         tài khoản</a></li>
-                                <li><a href="{{ route('my-account.edit','membership') }}"  ><i class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
-                                <li><a href="{{ route('my-account.edit','cinema-journey') }}" ><i class="fa-regular fa-paper-plane"></i> Lịch sử giao dịch</a></li>
+                                <li><a href="{{ route('my-account.edit', 'membership') }}"><i
+                                            class="fa-regular fa-credit-card"></i> Thẻ thành viên</a></li>
+                                <li><a href="{{ route('my-account.edit', 'cinema-journey') }}"><i
+                                            class="fa-regular fa-paper-plane"></i> Lịch sử giao dịch</a></li>
                                 {{-- <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li> --}}
                                 <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
                                 <li>
@@ -44,12 +46,12 @@
                     </ul>
                 @endguest
             </div>
-            <div>
-                <a href="#" onclick="return alert('Click cái gì, chưa đổi đc ngôn ngữ đâu :)))')">
+            {{-- <div>
+                <a href="#" onclick="return alert('Kích hoạt ! Đã chuyển đổi ngôn ngữ sang tiếng anh')">
                     <img width="20px" src="{{ asset('theme/client/images/languages_english.png') }}" alt="">
                 </a>
 
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="header-buttom ">
@@ -151,7 +153,7 @@
                         <a href="{{ route('introduce') }}">Giới thiệu</a>
                     </li>
                     <li>
-                        <a href="{{ route('my-account.edit','membership') }}">Thành viên</a>
+                        <a href="{{ route('my-account.edit', 'membership') }}">Thành viên</a>
                     </li>
                 </ul>
             </div>
@@ -190,4 +192,78 @@
         </div>
     </div>
 
+
+    @if (Auth::check() && !Auth::user()->hasVerifiedEmail())
+        <div class="verify-email-header">
+            <div class="container-verify-email">
+                <div>
+                    <p>
+                        <i class="fa-solid fa-circle-exclamation" style="color: #f47b2a;"></i>
+                        Vui lòng kiểm tra email và nhấp vào liên kết xác thực.
+                    </p>
+                </div>
+                <div>
+                    <button type="button" name="buttonSendMail">
+                        <span class="spinner" style="display: none; margin-right: 5px;">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                        </span>
+                        Gửi lại thư xác nhận
+                    </button>
+
+                    <form id="resend-verification" action="{{ route('verification.send') }}" method="POST"
+                        style="display: none;">
+                        @csrf
+                    </form>
+                    <a href="#">
+                        {{-- icon dấu X --}}
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
 </div>
+<script>
+    document.querySelector('.fa-xmark').addEventListener('click', function(e) {
+        e.preventDefault();
+        const verifyEmailHeader = document.querySelector('.verify-email-header');
+        verifyEmailHeader.classList.add('hidden');
+    });
+
+    document.querySelector('button[name="buttonSendMail"]').addEventListener('click', function() {
+        const button = this;
+        const spinner = button.querySelector('.spinner');
+
+        // Hiển thị spinner và vô hiệu hóa nút
+        spinner.style.display = 'inline-block';
+        button.disabled = true;
+
+        fetch("{{ route('verification.send') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Content-Type": "application/json"
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    button.innerHTML =
+                        '<i class="fa-solid fa-check" style="margin-right: 5px; color: green;"></i> Đã gửi!';
+                } else {
+                    alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                    // Kích hoạt lại nút nếu lỗi
+                    button.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                console.error(error);
+                button.disabled = false;
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
+            });
+    });
+</script>
