@@ -46,12 +46,12 @@
                     </ul>
                 @endguest
             </div>
-            <div>
+            {{-- <div>
                 <a href="#" onclick="return alert('Kích hoạt ! Đã chuyển đổi ngôn ngữ sang tiếng anh')">
                     <img width="20px" src="{{ asset('theme/client/images/languages_english.png') }}" alt="">
                 </a>
 
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="header-buttom ">

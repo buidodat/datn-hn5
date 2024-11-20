@@ -2074,6 +2074,7 @@ div text {
 
 .verify-email-header {
     background-color: #dcc9b5;
+    /* opacity: 0.5; */
 }
 
 .container-verify-email {
