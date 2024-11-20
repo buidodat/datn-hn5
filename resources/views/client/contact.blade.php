@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="prs_title_main_sec_wrapper">
+{{-- <div class="prs_title_main_sec_wrapper">
     <div class="prs_title_img_overlay"></div>
     <div class="container">
         <div class="row">
@@ -20,9 +20,12 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- prs title wrapper End -->
 <!-- prs contact form wrapper Start -->
+@php
+    $settings = App\Models\SiteSetting::first();
+@endphp
 <div class="prs_contact_form_main_wrapper">
     <div class="container">
         <div class="row">
@@ -96,18 +99,18 @@
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="prs_contact_right_section_wrapper">
                     <ul>
-                        <li><a href="#"><i class="fa fa-facebook"></i>
-                                &nbsp;&nbsp;&nbsp;facebook.com/presenter</a>
+                        <li><a href="{{ $settings->facebook_link }}" target="_blank"><i class="fa fa-facebook"></i>
+                                &nbsp;&nbsp;&nbsp;facebook.com</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-twitter"></i> &nbsp;&nbsp;&nbsp;twitter.com/presenter</a>
+                        {{-- <li><a href="#"><i class="fa fa-twitter"></i> &nbsp;&nbsp;&nbsp;twitter.com/presenter</a>
                         </li>
                         <li><a href="#"><i class="fa fa-vimeo"></i> &nbsp;&nbsp;&nbsp;vimeo.com/presenter</a>
+                        </li> --}}
+                        <li><a href="{{ $settings->youtube_link }}" target="_blank"><i class="fa fa-youtube-play"></i>
+                            &nbsp;&nbsp;&nbsp;youtube.com</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-instagram"></i>
-                                &nbsp;&nbsp;&nbsp;instagram.com/presenter</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-youtube-play"></i>
-                                &nbsp;&nbsp;&nbsp;youtube.com/presenter</a>
+                        <li><a href="{{ $settings->instagram_link }}" target="_blank"><i class="fa fa-instagram"></i>
+                                &nbsp;&nbsp;&nbsp;instagram.com</a>
                         </li>
                     </ul>
                 </div>
