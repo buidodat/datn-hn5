@@ -547,7 +547,6 @@
     <script>
         // new DataTable("#example", {
         //     order: [
-        //         [0, 'desc']
         //     ]
         // });
     </script>
@@ -596,7 +595,8 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('.changeActive').on('change', function() {
+          $(document).on('change', '.changeActive', function() {
+
                 let showtimeId = $(this).data('showtime-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
                 // Gửi yêu cầu AJAX

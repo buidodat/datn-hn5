@@ -125,18 +125,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-    </script>
-    <script>
         $(document).ready(function() {
-            $('.changeActive').on('change', function() {
+            // Khởi tạo DataTable
+            let table = $('#example').DataTable({
+                order: [
+                ],
+            });
+            // Xử lý sự kiện change cho checkbox .changeActive
+            $(document).on('change', '.changeActive', function() {
                 let cinemaId = $(this).data('cinema-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
-                // Gửi yêu cầu AJAX
+
+                // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
                     url: '{{ route('cinemas.change-active') }}',
                     method: 'POST',
@@ -146,8 +146,22 @@
                         is_active: is_active
                     },
                     success: function(response) {
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        if (response.success) {
+                            let row = table.row($(`[data-cinema-id="${cinemaId}"]`).closest(
+                                'tr'));
+
+                            // Cập nhật cột trạng thái (cột thứ 2) trong dòng này
+                            let statusHtml = response.data.is_active ?
+                                `<div class="form-check form-switch form-switch-success">
+                                    <input class="form-check-input switch-is-active changeActive"
+                                        type="checkbox" data-cinema-id="${cinemaId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                `<div class="form-check form-switch form-switch-success">
+                                    <input class="form-check-input switch-is-active changeActive"
+                                        type="checkbox" data-cinema-id="${cinemaId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                </div>  <span class='small text-secondary'>Dừng hoạt động</span>`;
+                            row.cell(row.index(), 4).data(statusHtml).draw(false);
+
                         }
                     },
                     error: function(xhr, status, error) {
@@ -155,6 +169,8 @@
                         console.error(error);
                     }
                 });
+
+                console.log('Đã thay đổi trạng thái active');
             });
         });
     </script>

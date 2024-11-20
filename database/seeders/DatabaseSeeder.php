@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Branch;
 use App\Models\Combo;
 use App\Models\ComboFood;
 use App\Models\Food;
@@ -156,7 +157,7 @@ class DatabaseSeeder extends Seeder
             'Hải Phòng'
         ];
         foreach ($branches as $branch) {
-            DB::table('branches')->insert([
+            Branch::create([
                 'name' => $branch,
                 'slug' => Str::slug($branch)
             ]);
@@ -654,7 +655,9 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Platinum',     'total_spent' => 3000000,   'ticket_percentage' => 10,    'combo_percentage' => 7,  'is_default' => 0],
             ['name' => 'Diamond',      'total_spent' => 5000000,   'ticket_percentage' => 15,    'combo_percentage' => 10, 'is_default' => 0],
         ];
-        Rank::insert($dataRanks);
+        foreach ($dataRanks as $rank) {
+            Rank::create($rank);
+        }
         // Tạo một bản ghi thành viên cho mỗi người dùng
         foreach ($users as $userData) {
             $user = User::where('email', $userData['email'])->first();
