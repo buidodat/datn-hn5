@@ -127,6 +127,21 @@
                                     </td>
                                     <td>
                                         <b>
+                                            @php
+                                                $url = $movie->img_thumbnail;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            @if (!empty($movie->img_thumbnail))
+                                                <img src="{{ $url }}" alt="" width="50px" height="60px"
+                                                    class="img-thumbnail">
+                                            @else
+                                                No image !
+                                            @endif
+
                                             {{ $movie->name }}
                                         </b>
                                         @if ($movie->is_special == 1)
@@ -135,9 +150,7 @@
                                         @else
                                         @endif
 
-                                        {{-- @if ($isSpecialMovie)
-                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt</span>
-                                        @endif --}}
+
                                     </td>
                                     <td>{{ $movie->duration }} phút</td>
                                     <td>{{ $movie->category }}</td>
@@ -149,8 +162,13 @@
                                         <table class="table table-sm table-bordered">
                                             <thead>
                                                 <tr class="bg-light">
-                                                    <th><input type="checkbox" id="select-all-{{ $movieId }}"
-                                                            class="select-all-movie"></th>
+                                                    <th>
+
+                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                            class="select-all-movie">
+
+                                                    </th>
+
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
                                                     <th>CHỖ NGỒI</th>
@@ -163,9 +181,11 @@
                                                 @foreach ($showtimesByMovie as $showtime)
                                                     <tr>
                                                         <td class="inputCheckBoxShowtimes">
-                                                            <input type="checkbox"
-                                                                class="select-showtime movie-{{ $movieId }}"
-                                                                data-showtime-id="{{ $showtime->id }}">
+                                                            @if ($showtime->is_active == 0)
+                                                                <input type="checkbox"
+                                                                    class="select-showtime movie-{{ $movieId }}"
+                                                                    data-showtime-id="{{ $showtime->id }}">
+                                                            @endif
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                                             -
@@ -188,7 +208,8 @@
                                                                     name="is_active" type="checkbox" role="switch"
                                                                     data-showtime-id="{{ $showtime->id }}"
                                                                     @checked($showtime->is_active)
-                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                                    @if ($showtime->is_active) disabled @endif
+                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')">
                                                             </div>
                                                         </td>
                                                         <td>
@@ -220,28 +241,27 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-                                                        @if ($showtime->is_active == 0)
-                                                            <div class="d-flex justify-content-between">
+                                                        {{-- @if ($showtime->is_active == 0) --}}
+                                                        <div class="d-flex justify-content-between">
 
-                                                                <form action="" method="post"
-                                                                    class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit" id="delete-all"
-                                                                        class="btn btn-danger btn-sm">
-                                                                        Xóa tất cả
-                                                                    </button>
-                                                                </form>
+                                                            <form action="" method="post" class="d-inline-block">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" id="delete-all"
+                                                                    class="btn btn-danger btn-sm">
+                                                                    Xóa tất cả
+                                                                </button>
+                                                            </form>
 
-                                                                <a href="" class="px-5">
-                                                                    <button id="change-status-all" title="thay đổi"
-                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
-                                                                        tất
-                                                                        cả</button>
+                                                            <a href="" class="px-5">
+                                                                <button id="change-status-all" title="thay đổi"
+                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                    tất
+                                                                    cả</button>
 
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                            </a>
+                                                        </div>
+                                                        {{-- @endif --}}
 
                                                     </td>
                                                 </tr>
@@ -432,7 +452,9 @@
                     return;
                 }
 
-                if (confirm('Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn?')) {
+                if (confirm(
+                        'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa'
+                    )) {
                     $.ajax({
                         url: '{{ route('showtimes.changeStatusSelected') }}', // Add your change status route
                         type: 'POST',

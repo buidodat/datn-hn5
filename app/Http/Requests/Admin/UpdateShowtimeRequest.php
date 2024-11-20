@@ -39,6 +39,38 @@ class UpdateShowtimeRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $roomId = $this->room_id; // ID phòng
+            $date = $this->date; // Ngày chiếu
+            $startTime = \Carbon\Carbon::parse($this->date . ' ' . $this->start_time); // Giờ bắt đầu
+            $movieDuration = $this->movie_id ? \App\Models\Movie::find($this->movie_id)->duration : 0;
+            $cleaningTime = \App\Models\Showtime::CLEANINGTIME;
+            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime); // Giờ kết thúc
+
+            // Truy vấn các suất chiếu khác trong cùng phòng và ngày
+            $conflictingShowtimes = \App\Models\Showtime::where('room_id', $roomId)
+                ->where('date', $date)
+                ->where('id', '!=', $this->route('showtime')->id) // Loại bỏ suất chiếu hiện tại
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->whereBetween('start_time', [$startTime, $endTime])
+                        ->orWhereBetween('end_time', [$startTime, $endTime])
+                        ->orWhere(function ($query) use ($startTime, $endTime) {
+                            $query->where('start_time', '<=', $startTime)
+                                ->where('end_time', '>=', $endTime);
+                        });
+                })
+                ->exists();
+
+            // Nếu phát hiện trùng lặp, thêm lỗi
+            if ($conflictingShowtimes) {
+                $validator->errors()->add('start_time', 'Giờ chiếu trùng lặp với suất chiếu khác.');
+            }
+        });
+    }
+
+
     public function messages()
     {
         return [
@@ -52,9 +84,11 @@ class UpdateShowtimeRequest extends FormRequest
             'date.required' => 'Vui lòng chọn ngày chiếu.',
             'date.date' => 'Ngày chiếu không hợp lệ.',
             'date.after_or_equal' => 'Ngày chiếu phải từ hôm nay trở đi.',
+
             'start_time.required' => 'Vui lòng chọn giờ chiếu.',
             'start_time.date_format' => 'Giờ chiếu không hợp lệ (định dạng phải là HH:MM).',
             'start_time.before' => 'Giờ chiếu phải trước giờ kết thúc.',
+            'start_time.unique' => 'Giờ chiếu trùng lặp với suất chiếu khác.',
             'end_time.required' => 'Vui lòng nhập giờ kết thúc.',
             'end_time.date_format' => 'Giờ kết thúc không hợp lệ (định dạng phải là HH:MM).',
             'end_time.after' => 'Giờ kết thúc phải sau giờ chiếu.',

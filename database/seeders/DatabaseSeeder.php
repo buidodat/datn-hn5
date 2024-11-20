@@ -937,7 +937,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách rạp',
             'Thêm rạp',
             'Sửa rạp',
-            // 'Xóa rạp',
+            'Xóa rạp',
             'Danh sách phòng chiếu',
             'Thêm phòng chiếu',
             'Sửa phòng chiếu',
@@ -950,7 +950,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách phim',
             'Thêm phim',
             'Sửa phim',
-            // 'Xóa phim',
+            'Xóa phim',
             'Xem chi tiết phim',
             'Danh sách suất chiếu',
             'Thêm suất chiếu',
@@ -959,14 +959,9 @@ class DatabaseSeeder extends Seeder
             'Xem chi tiết suất chiếu',
             'Danh sách hóa đơn',
             'Quét hóa đơn',
-            // 'Thêm hóa đơn',
-            // 'Sửa hóa đơn',
-            // 'Xóa hóa đơn',
+           
             'Xem chi tiết hóa đơn',
-            // 'Danh sách đặt vé',
-            // 'Thêm đặt vé',
-            // 'Sửa đặt vé',
-            // 'Xóa đặt vé',
+          
             'Danh sách đồ ăn',
             'Thêm đồ ăn',
             'Sửa đồ ăn',
@@ -1043,29 +1038,23 @@ class DatabaseSeeder extends Seeder
             'Sửa phòng chiếu',
             'Xóa phòng chiếu',
             'Xem chi tiết phòng chiếu',
-
             'Danh sách mẫu sơ đồ ghế',
             'Thêm mẫu sơ đồ ghế',
             'Sửa mẫu sơ đồ ghế',
             'Xóa mẫu sơ đồ ghế',
-
             'Danh sách phim',
             'Xem chi tiết phim',
-
             'Danh sách suất chiếu',
             'Thêm suất chiếu',
             'Sửa suất chiếu',
             'Xóa suất chiếu',
             'Xem chi tiết suất chiếu',
-
             'Danh sách hóa đơn',
             'Quét hóa đơn',
             'Xem chi tiết hóa đơn',
-
             'Danh sách đồ ăn',
             'Danh sách combo',
             'Danh sách vouchers',
-
             'Danh sách thanh toán',
             'Danh sách bài viết',
             'Danh sách slideshows',
@@ -1073,10 +1062,7 @@ class DatabaseSeeder extends Seeder
             'Sửa liên hệ',
 
             'Danh sách tài khoản',
-            // 'Thêm tài khoản',
-            // 'Sửa tài khoản',
-            // 'Xóa tài khoản',
-            // 'Cấu hình website',
+         
             'Danh sách thống kê',
         ]);
 
