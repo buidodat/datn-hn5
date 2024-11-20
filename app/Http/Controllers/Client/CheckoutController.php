@@ -18,27 +18,31 @@ use Illuminate\Support\Facades\Log;
 class CheckoutController extends Controller
 {
     //
-    public function checkout()
+    public function checkout(string $slug)
     {
-
-
+        // dd(session()->all());
 
         //Nếu tồn tại session thì hủy
         session()->forget(['customer', 'payment_voucher', 'payment_point']); // customer có thể là id khách hàng hoặc id admin
 
+        $showtime = Showtime::where('slug', $slug)->first();
+        // dd($showtime->toArray());
 
-        $checkoutData = session()->get('checkout_data', []);
+        $checkoutData = session()->get("checkout_data.$showtime->id", []);
+
+        // Kiểm tra nếu session không tồn tại hoặc remainingSeconds <= 5 thì xóa session
+        if (empty($checkoutData) || $checkoutData['remainingSeconds'] <= 5) {
+            session()->forget("checkout_data.$showtime->id"); // Xóa session checkout_data
+            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+        }
 
         // Tính lại thời gian còn lại
         if (isset($checkoutData['remainingSeconds']) && isset($checkoutData['lastUpdated'])) {
             $elapsedTime = now()->diffInSeconds($checkoutData['lastUpdated']);
             $checkoutData['remainingSeconds'] = max(0, $checkoutData['remainingSeconds'] - $elapsedTime);
-            session()->put('checkout_data.remainingSeconds', $checkoutData['remainingSeconds']);
-            session()->put('checkout_data.lastUpdated', now()); // Cập nhật thời điểm hiện tại
+            session()->put("checkout_data.$showtime->id.remainingSeconds", $checkoutData['remainingSeconds']);
+            session()->put("checkout_data.$showtime->id.lastUpdated", now()); // Cập nhật thời điểm hiện tại
         }
-
-        // Lấy suất chiếu theo ID từ session
-        $showtime = Showtime::where('id', $checkoutData['showtime_id'])->firstOrFail();
 
         //lấy ghế
         $showtimeId = $checkoutData['showtime_id'];

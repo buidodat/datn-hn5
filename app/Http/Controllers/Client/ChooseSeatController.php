@@ -191,6 +191,10 @@ class ChooseSeatController extends Controller
         $seatIds = explode(',', $request->seatId); // Chuỗi ghế thành mảng
         $userId = auth()->id();
 
+        $slug = Showtime::where('id',$showtimeId)->pluck('slug')->first();
+
+        // dd($slug);
+
         // Kiểm tra ghế, bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
         $seatShowtimes = DB::table('seat_showtimes')
             ->whereIn('seat_id', $seatIds)
@@ -212,17 +216,17 @@ class ChooseSeatController extends Controller
         }
 
         session()->put([
-            'checkout_data' => [
+            "checkout_data.$showtimeId" => [
                 'showtime_id' => $request->showtimeId,
                 'seat_ids' => $seatIds,
                 'selected_seats_name' => $request->selected_seats_name, // Tên ghế thành mảng
                 'total_price' => $request->total_price,
                 'remainingSeconds' => $request->remainingSeconds,
-                'lastUpdated' => now() // lưu thời gian hiện tại lúc bấm nút tiếp tục
+                'lastUpdated' => now(), // lưu thời gian hiện tại lúc bấm nút tiếp tục
             ]
         ]);
 
-        return redirect()->route('checkout');
+        return redirect()->route('checkout', ['slug' => $slug]);
     }
 
     // public function holdSeats(Request $request)
