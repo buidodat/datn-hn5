@@ -33,6 +33,7 @@ class CheckoutController extends Controller
         // Kiểm tra nếu session không tồn tại hoặc remainingSeconds <= 5 thì xóa session
         if (empty($checkoutData) || $checkoutData['remainingSeconds'] <= 5) {
             session()->forget("checkout_data.$showtime->id"); // Xóa session checkout_data
+
             return redirect()->route('home')->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
         }
 

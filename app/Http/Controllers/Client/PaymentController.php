@@ -99,6 +99,7 @@ class PaymentController extends Controller
         $totalDiscount = $pointDiscount + $voucherDiscount;
         $totalPayment = max($totalPrice - $totalDiscount, 10000); // Đảm bảo giá tối thiểu là 10k
 
+        $showtime = Showtime::where('id', $showtimeId)->first();
 
         $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
         foreach ($seatShowtimes as $seatShowtime) {
@@ -112,7 +113,7 @@ class PaymentController extends Controller
         if ($hasExpiredSeats) {
             // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
             // Chuyển hướng về trang chọn ghế với thông báo lỗi
-            return redirect()->route('choose-seat', $showtimeId)
+            return redirect()->route('choose-seat', $showtime->slug)
                 ->with('error', 'Ghế đã hết thời gian giữ chỗ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
         }
 
@@ -398,6 +399,7 @@ class PaymentController extends Controller
                 $timeKey = 'timeData.' . $paymentData['showtime_id'];
 
                 session()->forget($timeKey);
+                session()->forget("checkout_data.$showtime->id");
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -413,6 +415,8 @@ class PaymentController extends Controller
 
     public function handleFailedPayment($paymentData)
     {
+        $showtime = Showtime::find($paymentData['showtime_id']);
+
         //trường hợp nếu hủy hoặc thanh toán thất bại
         DB::table('seat_showtimes')
             ->whereIn('seat_id', $paymentData['seat_id'])
@@ -437,6 +441,7 @@ class PaymentController extends Controller
         $timeKey = 'timeData.' . $paymentData['showtime_id'];
 
         session()->forget($timeKey);
+        session()->forget("checkout_data.$showtime->id");
         session()->forget('payment_data');
 
         return redirect()->route('home')->with('error', 'Thanh toán thất bại hoặc đã hủy.');
@@ -699,6 +704,7 @@ class PaymentController extends Controller
                 $timeKey = 'timeData.' . $paymentData['showtime_id'];
 
                 session()->forget($timeKey);
+                session()->forget("checkout_data.$showtime->id");
                 session()->forget('payment_data');
 
                 return redirect()->route('home')->with('success', 'Thanh toán thành công!');
@@ -831,13 +837,13 @@ class PaymentController extends Controller
         if ($hasExpiredSeats) {
             // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
             // Chuyển hướng về trang chọn ghế với thông báo lỗi
-            return redirect()->route('choose-seat', $showtimeId)
+            return redirect()->route('choose-seat', $showtime->slug)
                 ->with('error', 'Ghế đã hết thời gian giữ chỗ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
         }
 
         // 11. Thực hiện transaction nếu không có ghế hết thời gian giữ
         // try {
-        DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo, $voucher, $customerId) {
+        DB::transaction(function () use ($dataTicket, $seatIds, $showtimeId, $request, $priceSeat, $priceCombo, $voucher, $customerId, $showtime) {
             // Tạo ticket
             $ticket = Ticket::create($dataTicket);
 
@@ -944,6 +950,7 @@ class PaymentController extends Controller
             $timeKey = 'timeData.' . $showtimeId;
 
             session()->forget($timeKey);
+            session()->forget("checkout_data.$showtime->id");
             session()->forget('payment_data');
         });
 
