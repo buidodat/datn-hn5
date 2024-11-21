@@ -170,7 +170,7 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <textarea class="form-control " rows="6" name="description"></textarea>
+                            <textarea class="form-control " rows="7" name="description"></textarea>
                             @error('description')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror

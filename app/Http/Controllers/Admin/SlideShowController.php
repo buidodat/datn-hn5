@@ -80,6 +80,7 @@ class SlideShowController extends Controller
     public function edit(string $id)
     {
         $slide = Slideshow::query()->findOrFail($id);
+        $slide->img_thumbnail = json_decode($slide->img_thumbnail, true);
         return view(self::PATH_VIEW . __FUNCTION__, compact('slide'));
     }
 
@@ -89,28 +90,45 @@ class SlideShowController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $data = $request->all();
-            $data['is_active'] = $request->has('is_active') ? 1 : 0;
-            $slide = Slideshow::query()->findOrFail($id);
+            $validatedData = $request->validate([
+                'img_thumbnail' => 'nullable|array',
+                'img_thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'existing_images' => 'nullable|array',
+                'description' => 'nullable|string|max:1000',
+            ]);
+
+            $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
+            $slide = Slideshow::findOrFail($id);
+
+            $existingImages = $request->input('existing_images', []);
+            $updatedImages = $existingImages;
 
             if ($request->hasFile('img_thumbnail')) {
-                if ($slide->img_thumbnail && Storage::exists($slide->img_thumbnail)) {
-                    Storage::delete($slide->img_thumbnail);
+                foreach ($request->file('img_thumbnail') as $key => $file) {
+                    if (isset($existingImages[$key])) {
+                        $oldPath = $existingImages[$key];
+                        if (Storage::exists($oldPath)) {
+                            Storage::delete($oldPath);
+                        }
+                    }
+                    $updatedImages[$key] = $file->store('uploads/slides');
                 }
-                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('img_thumbnail'));
-            } else {
-                $data['img_thumbnail'] = $slide->img_thumbnail;
             }
 
-            $slide->update($data);
+            $slide->update([
+                'img_thumbnail' => json_encode(array_values($updatedImages)),
+                'description' => $validatedData['description'],
+                'is_active' => $validatedData['is_active'],
+            ]);
 
-            return redirect()
-                ->back()
-                ->with('success', 'Cập nhật thành công!');
+            return redirect()->back()->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.
