@@ -10,6 +10,7 @@ use App\Models\TicketMovie;
 use App\Models\TicketSeat;
 use App\Models\User;
 use App\Models\Voucher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -41,12 +42,31 @@ class UserController extends Controller
         $user = User::with('membership')->findOrFail($userID);
         $genders = User::GENDERS;
         $ranks = Rank::orderBy('total_spent', 'asc')->get();
-        $vouchers = Voucher::query()->where('is_publish' , 1)->where('is_active',1)->get();
+        $vouchers = $this->getVoucher($userID);
         $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page','vouchers'));
     }
+    private function getVoucher($userId)
+    {
+        $user = User::findOrFail($userId);
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
 
+        return Voucher::where('is_publish', 1)
+            ->where('is_active', 1)
+            ->where('start_date_time', '<=', $now)
+            ->where('end_date_time', '>=', $now)
+            ->where('quantity', '>', 0)
+            ->where(function($query) use ($userId, $user) {
+                $query->where('type', 1) // Voucher thường
+                ->orWhere(function($q) use ($userId, $user) {
+                    $q->where('type', 2) // Voucher sinh nhật
+                    ->whereMonth('start_date_time', $user->birthday->month)
+                        ->whereDay('start_date_time', $user->birthday->day);
+                });
+            })
+            ->get();
+    }
     public function update(UpdateUserRequest $request)
     {
         $userID = Auth::user()->id;

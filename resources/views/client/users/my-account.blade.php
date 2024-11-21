@@ -304,7 +304,7 @@
                                                 <th>Voucher</th>
                                                 <th>Giảm giá (VNĐ)</th>
                                                 <th>Nội dung</th>
-                                                <th>Hạn sử dụng</th>
+                                                <th>Thời gian</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -313,7 +313,7 @@
                                                     <td>{{ $voucher->code }}</td>
                                                     <td>{{ number_format($voucher->discount, 0, ',', '.') }} VNĐ</td>
                                                     <td>{{ $voucher->title }}</td>
-                                                    <td>{{ $voucher->end_date_time ? $voucher->end_date_time->format('H:i, d/m/Y') : '' }}</td>
+                                                    <td>{{ $voucher->start_date_time ? $voucher->start_date_time->format('H:i, d/m/Y') : '' }} <strong>đến</strong> {{ $voucher->end_date_time ? $voucher->end_date_time->format('H:i, d/m/Y') : '' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
