@@ -49,25 +49,26 @@ class MovieController extends Controller
     public function store(StoreMovieRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
-
-                $dataMovie = [
-                    'name' => $request->name,
-                    'slug' => Str::slug($request->name),
-                    'category' => $request->category,
-                    'description' => $request->description,
-                    'director' => $request->director,
-                    'cast' => $request->cast,
-                    'rating' => $request->rating,
-                    'duration' => $request->duration,
-                    'release_date' => $request->release_date,
-                    'end_date' => $request->end_date,
-                    'trailer_url' => $request->trailer_url,
-                    'surcharge' => $request->surcharge,
-                    'is_active' => isset($request->is_active) ? 1 : 0,
-                    'is_hot' => isset($request->is_hot) ? 1 : 0,
-                ];
-
+            $dataMovie = [
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'category' => $request->category,
+                'description' => $request->description,
+                'director' => $request->director,
+                'cast' => $request->cast,
+                'rating' => $request->rating,
+                'duration' => $request->duration,
+                'release_date' => $request->release_date,
+                'end_date' => $request->end_date,
+                'trailer_url' => $request->trailer_url,
+                'surcharge' => $request->surcharge,
+                'is_active' => isset($request->is_active) ? 1 : 0,
+                'is_hot' => isset($request->is_hot) ? 1 : 0,
+            ];
+            if($request->action === 'publish'){
+                $dataMovie['is_publish'] = 1;
+            }
+            DB::transaction(function () use ($request, $dataMovie ) {
 
                 if ($request->img_thumbnail) {
                     $dataMovie['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
@@ -75,7 +76,7 @@ class MovieController extends Controller
 
                 $movie = Movie::create($dataMovie);
 
-                foreach ($request->versions as $version) {
+                foreach ($request->versions ?? [] as $version) {
                     MovieVersion::create([
                         'movie_id' => $movie->id,
                         'name' => $version
@@ -174,6 +175,24 @@ class MovieController extends Controller
                 ->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
+        }
+    }
+
+
+    public function destroy(Movie $movie)
+    {
+        try {
+            if ($movie->is_publish) {
+                return redirect()
+                ->route('admin.movies.index')->with('error', 'Phim đã được xuất bản, không thể xóa');
+            }
+            $movie->delete();
+
+            return redirect()
+                ->route('admin.movies.index')->with('success', 'Xóa phim thành công');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('admin.movies.index')->with('error', $th->getMessage());
         }
     }
 }

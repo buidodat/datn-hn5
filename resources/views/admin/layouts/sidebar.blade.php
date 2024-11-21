@@ -66,7 +66,7 @@
                                 {{-- <li class="nav-item">
                                     <a href="{{ route('admin.statistical.cinemaRevenue') }}" class="nav-link menu-link"
                                         data-key="t-horizontal">
-                                       
+
                                         <span data-key="t-dashboards">Doanh Thu Theo Rạp</span>
                                     </a>
                                 </li> --}}
@@ -165,7 +165,8 @@
                                     'Xem chi tiết phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
+                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span
+                                                data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
@@ -182,11 +183,13 @@
                                             <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                                     </li>
                                 @endcan
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
-                                        <span data-key="t-layouts">Thẻ thành viên</span></a>
-                                </li>
+                                @can('Thẻ thành viên')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
+                                            data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
+                                            <span data-key="t-layouts">Thẻ thành viên</span></a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     </li>
@@ -459,22 +462,12 @@
 
                 @canany(['Cấu hình website'])
                     <li class="nav-item">
-                        <a class="nav-link menu-link collapsed" href="#siteSetting" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="siteSetting">
-                            <i class="fa fa-cogs"></i> <span data-key="t-landing">Cấu hình Website</span>
+                        <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
+                            data-key="t-horizontal">
+                            <i class="ri-settings-5-line"></i> <span data-key="t-landing">Cấu hình Website</span>
                         </a>
-                        <div class="menu-dropdown collapse" id="siteSetting">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.site-settings.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal">
-                                        <i class="fa fa-tools"></i> <span data-key="t-layouts">Quản lý</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
-                @endcanany            
+                @endcanany
 
 
             </ul>
