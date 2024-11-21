@@ -39,7 +39,6 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-
                     </div>
                 @endif --}}
             </div>
@@ -199,6 +198,9 @@
                                     <label for="start_hour">Giờ mở cửa:</label>
                                     <input type="time" id="start_hour" name="start_hour" class="form-control"
                                         value="{{ old('start_hour') }}">
+                                    @error('start_hour')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -206,10 +208,12 @@
                                     <label for="end_hour">Giờ đóng cửa:</label>
                                     <input type="time" id="end_hour" name="end_hour" class="form-control"
                                         value="{{ old('end_hour') }}">
+                                    @error('end_hour')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
-                            <!-- Các input cho giờ mở cửa và giờ đóng cửa, chỉ hiển thị khi checkbox được chọn -->
 
                             <div class="row" id="add-start-time">
                                 <div id="showtime-container">
@@ -220,11 +224,12 @@
                                             <label for="start_time" class="form-label ">Giờ chiếu:</label>
                                             <input type="time" class="form-control" name="start_time[]"
                                                 id="start_time" value="">
-                                            @error('start_time')
+                                            @error('start_time.*')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
                                             @enderror
+
                                         </div>
                                         {{-- <input type="checkbox" > --}}
 
@@ -298,6 +303,7 @@
                 </div>
                 <!--end col-->
             </div>
+        </div>
     </form>
 @endsection
 
@@ -416,7 +422,7 @@
             }
         });
 
-        // Ajax đổ Suất chiếu đang có theo Phòng
+        // Ajax đổ Suất chiếu đang có theo Phòng và Ngày
         $(document).ready(function() {
             var roomId = $('#room').val() || "{{ old('room_id') }}";
             var selectedDate = $('#date').val() || "{{ old('date') }}";

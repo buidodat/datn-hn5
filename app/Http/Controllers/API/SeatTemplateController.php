@@ -117,14 +117,15 @@ class SeatTemplateController extends Controller
     }
 
 
-    public function updateActive(Request $request,SeatTemplate $seatTemplate)
+    public function changeActive(Request $request)
     {
         try {
+            $seatTemplate = seatTemplate::findOrFail($request->id);
             if($seatTemplate->is_publish){
                 $seatTemplate->update([
                     'is_active' => $request->is_active
                 ]);
-                return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.']);
+                return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái thành công.','data'=>$seatTemplate]);
             } else {
                 // Nếu template chưa được publish, trả về thông báo lỗi
                 return response()->json(['success' => false, 'message' => 'Template chưa được publish.']);

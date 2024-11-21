@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Branch;
 use App\Models\Combo;
 use App\Models\ComboFood;
 use App\Models\Food;
@@ -15,6 +16,7 @@ use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Rank;
+use App\Models\Showtime;
 use App\Models\Ticket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -156,7 +158,7 @@ class DatabaseSeeder extends Seeder
             'Hải Phòng'
         ];
         foreach ($branches as $branch) {
-            DB::table('branches')->insert([
+            Branch::create([
                 'name' => $branch,
                 'slug' => Str::slug($branch)
             ]);
@@ -339,6 +341,7 @@ class DatabaseSeeder extends Seeder
                         DB::table('showtimes')->insert([
                             'cinema_id' => $cinema->cinema_id,  // Lưu cinema_id
                             'room_id' => $room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $format, // Format kết hợp type_room và movie_version
                             'movie_version_id' => $movie_version_id,
                             'movie_id' => $movie->movie_id,
@@ -556,7 +559,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-
+        
 
         //tạo 5 bản ghỉ user type admin
         $users = [
@@ -564,6 +567,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'System Admin',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
                 'phone' => '0332295555',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'admin@fpt.edu.vn',
                 'password' => Hash::make('admin@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
@@ -576,6 +580,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Trương Công Lực',
                 'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
                 'phone' => '0332293871',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'luctcph37171@fpt.edu.vn',
                 'password' => Hash::make('luctcph37171@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
@@ -588,6 +593,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Hà Đắc Hiếu',
                 'img_thumbnail' => 'theme/admin/assets/images/users/user-dummy-img.jpg',
                 'phone' => '0975098710',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'hieuhdph36384@fpt.edu.vn',
                 'password' => Hash::make('hieuhdph36384@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
@@ -600,6 +606,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Đặng Phú An',
                 'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
                 'phone' => '0378633611',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'andpph31859@fpt.edu.vn',
                 'password' => Hash::make('andpph31859@fpt.edu.vn'),
                 'address' => 'Văn Chấn, Yên Bái.',
@@ -612,6 +619,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'An Dang Phu',
                 'img_thumbnail' => '',
                 'phone' => '0378633611',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'anpx123@gmail.com',
                 'password' => Hash::make('anpx123@gmail.com'),
                 'address' => 'Văn Chấn, Yên Bái.',
@@ -624,6 +632,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Nguyễn Viết Sơn',
                 'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Ac_8W5oiz3UQ7kNvgE477pl&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ajp6VrKXh1BJ4nvrLvN-bbm&oh=00_AYCMP6yTzIhdGeGsW8knCmMkdI3IBd1wi_dlZwVKIfdn6w&oe=670D6BD1',
                 'phone' => '0973657594',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'sonnvph33874@fpt.edu.vn',
                 'password' => Hash::make('sonnvph33874@fpt.edu.vn'),
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
@@ -636,6 +645,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Bùi Đỗ Đạt',
                 'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
                 'phone' => '0965263725',
+                'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'datbdph38211@fpt.edu.vn',
                 'password' => Hash::make('datbdph38211@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
@@ -654,7 +664,9 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Platinum',     'total_spent' => 3000000,   'ticket_percentage' => 10,    'combo_percentage' => 7,  'is_default' => 0],
             ['name' => 'Diamond',      'total_spent' => 5000000,   'ticket_percentage' => 15,    'combo_percentage' => 10, 'is_default' => 0],
         ];
-        Rank::insert($dataRanks);
+        foreach ($dataRanks as $rank) {
+            Rank::create($rank);
+        }
         // Tạo một bản ghi thành viên cho mỗi người dùng
         foreach ($users as $userData) {
             $user = User::where('email', $userData['email'])->first();
@@ -926,6 +938,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
+        // Phân quyền : Danh sách quyền 
         $permissions = [
             'Danh sách chi nhánh',
             'Thêm chi nhánh',
@@ -934,7 +947,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách rạp',
             'Thêm rạp',
             'Sửa rạp',
-            // 'Xóa rạp',
+            'Xóa rạp',
             'Danh sách phòng chiếu',
             'Thêm phòng chiếu',
             'Sửa phòng chiếu',
@@ -947,7 +960,7 @@ class DatabaseSeeder extends Seeder
             'Danh sách phim',
             'Thêm phim',
             'Sửa phim',
-            // 'Xóa phim',
+            'Xóa phim',
             'Xem chi tiết phim',
             'Danh sách suất chiếu',
             'Thêm suất chiếu',
@@ -956,14 +969,9 @@ class DatabaseSeeder extends Seeder
             'Xem chi tiết suất chiếu',
             'Danh sách hóa đơn',
             'Quét hóa đơn',
-            // 'Thêm hóa đơn',
-            // 'Sửa hóa đơn',
-            // 'Xóa hóa đơn',
+           
             'Xem chi tiết hóa đơn',
-            // 'Danh sách đặt vé',
-            // 'Thêm đặt vé',
-            // 'Sửa đặt vé',
-            // 'Xóa đặt vé',
+          
             'Danh sách đồ ăn',
             'Thêm đồ ăn',
             'Sửa đồ ăn',
@@ -1002,7 +1010,7 @@ class DatabaseSeeder extends Seeder
             'Xóa tài khoản',
             'Cấu hình website',
             'Danh sách thống kê',
-
+            'Thẻ thành viên'
             // 'Thêm thống kê',
             // 'Sửa thống kê',
             // 'Xóa thống kê',
@@ -1040,29 +1048,23 @@ class DatabaseSeeder extends Seeder
             'Sửa phòng chiếu',
             'Xóa phòng chiếu',
             'Xem chi tiết phòng chiếu',
-
             'Danh sách mẫu sơ đồ ghế',
             'Thêm mẫu sơ đồ ghế',
             'Sửa mẫu sơ đồ ghế',
             'Xóa mẫu sơ đồ ghế',
-
             'Danh sách phim',
             'Xem chi tiết phim',
-
             'Danh sách suất chiếu',
             'Thêm suất chiếu',
             'Sửa suất chiếu',
             'Xóa suất chiếu',
             'Xem chi tiết suất chiếu',
-
             'Danh sách hóa đơn',
             'Quét hóa đơn',
             'Xem chi tiết hóa đơn',
-
             'Danh sách đồ ăn',
             'Danh sách combo',
             'Danh sách vouchers',
-
             'Danh sách thanh toán',
             'Danh sách bài viết',
             'Danh sách slideshows',
@@ -1070,10 +1072,7 @@ class DatabaseSeeder extends Seeder
             'Sửa liên hệ',
 
             'Danh sách tài khoản',
-            // 'Thêm tài khoản',
-            // 'Sửa tài khoản',
-            // 'Xóa tài khoản',
-            // 'Cấu hình website',
+         
             'Danh sách thống kê',
         ]);
 

@@ -73,7 +73,7 @@ function updateModalContent(data) {
             date.showtimes[format].forEach(showtime => {
                 showtimesHTML += `
                     <div class="showtime-item">
-                        <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.id}'">
+                        <div class="showtime-item-start-time" onclick="window.location.href='${APP_URL}/choose-seat/${showtime.slug}'">
                             ${new Date(showtime.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
 

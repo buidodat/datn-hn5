@@ -257,29 +257,4 @@
             });
         });
     </script>
-    {{--<script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initialize Swiper for each instance
-            document.querySelectorAll('.swiper').forEach(function (swiperContainer) {
-                new Swiper(swiperContainer, {
-                    effect: 'coverflow',
-                    grabCursor: true,
-                    centeredSlides: true,
-                    slidesPerView: 'auto',
-                    coverflowEffect: {
-                        rotate: 50,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows: true,
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                });
-            });
-        });
-    </script>--}}
-
 @endsection

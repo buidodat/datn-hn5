@@ -1,9 +1,8 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách chi nhánh
+    Quản lý chi nhánh
 @endsection
-
 @section('style-libs')
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
@@ -14,92 +13,158 @@
 @endsection
 
 
-
 @section('content')
-    <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Chi nhánh</h4>
+                <h4 class="mb-sm-0">Quản lý chi nhánh</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Chi nhánh</li>
+                        <li class="breadcrumb-item"><a href="">Chi nhánh</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
-
             </div>
         </div>
     </div>
-    <!-- end page title -->
 
+    <!-- thông tin -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-4">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Quản lý chi nhánh</h5>
-                    <a href="{{route('admin.branches.create')}}" class="btn btn-primary">Thêm mới</a>
-                </div>
-                @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
-
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Thêm mới chi nhánh</h4>
+                </div><!-- end card header -->
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên chi nhánh</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($branches as $branch)
-                                <tr>
-                                    <td>{{ $branch->id }}</td>
-                                    <td>{{ $branch->name }}</td>
-                                    <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{-- <a href="">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a> --}}
+                    <div class="live-preview">
+                        <form action="{{ route('admin.branches.store') }}" method="post">
+                            @csrf
+                            <div class="row ">
+                                <div class="mb-2">
+                                    <label for="name" class="form-label">
+                                        <span class="text-danger">*</span>Tên chi nhánh:
+                                    </label>
+                                    <input type="text" class='form-control' name="name" value="{{ old('name') }}"
+                                        placeholder="Nhập tên chi nhánh">
+                                    <div class="form-text">
+                                        Tên chi nhánh của rạp chiếu phim.
+                                    </div>
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="text-end mt-2">
+                                    <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                                </div>
 
-                                        <a href="{{ route('admin.branches.edit', $branch) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        @if($branch->cinemas()->count() == 0 )
-                                            <form action="{{route('admin.branches.destroy', $branch)}}" method="POST" class="d-inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
-                                                    <i class="ri-delete-bin-7-fill"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                            </div>
+                        </form>
 
-                    </table>
+                        <!--end row-->
+                    </div>
                 </div>
             </div>
-        </div><!--end col-->
-    </div><!--end row-->
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Danh sách chi nhánh </h4>
+                        </div><!-- end card header -->
+
+                        <div class="card-body ">
+                            <table class="table table-bordered dt-responsive nowrap w-100" id="example">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên chi nhánh</th>
+                                        <th>Hoạt động</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($branches as $index => $branch)
+                                        <tr>
+                                            <td>{{ $branch->id }}</td>
+                                            <td>
+                                                <div class='room-name'>
+                                                    <div>{{ $branch->name }} {!! $branch->is_default ? '<span class="text-black-50 small">(Mặc định)</span>' : null !!}
+                                                    </div>
+                                                    <div>
+
+                                                        <a class="cursor-pointer text-info small openUpdateBranchModal"
+                                                            data-branch-id="{{ $branch->id }}"
+                                                            data-branch-name="{{ $branch->name }}">Sửa</a>
+
+
+                                                        @if ($branch->cinemas()->count() == 0)
+                                                            <a href="{{ route('admin.branches.destroy', $branch) }}"
+                                                                class="cursor-pointer  mx-1 text-danger small"
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa ?')">Xóa</a>
+                                                        @endif
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active changeActive"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                </div>
+                                            </td>
+                                            <td class="small">{{ $branch->created_at->format('d/m/Y') }}<br>{{ $branch->created_at->format('H:i:s') }}</td>
+                                            <td class="small">{{ $branch->updated_at->format('d/m/Y') }}<br>{{ $branch->updated_at->format('H:i:s') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+    </div>
+    <!-- Modal Cập nhật chi nhánh -->
+    <div class="modal fade" id="updateBranchModal" tabindex="-1" aria-labelledby="updateBranchModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateBranchModalLabel">Cập nhật chi nhánh</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateBranchForm" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <input type="hidden" id="updateBranchId" name="branch_id">
+                            <div class="col-md-12 mb-3">
+                                <label for="updateName" class="form-label"><span class="text-danger">*</span> Tên chi
+                                    nhánh:</label>
+                                <input type="text" class="form-control" id="updateName" name="name" required
+                                    placeholder="Nhập tên chi nhánh">
+                                <span class="text-danger mt-3" id="updateNameError"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="updateBranchBtn">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
 
 
 @section('script-libs')
@@ -117,18 +182,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-        new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
-        });
-    </script>
-     <script>
         $(document).ready(function() {
-            $('.changeActive').on('change', function() {
+            // Khởi tạo DataTable
+            let table = $('#example').DataTable({
+                order: [
+                ],
+            });
+            // Xử lý sự kiện change cho checkbox .changeActive
+            $(document).on('change', '.changeActive', function() {
                 let branchId = $(this).data('branch-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
-                // Gửi yêu cầu AJAX
+
+                // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
                     url: '{{ route('branches.change-active') }}',
                     method: 'POST',
@@ -138,8 +203,24 @@
                         is_active: is_active
                     },
                     success: function(response) {
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                        if (response.success) {
+                            let row = table.row($(`[data-branch-id="${branchId}"]`).closest(
+                                'tr'));
+                            console.log(row);
+
+                            // Cập nhật cột trạng thái (cột thứ 2) trong dòng này
+                            let statusHtml = response.data.is_active ?
+                                `<div class="form-check form-switch form-switch-success">
+                                    <input class="form-check-input switch-is-active changeActive"
+                                        type="checkbox" data-branch-id="${branchId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                `<div class="form-check form-switch form-switch-success">
+                                    <input class="form-check-input switch-is-active changeActive"
+                                        type="checkbox" data-branch-id="${branchId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                </div>  <span class='small text-secondary'>Dừng hoạt động</span>`;
+                            row.cell(row.index(), 2).data(statusHtml).draw(false);
+                            row.cell(row.index(), 4).data(`${response.data.updated_date}<br>${response.data.updated_time}`).draw(false);
+
                         }
                     },
                     error: function(xhr, status, error) {
@@ -147,7 +228,93 @@
                         console.error(error);
                     }
                 });
+
+                console.log('Đã thay đổi trạng thái active');
             });
         });
+    </script>
+    <script>
+        function filterPermissions() {
+            const searchValue = document.getElementById("search-permission").value.toLowerCase();
+            const permissionItems = document.querySelectorAll(".form-check");
+
+            permissionItems.forEach(item => {
+                const label = item.querySelector("label").textContent.toLowerCase();
+                if (label.includes(searchValue)) {
+                    item.style.display = "block"; // Hiển thị mục nếu khớp
+                } else {
+                    item.style.display = "none"; // Ẩn mục nếu không khớp
+                }
+            });
+        }
+
+
+        document.querySelectorAll('.openUpdateBranchModal').forEach(button => {
+            button.addEventListener('click', function() {
+                const branchId = this.getAttribute('data-branch-id'); // Lấy roomId từ data attribute
+                const branchName = this.getAttribute('data-branch-name');
+
+                document.getElementById('updateBranchId').value = branchId; // Gán giá trị roomId
+                document.getElementById('updateName').value = branchName;
+
+                // Reset các lỗi trước khi mở modal
+                resetErrors('update');
+                $('#updateBranchModal').modal('show');
+            });
+        });
+
+        // Xử lý nút click
+        document.getElementById('updateBranchBtn').addEventListener('click', function(event) {
+            document.getElementById('updateBranchForm').dispatchEvent(new Event(
+                'submit')); // Kích hoạt sự kiện submit của form
+        });
+
+        // Xử lý sự kiện submit của form
+        document.getElementById('updateBranchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn hành vi mặc định (reload trang)
+
+            const form = document.getElementById('updateBranchForm');
+            const formData = new FormData(form);
+            const branchId = document.getElementById('updateBranchId').value; // Lấy ID phòng từ hidden input
+            let hasErrors = false; // Biến để theo dõi có lỗi hay không
+
+            const url = '{{ route('admin.branches.update', ':id') }}'.replace(':id', branchId);
+
+            // Gửi request qua Fetch API
+            fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            handleErrors(errorData.errors, 'update');
+                            hasErrors = true;
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!hasErrors) {
+                        console.log(data);
+                        $('#updateBranchModal').modal('hide'); // Đóng modal
+                        form.reset(); // Reset form
+                        location.reload(); // Reload trang
+                    }
+                })
+                .catch(error => console.error('Error updating branch:', error));
+        });
+
+
+        function handleErrors(errors, prefix) {
+            document.getElementById(`${prefix}NameError`).innerText = '';
+            if (errors.name) {
+                document.getElementById(`${prefix}NameError`).innerText = errors.name.join(', ');
+            }
+        }
+
+        function resetErrors(prefix) {
+            document.getElementById(`${prefix}NameError`).innerText = '';
+        }
     </script>
 @endsection

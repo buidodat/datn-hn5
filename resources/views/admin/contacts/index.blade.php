@@ -76,18 +76,18 @@
                                             {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }}
                                         </div>
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($contact->created_at)->format('d/m/Y, H:i:s') }}</td>                          
+                                    <td>{{ \Carbon\Carbon::parse($contact->created_at)->format('d/m/Y, H:i:s') }}</td>
                                     <td>
                                         <select class="form-select status-select" data-id="{{ $contact->id }}" {{ $contact->status == 'resolved' ? 'disabled' : '' }} >
                                             <option value="pending" {{ $contact->status == 'pending' ? 'selected' : '' }}>Chưa xử lí</option>
                                             <option value="resolved" {{ $contact->status == 'resolved' ? 'selected' : '' }}>Đã xử lí</option>
                                         </select>
-                                    </td> 
-                                    <td>    
+                                    </td>
+                                    <td>
                                         {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
-                                        
+
                                         <button class="btn btn-info btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
                                             <i class="fas fa-eye"></i> Xem
                                         </button>
@@ -148,7 +148,6 @@
     <script>
         new DataTable("#example", {
             order: [
-                [0, 'desc']
             ]
         });
     </script>
@@ -185,7 +184,7 @@
     <script>
         $(document).on('click', '.view-contact', function() {
             var contactId = $(this).data('id');
-    
+
             // Gửi AJAX để lấy thông tin liên hệ
             $.ajax({
                 url: '/admin/contacts/' + contactId, // Route để lấy thông tin chi tiết liên hệ

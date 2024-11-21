@@ -236,6 +236,7 @@ class ShowtimeController extends Controller
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
                             'room_id' => $request->room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $typeRoom->name . ' ' . $movieVersion->name,
                             'movie_version_id' => $request->movie_version_id,
                             'movie_id' => $request->movie_id,
@@ -283,9 +284,16 @@ class ShowtimeController extends Controller
                         }
                     }
                 } else {
+
                     // Thêm suất chiếu theo cách thủ công
                     foreach ($request->start_time as $i => $startTimeChild) {
                         $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
+
+                        // Kiểm tra nếu thời gian chiếu nằm trong quá khứ
+                        if ($startTime->isPast()) {
+                            return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
+                        }
+
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
                         foreach ($existingShowtimes as $showtime) {
@@ -297,6 +305,7 @@ class ShowtimeController extends Controller
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
                             'room_id' => $request->room_id,
+                            'slug' => Showtime::generateCustomRandomString(),
                             'format' => $typeRoom->name . ' ' . $movieVersion->name,
                             'movie_version_id' => $request->movie_version_id,
                             'movie_id' => $request->movie_id,
@@ -351,7 +360,7 @@ class ShowtimeController extends Controller
 
         $soldSeats = $showtime->seats()->wherePivot('status', 'sold')->pluck('seats.id')->toArray();
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix', 'seats','soldSeats'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix', 'seats', 'soldSeats'));
     }
 
 
@@ -375,10 +384,11 @@ class ShowtimeController extends Controller
         $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
         $branches = Branch::where('is_active', '1')->get();
 
+        $movieDuration = $showtime->movie->duration;
 
 
         $cleaningTime = Showtime::CLEANINGTIME;
-        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
     }
 
     /**
@@ -416,20 +426,6 @@ class ShowtimeController extends Controller
 
 
             $showtime->update($dataShowtimes);
-
-
-            // $seats = Seat::where('room_id', $room->id)->get(); // Lấy tất cả ghế trong phòng
-
-            // foreach ($seats as $seat) {
-
-            //     $dataSeatShowtime = [
-            //         'showtime_id' => $showtime->id,
-            //         'seat_id' => $seat->id,
-            //         'status' => 'available'
-            //     ];
-
-            //     SeatShowtime::where('id', $seat->id)->update($dataSeatShowtime);
-            // }
 
 
             return redirect()
