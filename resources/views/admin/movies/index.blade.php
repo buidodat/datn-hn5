@@ -62,7 +62,7 @@
                                 <th class="text-center">Hình ảnh</th>
                                 <th>Thông tin phim</th>
                                 <th>Hoạt động</th>
-                                <th>Tag hot</th>
+                                <th>Nổi bật</th>
                                 <th>Chức năng</th>
 
                             </tr>
@@ -183,7 +183,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -300,7 +300,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -417,7 +417,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>

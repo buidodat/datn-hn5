@@ -309,7 +309,7 @@
                                         </span>
                                     </div>
                                     <div class="col-md-12 mb-3 d-flex ">
-                                        <label class="form-label">Tag hot:</label>
+                                        <label class="form-label">Nổi bật:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-danger">
                                                 <input class="form-check-input switch-is-active" name="is_hot"

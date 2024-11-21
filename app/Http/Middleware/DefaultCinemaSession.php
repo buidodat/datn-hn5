@@ -24,7 +24,7 @@ class DefaultCinemaSession
                 Session::put('cinema_id', $cinema->id);
             }
         }
-
+        
         return $next($request);
     }
 }
