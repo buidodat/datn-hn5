@@ -16,6 +16,7 @@ class SlideShowController extends Controller
      */
     const PATH_VIEW = 'admin.slideshows.';
     const PATH_UPLOAD = 'slideshows';
+
     public function __construct()
     {
         $this->middleware('can:Danh sách slideshows')->only('index');
@@ -23,10 +24,15 @@ class SlideShowController extends Controller
         $this->middleware('can:Sửa slideshows')->only(['edit', 'update']);
         $this->middleware('can:Xóa slideshows')->only('destroy');
     }
+
     public function index()
     {
-        $data = Slideshow::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $slideshows = Slideshow::all();
+
+        foreach ($slideshows as $slideshow) {
+            $slideshow->img_thumbnail = json_decode($slideshow->img_thumbnail);
+        }
+        return view(self::PATH_VIEW . __FUNCTION__, compact('slideshows'));
     }
 
     /**
