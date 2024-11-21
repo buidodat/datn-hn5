@@ -86,7 +86,20 @@ Route::patch('contacts/{contact}/status', [ContactController::class, 'updateStat
 Route::get('contacts/{contact}', [ContactController::class, 'show']);
 
 
-Route::resource('movies', MovieController::class);
+
+// Quản lý phim
+Route::prefix('movies')
+    ->as('movies.')
+    ->group(function () {
+        Route::get('/', [MovieController::class, 'index'])->name('index');
+        Route::get('create', [MovieController::class, 'create'])->name('create'); // Chuyển lên trước
+        Route::post('store', [MovieController::class, 'store'])->name('store');
+        Route::get('{movie}', [MovieController::class, 'show'])->name('show');
+        Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('edit');
+        Route::put('{movie}', [MovieController::class, 'update'])->name('update');
+        Route::delete('{movie}', [MovieController::class, 'destroy'])->name('destroy');
+    });
+
 
 
 // Route::resource('type-rooms', TypeRoomController::class);

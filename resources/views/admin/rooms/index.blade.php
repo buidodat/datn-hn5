@@ -275,8 +275,8 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
-            return $query->where('cinema_id', Auth::user()->cinema_id);
-        }) as $index => $room)
+                                                return $query->where('cinema_id', Auth::user()->cinema_id);
+                                            }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
@@ -878,7 +878,7 @@
                         console.error(error);
                     }
                 });
-    
+
             });
 
             // Hàm cập nhật trạng thái trong bảng

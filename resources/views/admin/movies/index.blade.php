@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách phim
+    Quản lý phim
 @endsection
 
 @section('style-libs')
@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <style>
+        .movie-name {
+            color: #434f89;
+            font-weight: 600;
+            letter-spacing: -1px !important;
+            font-family: Oswald !important;
+        }
+        .content-movie{
+            letter-spacing: -0.2px !important;
+        }
+    </style>
 @endsection
 
 
@@ -20,12 +31,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách phim</h4>
+                <h4 class="mb-sm-0">Quản lý phim</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Phim</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Phim</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -41,18 +52,8 @@
                     <h5 class="card-title mb-0">Danh sách phim</h5>
                     <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
-                @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
-                @if (session()->has('error'))
-                    <div class="alert alert-warning m-3">
-                        {{ session()->get('error') }}
-                    </div>
-                @endif
 
-                <div class="card-body">
+                {{-- <div class="card-body">
                     <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
                         style="width:100%">
                         <thead>
@@ -71,12 +72,6 @@
                                 <tr>
                                     <td>{{ $movie->id }}</td>
                                     <td class="text-center">
-                                        {{-- @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
-                                            <img src="{{ Storage::url($movie->img_thumbnail) }}" alt=""
-                                                width="160px" >
-                                        @else
-                                            No image !
-                                        @endif --}}
 
                                         @php
                                             $url = $movie->img_thumbnail;
@@ -149,6 +144,195 @@
                         </tbody>
 
                     </table>
+                </div> --}}
+                <div class="card-body pt-0">
+
+                    <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allMovie" role="tab"
+                                aria-selected="true">
+                                Tất cả
+                                <span class="badge bg-dark align-middle ms-1">{{ $movies->count() }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
+                                aria-selected="false">
+                                Đã xuất bản
+                                <span
+                                    class="badge bg-success align-middle ms-1">{{ $movies->where('is_publish', true)->count() }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
+                                aria-selected="false">
+                                Bản nháp<span
+                                    class="badge bg-warning align-middle ms-1">{{ $movies->where('is_publish', false)->count() }}</span>
+                            </a>
+                        </li>
+                    </ul>
+
+
+                    <div class="card-body tab-content ">
+                        {{-- Tất cả ok rồi --}}
+                        <div class="tab-pane " id="allMovie" role="tabpanel">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllMovie">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Hình ảnh</th>
+                                        <th>Thông tin phim</th>
+                                        <th>Hoạt động</th>
+                                        <th>Tag hot</th>
+                                        <th>Trạng thái</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- Đã xuất bản --}}
+                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Hình ảnh</th>
+                                        <th>Thông tin phim</th>
+                                        <th>Hoạt động</th>
+                                        <th>Tag hot</th>
+                                        <th>Trạng thái</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($movies->where('is_publish') as $movie)
+                                        <tr>
+                                            <td>{{ $movie->id }}</td>
+                                            <td class="text-center">
+
+                                                @php
+                                                    $url = $movie->img_thumbnail;
+
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+
+                                                @endphp
+                                                @if (!empty($movie->img_thumbnail))
+                                                        <img src="{{ $url }}" alt="" width="130px">
+                                                @else
+                                                    No image !
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                <h4 class="movie-name" >{{ $movie->name }}</h4>
+                                                <ul class="nav nav-sm flex-column content-movie">
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Đạo diễn:</span>
+                                                        {{ $movie->director }}</li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Diễn viên:</span>
+                                                        {{ $movie->cast }}</li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Thể loại:</span>
+                                                        {{ $movie->category }}</li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Ngày khởi
+                                                            chiếu:</span>
+                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                    </li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Ngày kết
+                                                            thúc:</span>
+                                                        {{ \Carbon\Carbon::parse($movie->end_date)->format('d/m/Y') }}</li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Phân loại:</span>
+                                                        {{ $movie->rating }}</li>
+                                                    <li class="nav-item mb-1">
+                                                        <span class="fw-semibold">Phiên bản:</span>
+                                                        @foreach ($movie->movieVersions as $version)
+                                                            <span class="badge bg-info">{{ $version->name }}</span>
+                                                        @endforeach
+                                                    </li>
+                                                    <li class="nav-item mb-1"><span class="fw-semibold">Code Youtube:</span>
+                                                        <input type="text" disabled
+                                                            value="{{ $movie->trailer_url }}2121">
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch form-switch-success">
+                                                    <input class="form-check-input switch-is-active change-is-active"
+                                                        name="is_active" type="checkbox" role="switch"
+                                                        data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="form-check form-switch form-switch-danger">
+                                                    <input class="form-check-input switch-is-active change-is-hot"
+                                                        name="is_hot" type="checkbox" role="switch"
+                                                        data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {!! $movie->is_publish == 1
+                                                    ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                    : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
+                                            </td>
+                                            <td >
+                                                <div class='d-flex'>
+                                                    <a href="{{ route('admin.movies.show', $movie) }}">
+                                                        <button title="xem" class="btn btn-success btn-sm "
+                                                            type="button"><i class="fas fa-eye"></i></button></a>
+                                                    <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                        <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                            type="button"><i class="fas fa-edit"></i></button>
+                                                    </a>
+                                                    <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
+                                                        class="d-inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Bạn có muốn xóa không')">
+                                                            <i class="ri-delete-bin-7-fill"></i>
+                                                        </button>
+                                                    </form>
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- Bản nháp --}}
+                        <div class="tab-pane " id="isDraft" role="tabpanel">
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
+                                <thead class='table-light'>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Hình ảnh</th>
+                                        <th>Thông tin phim</th>
+                                        <th>Hoạt động</th>
+                                        <th>Tag hot</th>
+                                        <th>Trạng thái</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
                 </div>
             </div>
         </div><!--end col-->
@@ -172,36 +356,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-        // $(document).ready(function() {
-        //     $('.change-is-hot').on('change', function() {
-        //         let Movie = $(this).data('id');
-        //         let isHot = $(this).is(':checked') ? 1 : 0;
-        //         // Gửi yêu cầu AJAX
-        //         $.ajax({
-        //             url: '{{ route('movies.update-hot') }}',
-        //             method: 'POST',
-        //             data: {
-        //                 _token: '{{ csrf_token() }}',
-        //                 id: Movie,
-        //                 is_hot: isHot
-        //             },
-        //             success: function(response) {
-        //                 if (!response.success) {
-        //                     alert('Có lỗi xảy ra, vui lòng thử lại.');
-        //                 }
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 alert('Lỗi kết nối hoặc server không phản hồi.');
-        //                 console.error(error);
-        //             }
-        //         });
-        //     });
-        // });
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.change-is-active', function() {
@@ -283,6 +441,29 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        new DataTable("#tableAllMovie", {
+            order: [],
+            columnDefs: [{
+                targets: 1,
+                width: "130px"
+            }]
+        });
+        new DataTable("#tableIsPublish", {
+            order: [],
+            columnDefs: [{
+                targets: 1,
+                width: "130px"
+            }]
+        });
+        new DataTable("#tableIsDraft", {
+            order: [],
+            columnDefs: [{
+                targets: 1,
+                width: "130px"
+            }]
         });
     </script>
 @endsection

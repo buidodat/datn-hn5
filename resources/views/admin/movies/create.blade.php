@@ -5,15 +5,6 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     <form action="{{ route('admin.movies.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
@@ -24,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.movies.index') }}">Danh sách</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.movies.index') }}">Phim</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -76,7 +67,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-8 mb-3">
-                                            <label for="cast" class="form-label ">
+                                            <label for="cast" class="form-label "><span class='text-danger'>*</span>
                                                 Diễn viên:</label>
                                             <input type="text" class="form-control" id="cast" name="cast"
                                                 value="{{ old('cast') }}" placeholder="Monkey D.Luffy, Rononoa Zoro">
@@ -121,7 +112,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label for="category" class="form-label "><span class='text-danger'>*</span> Thể
                                                 loại:</label>
                                             <input type="text" class="form-control" id="category" name="category"
@@ -132,13 +123,13 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 mb-3">
+                                        <div class="col-md-8 mb-3">
                                             <label for="rating" class="form-label "><span class='text-danger'>*</span>
                                                 Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
                                                     <option value="{{ $rating['name'] }}" @selected(old('rating') == $rating['name'])>
-                                                        {{ $rating['name'] }}</option>
+                                                        {{ $rating['name'] }} -  {{ $rating['description'] }}</option>
                                                 @endforeach
                                             </select>
                                             @error('rating')
@@ -147,10 +138,10 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-12 mb-3">
                                             <label class="form-check-label mb-2" for="is_active"><span
                                                     class='text-danger'>*</span> Phiên bản:</label>
-                                                    
+
                                             <select class="js-example-basic-multiple" name="versions[]"
                                                 multiple="multiple">
                                                 @foreach ($versions as $version)
@@ -167,7 +158,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label for="description" class="form-label">Mô tả phim:</label>
+                                            <label for="description" class="form-label"><span class='text-danger'>*</span>  Mô tả phim:</label>
                                             <textarea class="form-control " rows="5" name="description"
                                                 placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '></textarea>
                                             @error('description')
@@ -261,10 +252,8 @@
                 <div class="row mb-4">
                     <div class="col-lg-12">
                         <div class="text-end">
-
-                                <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Quay lại</a>
-                                <button type="submit" class="btn btn-primary mx-2">Thêm mới</button>
-
+                                <button type="submit" class="btn btn-light" name="action" value="draft">Lưu nháp</button>
+                                <button type="submit" class="btn btn-primary mx-2" name="action" value="publish">Xuất bản</button>
                         </div>
                     </div>
                     <!--end col-->
@@ -290,7 +279,7 @@
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-success">
                                                 <input class="form-check-input switch-is-active" name="is_active"
-                                                    type="checkbox" role="switch" checked="">
+                                                    type="checkbox" role="switch" {{ old('is_active') ? 'checked' : '' }} >
                                             </div>
                                         </span>
                                     </div>
@@ -298,18 +287,15 @@
                                         <label class="form-label">Tag hot:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-danger">
-                                                <input class="form-check-input switch-is-active" name="is_hot"
+                                                <input class="form-check-input switch-is-active" name="is_hot" {{ old('is_hot') ? 'checked' : '' }}
                                                     type="checkbox" role="switch" >
                                             </div>
                                         </span>
                                     </div>
-
-
                                 </div>
                                 <div class="text-end">
-                                    <a href="{{ route('admin.movies.index') }}" class="btn btn-light mx-1">Quay
-                                        lại</a>
-                                    <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                                    <button type="submit" class="btn btn-light" name="action" value="draft">Lưu nháp</button>
+                                <button type="submit" class="btn btn-primary mx-2" name="action" value="publish">Xuất bản</button>
                                 </div>
 
                             </div>
@@ -320,7 +306,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">Hình
+                                    <label for="" class="form-label"><span class='text-danger'>*</span>  Hình
                                         ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
                                     @error('img_thumbnail')
@@ -336,7 +322,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="trailer_url" class="form-label">Code Youtube:</label>
+                                    <label for="trailer_url" class="form-label"><span class='text-danger'>*</span>  Code Youtube:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
                                         value="{{ old('trailer_url') }}" placeholder="ZQkU_oI2NOU">
                                     @error('trailer_url')
