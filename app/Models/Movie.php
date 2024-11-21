@@ -24,15 +24,14 @@ class Movie extends Model
         'surcharge',
         'is_active',
         'is_hot',
-        /*Thêm 2 cái còn thiếu ở trong migration*/
-        'is_show_home',
+        'is_publish',
         'is_special'
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'is_hot' => 'boolean',
-        'is_show_home' => 'boolean',
+        'is_publish' => 'boolean',
         'is_special' => 'boolean',
     ];
     const VERSIONS = [
