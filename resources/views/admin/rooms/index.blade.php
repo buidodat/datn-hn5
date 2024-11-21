@@ -275,8 +275,8 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
-                                                return $query->where('cinema_id', Auth::user()->cinema_id);
-                                            }) as $index => $room)
+            return $query->where('cinema_id', Auth::user()->cinema_id);
+        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
@@ -387,8 +387,12 @@
                                                 </td>
                                                 <td>{{ $room->cinema->name }}</td>
                                                 <td>{{ $room->typeRoom->name }}</td>
-                                                <td>{{ $room->seats->where('is_active', true)->count() }}
-                                                    / {{ $room->seats->count() }} chỗ ngồi</td>
+                                                @php
+                                                    $seatActive = App\Models\Seat::getTotalSeat($room->id);
+                                                    $seatBroken = App\Models\Seat::getTotalSeat($room->id, 0);
+                                                @endphp
+                                                <td>{{ $seatActive - $seatBroken }}
+                                                    / {{ $seatActive }} chỗ ngồi</td>
                                                 <td>
                                                     {!! $room->is_publish == 1
                                                         ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
@@ -866,7 +870,8 @@
                                 // Cập nhật các bảng cho các cinema trong vòng lặp
                                 @foreach ($cinemas as $cinema)
                                     if (tableId !== 'tableCinemaID{{ $cinema->id }}') {
-                                        updateStatusInTable(cinemaTables["tableCinemaID{{ $cinema->id }}"],
+                                        updateStatusInTable(cinemaTables[
+                                                "tableCinemaID{{ $cinema->id }}"],
                                             roomId, statusHtml);
                                     }
                                 @endforeach
@@ -894,5 +899,4 @@
             }
         });
     </script>
-
 @endsection
