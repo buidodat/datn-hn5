@@ -1517,6 +1517,10 @@
     width: 184px;
     height: 40px;
 }
+.header .img-logo {
+    display: flex;
+    align-items: center;
+}
 
 .header-top {
     background-color: #192041;
@@ -2068,6 +2072,22 @@ div text {
     .container-ticket-price .table-ticket-price td {
         font-size: 14px;
     }
+    .container-verify-email div p {
+        font-size: 10px;
+        color: #d77534;
+    }
+
+    .container-verify-email div button {
+        padding: 2px 6px;
+        background-color: #b1b1b1;
+        border: 0px;
+        border-radius: 4px;
+        font-size: 10px;
+        /* color: #d77534; */
+        color: #333;
+        transition: all 0.5s;
+    }
+
 }
 
 /* Style Verify email header */
@@ -2080,7 +2100,7 @@ div text {
 
 .container-verify-email {
     margin: 0px auto;
-    max-width: 1100px;
+    max-width: 75%;
     display: flex;
     justify-content: space-between;
     align-items: center;
