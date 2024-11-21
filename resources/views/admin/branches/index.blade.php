@@ -217,7 +217,7 @@
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-branch-id="${branchId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Dừng hoạt động</span>`;
+                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
                             row.cell(row.index(), 2).data(statusHtml).draw(false);
                             row.cell(row.index(), 4).data(`${response.data.updated_date}<br>${response.data.updated_time}`).draw(false);
 

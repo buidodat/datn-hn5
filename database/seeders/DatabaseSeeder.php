@@ -137,6 +137,7 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
                 'is_hot' => $booleans[rand(0, 7)],
                 'is_special' => $booleans[rand(0, 7)],
+                'is_publish' => true,
                 'surcharge' => [10000, 20000][array_rand([10000, 20000])],
 
             ]);
@@ -212,7 +213,7 @@ class DatabaseSeeder extends Seeder
             'matrix_id' => 1, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure1(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
-            'is_active' => 1, // Đang hoạt động
+            'is_active' => 1, // Đã kích hoạt
         ]);
          SeatTemplate::create([
             'name' => 'Template Large' ,
@@ -220,7 +221,7 @@ class DatabaseSeeder extends Seeder
             'matrix_id' => 3, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure2(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
-            'is_active' => 1, // Đang hoạt động
+            'is_active' => 1, // Đã kích hoạt
         ]);
         function randomSeatTemplateId() {
             // Tạo một số ngẫu nhiên từ 1 đến 100
@@ -559,7 +560,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-        
+
 
         //tạo 5 bản ghỉ user type admin
         $users = [
@@ -938,7 +939,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        // Phân quyền : Danh sách quyền 
+        // Phân quyền : Danh sách quyền
         $permissions = [
             'Danh sách chi nhánh',
             'Thêm chi nhánh',
@@ -969,9 +970,9 @@ class DatabaseSeeder extends Seeder
             'Xem chi tiết suất chiếu',
             'Danh sách hóa đơn',
             'Quét hóa đơn',
-           
+
             'Xem chi tiết hóa đơn',
-          
+
             'Danh sách đồ ăn',
             'Thêm đồ ăn',
             'Sửa đồ ăn',
@@ -1072,7 +1073,7 @@ class DatabaseSeeder extends Seeder
             'Sửa liên hệ',
 
             'Danh sách tài khoản',
-         
+
             'Danh sách thống kê',
         ]);
 

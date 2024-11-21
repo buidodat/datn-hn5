@@ -15,22 +15,21 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->string('category');
+            $table->string('category')->nullable();;
             $table->string('img_thumbnail')->nullable();
             $table->string('description')->nullable();
-            $table->string('director');
+            $table->string('director')->nullable();;
             $table->string('cast')->nullable();
-            $table->unsignedInteger('duration');
+            $table->unsignedInteger('duration')->nullable();
             $table->string('rating')->nullable();
-            $table->date('release_date');
-            $table->date('end_date');
+            $table->date('release_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->string('trailer_url')->nullable();
             $table->unsignedInteger('surcharge')->nullable()->default(0);
             $table->boolean('is_active')->default(false);
             $table->boolean('is_hot')->default(false);
             $table->boolean('is_special')->default(false);
-            $table->boolean('is_publish')->default(false);      
-            $table->boolean('is_show_home')->default(false);      
+            $table->boolean('is_publish')->default(false);
             $table->timestamps();
         });
     }
