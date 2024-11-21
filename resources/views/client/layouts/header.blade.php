@@ -87,43 +87,52 @@
                         @endphp
 
                         <ul class="dropdown">
-                            <li class="default-base">
-                                @php
-                                    $selectedCinema = App\Models\Cinema::find(session('cinema_id'));
-                                @endphp
-                                <a href="#">Poly {{ $selectedCinema->name }} <i
-                                        class="fa-solid fa-chevron-down"></i></a>
-                                <ul class="sub-menu">
-                                    @foreach ($branches as $branch)
-                                        <li class="li-branch">
-                                            <a href="#">{{ $branch->name }}</a> {{--   Hà Nội, HCM --}}
-                                            <span><i class="fa-solid fa-chevron-right"></i></span>
-                                            <ul class="menu-cinema">
-                                                @if ($branch->cinemas->isEmpty())
-                                                    <li><a href="#">Không có rạp nào</a></li>
-                                                @else
-                                                    @foreach ($branch->cinemas as $cinema)
-                                                        <li>
-                                                            <a>
-                                                                <form action="{{ route('change-cinema') }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    <input type="hidden" name="cinema_id"
-                                                                        value="{{ $cinema->id }}">
-                                                                    <button type="submit"
-                                                                        style="background:none;border:none;text-align:left;cursor:pointer;">
-                                                                        Poly {{ $cinema->name }}
-                                                                    </button>
-                                                                </form>
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
-                                                @endif
-                                            </ul>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
+                            @if (!Auth::user() || Auth::user()->type == 'member' || Auth::user()->hasRole('System Admin'))
+                                <li class="default-base">
+                                    @php
+                                        $selectedCinema = App\Models\Cinema::find(session('cinema_id'));
+                                    @endphp
+                                    <a href="#">Poly {{ $selectedCinema->name }} <i
+                                            class="fa-solid fa-chevron-down"></i></a>
+                                    <ul class="sub-menu">
+                                        @foreach ($branches as $branch)
+                                            <li class="li-branch">
+                                                <a href="#">{{ $branch->name }}</a> {{--   Hà Nội, HCM --}}
+                                                <span><i class="fa-solid fa-chevron-right"></i></span>
+                                                <ul class="menu-cinema">
+                                                    @if ($branch->cinemas->isEmpty())
+                                                        <li><a href="#">Không có rạp nào</a></li>
+                                                    @else
+                                                        @foreach ($branch->cinemas as $cinema)
+                                                            <li>
+                                                                <a>
+                                                                    <form action="{{ route('change-cinema') }}"
+                                                                        method="POST" style="display:inline;">
+                                                                        @csrf
+                                                                        <input type="hidden" name="cinema_id"
+                                                                            value="{{ $cinema->id }}">
+                                                                        <button type="submit"
+                                                                            style="background:none;border:none;text-align:left;cursor:pointer;">
+                                                                            Poly {{ $cinema->name }}
+                                                                        </button>
+                                                                    </form>
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    @endif
+                                                </ul>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @elseif(Auth::user()->type == 'admin' && Auth::user()->cinema_id != '')
+                                <li class="default-base">
+                                    @php
+                                        $selectedCinema = App\Models\Cinema::find(Auth::user()->cinema_id);
+                                    @endphp
+                                    <a href="#">Poly {{ $selectedCinema->name }} </a>
+                                </li>
+                            @endif
                         </ul>
 
                     </div>
@@ -184,7 +193,8 @@
                                 <a href="{{ route('posts') }}"><i class="fa-regular fa-newspaper"></i> Tin tức</a>
                             </li>
                             <li>
-                                <a href="{{ route('contact') }}"><i class="fa-regular fa-address-card"></i> Liên hệ</a>
+                                <a href="{{ route('contact') }}"><i class="fa-regular fa-address-card"></i> Liên
+                                    hệ</a>
                             </li>
                             <li>
                                 <a href=""><i class="fa-regular fa-user"></i> Thành viên</a>
