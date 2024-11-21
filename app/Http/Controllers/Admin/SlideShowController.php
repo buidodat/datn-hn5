@@ -46,24 +46,32 @@ class SlideShowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSlideShowRequest $request)
+    public function store(Request $request)
     {
-        try {
-            $data = $request->all();
-            $data['is_active'] = $request->has('is_active') ? 1 : 0;
+        $validatedData = $request->validate([
+            'img_thumbnail' => 'required|array',
+            'img_thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'nullable|string|max:1000',
+        ]);
 
-            if ($data['img_thumbnail']) {
-                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+        $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        $imagePaths = [];
+        if ($request->hasFile('img_thumbnail')) {
+            foreach ($request->file('img_thumbnail') as $file) {
+                $path = $file->store(self::PATH_UPLOAD);
+                $imagePaths[] = $path;
             }
-
-            Slideshow::query()->create($data);
-
-            return redirect()
-                ->route('admin.slideshows.index')
-                ->with('success', 'Thêm thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
         }
+
+        // Lưu đường dẫn ảnh dưới dạng JSON
+        $validatedData['img_thumbnail'] = json_encode($imagePaths);
+
+        Slideshow::create($validatedData);
+
+        return redirect()
+            ->route('admin.slideshows.index')
+            ->with('success', 'Thêm thành công!');
     }
 
     /**
