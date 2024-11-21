@@ -54,7 +54,7 @@ class GoogleAuthController extends Controller
             }
         } catch (Exception $e) {
             dd($e->getMessage());
-            return redirect()->intended('http://datn-hn5.test');
+            // return redirect()->intended('http://datn-hn5.test');
         }
     }
 }
