@@ -551,7 +551,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
@@ -586,7 +586,7 @@
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active change-is-active"
                                         type="checkbox" data-id="${movieId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Dừng hoạt động</span>`;
+                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
                             row.cell(row.index(), 3).data(statusHtml).draw(false);
 
                         }
@@ -626,7 +626,7 @@
                                 `<div class="form-check form-switch form-switch-danger">
                                     <input class="form-check-input switch-is-active change-is-hot"
                                         type="checkbox" data-id="${movieId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Dừng hoạt động</span>`;
+                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
                             row.cell(row.index(), 4).data(statusHtml).draw(false);
 
                         }
@@ -638,28 +638,176 @@
                 });
             });
         });
-    </script>
-    <script>
-        new DataTable("#tableAllMovie", {
-            order: [],
-            columnDefs: [{
-                targets: 1,
-                width: "130px"
-            }]
+    </script> --}}
+
+
+<script>
+    $(document).ready(function() {
+        // Khởi tạo DataTable
+        let tableAllSeatTemplate = new DataTable("#tableAllMovie", {
+            order: []
         });
-        new DataTable("#tableIsPublish", {
-            order: [],
-            columnDefs: [{
-                targets: 1,
-                width: "130px"
-            }]
+
+        let tableIsPublish = new DataTable("#tableIsPublish", {
+            order: []
         });
-        new DataTable("#tableIsDraft", {
-            order: [],
-            columnDefs: [{
-                targets: 1,
-                width: "130px"
-            }]
+
+        let tableIsDraft = new DataTable("#tableIsDraft", {
+            order: []
         });
-    </script>
+
+        // Xử lý sự kiện change cho checkbox .changeActive
+        $(document).on('change', '.change-is-active', function() {
+            let movieId = $(this).data('id');
+            let is_active = $(this).is(':checked') ? 1 : 0;
+            let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
+
+            // Gửi yêu cầu AJAX để thay đổi trạng thái
+            $.ajax({
+                url: '{{ route('movies.update-active') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: movieId,
+                    is_active: is_active
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let table;
+
+
+                        // Tùy vào ID của bảng mà chọn đúng đối tượng DataTable
+                        if (tableId === 'tableAllSeatTemplate') {
+                            table = tableAllSeatTemplate;
+                        } else if (tableId === 'tableIsPublish') {
+                            table = tableIsPublish;
+                        } else if (tableId === 'tableIsDraft') {
+                            table = tableIsDraft;
+                        }
+
+                        // Cập nhật cột trạng thái (cột thứ 6) trong dòng này
+                        let row = table.row($(`[data-id="${movieId}"]`).closest(
+                            'tr'));
+                        console.log(row);
+
+                        let statusHtml = response.data.is_active ?
+                            `<div class="form-check form-switch form-switch-success">
+                        <input class="form-check-input switch-is-active change-is-active"
+                            type="checkbox" data-id="${movieId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                    </div><span class='small text-success'>Đã kích hoạt</span>` :
+                            `<div class="form-check form-switch form-switch-success">
+                        <input class="form-check-input switch-is-active change-is-active"
+                            type="checkbox" data-id="${movieId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                    </div><span class='small text-secondary'>Chưa hoạt động</span>`;
+
+                        updateStatusInTable(table, movieId, statusHtml);
+
+                        // Cập nhật trạng thái cho các bảng còn lại
+                        if (tableId !== 'tableAllSeatTemplate') {
+                            updateStatusInTable(tableAllSeatTemplate, movieId,
+                            statusHtml);
+                        }
+                        if (tableId !== 'tableIsPublish') {
+                            updateStatusInTable(tableIsPublish, movieId, statusHtml);
+                        }
+                        if (tableId !== 'tableIsDraft') {
+                            updateStatusInTable(tableIsDraft, movieId, statusHtml);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Lỗi kết nối hoặc server không phản hồi.');
+                    console.error(error);
+                }
+            });
+            console.log('Đã thay đổi trạng thái active');
+        });
+
+        $(document).on('change', '.change-is-hot', function() {
+            let movieId = $(this).data('id');
+            let is_hot = $(this).is(':checked') ? 1 : 0;
+            let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
+
+            // Gửi yêu cầu AJAX để thay đổi trạng thái
+            $.ajax({
+                url: '{{ route('movies.update-hot') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: movieId,
+                    is_hot: is_hot
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let table;
+
+
+                        // Tùy vào ID của bảng mà chọn đúng đối tượng DataTable
+                        if (tableId === 'tableAllSeatTemplate') {
+                            table = tableAllSeatTemplate;
+                        } else if (tableId === 'tableIsPublish') {
+                            table = tableIsPublish;
+                        } else if (tableId === 'tableIsDraft') {
+                            table = tableIsDraft;
+                        }
+
+                        // Cập nhật cột trạng thái (cột thứ 6) trong dòng này
+                        let row = table.row($(`[data-id="${movieId}"]`).closest(
+                            'tr'));
+                        console.log(row);
+
+                        let statusHtml = response.data.is_hot ?
+                            `<div class="form-check form-switch form-switch-danger">
+                        <input class="form-check-input switch-is-active change-is-hot"
+                            type="checkbox" data-id="${movieId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                    </div><span class='small text-success'>Đã kích hoạt</span>` :
+                            `<div class="form-check form-switch form-switch-danger">
+                        <input class="form-check-input switch-is-active change-is-hot"
+                            type="checkbox" data-id="${movieId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                    </div><span class='small text-secondary'>Chưa hoạt động</span>`;
+
+                        updateStatusInTable2(table, movieId, statusHtml);
+
+                        // Cập nhật trạng thái cho các bảng còn lại
+                        if (tableId !== 'tableAllSeatTemplate') {
+                            updateStatusInTable2(tableAllSeatTemplate, movieId,
+                            statusHtml);
+                        }
+                        if (tableId !== 'tableIsPublish') {
+                            updateStatusInTable2(tableIsPublish, movieId, statusHtml);
+                        }
+                        if (tableId !== 'tableIsDraft') {
+                            updateStatusInTable2(tableIsDraft, movieId, statusHtml);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Lỗi kết nối hoặc server không phản hồi.');
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+    function updateStatusInTable(table, movieId, statusHtml) {
+        // Cập nhật trạng thái trong bảng
+        table.rows().every(function() {
+            let row = this.node();
+            let rowId = $(row).find('.change-is-active').data('id');
+            if (rowId === movieId) {
+                table.cell(row, 3).data(statusHtml).draw(false);
+            }
+        });
+    }
+    function updateStatusInTable2(table, movieId, statusHtml) {
+        // Cập nhật trạng thái trong bảng
+        table.rows().every(function() {
+            let row = this.node();
+            let rowId = $(row).find('.change-is-hot').data('id');
+            if (rowId === movieId) {
+                table.cell(row, 4).data(statusHtml).draw(false);
+            }
+        });
+    }
+</script>
 @endsection

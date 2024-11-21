@@ -213,7 +213,7 @@ class DatabaseSeeder extends Seeder
             'matrix_id' => 1, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure1(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
-            'is_active' => 1, // Đang hoạt động
+            'is_active' => 1, // Đã kích hoạt
         ]);
          SeatTemplate::create([
             'name' => 'Template Large' ,
@@ -221,7 +221,7 @@ class DatabaseSeeder extends Seeder
             'matrix_id' => 3, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure2(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
-            'is_active' => 1, // Đang hoạt động
+            'is_active' => 1, // Đã kích hoạt
         ]);
         function randomSeatTemplateId() {
             // Tạo một số ngẫu nhiên từ 1 đến 100
