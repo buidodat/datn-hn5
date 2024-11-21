@@ -16,7 +16,7 @@ class HomeController extends Controller
     // const PATH_VIEW = 'client.';
     // const PATH_UPLOAD = 'home';
 
- 
+
     public function home()
     {
         $slideShow = Slideshow::query()->where('is_active', 1)->get();
@@ -29,7 +29,6 @@ class HomeController extends Controller
         // phim sắp chiếu
         $moviesShowing = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
             ['release_date', '<=', $currentNow],
             ['end_date', '>=', $currentNow]
         ])
@@ -40,7 +39,6 @@ class HomeController extends Controller
         // Phim sắp chiếu (chưa đến thời gian khởi chiếu)
         $moviesUpcoming = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
             ['release_date', '>', $currentNow]
         ])
             ->orderBy('is_hot', 'desc')
@@ -50,7 +48,6 @@ class HomeController extends Controller
         // Phim suất chiếu đặc biệt (chưa đến ngày khởi chiếu hoặc đã hết thời gian khởi chiếu)
         $moviesSpecial = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
             ['is_special', '1']
         ])
             ->orderBy('is_hot', 'desc')
@@ -76,7 +73,7 @@ class HomeController extends Controller
         // Lấy phim theo trang
         $moviesShowing = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
+
             ['release_date', '<=', $currentNow],
             ['end_date', '>', $currentNow],
             ['is_special', '!=', '1']
@@ -95,7 +92,7 @@ class HomeController extends Controller
         // Lấy phim theo trang
         $moviesUpcoming = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
+
             ['release_date', '>', $currentNow],
             ['is_special', '!=', '1']
         ])
@@ -114,7 +111,7 @@ class HomeController extends Controller
         // Lấy phim theo trang
         $moviesSpecial = Movie::where([
             ['is_active', '1'],
-            ['is_show_home', '1'],
+
             ['is_special', '1']
         ])
             ->orderBy('is_hot', 'desc')
