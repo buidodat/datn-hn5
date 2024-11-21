@@ -938,6 +938,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
+        // Phân quyền : Danh sách quyền 
         $permissions = [
             'Danh sách chi nhánh',
             'Thêm chi nhánh',
@@ -1009,7 +1010,7 @@ class DatabaseSeeder extends Seeder
             'Xóa tài khoản',
             'Cấu hình website',
             'Danh sách thống kê',
-
+            'Thẻ thành viên'
             // 'Thêm thống kê',
             // 'Sửa thống kê',
             // 'Xóa thống kê',

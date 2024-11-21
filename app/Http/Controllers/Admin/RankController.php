@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\DB;
 class RankController extends Controller
 {
     const PATH_VIEW = 'admin.ranks.';
+    public function __construct()
+    {
+        $this->middleware('can:Thẻ thành viên')->only('index', 'store', 'update', 'destroy', 'updateRankMembership');
+    }
     public function index()
     {
         $ranks = Rank::orderBy('total_spent', 'asc')->get();
@@ -74,23 +78,23 @@ class RankController extends Controller
     public function destroy(Rank $rank)
     {
         // try {
-            // Kiểm tra xem tổng số bản ghi trong bảng Rank có nhỏ hơn 2 không
-            DB::transaction(function() use($rank) {
-                if (Rank::count() <= 2) {
-                    return redirect()->back()->with('error', 'Số lượng cấp bậc đã đạt đến tối tiểu, không thể xóa');
-                }
+        // Kiểm tra xem tổng số bản ghi trong bảng Rank có nhỏ hơn 2 không
+        DB::transaction(function () use ($rank) {
+            if (Rank::count() <= 2) {
+                return redirect()->back()->with('error', 'Số lượng cấp bậc đã đạt đến tối tiểu, không thể xóa');
+            }
 
-                // Kiểm tra nếu $rank có is_default = true
-                if ($rank->is_default) {
-                    return redirect()->back()->with('error', 'Không thể xóa cấp bậc mặc định.');
-                }
+            // Kiểm tra nếu $rank có is_default = true
+            if ($rank->is_default) {
+                return redirect()->back()->with('error', 'Không thể xóa cấp bậc mặc định.');
+            }
 
-                // Thực hiện xóa nếu các điều kiện thỏa mãn
-                $rank->delete();
-                $this->updateRankMembership();
-            });
+            // Thực hiện xóa nếu các điều kiện thỏa mãn
+            $rank->delete();
+            $this->updateRankMembership();
+        });
 
-            return redirect()->back()->with('success', 'Xóa cấp bậc thành công!');
+        return redirect()->back()->with('success', 'Xóa cấp bậc thành công!');
         // } catch (\Exception $e) {
         //     return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
         // }

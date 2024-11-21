@@ -165,7 +165,8 @@
                                     'Xem chi tiết phòng chiếu'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.rooms.index') }}" class="nav-link menu-link"
-                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span data-key="t-layouts">Quản
+                                            data-key="t-horizontal"> <i class=" ri-tv-line"></i> <span
+                                                data-key="t-layouts">Quản
                                                 lý Phòng chiếu</span></a>
                                     </li>
                                 @endcan
@@ -182,11 +183,13 @@
                                             <span data-key="t-layouts">Mẫu sơ đồ ghế</span></a>
                                     </li>
                                 @endcan
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
-                                        data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
-                                        <span data-key="t-layouts">Thẻ thành viên</span></a>
-                                </li>
+                                @can('Thẻ thành viên')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.ranks.index') }}" class="nav-link menu-link"
+                                            data-key="t-horizontal"> <i class="mdi mdi-wallet-giftcard"></i>
+                                            <span data-key="t-layouts">Thẻ thành viên</span></a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     </li>
@@ -474,7 +477,7 @@
                             </ul>
                         </div>
                     </li>
-                @endcanany            
+                @endcanany
 
 
             </ul>

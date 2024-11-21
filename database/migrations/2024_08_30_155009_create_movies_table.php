@@ -29,7 +29,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(false);
             $table->boolean('is_hot')->default(false);
             $table->boolean('is_special')->default(false);
-            $table->boolean('is_publish')->default(false);
+            $table->boolean('is_publish')->default(false);      
+            $table->boolean('is_show_home')->default(false);      
             $table->timestamps();
         });
     }
