@@ -125,7 +125,12 @@
                                                         <div class="flex-grow-1">
                                                             <div class="pt-1" style="width: 73%;">
                                                                 <input type="file" id="img_thumbnail" name="img_thumbnail[id_0]"
-                                                                       class="form-control" onchange="previewImg(this, 0)">
+                                                                       class="form-control @error('img_thumbnail') is-invalid @enderror" onchange="previewImg(this, 0)">
+                                                                @error('img_thumbnail.0')
+                                                                <div class="invalid-feedback">
+                                                                    {{ $message }}
+                                                                </div>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         {{--<div class="flex-shrink-0 ms-3">
@@ -170,9 +175,11 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <textarea class="form-control " rows="7" name="description"></textarea>
+                            <textarea class="form-control @error('description') is-invalid @enderror" rows="7" name="description"></textarea>
                             @error('description')
-                            <span class="text-danger">{{ $message }}</span>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                             @enderror
                         </div>
                         <!-- end card body -->

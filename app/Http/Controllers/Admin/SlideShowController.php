@@ -46,13 +46,9 @@ class SlideShowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSlideShowRequest $request)
     {
-        $validatedData = $request->validate([
-            'img_thumbnail' => 'required|array',
-            'img_thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'nullable|string|max:1000',
-        ]);
+        $validatedData = $request->validated();
 
         $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
 
@@ -87,15 +83,10 @@ class SlideShowController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSlideShowRequest $request, string $id)
     {
         try {
-            $validatedData = $request->validate([
-                'img_thumbnail' => 'nullable|array',
-                'img_thumbnail.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'existing_images' => 'nullable|array',
-                'description' => 'nullable|string|max:1000',
-            ]);
+            $validatedData = $request->validated();
 
             $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
             $slide = Slideshow::findOrFail($id);

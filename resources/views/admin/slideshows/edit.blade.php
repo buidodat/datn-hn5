@@ -62,9 +62,14 @@
                                                                     <input type="file"
                                                                            id="img_thumbnail_{{ $key }}"
                                                                            name="img_thumbnail[id_{{ $key }}]"
-                                                                           class="form-control"
+                                                                           class="form-control @error('img_thumbnail.' . $key) is-invalid @enderror"
                                                                            onchange="previewImg(this, {{ $key }})">
                                                                     <input type="hidden" name="existing_images[id_{{ $key }}]" value="{{ $imgPath }}">
+                                                                    @error('img_thumbnail.' . $key)
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="flex-shrink-0 ms-3">
@@ -110,9 +115,12 @@
                     </div><!-- end card header -->
 
                     <div class="card-body">
-                        <textarea class="form-control " rows="7" name="description">{{ $slide->description }}</textarea>
+                        <textarea class="form-control @error('description') is-invalid @enderror" rows="7"
+                                  name="description">{{ old('description', $slide->description) }}</textarea>
                         @error('description')
-                        <span class="text-danger">{{ $message }}</span>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                         @enderror
                     </div>
                     <!-- end card body -->
