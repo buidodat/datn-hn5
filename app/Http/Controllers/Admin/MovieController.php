@@ -177,4 +177,22 @@ class MovieController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
+
+    public function destroy(Movie $movie)
+    {
+        try {
+            if ($movie->is_publish) {
+                return redirect()
+                ->route('admin.movies.index')->with('error', 'Phim đã được xuất bản, không thể xóa');
+            }
+            $movie->delete();
+
+            return redirect()
+                ->route('admin.movies.index')->with('success', 'Xóa phim thành công');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('admin.movies.index')->with('error', $th->getMessage());
+        }
+    }
 }

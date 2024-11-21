@@ -189,7 +189,104 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($movies as $movie)
+                                    <tr>
+                                        <td>{{ $movie->id }}</td>
+                                        <td class="text-center">
 
+                                            @php
+                                                $url = $movie->img_thumbnail;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            @if (!empty($movie->img_thumbnail))
+                                                    <img src="{{ $url }}" alt="" width="130px">
+                                            @else
+                                                No image !
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <h4 class="movie-name" >{{ $movie->name }}</h4>
+                                            <ul class="nav nav-sm flex-column content-movie">
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Đạo diễn:</span>
+                                                    {{ $movie->director }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Diễn viên:</span>
+                                                    {{ $movie->cast }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Thể loại:</span>
+                                                    {{ $movie->category }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Ngày khởi
+                                                        chiếu:</span>
+                                                    {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                </li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Ngày kết
+                                                        thúc:</span>
+                                                    {{ \Carbon\Carbon::parse($movie->end_date)->format('d/m/Y') }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Phân loại:</span>
+                                                    {{ $movie->rating }}</li>
+                                                <li class="nav-item mb-1">
+                                                    <span class="fw-semibold">Phiên bản:</span>
+                                                    @foreach ($movie->movieVersions as $version)
+                                                        <span class="badge bg-info">{{ $version->name }}</span>
+                                                    @endforeach
+                                                </li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Code Youtube:</span>
+                                                    <input type="text" disabled
+                                                        value="{{ $movie->trailer_url }}2121">
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active change-is-active"
+                                                    name="is_active" type="checkbox" role="switch"
+                                                    data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="form-check form-switch form-switch-danger">
+                                                <input class="form-check-input switch-is-active change-is-hot"
+                                                    name="is_hot" type="checkbox" role="switch"
+                                                    data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {!! $movie->is_publish == 1
+                                                ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
+                                        </td>
+                                        <td >
+                                            <div class='d-flex'>
+                                                <a href="{{ route('admin.movies.show', $movie) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm "
+                                                        type="button"><i class="fas fa-eye"></i></button></a>
+                                                <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                    <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                </a>
+                                               @if (!$movie->is_publish)
+                                               <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn có muốn xóa không')">
+                                                        <i class="ri-delete-bin-7-fill"></i>
+                                                    </button>
+                                                </form>
+                                               @endif
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                                 </tbody>
                             </table>
@@ -290,7 +387,8 @@
                                                         <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                             type="button"><i class="fas fa-edit"></i></button>
                                                     </a>
-                                                    <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
+                                                   @if (!$movie->is_publish)
+                                                   <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                         class="d-inline-block">
                                                         @csrf
                                                         @method('DELETE')
@@ -299,6 +397,7 @@
                                                             <i class="ri-delete-bin-7-fill"></i>
                                                         </button>
                                                     </form>
+                                                   @endif
 
 
                                                 </div>
@@ -324,7 +423,104 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($movies->where('is_publish',false) as $movie)
+                                    <tr>
+                                        <td>{{ $movie->id }}</td>
+                                        <td class="text-center">
 
+                                            @php
+                                                $url = $movie->img_thumbnail;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            @if (!empty($movie->img_thumbnail))
+                                                    <img src="{{ $url }}" alt="" width="130px">
+                                            @else
+                                                No image !
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <h4 class="movie-name" >{{ $movie->name }}</h4>
+                                            <ul class="nav nav-sm flex-column content-movie">
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Đạo diễn:</span>
+                                                    {{ $movie->director }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Diễn viên:</span>
+                                                    {{ $movie->cast }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Thể loại:</span>
+                                                    {{ $movie->category }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Ngày khởi
+                                                        chiếu:</span>
+                                                    {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                </li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Ngày kết
+                                                        thúc:</span>
+                                                    {{ \Carbon\Carbon::parse($movie->end_date)->format('d/m/Y') }}</li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Phân loại:</span>
+                                                    {{ $movie->rating }}</li>
+                                                <li class="nav-item mb-1">
+                                                    <span class="fw-semibold">Phiên bản:</span>
+                                                    @foreach ($movie->movieVersions as $version)
+                                                        <span class="badge bg-info">{{ $version->name }}</span>
+                                                    @endforeach
+                                                </li>
+                                                <li class="nav-item mb-1"><span class="fw-semibold">Code Youtube:</span>
+                                                    <input type="text" disabled
+                                                        value="{{ $movie->trailer_url }}2121">
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active change-is-active"
+                                                    name="is_active" type="checkbox" role="switch"
+                                                    data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="form-check form-switch form-switch-danger">
+                                                <input class="form-check-input switch-is-active change-is-hot"
+                                                    name="is_hot" type="checkbox" role="switch"
+                                                    data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {!! $movie->is_publish == 1
+                                                ? '<span class="badge bg-success-subtle text-success">Đã xuất bản</span>'
+                                                : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
+                                        </td>
+                                        <td >
+                                            <div class='d-flex'>
+                                                <a href="{{ route('admin.movies.show', $movie) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm "
+                                                        type="button"><i class="fas fa-eye"></i></button></a>
+                                                <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                    <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                </a>
+                                               @if (!$movie->is_publish)
+                                               <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn có muốn xóa không')">
+                                                        <i class="ri-delete-bin-7-fill"></i>
+                                                    </button>
+                                                </form>
+                                               @endif
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                                 </tbody>
                             </table>
