@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Cinema;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,6 +25,14 @@ class DefaultCinemaSession
                 Session::put('cinema_id', $cinema->id);
             }
         }
+
+        // if (Auth::check()) {
+        //     if (Auth::user()->type == 'admin' && !empty(Auth::user()->cinema_id)) {
+        //         Session::put('cinema_id', Auth::user()->cinema_id);
+        //     }
+        // }
+
+
 
         return $next($request);
     }

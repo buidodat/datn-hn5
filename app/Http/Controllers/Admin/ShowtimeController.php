@@ -219,13 +219,27 @@ class ShowtimeController extends Controller
                     $startHour = $request->input('start_hour'); // Giờ mở cửa
                     $endHour = $request->input('end_hour'); // Giờ đóng cửa
 
+                    // if (!$startHour || !$endHour) {
+                    //     return back()->with('error', 'Bạn phải nhập Giờ mở cửa và Giờ đóng cửa khi chọn tự động tạo suất chiếu.');
+                    // }
+
                     //
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startHour);
                     $endOfDay = \Carbon\Carbon::parse($request->date . ' ' . $endHour);
 
+                    // Kiểm tra nếu giờ mở cửa hoặc đóng cửa trong quá khứ
+                    if ($startTime->isPast() || $endOfDay->isPast()) {
+                        return back()->with('error', "Giờ mở cửa và giờ đóng cửa phải nằm trong tương lai.");
+                    }
+
                     // Lặp
                     while ($startTime->lt($endOfDay)) {
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+
+                        // // Kiểm tra nếu suất chiếu trong quá khứ
+                        // if ($startTime->isPast()) {
+                        //     break; // Dừng tạo suất chiếu
+                        // }
 
                         foreach ($existingShowtimes as $showtime) {
                             if ($startTime->lt($showtime->end_time) && $endTime->gt($showtime->start_time)) {
@@ -284,15 +298,17 @@ class ShowtimeController extends Controller
                         }
                     }
                 } else {
-
+                    if (empty($request->start_time)) {
+                        return back()->with('error', 'Bạn phải nhập ít nhất một Giờ chiếu khi thêm suất chiếu thủ công.');
+                    }
                     // Thêm suất chiếu theo cách thủ công
                     foreach ($request->start_time as $i => $startTimeChild) {
                         $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
 
                         // Kiểm tra nếu thời gian chiếu nằm trong quá khứ
-                        if ($startTime->isPast()) {
-                            return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
-                        }
+                        // if ($startTime->isPast()) {
+                        //     return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
+                        // }
 
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 

@@ -72,6 +72,7 @@ class ShowtimeController extends Controller
 
     public function show()
     {
+        // dd(session()->all());
         $cinema = Cinema::where('id', session('cinema_id'))->firstOrFail();
 
         $showtimes = Showtime::with(['movie' => function ($query) {
