@@ -28,6 +28,10 @@ class CheckoutController extends Controller
         $showtime = Showtime::where('slug', $slug)->first();
         // dd($showtime->toArray());
 
+        if(empty($showtime)){
+            return redirect()->route('home')->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+        }
+
         $checkoutData = session()->get("checkout_data.$showtime->id", []);
 
         // Kiểm tra nếu session không tồn tại hoặc remainingSeconds <= 5 thì xóa session

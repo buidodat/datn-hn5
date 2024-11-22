@@ -135,7 +135,7 @@ class PaymentController extends Controller
                         'user_id' => $request->user_id,
                         'payment_name' => $request->payment_name,
                         'voucher_code' => $voucher->code ?? null,
-                        'voucher_discount' => $voucher->discount ?? null,
+                        'voucher_discount' => $voucher->discount ?? 0,
                         'point_use' => $dataUsePoint['use_points'] ?? null,
                         'point_discount' => $pointDiscount,
                         'total_price' => $totalPayment,
