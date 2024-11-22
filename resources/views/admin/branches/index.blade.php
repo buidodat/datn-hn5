@@ -193,6 +193,14 @@
                 let branchId = $(this).data('branch-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
 
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false, // Không cho phép đóng ngoài khi đang xử lý
+                    didOpen: () => {
+                        Swal.showLoading(); // Hiển thị spinner loading
+                    }
+                });
                 // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
                     url: '{{ route('branches.change-active') }}',
@@ -212,20 +220,39 @@
                             let statusHtml = response.data.is_active ?
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
-                                        type="checkbox" data-branch-id="${branchId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                        type="checkbox" data-branch-id="${branchId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')"> </div>` :
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
-                                        type="checkbox" data-branch-id="${branchId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
+                                        type="checkbox" data-branch-id="${branchId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')"> </div>`;
                             row.cell(row.index(), 2).data(statusHtml).draw(false);
                             row.cell(row.index(), 4).data(`${response.data.updated_date}<br>${response.data.updated_time}`).draw(false);
 
+
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Trạng thái hoạt động đã được cập nhật.',
+                                confirmButtonText: 'Đóng',
+                                timer: 3000,
+                                timerProgressBar: true,
+
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+
+                        // Hoàn lại thao tác (set lại trạng thái ban đầu cho checkbox)
+                        let checkbox = $(`[data-branch-id="${branchId}"]`).closest('tr').find('.changeActive');
+                        checkbox.prop('checked', !is_active);
                     }
                 });
 
