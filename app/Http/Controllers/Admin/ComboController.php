@@ -31,12 +31,11 @@ class ComboController extends Controller
      */
     public function index()
     {
-        $data = Combo::query()->with('comboFood')->latest('id')->get();
-        $foods = Food::query()->select('id', 'name', 'type')->get();
+        $data = Combo::query()->with('food')->latest('id')->get();
 
         // dd($food->toArray());
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'foods'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
     /**

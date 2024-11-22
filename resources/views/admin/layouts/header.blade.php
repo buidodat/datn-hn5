@@ -38,13 +38,13 @@
 
                 <!-- App Search-->
                 <form class="app-search d-none d-md-block">
-                    <div class="position-relative">
+                    {{-- <div class="position-relative">
                         <input type="text" class="form-control" placeholder="Search..." autocomplete="off"
                             id="search-options" value="">
                         <span class="mdi mdi-magnify search-widget-icon"></span>
                         <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
                             id="search-close-options"></span>
-                    </div>
+                    </div> --}}
                     <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
                         <div data-simplebar style="max-height: 320px;">
                             <!-- item-->
@@ -191,7 +191,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">Welcome !</h6>
+                        <h6 class="dropdown-header">Xin chào !</h6>
+                        <a class="dropdown-item" href="/"><i
+                            class="ri-home-heart-line text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Trang chủ</span></a>
                         <a class="dropdown-item" href="{{ route('admin.my-account') }}"><i
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Hồ sơ cá nhân</span></a>
