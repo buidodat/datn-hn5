@@ -537,98 +537,126 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // Khởi tạo DataTable
-                let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
-                    order: []
-                });
-
-                let tableIsPublish = new DataTable("#tableIsPublish", {
-                    order: []
-                });
-
-                let tableIsDraft = new DataTable("#tableIsDraft", {
-                    order: []
-                });
-
-                // Xử lý sự kiện change cho checkbox .changeActive
-                $(document).on('change', '.changeActive', function() {
-                    let seatTemplateId = $(this).data('id');
-                    let is_active = $(this).is(':checked') ? 1 : 0;
-                    let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
-
-                    // Gửi yêu cầu AJAX để thay đổi trạng thái
-                    $.ajax({
-                        url: '{{ route('seat-templates.change-active') }}',
-                        method: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            id: seatTemplateId,
-                            is_active: is_active
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                let table;
-
-
-                                // Tùy vào ID của bảng mà chọn đúng đối tượng DataTable
-                                if (tableId === 'tableAllSeatTemplate') {
-                                    table = tableAllSeatTemplate;
-                                } else if (tableId === 'tableIsPublish') {
-                                    table = tableIsPublish;
-                                } else if (tableId === 'tableIsDraft') {
-                                    table = tableIsDraft;
-                                }
-
-                                // Cập nhật cột trạng thái (cột thứ 6) trong dòng này
-                                let row = table.row($(`[data-id="${seatTemplateId}"]`).closest(
-                                    'tr'));
-                                console.log(row);
-
-                                let statusHtml = response.data.is_active ?
-                                    `<div class="form-check form-switch form-switch-success">
-                                <input class="form-check-input switch-is-active changeActive"
-                                    type="checkbox" data-id="${seatTemplateId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                            </div><span class='small text-success'>Đã kích hoạt</span>` :
-                                    `<div class="form-check form-switch form-switch-success">
-                                <input class="form-check-input switch-is-active changeActive"
-                                    type="checkbox" data-id="${seatTemplateId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                            </div><span class='small text-secondary'>Chưa hoạt động</span>`;
-
-                                updateStatusInTable(table, seatTemplateId, statusHtml);
-
-                                // Cập nhật trạng thái cho các bảng còn lại
-                                if (tableId !== 'tableAllSeatTemplate') {
-                                    updateStatusInTable(tableAllSeatTemplate, seatTemplateId,
-                                    statusHtml);
-                                }
-                                if (tableId !== 'tableIsPublish') {
-                                    updateStatusInTable(tableIsPublish, seatTemplateId, statusHtml);
-                                }
-                                if (tableId !== 'tableIsDraft') {
-                                    updateStatusInTable(tableIsDraft, seatTemplateId, statusHtml);
-                                }
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Lỗi kết nối hoặc server không phản hồi.');
-                            console.error(error);
-                        }
-                    });
-                    console.log('Đã thay đổi trạng thái active');
-                });
+    <script>
+        $(document).ready(function() {
+            // Khởi tạo DataTable
+            let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
+                order: []
             });
 
-            function updateStatusInTable(table, seatTemplateId, statusHtml) {
-                // Cập nhật trạng thái trong bảng
-                table.rows().every(function() {
-                    let row = this.node();
-                    let rowId = $(row).find('.changeActive').data('id');
-                    if (rowId === seatTemplateId) {
-                        table.cell(row, 5).data(statusHtml).draw(false);
+            let tableIsPublish = new DataTable("#tableIsPublish", {
+                order: []
+            });
+
+            let tableIsDraft = new DataTable("#tableIsDraft", {
+                order: []
+            });
+
+            // Xử lý sự kiện change cho checkbox .changeActive
+            $(document).on('change', '.changeActive', function() {
+                let seatTemplateId = $(this).data('id');
+                let is_active = $(this).is(':checked') ? 1 : 0;
+                let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
+
+
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
                 });
-            }
-        </script>
+                // Gửi yêu cầu AJAX để thay đổi trạng thái
+                $.ajax({
+                    url: '{{ route('seat-templates.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: seatTemplateId,
+                        is_active: is_active
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            let table;
+
+
+                            // Tùy vào ID của bảng mà chọn đúng đối tượng DataTable
+                            if (tableId === 'tableAllSeatTemplate') {
+                                table = tableAllSeatTemplate;
+                            } else if (tableId === 'tableIsPublish') {
+                                table = tableIsPublish;
+                            } else if (tableId === 'tableIsDraft') {
+                                table = tableIsDraft;
+                            }
+
+                            // Cập nhật cột trạng thái (cột thứ 6) trong dòng này
+                            let row = table.row($(`[data-id="${seatTemplateId}"]`).closest(
+                                'tr'));
+                            console.log(row);
+
+                            let statusHtml = response.data.is_active ?
+                                `<div class="form-check form-switch form-switch-success">
+                                <input class="form-check-input switch-is-active changeActive"
+                                    type="checkbox" data-id="${seatTemplateId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                            </div>` :
+                                `<div class="form-check form-switch form-switch-success">
+                                <input class="form-check-input switch-is-active changeActive"
+                                    type="checkbox" data-id="${seatTemplateId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                            </div>`;
+
+                            updateStatusInTable(table, seatTemplateId, statusHtml);
+
+                            // Cập nhật trạng thái cho các bảng còn lại
+                            if (tableId !== 'tableAllSeatTemplate') {
+                                updateStatusInTable(tableAllSeatTemplate, seatTemplateId,
+                                    statusHtml);
+                            }
+                            if (tableId !== 'tableIsPublish') {
+                                updateStatusInTable(tableIsPublish, seatTemplateId, statusHtml);
+                            }
+                            if (tableId !== 'tableIsDraft') {
+                                updateStatusInTable(tableIsDraft, seatTemplateId, statusHtml);
+                            }
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Trạng thái hoạt động đã được cập nhật.',
+                                confirmButtonText: 'Đóng',
+                                timer: 3000,
+                                timerProgressBar: true,
+
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+
+                        let checkbox = $(`[data-id="${seatTemplateId}"]`).closest('tr').find(
+                            '.changeActive');
+                        checkbox.prop('checked', !is_active);
+                    }
+                });
+                console.log('Đã thay đổi trạng thái active');
+            });
+        });
+
+        function updateStatusInTable(table, seatTemplateId, statusHtml) {
+            // Cập nhật trạng thái trong bảng
+            table.rows().every(function() {
+                let row = this.node();
+                let rowId = $(row).find('.changeActive').data('id');
+                if (rowId === seatTemplateId) {
+                    table.cell(row, 5).data(statusHtml).draw(false);
+                }
+            });
+        }
+    </script>
 @endsection

@@ -816,6 +816,15 @@
                 let is_active = $(this).is(':checked') ? 1 : 0;
                 let tableId = $(this).closest('table').attr('id'); // Lấy ID của bảng
 
+
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
                     url: '{{ route('rooms.update-active') }}',
@@ -848,11 +857,11 @@
                                     `<div class="form-check form-switch form-switch-success">
                                         <input class="form-check-input switch-is-active changeActive"
                                             type="checkbox" data-id="${roomId}" checked onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                    </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                    </div>` :
                                     `<div class="form-check form-switch form-switch-success">
                                         <input class="form-check-input switch-is-active changeActive"
                                             type="checkbox" data-id="${roomId}" onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                    </div><span class='small text-secondary'>Chưa hoạt động</span>`;
+                                    </div>`;
 
                                 updateStatusInTable(table, roomId, statusHtml);
 
@@ -875,12 +884,31 @@
                                             roomId, statusHtml);
                                     }
                                 @endforeach
+
+                                Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Trạng thái hoạt động đã được cập nhật.',
+                                confirmButtonText: 'Đóng',
+                                timer: 3000,
+                                timerProgressBar: true,
+
+                            });
                             }
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+
+                        let checkbox = $(`[data-id="${roomId}"]`).closest('tr').find('.changeActive');
+                        checkbox.prop('checked', !is_active);
                     }
                 });
 
