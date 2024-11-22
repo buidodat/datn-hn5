@@ -42,7 +42,7 @@ class MovieController extends Controller
         $versions = Movie::VERSIONS;
         // $typeSeats = TypeSeat::all();
         // $typeRooms = TypeRoom::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions', ]));
+        return view(self::PATH_VIEW . __FUNCTION__, compact(['ratings', 'versions',]));
     }
 
 
@@ -65,10 +65,10 @@ class MovieController extends Controller
                 'is_active' => isset($request->is_active) ? 1 : 0,
                 'is_hot' => isset($request->is_hot) ? 1 : 0,
             ];
-            if($request->action === 'publish'){
+            if ($request->action === 'publish') {
                 $dataMovie['is_publish'] = 1;
             }
-            DB::transaction(function () use ($request, $dataMovie ) {
+            DB::transaction(function () use ($request, $dataMovie) {
 
                 if ($request->img_thumbnail) {
                     $dataMovie['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
@@ -86,7 +86,7 @@ class MovieController extends Controller
 
             return redirect()
                 ->route('admin.movies.index')
-                ->with('success', 'Thêm mới thành công!');
+                ->with('success', 'Thao tác thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -124,23 +124,35 @@ class MovieController extends Controller
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         try {
-            DB::transaction(function () use ($request, $movie) {
-                $dataMovie = [
-                    'name' => $request->name,
-                    'slug' => Str::slug($request->name),
-                    'category' => $request->category,
-                    'description' => $request->description,
-                    'director' => $request->director,
-                    'cast' => $request->cast,
-                    'rating' => $request->rating,
-                    'duration' => $request->duration,
-                    'end_date' => $request->end_date,
-                    'trailer_url' => $request->trailer_url,
-                    'surcharge' => $request->surcharge,
-                    'is_active' => isset($request->is_active) ? 1 : 0,
-                    'is_hot' => isset($request->is_hot) ? 1 : 0,
-                ];
+            $dataMovie = [
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'category' => $request->category,
+                'description' => $request->description,
+                'director' => $request->director,
+                'cast' => $request->cast,
+                'rating' => $request->rating,
+                'trailer_url' => $request->trailer_url,
+                'surcharge' => $request->surcharge,
+                'is_active' => isset($request->is_active) ? 1 : 0,
+                'is_hot' => isset($request->is_hot) ? 1 : 0,
+            ];
 
+            // Kiểm tra trạng thái xuất bản
+            if (!$movie->is_publish) {
+                // Trường hợp chưa xuất bản: Được phép sửa tất cả thông tin
+                $dataMovie['duration'] = $request->duration;
+                $dataMovie['start_date'] = $request->start_date;
+                $dataMovie['end_date'] = $request->end_date;
+
+                // Nếu nhấn nút xuất bản, cập nhật trạng thái is_publish
+                if ($request->action === 'publish') {
+                    $dataMovie['is_publish'] = 1;
+                }
+            }
+
+
+            DB::transaction(function () use ($dataMovie, $request, $movie) {
 
                 if ($request->img_thumbnail) {
                     $dataMovie['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
@@ -150,18 +162,16 @@ class MovieController extends Controller
                     // Nếu không có ảnh mới, giữ nguyên ảnh cũ
                     unset($dataMovie['img_thumbnail']);
                 }
-
+                $isPublishOld = $movie->is_publish;
                 $movie->update($dataMovie);
 
                 // Nếu có ảnh mới và ảnh mới khác với ảnh cũ, xóa ảnh cũ khỏi hệ thống
                 if (!empty($ImgThumbnailCurrent) && ($dataMovie['img_thumbnail'] ?? null) != $ImgThumbnailCurrent && Storage::exists($ImgThumbnailCurrent)) {
                     Storage::delete($ImgThumbnailCurrent);
                 }
-
-                $movieVersions = $movie->movieVersions()->pluck('name')->all();
-
-                foreach ($request->versions ?? [] as $version) {
-                    if (!in_array($version, $movieVersions)) {
+                if (!$isPublishOld) {
+                    $movie->movieVersions()->delete(); // Xóa cũ & thêm mới
+                    foreach ($request->versions ?? [] as $version) {
                         MovieVersion::create([
                             'movie_id' => $movie->id,
                             'name' => $version
@@ -172,7 +182,7 @@ class MovieController extends Controller
 
             return redirect()
                 ->back()
-                ->with('success', 'Cập nhật thành công!');
+                ->with('success', 'Thao tác thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -182,14 +192,14 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         try {
-            if ($movie->is_publish) {
+            if (!$movie->is_publish || $movie->showtimes()->doesntExist() ) {
+                $movie->delete();
                 return redirect()
-                ->route('admin.movies.index')->with('error', 'Phim đã được xuất bản, không thể xóa');
+                    ->route('admin.movies.index')->with('success', 'Xóa phim thành công!');
             }
-            $movie->delete();
 
             return redirect()
-                ->route('admin.movies.index')->with('success', 'Xóa phim thành công');
+                ->route('admin.movies.index')->with('error', 'Phim đã được xuất bản & có suất chiếu, không thể xóa!');
         } catch (\Throwable $th) {
             return redirect()
                 ->route('admin.movies.index')->with('error', $th->getMessage());

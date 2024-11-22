@@ -62,7 +62,7 @@
                                 <th class="text-center">Hình ảnh</th>
                                 <th>Thông tin phim</th>
                                 <th>Hoạt động</th>
-                                <th>Tag hot</th>
+                                <th>Nổi bật</th>
                                 <th>Chức năng</th>
 
                             </tr>
@@ -183,7 +183,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -270,7 +270,7 @@
                                                     <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                         type="button"><i class="fas fa-edit"></i></button>
                                                 </a>
-                                               @if (!$movie->is_publish)
+                                               @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                     class="d-inline-block">
                                                     @csrf
@@ -300,7 +300,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -387,7 +387,7 @@
                                                         <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                             type="button"><i class="fas fa-edit"></i></button>
                                                     </a>
-                                                   @if (!$movie->is_publish)
+                                                   @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                    <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                         class="d-inline-block">
                                                         @csrf
@@ -417,7 +417,7 @@
                                         <th class="text-center">Hình ảnh</th>
                                         <th>Thông tin phim</th>
                                         <th>Hoạt động</th>
-                                        <th>Tag hot</th>
+                                        <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
@@ -504,7 +504,7 @@
                                                     <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                         type="button"><i class="fas fa-edit"></i></button>
                                                 </a>
-                                               @if (!$movie->is_publish)
+                                               @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                     class="d-inline-block">
                                                     @csrf
