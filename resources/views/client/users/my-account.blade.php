@@ -27,8 +27,8 @@
                 <a href="#cinema-journey" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab {{ $page=='cinema-journey' ? 'my-account-active' : '' }}" role="presentation">LỊCH SỬ GIAO DỊCH</div>
                 </a>
-                <a href="#voucher" role="tab" data-toggle="tab" class="tab-link">
-                    <div class="my-account-tab">VOUCHER CỦA TÔI</div>
+                <a href="#my-voucher" role="tab" data-toggle="tab" class="tab-link">
+                    <div class="my-account-tab" {{ $page=='my-voucher' ? 'my-account-active' : '' }}">VOUCHER CỦA TÔI</div>
                 </a>
             </div>
 
@@ -288,6 +288,40 @@
                             </div>
                         </div>
                     </div>
+                    <div id="my-voucher" class="tab-pane  {{ $page=='membership' ? 'in active' : 'fade' }} item-content" role="tabpanel">
+                        {{-- fade --}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card-body">
+                                    <div class='row-header'>
+                                        Danh sách voucher
+                                    </div>
+                                    <table id="myVoucher"
+                                        class='table table-bordered dt-responsive nowrap  align-middle dataTable no-footer dtr-inline'
+                                        width="100%">
+                                        <thead class='xanh-fpt'>
+                                            <tr>
+                                                <th>Voucher</th>
+                                                <th>Giảm giá (VNĐ)</th>
+                                                <th>Nội dung</th>
+                                                <th>Thời gian</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($vouchers as $voucher)
+                                                <tr>
+                                                    <td>{{ $voucher->code }}</td>
+                                                    <td>{{ number_format($voucher->discount, 0, ',', '.') }} VNĐ</td>
+                                                    <td>{{ $voucher->title }}</td>
+                                                    <td>{{ $voucher->start_date_time ? $voucher->start_date_time->format('H:i, d/m/Y') : '' }} <strong>đến</strong> {{ $voucher->end_date_time ? $voucher->end_date_time->format('H:i, d/m/Y') : '' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     {{-- Hành trình điện ảnh --}}
@@ -439,6 +473,11 @@
         new DataTable("#pointHistory", {
             order: [],
 
+        });
+    </script>
+    <script>
+        new DataTable("#myVoucher", {
+            order: [],
         });
     </script>
 

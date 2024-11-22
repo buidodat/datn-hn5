@@ -123,8 +123,10 @@
     </div> --}}
 
     <!-- Theme Settings -->
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+            integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @include('admin.layouts.components.modal-qr')
     <!-- JAVASCRIPT -->
     <script>
         const PATH_ROOT = "{{ env('APP_URL') . '/theme/admin' }}";

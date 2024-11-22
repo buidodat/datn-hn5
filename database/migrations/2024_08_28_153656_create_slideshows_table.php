@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('slideshows', function (Blueprint $table) {
             $table->id();
 //            $table->string('title')->nullable();
-            $table->string('img_thumbnail');
+            $table->text('img_thumbnail');
             $table->text('description')->nullable();
 //            $table->string('route_url')->comment('Đường dẫn điều hướng')->nullable();
             $table->boolean('is_active')->default(true);
