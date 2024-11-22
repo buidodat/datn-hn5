@@ -5,15 +5,7 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     <form action="{{ route('admin.movies.update', $movie) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -42,6 +34,15 @@
                     </div>
                 @endif
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="col-lg-9 col-md-9 ">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
@@ -53,9 +54,10 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
-                                            <label for="name" class="form-label "><span class='text-danger'>*</span> Tên phim:</label>
+                                            <label for="name" class="form-label "><span class='text-danger'>*</span> Tên
+                                                phim:</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ $movie->name }}" placeholder="Nhập tên phim">
+                                                value="{{ old('name', $movie->name) }}" placeholder="Nhập tên phim">
                                             @error('name')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -64,9 +66,10 @@
                                         </div>
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="director" class="form-label "><span class='text-danger'>*</span> Đạo diễn:</label>
+                                            <label for="director" class="form-label "><span class='text-danger'>*</span> Đạo
+                                                diễn:</label>
                                             <input type="text" class="form-control" id="director" name="director"
-                                                value="{{ $movie->director }}" placeholder="Eiichiro Oda">
+                                                value="{{ old('director', $movie->director) }}" placeholder="Eiichiro Oda">
                                             @error('director')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -74,9 +77,11 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-8 mb-3">
-                                            <label for="cast" class="form-label ">Diễn viên:</label>
+                                            <label for="cast" class="form-label "><span class='text-danger'>*</span>
+                                                Diễn viên:</label>
                                             <input type="text" class="form-control" id="cast" name="cast"
-                                                value="{{ $movie->cast }}" placeholder="Monkey D.Luffy, Rononoa Zoro">
+                                                value="{{ old('cast', $movie->cast) }}"
+                                                placeholder="Monkey D.Luffy, Rononoa Zoro">
                                             @error('cast')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -86,9 +91,11 @@
 
 
                                         <div class="col-md-4 mb-3">
-                                            <label for="release_date" class="form-label "><span class='text-danger'>*</span> Ngày khởi chiếu:</label>
+                                            <label for="release_date" class="form-label "><span class='text-danger'>*</span>
+                                                Ngày khởi chiếu:</label>
                                             <input type="date" class="form-control" id="release_date" name="release_date"
-                                                value="{{ $movie->release_date }}" disabled>
+                                                value="{{ old('release_date', $movie->release_date) }}"
+                                                @disabled($movie->is_publish)>
                                             @error('release_date')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -96,9 +103,10 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="end_date" class="form-label "><span class='text-danger'>*</span> Ngày kết thúc:</label>
+                                            <label for="end_date" class="form-label "><span class='text-danger'>*</span>
+                                                Ngày kết thúc:</label>
                                             <input type="date" class="form-control" id="end_date" name="end_date"
-                                                value="{{ $movie->end_date }}">
+                                                value="{{ old('end_date', $movie->end_date) }}" @disabled($movie->is_publish)>
                                             @error('end_date')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -106,32 +114,39 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="duration" class="form-label "><span class='text-danger'>*</span> Thời lượng:</label>
+                                            <label for="duration" class="form-label "><span class='text-danger'>*</span>
+                                                Thời lượng:</label>
                                             <input type="number" class="form-control" id="duration" name="duration"
-                                                value="{{ $movie->duration }}" placeholder="127 (phút)">
+                                                value="{{ old('duration', $movie->duration) }}" placeholder="127 (phút)"
+                                                @disabled($movie->is_publish)>
                                             @error('duration')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="category" class="form-label "><span class='text-danger'>*</span> Thể loại:</label>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="category" class="form-label "><span class='text-danger'>*</span> Thể
+                                                loại:</label>
                                             <input type="text" class="form-control" id="category" name="category"
-                                                value="{{ $movie->category }}" placeholder="Hoạt hình, Khám phá">
+                                                value="{{ old('category', $movie->category) }}"
+                                                placeholder="Hoạt hình, Khám phá">
                                             @error('category')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="rating" class="form-label "><span class='text-danger'>*</span> Giới hạn độ tuổi:</label>
+                                        <div class="col-md-8 mb-3">
+                                            <label for="rating" class="form-label "><span class='text-danger'>*</span>
+                                                Giới hạn độ tuổi:</label>
                                             <select name="rating" id="" class="form-select">
                                                 @foreach ($ratings as $rating)
-                                                    <option value="{{ $rating['name'] }}" @selected($movie->rating == $rating['name'])>
-                                                        {{ $rating['name'] }}</option>
+                                                    <option value="{{ $rating['name'] }}" @selected(old('rating', $movie->rating) == $rating['name'])>
+                                                        {{ $rating['name'] }} - {{ $rating['description'] }}
+                                                    </option>
                                                 @endforeach
+
                                             </select>
                                             @error('rating')
                                                 <div class='mt-1'>
@@ -139,43 +154,19 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-12 mb-3">
                                             <div class='versionOld'>
-                                                <label class="form-check-label mb-2" for="is_active"><span class='text-danger'>*</span> Phiên bản:</label>
-                                                <select class="js-example-basic-multiple" disabled multiple="multiple">
+                                                <label class="form-check-label mb-2" for="versions[]"><span
+                                                        class='text-danger'>*</span> Phiên bản:</label>
+                                                <select class="js-example-basic-multiple" @disabled($movie->is_publish)
+                                                    name="versions[]" multiple="multiple">
 
                                                     @foreach ($versions as $version)
-                                                        <option @selected(in_array($version['name'], $movieVersions))>{{ $version['name'] }}
+                                                        <option @selected(in_array($version['name'], old('versions', $movieVersions)))>{{ $version['name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class='mt-2' id='versionNew'>
-                                                <div class="text-end text-primary" id="toggleDiv" onclick="toggleInput()"
-                                                    style="cursor: pointer;">
-                                                    Thêm mới ?
-                                                </div>
-                                                <div id="inputContainer" style="display: none;">
-                                                    <div class="text-end text-danger mb-1" id="cancelDiv"
-                                                        onclick="cancelInput()" style="cursor: pointer;">
-                                                        Hủy
-                                                    </div>
-                                                    <select class="js-example-basic-multiple" name="versions[]"
-                                                        multiple="multiple" id="versionsSelect">
-                                                        @foreach ($versions as $version)
-                                                            @if (!in_array($version['name'], $movieVersions))
-                                                                <option value="{{ $version['name'] }}">
-                                                                    {{ $version['name'] }}</option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-
-
-
                                             @error('versions')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -183,9 +174,10 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label for="description" class="form-label">Mô tả phim:</label>
+                                            <label for="description" class="form-label"><span
+                                                    class='text-danger'>*</span> Mô tả phim:</label>
                                             <textarea class="form-control " rows="5" name="description"
-                                                placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '>{{ $movie->description }}</textarea>
+                                                placeholder='Hành trình ra khơi của những băng hải tặc, phiêu lưu trên bờ biển "Đại hải trình" để truy tìm, khám phá kho báu One Piece của vua hải tặc tiền nhiệm God D Roger. '>{{ old('description',$movie->description )}}</textarea>
                                             @error('description')
                                                 <div class='mt-1'>
                                                     <span class="text-danger">{{ $message }}</span>
@@ -202,7 +194,7 @@
                 </div>
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Giá vé</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Phụ thu</h4>
                         <div class="text-end">
 
                         </div>
@@ -250,11 +242,11 @@
 
                                             @endforeach --}}
                                             <tr>
-                                                <td><span class='text-danger'></span> Thu thêm theo phim</td>
+                                                <td><span class='text-danger'></span> Giá vé thu thêm</td>
                                                 <td>
-                                                    <input type="number" name="surcharge"
-                                                        class="form-control"
-                                                        onwheel="return false;" placeholder="0đ" value="{{ $movie->surcharge }}">
+                                                    <input type="number" name="surcharge" class="form-control"
+                                                        onwheel="return false;" placeholder="0đ"
+                                                        value="{{ old('surcharge',$movie->surcharge) }}">
 
                                                     @error('surcharge')
                                                         <div class='mt-1'>
@@ -274,15 +266,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-lg-12">
                         <div class="text-end">
-
+                            @if ($movie->is_publish)
                                 <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Danh sách</a>
                                 <button type="submit" class="btn btn-primary mx-2">Cập nhật</button>
-
+                            @else
+                                <button type="submit" class="btn btn-light" name="action" value="draft">Lưu
+                                    nháp</button>
+                                <button type="submit" class="btn btn-primary mx-2" name="action" value="publish">Xuất
+                                    bản</button>
+                            @endif
                         </div>
                     </div>
+                    <!--end col-->
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 ">
@@ -291,29 +289,40 @@
                         <div class="card card-seat ">
                             <div class="card-header align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Cập nhật</h4>
+                                @if ($movie->is_publish)
+                                    <span class="badge fs-11 bg-success-subtle text-success">
+                                        Đã xuất bản
+                                    </span>
+                                @else
+                                    <span class="badge fs-11 bg-primary-subtle text-primary">
+                                        Bản nháp
+                                    </span>
+                                @endif
+
+
                             </div><!-- end card header -->
                             <div class="card-body ">
 
                                 <div class="row ">
-                                    {{-- <div class="col-md-12 mb-3">
+                                    {{-- <div class="col-md-12 mb-2">
                                         <label class="form-label">Trạng thái:</label>
-                                        <span class="text-muted">Đã xuất bản</span>
+                                        <span class="text-muted">{{ $movie->is_publish ? "Đã xuất bản":'Bản nháp' }}</span>
                                     </div> --}}
-                                    <div class="col-md-12 mb-3 d-flex ">
+                                    <div class="col-md-12 mb-2 d-flex ">
                                         <label class="form-label">Hoạt động:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-success">
                                                 <input class="form-check-input switch-is-active" name="is_active"
-                                                    type="checkbox" role="switch" @checked($movie->is_active)>
+                                                    type="checkbox" role="switch" @checked(old('is_active', $movie->is_active))>
                                             </div>
                                         </span>
                                     </div>
-                                    <div class="col-md-12 mb-3 d-flex ">
+                                    <div class="col-md-12 mb-2 d-flex ">
                                         <label class="form-label">Nổi bật:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-danger">
                                                 <input class="form-check-input switch-is-active" name="is_hot"
-                                                    type="checkbox" role="switch" @checked($movie->is_hot)>
+                                                    type="checkbox" role="switch" @checked(old('is_hot', $movie->is_hot))>
                                             </div>
                                         </span>
                                     </div>
@@ -321,9 +330,15 @@
 
                                 </div>
                                 <div class="text-end">
-                                    <a href="{{ route('admin.movies.index') }}" class="btn btn-light mx-1">Quay
-                                        lại</a>
-                                    <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
+                                    @if ($movie->is_publish)
+                                        <a href="{{ route('admin.movies.index') }}" class="btn btn-light">Danh sách</a>
+                                        <button type="submit" class="btn btn-primary mx-2">Cập nhật</button>
+                                    @else
+                                        <button type="submit" class="btn btn-light" name="action" value="draft">Lưu
+                                            nháp</button>
+                                        <button type="submit" class="btn btn-primary mx-2" name="action"
+                                            value="publish">Xuất bản</button>
+                                    @endif
                                 </div>
 
                             </div>
@@ -334,7 +349,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">Hình ảnh:</label>
+                                    <label for="" class="form-label"><span class='text-danger'>*</span> Hình
+                                        ảnh:</label>
                                     <input type="file" name="img_thumbnail" id="" class="form-control">
                                     {{-- @if ($movie->img_thumbnail && \Storage::exists($movie->img_thumbnail))
                                         <div class="text-center mt-2">
@@ -355,7 +371,7 @@
                                     @endphp
                                     @if (!empty($movie->img_thumbnail))
                                         <div class="text-center mt-2">
-                                            <img src="{{ $url }}" alt="" width="70%">
+                                            <img src="{{ $url }}" alt="" width="45%">
                                         </div>
                                     @else
                                         No image !
@@ -377,9 +393,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-2">
-                                    <label for="trailer_url" class="form-label">Code Youtube:</label>
+                                    <label for="trailer_url" class="form-label"><span class='text-danger'>*</span> Code
+                                        Youtube:</label>
                                     <input type="text" class="form-control" id="trailer_url" name="trailer_url"
-                                        value="{{ $movie->trailer_url }}" placeholder="ZQkU_oI2NOU">
+                                        value="{{ old('trailer_url',$movie->trailer_url) }}" placeholder="ZQkU_oI2NOU">
                                     @if ($movie->trailer_url)
                                         <div class="text-center">
                                             <iframe class="w-100 mt-2"

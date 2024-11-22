@@ -270,7 +270,7 @@
                                                     <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                         type="button"><i class="fas fa-edit"></i></button>
                                                 </a>
-                                               @if (!$movie->is_publish)
+                                               @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                     class="d-inline-block">
                                                     @csrf
@@ -387,7 +387,7 @@
                                                         <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                             type="button"><i class="fas fa-edit"></i></button>
                                                     </a>
-                                                   @if (!$movie->is_publish)
+                                                   @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                    <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                         class="d-inline-block">
                                                         @csrf
@@ -504,7 +504,7 @@
                                                     <button title="sủa" class="btn btn-warning btn-sm mx-1"
                                                         type="button"><i class="fas fa-edit"></i></button>
                                                 </a>
-                                               @if (!$movie->is_publish)
+                                               @if (!$movie->is_publish || $movie->showtimes()->doesntExist() )
                                                <form action="{{ route('admin.movies.destroy', $movie) }}" method="POST"
                                                     class="d-inline-block">
                                                     @csrf
