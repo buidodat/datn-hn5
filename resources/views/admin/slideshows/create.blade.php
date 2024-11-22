@@ -5,145 +5,191 @@
 @endsection
 
 @section('style-libs')
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
-    <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
-    <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
-    <!-- App Css-->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css"/>
-    <!-- custom Css-->
-    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/dropzone/dropzone.css') }}" type="text/css"/>
+    <!-- Filepond css -->
+    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/filepond/filepond.min.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
 
     <style>
-        .solar--upload-linear {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-width='1.5'%3E%3Cpath d='M17 9.002c2.175.012 3.353.109 4.121.877C22 10.758 22 12.172 22 15v1c0 2.829 0 4.243-.879 5.122C20.243 22 18.828 22 16 22H8c-2.828 0-4.243 0-5.121-.878C2 20.242 2 18.829 2 16v-1c0-2.828 0-4.242.879-5.121c.768-.768 1.946-.865 4.121-.877'/%3E%3Cpath stroke-linejoin='round' d='M12 15V2m0 0l3 3.5M12 2L9 5.5'/%3E%3C/g%3E%3C/svg%3E");
-            background-color: currentColor;
-            -webkit-mask-image: var(--svg);
-            mask-image: var(--svg);
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-            -webkit-mask-size: 100% 100%;
-            mask-size: 100% 100%;
-        }
+
     </style>
 @endsection
 
 @section('content')
     <form action="{{ route('admin.slideshows.store') }}" method="post" enctype="multipart/form-data">
         @csrf
-
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Thêm slide show</h4>
-
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.slideshows.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        <!-- thông tin -->
-        <div class="row">
 
-            <div class="col-lg-9">
-                <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Thêm slideshow</h4>
-                    </div><!-- end card header -->
+        <div class="container-fluid">
+            <!-- end page title -->
 
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+            <div class="row">
+                {{--<div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Chọn ảnh</h4>
+                        </div><!-- end card header -->
 
-                    @if (session()->has('error'))
-                        <div class="alert alert-success">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                        <div class="card-body">
+                            <p class="text-muted">Vui lòng chọn một hoặc nhiều hình ảnh.</p>
 
-                    <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row gy-4">
-                                <div class="col-md-12">
+                            <div class="dropzone">
+                                <div class="fallback">
+                                    <input name="img_thumbnail" type="file" multiple="multiple">
+                                </div>
+                                <div class="dz-message needsclick">
                                     <div class="mb-3">
-                                        <label for="" class="form-label">Thêm ảnh:</label>
-{{--                                        <input type="file" name="img_thumbnail" id="" class="form-control">--}}
+                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                    </div>
 
-                                        <div class="card-body p-24">
-                                            <label for="file-upload" class="mb-16 border border-neutral-600 fw-medium
-                                    text-secondary-light px-16 py-12 radius-12 d-inline-flex align-items-center gap-2 bg-hover-neutral-200">
-                                                <span class="solar--upload-linear"></span>
-                                                Tải ảnh lên
-                                                <input type="file" class="form-control w-auto mt-24 form-control-lg"
-                                                       id="file-upload"
-                                                       name="hinh_anh" onchange="showImg(event)" hidden>
-                                            </label>
-                                            <img src="" id="uploaded-img" style="display: none; width: 100px">
-                                        </div>
-                                        @error('img_thumbnail')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description" class="form-label">Mô tả:</label>
-                                        <textarea class="form-control " rows="3" name="description"></textarea>
-                                        @error('description')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                    <h4>Kéo thả hoặc chọn ảnh.</h4>
                                 </div>
                             </div>
 
-                            <!--end row-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" checked value="1">
+                            <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                <li class="mt-2" id="dropzone-preview-list">
+                                    <!-- This is used as the file preview template -->
+                                    <div class="border rounded">
+                                        <div class="d-flex p-2">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="avatar-sm bg-light rounded">
+                                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="{{ asset('theme/admin/assets/images/new-document.png') }}" alt="Dropzone-Image"/>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="pt-1">
+                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                                </div>
+                                            </div>
+                                            <div class="flex-shrink-0 ms-3">
+                                                <button data-dz-remove class="btn btn-sm btn-danger">Xóa</button>
                                             </div>
                                         </div>
                                     </div>
+                                </li>
+                            </ul>
+                            <!-- end dropzon-preview -->
+                            @error('img_thumbnail')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+                </div> <!-- end col -->--}}
 
-                                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Chọn ảnh</h4>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <div class="d-flex mb-1 justify-content-between">
+                                <p class="text-muted">Vui lòng chọn một hoặc nhiều hình ảnh.</p>
+                                <p class="btn btn-sm btn-primary fw-bold" id="add-row" style="cursor: pointer">Thêm ảnh </p>
+                            </div>
+                            <div class="my-3">
+
+                                <table style="width: 100%;">
+                                    <tbody id="img-table">
+                                    <tr>
+                                        <td class="d-flex align-items-center justify-content-around">
+                                            <div style="width: 100%;">
+                                                <div class="border rounded">
+                                                    <div class="d-flex p-2">
+                                                        <div class="flex-shrink-0 me-3">
+                                                            <div class="avatar-sm bg-light rounded">
+                                                                <img id="preview_0" src="" style="width: 45px; height: 45px">
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="pt-1" style="width: 73%;">
+                                                                <input type="file" id="img_thumbnail" name="img_thumbnail[id_0]"
+                                                                       class="form-control @error('img_thumbnail') is-invalid @enderror" onchange="previewImg(this, 0)">
+                                                                @error('img_thumbnail.0')
+                                                                <div class="invalid-feedback">
+                                                                    {{ $message }}
+                                                                </div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        {{--<div class="flex-shrink-0 ms-3">
+                                                            <button class="btn btn-sm btn-danger">Xóa</button>
+                                                        </div>--}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end dropzon-preview -->
+                            @error('img_thumbnail')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+                </div> <!-- end col -->
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Is Active</h4>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <div class="form-check form-switch form-switch-default">
+                                <input class="form-check-input" type="checkbox" role=""
+                                       name="is_active" checked value="1">
                             </div>
                         </div>
+                        <!-- end card body -->
                     </div>
 
-                </div>
-            </div>
-            <!--end col-->
-        </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Mô tả</h4>
+                        </div><!-- end card header -->
 
+                        <div class="card-body">
+                            <textarea class="form-control @error('description') is-invalid @enderror" rows="7" name="description"></textarea>
+                            @error('description')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <!-- end card body -->
+                    </div>
+
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -156,16 +202,24 @@
             </div>
             <!--end col-->
         </div>
+
     </form>
 @endsection
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!--select2 cdn-->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <script src="{{ asset('theme/admin/assets/js/pages/select2.init.js') }}"></script>
+    <!-- dropzone min -->
+    <script src="{{ asset('theme/admin/assets/libs/dropzone/dropzone-min.js') }}"></script>
+    <!-- filepond js -->
+    <script src="{{ asset('theme/admin/assets/libs/filepond/filepond.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
+    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js') }}"></script>
+
+    <script src="{{ asset('theme/admin/assets/js/pages/form-file-upload.init.js') }}"></script>
 
     <script src="https:////cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
     <script>
@@ -174,5 +228,60 @@
             height: "750px"
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var rowCount = 1;
+            document.getElementById('add-row').addEventListener('click', function () {
+                var tableBody = document.getElementById('img-table');
 
+                var newRow = document.createElement('tr');
+
+                newRow.innerHTML = `
+                                         <td class="d-flex align-items-center justify-content-around">
+                                            <div class="mt-2" style="width: 100%;">
+                                                <div class="border rounded">
+                                                    <div class="d-flex p-2">
+                                                        <div class="flex-shrink-0 me-3">
+                                                            <div class="avatar-sm bg-light rounded">
+                                                                <img id="preview_${rowCount}" src="" style="width: 45px; height: 45px">
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="pt-1" style="width: 80%;">
+                                                                <input type="file" id="img_thumbnail" name="img_thumbnail[id_${rowCount}]"
+                                                                       class="form-control" onchange="previewImg(this, ${rowCount})">
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-shrink-0 ms-3">
+                                                            <button class="btn btn-sm btn-danger" onclick="removeRow(this)">Xóa</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                `;
+
+                tableBody.appendChild(newRow);
+                rowCount++;
+            })
+        });
+
+        function previewImg(input, rowindex) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById(`preview_${rowindex}`).setAttribute('src', e.target.result)
+                }
+
+                reader.readAsDataURL(input.files[0])
+            }
+        }
+
+        function removeRow(item) {
+            var row = item.closest('tr');
+            row.remove();
+        }
+
+    </script>
 @endsection

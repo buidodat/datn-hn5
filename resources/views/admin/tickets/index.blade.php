@@ -105,20 +105,19 @@
                             <div class="col-xxl-3 text-end">
                                 <div>
                                     <!-- center modal -->
-                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal"
-                                            data-bs-target=".bs-example-modal-center">Quét QR
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal" data-source="index">Quét QR
                                     </button>
-                                    <div class="modal fade bs-example-modal-center" id="scanModal" tabindex="-1"
-                                         aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+                                    {{--<div class="modal fade" id="scanModal" tabindex="-1"
+                                         aria-labelledby="" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content" style="width: 680px; ">
                                                 <div class="modal-body text-center">
                                                     <div id="camera"
                                                          style="width: 640px; height: 360px; border: 1px solid gray; margin: 0 auto;"></div>
                                                     <div class="mt-4">
-                                                        <h4 class="mb-3">Đưa mã vạch vào camera để quét</h4>
-                                                        {{--<div id="message-result" style="color: #26ee26; margin-top: 10px;"></div>--}}
-                                                        <div id="barcode-result" style="color: #eed223; margin-top: 10px;"></div>
+
+                                                        --}}{{--<div id="message-result" style="color: #26ee26; margin-top: 10px;"></div>--}}{{--
+                                                        <div id="barcode-result" style="color: red; margin-top: 35px;"></div>
                                                         <div id="error-message" style="color: red; margin-top: 10px;"></div>
                                                         <div class="hstack gap-2 justify-content-center">
                                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng
@@ -130,7 +129,7 @@
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                    </div><!-- /.modal -->--}}
                                 </div>
                             </div>
 
@@ -161,7 +160,7 @@
                                 <th class="text-center">Hình ảnh</th>
                                 <th>Thông tin vé</th>
                                 {{-- <th>Trạng thái</th> --}}
-                                <th>Chức năng(Phân quyền)</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody id="ticket-table-body">
@@ -305,9 +304,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
             integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
     <script>
         new DataTable("#example", {
             order: []
@@ -397,7 +396,7 @@
         });
 
         /*modal quét qr*/
-        document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             const scanModal = document.getElementById('scanModal');
             const scanAnotherBtn = document.getElementById("scanAnotherBtn");
             const errorMessage = document.getElementById("error-message");
@@ -483,7 +482,7 @@
                 errorMessage.innerText = ""; // Xóa thông báo lỗi
                 startScanner(); // Bắt đầu quét lại
             });
-        });
+        });*/
 
 
     </script>
