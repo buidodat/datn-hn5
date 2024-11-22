@@ -536,18 +536,14 @@
 	}
 
 	.info-movie div ul li h3 {
-		margin-left: 15px;
-		color: #0090e3;
+
 		font-size: 21px !important;
-		font-family: serif !important;
+
 	}
 
 	.st_dtts_bs_heading p {
 		font-size: 16px !important;
-		color: #FFFFFF;
-		letter-spacing: 1px;
-		text-align: center;
-		font-family: none;
+
 	}
 
 	.bold {

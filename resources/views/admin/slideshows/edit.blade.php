@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.slideshows.update', $slide) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.slideshows.update', $slide->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -28,118 +28,113 @@
         <!-- thông tin -->
         <div class="row">
 
-            <div class="col-lg-9">
+            <div class="col-lg-6">
                 <div class="card">
-                    <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Sửa slideshow</h4>
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Sửa ảnh</h4>
                     </div><!-- end card header -->
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
 
-                    @if (session()->has('error'))
-                        <div class="alert alert-success">
-                            {{ session('error') }}
-                        </div>
-                    @endif
                     <div class="card-body">
-                        <div class="live-preview">
-                            <div class="row gy-4">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label ">Tiêu đề:</label>
-                                        <input type="text" class="form-control" id="title"
-                                               name="title" value="{{ $slide->title }}"
-                                               placeholder="Nhập tiêu đề slide">
-                                        @error('title')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description" class="form-label">Mô tả ngắn:</label>
-                                        <textarea class="form-control" rows="5" col="30" name="description">{{ $slide->description }}</textarea>
-                                        @error('description')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label ">Đường dẫn url:</label>
-                                        <input type="text" class="form-control " id="route_url"
-                                               name="route_url" value=" {{ $slide->route_url }}" placeholder="Nhập đường dẫn của phim">
-                                        @error('route_url')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!--end row-->
+                        <div class="d-flex mb-1 justify-content-between">
+                            <p class="text-muted">Vui lòng chọn một hoặc nhiều hình ảnh để chỉnh sửa.</p>
+                            <p class="btn btn-sm btn-primary fw-bold" id="add-row" style="cursor: pointer">Thêm ảnh </p>
                         </div>
+                        <div class="my-3">
+
+                            <table style="width: 100%;">
+                                <tbody id="img-table">
+                                @if (!empty($slide->img_thumbnail) && is_array($slide->img_thumbnail))
+                                    @foreach ($slide->img_thumbnail as $key => $imgPath)
+                                        <tr>
+                                            <td class="d-flex align-items-center justify-content-around">
+                                                <div style="width: 100%;">
+                                                    <div class="border rounded">
+                                                        <div class="d-flex p-2">
+                                                            <div class="flex-shrink-0 me-3">
+                                                                <div class="avatar-sm bg-light rounded">
+                                                                    <img id="preview_{{ $key }}"
+                                                                         src="{{ Storage::url($imgPath) }}"
+                                                                         style="width: 45px; height: 45px; object-fit: cover;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <div class="pt-1" style="width: 73%;">
+                                                                    <input type="file"
+                                                                           id="img_thumbnail_{{ $key }}"
+                                                                           name="img_thumbnail[id_{{ $key }}]"
+                                                                           class="form-control @error('img_thumbnail.' . $key) is-invalid @enderror"
+                                                                           onchange="previewImg(this, {{ $key }})">
+                                                                    <input type="hidden" name="existing_images[id_{{ $key }}]" value="{{ $imgPath }}">
+                                                                    @error('img_thumbnail.' . $key)
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-shrink-0 ms-3">
+                                                                <button class="btn btn-sm btn-danger" type="button" onclick="removeRow(this)">Xóa</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end dropzon-preview -->
+                        @error('img_thumbnail')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
+                    <!-- end card body -->
                 </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mb-2">
-                                    <label for="" class="form-label">Ảnh slide</label>
-                                    <input type="file" name="img_thumbnail" id="" class="form-control">
+                <!-- end card -->
+            </div> <!-- end col -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Is Active</h4>
+                    </div><!-- end card header -->
 
-                                    @if ($slide->img_thumbnail && \Storage::exists($slide->img_thumbnail))
-                                        <div class="text-center">
-                                            <img src="{{ Storage::url($slide->img_thumbnail) }}" alt="" class="mt-3"
-                                                 width="150px" height="90px">
-                                        </div>
-                                    @else
-                                        No image !
-                                    @endif
-
-                                    @error('img_thumbnail')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
+                    <div class="card-body">
+                        <div class="form-check form-switch form-switch-default">
+                            <input class="form-check-input" type="checkbox" role=""
+                                   name="is_active" @checked($slide->is_active)  value="1">
                         </div>
                     </div>
-
-
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" @checked($slide->is_active) value="1">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+                    <!-- end card body -->
                 </div>
-            </div>
-            <!--end col-->
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Mô tả</h4>
+                    </div><!-- end card header -->
+
+                    <div class="card-body">
+                        <textarea class="form-control @error('description') is-invalid @enderror" rows="7"
+                                  name="description">{{ old('description', $slide->description) }}</textarea>
+                        @error('description')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <!-- end card body -->
+                </div>
+
+            </div> <!-- end col -->
         </div>
-
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
                         <a href="{{ route('admin.slideshows.index') }}" class="btn btn-info">Danh sách</a>
-                        <button type="submit" class="btn btn-primary mx-1">Cập nhật</button>
+                        <button type="submit" class="btn btn-primary mx-1">Lưu thay đổi</button>
                     </div>
                 </div>
             </div>
@@ -181,4 +176,56 @@
             height: "750px"
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let rowCount = document.querySelectorAll('#img-table tr').length;
+
+            document.getElementById('add-row').addEventListener('click', function () {
+                const tableBody = document.getElementById('img-table');
+
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+        <td class="d-flex align-items-center justify-content-around">
+            <div class="mt-2" style="width: 100%;">
+                <div class="border rounded">
+                    <div class="d-flex p-2">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light rounded">
+                                <img id="preview_${rowCount}" src="" style="width: 45px; height: 45px; object-fit: cover;">
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="pt-1" style="width: 73%;">
+                                <input type="file" id="img_thumbnail_${rowCount}" name="img_thumbnail[new_${rowCount}]"
+                                       class="form-control" onchange="previewImg(this, ${rowCount})">
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 ms-3">
+                            <button class="btn btn-sm btn-danger" type="button" onclick="removeRow(this)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>`;
+                tableBody.appendChild(newRow);
+                rowCount++;
+            });
+
+            window.previewImg = function (input, index) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(`preview_${index}`).src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            };
+
+            window.removeRow = function (item) {
+                const row = item.closest('tr');
+                row.remove();
+            };
+        });
+    </script>
+
 @endsection

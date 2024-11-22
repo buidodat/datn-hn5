@@ -163,6 +163,15 @@
                 let comboId = $(this).data('combo-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
 
+
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
                     url: '{{ route('combos.change-active') }}',
@@ -183,18 +192,36 @@
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-combo-id="${comboId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                </div>` :
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-combo-id="${comboId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
+                                </div>`;
                             row.cell(row.index(), 7).data(statusHtml).draw(false);
 
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Trạng thái hoạt động đã được cập nhật.',
+                                confirmButtonText: 'Đóng',
+                                timer: 3000,
+                                timerProgressBar: true,
+
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+
+                        let checkbox = $(`[data-combo-id="${comboId}"]`).closest('tr').find('.changeActive');
+                        checkbox.prop('checked', !is_active);
                     }
                 });
 

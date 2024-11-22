@@ -426,17 +426,19 @@
 }
 
 .info-movie div ul li h3 {
-    margin-left: 15px;
+    padding: 0 8px;
     color: #434f89;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
+    font-weight: 600;
+    letter-spacing: -1px !important;
+    font-family: Oswald !important;
+
     font-style: normal;
     letter-spacing: -0.5px;
 }
 
 
 .info-movie div ul li:first-child p {
-    margin-left: 15px;
+    padding: 0 8px;
 }
 
 .info-movie div ul li.bold {

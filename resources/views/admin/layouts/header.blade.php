@@ -154,7 +154,14 @@
                     </div>
                 </div>
 
-                @include('admin.layouts.components.modal-qr')
+                <div class="ms-1 header-item d-none d-sm-flex">
+                    <div>
+                        <!-- center modal -->
+                        <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-bs-toggle="modal"
+                                data-bs-target="#scanModal" data-source="header"><i class='ri-qr-code-line fs-22'></i>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"

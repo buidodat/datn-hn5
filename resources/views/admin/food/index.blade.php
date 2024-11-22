@@ -91,9 +91,9 @@
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>
                                         <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-food-id="{{ $item->id }}" @checked($item->is_active)
+                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                type="checkbox" role="switch" data-food-id="{{ $item->id }}"
+                                                @checked($item->is_active)
                                                 onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
                                     </td>
@@ -145,18 +145,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
-     <script>
-
+    <script>
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
                 let foodId = $(this).data('food-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
+
+                Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
                 // Gửi yêu cầu AJAX để thay đổi trạng thái
                 $.ajax({
@@ -178,18 +185,36 @@
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-food-id="${foodId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div><span class='small text-success'>Đã kích hoạt</span>` :
+                                </div>` :
                                 `<div class="form-check form-switch form-switch-success">
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-food-id="${foodId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
+                                </div>`;
                             row.cell(row.index(), 5).data(statusHtml).draw(false);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Trạng thái hoạt động đã được cập nhật.',
+                                confirmButtonText: 'Đóng',
+                                timer: 3000,
+                                timerProgressBar: true,
 
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+
+                        let checkbox = $(`[data-food-id="${foodId}"]`).closest('tr').find(
+                            '.changeActive');
+                        checkbox.prop('checked', !is_active);
                     }
                 });
 
