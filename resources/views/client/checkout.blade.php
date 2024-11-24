@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Checkout
+    Xác thực và thanh toán
 @endsection
 
 @section('content')

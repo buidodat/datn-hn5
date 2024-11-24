@@ -31,11 +31,12 @@ class ComboController extends Controller
      */
     public function index()
     {
-        $data = Combo::query()->with('food')->latest('id')->get();
+        $data = Combo::query()->with('comboFood')->latest('id')->get();
+        $foods = Food::query()->select('id', 'name', 'type')->get();
 
         // dd($food->toArray());
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data', 'foods'));
     }
 
     /**
@@ -52,35 +53,90 @@ class ComboController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(StoreComboRequest $request)
+    // {
+    //     try {
+
+    //         DB::transaction(function () use ($request) {
+
+    //             // Lấy dữ liệu từ request
+    //             $data = $request->all();
+    //             $data['is_active'] ??= 0;
+
+    //             // Xử lý upload hình ảnh nếu có
+    //             if ($data['img_thumbnail']) {
+    //                 $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+    //             }
+
+    //             // Tính tổng giá của combo dựa trên giá của món ăn và số lượng
+    //             $foodIds = $request->input('combo_food');
+    //             $quantities = $request->input('combo_quantity');
+    //             $totalPrice = 0;
+
+    //             foreach ($foodIds as $key => $foodId) {
+    //                 // Lấy thông tin món ăn từ bảng food
+    //                 $food = Food::findOrFail($foodId); // lấy món ăn
+    //                 $quantity = $quantities[$key];     // lấy số lượng của món ăn tương ứng
+
+    //                 // Tính giá: giá món ăn * số lượng
+    //                 $totalPrice += $food->price * $quantity;
+    //             }
+
+    //             // Tạo combo mới và lưu tổng giá vào trường price
+    //             $combo = Combo::create([
+    //                 'name' => $data['name'],
+    //                 'price_sale' => $data['price_sale'],
+    //                 'price' => $totalPrice,  // Lưu tổng giá của combo
+    //                 'description' => $data['description'],
+    //                 'img_thumbnail' => $data['img_thumbnail'] ?? null,
+    //                 'is_active' => $data['is_active'],
+    //             ]);
+
+    //             // Lưu các món ăn vào combo
+    //             foreach ($foodIds as $key => $foodId) {
+    //                 ComboFood::create([
+    //                     'combo_id' => $combo->id,
+    //                     'food_id' => $foodId,
+    //                     'quantity' => $quantities[$key],
+    //                 ]);
+    //             }
+    //         });
+
+    //         return redirect()
+    //             ->route('admin.combos.index')
+    //             ->with('success', 'Thêm mới thành công!');
+    //     } catch (\Throwable $th) {
+    //         return back()->with('error', $th->getMessage());
+    //     }
+    // }
+
     public function store(StoreComboRequest $request)
     {
         try {
-
             DB::transaction(function () use ($request) {
-
                 // Lấy dữ liệu từ request
-                $data = $request->all();
+                $data = $request->validated(); // Lấy dữ liệu đã validate
                 $data['is_active'] ??= 0;
-
+    
                 // Xử lý upload hình ảnh nếu có
-                if ($data['img_thumbnail']) {
-                    $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+                if ($request->hasFile('img_thumbnail')) {
+                    $data['img_thumbnail'] = $request->file('img_thumbnail')->store(self::PATH_UPLOAD, 'public');
                 }
-
+    
                 // Tính tổng giá của combo dựa trên giá của món ăn và số lượng
-                $foodIds = $request->input('combo_food');
-                $quantities = $request->input('combo_quantity');
+                $foodIds = $data['combo_food'];
+                $quantities = $data['combo_quantity'];
                 $totalPrice = 0;
-
+    
                 foreach ($foodIds as $key => $foodId) {
                     // Lấy thông tin món ăn từ bảng food
                     $food = Food::findOrFail($foodId); // lấy món ăn
                     $quantity = $quantities[$key];     // lấy số lượng của món ăn tương ứng
-
+    
                     // Tính giá: giá món ăn * số lượng
                     $totalPrice += $food->price * $quantity;
                 }
-
+    
                 // Tạo combo mới và lưu tổng giá vào trường price
                 $combo = Combo::create([
                     'name' => $data['name'],
@@ -90,7 +146,7 @@ class ComboController extends Controller
                     'img_thumbnail' => $data['img_thumbnail'] ?? null,
                     'is_active' => $data['is_active'],
                 ]);
-
+    
                 // Lưu các món ăn vào combo
                 foreach ($foodIds as $key => $foodId) {
                     ComboFood::create([
@@ -100,14 +156,13 @@ class ComboController extends Controller
                     ]);
                 }
             });
-
-            return redirect()
-                ->route('admin.combos.index')
-                ->with('success', 'Thêm mới thành công!');
+            session()->flash('success', 'Thêm mới thành công!');
+            return response()->json(['success' => true, 'message' => 'Thêm mới thành công!']);
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 500);
         }
     }
+    
 
 
     /**
