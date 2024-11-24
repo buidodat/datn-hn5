@@ -31,11 +31,11 @@ class Ticket extends Model
         'expiry' => 'datetime',
     ];
 
-    const STATUS = [
-        ['value' => 'pending', 'label' => 'Chưa xuất vé'],
-        ['value' => 'confirmed', 'label' => 'Đã xuất vé'],
-        ['value' => 'cancelled', 'label' => 'Đã hết hạn'],
-    ];
+    // const STATUS = [
+    //     ['value' => 'pending', 'label' => 'Chưa xuất vé'],
+    //     ['value' => 'confirmed', 'label' => 'Đã xuất vé'],
+    //     ['value' => 'cancelled', 'label' => 'Đã hết hạn'],
+    // ];
 
     //Trạng thái vé
     const ISSUED = 'Đã xuất vé';
