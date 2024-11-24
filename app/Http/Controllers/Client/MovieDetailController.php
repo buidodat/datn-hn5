@@ -45,6 +45,15 @@ class MovieDetailController extends Controller
         $request->validate([
             'rating' => 'required|integer|min:1|max:10',
             'description' => 'required|string|max:220',
+        ], [
+            'rating.required' => 'Vui lòng chọn xếp hạng.',
+            'rating.integer' => 'Xếp hạng phải là một số nguyên.',
+            'rating.min' => 'Xếp hạng tối thiểu là :min.',
+            'rating.max' => 'Xếp hạng tối đa là :max.',
+
+            'description.required' => 'Vui lòng nhập mô tả đánh giá.',
+            'description.string' => 'Mô tả phải là một chuỗi ký tự.',
+            'description.max' => 'Mô tả không được vượt quá :max ký tự.',
         ]);
 
         $movie = Movie::where('slug', $slug)->firstOrFail();
