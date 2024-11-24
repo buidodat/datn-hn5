@@ -78,7 +78,7 @@ class TicketController extends Controller
             'status' => 'required',
         ]);
 
-        if ($ticket->status == 'Đã suất vé') {
+        if ($ticket->status == 'Đã xuất vé') {
             return response()->json([
                 'success' => false,
                 'message' => 'Vé đã hoàn tất, không thể chỉnh sửa.'
@@ -180,14 +180,14 @@ class TicketController extends Controller
         }
 
         switch ($ticket->status) {
-            case 'Chưa suất vé':
+            case 'Chưa xuất vé':
                 return response()->json([
                     'success' => true,
                     'message' => 'QR code đã được xử lý thành công!',
                     'redirect_url' => route('admin.tickets.show', $ticket)
                 ]);
 
-            case 'Đã suất vé':
+            case 'Đã xuất vé':
                 return response()->json([
                     'success' => true,
                     'message' => 'Vé này đã được suất rồi.',

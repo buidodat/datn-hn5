@@ -1418,6 +1418,16 @@
     text-decoration: underline;
 
 }
+.form-select {
+    border-radius: 0.25rem; /* Viền bo tròn */
+    background-color: #f8f9fa; /* Màu nền nhạt */
+}
+
+/* Tùy chỉnh màu sắc khi select được chọn */
+.form-select:focus {
+    border-color: #80bdff; /* Màu viền khi focus */
+    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, 0.25); /* Hiệu ứng shadow khi focus */
+}
 
 .tab-content .is_hot {
     position: absolute;
@@ -2095,8 +2105,8 @@ div text {
 /* Style Verify email header */
 
 .verify-email-header {
-    background-color: rgba(0, 200, 255, 0.5);
-
+    background-color: #FFF8EB;
+    font-family: "Roboto" !important ;
     /* opacity: 0.5; */
 }
 
@@ -2111,7 +2121,7 @@ div text {
 }
 
 .container-verify-email div p {
-    color: #ff7307;
+    color: #D68F00;
 }
 
 .container-verify-email div p i {
@@ -2119,22 +2129,23 @@ div text {
 }
 
 .container-verify-email div button {
-    padding: 4px 11px;
-    background-color: rgba(0, 200, 255, 0.6);
+    padding: 6px 20px;
+    background-color: #FFF3DB;
     border: 0px;
     border-radius: 4px;
-    color: #ff7307;
+    color: #D68F00;
+    font-weight: 500;
     transition: all 0.5s;
 }
 
 .container-verify-email div button:hover {
-    background-color: rgb(21, 204, 255);
+    background-color: #FFEECC;
 
 
 }
 
 .container-verify-email div a i {
-    color: #ff7307;
+    color: #D68F00;
     padding-left: 10px;
 }
 
@@ -2144,3 +2155,68 @@ div text {
     opacity: 0;
     visibility: hidden;
 }
+
+
+.badge-not-issued {
+    background-color: #f0ad4e; /* Màu vàng: Chưa xuất vé */
+    color: white;
+}
+.badge-issued {
+    background-color: #5cb85c; /* Màu xanh lá: Đã xuất vé */
+    color: white;
+}
+.badge-expired {
+    background-color: #d9534f; /* Màu đỏ: Đã hết hạn */
+    color: white;
+}
+/* Nút Chi tiết */
+.btn-custom-primary {
+    background-color: #007bff; /* Màu xanh dương */
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+}
+
+.btn-custom-primary:hover {
+    background-color: #0056b3; /* Xanh đậm hơn khi hover */
+    border-color: #0056b3;
+    color: white;
+}
+
+/* Nút Đánh giá */
+.btn-custom-warning {
+    background-color: #ffc107; /* Màu vàng */
+    color: #212529;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+}
+
+.btn-custom-warning:hover {
+    background-color: #e0a800; /* Vàng đậm hơn khi hover */
+    border-color: #d39e00;
+}
+
+/* Khoảng cách giữa các nút */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.action-buttons .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* Cỡ chữ */
+    padding: 6px 12px; /* Khoảng cách trong */
+}
+
+.action-buttons .btn i {
+    margin-right: 5px; /* Khoảng cách giữa icon và text */
+    font-size: 16px; /* Kích thước icon */
+}
+
+
+
+/* Tạo hiệu ứng hover trên mỗi hàng */
+
