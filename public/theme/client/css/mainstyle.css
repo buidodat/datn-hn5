@@ -2095,8 +2095,8 @@ div text {
 /* Style Verify email header */
 
 .verify-email-header {
-    background-color: rgba(0, 200, 255, 0.5);
-
+    background-color: #FFF8EB;
+    font-family: "Roboto" !important ;
     /* opacity: 0.5; */
 }
 
@@ -2111,7 +2111,7 @@ div text {
 }
 
 .container-verify-email div p {
-    color: #ff7307;
+    color: #D68F00;
 }
 
 .container-verify-email div p i {
@@ -2119,22 +2119,23 @@ div text {
 }
 
 .container-verify-email div button {
-    padding: 4px 11px;
-    background-color: rgba(0, 200, 255, 0.6);
+    padding: 6px 20px;
+    background-color: #FFF3DB;
     border: 0px;
     border-radius: 4px;
-    color: #ff7307;
+    color: #D68F00;
+    font-weight: 500;
     transition: all 0.5s;
 }
 
 .container-verify-email div button:hover {
-    background-color: rgb(21, 204, 255);
+    background-color: #FFEECC;
 
 
 }
 
 .container-verify-email div a i {
-    color: #ff7307;
+    color: #D68F00;
     padding-left: 10px;
 }
 
