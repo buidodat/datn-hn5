@@ -223,16 +223,16 @@
                                                 <span class="badge bg-danger">Đã hết hạn</span>
                                             @else --}}
                                                 @switch($ticket->status)
-                                                    @case('Chưa suất vé')
-                                                        <span class="badge bg-warning">Chưa suất vé</span>
+                                                    @case('Chưa xuất vé')
+                                                        <span class="badge bg-warning">Chưa xuất vé</span>
                                                     @break
 
                                                     @case('Đã hết hạn')
                                                         <span class="badge bg-danger">Đã hết hạn</span>
                                                     @break
 
-                                                    @case('Đã suất vé')
-                                                        <span class="badge bg-success">Đã suất vé</span>
+                                                    @case('Đã xuất vé')
+                                                        <span class="badge bg-success">Đã xuất vé</span>
                                                     @break
                                                 @endswitch
                                                 {{-- @endif --}}
@@ -248,12 +248,12 @@
                                     {{-- <td>
                                      <select class="form-select" data-original-status="{{ $ticket->status }}"
                                              data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
-                                         {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                         <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác
+                                         {{ $ticket->expiry->isPast() || $ticket->status == 'Đã xuất vé' ? 'disabled' : '' }}>
+                                         <option value="Chưa xuất vé" {{ $ticket->status == 'Chưa xuất vé' ? 'selected' : '' }}>Chờ xác
                                              nhận
                                          </option>
-                                         <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
-                                         @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                         <option value="Đã xuất vé" {{ $ticket->status == 'Đã xuất vé' ? 'selected' : '' }}>Hoàn tất</option>
+                                         @if ($ticket->expiry->isPast() && $ticket->status != 'Đã xuất vé')
                                              <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
                                          @endif
                                      </select>
@@ -264,7 +264,7 @@
                                                     class="fas fa-eye"></i>
                                             </button>
                                         </a>
-                                        {{-- @if ($ticket->status == 'Đã suất vé')
+                                        {{-- @if ($ticket->status == 'Đã xuất vé')
                                         <a href="{{ route('admin.tickets.print', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
                                                     class="ri-download-2-fill align-middle me-1"></i> In vé

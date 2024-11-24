@@ -3,9 +3,8 @@
 
     .my-account-tabs {
         display: flex;
-        border-bottom: 2px solid #ccc;
+        border-bottom: 1px solid #ccc;
         font-size: 0.8em;
-        margin-bottom: 20px;
     }
 
     .my-account-tab {
@@ -27,11 +26,13 @@
     .my-account-tab.my-account-active {
         background-color: #ff7307;
         color: white;
+        border-bottom: 2px solid red;
     }
 
     .my-account-tab:not(.my-account-active):hover {
         /* background-color: #e2e6ea; */
         background-color: #ff7307;
+        border-bottom: 2px solid red;
     }
 
     .my-account-upload-container {
@@ -240,7 +241,7 @@
 
 
     /* Hành trình điện ảnh */
-   
+
     /* Css lịch sử giao dịch */
 
     .row.mb-3.title-detail {
