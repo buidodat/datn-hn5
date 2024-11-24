@@ -85,7 +85,7 @@
     <div class="ticket-container">
         <div>
             <div class="flex-shrink-0 no-print">
-                @if($oneTicket->status == 'Đã suất vé')
+                @if($oneTicket->status == 'Đã xuất vé')
                     <a href="#" class="btn btn-success btn-sm"
                        onclick="window.print()"><i
                             class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>
@@ -136,7 +136,7 @@
     {{--    <div class="ticket-container">
             <div>
                 <div class="flex-shrink-0">
-                    @if($oneTicket->status == 'Đã suất vé')
+                    @if($oneTicket->status == 'Đã xuất vé')
                         <a href="#" class="btn btn-success btn-sm"
                            onclick="window.print()"><i
                                 class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>

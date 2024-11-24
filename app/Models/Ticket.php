@@ -32,14 +32,14 @@ class Ticket extends Model
     ];
 
     const STATUS = [
-        ['value' => 'pending', 'label' => 'Chưa suất vé'],
-        ['value' => 'confirmed', 'label' => 'Đã suất vé'],
+        ['value' => 'pending', 'label' => 'Chưa xuất vé'],
+        ['value' => 'confirmed', 'label' => 'Đã xuất vé'],
         ['value' => 'cancelled', 'label' => 'Đã hết hạn'],
     ];
 
     //Trạng thái vé
-    const ISSUED = 'Đã suất vé';
-    const NOT_ISSUED = 'Chưa suất vé';
+    const ISSUED = 'Đã xuất vé';
+    const NOT_ISSUED = 'Chưa xuất vé';
     const EXPIRED = 'Đã hết hạn';
     const CANCELED = 'Đã hủy';
 

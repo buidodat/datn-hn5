@@ -846,7 +846,7 @@ class DatabaseSeeder extends Seeder
         //             'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
         //             'code' => fake()->regexify('[A-Za-z0-9]{10}'),
         //             'total_price' => fake()->numberBetween(50, 200) * 1000,
-        //             'status' => fake()->randomElement(['Chưa suất vé']),
+        //             'status' => fake()->randomElement(['Chưa xuất vé']),
         //             'staff' => fake()->randomElement(['admin', 'member']),
         //             'expiry' => $expiryDate,
         //             'created_at' => now(),
