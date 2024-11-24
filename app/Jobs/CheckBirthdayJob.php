@@ -32,8 +32,8 @@ class CheckBirthdayJob implements ShouldQueue
     public function handle(): void
     {
         $users = User::whereMonth('birthday', now()->month)
+            ->whereNotNull('email_verified_at')
             ->get();
-        /*thêm check email verify*/
 
         foreach ($users as $user) {
             $existVoucher = $user->vouchers()
