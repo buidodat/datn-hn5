@@ -288,7 +288,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="my-voucher" class="tab-pane  {{ $page=='membership' ? 'in active' : 'fade' }} item-content" role="tabpanel">
+                    <div id="my-voucher" class="tab-pane  {{ $page=='my-voucher' ? 'in active' : 'fade' }} item-content" role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
