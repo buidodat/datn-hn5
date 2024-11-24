@@ -19,10 +19,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const scanModal = document.getElementById('scanModal');
-        if (!scanModal) {
-            console.error('Không tìm thấy modal với ID "scanModal". Kiểm tra lại HTML.');
-            return;
-        }
         const scanAnotherBtn = document.getElementById("scanAnotherBtn");
         const errorMessage = document.getElementById("error-message");
         const barcodeResult = document.getElementById("barcode-result");
@@ -103,7 +99,12 @@
                 .then(data => {
                     alert(data.message);
                     if (data.success && data.redirect_url) {
-                        window.location.href = data.redirect_url;
+                        // Mở tab mới
+                        window.open(data.redirect_url, '_blank');
+
+                        // Khởi động lại scanner
+                        barcodeResult.innerText = ""; // Xóa kết quả cũ
+                        startScanner();
                     }
                 })
                 .catch(error => {
