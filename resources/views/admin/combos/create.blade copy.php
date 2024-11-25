@@ -65,7 +65,6 @@
                                                 combo</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ old('name') }}" placeholder="Nhập tên combo">
-                                            <span class="error-message" id="error-name"></span>
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -155,7 +154,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let foodCount = 0;
@@ -163,6 +161,8 @@
             const maxFoodItems = 8;
 
             const foodList = document.getElementById('food_list');
+            const validationErrors = document.querySelector('meta[name="validation-errors"]') ?
+                JSON.parse(document.querySelector('meta[name="validation-errors"]').content) : {};
 
             // Thay thế `@json($foodPrice->pluck('price', 'id'))` với dữ liệu thực tế từ backend
             const foodPrices = @json($foodPrice->pluck('price', 'id'));
@@ -190,7 +190,7 @@
                                         <option value="{{ $itemId }}">{{ $itemName }}</option>
                                     @endforeach
                                 </select>
-                                <div class="invalid-feedback fs-6" id="${index}_food_error"></div> <!-- Div lỗi cho combo_food -->
+                                <span class="text-danger" id="${id}_food_error"></span>
                             </div>
                             <div class="col-md-3 mx-4">
                                 <label for="${id}" class="form-label">Số lượng</label>
@@ -202,7 +202,7 @@
                                         <button type="button" class="pluss">+</button>
                                     </div>
                                 </div>
-                                <div class="invalid-feedback fs-6" id="${index}_quantity_error"></div> <!-- Div lỗi cho combo_quantity -->
+                                <span class="text-danger" id="${id}_quantity_error"></span>
                             </div>
 
                             <div class="col-md-5 pt-4 mt-1">
@@ -229,7 +229,16 @@
 
                 foodCount++;
 
-
+                // Hiển thị lỗi nếu có
+                if (validationErrors[`combo_food.${index}`]) {
+                    document.getElementById(`${id}_food_error`).innerText = validationErrors[`combo_food.${index}`][
+                        0
+                    ];
+                }
+                if (validationErrors[`combo_quantity.${index}`]) {
+                    document.getElementById(`${id}_quantity_error`).innerText = validationErrors[
+                        `combo_quantity.${index}`][0];
+                }
                 updateSelectOptions(); // Cập nhật các tùy chọn sau khi thêm món ăn mới
             }
 
@@ -311,75 +320,6 @@
             document.querySelector('button[onclick="addFood()"]').addEventListener('click', function() {
                 addFood(foodCount);
             });
-
-            function displayValidationErrors(errors) {
-                // Xóa thông báo lỗi cũ
-                $('.invalid-feedback').empty();
-
-                // hiển thị validate của trường combo_food + combo_quantity
-                for (let field in errors) {
-                    let fieldErrors = errors[field];
-
-                    // Tìm id combo_food và combo_quantity
-                    let errorDiv;
-                    if (field.startsWith('combo_food')) {
-                        let index = field.match(/\d+/)[0];
-                        errorDiv = $(`#${index}_food_error`);
-                    } else if (field.startsWith('combo_quantity')) {
-                        let index = field.match(/\d+/)[0];
-                        errorDiv = $(`#${index}_quantity_error`);
-                    }
-
-                    if (errorDiv && errorDiv.length) {
-                        errorDiv.text(fieldErrors[0]); // Gán lỗi vào div
-                        errorDiv.show();
-                    }
-                }
-
-                // hiển thị validate của các trường còn lại
-                $('.error-message').remove();
-                // Hiển thị thông báo lỗi mới
-                for (let field in errors) {
-                    let fieldErrors = errors[field]; // Array lỗi của từng field
-                    let input = $(`[name="${field}"]`); // Tìm input theo tên
-
-                    // Thêm lỗi phía dưới input
-                    if (input.length > 0) {
-                        input.after(`<div class="error-message text-danger">${fieldErrors[0]}</div>`);
-                    }
-                }
-            }
-
-            $('#comboForm').on('submit', function(e) {
-                e.preventDefault();
-
-                let formData = new FormData(this);
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            // alert(response.message);
-                            window.location.href = '/admin/combos';
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            console.log(errors); // Kiểm tra lỗi
-                            displayValidationErrors(errors);
-                        } else {
-                            alert('Đã xảy ra lỗi, vui lòng thử lại!');
-                        }
-                    }
-                });
-            });
-
-
         });
     </script>
 @endsection
