@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
                                     @if (Auth::user()->hasRole('System Admin'))
@@ -77,20 +77,28 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input type="date" name="date" class="form-control"
                                             value="{{ $date }}">
                                     </div>
+                                    <div class="col-md-2">
+                                        <select name="is_active" class="form-select">
+                                            <option value="" {{ $isActive == "" ? 'selected' : '' }}>Tất cả</option>
+                                            <option value="0" {{ $isActive == "0" ? 'selected' : '' }}>Tắt</option>
+                                            <option value="1" {{ $isActive == "1" ? 'selected' : '' }}>Bật</option>
+                                        </select>
+                                    </div>
 
-                                    <div class="col-md-3">
+
+                                    <div class="col-md-2">
                                         <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
                                     </div>
                                 </div>
                             </form>
 
                         </div>
-                        <div class="col-md-4" align="right">
-                            <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a>
+                        <div class="col-md-2" align="right">
+                            {{-- <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a> --}}
                             <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                         </div>
                     </div>
@@ -405,10 +413,10 @@
 
                         if (response.data.is_active) {
                             checkbox.closest('td').find('.select-showtime')
-                        .remove(); // Loại bỏ checkbox khỏi DOM
+                                .remove(); // Loại bỏ checkbox khỏi DOM
                         } else {
                             checkbox.closest('td').find('.select-showtime')
-                        .show(); // Hiển thị lại checkbox nếu trạng thái tắt
+                                .show(); // Hiển thị lại checkbox nếu trạng thái tắt
                         }
 
 

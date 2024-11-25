@@ -37,56 +37,37 @@ class ShowtimeController extends Controller
 
     public function index(Request $request)
     {
-
-
-        // $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
-        // if ($user->cinema_id != "") {
-        //     $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($user) {
-        //         $query->where('id', $user->cinema_id);
-        //     });
-        // }
-        // if ($request->input('cinema_id')) {
-        //     $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
-        //         $query->where('id', $request->cinema_id);
-        //     });
-        // }
-
-        // if ($request->input('date')) {
-        //     $showtimes = $showtimes->where('date', $request->date);
-        // }
-
-        // $showtimes = $showtimes->paginate(15);
-
-        // $showtimes->appends([
-        //     'cinema_id' => $request->cinema_id,
-        //     'date' => $request->date
-        // ]);
-
         $branches = Branch::all();
         $user = auth()->user();
 
         $defaultBranchId = 1;
         $defaultCinemaId = 1;
         $defaultDate = now()->format('Y-m-d');
+        $defaultIsActive = null; 
 
         $branchId = $request->input('branch_id', $defaultBranchId);
         $cinemaId = $request->input('cinema_id', $defaultCinemaId);
         $date = $request->input('date', $defaultDate);
+        $isActive = $request->input('is_active', $defaultIsActive);  
 
         // Tải danh sách chi nhánh và rạp
         $cinemas = Cinema::where('branch_id', $branchId)->get();
 
+        // Lọc showtimes theo cinema_id, date, và is_active (nếu có)
+        $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
+            ->whereDate('date', $date);
 
-        $showtimes = Showtime::where('cinema_id', $cinemaId)
-            ->whereDate('date', $date)
-            ->with(['movie', 'room', 'movieVersion'])
-            ->latest('id')
-            ->get();
-
+        if ($isActive !== null) { 
+            $showtimesQuery->where('is_active', $isActive);
+        } 
+        
+        $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();
         $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date', 'isActive'));
     }
+
+
 
 
 
@@ -407,15 +388,10 @@ class ShowtimeController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateShowtimeRequest $request, Showtime $showtime)
     {
-        //
 
         try {
-
             $movieVersion = MovieVersion::find($request->movie_version_id);
             $room = Room::find($request->room_id);
             $typeRoom = TypeRoom::find($room->type_room_id);
