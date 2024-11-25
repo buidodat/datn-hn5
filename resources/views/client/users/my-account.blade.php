@@ -302,7 +302,8 @@
                                         <thead class='xanh-fpt'>
                                             <tr>
                                                 <th>Voucher</th>
-                                                <th>Giảm giá (VNĐ)</th>
+                                                <th>Giảm giá </th>
+                                                <th>Còn lại</th>
                                                 <th>Nội dung</th>
                                                 <th>Thời gian</th>
                                             </tr>
@@ -312,8 +313,12 @@
                                                 <tr>
                                                     <td>{{ $voucher->code }}</td>
                                                     <td>{{ number_format($voucher->discount, 0, ',', '.') }} VNĐ</td>
+                                                    <td>{{ $voucher->remaining_uses }}</td>
                                                     <td>{{ $voucher->title }}</td>
-                                                    <td>{{ $voucher->start_date_time ? $voucher->start_date_time->format('H:i, d/m/Y') : '' }} <strong>đến</strong> {{ $voucher->end_date_time ? $voucher->end_date_time->format('H:i, d/m/Y') : '' }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($voucher->start_date_time)->format('H:i, d/m/Y') ?? '' }}
+                                                    <strong>đến</strong>
+                                                    {{ \Carbon\Carbon::parse($voucher->end_date_time)->format('H:i, d/m/Y') ?? '' }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
