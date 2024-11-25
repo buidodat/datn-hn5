@@ -28,7 +28,7 @@ class CheckoutController extends Controller
         $showtime = Showtime::where('slug', $slug)->first();
         // dd($showtime->toArray());
 
-        if(empty($showtime)){
+        if (empty($showtime)) {
             return redirect()->route('home')->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
         }
 
@@ -69,7 +69,9 @@ class CheckoutController extends Controller
     public function applyVoucher(Request $request)
 
     {
-        $voucher = Voucher::where('code', $request->code)->first();
+        $voucher = Voucher::where('is_active', 1)
+            ->where('code', $request->code)
+            ->first();
 
         if (!$voucher) {
             return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
@@ -124,10 +126,11 @@ class CheckoutController extends Controller
             return response()->json(['error' => 'Voucher đã hết lượt sử dụng.'], 400);
         }
 
-        // Bỏ qua phản hồi nếu discount = 0
         if ($voucher->discount == 0) {
             return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
         }
+
+
         $paymentVoucher = [
             'voucher_id' => $voucher->id,
             'voucher_code' => $voucher->code,
