@@ -77,30 +77,29 @@
                                                                             @php $col++; @endphp
                                                                         @else
                                                                             <td class="row-seat">
-                                                                                    @switch($seat->type_seat_id ?? "")
-                                                                                        @case(1)
-                                                                                            <span data-seat-id="{{ $seat->id }}"
-                                                                                                data-seat-price="{{ $seat->pivot->price }}"
-                                                                                                data-type="1"
-                                                                                                class="solar--sofa-3-bold seat span-seat {{  $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
-                                                                                                id="seat-{{ $seat->id }}">
-                                                                                                <span
-                                                                                                    class="seat-label">{{ $seat->name }}</span>
-                                                                                            </span>
-                                                                                        @break
-
-                                                                                        @case(2)
+                                                                                @switch($seat->type_seat_id ?? "")
+                                                                                    @case(1)
+                                                                                        <span data-seat-id="{{ $seat->id }}"
+                                                                                            data-seat-price="{{ $seat->pivot->price }}"
+                                                                                            data-type="1"
+                                                                                            class="solar--sofa-3-bold seat span-seat {{ $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
+                                                                                            id="seat-{{ $seat->id }}">
                                                                                             <span
-                                                                                                data-seat-id="{{ $seat->id }}"
-                                                                                                data-seat-price="{{ $seat->pivot->price }}"
-                                                                                                data-type="2"
-                                                                                                class="mdi--love-seat text-muted seat span-seat {{  $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
-                                                                                                id="seat-{{ $seat->id }}">
-                                                                                                <span
-                                                                                                    class="seat-label">{{ $seat->name }}</span>
-                                                                                            </span>
-                                                                                        @break
-                                                                                    @endswitch
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    @break
+
+                                                                                    @case(2)
+                                                                                        <span data-seat-id="{{ $seat->id }}"
+                                                                                            data-seat-price="{{ $seat->pivot->price }}"
+                                                                                            data-type="2"
+                                                                                            class="mdi--love-seat text-muted seat span-seat {{ $seat->pivot->status }} {{ $seat->is_active == 0 ? 'seat-is_active' : '' }}"
+                                                                                            id="seat-{{ $seat->id }}">
+                                                                                            <span
+                                                                                                class="seat-label">{{ $seat->name }}</span>
+                                                                                        </span>
+                                                                                    @break
+                                                                                @endswitch
 
                                                                             </td>
                                                                         @endif
@@ -232,6 +231,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/js/choose-seat.js')
     <script>
+        function showAlertMessage(message, type = 'error') {
+            Swal.fire({
+                text: message,
+                icon: type,
+                timer: 5000,
+                timerProgressBar: true,
+                confirmButtonText: 'Đóng'
+            });
+        }
+
+
         // Định nghĩa các biến toàn cục
         const selectedSeatsDisplay = document.getElementById('selected-seats');
         const hiddenSelectedSeats = document.getElementById('hidden-selected-seats-name');
@@ -287,7 +297,8 @@
 
             // Kiểm tra trạng thái ghế (hold hoặc sold)
             if (seat.classList.contains('hold') || seat.classList.contains('sold')) {
-                alert(seat.classList.contains('hold') ? 'Ghế này đã được giữ!' : 'Ghế này đã được bán!');
+                // alert(seat.classList.contains('hold') ? 'Ghế này đã được giữ!' : 'Ghế này đã được bán!');
+                showAlertMessage(seat.classList.contains('hold') ? 'Ghế này đã được giữ!' : 'Ghế này đã được bán!', 'warning')
                 return;
             }
 
@@ -299,7 +310,8 @@
                 releaseSeat(seat, seatLabel, seatId, seatPrice);
             } else {
                 if (selectedSeats.length >= 8) {
-                    alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                    // alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                    showAlertMessage('Bạn chỉ được chọn tối đa 8 ghế!', 'warning')
                     return;
                 }
                 selectSeat(seat, seatLabel, seatId, seatPrice);
@@ -349,7 +361,20 @@
             updateDisplay();
         }
 
-        // Cập nhật ghế trên server
+        // // Cập nhật ghế trên server
+        // async function updateSeatOnServer(seatId, action) {
+        //     try {
+        //         await axios.post('/update-seat', {
+        //             seat_id: seatId,
+        //             showtime_id: showtimeId,
+        //             action: action
+        //         });
+        //     } catch (error) {
+        //         console.error(`Lỗi ${action === 'hold' ? 'giữ' : 'hủy'} ghế:`, error);
+        //         throw error; // Ném lỗi để có thể xử lý ở nơi gọi
+        //     }
+        // }
+
         async function updateSeatOnServer(seatId, action) {
             try {
                 await axios.post('/update-seat', {
@@ -358,10 +383,27 @@
                     action: action
                 });
             } catch (error) {
-                console.error(`Lỗi ${action === 'hold' ? 'giữ' : 'hủy'} ghế:`, error);
-                throw error; // Ném lỗi để có thể xử lý ở nơi gọi
+                if (error.response) {
+                    const errorMessage = error.response.data.message || 'Đã xảy ra lỗi. Vui lòng thử lại.';
+                    if (error.response.status === 409) {
+                        // Thông báo lỗi khi ghế đã bị giữ
+                        Swal.fire({
+                            icon: 'error',
+                            // title: 'Lỗi chọn ghế',
+                            text: errorMessage,
+                            confirmButtonText: 'Đóng'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Reload trang khi người dùng bấm OK
+                                location.reload();
+                            }
+                        });
+                    }
+                    throw error; // Ném lỗi để xử lý bên ngoài nếu cần
+                }
             }
         }
+
 
         // Cập nhật hiển thị
         function updateDisplay() {
@@ -398,7 +440,8 @@
                         const emptySeat = seatsInRow[emptySeatIndex];
 
                         // Bỏ qua nếu ghế ở giữa có trạng thái sold hoặc hold/ ghế hỏng
-                        if (!emptySeat.classList.contains('sold') && !emptySeat.classList.contains('hold') && !emptySeat.classList.contains('seat-is_active')) {
+                        if (!emptySeat.classList.contains('sold') && !emptySeat.classList.contains('hold') && !
+                            emptySeat.classList.contains('seat-is_active')) {
                             isSoleSeatIssue = true;
                             soleSeatsMessage += emptySeat.querySelector('.seat-label').textContent + ' ';
                         }
@@ -436,7 +479,7 @@
                         isEdgeSeatIssue = true;
                         edgeSeatsMessage += firstSeat.querySelector('.seat-label').textContent + ' ';
                     }
-                    
+
                     // Bỏ qua nếu ghế cuối là ghế đôi, có type=3 hoặc có trạng thái sold/hold, ghế hỏng
                     if (!lastSeat.classList.contains('selected') &&
                         beforeLastSeat.classList.contains('selected') &&
@@ -469,18 +512,23 @@
 
             if (selectedSeats.length === 0) {
                 event.preventDefault();
-                alert('Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.');
+                // alert('Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.');
+                showAlertMessage('Bạn chưa chọn ghế nào! Vui lòng chọn ghế trước khi tiếp tục.', 'warning')
                 return false;
             } else if (selectedSeats.length > 8) {
                 event.preventDefault();
-                alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                // alert('Bạn chỉ được chọn tối đa 8 ghế!');
+                showAlertMessage('Bạn chỉ được chọn tối đa 8 ghế!', 'warning')
             } else if (isEdgeSeatIssue) {
                 event.preventDefault();
-                alert(`Bạn không được để trống ghế: ${edgeSeatsMessage}`);
+                // alert(`Bạn không được để trống ghế: ${edgeSeatsMessage}`);
+                showAlertMessage(`Bạn không được để trống ghế: ${edgeSeatsMessage}`, 'warning')
                 return false;
             } else if (isSoleSeatIssue) {
                 event.preventDefault();
-                alert(`Bạn không được để trống ghế: ${soleSeatsMessage}`);
+                // alert(`Bạn không được để trống ghế: ${soleSeatsMessage}`);
+                showAlertMessage(`Bạn không được để trống ghế: ${soleSeatsMessage}`, 'warning')
+
                 return false;
             }
         });
@@ -508,7 +556,8 @@
                 clearInterval(countdown); // Dừng đếm ngược
 
                 // Hiển thị thông báo và quay về trang chủ
-                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                // alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                showAlertMessage('Hết thời gian! Bạn sẽ được chuyển về trang chủ.', 'warning')
                 window.location.href = '/'; // Điều hướng về trang chủ ("/")
             }
         }, 1000); // Cập nhật mỗi giây

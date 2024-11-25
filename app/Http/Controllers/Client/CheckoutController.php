@@ -58,11 +58,10 @@ class CheckoutController extends Controller
             ->get();
 
         // Lấy danh sách combo và thực phẩm liên quan
-        $data = Combo::query()->where('is_active', '1')->with('comboFood')->latest('id')->get();
-        $foods = Food::query()->select('id', 'name', 'type')->get();
+        $data = Combo::query()->where('is_active', '1')->with('food')->latest('id')->get();
 
         // Trả về view với dữ liệu
-        return view('client.checkout', compact('data', 'foods', 'showtime', 'checkoutData', 'seats'));
+        return view('client.checkout', compact('data', 'showtime', 'checkoutData', 'seats'));
     }
 
 
