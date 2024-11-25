@@ -161,7 +161,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận ghế</label>
                                 <select class="form-select" id="matrix_id" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
+                                    @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
                                         <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
                                     @endforeach
                                 </select>

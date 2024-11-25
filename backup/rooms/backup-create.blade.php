@@ -113,7 +113,7 @@
                                             <span class='text-danger'>*</span>
                                             <label for="surcharge" class="form-label ">Ma trận ghế:</label>
                                             <select name="matrix_id" id="" class="form-select">
-                                                @foreach (App\Models\Room::MATRIXS as $matrix)
+                                                @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
                                                     <option value="{{ $matrix['id'] }}" @selected(old('matrix_id') == $matrix['id'])>
                                                         {{ $matrix['name'] }}</option>
                                                 @endforeach
