@@ -35,40 +35,43 @@ class ShowtimeController extends Controller
         $this->middleware('can:Xem chi tiết suất chiếu')->only('show');
     }
 
+
     public function index(Request $request)
     {
-        $branches = Branch::all();
-        $user = auth()->user();
-
+        // Giá trị mặc định
         $defaultBranchId = 1;
         $defaultCinemaId = 1;
         $defaultDate = now()->format('Y-m-d');
-        $defaultIsActive = null; 
+        $defaultIsActive = null;
 
-        $branchId = $request->input('branch_id', $defaultBranchId);
-        $cinemaId = $request->input('cinema_id', $defaultCinemaId);
-        $date = $request->input('date', $defaultDate);
-        $isActive = $request->input('is_active', $defaultIsActive);  
+        // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
+        $branchId = $request->input('branch_id', session('branch_id', $defaultBranchId));
+        $cinemaId = $request->input('cinema_id', session('cinema_id', $defaultCinemaId));
+        $date = $request->input('date', session('date', $defaultDate));
+        $isActive = $request->input('is_active', session('is_active', $defaultIsActive));
 
-        // Tải danh sách chi nhánh và rạp
+        // Lưu vào session
+        session([
+            'branch_id' => $branchId,
+            'cinema_id' => $cinemaId,
+            'date' => $date,
+            'is_active' => $isActive
+        ]);
+
+        $branches = Branch::all();
         $cinemas = Cinema::where('branch_id', $branchId)->get();
 
-        // Lọc showtimes theo cinema_id, date, và is_active (nếu có)
         $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
             ->whereDate('date', $date);
 
         if ($isActive !== null) { 
             $showtimesQuery->where('is_active', $isActive);
-        } 
-        
+        }
         $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();
-        $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
 
+        $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date', 'isActive'));
     }
-
-
-
 
 
     public function create()

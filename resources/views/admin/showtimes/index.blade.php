@@ -20,7 +20,10 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách Suất chiếu</h4>
+                <h4 class="mb-sm-0">Danh sách Suất chiếu @if (Auth::user()->cinema_id != '')
+                        - {{ Auth::user()->cinema->name }}
+                    @endif
+                </h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -35,15 +38,13 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12">      
             <div class="card">
                 <div class="card-header ">
                     {{-- d-flex justify-content-between --}}
                     <div class="row mb-3">
                         <h5 class="card-title mb-0">Danh sách Suất chiếu
-                            @if (Auth::user()->cinema_id != '')
-                                - {{ Auth::user()->cinema->name }}
-                            @endif
+
                         </h5>
                     </div>
 
@@ -51,13 +52,15 @@
                         <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
+                                    <label for="">Lọc theo Rạp/Ngày Chiếu/Trạng thái</label>
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
+                                           
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}"
-                                                        {{ $branch->id == $branchId ? 'selected' : '' }}>
+                                                        {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
                                                         {{ $branch->name }}
                                                     </option>
                                                 @endforeach
@@ -69,7 +72,7 @@
                                                 <option value="">Chọn Rạp</option>
                                                 @foreach ($cinemas as $cinema)
                                                     <option value="{{ $cinema->id }}"
-                                                        {{ $cinema->id == $cinemaId ? 'selected' : '' }}>
+                                                        {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
                                                         {{ $cinema->name }}
                                                     </option>
                                                 @endforeach
@@ -79,21 +82,25 @@
 
                                     <div class="col-md-2">
                                         <input type="date" name="date" class="form-control"
-                                            value="{{ $date }}">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select name="is_active" class="form-select">
-                                            <option value="" {{ $isActive == "" ? 'selected' : '' }}>Tất cả</option>
-                                            <option value="0" {{ $isActive == "0" ? 'selected' : '' }}>Tắt</option>
-                                            <option value="1" {{ $isActive == "1" ? 'selected' : '' }}>Bật</option>
-                                        </select>
+                                            value="{{ session('date', now()->format('Y-m-d')) }}">
                                     </div>
 
+                                    <div class="col-md-2">
+                                        <select name="is_active" class="form-select">
+                                            <option value=""
+                                                {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả</option>
+                                            <option value="0"
+                                                {{ session('is_active', null) === '0' ? 'selected' : '' }}>Tắt</option>
+                                            <option value="1"
+                                                {{ session('is_active', null) === '1' ? 'selected' : '' }}>Bật</option>
+                                        </select>
+                                    </div>
 
                                     <div class="col-md-2">
                                         <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
                                     </div>
                                 </div>
+
                             </form>
 
                         </div>
@@ -285,7 +292,7 @@
 
                                                                 <a href="" class="px-5">
                                                                     <button id="change-status-all" title="thay đổi"
-                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                        class="btn btn-primary btn-sm">Bật trạng thái
                                                                         tất cả</button>
                                                                 </a>
                                                             </div>
