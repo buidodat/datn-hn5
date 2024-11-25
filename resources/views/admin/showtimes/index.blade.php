@@ -199,13 +199,13 @@
                                                             //danh sách ticket
                                                             $tickets = $showtime->tickets;
 
-                                                            // Đếm số lượng ghế đã bán
+                                                            //Đếm số lượng ghế đã bán
                                                             $soldSeats = \App\Models\TicketSeat::whereIn(
                                                                 'ticket_id',
                                                                 $tickets->pluck('id'),
                                                             )->count();
 
-                                                            // Tổng số ghế trong phòng chiếu
+                                                            //Tổng số ghế trong phòng chiếu
                                                             $totalSeats = $showtime->room->seats
                                                                 ->whereNull('deleted_at')
                                                                 ->where('is_active', true)
@@ -216,8 +216,6 @@
                                                         @endphp
 
                                                         <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
-
-
 
                                                         <td>
                                                             {{ $showtime->format }}
@@ -230,10 +228,10 @@
                                                                     name="is_active" type="checkbox" role="switch"
                                                                     data-showtime-id="{{ $showtime->id }}"
                                                                     @checked($showtime->is_active)
-                                                                    @if ($showtime->is_active) disabled @endif
-                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')">
+                                                                    @if ($showtime->is_active) disabled @endif>
                                                             </div>
                                                         </td>
+
                                                         <td>
                                                             <a href="{{ route('admin.showtimes.show', $showtime) }}">
                                                                 <button title="xem" class="btn btn-success btn-sm "
@@ -241,7 +239,8 @@
 
                                                             @if ($showtime->is_active == 0)
                                                                 <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                    <button title="sửa" class="btn btn-warning btn-sm"
+                                                                    <button title="sửa"
+                                                                        class="btn btn-warning btn-edit btn-sm"
                                                                         type="button"><i class="fas fa-edit"></i></button>
                                                                 </a>
 
@@ -250,7 +249,8 @@
                                                                     method="post" class="d-inline-block">
                                                                     @csrf
                                                                     @method('delete')
-                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger btn-destroy btn-sm"
                                                                         onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
                                                                         <i class="ri-delete-bin-7-fill"></i>
                                                                     </button>
@@ -263,9 +263,6 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-
-
-
                                                         @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
                                                             <div class="d-flex justify-content-between">
                                                                 <form action="" method="post"
@@ -367,32 +364,80 @@
             }
         });
 
-        $(document).ready(function() {
-            $(document).on('change', '.changeActive', function() {
 
-                let showtimeId = $(this).data('showtime-id');
-                let is_active = $(this).is(':checked') ? 1 : 0;
-                // Gửi yêu cầu AJAX
-                $.ajax({
-                    url: '{{ route('showtimes.change-active') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: showtimeId,
-                        is_active: is_active
-                    },
-                    success: function(response) {
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+        //Thay đôi ttrangj thái is_active ko load
+        //mới
+        $(document).on('change', '.changeActive', function() {
+            let showtimeId = $(this).data('showtime-id');
+            let is_active = $(this).is(':checked') ? 1 : 0;
+
+            if (!confirm(
+                    'Bạn có chắc muốn thay đổi? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')) {
+
+                $(this).prop('checked', !is_active);
+                return;
+            }
+
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát.',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            $.ajax({
+                url: '{{ route('showtimes.change-active') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: showtimeId,
+                    is_active: is_active
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
+                        checkbox.prop('disabled', response.data.is_active); // Disable nếu bật
+                        checkbox.closest('tr').find('.btn-edit, .btn-destroy').toggle(!response.data
+                            .is_active); // Ẩn nút sửa, xóa
+
+                        // checkbox.closest('tr').find('.select-showtime').toggle(!response.data
+                        //     .is_active); // Ẩn nút select checkbox 
+
+                        if (response.data.is_active) {
+                            checkbox.closest('td').find('.select-showtime')
+                        .remove(); // Loại bỏ checkbox khỏi DOM
+                        } else {
+                            checkbox.closest('td').find('.select-showtime')
+                        .show(); // Hiển thị lại checkbox nếu trạng thái tắt
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Trạng thái hoạt động đã được cập nhật.',
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
                     }
-                });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                        timer: 3000
+                    });
+
+                    // Hoàn lại trạng thái checkbox
+                    let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
+                    checkbox.prop('checked', !is_active);
+                }
             });
         });
+
+
+
 
         $(document).ready(function() {
             $('.toggle-button').click(function() {

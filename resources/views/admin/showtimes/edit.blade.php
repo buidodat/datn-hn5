@@ -101,13 +101,9 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="title" class="form-label ">Tên Chi Nhánh:</label>
-                                            <select name="branch_id" id="branch" class="form-select">
+                                            <select name="branch_id" id="branch" disabled @readonly(true) class="form-select">
                                                 <option value="">Chọn</option>
-                                                {{-- @foreach ($branches as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        @if ($item->id == $showtime->room->cinema->branch->id) selected @endif>
-                                                        {{ $item->name }}</option>
-                                                @endforeach --}}
+                                         
                                                 @foreach ($branches as $item)
                                                     <option value="{{ $item->id }}" @selected($item->id == old('branch_id', $showtime->cinema->branch_id ?? ''))>
                                                         {{ $item->name }}</option>
@@ -124,10 +120,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="title" class="form-label ">Tên Rạp:</label>
-                                            <select name="cinema_id" id="cinema" class="form-select">
+                                            <select name="cinema_id" id="cinema" disabled @readonly(true) class="form-select">
                                                 <option value="">Chọn</option>
-                                                {{-- <option value="{{ $showtime->room->cinema->id }}" selected>
-                                                    {{ $showtime->room->cinema->name }}</option> --}}
                                             </select>
                                             @error('cinema_id')
                                                 <div class='mt-1'>
