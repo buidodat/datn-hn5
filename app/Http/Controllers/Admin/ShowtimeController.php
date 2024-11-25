@@ -35,59 +35,43 @@ class ShowtimeController extends Controller
         $this->middleware('can:Xem chi tiết suất chiếu')->only('show');
     }
 
+
     public function index(Request $request)
     {
-
-
-        // $showtimes = Showtime::with(['room.cinema', 'movieVersion.movie'])->latest('id');
-        // if ($user->cinema_id != "") {
-        //     $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($user) {
-        //         $query->where('id', $user->cinema_id);
-        //     });
-        // }
-        // if ($request->input('cinema_id')) {
-        //     $showtimes = $showtimes->whereHas('room.cinema', function ($query) use ($request) {
-        //         $query->where('id', $request->cinema_id);
-        //     });
-        // }
-
-        // if ($request->input('date')) {
-        //     $showtimes = $showtimes->where('date', $request->date);
-        // }
-
-        // $showtimes = $showtimes->paginate(15);
-
-        // $showtimes->appends([
-        //     'cinema_id' => $request->cinema_id,
-        //     'date' => $request->date
-        // ]);
-
-        $branches = Branch::all();
-        $user = auth()->user();
-
+        // Giá trị mặc định
         $defaultBranchId = 1;
         $defaultCinemaId = 1;
         $defaultDate = now()->format('Y-m-d');
+        $defaultIsActive = null;
 
-        $branchId = $request->input('branch_id', $defaultBranchId);
-        $cinemaId = $request->input('cinema_id', $defaultCinemaId);
-        $date = $request->input('date', $defaultDate);
+        // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
+        $branchId = $request->input('branch_id', session('branch_id', $defaultBranchId));
+        $cinemaId = $request->input('cinema_id', session('cinema_id', $defaultCinemaId));
+        $date = $request->input('date', session('date', $defaultDate));
+        $isActive = $request->input('is_active', session('is_active', $defaultIsActive));
 
-        // Tải danh sách chi nhánh và rạp
+        // Lưu vào session
+        session([
+            'branch_id' => $branchId,
+            'cinema_id' => $cinemaId,
+            'date' => $date,
+            'is_active' => $isActive
+        ]);
+
+        $branches = Branch::all();
         $cinemas = Cinema::where('branch_id', $branchId)->get();
 
+        $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
+            ->whereDate('date', $date);
 
-        $showtimes = Showtime::where('cinema_id', $cinemaId)
-            ->whereDate('date', $date)
-            ->with(['movie', 'room', 'movieVersion'])
-            ->latest('id')
-            ->get();
+        if ($isActive !== null) { 
+            $showtimesQuery->where('is_active', $isActive);
+        }
+        $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();
 
         $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date', 'isActive'));
     }
-
 
 
     public function create()
@@ -219,13 +203,27 @@ class ShowtimeController extends Controller
                     $startHour = $request->input('start_hour'); // Giờ mở cửa
                     $endHour = $request->input('end_hour'); // Giờ đóng cửa
 
+                    // if (!$startHour || !$endHour) {
+                    //     return back()->with('error', 'Bạn phải nhập Giờ mở cửa và Giờ đóng cửa khi chọn tự động tạo suất chiếu.');
+                    // }
+
                     //
                     $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startHour);
                     $endOfDay = \Carbon\Carbon::parse($request->date . ' ' . $endHour);
 
+                    // Kiểm tra nếu giờ mở cửa hoặc đóng cửa trong quá khứ
+                    if ($startTime->isPast() || $endOfDay->isPast()) {
+                        return back()->with('error', "Giờ mở cửa và giờ đóng cửa phải nằm trong tương lai.");
+                    }
+
                     // Lặp
                     while ($startTime->lt($endOfDay)) {
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
+
+                        // // Kiểm tra nếu suất chiếu trong quá khứ
+                        // if ($startTime->isPast()) {
+                        //     break; // Dừng tạo suất chiếu
+                        // }
 
                         foreach ($existingShowtimes as $showtime) {
                             if ($startTime->lt($showtime->end_time) && $endTime->gt($showtime->start_time)) {
@@ -284,15 +282,17 @@ class ShowtimeController extends Controller
                         }
                     }
                 } else {
-
+                    if (empty($request->start_time)) {
+                        return back()->with('error', 'Bạn phải nhập ít nhất một Giờ chiếu khi thêm suất chiếu thủ công.');
+                    }
                     // Thêm suất chiếu theo cách thủ công
                     foreach ($request->start_time as $i => $startTimeChild) {
                         $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
 
                         // Kiểm tra nếu thời gian chiếu nằm trong quá khứ
-                        if ($startTime->isPast()) {
-                            return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
-                        }
+                        // if ($startTime->isPast()) {
+                        //     return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
+                        // }
 
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
@@ -391,15 +391,10 @@ class ShowtimeController extends Controller
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateShowtimeRequest $request, Showtime $showtime)
     {
-        //
 
         try {
-
             $movieVersion = MovieVersion::find($request->movie_version_id);
             $room = Room::find($request->room_id);
             $typeRoom = TypeRoom::find($room->type_room_id);

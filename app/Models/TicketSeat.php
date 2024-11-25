@@ -18,15 +18,7 @@ class TicketSeat extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
-    // Sơn cmt model cũ
-    // public function cinema()
-    // {
-    //     return $this->belongsTo(Cinema::class);
-    // }
-    // public function room()
-    // {
-    //     return $this->belongsTo(Room::class);
-    // }
+  
     public function seat()
     {
         return $this->belongsTo(Seat::class);
