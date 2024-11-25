@@ -79,13 +79,13 @@
     </style>
 </head>
 <body class="body" style="width:100%;height:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
-<div dir="ltr" class="es-wrapper-color" lang="vi" style="background-color:#F6F6F6">
+<div dir="ltr" class="es-wrapper-color" lang="vi" style="background-color:#f3f3f9">
     <!--[if gte mso 9]>
     <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
-        <v:fill type="tile" color="#f6f6f6"></v:fill>
+        <v:fill type="tile" color="#f3f3f9"></v:fill>
     </v:background>
     <![endif]-->
-    <table width="100%" cellspacing="0" cellpadding="0" class="es-wrapper" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;background-color:#F6F6F6">
+    <table width="100%" cellspacing="0" cellpadding="0" class="es-wrapper" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;background-color:#f3f3f9">
         <tbody>
         <tr style="border-collapse:collapse">
             <td valign="top" style="padding:0;Margin:0">

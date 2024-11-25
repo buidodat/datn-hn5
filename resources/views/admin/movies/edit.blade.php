@@ -34,15 +34,6 @@
                     </div>
                 @endif
             </div>
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <div class="col-lg-9 col-md-9 ">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">

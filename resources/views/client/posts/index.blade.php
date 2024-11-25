@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="pager_wrapper prs_blog_pagi_wrapper">
-                    {{ $posts->links('pagination::bootstrap-4') }} 
+                    {{ $posts->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
@@ -53,10 +53,10 @@
 @section('styles')
     <style>
     .hs_blog_box1_main_wrapper {
-        background-color: #F6F6F6;
+        background-color: #f3f3f9;
         padding: 20px;
         border-radius: 10px;
-        height: 450px; 
+        height: 450px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;

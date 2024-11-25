@@ -45,7 +45,7 @@ class StoreComboRequest extends FormRequest
             'price_sale.min' => 'Giá phải lớn hơn 1000đ.',
             'price_sale.max' => 'Giá phải nhỏ hơn 1.000.000đ.',
             'description.required' => 'Bạn chưa nhập mô tả.',
-            'combo_food.*.required' => 'Bạn chưaa chọn món.',
+            'combo_food.*.required' => 'Bạn chưa chọn món.',
             'combo_food.*.exists' => 'Món ăn bạn chọn không tồn tại.',
             'combo_quantity.*.integer' => 'Số lượng phải là số nguyên.',
             'combo_quantity.*.min' => 'Số lượng phải lớn hơn 0.',

@@ -189,9 +189,9 @@
                                         <div class="modal-content">
                                             <div class="modal-body text-center p-5">
                                                 <div class="mt-4">
-                                                    <h4 class="mb-3">Xác nhận suất vé</h4>
+                                                    <h4 class="mb-3">Xác nhận xuất vé</h4>
                                                     <p class="text-muted mb-4"> Vui lòng xác nhận và thay đổi trạng thái
-                                                        thành đã suất vé.
+                                                        thành đã xuất vé.
                                                     </p>
                                                     <div class="hstack gap-2 justify-content-center">
                                                         <a id="confirmPrintBtn" class="btn btn-success"
@@ -361,10 +361,10 @@
                                 @if (now()->greaterThan($ticket->expiry))
                                     Đã hết hạn <br>
                                     <span>{{ \Carbon\Carbon::parse($ticket->expiry)->locale('vi')->translatedFormat('H:i - j/n/Y') }}</span>
-                                @elseif ($ticket->status == 'Chưa suất vé')
-                                    Chưa suất vé
-                                @elseif($ticket->status == 'Đã suất vé')
-                                    Đã suất vé <br>
+                                @elseif ($ticket->status == 'Chưa xuất vé')
+                                    Chưa xuất vé
+                                @elseif($ticket->status == 'Đã xuất vé')
+                                    Đã xuất vé <br>
                                     <span>({{ \Carbon\Carbon::parse($ticket->updated_at)->locale('vi')->translatedFormat('H:i - j/n/Y') }})</span>
                                 @endif
 

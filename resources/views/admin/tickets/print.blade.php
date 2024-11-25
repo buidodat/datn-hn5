@@ -215,7 +215,7 @@
         <div class="ticket-container2">
             <div>
                 <div class="flex-shrink-0 no-print">
-                    @if($ticket->status == 'Đã suất vé')
+                    @if($ticket->status == 'Đã xuất vé')
                         <a href="#" class="btn btn-success btn-sm"
                            onclick="window.print()"><i
                                     class="ri-download-2-fill align-middle me-1"></i> In hóa đơn</a>

@@ -50,7 +50,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'min:2', 'max:30', 'unique:users'],
+            'name' => ['required', 'string', 'min:2', 'max:30'],
             'email' => ['required', 'string', 'email', 'max:30', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
@@ -58,20 +58,19 @@ class RegisterController extends Controller
             'name.string' => 'Tên phải là một chuỗi ký tự.',
             'name.min' => 'Tên phải có ít nhất 2 ký tự.',
             'name.max' => 'Tên không được quá 30 ký tự.',
-            'name.unique' => 'Tên này đã được sử dụng, vui lòng chọn tên khác.',
-            
+
             'email.required' => 'Bạn chưa nhập email.',
             'email.string' => 'Email phải là một chuỗi ký tự.',
             'email.email' => 'Địa chỉ email không hợp lệ.',
             'email.max' => 'Email không được quá 30 ký tự.',
             'email.unique' => 'Email này đã được đăng ký, vui lòng chọn email khác.',
-            
+
             'password.required' => 'Bạn chưa nhập mật khẩu.',
             'password.string' => 'Mật khẩu phải là một chuỗi ký tự.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
-        
+
     }
 
     /**

@@ -61,7 +61,7 @@ class MovieDetailController extends Controller
         // Kiểm tra vé
         $ticket = Ticket::where('movie_id', $movie->id)
             ->where('user_id', Auth::id())
-            ->where('status', 'Đã suất vé')
+            ->where('status', 'Đã xuất vé')
             ->first();
 
         if (!$ticket) {
