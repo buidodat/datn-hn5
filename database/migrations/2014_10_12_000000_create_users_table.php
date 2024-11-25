@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('service_id')->nullable();
             $table->string('service_name')->nullable();
             $table->string('type')->default(User::TYPE_MEMBER);         //admin(quản trị viên)/member(thành viên)
-            // $table->string('role')->default(User::ROLE['2']);               // System Admin/ Cinema Manager/ Staff => ko cần nữa vì gói Permission hỗ trợ
             $table->foreignIdFor(Cinema::class)->nullable();
             $table->softDeletes();
             $table->timestamps();

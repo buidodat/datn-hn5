@@ -250,7 +250,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Trạng thái hoạt động</label>
+                                            <label class="form-check-label" for="is_active">Hoạt động</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
                                                     name="is_active" @checked($showtime->is_active == 1)>

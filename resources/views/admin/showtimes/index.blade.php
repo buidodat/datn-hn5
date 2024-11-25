@@ -119,7 +119,7 @@
                             @foreach ($showtimes->groupBy('movie_id') as $movieId => $showtimesByMovie)
                                 @php
                                     $movie = $showtimesByMovie->first()->movie;
-
+                                    // dd($showtimesByMovie->toArray());
                                 @endphp
                                 <tr class="movie-row">
                                     <td class="plusShowtime">
@@ -163,9 +163,11 @@
                                             <thead>
                                                 <tr class="bg-light">
                                                     <th>
-
-                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
-                                                            class="select-all-movie">
+                                                        {{-- dùng hàm contains để kiểm tra tồn tại --}}
+                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
+                                                            <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                                class="select-all-movie">
+                                                        @endif
 
                                                     </th>
 
@@ -173,7 +175,7 @@
                                                     <th>PHÒNG</th>
                                                     <th>CHỖ NGỒI</th>
                                                     <th>ĐỊNH DẠNG</th>
-                                                    <th class="status-showtime">TRẠNG THÁI</th>
+                                                    <th class="status-showtime">HOẠT ĐỘNG</th>
                                                     <th>CHỨC NĂNG</th>
                                                 </tr>
                                             </thead>
@@ -241,27 +243,28 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-                                                        {{-- @if ($showtime->is_active == 0) --}}
-                                                        <div class="d-flex justify-content-between">
 
-                                                            <form action="" method="post" class="d-inline-block">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button type="submit" id="delete-all"
-                                                                    class="btn btn-danger btn-sm">
-                                                                    Xóa tất cả
-                                                                </button>
-                                                            </form>
+                                                     
 
-                                                            <a href="" class="px-5">
-                                                                <button id="change-status-all" title="thay đổi"
-                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái
-                                                                    tất
-                                                                    cả</button>
+                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
+                                                            <div class="d-flex justify-content-between">
+                                                                <form action="" method="post"
+                                                                    class="d-inline-block">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit" id="delete-all"
+                                                                        class="btn btn-danger btn-sm">
+                                                                        Xóa tất cả
+                                                                    </button>
+                                                                </form>
 
-                                                            </a>
-                                                        </div>
-                                                        {{-- @endif --}}
+                                                                <a href="" class="px-5">
+                                                                    <button id="change-status-all" title="thay đổi"
+                                                                        class="btn btn-primary btn-sm">Thay đổi trạng thái
+                                                                        tất cả</button>
+                                                                </a>
+                                                            </div>
+                                                        @endif
 
                                                     </td>
                                                 </tr>
@@ -298,8 +301,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-            ]
+            order: []
         });
     </script>
 
@@ -346,7 +348,7 @@
         });
 
         $(document).ready(function() {
-          $(document).on('change', '.changeActive', function() {
+            $(document).on('change', '.changeActive', function() {
 
                 let showtimeId = $(this).data('showtime-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
