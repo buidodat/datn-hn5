@@ -173,7 +173,7 @@
 
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
-                                                    <th>CHỖ NGỒI</th>
+                                                    <th>CÒN LẠI</th>
                                                     <th>ĐỊNH DẠNG</th>
                                                     <th class="status-showtime">HOẠT ĐỘNG</th>
                                                     <th>CHỨC NĂNG</th>
@@ -194,11 +194,31 @@
                                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
                                                         </td>
                                                         <td>{{ $showtime->room->name }}</td>
-                                                        <td>
-                                                            {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                            /
-                                                            {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
-                                                        </td>
+
+                                                        @php
+                                                            //danh sách ticket
+                                                            $tickets = $showtime->tickets;
+
+                                                            // Đếm số lượng ghế đã bán
+                                                            $soldSeats = \App\Models\TicketSeat::whereIn(
+                                                                'ticket_id',
+                                                                $tickets->pluck('id'),
+                                                            )->count();
+
+                                                            // Tổng số ghế trong phòng chiếu
+                                                            $totalSeats = $showtime->room->seats
+                                                                ->whereNull('deleted_at')
+                                                                ->where('is_active', true)
+                                                                ->count();
+
+                                                            //Tổng số ghế còn lại
+                                                            $remainingSeats = $totalSeats - $soldSeats;
+                                                        @endphp
+
+                                                        <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
+
+
+
                                                         <td>
                                                             {{ $showtime->format }}
                                                         </td>
@@ -244,7 +264,7 @@
                                                 <tr>
                                                     <td colspan="7">
 
-                                                     
+
 
                                                         @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
                                                             <div class="d-flex justify-content-between">
