@@ -23,12 +23,12 @@ class Voucher extends Model
     ];
     protected $casts = [
         'is_active'=>'boolean',
-        'end_date_time' => 'datetime',
-        'start_date_time' => 'datetime',
     ];
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_vouchers')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_vouchers')
+            ->withPivot('usage_count')
+            ->withTimestamps();
     }
     public function tickets()
     {

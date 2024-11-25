@@ -79,7 +79,9 @@ class User extends Authenticatable implements MustVerifyEmail, ShouldQueue
 
     public function vouchers()
     {
-        return $this->belongsToMany(Voucher::class, 'user_vouchers')->withTimestamps();
+        return $this->belongsToMany(Voucher::class, 'user_vouchers')
+            ->withPivot('usage_count')
+            ->withTimestamps();
     }
 
     public function posts()
