@@ -25,15 +25,12 @@ class DefaultCinemaSession
                 Session::put('cinema_id', $cinema->id);
             }
         }
-
-        // if (Auth::check()) {
-        //     if (Auth::user()->type == 'admin' && !empty(Auth::user()->cinema_id)) {
-        //         Session::put('cinema_id', Auth::user()->cinema_id);
-        //     }
-        // }
-
-
-
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->type == 'admin' && $user->cinema_id) {
+                Session::put('cinema_id', $user->cinema_id);
+            }
+        }
         return $next($request);
     }
 }

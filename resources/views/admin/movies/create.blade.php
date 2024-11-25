@@ -15,7 +15,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.movies.index') }}">Phim</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.movies.index') }}">Danh sách</a></li>
                             <li class="breadcrumb-item active">Thêm mới</li>
                         </ol>
                     </div>
@@ -139,7 +139,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label class="form-check-label mb-2" for="is_active"><span
+                                            <label class="form-check-label mb-2" for="versions[]"><span
                                                     class='text-danger'>*</span> Phiên bản:</label>
 
                                             <select class="js-example-basic-multiple" name="versions[]"
@@ -178,7 +178,7 @@
                 {{-- Giá vé  --}}
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Giá vé</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Phụ thu</h4>
                         <div class="text-end">
 
                         </div>
@@ -226,10 +226,10 @@
 
                                             @endforeach --}}
                                             <tr>
-                                                <td><span class='text-danger'></span> Thu thêm theo phim</td>
+                                                <td><span class='text-danger'></span> Giá vé thu thêm</td>
                                                 <td>
                                                     <input type="number" name="surcharge"
-                                                        class="form-control" value=""
+                                                        class="form-control" value="{{ old('surcharge') }}"
                                                         onwheel="return false;" placeholder="0đ">
                                                     @error('surcharge')
                                                         <div class='mt-1'>
@@ -274,7 +274,7 @@
                                         <label class="form-label">Trạng thái:</label>
                                         <span class="text-muted">Đã xuất bản</span>
                                     </div> --}}
-                                    <div class="col-md-12 mb-3 d-flex ">
+                                    <div class="col-md-12 mb-2 d-flex ">
                                         <label class="form-label">Hoạt động:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-success">
@@ -283,8 +283,8 @@
                                             </div>
                                         </span>
                                     </div>
-                                    <div class="col-md-12 mb-3 d-flex ">
-                                        <label class="form-label">Tag hot:</label>
+                                    <div class="col-md-12 mb-2 d-flex ">
+                                        <label class="form-label">Nổi bật:</label>
                                         <span class="text-muted mx-2">
                                             <div class="form-check form-switch form-switch-danger">
                                                 <input class="form-check-input switch-is-active" name="is_hot" {{ old('is_hot') ? 'checked' : '' }}

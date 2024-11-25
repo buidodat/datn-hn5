@@ -191,7 +191,7 @@ Route::get('public', function () {
 })->name('public');
 
 Route::get('huhu', function () {
-    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(20); // Lấy ticket có ID là 1
     if (!$ticket) {
         return 'Ticket not found';
     }
@@ -201,7 +201,7 @@ Route::get('huhu', function () {
     return 'Email sent successfully';
 });
 Route::get('hihi/{id}', function () {
-    $ticket = Ticket::find(3); // Lấy ticket có ID là 1
+    $ticket = Ticket::find(20); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
 

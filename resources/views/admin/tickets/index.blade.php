@@ -105,20 +105,19 @@
                             <div class="col-xxl-3 text-end">
                                 <div>
                                     <!-- center modal -->
-                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal"
-                                            data-bs-target=".bs-example-modal-center">Quét QR
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal" data-source="index">Quét QR
                                     </button>
-                                    <div class="modal fade bs-example-modal-center" id="scanModal" tabindex="-1"
-                                         aria-labelledby="mySmallModalLabel" aria-hidden="true" style="display: none;">
+                                    {{--<div class="modal fade" id="scanModal" tabindex="-1"
+                                         aria-labelledby="" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content" style="width: 680px; ">
                                                 <div class="modal-body text-center">
                                                     <div id="camera"
                                                          style="width: 640px; height: 360px; border: 1px solid gray; margin: 0 auto;"></div>
                                                     <div class="mt-4">
-                                                        <h4 class="mb-3">Đưa mã vạch vào camera để quét</h4>
-                                                        {{--<div id="message-result" style="color: #26ee26; margin-top: 10px;"></div>--}}
-                                                        <div id="barcode-result" style="color: #eed223; margin-top: 10px;"></div>
+
+                                                        --}}{{--<div id="message-result" style="color: #26ee26; margin-top: 10px;"></div>--}}{{--
+                                                        <div id="barcode-result" style="color: red; margin-top: 35px;"></div>
                                                         <div id="error-message" style="color: red; margin-top: 10px;"></div>
                                                         <div class="hstack gap-2 justify-content-center">
                                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng
@@ -130,7 +129,7 @@
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                    </div><!-- /.modal -->--}}
                                 </div>
                             </div>
 
@@ -161,7 +160,7 @@
                                 <th class="text-center">Hình ảnh</th>
                                 <th>Thông tin vé</th>
                                 {{-- <th>Trạng thái</th> --}}
-                                <th>Chức năng(Phân quyền)</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody id="ticket-table-body">
@@ -224,16 +223,16 @@
                                                 <span class="badge bg-danger">Đã hết hạn</span>
                                             @else --}}
                                                 @switch($ticket->status)
-                                                    @case('Chưa suất vé')
-                                                        <span class="badge bg-warning">Chưa suất vé</span>
+                                                    @case('Chưa xuất vé')
+                                                        <span class="badge bg-warning">Chưa xuất vé</span>
                                                     @break
 
                                                     @case('Đã hết hạn')
                                                         <span class="badge bg-danger">Đã hết hạn</span>
                                                     @break
 
-                                                    @case('Đã suất vé')
-                                                        <span class="badge bg-success">Đã suất vé</span>
+                                                    @case('Đã xuất vé')
+                                                        <span class="badge bg-success">Đã xuất vé</span>
                                                     @break
                                                 @endswitch
                                                 {{-- @endif --}}
@@ -249,12 +248,12 @@
                                     {{-- <td>
                                      <select class="form-select" data-original-status="{{ $ticket->status }}"
                                              data-ticket-id="{{ $ticket->id }}" onchange="changeStatus(this)"
-                                         {{ $ticket->expiry->isPast() || $ticket->status == 'Đã suất vé' ? 'disabled' : '' }}>
-                                         <option value="Chưa suất vé" {{ $ticket->status == 'Chưa suất vé' ? 'selected' : '' }}>Chờ xác
+                                         {{ $ticket->expiry->isPast() || $ticket->status == 'Đã xuất vé' ? 'disabled' : '' }}>
+                                         <option value="Chưa xuất vé" {{ $ticket->status == 'Chưa xuất vé' ? 'selected' : '' }}>Chờ xác
                                              nhận
                                          </option>
-                                         <option value="Đã suất vé" {{ $ticket->status == 'Đã suất vé' ? 'selected' : '' }}>Hoàn tất</option>
-                                         @if ($ticket->expiry->isPast() && $ticket->status != 'Đã suất vé')
+                                         <option value="Đã xuất vé" {{ $ticket->status == 'Đã xuất vé' ? 'selected' : '' }}>Hoàn tất</option>
+                                         @if ($ticket->expiry->isPast() && $ticket->status != 'Đã xuất vé')
                                              <option value="Đã hết hạn" selected disabled>Đã hết hạn</option>
                                          @endif
                                      </select>
@@ -265,7 +264,7 @@
                                                     class="fas fa-eye"></i>
                                             </button>
                                         </a>
-                                        {{-- @if ($ticket->status == 'Đã suất vé')
+                                        {{-- @if ($ticket->status == 'Đã xuất vé')
                                         <a href="{{ route('admin.tickets.print', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
                                                     class="ri-download-2-fill align-middle me-1"></i> In vé
@@ -305,9 +304,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
             integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
     <script>
         new DataTable("#example", {
             order: []
@@ -397,7 +396,7 @@
         });
 
         /*modal quét qr*/
-        document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             const scanModal = document.getElementById('scanModal');
             const scanAnotherBtn = document.getElementById("scanAnotherBtn");
             const errorMessage = document.getElementById("error-message");
@@ -483,7 +482,7 @@
                 errorMessage.innerText = ""; // Xóa thông báo lỗi
                 startScanner(); // Bắt đầu quét lại
             });
-        });
+        });*/
 
 
     </script>

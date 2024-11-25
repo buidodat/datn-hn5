@@ -16,6 +16,7 @@ class SlideShowController extends Controller
      */
     const PATH_VIEW = 'admin.slideshows.';
     const PATH_UPLOAD = 'slideshows';
+
     public function __construct()
     {
         $this->middleware('can:Danh sách slideshows')->only('index');
@@ -23,10 +24,15 @@ class SlideShowController extends Controller
         $this->middleware('can:Sửa slideshows')->only(['edit', 'update']);
         $this->middleware('can:Xóa slideshows')->only('destroy');
     }
+
     public function index()
     {
-        $data = Slideshow::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $slideshows = Slideshow::all();
+
+        foreach ($slideshows as $slideshow) {
+            $slideshow->img_thumbnail = json_decode($slideshow->img_thumbnail);
+        }
+        return view(self::PATH_VIEW . __FUNCTION__, compact('slideshows'));
     }
 
     /**
@@ -42,22 +48,26 @@ class SlideShowController extends Controller
      */
     public function store(StoreSlideShowRequest $request)
     {
-        try {
-            $data = $request->all();
-            $data['is_active'] = $request->has('is_active') ? 1 : 0;
+        $validatedData = $request->validated();
 
-            if ($data['img_thumbnail']) {
-                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $data['img_thumbnail']);
+        $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
+
+        $imagePaths = [];
+        if ($request->hasFile('img_thumbnail')) {
+            foreach ($request->file('img_thumbnail') as $file) {
+                $path = $file->store(self::PATH_UPLOAD);
+                $imagePaths[] = $path;
             }
-
-            Slideshow::query()->create($data);
-
-            return redirect()
-                ->route('admin.slideshows.index')
-                ->with('success', 'Thêm thành công!');
-        } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
         }
+
+        // Lưu đường dẫn ảnh dưới dạng JSON
+        $validatedData['img_thumbnail'] = json_encode($imagePaths);
+
+        Slideshow::create($validatedData);
+
+        return redirect()
+            ->route('admin.slideshows.index')
+            ->with('success', 'Thêm thành công!');
     }
 
     /**
@@ -66,37 +76,50 @@ class SlideShowController extends Controller
     public function edit(string $id)
     {
         $slide = Slideshow::query()->findOrFail($id);
+        $slide->img_thumbnail = json_decode($slide->img_thumbnail, true);
         return view(self::PATH_VIEW . __FUNCTION__, compact('slide'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSlideShowRequest $request, string $id)
     {
         try {
-            $data = $request->all();
-            $data['is_active'] = $request->has('is_active') ? 1 : 0;
-            $slide = Slideshow::query()->findOrFail($id);
+            $validatedData = $request->validated();
+
+            $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
+            $slide = Slideshow::findOrFail($id);
+
+            $existingImages = $request->input('existing_images', []);
+            $updatedImages = $existingImages;
 
             if ($request->hasFile('img_thumbnail')) {
-                if ($slide->img_thumbnail && Storage::exists($slide->img_thumbnail)) {
-                    Storage::delete($slide->img_thumbnail);
+                foreach ($request->file('img_thumbnail') as $key => $file) {
+                    if (isset($existingImages[$key])) {
+                        $oldPath = $existingImages[$key];
+                        if (Storage::exists($oldPath)) {
+                            Storage::delete($oldPath);
+                        }
+                    }
+                    $updatedImages[$key] = $file->store('uploads/slides');
                 }
-                $data['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->file('img_thumbnail'));
-            } else {
-                $data['img_thumbnail'] = $slide->img_thumbnail;
             }
 
-            $slide->update($data);
+            $slide->update([
+                'img_thumbnail' => json_encode(array_values($updatedImages)),
+                'description' => $validatedData['description'],
+                'is_active' => $validatedData['is_active'],
+            ]);
 
-            return redirect()
-                ->back()
-                ->with('success', 'Cập nhật thành công!');
+            return redirect()->back()->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -104,8 +127,17 @@ class SlideShowController extends Controller
     public function destroy(string $id)
     {
         $slide = Slideshow::query()->findOrFail($id);
-        if ($slide->img_thumbnail && Storage::exists($slide->img_thumbnail)) {
-            Storage::delete($slide->img_thumbnail);
+        // Giải mã mảng JSON và kiểm tra từng ảnh
+        if ($slide->img_thumbnail) {
+            $imagePaths = json_decode($slide->img_thumbnail, true);
+
+            if (is_array($imagePaths)) {
+                foreach ($imagePaths as $path) {
+                    if (Storage::exists($path)) {
+                        Storage::delete($path);
+                    }
+                }
+            }
         }
         $slide->delete();
         return redirect()

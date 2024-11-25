@@ -135,7 +135,7 @@ class PaymentController extends Controller
                         'user_id' => $request->user_id,
                         'payment_name' => $request->payment_name,
                         'voucher_code' => $voucher->code ?? null,
-                        'voucher_discount' => $voucher->discount ?? null,
+                        'voucher_discount' => $voucher->discount ?? 0,
                         'point_use' => $dataUsePoint['use_points'] ?? null,
                         'point_discount' => $pointDiscount,
                         'total_price' => $totalPayment,
@@ -266,7 +266,7 @@ class PaymentController extends Controller
                         'payment_name' => "Ví MoMo",
                         'code' => $paymentData['code'],
                         'total_price' => $paymentData['total_price'],
-                        'status' => 'Chưa suất vé',
+                        'status' => 'Chưa xuất vé',
                         'expiry' => $showtime->end_time,
                     ]);
 
@@ -572,7 +572,7 @@ class PaymentController extends Controller
                         'payment_name' => "Ví VnPay",
                         'code' => $paymentData['code'],
                         'total_price' => $paymentData['total_price'],
-                        'status' => 'Chưa suất vé',
+                        'status' => 'Chưa xuất vé',
                         'expiry' => $showtime->end_time,
                     ]);
 
@@ -811,7 +811,7 @@ class PaymentController extends Controller
             'point_use' => $dataUsePoint['use_points'] ?? null,
             'point_discount' => $pointDiscount,
             'total_price' => $totalPayment,
-            'status' => 'Chưa suất vé',
+            'status' => 'Chưa xuất vé',
             'expiry' => $showtime->end_time,
         ];
 

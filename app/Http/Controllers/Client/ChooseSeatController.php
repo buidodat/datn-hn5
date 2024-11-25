@@ -89,7 +89,6 @@ class ChooseSeatController extends Controller
 
     public function show(string $slug)
     {
-
         // $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie'])->findOrFail($id);
         // $showtime->room->seats;
         // $matrixKey = array_search($showtime->room->matrix_id, array_column(Room::MATRIXS, 'id'));

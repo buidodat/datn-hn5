@@ -260,7 +260,22 @@
                 <div class="info-block-ticket-detail">
                     <div>
                         <strong class="t-black">Mã giao dịch:</strong> {{ $ticket->code }}<br>
-                        <strong class="t-black">Ngày mua hàng:</strong> {{ $ticket->created_at->format('d/m/Y H:i') }}
+                        <strong class="t-black">Ngày mua hàng:</strong> {{ $ticket->created_at->format('d/m/Y H:i') }} <br>
+                        <strong class="t-black">Trạng thái:</strong> <span class="badge
+                        @switch($ticket->status)
+                            @case(App\Models\Ticket::NOT_ISSUED)
+                                badge-not-issued
+                                @break
+                            @case(App\Models\Ticket::ISSUED)
+                                badge-issued
+                                @break
+                            @case(App\Models\Ticket::EXPIRED)
+                                badge-expired
+                                @break
+                        @endswitch
+                    ">
+                        {{ $ticket->status }}
+                    </span>
                     </div>
                     <div class="barcode-ticket-detail">
                         {!! DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 60) !!}

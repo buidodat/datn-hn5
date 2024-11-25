@@ -39,13 +39,7 @@ class Movie extends Model
         ['id' => 2, 'name' => 'Lồng Tiếng'],
         ['id' => 3, 'name' => 'Thuyết Minh'],
     ];
-    // const RATINGS = [
-    //     'P',
-    //     'C13',
-    //     'C16',
-    //     'C18',
-    //     'K'
-    // ];
+
     const RATINGS = [
         ['id' => 1, 'name' => 'P', 'description' => 'Phim được phổ  biến rộng rãi đến mọi đối tượng.'],
         ['id' => 2, 'name' => 'T13', 'description' => 'Phim được phổ biến đến khán giả từ đủ 13 tuổi trở lên.'],
