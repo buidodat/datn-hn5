@@ -125,9 +125,12 @@
                                         @endforeach
                                     </ul>
                                 </li>
+                        
                             @elseif(Auth::user()->type == 'admin' && Auth::user()->cinema_id != '')
                                 <li class="default-base">
                                     @php
+                                        // use Illuminate\Support\Facades\Session;
+                                        // Session::put('cinema_id', Auth::user()->cinema_id);
                                         $selectedCinema = App\Models\Cinema::find(Auth::user()->cinema_id);
                                     @endphp
                                     <a href="#">Poly {{ $selectedCinema->name }} </a>

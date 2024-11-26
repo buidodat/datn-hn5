@@ -20,7 +20,10 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách Suất chiếu</h4>
+                <h4 class="mb-sm-0">Danh sách Suất chiếu @if (Auth::user()->cinema_id != '')
+                        - {{ Auth::user()->cinema->name }}
+                    @endif
+                </h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -35,29 +38,29 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12">      
             <div class="card">
                 <div class="card-header ">
                     {{-- d-flex justify-content-between --}}
                     <div class="row mb-3">
                         <h5 class="card-title mb-0">Danh sách Suất chiếu
-                            @if (Auth::user()->cinema_id != '')
-                                - {{ Auth::user()->cinema->name }}
-                            @endif
+
                         </h5>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
+                                    <label for="">Lọc theo Rạp/Ngày Chiếu/Trạng thái</label>
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
+                                           
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}"
-                                                        {{ $branch->id == $branchId ? 'selected' : '' }}>
+                                                        {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
                                                         {{ $branch->name }}
                                                     </option>
                                                 @endforeach
@@ -69,7 +72,7 @@
                                                 <option value="">Chọn Rạp</option>
                                                 @foreach ($cinemas as $cinema)
                                                     <option value="{{ $cinema->id }}"
-                                                        {{ $cinema->id == $cinemaId ? 'selected' : '' }}>
+                                                        {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
                                                         {{ $cinema->name }}
                                                     </option>
                                                 @endforeach
@@ -77,20 +80,32 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input type="date" name="date" class="form-control"
-                                            value="{{ $date }}">
+                                            value="{{ session('date', now()->format('Y-m-d')) }}">
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        <select name="is_active" class="form-select">
+                                            <option value=""
+                                                {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả</option>
+                                            <option value="0"
+                                                {{ session('is_active', null) === '0' ? 'selected' : '' }}>Tắt</option>
+                                            <option value="1"
+                                                {{ session('is_active', null) === '1' ? 'selected' : '' }}>Bật</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
                                         <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
                                     </div>
                                 </div>
+
                             </form>
 
                         </div>
-                        <div class="col-md-4" align="right">
-                            <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a>
+                        <div class="col-md-2" align="right">
+                            {{-- <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a> --}}
                             <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                         </div>
                     </div>
@@ -119,7 +134,7 @@
                             @foreach ($showtimes->groupBy('movie_id') as $movieId => $showtimesByMovie)
                                 @php
                                     $movie = $showtimesByMovie->first()->movie;
-
+                                    // dd($showtimesByMovie->toArray());
                                 @endphp
                                 <tr class="movie-row">
                                     <td class="plusShowtime">
@@ -163,17 +178,19 @@
                                             <thead>
                                                 <tr class="bg-light">
                                                     <th>
-
-                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
-                                                            class="select-all-movie">
+                                                        {{-- dùng hàm contains để kiểm tra tồn tại --}}
+                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
+                                                            <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                                class="select-all-movie">
+                                                        @endif
 
                                                     </th>
 
                                                     <th>THỜI GIAN</th>
                                                     <th>PHÒNG</th>
-                                                    <th>CHỖ NGỒI</th>
+                                                    <th>CÒN LẠI</th>
                                                     <th>ĐỊNH DẠNG</th>
-                                                    <th class="status-showtime">TRẠNG THÁI</th>
+                                                    <th class="status-showtime">HOẠT ĐỘNG</th>
                                                     <th>CHỨC NĂNG</th>
                                                 </tr>
                                             </thead>
@@ -192,11 +209,29 @@
                                                             {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
                                                         </td>
                                                         <td>{{ $showtime->room->name }}</td>
-                                                        <td>
-                                                            {{ $showtime->room->seats->whereNull('deleted_at')->where('is_active', true)->count() }}
-                                                            /
-                                                            {{ $showtime->room->seats->whereNull('deleted_at')->count() }}
-                                                        </td>
+
+                                                        @php
+                                                            //danh sách ticket
+                                                            $tickets = $showtime->tickets;
+
+                                                            //Đếm số lượng ghế đã bán
+                                                            $soldSeats = \App\Models\TicketSeat::whereIn(
+                                                                'ticket_id',
+                                                                $tickets->pluck('id'),
+                                                            )->count();
+
+                                                            //Tổng số ghế trong phòng chiếu
+                                                            $totalSeats = $showtime->room->seats
+                                                                ->whereNull('deleted_at')
+                                                                ->where('is_active', true)
+                                                                ->count();
+
+                                                            //Tổng số ghế còn lại
+                                                            $remainingSeats = $totalSeats - $soldSeats;
+                                                        @endphp
+
+                                                        <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
+
                                                         <td>
                                                             {{ $showtime->format }}
                                                         </td>
@@ -208,10 +243,10 @@
                                                                     name="is_active" type="checkbox" role="switch"
                                                                     data-showtime-id="{{ $showtime->id }}"
                                                                     @checked($showtime->is_active)
-                                                                    @if ($showtime->is_active) disabled @endif
-                                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')">
+                                                                    @if ($showtime->is_active) disabled @endif>
                                                             </div>
                                                         </td>
+
                                                         <td>
                                                             <a href="{{ route('admin.showtimes.show', $showtime) }}">
                                                                 <button title="xem" class="btn btn-success btn-sm "
@@ -219,7 +254,8 @@
 
                                                             @if ($showtime->is_active == 0)
                                                                 <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                    <button title="sửa" class="btn btn-warning btn-sm"
+                                                                    <button title="sửa"
+                                                                        class="btn btn-warning btn-edit btn-sm"
                                                                         type="button"><i class="fas fa-edit"></i></button>
                                                                 </a>
 
@@ -228,7 +264,8 @@
                                                                     method="post" class="d-inline-block">
                                                                     @csrf
                                                                     @method('delete')
-                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger btn-destroy btn-sm"
                                                                         onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
                                                                         <i class="ri-delete-bin-7-fill"></i>
                                                                     </button>
@@ -241,27 +278,25 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-                                                        {{-- @if ($showtime->is_active == 0) --}}
-                                                        <div class="d-flex justify-content-between">
+                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
+                                                            <div class="d-flex justify-content-between">
+                                                                <form action="" method="post"
+                                                                    class="d-inline-block">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                    <button type="submit" id="delete-all"
+                                                                        class="btn btn-danger btn-sm">
+                                                                        Xóa tất cả
+                                                                    </button>
+                                                                </form>
 
-                                                            <form action="" method="post" class="d-inline-block">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button type="submit" id="delete-all"
-                                                                    class="btn btn-danger btn-sm">
-                                                                    Xóa tất cả
-                                                                </button>
-                                                            </form>
-
-                                                            <a href="" class="px-5">
-                                                                <button id="change-status-all" title="thay đổi"
-                                                                    class="btn btn-primary btn-sm">Thay đổi trạng thái
-                                                                    tất
-                                                                    cả</button>
-
-                                                            </a>
-                                                        </div>
-                                                        {{-- @endif --}}
+                                                                <a href="" class="px-5">
+                                                                    <button id="change-status-all" title="thay đổi"
+                                                                        class="btn btn-primary btn-sm">Bật trạng thái
+                                                                        tất cả</button>
+                                                                </a>
+                                                            </div>
+                                                        @endif
 
                                                     </td>
                                                 </tr>
@@ -298,8 +333,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-            ]
+            order: []
         });
     </script>
 
@@ -345,32 +379,80 @@
             }
         });
 
-        $(document).ready(function() {
-          $(document).on('change', '.changeActive', function() {
 
-                let showtimeId = $(this).data('showtime-id');
-                let is_active = $(this).is(':checked') ? 1 : 0;
-                // Gửi yêu cầu AJAX
-                $.ajax({
-                    url: '{{ route('showtimes.change-active') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: showtimeId,
-                        is_active: is_active
-                    },
-                    success: function(response) {
-                        if (!response.success) {
-                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+        //Thay đôi ttrangj thái is_active ko load
+        //mới
+        $(document).on('change', '.changeActive', function() {
+            let showtimeId = $(this).data('showtime-id');
+            let is_active = $(this).is(':checked') ? 1 : 0;
+
+            if (!confirm(
+                    'Bạn có chắc muốn thay đổi? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')) {
+
+                $(this).prop('checked', !is_active);
+                return;
+            }
+
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát.',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            $.ajax({
+                url: '{{ route('showtimes.change-active') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: showtimeId,
+                    is_active: is_active
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
+                        checkbox.prop('disabled', response.data.is_active); // Disable nếu bật
+                        checkbox.closest('tr').find('.btn-edit, .btn-destroy').toggle(!response.data
+                            .is_active); // Ẩn nút sửa, xóa
+
+                        // checkbox.closest('tr').find('.select-showtime').toggle(!response.data
+                        //     .is_active); // Ẩn nút select checkbox 
+
+                        if (response.data.is_active) {
+                            checkbox.closest('td').find('.select-showtime')
+                                .remove(); // Loại bỏ checkbox khỏi DOM
+                        } else {
+                            checkbox.closest('td').find('.select-showtime')
+                                .show(); // Hiển thị lại checkbox nếu trạng thái tắt
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
+
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Trạng thái hoạt động đã được cập nhật.',
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
                     }
-                });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Có lỗi xảy ra khi cập nhật trạng thái.',
+                        timer: 3000
+                    });
+
+                    // Hoàn lại trạng thái checkbox
+                    let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
+                    checkbox.prop('checked', !is_active);
+                }
             });
         });
+
+
+
 
         $(document).ready(function() {
             $('.toggle-button').click(function() {
