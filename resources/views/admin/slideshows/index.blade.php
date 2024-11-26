@@ -97,16 +97,31 @@
                                     <div class="overflow-x-auto">
                                         <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
                                             @if(is_array($slideshow->img_thumbnail))
+                                                <!-- Hiển thị ảnh từ DB -->
                                                 @foreach($slideshow->img_thumbnail as $image)
-                                                    <img src="{{ Storage::url($image) }}"
-                                                         width="100px"
-                                                         alt="Slideshow image"
-                                                         class="rounded-2">
+                                                    <!-- Kiểm tra nếu đường dẫn là URL bên ngoài, không cần thêm `Storage::url()` -->
+                                                    @if (filter_var($image, FILTER_VALIDATE_URL))
+                                                        <img src="{{ $image }}" width="100px" alt="Slideshow image" class="rounded-2">
+                                                    @else
+                                                        <img src="{{ Storage::url($image) }}" width="100px" alt="Slideshow image" class="rounded-2">
+                                                    @endif
+                                                @endforeach
+                                            @elseif($slideshow->img_thumbnail)
+                                                @php
+                                                    $fake_images = json_decode($slideshow->img_thumbnail, true);
+                                                @endphp
+                                                    <!-- Hiển thị ảnh fake -->
+                                                @foreach($fake_images as $image)
+                                                    <!-- Kiểm tra nếu đường dẫn là URL bên ngoài -->
+                                                    @if (filter_var($image, FILTER_VALIDATE_URL))
+                                                        <img src="{{ $image }}" width="100px" alt="Fake Slideshow image" class="rounded-2">
+                                                    @endif
                                                 @endforeach
                                             @else
-                                                No image !
+                                                <p>No image !</p>
                                             @endif
                                         </div>
+
                                     </div>
 
 

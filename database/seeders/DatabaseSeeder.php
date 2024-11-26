@@ -42,18 +42,18 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        //3 bản ghi slideshow
+        // 3 bản ghi slideshow
         Slideshow::insert([
             [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
-            ],
-            [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg'
-            ],
-            [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                'img_thumbnail' => json_encode([
+                    'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
+                    'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg',
+                    'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                ]),
             ]
         ]);
+
+
 
         //20 bản ghi movie và 40 bản ghi movie_version
         $url_youtubes = [
