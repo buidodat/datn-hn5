@@ -24,8 +24,8 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Liên hệ</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Liên hệ</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -48,9 +48,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                             <tr>
                                 <th>#</th>
                                 <th>Thông tin liên hệ</th>

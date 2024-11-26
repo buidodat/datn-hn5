@@ -78,9 +78,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                           style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th>Hình ảnh</th>

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Giá vé
+    Quản lý giá vé
 @endsection
 
 @section('style-libs')
@@ -24,8 +24,8 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Giá vé</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Giá vé</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -77,7 +77,7 @@
                                                 <td>{{ $typeSeat->name }}</td>
                                                 <td>
                                                     <input type="number" name="prices[{{ $typeSeat->id }}]" id=""
-                                                        class="form-control" 
+                                                        class="form-control"
                                                         value="{{ $typeSeat->price }}">
                                                     @error('price')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -168,9 +168,8 @@
                         @csrf
                         <div class="card-body pt-0" style="max-height: 474px; overflow-y: auto;">
                             <table id="example"
-                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                                style="width:100%">
-                                <thead>
+                                class="table table-bordered dt-responsive nowrap align-middle w-100">
+                                <thead class='table-light'>
                                     <tr>
                                         <th>Tên rạp</th>
                                         <th>Giá <span class="text-muted">(VNĐ)</span> </th>
@@ -229,7 +228,7 @@
                                     <tr>
                                         <th>Tên phim</th>
                                         <th>Phụ thu</th>
-                                    
+
                                     </tr>
                                 </thead>
                                 <tbody>

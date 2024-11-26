@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách bài viết
+    Quản lý bài viết
 @endsection
 
 @section('style-libs')
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách bài viết</h4>
+                <h4 class="mb-sm-0">Quản lý bài viết</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -48,9 +48,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100"">
+                        <thead class='table-light'>
                             <tr>
                                 <th>#</th>
                                 <th>Tiêu đề</th>

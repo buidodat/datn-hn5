@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Vouchers
+    Quản lý mã giảm giá
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Vouchers</h4>
+                <h4 class="mb-sm-0">Quản lý mã giảm giá</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Vouchers</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Mã giảm giá</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -38,7 +38,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Danh sách vouchers </h5>
+                    <h5 class="card-title mb-0"> Danh sách mã giảm giá </h5>
                     <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
                 </div>
 
@@ -55,9 +55,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                             <tr>
                                 {{--<th>#</th>--}}
                                 <th>Mã voucher</th>
