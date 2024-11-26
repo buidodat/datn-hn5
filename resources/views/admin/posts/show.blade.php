@@ -1,14 +1,14 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Chi tiết bài viết
+    Chi tiết bài viết: {{ $post->title }}
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Chi tiết Bài viết</h4>
+                <h4 class="mb-sm-0">Quản lý bài viết</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -72,7 +72,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    
+
                                         Trạng thái hoạt động:
                                         @if ($post->is_active == 1)
                                             <span class="badge bg-success">Yes</span>
@@ -80,7 +80,7 @@
                                             <span class="badge bg-danger">No</span>
                                         @endif
 
-                                  
+
                                 </div>
                             </div>
                             <div class="row">

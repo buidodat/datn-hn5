@@ -118,8 +118,12 @@
                                                         onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                                 </div>
                                             </td>
-                                            <td class="small">{{ $branch->created_at->format('d/m/Y') }}<br>{{ $branch->created_at->format('H:i:s') }}</td>
-                                            <td class="small">{{ $branch->updated_at->format('d/m/Y') }}<br>{{ $branch->updated_at->format('H:i:s') }}</td>
+                                            <td class="small">
+                                                {{ $branch->created_at->format('d/m/Y') }}<br>{{ $branch->created_at->format('H:i:s') }}
+                                            </td>
+                                            <td class="small">
+                                                {{ $branch->updated_at->format('d/m/Y') }}<br>{{ $branch->updated_at->format('H:i:s') }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -185,8 +189,16 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -225,7 +237,9 @@
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-branch-id="${branchId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')"> </div>`;
                             row.cell(row.index(), 2).data(statusHtml).draw(false);
-                            row.cell(row.index(), 4).data(`${response.data.updated_date}<br>${response.data.updated_time}`).draw(false);
+                            row.cell(row.index(), 4).data(
+                                `${response.data.updated_date}<br>${response.data.updated_time}`
+                                ).draw(false);
 
 
 
@@ -251,7 +265,8 @@
                         });
 
                         // Hoàn lại thao tác (set lại trạng thái ban đầu cho checkbox)
-                        let checkbox = $(`[data-branch-id="${branchId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-branch-id="${branchId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

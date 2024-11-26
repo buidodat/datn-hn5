@@ -23,11 +23,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Quản lý sơ đồ ghế</h4>
+                <h4 class="mb-sm-0">Quản lý mẫu sơ đồ ghế</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Sơ đồ ghế</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Mẫu sơ đồ ghế</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="card-header border-0">
                     <div class="row align-items-center gy-3">
                         <div class="col-sm">
-                            <h5 class="card-title mb-0">Danh sách sơ đồ ghế</h5>
+                            <h5 class="card-title mb-0">Danh sách mẫu sơ đồ ghế</h5>
                         </div>
                         @can('Thêm mẫu sơ đồ ghế')
                             <div class="col-sm-auto">
@@ -114,13 +114,18 @@
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-seat-template-row-regular="{{ $item->row_regular }}"
+                                                                data-seat-template-row-vip="{{ $item->row_vip }}"
+                                                                data-seat-template-row-double="{{ $item->row_double }}"
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
 
 
 
-                                                        @if (!$item->is_publish)
+
+
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"
@@ -189,8 +194,19 @@
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-seat-template-row-regular="{{ $item->row_regular }}"
+                                                                data-seat-template-row-vip="{{ $item->row_vip }}"
+                                                                data-seat-template-row-double="{{ $item->row_double }}"
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
+
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
+                                                            @can('Xóa mẫu sơ đồ ghế')
+                                                                <a class="cursor-pointer text-danger small"
+                                                                    href="{{ route('admin.seat-templates.destroy', $item) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                            @endcan
+                                                        @endif
 
                                                     </div>
                                                 </div>
@@ -257,12 +273,15 @@
                                                                 data-seat-template-name="{{ $item->name }}"
                                                                 data-seat-template-description="{{ $item->description }}"
                                                                 data-matrix-id="{{ $item->matrix_id }}"
+                                                                data-seat-template-row-regular="{{ $item->row_regular }}"
+                                                                data-seat-template-row-vip="{{ $item->row_vip }}"
+                                                                data-seat-template-row-double="{{ $item->row_double }}"
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
 
 
-                                                        @if (!$item->is_publish)
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"
@@ -331,13 +350,43 @@
                             <div class="col-md-12 mb-3">
                                 <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận
                                     ghế</label>
-                                <select class="form-select" id="matrix_id" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
-                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
+                                <select class="form-select" id="createMatrixId" name="matrix_id" required>
+                                    @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
+                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }} -
+                                            {{ $matrix['description'] }}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger mt-3" id="createMatrixSeatError"></span>
                             </div>
+                            <div class='col-md-12 mb-3'>
+                                <div class="row">
+                                    <div class="col-md-4 ">
+                                        <label for="row_regular" class="form-label"><span class="text-danger">*</span>
+                                            Hàng
+                                            ghế thường</label>
+                                        <input type="number" class="form-control" id="createRowRegular"
+                                            name="row_regular" required value="4">
+                                        <span class="text-danger mt-3" id="createRowRegularError"></span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <label for="row_vip" class="form-label"><span class="text-danger">*</span> Hàng
+                                            ghế vip</label>
+                                        <input type="number" class="form-control " id="createRowVip" name="row_vip"
+                                            required value="6">
+                                        <span class="text-danger mt-3" id="createRowVipError"></span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <label for="row_double" class="form-label"><span class="text-danger">*</span>
+                                            Hàng
+                                            ghế đôi</label>
+                                        <input type="number" class="form-control" id="createRowDouble"
+                                            name="row_double" required value="2">
+                                        <span class="text-danger mt-3" id="createRowDoubleError"></span>
+                                    </div>
+                                    <span class="text-danger mt-1" id="createRowError"></span>
+                                </div>
+                            </div>
+
                             <div class="col-md-12 mb-3">
                                 <label for="name" class="form-label"><span class="text-danger">*</span> Mô tả</label>
                                 <textarea name="description" class='form-control' rows="3"
@@ -382,12 +431,42 @@
                                 <label for="updateMatrixId" class="form-label"><span class="text-danger">*</span> Ma trận
                                     ghế</label>
                                 <select class="form-select" id="updateMatrixId" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
-                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
+                                    @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
+                                        <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }} -
+                                            {{ $matrix['description'] }}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger mt-3" id="updateMatrixSeatError"></span>
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="row_regular" class="form-label"><span class="text-danger">*</span>
+                                            Hàng
+                                            ghế thường</label>
+                                        <input type="number" class="form-control" id="updateRowRegular"
+                                            name="row_regular" required value="">
+                                        <span class="text-danger mt-3" id="updateRowRegularError" value="4"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="row_vip" class="form-label"><span class="text-danger">*</span> Hàng
+                                            ghế vip</label>
+                                        <input type="number" class="form-control" id="updateRowVip" name="row_vip"
+                                            required value="6">
+                                        <span class="text-danger mt-3" id="updateRowVipError"></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="row_double" class="form-label"><span class="text-danger">*</span>
+                                            Hàng
+                                            ghế đôi</label>
+                                        <input type="number" class="form-control" id="updateRowDouble"
+                                            name="row_double" required value="2">
+                                        <span class="text-danger mt-3" id="updateRowDoubleError"></span>
+                                    </div>
+                                    <span class="text-danger mt-1" id="updateRowError"></span>
+                                </div>
+                            </div>
+
                             <div class="col-md-12 mb-3">
                                 <label for="name" class="form-label"><span class="text-danger">*</span> Mô tả</label>
                                 <textarea name="description" class='form-control' rows="3" id="updateDescription"
@@ -408,6 +487,12 @@
 
 
 @section('script-libs')
+    <script>
+        const matrixs = @json(App\Models\SeatTemplate::MATRIXS);
+    </script>
+
+
+
     {{-- Hàm load các rạp chiếu khi chọn chi nhánh & modal create rạp chiếu --}}
     <script>
         document.getElementById('createSeatTemplateBtn').addEventListener('click', function(event) {
@@ -443,24 +528,38 @@
         });
         document.querySelectorAll('.openUpdateSeatTemplateModal').forEach(button => {
             button.addEventListener('click', function() {
+
                 const seatTemplateId = this.getAttribute(
-                    'data-seat-template-id'); // Lấy roomId từ data attribute
+                'data-seat-template-id'); // Lấy roomId từ data attribute
                 const seatTemplateName = this.getAttribute('data-seat-template-name');
                 const seatTemplateDescription = this.getAttribute('data-seat-template-description');
                 const matrixId = this.getAttribute('data-matrix-id');
+                const rowRegular = this.getAttribute('data-seat-template-row-regular');
+                const rowVip = this.getAttribute('data-seat-template-row-vip');
+                const rowDouble = this.getAttribute('data-seat-template-row-double');
                 const isPublish = this.getAttribute('data-is-publish');
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateSeatTemplateId').value =
-                    seatTemplateId; // Gán giá trị roomId
+                seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
+                document.getElementById(`updateRowRegular`).value = rowRegular;
+                document.getElementById(`updateRowVip`).value = rowVip;
+                document.getElementById(`updateRowDouble`).value = rowDouble;
+
                 if (isPublish == 1) {
                     document.getElementById('updateMatrixId').disabled = true;
+                    document.getElementById('updateRowRegular').disabled = true;
+                    document.getElementById('updateRowVip').disabled = true;
+                    document.getElementById('updateRowDouble').disabled = true;
                 } else {
                     // Nếu chưa publish, cho phép chỉnh sửa tất cả
                     document.getElementById('updateMatrixId').disabled = false;
+                    document.getElementById('updateRowRegular').disabled = false;
+                    document.getElementById('updateRowVip').disabled = false;
+                    document.getElementById('updateRowDouble').disabled = false;
                 }
 
                 // Mở modal
@@ -497,7 +596,6 @@
                     if (!hasErrors) {
                         console.log(data);
                         $('#updateSeatTemplateModal').modal('hide');
-                        form.reset();
                         location.reload();
 
                     }
@@ -510,6 +608,7 @@
             // Reset thông báo lỗi trước đó
             document.getElementById(`${prefix}NameError`).innerText = '';
             document.getElementById(`${prefix}MatrixSeatError`).innerText = '';
+
             document.getElementById(`${prefix}DescriptionError`).innerText = '';
 
             // Kiểm tra và hiển thị lỗi cho từng trường
@@ -521,6 +620,39 @@
             }
             if (errors.matrix_id) {
                 document.getElementById(`${prefix}MatrixSeatError`).innerText = errors.matrix_id.join(', ');
+            }
+            // if (errors.row_regular) {
+            //     console.log('row_rgl');
+            //     document.getElementById(`${prefix}RowRegularError`).innerText = errors.row_regular.join(', ');
+            // }
+            // if (errors.row_vip) {
+            //     console.log('row_vip');
+
+            //     document.getElementById(`${prefix}RowVipError`).innerText = errors.row_vip.join(', ');
+            // }
+            // if (errors.row_double) {
+            //     console.log('row_db');
+            //     document.getElementById(`${prefix}RowDoubleError`).innerText = errors.row_double.join(', ');
+            // }
+            if (errors.row_regular) {
+                document.getElementById(`${prefix}RowRegular`).classList.add('is-invalid');
+            } else {
+                document.getElementById(`${prefix}RowRegular`).classList.remove('is-invalid');
+            }
+            if (errors.row_vip) {
+                document.getElementById(`${prefix}RowVip`).classList.add('is-invalid');
+            } else {
+                document.getElementById(`${prefix}RowVip`).classList.remove('is-invalid');
+            }
+            if (errors.row_double) {
+                document.getElementById(`${prefix}RowDouble`).classList.add('is-invalid');
+            } else {
+                document.getElementById(`${prefix}RowDouble`).classList.remove('is-invalid');
+            }
+            if (errors.rows) {
+                document.getElementById(`${prefix}RowError`).innerText = errors.rows[0];
+            } else {
+                document.getElementById(`${prefix}RowError`).innerText = '';
             }
         }
     </script>
@@ -541,15 +673,42 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsPublish = new DataTable("#tableIsPublish", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsDraft = new DataTable("#tableIsDraft", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             // Xử lý sự kiện change cho checkbox .changeActive
@@ -658,5 +817,32 @@
                 }
             });
         }
+    </script>
+
+
+    {{-- ajax load matrix --}}
+    <script>
+        $(document).ready(function() {
+            // Lắng nghe sự kiện change cho cả hai select (create và update)
+            $('#createMatrixId, #updateMatrixId').on('change', function() {
+                const selectedId = $(this).val(); // Lấy ID từ select
+                const target = $(this).attr('id'); // Xác định ID của select đang thay đổi
+
+                if (selectedId !== "") {
+                    // Tìm ma trận có id khớp với selectedId
+                    const selectedMatrix = matrixs.find(matrix => matrix.id == selectedId);
+
+                    if (selectedMatrix) {
+                        // Xác định prefix của form (create hoặc update)
+                        const prefix = target === 'createMatrixId' ? 'create' : 'update';
+
+                        // Cập nhật giá trị vào các input tương ứng
+                        $(`#${prefix}RowRegular`).val(selectedMatrix.row_default.regular);
+                        $(`#${prefix}RowVip`).val(selectedMatrix.row_default.vip);
+                        $(`#${prefix}RowDouble`).val(selectedMatrix.row_default.double);
+                    }
+                }
+            });
+        });
     </script>
 @endsection

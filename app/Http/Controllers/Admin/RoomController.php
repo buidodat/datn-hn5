@@ -31,7 +31,7 @@ class RoomController extends Controller
     }
     public function index()
     {
-        $rooms = Room::query()->with(['typeRoom', 'cinema', 'seats'])->latest('cinema_id')->get();
+        $rooms = Room::query()->with(['typeRoom', 'cinema', 'seats'])->latest('id')->get();
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         if (Auth::user()->cinema_id == "") {
@@ -51,8 +51,8 @@ class RoomController extends Controller
 
     public function show(Room $room)
     {
-        $matrixKey = array_search($room->matrix_id, array_column(Room::MATRIXS, 'id'));
-        $matrixSeat = Room::MATRIXS[$matrixKey];
+        $matrixKey = array_search($room->matrix_id, array_column(SeatTemplate::MATRIXS, 'id'));
+        $matrixSeat = SeatTemplate::MATRIXS[$matrixKey];
         $seats = Seat::where(['room_id' => $room->id])->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         return view(self::PATH_VIEW . __FUNCTION__, compact('typeRooms', 'room', 'seats', 'matrixSeat'));
@@ -118,16 +118,14 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         try {
-            if ($room->is_publish) {
-                return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
-            }
-            DB::transaction(function () use ($room) {
-
+            if (!$room->is_publish || $room->showtimes()->doesntExist()) {
                 Seat::where('room_id', $room->id)->delete();
                 $room->delete();
-            });
+                return redirect()->back()->with('success', 'Thao tác thành công!');
+            }
+            return redirect()->back()->with('error', 'Phòng chiếu đã đi vào sử dụng, không thể xóa!');
 
-            return redirect()->back()->with('success', 'Thao tác thành công!');
+
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

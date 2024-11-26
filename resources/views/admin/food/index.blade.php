@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Đồ Ăn
+    Quản lý đồ ăn
 @endsection
 
 @section('style-libs')
@@ -18,11 +18,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Đồ Ăn</h4>
+                <h4 class="mb-sm-0">Quản lý đồ ăn</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Đồ Ăn</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Đồ ăn</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Đồ Ăn</h5>
+                    <h5 class="card-title mb-0">Danh sách đồ ăn</h5>
                     <a href="{{ route('admin.food.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
@@ -51,9 +51,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                             <tr>
                                 <th>#</th>
                                 <th>Tên Đồ Ăn</th>
@@ -150,6 +149,15 @@
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
                 order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {

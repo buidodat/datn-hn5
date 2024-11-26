@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách tài khoản
+    Quản lý tài khoản
 @endsection
 
 @section('style-libs')
@@ -20,11 +20,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách tài khoản</h4>
+                <h4 class="mb-sm-0">Quản lý tài khoản</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">tài khoản</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tài khoản</a></li>
                         <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
@@ -78,10 +78,8 @@
                         {{-- Tất cả ok rồi --}}
                         <div class="tab-pane active" id="admin" role="tabpanel">
 
-                            <table
-                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                                style="width:100%" id="tableAdmin">
-                                <thead>
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAdmin">
+                                <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
                                         <th>Họ và tên</th>
@@ -183,10 +181,8 @@
 
                         <div class="tab-pane " id="users" role="tabpanel">
 
-                            <table
-                                class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                                style="width:100%" id="tableUsers">
-                                <thead>
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableUsers">
+                                <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
                                         <th>Họ và tên</th>
@@ -292,17 +288,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#tableAdmin", {
-            order: [
-
-
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+            },
         });
 
         new DataTable("#tableUsers", {
-            order: [
-    
-
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+            },
         });
     </script>
 @endsection

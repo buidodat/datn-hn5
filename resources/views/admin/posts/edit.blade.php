@@ -1,18 +1,18 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Cập nhật bài viết
+    Cập nhật bài viết: {{ $post->title }}
 @endsection
 
 @section('content')
     <form action="{{ route('admin.posts.update', $post) }}" method="post" enctype="multipart/form-data">
         @method('PUT')
         @csrf
-      
+
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Cập nhật Bài viết</h4>
+                    <h4 class="mb-sm-0">Quản lý bài viết</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
@@ -37,7 +37,7 @@
             <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
-                        <h4 class="card-title mb-0 flex-grow-1">Cập nhật thông tin bài viết</h4>
+                        <h4 class="card-title mb-0 flex-grow-1">Thông tin bài viết</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
                         <div class="live-preview">
