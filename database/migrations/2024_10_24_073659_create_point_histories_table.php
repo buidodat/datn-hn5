@@ -17,9 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(Membership::class);
             $table->unsignedBigInteger('points');
             $table->string('type');
-            $table->string('description')->nullable();
-            $table->date('expiry_date')->nullable();
-            $table->boolean('processed')->default(false);
+            // $table->string('description')->nullable();
+            // $table->date('expiry_date')->nullable();
             $table->timestamps();
         });
     }

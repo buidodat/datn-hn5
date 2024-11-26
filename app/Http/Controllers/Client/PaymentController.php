@@ -338,7 +338,7 @@ class PaymentController extends Controller
                         'membership_id' => $membership->id,
                         'points' => $totalPoints,
                         'type' => PointHistory::POINTS_ACCUMULATED,
-                        'expiry_date' => now()->addMonths(PointHistory::POINT_EXPIRY_DURATION),
+
                     ]);
 
                     // Kiểm tra thăng hạng
@@ -643,7 +643,7 @@ class PaymentController extends Controller
                         'membership_id' => $membership->id,
                         'points' => $totalPoints,
                         'type' => PointHistory::POINTS_ACCUMULATED,
-                        'expiry_date' => now()->addMonths(PointHistory::POINT_EXPIRY_DURATION),
+
                     ]);
 
                     // Kiểm tra thăng hạng
@@ -914,8 +914,7 @@ class PaymentController extends Controller
             PointHistory::create([
                 'membership_id' => $membership->id,
                 'points' => $totalPoints,
-                'type' => PointHistory::POINTS_ACCUMULATED,
-                'expiry_date' => now()->addMonths(PointHistory::POINT_EXPIRY_DURATION),
+                'type' => PointHistory::POINTS_ACCUMULATED
             ]);
 
             // Kiểm tra thăng hạng

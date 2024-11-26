@@ -170,7 +170,7 @@
                                 <div class="row">
                                     <div class="col-md-9">
 
-                                        <div class='text-center'>
+                                        <div class='text-center rank_membership'>
                                             <p><span class="span_card">Cấp độ thẻ: </span><span
                                                     class="bold">{{ $user->membership->rank->name }}</span></p>
                                         </div>
@@ -209,8 +209,8 @@
                                             <div class="progress-info">
                                                 <span>Số tiền đã chi tiêu</span>
                                                 <span class="amount">
-                                                        {{ number_format($user->membership->total_spent, 0, ',', '.') }}
-                                                        <strong>VND</strong>
+
+                                                        <strong>{{ number_format($user->membership->total_spent, 0, ',', '.') }}    VND</strong>
                                                     </span>
                                             </div>
 
@@ -259,10 +259,6 @@
                                                     class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.') }}
                                                         điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm đã hết hạn:</span> <span
-                                                    class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.') }}
-                                                        điểm</span>
-                                            </div>
                                             <div><span class="span_label">Điểm hiện có:</span> <span
                                                     class='bold'>{{ number_format($user->membership->points, 0, ',', '.') }}
                                                         điểm</span></div>
@@ -285,7 +281,6 @@
                                             <th>Thời gian</th>
                                             <th>Số điểm</th>
                                             <th>Nội dung sử dụng</th>
-                                            <th>Hạn sử dụng</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -298,7 +293,7 @@
                                                         : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
                                                 </td>
                                                 <td>{{ $pointHistory->type }}</td>
-                                                <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}
+
                                                 </td>
                                             </tr>
                                         @endforeach
