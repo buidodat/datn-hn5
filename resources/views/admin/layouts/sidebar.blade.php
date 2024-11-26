@@ -151,7 +151,7 @@
                                     <li class="nav-item">
                                         <a href="{{ route('admin.branches.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-ancient-gate-fill"></i><span
-                                                data-key="t-layouts">Quản lý chi nhánh</span></a>
+                                                data-key="t-layouts">Quản lý Chi nhánh</span></a>
                                     </li>
                                 @endcan
                                 @canany(['Danh sách rạp', 'Thêm rạp', 'Sửa rạp'])
@@ -254,7 +254,7 @@
                                         <a href="{{ route('admin.tickets.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal">
                                             <i class="ri-wallet-3-fill"></i>
-                                            <span data-key="t-layouts">Quản lý hóa đơn</span></a>
+                                            <span data-key="t-layouts">Quản lý Hóa đơn</span></a>
                                     </li>
                                 @endcan
 
@@ -306,7 +306,7 @@
                                     <li class="nav-item">
                                         <a href="{{ route('admin.food.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-cake-3-fill"></i> <span
-                                                data-key="t-layouts">Quản lý Đồ Ăn</span></a>
+                                                data-key="t-layouts">Quản lý Đồ ăn</span></a>
                                     </li>
                                 @endcan
 
@@ -325,11 +325,11 @@
                                     <li class="nav-item">
                                         <a href="{{ route('admin.vouchers.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class=" ri-coupon-3-line "></i> <span
-                                                data-key="t-layouts">Vouchers</span></a>
+                                                data-key="t-layouts">Mã giảm giá</span></a>
                                     </li>
                                 @endcan
 
-
+{{--
                                 @canany(['Danh sách thanh toán', 'Thêm thanh toán', 'Sửa thanh toán', 'Xóa thanh toán'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.payments.index') }}" class="nav-link menu-link"
@@ -337,14 +337,14 @@
                                                 data-key="t-layouts">Quản lý
                                                 Thanh Toán</span></a>
                                     </li>
-                                @endcan
+                                @endcan --}}
 
                                 @canany(['Danh sách giá', 'Sửa giá'])
 
                                     {{-- Giá vé --}}
                                     <li class="nav-item">
                                         <a class="nav-link menu-link" href="{{ route('admin.ticket-price') }}">
-                                            <i class=" ri-ticket-2-line"></i> <span data-key="t-dashboards">Quản lý Giá
+                                            <i class=" ri-ticket-2-line"></i> <span data-key="t-dashboards">Quản lý Giá vé
                                             </span>
                                         </a>
                                     </li>
@@ -370,7 +370,7 @@
                                     <li class="nav-item">
                                         <a href="{{ route('admin.posts.index') }}" class="nav-link menu-link"
                                             data-key="t-horizontal"><i class="ri-file-list-3-line"></i> <span
-                                                data-key="t-layouts">Quản lý bài
+                                                data-key="t-layouts">Quản lý Bài
                                                 viết</span></a>
                                     </li>
                                 @endcan

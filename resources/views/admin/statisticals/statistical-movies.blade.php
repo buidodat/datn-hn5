@@ -8,9 +8,30 @@
     <div class="row">
         <div class="col">
             <div class="h-100">
-                <div class="row">
-                    <div class="col-md-10">
-                        <form action="{{ route('admin.statistical-movies') }}" method="GET">
+
+                <form action="{{ route('admin.statistical-movies') }}" method="GET" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row">
+                                @if (Auth::user()->hasRole('System Admin'))
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Chi nhánh</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Rạp</label>
+                                    </div>
+                                @endif
+                                <div class="col-md-2">
+                                    <label class="mb-0">Ngày bắt đầu</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="mb-0">Ngày kết thúc</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
                             <div class="row">
                                 @if (Auth::user()->hasRole('System Admin'))
                                     <div class="col-md-2">
@@ -30,12 +51,12 @@
                                         </select>
                                     </div>
                                 @endif
-                                <div class="col-md-3">
-                                    <input type="datetime-local" name="start_date" class="form-control"
+                                <div class="col-md-2">
+                                    <input type="date" name="start_date" class="form-control"
                                         value="{{ old('start_date', $startDate) }}">
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="datetime-local" name="end_date" class="form-control"
+                                <div class="col-md-2">
+                                    <input type="date" name="end_date" class="form-control"
                                         value="{{ old('end_date', $endDate) }}">
                                 </div>
                                 <div class="col-md-2">
@@ -44,14 +65,14 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
-
-
+                        </div>
+                        <div class="col-md-2" align="right">
+                                <a href="{{ route('admin.statistical-movies') }}" class="btn btn-primary">Tổng
+                                    quan</a>
+                        </div>
                     </div>
-                    <div class="col-md-2" align="right">
-                        <a href="{{ route('admin.statistical-movies') }}" class="btn btn-primary mb-3 ">Tổng quan</a>
-                    </div>
-                </div>
+                </form>
+
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
@@ -63,7 +84,8 @@
                                 <div class="row g-0 text-center">
                                     <div class="col-6 col-sm-6">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="{{ $totalMovies }}">0</span>
+                                            <h5 class="mb-1"><span class="counter-value"
+                                                    data-target="{{ $totalMovies }}">0</span>
                                             </h5>
                                             <p class="text-muted mb-0">Tổng phim</p>
                                         </div>
@@ -80,7 +102,7 @@
                                     <div class="col-6 col-sm-6">
                                         <div class="p-3 border border-dashed border-start-0">
                                             <h5 class="mb-1"><span class="counter-value"
-                                                    data-target="{{ $totalRevenue}}">0</span>VNĐ
+                                                    data-target="{{ $totalRevenue }}">0</span>VNĐ
                                             </h5>
                                             <p class="text-muted mb-0">Tổng doanh thu</p>
                                         </div>
@@ -134,7 +156,7 @@
                                 cinemaSelect.empty();
                                 cinemaSelect.append(
                                     '<option value="">Tất cả rạp</option>'
-                                    ); // Hiển thị "Tất cả rạp" sau khi tải
+                                ); // Hiển thị "Tất cả rạp" sau khi tải
 
                                 $.each(data, function(index, cinema) {
                                     cinemaSelect.append('<option value="' + cinema.id +

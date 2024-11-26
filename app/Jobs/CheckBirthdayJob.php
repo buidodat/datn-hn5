@@ -67,8 +67,15 @@ class CheckBirthdayJob implements ShouldQueue
             $discount = VoucherConfig::getValue('birthday_voucher', 50000);
 
             try {
+                $voucherCode = null;
+
+                do {
+                    $randomString = Str::upper(Str::random(6));
+                    $voucherCode = 'BDAY' . $user->id . $randomString;
+                } while (Voucher::where('code', $voucherCode)->exists());
+
                 $voucher = Voucher::create([
-                    'code' => 'BDAY' . substr((string)Ulid::generate(), 0, 6),
+                    'code' => $voucherCode,
                     'title' => 'Voucher Sinh Nhật của ' . $user->name,
                     'description' => 'Voucher giảm giá sinh nhật tháng ' . now()->month,
                     'start_date_time' => Carbon::now('Asia/Ho_Chi_Minh'),
@@ -88,7 +95,7 @@ class CheckBirthdayJob implements ShouldQueue
                 Mail::to($user->email)->queue(new BirthdayVoucherMail($user, $voucher));
 
             } catch (\Exception $e) {
-                Log::error("Failed to create birthday voucher {$user->id}: {$e->getMessage()}");
+                Log::error("Lỗi tạo voucher sinh nhật cho user {$user->id}: {$e->getMessage()}");
             }
 
         }

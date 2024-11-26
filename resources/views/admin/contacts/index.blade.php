@@ -24,8 +24,8 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Liên hệ</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Liên hệ</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -48,9 +48,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                             <tr>
                                 <th>#</th>
                                 <th>Thông tin liên hệ</th>
@@ -147,8 +146,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
+            },
         });
     </script>
     <script>

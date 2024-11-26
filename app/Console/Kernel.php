@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
             ->dailyAt('00:00')
             ->timezone('Asia/Ho_Chi_Minh')
             ->withoutOverlapping();*/
-         $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
+         $schedule->job(new CheckBirthdayJob)->everySecond()->timezone('Asia/Ho_Chi_Minh');
         $schedule->command('points:expire')->daily();
         $schedule->command('membership:reset')->yearly();
     }

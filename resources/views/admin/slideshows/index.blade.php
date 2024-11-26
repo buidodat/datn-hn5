@@ -6,9 +6,9 @@
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <!-- Swiper CSS -->
@@ -78,16 +78,15 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                           style="width:100%">
-                        <thead>
-                        <tr>
-                            <th style="width: 30px;">#</th>
-                            <th>Hình ảnh</th>
-                            <th>Mô tả ngắn</th>
-                            <th style="width: 85px;">Hoạt động</th>
-                            <th style="width: 85px;">Chức năng</th>
-                        </tr>
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>Hình ảnh</th>
+                                <th>Mô tả ngắn</th>
+                                <th style="width: 85px;">Hoạt động</th>
+                                <th style="width: 85px;">Chức năng</th>
+                            </tr>
                         </thead>
                         <tbody>
                         @foreach($slideshows as $slideshow)
@@ -125,8 +124,8 @@
                                     </div>
 
 
-                                    <!-- Swiper -->
-                                    {{--<div
+                                        <!-- Swiper -->
+                                        {{-- <div
                                         class="swiper effect-coverflow-swiper rounded pb-5 swiper-coverflow swiper-3d swiper-initialized swiper-horizontal swiper-watch-progress">
                                         <div class="swiper-wrapper" id="swiper-wrapper-faf810d4c84b10918c" aria-live="off"
                                              style="cursor: grab; transition-duration: 300ms; transform: translate3d(-77.875px, 0px, 0px);">
@@ -184,34 +183,36 @@
                                                 class="swiper-pagination-bullet swiper-pagination-bullet-active swiper-pagination-bullet-active-main" tabindex="0"
                                                 role="button" aria-label="Go to slide 6" style="left: -90px;" aria-current="true"></span></div>
                                         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                                    </div>--}}
+                                    </div> --}}
 
-                                </td>
-                                <td>{{ $slideshow->description }}</td>
-                                <td>
-                                    <div class="form-check form-switch form-switch-success">
-                                        <input class="form-check-input switch-is-active changeActive"
-                                               name="is_active" type="checkbox" role="switch"
-                                               data-slideshow-id="{{ $slideshow->id }}" @checked($slideshow->is_active)
-                                               onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.slideshows.edit',$slideshow) }}">
-                                        <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                class="fas fa-edit"></i></button>
-                                    </a>
-                                    <form action="{{route('admin.slideshows.destroy', $slideshow)}}" method="POST" class="d-inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
-                                            <i class="ri-delete-bin-7-fill"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                                    </td>
+                                    <td>{{ $slideshow->description }}</td>
+                                    <td>
+                                        <div class="form-check form-switch form-switch-success">
+                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
+                                                @checked($slideshow->is_active)
+                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
+                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                    class="fas fa-edit"></i></button>
+                                        </a>
+                                        <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"
+                                            class="d-inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có muốn xóa không')">
+                                                <i class="ri-delete-bin-7-fill"></i>
+                                            </button>
+                                        </form>
+                                    </td>
 
-                            </tr>
-                        @endforeach
+                                </tr>
+                            @endforeach
                         </tbody>
 
                     </table>
@@ -224,7 +225,7 @@
 
 @section('script-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -240,14 +241,23 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-                [0, 'desc']
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
+            },
         });
     </script>
     <script>
-        $(document).ready(function () {
-            $('.changeActive').on('change', function () {
+        $(document).ready(function() {
+            $('.changeActive').on('change', function() {
                 let slideshowId = $(this).data('slideshow-id');
                 let is_active = $(this).is(':checked') ? 1 : 0;
                 // Gửi yêu cầu AJAX
@@ -259,12 +269,12 @@
                         id: slideshowId,
                         is_active: is_active
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (!response.success) {
                             alert('Có lỗi xảy ra, vui lòng thử lại.');
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         alert('Lỗi kết nối hoặc server không phản hồi.');
                         console.error(error);
                     }

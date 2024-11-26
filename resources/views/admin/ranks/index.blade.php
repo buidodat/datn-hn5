@@ -160,9 +160,11 @@
                                             <td>{{ $rank->ticket_percentage }}%</td>
                                             <td>{{ $rank->combo_percentage }}%</td>
                                             <td class="small">{{ $rank->created_at->format('d/m/Y') }}
-                                                <br>{{ $rank->created_at->format('H:i:s') }}</td>
+                                                <br>{{ $rank->created_at->format('H:i:s') }}
+                                            </td>
                                             <td class="small">{{ $rank->updated_at->format('d/m/Y') }}
-                                                <br>{{ $rank->updated_at->format('H:i:s') }}</td>
+                                                <br>{{ $rank->updated_at->format('H:i:s') }}
+                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -250,8 +252,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
+            },
         });
     </script>
     <script>

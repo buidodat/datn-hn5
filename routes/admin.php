@@ -93,13 +93,14 @@ Route::get('contacts/{contact}', [ContactController::class, 'show']);
 Route::prefix('movies')
     ->as('movies.')
     ->group(function () {
-        Route::get('/', [MovieController::class, 'index'])->name('index');
-        Route::get('create', [MovieController::class, 'create'])->name('create'); // Chuyển lên trước
-        Route::post('store', [MovieController::class, 'store'])->name('store');
-        Route::get('{movie}', [MovieController::class, 'show'])->name('show');
-        Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('edit');
-        Route::put('{movie}', [MovieController::class, 'update'])->name('update');
-        Route::delete('{movie}', [MovieController::class, 'destroy'])->name('destroy');
+        Route::get('/',             [MovieController::class, 'index'])->name('index');
+        Route::get('create',        [MovieController::class, 'create'])->name('create'); // Chuyển lên trước
+        Route::post('store',        [MovieController::class, 'store'])->name('store');
+        Route::get('{movie}',       [MovieController::class, 'show'])->name('show');
+        Route::get('{movie}/edit',  [MovieController::class, 'edit'])->name('edit');
+        Route::put('{movie}',       [MovieController::class, 'update'])->name('update');
+        Route::delete('{movie}',    [MovieController::class, 'destroy'])->name('destroy');
+        Route::post('selected-tab', [MovieController::class, 'selectedTab'])->name('selected-tab');
     });
 
 
@@ -110,23 +111,25 @@ Route::prefix('movies')
 Route::prefix('rooms')
     ->as('rooms.')
     ->group(function () {
-        Route::get('/',                   [RoomController::class, 'index'])->name('index');
-        Route::get('edit/{room}', [RoomController::class, 'edit'])->name('edit');
-        Route::put('{room}/update', [RoomController::class, 'update'])->name('update');
+        Route::get('/',                     [RoomController::class, 'index'])->name('index');
+        Route::get('edit/{room}',           [RoomController::class, 'edit'])->name('edit');
+        Route::put('{room}/update',         [RoomController::class, 'update'])->name('update');
 
-        Route::get('{room}',     [RoomController::class, 'show'])->name('show');
-        Route::get('{room}/destroy',     [RoomController::class, 'destroy'])->name('destroy');
-        Route::get('{room}/destroy',     [RoomController::class, 'destroy'])->name('destroy');
+        Route::get('{room}',                [RoomController::class, 'show'])->name('show');
+        Route::get('{room}/destroy',        [RoomController::class, 'destroy'])->name('destroy');
+        Route::get('{room}/destroy',        [RoomController::class, 'destroy'])->name('destroy');
+        Route::post('selected-tab',         [RoomController::class, 'selectedTab'])->name('selected-tab');
     });
 
 Route::prefix('seat-templates')
     ->as('seat-templates.')
     ->group(function () {
-        Route::get('/',                     [SeatTemplateController::class, 'index'])->name('index');
-        Route::get('{seatTemplate}/edit',   [SeatTemplateController::class, 'edit'])->name('edit');
-        Route::put('{seatTemplate}/seat-structure',   [SeatTemplateController::class, 'updateSeatStructure'])->name('update.seat-structure');
-        Route::put('{seatTemplate}/info',   [SeatTemplateController::class, 'update'])->name('updateInfo')->name('update.info');
-        Route::get('{seatTemplate}',   [SeatTemplateController::class, 'destroy'])->name('destroy');
+        Route::get('/',                                 [SeatTemplateController::class, 'index'])->name('index');
+        Route::get('{seatTemplate}/edit',               [SeatTemplateController::class, 'edit'])->name('edit');
+        Route::put('{seatTemplate}/seat-structure',     [SeatTemplateController::class, 'updateSeatStructure'])->name('update.seat-structure');
+        Route::put('{seatTemplate}/info',               [SeatTemplateController::class, 'update'])->name('updateInfo')->name('update.info');
+        Route::get('{seatTemplate}',                    [SeatTemplateController::class, 'destroy'])->name('destroy');
+        Route::post('selected-tab',                     [SeatTemplateController::class, 'selectedTab'])->name('selected-tab');
     });
 // Route::resource('rooms', RoomController::class);
 

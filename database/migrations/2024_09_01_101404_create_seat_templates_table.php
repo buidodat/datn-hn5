@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedSmallInteger('matrix_id');
             $table->string('name')->unique(); // Tên của template
             $table->json('seat_structure')->nullable(); // Cấu trúc ghế lưu ở dạng JSON
+            $table->unsignedTinyInteger('row_regular')->default(4);
+            $table->unsignedTinyInteger('row_vip')->nullable();
+            $table->unsignedTinyInteger('row_double')->nullable(2);
             $table->string('description')->nullable();
             $table->boolean('is_active')->default(false);
             $table->boolean('is_publish')->default(false);
