@@ -278,7 +278,7 @@
                     <td>{{ number_format($ticket->voucher_discount, 0, ',', '.') }}đ</td>
                 </tr>
                 <tr>
-                    <th>Điểm</th>
+                    <th>Điểm Poly</th>
                     <td>{{ number_format($ticket->point_discount, 0, ',', '.') }}đ</td>
                 </tr>
             </table>

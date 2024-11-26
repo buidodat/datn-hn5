@@ -63,11 +63,26 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="birthday" class="form-label">Ngày sinh <span
+                                                class="text-danger">*</span></label>
+                                        <input id="birthday" type="date"
+                                            class="form-control @error('birthday') is-invalid @enderror" name="birthday"
+                                            value="{{ old('birthday') }}" autocomplete="birthday">
+
+                                        @error('birthday')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+
+                                    </div>
+
+                                    <div class="mb-3">
                                         <label class="form-label" for="password-input">Mật khẩu</label>
                                         <div class="position-relative auth-pass-inputgroup">
                                             <input id="password" type="password"
                                                 class="form-control pe-5 password-input @error('password') is-invalid @enderror"
-                                                name="password" placeholder="Nhập mật khẩu" autocomplete="new-password">
+                                                name="password" value="{{ old('password') }}" placeholder="Nhập mật khẩu" autocomplete="new-password">
 
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">

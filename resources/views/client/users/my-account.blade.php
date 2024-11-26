@@ -6,9 +6,9 @@
 
 @section('style-libs')
     <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <style>
@@ -21,8 +21,6 @@
         .tab-content_info {
             padding: 25px 0;
         }
-
-
     </style>
 @endsection
 
@@ -40,7 +38,7 @@
                 </a>
                 <a href="#cinema-journey" role="tab" data-toggle="tab" class="tab-link">
                     <div class="my-account-tab {{ $page == 'cinema-journey' ? 'my-account-active' : '' }}"
-                         role="presentation">LỊCH SỬ GIAO DỊCH
+                        role="presentation">LỊCH SỬ GIAO DỊCH
                     </div>
                 </a>
                 <a href="#my-voucher" role="tab" data-toggle="tab" class="tab-link">
@@ -53,9 +51,9 @@
                 <div class="tab-content tab-content_info">
                     {{-- Thông tin tài khoản --}}
                     <div id="my-account" class="tab-pane  {{ $page == 'my-account' ? 'in active' : 'fade' }} item-content"
-                         role="tabpanel"> {{-- active --}}
+                        role="tabpanel"> {{-- active --}}
                         <form action="{{ route('my-account.update') }}" method="post" enctype="multipart/form-data"
-                              id="updateAccountForm">
+                            id="updateAccountForm">
                             @csrf
                             @method('PUT')
 
@@ -78,7 +76,7 @@
                                 </div>
                                 <div class="my-account-buttons">
                                     <input type="file" id="file-upload" name="img_thumbnail" accept="image/*"
-                                           style="display: none;"/>
+                                        style="display: none;" />
                                     <label for="img_thumbnail" class="my-account-upload-btn" id="uploadBtn">Tải ảnh
                                         lên</label>
                                 </div>
@@ -90,45 +88,48 @@
                                     <div class="my-account-mb-3">
                                         <label for="name"><span style="color: red;">*</span>&nbsp;Họ tên</label>
                                         <input type="text" class="my-account-form-control" placeholder="Họ và tên"
-                                               name="name" id="name" value="{{ old('name', $user->name) }}">
+                                            name="name" id="name" value="{{ old('name', $user->name) }}">
                                         @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="my-account-mb-3">
                                         <label for="phone"><span style="color: red;">*</span>&nbsp;Số điện thoại</label>
                                         <i class="fa fa-phone-square phone-icon"></i>
                                         <input type="text" id="phone" class="my-account-form-control" name="phone"
-                                               placeholder="Nhập số điện thoại của bạn"
-                                               value="{{ old('phone', $user->phone) }}">
+                                            placeholder="Nhập số điện thoại của bạn"
+                                            value="{{ old('phone', $user->phone) }}">
                                         @error('phone')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     <div class="my-account-mb-3">
-                                        <label for="birthday"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
-                                        <i class="fa fa-calendar birthday-icon"></i>
-                                        <input type="date" id="birthday"
-                                               value="{{ old('birthday', $user->birthday->format('Y-m-d')) }}"
-                                               class="my-account-form-control" name="birthday" placeholder="Ngày sinh"
-                                               data-date-format="yyyy-mm-dd"/>
-                                        @error('birthday')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        @if ($user->birthday == null)
+                                            <label for="birthday"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
+                                            <i class="fa fa-calendar birthday-icon"></i>
+                                            <input type="date" id="birthday" value="{{ old('birthday') }}"
+                                                class="my-account-form-control" name="birthday" placeholder="Ngày sinh" />
+                                            @error('birthday')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        @else
+                                            <label>Ngày sinh</label>
+                                            <input disabled value="{{ \Carbon\Carbon::parse($user->birthday)->format('d/m/Y') }}" class="my-account-form-control"/>
+                                        @endif
+
                                     </div>
                                     <div class="my-account-mb-3">
-                                        <a href="#" id="changePasswordBtn" class="my-account-d-block">Đổi mật
+                                        <a href="#" id="changePasswordBtn" style="color: #ff7307;">Đổi mật
                                             khẩu?</a>
                                     </div>
                                 </div>
 
                                 <div class="my-account-form-group">
                                     <div class="my-account-mb-3">
-                                        <label for="email"><span style="color: red;">*</span>&nbsp;Email</label>
+                                        <label for="email">Email</label>
                                         <i class="fa fa-envelope email-icon"></i>
-                                        <input type="email" id="email" disabled class="my-account-form-control"
-                                               name="email" placeholder="example@gmail.com"
-                                               value="{{ old('email', $user->email) }}">
+                                        <input  id="email" disabled class="my-account-form-control"
+                                           value="{{ old('email', $user->email) }}">
                                     </div>
                                     <div class="my-account-mb-3">
                                         <label for="gender">Giới tính</label>
@@ -146,8 +147,8 @@
                                     <div class="my-account-mb-3">
                                         <label for="address">Địa chỉ</label>
                                         <input type="text" class="my-account-form-control"
-                                               placeholder="Số nhà, đường, ngõ xóm" name="address" id="address"
-                                               value="{{ old('address', $user->address) }}">
+                                            placeholder="Số nhà, đường, ngõ xóm" name="address" id="address"
+                                            value="{{ old('address', $user->address) }}">
                                     </div>
                                 </div>
                             </div>
@@ -158,8 +159,8 @@
                         </form>
                     </div>
                     <div id="membership"
-                         class="tab-pane  {{ $page == 'membership' ? 'in active' : 'fade' }} item-content"
-                         role="tabpanel">
+                        class="tab-pane  {{ $page == 'membership' ? 'in active' : 'fade' }} item-content"
+                        role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
@@ -208,9 +209,9 @@
                                             <div class="progress-info">
                                                 <span>Số tiền đã chi tiêu</span>
                                                 <span class="amount">
-                                                        {{ number_format($user->membership->total_spent, 0, ',', '.') }}
-                                                        <strong>VND</strong>
-                                                    </span>
+                                                    {{ number_format($user->membership->total_spent, 0, ',', '.') }}
+                                                    <strong>VND</strong>
+                                                </span>
                                             </div>
 
                                             @php
@@ -224,16 +225,16 @@
 
                                             <div class="progress-bar-container">
                                                 <div class="progress-bar-fill {{ $progress >= 100 ? 'full' : '' }}"
-                                                     style="width: {{ $progress }}%;"></div>
+                                                    style="width: {{ $progress }}%;"></div>
                                             </div>
 
                                             <div class="milestone-container">
                                                 @foreach ($ranks as $index => $rank)
                                                     <div class="milestone"
-                                                         style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
+                                                        style="{{ $index === count($ranks) - 1 ? 'right: 0;' : 'left: ' . ($rank['total_spent'] / $maxAmount) * 100 . '%;' }}">
                                                         <span>{{ $rank['name'] }}</span>
                                                         <span>{{ number_format($rank['total_spent'], 0, ',', '.') }}
-                                                                VND</span>
+                                                            VND</span>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -252,19 +253,19 @@
                                         <div class="points-info">
                                             <div><span class="span_label">Điểm đã tích lũy:</span> <span
                                                     class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_ACCUMULATED)->sum('points'), 0, ',', '.') }}
-                                                        điểm</span>
+                                                    điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã sử dụng:</span> <span
                                                     class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.') }}
-                                                        điểm</span>
+                                                    điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm đã hết hạn:</span> <span
                                                     class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.') }}
-                                                        điểm</span>
+                                                    điểm</span>
                                             </div>
                                             <div><span class="span_label">Điểm hiện có:</span> <span
                                                     class='bold'>{{ number_format($user->membership->points, 0, ',', '.') }}
-                                                        điểm</span></div>
+                                                    điểm</span></div>
 
                                         </div>
                                     </div>
@@ -276,31 +277,30 @@
                                     <div class='row-header'>
                                         Lịch sử điểm
                                     </div>
-                                    <table id="pointHistory"
-                                           class='table table-bordered dt-responsive nowrap'
-                                           width="100%">
+                                    <table id="pointHistory" class='table table-bordered dt-responsive nowrap'
+                                        width="100%">
                                         <thead class='xanh-fpt'>
-                                        <tr>
-                                            <th>Thời gian</th>
-                                            <th>Số điểm</th>
-                                            <th>Nội dung sử dụng</th>
-                                            <th>Hạn sử dụng</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Thời gian</th>
+                                                <th>Số điểm</th>
+                                                <th>Nội dung sử dụng</th>
+                                                <th>Hạn sử dụng</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
-                                            <tr>
-                                                <td>{{ $pointHistory->created_at->format('d/m/Y H:i') }}</td>
-                                                <td>
-                                                    {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
-                                                        ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
-                                                        : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
-                                                </td>
-                                                <td>{{ $pointHistory->type }}</td>
-                                                <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
+                                                <tr>
+                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i') }}</td>
+                                                    <td>
+                                                        {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
+                                                            ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
+                                                            : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
+                                                    </td>
+                                                    <td>{{ $pointHistory->type }}</td>
+                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -308,8 +308,8 @@
                         </div>
                     </div>
                     <div id="my-voucher"
-                         class="tab-pane  {{ $page == 'my-voucher' ? 'in active' : 'fade' }} item-content"
-                         role="tabpanel">
+                        class="tab-pane  {{ $page == 'my-voucher' ? 'in active' : 'fade' }} item-content"
+                        role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
@@ -317,34 +317,33 @@
                                     <div class='row-header'>
                                         Danh sách voucher
                                     </div>
-                                    <table id="myVoucher"
-                                           class='table table-bordered dt-responsive nowrap'
-                                           width="100%">
+                                    <table id="myVoucher" class='table table-bordered dt-responsive nowrap'
+                                        width="100%">
                                         <thead class='xanh-fpt'>
-                                        <tr>
-                                            <th>Voucher</th>
-                                            <th>Tiêu đề</th>
-                                            <th>Giảm giá</th>
+                                            <tr>
+                                                <th>Voucher</th>
+                                                <th>Tiêu đề</th>
+                                                <th>Giảm giá</th>
 
-                                            <th>Thời gian</th>
-                                            <th>Còn lại</th>
-                                        </tr>
+                                                <th>Thời gian</th>
+                                                <th>Còn lại</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($vouchers as $voucher)
-                                            <tr>
-                                                <td>{{ $voucher->code }}</td>
-                                                <td>{{ $voucher->title }}</td>
-                                                <td>{{ number_format($voucher->discount, 0, ',', '.') }} đ</td>
+                                            @foreach ($vouchers as $voucher)
+                                                <tr>
+                                                    <td>{{ $voucher->code }}</td>
+                                                    <td>{{ $voucher->title }}</td>
+                                                    <td>{{ number_format($voucher->discount, 0, ',', '.') }} đ</td>
 
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($voucher->start_date_time)->format('H:i, d/m/Y') }}
-                                                    <strong>đến</strong>
-                                                    {{ \Carbon\Carbon::parse($voucher->end_date_time)->format('H:i, d/m/Y') }}
-                                                </td>
-                                                <td>{{ $voucher->remaining_uses }} lần</td>
-                                            </tr>
-                                        @endforeach
+                                                    <td>
+                                                        {{ \Carbon\Carbon::parse($voucher->start_date_time)->format('H:i, d/m/Y') }}
+                                                        <strong>đến</strong>
+                                                        {{ \Carbon\Carbon::parse($voucher->end_date_time)->format('H:i, d/m/Y') }}
+                                                    </td>
+                                                    <td>{{ $voucher->remaining_uses }} lần</td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -355,68 +354,68 @@
 
                     {{-- Hành trình điện ảnh --}}
                     <div id="cinema-journey"
-                         class="tab-pane  {{ $page == 'cinema-journey' ? 'in active' : 'fade' }} item-content"
-                         role="tabpanel">
+                        class="tab-pane  {{ $page == 'cinema-journey' ? 'in active' : 'fade' }} item-content"
+                        role="tabpanel">
                         {{-- fade --}}
                         <div class="row">
                             <div class="col-md-12">
-                                <table class='table table-bordered dt-responsive nowrap'
-                                       id="transactionHistory" width="100%">
+                                <table class='table table-bordered dt-responsive nowrap' id="transactionHistory"
+                                    width="100%">
                                     <thead class='xanh-fpt text-center'>
-                                    <tr>
-                                        <th>Mã đặt vé</th>
-                                        <th>Hình ảnh</th>
-                                        <th>Thông tin vé</th>
-                                        <th>Thao tác</th>
+                                        <tr>
+                                            <th>Mã đặt vé</th>
+                                            <th>Hình ảnh</th>
+                                            <th>Thông tin vé</th>
+                                            <th>Thao tác</th>
 
                                     </thead>
                                     <tbody>
-                                    @foreach ($tickets as $ticket)
-                                        <tr>
+                                        @foreach ($tickets as $ticket)
+                                            <tr>
 
-                                            <td>{{ $ticket->code }}
-                                                <div>
-                                                    @include('client.modals.ticket-detail', [
-                                                        'ticket' => $ticket,
-                                                    ])
-                                                </div>
-                                            </td>
-                                            <td>
-                                                @php
-                                                    // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
-                                                    $url = $ticket->movie->img_thumbnail;
+                                                <td>{{ $ticket->code }}
+                                                    <div>
+                                                        @include('client.modals.ticket-detail', [
+                                                            'ticket' => $ticket,
+                                                        ])
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Lấy thông tin movie từ ticketSeat đầu tiên trong nhóm
+                                                        $url = $ticket->movie->img_thumbnail;
 
-                                                    if (!\Str::contains($url, 'http')) {
-                                                        $url = Storage::url($url);
-                                                    }
-                                                @endphp
+                                                        if (!\Str::contains($url, 'http')) {
+                                                            $url = Storage::url($url);
+                                                        }
+                                                    @endphp
 
-                                                <img width="100% " src="{{ $url }}" alt="movie_img"/>
+                                                    <img width="100% " src="{{ $url }}" alt="movie_img" />
 
 
-                                            </td>
-                                            <td>
-                                                <h3 class="movie-name-history">
-                                                    <a
-                                                        href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">{{ $ticket->movie->name }}</a>
-                                                </h3>
-                                                <b>Ngày chiếu:</b>
-                                                {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
-                                                <br>
-                                                <b>Giờ chiếu: </b>
-                                                {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
-                                                ~
-                                                {{ \Carbon\Carbon::parse($ticket->showtime->end_time)->format('H:i') }}
-                                                <br>
-                                                <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
-                                                {{ $ticket->room->name }}
-                                                <br>
-                                                <b>Ghế ngồi:</b>
-                                                {{ implode(', ', $ticket->ticketSeats->pluck('seat.name')->toArray()) }}
-                                                <br>
-                                                <b>Trạng thái:</b>
-                                                <span
-                                                    class="badge
+                                                </td>
+                                                <td>
+                                                    <h3 class="movie-name-history">
+                                                        <a
+                                                            href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">{{ $ticket->movie->name }}</a>
+                                                    </h3>
+                                                    <b>Ngày chiếu:</b>
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
+                                                    <br>
+                                                    <b>Giờ chiếu: </b>
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->start_time)->format('H:i') }}
+                                                    ~
+                                                    {{ \Carbon\Carbon::parse($ticket->showtime->end_time)->format('H:i') }}
+                                                    <br>
+                                                    <b>Rạp chiếu:</b> {{ $ticket->cinema->name }} -
+                                                    {{ $ticket->room->name }}
+                                                    <br>
+                                                    <b>Ghế ngồi:</b>
+                                                    {{ implode(', ', $ticket->ticketSeats->pluck('seat.name')->toArray()) }}
+                                                    <br>
+                                                    <b>Trạng thái:</b>
+                                                    <span
+                                                        class="badge
                                                             @switch($ticket->status)
                                                                 @case(App\Models\Ticket::NOT_ISSUED)
                                                                     badge-not-issued
@@ -429,43 +428,44 @@
                                                                     @break
                                                             @endswitch
                                                         ">
-                                                            {{ $ticket->status }}
-                                                        </span>
+                                                        {{ $ticket->status }}
+                                                    </span>
 
-                                                <br>
-                                                <b>Tổng tiền thanh toán:</b>
-                                                {{ number_format($ticket->total_price, 0, ',', '.') }}
-                                                đ
+                                                    <br>
+                                                    <b>Tổng tiền thanh toán:</b>
+                                                    {{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                    đ
 
-                                            </td>
-                                            <td>
-
-
-                                                <div class="action-icons d-flex flex-column">
-                                                    <!-- Nút Chi Tiết -->
-                                                    <button
-                                                        class="btn btn-custom-primary  btn-sm mb-2 d-flex align-items-center"
-                                                        title="Chi tiết"
-                                                        onclick="showTicketDetail('{{ $ticket->code }}')">
-                                                        <i class="fas fa-info-circle me-2"></i> Chi tiết
-                                                    </button>
-                                                    @if ($ticket->status == App\Models\Ticket::ISSUED )
-                                                        <a href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">
-                                                            <button
-                                                                class="btn btn-custom-warning btn-sm d-flex align-items-center"
-                                                                title="Đánh giá phim">
-                                                                <i class="fas fa-star me-2"></i> Đánh giá
-                                                            </button>
-                                                        </a>
-                                                    @endif
-                                                </div>
+                                                </td>
+                                                <td>
 
 
-                                            </td>
+                                                    <div class="action-icons d-flex flex-column">
+                                                        <!-- Nút Chi Tiết -->
+                                                        <button
+                                                            class="btn btn-custom-primary  btn-sm mb-2 d-flex align-items-center"
+                                                            title="Chi tiết"
+                                                            onclick="showTicketDetail('{{ $ticket->code }}')">
+                                                            <i class="fas fa-info-circle me-2"></i> Chi tiết
+                                                        </button>
+                                                        @if ($ticket->status == App\Models\Ticket::ISSUED)
+                                                            <a
+                                                                href="{{ route('movies.movie-detail', $ticket->movie->slug) }}">
+                                                                <button
+                                                                    class="btn btn-custom-warning btn-sm d-flex align-items-center"
+                                                                    title="Đánh giá phim">
+                                                                    <i class="fas fa-star me-2"></i> Đánh giá
+                                                                </button>
+                                                            </a>
+                                                        @endif
+                                                    </div>
 
 
-                                        </tr>
-                                    @endforeach
+                                                </td>
+
+
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -484,20 +484,20 @@
                 <div class="my-account-mb-3">
                     <label for="old_password"><span style="color: red;">*</span>&nbsp;Mật khẩu hiện tại</label>
                     <input type="password" class="my-account-form-control" id="old_password" name="old_password"
-                           placeholder="Nhập mật khẩu hiện tại">
+                        placeholder="Nhập mật khẩu hiện tại">
                     <span id="old_password_error" class="text-danger"></span>
                 </div>
                 <div class="my-account-mb-3">
                     <label for="password"><span style="color: red;">*</span>&nbsp;Mật khẩu mới</label>
                     <input type="password" class="my-account-form-control" id="password" name="password"
-                           placeholder="Nhập mật khẩu mới">
+                        placeholder="Nhập mật khẩu mới">
                     <span id="password_error" class="text-danger"></span>
                 </div>
                 <div class="my-account-mb-3">
                     <label for="password_confirmation"><span style="color: red;">*</span>&nbsp;Nhập lại mật khẩu
                         mới</label>
                     <input type="password" class="my-account-form-control" id="password_confirmation"
-                           name="password_confirmation" placeholder="Nhập lại mật khẩu mới">
+                        name="password_confirmation" placeholder="Nhập lại mật khẩu mới">
                     <span id="password_confirmation_error" class="text-danger"></span>
                 </div>
                 <div class="my-account-text-center">
@@ -508,12 +508,12 @@
 
         </div>
     </div>
-    @endsection
+@endsection
 
-    @section('script-libs')
-        </script>
+@section('script-libs')
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -574,14 +574,14 @@
     </script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Xóa thông báo lỗi khi người dùng nhập vào các input trong form đổi mật khẩu
-            $('#old_password, #password, #password_confirmation').on('input', function () {
+            $('#old_password, #password, #password_confirmation').on('input', function() {
                 $(this).next('.text-danger').text(''); // Xóa nội dung lỗi ngay sau trường input
             });
 
             // AJAX cho cập nhật tài khoản
-            $('#updateAccountForm').on('submit', function (e) {
+            $('#updateAccountForm').on('submit', function(e) {
                 e.preventDefault();
 
                 let formData = new FormData(this);
@@ -595,12 +595,12 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             location.reload(); // Tải lại trang nếu cập nhật thành công
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
                             for (let field in errors) {
@@ -617,7 +617,7 @@
             });
 
             // AJAX cho đổi mật khẩu
-            $('#changePasswordForm').on('submit', function (e) {
+            $('#changePasswordForm').on('submit', function(e) {
                 e.preventDefault();
 
                 let formData = {
@@ -634,12 +634,12 @@
                     url: '{{ route('my-account.changePasswordAjax') }}',
                     type: 'PUT',
                     data: formData,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             location.reload(); // Tải lại trang nếu đổi mật khẩu thành công
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
 
