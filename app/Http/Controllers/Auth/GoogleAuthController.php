@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
+
 
 class GoogleAuthController extends Controller
 {
@@ -40,6 +42,7 @@ class GoogleAuthController extends Controller
                     $newUser =  User::create([
                         'name' => $userGoogle->name,
                         'email' => $userGoogle->email,
+                        'password' => encrypt(Str::random(10)),
                         'service_id' => $userGoogle->id,
                         'service_name' => 'google',
                     ]);
