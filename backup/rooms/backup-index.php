@@ -161,7 +161,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="matrix_id" class="form-label"><span class="text-danger">*</span> Ma trận ghế</label>
                                 <select class="form-select" id="matrix_id" name="matrix_id" required>
-                                    @foreach (App\Models\Room::MATRIXS as $matrix)
+                                    @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
                                         <option value="{{ $matrix['id'] }}">{{ $matrix['name'] }}</option>
                                     @endforeach
                                 </select>
@@ -293,8 +293,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
+            },
         });
     </script>
 @endsection

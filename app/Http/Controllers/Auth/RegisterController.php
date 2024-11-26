@@ -52,6 +52,25 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'min:2', 'max:30'],
             'email' => ['required', 'string', 'email', 'max:30', 'unique:users'],
+            'birthday' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $birthday = \Carbon\Carbon::parse($value);
+                    $currentYear = \Carbon\Carbon::now()->year;
+
+                    // Kiểm tra năm sinh > 1900
+                    if ($birthday->year <= 1900) {
+                        $fail('Năm sinh phải lớn hơn 1900.');
+                    }
+
+                    // Kiểm tra tuổi phải trên 12
+                    $age = $birthday->age;
+                    if ($age < 12) {
+                        $fail('Bạn phải lớn hơn 12 tuổi.');
+                    }
+                },
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'name.required' => 'Bạn chưa nhập tên.',
@@ -65,12 +84,14 @@ class RegisterController extends Controller
             'email.max' => 'Email không được quá 30 ký tự.',
             'email.unique' => 'Email này đã được đăng ký, vui lòng chọn email khác.',
 
+            'birthday.required' => 'Bạn chưa nhập ngày sinh.',
+            'birthday.date' => 'Ngày sinh phải ở định dạng hợp lệ.',
+
             'password.required' => 'Bạn chưa nhập mật khẩu.',
             'password.string' => 'Mật khẩu phải là một chuỗi ký tự.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
         ]);
-
     }
 
     /**
@@ -84,10 +105,11 @@ class RegisterController extends Controller
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'birthday' => $data['birthday'],
             'password' => Hash::make($data['password']),
         ]);
         Membership::create([
-            'user_id' => $user->id ,
+            'user_id' => $user->id,
             'code' => Membership::codeMembership(),
         ]);
         return $user;

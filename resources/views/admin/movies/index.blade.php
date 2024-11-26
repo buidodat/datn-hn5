@@ -53,120 +53,30 @@
                     <h5 class="card-title mb-0">Danh sách phim</h5>
                     <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
-
-                {{-- <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="text-center">Hình ảnh</th>
-                                <th>Thông tin phim</th>
-                                <th>Hoạt động</th>
-                                <th>Nổi bật</th>
-                                <th>Chức năng</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($movies as $movie)
-                                <tr>
-                                    <td>{{ $movie->id }}</td>
-                                    <td class="text-center">
-
-                                        @php
-                                            $url = $movie->img_thumbnail;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        @if (!empty($movie->img_thumbnail))
-                                            <img src="{{ $url }}" alt="" width="130px">
-                                        @else
-                                            No image !
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        <ul class="nav nav-sm flex-column">
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Tên phim:</span>
-                                                {{ $movie->name }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Đạo diễn:</span>
-                                                {{ $movie->director }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Diễn viên:</span>
-                                                {{ $movie->cast }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Thể loại:</span>
-                                                {{ $movie->category }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Ngày khởi chiếu:</span>
-                                                {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Ngày kết thúc:</span>
-                                                {{ \Carbon\Carbon::parse($movie->end_date)->format('d/m/Y') }}</li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Phân loại:</span>
-                                                {{ $movie->rating }}</li>
-                                            <li class="nav-item mb-1">
-                                                <span class="fw-semibold">Phiên bản:</span>
-                                                @foreach ($movie->movieVersions as $version)
-                                                    <span class="badge bg-info">{{ $version->name }}</span>
-                                                @endforeach
-                                            </li>
-                                            <li class="nav-item mb-1"><span class="fw-semibold">Code Youtube:</span> <input
-                                                    type="text" disabled value="{{ $movie->trailer_url }}2121"></li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active change-is-active"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-id="{{ $movie->id }}" @checked($movie->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch form-switch-danger">
-                                            <input class="form-check-input switch-is-active change-is-hot" name="is_hot"
-                                                type="checkbox" role="switch" data-id="{{ $movie->id }}"
-                                                @checked($movie->is_hot)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
-                                    <td>
-                                        <a href="{{ route('admin.movies.show', $movie) }}">
-                                            <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                    class="fas fa-eye"></i></button></a>
-                                        <a href="{{ route('admin.movies.edit', $movie) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
-
-                    </table>
-                </div> --}}
-                <div class="card-body pt-0">
+                <div class="card-body">
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allMovie" role="tab"
-                                aria-selected="true">
+                            <a class="nav-link  All py-3 {{ session('movies.selected_tab') === 'all' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#allMovie" role="tab" aria-selected="true"
+                                data-tab-key='all'>
                                 Tất cả
                                 <span class="badge bg-dark align-middle ms-1">{{ $movies->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3 isPublish {{ session('movies.selected_tab') === 'publish' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isPublish" role="tab" aria-selected="false"
+                                data-tab-key='pulish'>
                                 Đã xuất bản
                                 <span
                                     class="badge bg-success align-middle ms-1">{{ $movies->where('is_publish', true)->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3 isDraft {{ session('movies.selected_tab') === 'draft' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isDraft" role="tab" aria-selected="false"
+                                data-tab-key='draft'>
                                 Bản nháp<span
                                     class="badge bg-warning align-middle ms-1">{{ $movies->where('is_publish', false)->count() }}</span>
                             </a>
@@ -554,110 +464,74 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script>
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabKey = this.getAttribute('data-tab-key');
+                console.log(tabKey);
 
-    {{-- <script>
-        $(document).ready(function() {
-            // Khởi tạo DataTable
-            let table = $('#example').DataTable({
-                order: [],
-            });
-            // Xử lý sự kiện change cho checkbox .changeActive
-            $(document).on('change', '.change-is-active', function() {
-                let movieId = $(this).data('id');
-                let is_active = $(this).is(':checked') ? 1 : 0;
-
-                // Gửi yêu cầu AJAX để thay đổi trạng thái
-                $.ajax({
-                    url: '{{ route('movies.update-active') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: movieId,
-                        is_active: is_active
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            let row = table.row($(`[data-id="${movieId}"]`).closest(
-                                'tr'));
-                            console.log(row);
-
-                            // Cập nhật cột trạng thái (cột thứ 2) trong dòng này
-                            let statusHtml = response.data.is_active ?
-                                `<div class="form-check form-switch form-switch-success">
-                                    <input class="form-check-input switch-is-active change-is-active"
-                                        type="checkbox" data-id="${movieId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div><span class='small text-success'>Đã kích hoạt</span>` :
-                                `<div class="form-check form-switch form-switch-success">
-                                    <input class="form-check-input switch-is-active change-is-active"
-                                        type="checkbox" data-id="${movieId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
-                            row.cell(row.index(), 3).data(statusHtml).draw(false);
-
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
-                    }
-                });
-            });
-
-            $(document).on('change', '.change-is-hot', function() {
-                let movieId = $(this).data('id');
-                let is_hot = $(this).is(':checked') ? 1 : 0;
-
-                // Gửi yêu cầu AJAX để thay đổi trạng thái
-                $.ajax({
-                    url: '{{ route('movies.update-hot') }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: movieId,
-                        is_hot: is_hot
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            let row = table.row($(`[data-id="${movieId}"]`).closest(
-                                'tr'));
-                            console.log(row);
-
-                            // Cập nhật cột trạng thái (cột thứ 2) trong dòng này
-                            let statusHtml = response.data.is_hot ?
-                                `<div class="form-check form-switch form-switch-danger">
-                                    <input class="form-check-input switch-is-active change-is-hot"
-                                        type="checkbox" data-id="${movieId}" checked   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div><span class='small text-success'>Đã kích hoạt</span>` :
-                                `<div class="form-check form-switch form-switch-danger">
-                                    <input class="form-check-input switch-is-active change-is-hot"
-                                        type="checkbox" data-id="${movieId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                </div>  <span class='small text-secondary'>Chưa hoạt động</span>`;
-                            row.cell(row.index(), 4).data(statusHtml).draw(false);
-
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Lỗi kết nối hoặc server không phản hồi.');
-                        console.error(error);
-                    }
-                });
+                fetch('{{ route('admin.movies.selected-tab') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            tab_key: tabKey
+                        })
+                    }).then(response => response.json())
+                    .then(data => console.log('Tab saved:', data));
             });
         });
-    </script> --}}
+    </script>
 
 
     <script>
         $(document).ready(function() {
             // Khởi tạo DataTable
             let tableAllSeatTemplate = new DataTable("#tableAllMovie", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
+                },
             });
 
             let tableIsPublish = new DataTable("#tableIsPublish", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
+                },
             });
 
             let tableIsDraft = new DataTable("#tableIsDraft", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
+                },
             });
 
             // Xử lý sự kiện change cho checkbox .changeActive
