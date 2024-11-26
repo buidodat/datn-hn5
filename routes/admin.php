@@ -54,6 +54,8 @@ Route::resource('payments', PaymentController::class);
 
 Route::resource('slideshows', SlideShowController::class);
 Route::resource('vouchers', VoucherController::class);
+Route::post('vouchers/update-discount', [VoucherController::class, 'updateDiscount'])
+    ->name('vouchers.update-discount');
 //resource ticket
 Route::resource('tickets', TicketController::class);
 
