@@ -25,6 +25,9 @@ class SeatTemplateController extends Controller
     }
     public function index()
     {
+        if (!session()->has('seatTemplates.selected_tab')) {
+            session(['seatTemplates.selected_tab' => 'publish']); // Tab mặc định
+        }
         $seatTemplates = SeatTemplate::latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('seatTemplates'));
     }
@@ -107,5 +110,11 @@ class SeatTemplateController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    public  function selectedTab(Request $request){
+        $tabKey = $request->tab_key;
+        session(['seatTemplates.selected_tab' => $tabKey]);
+        return response()->json(['message' => 'Tab saved', 'tab' => $tabKey]);
     }
 }

@@ -55,7 +55,9 @@ class MovieController extends Controller
     }
 
 
-
+    public function activeTab(){
+        
+    }
 
     public function updateActive(Request $request)
     {
