@@ -128,7 +128,12 @@ class VoucherController extends Controller
     {
         try {
             $data = $request->all();
+
+            $data['start_date_time'] = Carbon::parse($request->input('start_date_time'), 'Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+            $data['end_date_time'] = Carbon::parse($request->input('end_date_time'), 'Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
             $data['is_active'] = $request->has('is_active') ? 1 : 0;
+            $data['is_publish'] = $request->has('is_publish') ? 1 : 0;
+
             $voucher = Voucher::query()->findOrFail($id);
 
             $voucher->update($data);
