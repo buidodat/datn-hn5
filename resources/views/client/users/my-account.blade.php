@@ -171,7 +171,7 @@
                                 <div class="row">
                                     <div class="col-md-9">
 
-                                        <div class='text-center'>
+                                        <div class='text-center rank_membership'>
                                             <p><span class="span_card">Cấp độ thẻ: </span><span
                                                     class="bold">{{ $user->membership->rank->name }}</span></p>
                                         </div>
@@ -210,9 +210,9 @@
                                             <div class="progress-info">
                                                 <span>Số tiền đã chi tiêu</span>
                                                 <span class="amount">
-                                                    {{ number_format($user->membership->total_spent, 0, ',', '.') }}
-                                                    <strong>VND</strong>
-                                                </span>
+
+                                                        <strong>{{ number_format($user->membership->total_spent, 0, ',', '.') }}    VND</strong>
+                                                    </span>
                                             </div>
 
                                             @php
@@ -260,10 +260,6 @@
                                                     class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_SPENT)->sum('points'), 0, ',', '.') }}
                                                     điểm</span>
                                             </div>
-                                            <div><span class="span_label">Điểm đã hết hạn:</span> <span
-                                                    class='bold'>{{ number_format($user->membership->pointHistories->where('type', App\Models\PointHistory::POINTS_EXPIRY)->sum('points'), 0, ',', '.') }}
-                                                    điểm</span>
-                                            </div>
                                             <div><span class="span_label">Điểm hiện có:</span> <span
                                                     class='bold'>{{ number_format($user->membership->points, 0, ',', '.') }}
                                                     điểm</span></div>
@@ -281,27 +277,26 @@
                                     <table id="pointHistory" class='table table-bordered dt-responsive nowrap'
                                         width="100%">
                                         <thead class='xanh-fpt'>
-                                            <tr>
-                                                <th>Thời gian</th>
-                                                <th>Số điểm</th>
-                                                <th>Nội dung sử dụng</th>
-                                                <th>Hạn sử dụng</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Số điểm</th>
+                                            <th>Nội dung sử dụng</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
-                                                <tr>
-                                                    <td>{{ $pointHistory->created_at->format('d/m/Y H:i') }}</td>
-                                                    <td>
-                                                        {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
-                                                            ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
-                                                            : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
-                                                    </td>
-                                                    <td>{{ $pointHistory->type }}</td>
-                                                    <td>{{ $pointHistory->expiry_date ? $pointHistory->expiry_date->format('d/m/Y') : '' }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                        @foreach ($user->membership->pointHistories()->latest('id')->get() as $pointHistory)
+                                            <tr>
+                                                <td>{{ $pointHistory->created_at->format('d/m/Y H:i') }}</td>
+                                                <td>
+                                                    {{ $pointHistory->type == App\Models\PointHistory::POINTS_ACCUMULATED
+                                                        ? '+ ' . number_format($pointHistory->points, 0, ',', '.')
+                                                        : '- ' . number_format($pointHistory->points, 0, ',', '.') }}
+                                                </td>
+                                                <td>{{ $pointHistory->type }}</td>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -540,7 +535,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
             }
         });
     </script>
@@ -554,7 +551,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
             }
 
         });
@@ -569,7 +568,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
             }
         });
     </script>

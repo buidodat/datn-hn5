@@ -64,8 +64,9 @@
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         @if (Auth::user()->hasRole('System Admin'))
                             <li class="nav-item">
-                                <a class="nav-link  All py-3" data-bs-toggle="tab" href="#allRoom" role="tab"
-                                    aria-selected="true">
+                                <a class="nav-link  All py-3 {{ session('rooms.selected_tab') === 'all' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" href="#allRoom" role="tab" aria-selected="true"
+                                    data-tab-key='all'>
                                     Tất cả
                                     <span
                                         class="badge bg-dark align-middle ms-1">{{ $rooms->when(Auth::user()->cinema_id, function ($query) {
@@ -75,8 +76,9 @@
                             </li>
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3 isPublish {{ session('rooms.selected_tab') === 'publish' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isPublish" role="tab" aria-selected="false"
+                                data-tab-key='publish'>
                                 Đã xuất bản
                                 <span
                                     class="badge bg-success align-middle ms-1">{{ $rooms->where('is_publish', true)->when(Auth::user()->cinema_id, function ($query) {
@@ -85,8 +87,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3 isDraft {{ session('rooms.selected_tab') === 'draft' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isDraft" role="tab" aria-selected="false"
+                                data-tab-key='draft'>
                                 Bản nháp<span
                                     class="badge bg-warning align-middle ms-1">{{ $rooms->where('is_publish', false)->when(Auth::user()->cinema_id, function ($query) {
                                             return $query->where('cinema_id', Auth::user()->cinema_id);
@@ -95,8 +98,9 @@
                         </li>
                         @foreach ($cinemas as $cinema)
                             <li class="nav-item">
-                                <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#cinemaID{{ $cinema->id }}"
-                                    role="tab" aria-selected="false">
+                                <a class="nav-link py-3 {{ session('rooms.selected_tab') === 'cinema_' . $cinema->id ? 'active' : '' }}"
+                                    data-bs-toggle="tab" href="#cinemaID{{ $cinema->id }}" role="tab"
+                                    aria-selected="false" data-tab-key='cinema_{{ $cinema->id }}'>
                                     {{ $cinema->name }}
                                 </a>
                             </li>
@@ -106,7 +110,8 @@
 
                     <div class="card-body tab-content ">
                         {{-- Tất cả ok rồi --}}
-                        <div class="tab-pane " id="allRoom" role="tabpanel">
+                        <div class="tab-pane {{ session('rooms.selected_tab') === 'all' ? 'active' : '' }} " id="allRoom"
+                            role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllRoom">
                                 <thead class='table-light'>
                                     <tr>
@@ -185,7 +190,8 @@
                             </table>
                         </div>
                         {{-- Đã xuất bản --}}
-                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                        <div class="tab-pane {{ session('rooms.selected_tab') === 'publish' ? 'active' : '' }} "
+                            id="isPublish" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsPublish">
                                 <thead class='table-light'>
                                     <tr>
@@ -259,7 +265,8 @@
                             </table>
                         </div>
                         {{-- Bản nháp --}}
-                        <div class="tab-pane " id="isDraft" role="tabpanel">
+                        <div class="tab-pane {{ session('rooms.selected_tab') === 'draft' ? 'active' : '' }} "
+                            id="isDraft" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
                                 <thead class='table-light'>
                                     <tr>
@@ -336,7 +343,8 @@
 
                         {{-- Các Rạp khác ok rồi --}}
                         @foreach ($cinemas as $cinema)
-                            <div class="tab-pane " id="cinemaID{{ $cinema->id }}" role="tabpanel">
+                            <div class="tab-pane {{ session('rooms.selected_tab') === 'cinema_' . $cinema->id ? 'active' : '' }} "
+                                id="cinemaID{{ $cinema->id }}" role="tabpanel">
                                 <table class="table table-bordered dt-responsive nowrap align-middle w-100"
                                     id="tableCinemaID{{ $cinema->id }}">
                                     <thead class='table-light'>
@@ -591,6 +599,24 @@
 
 
 @section('script-libs')
+    <script>
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabKey = this.getAttribute('data-tab-key');
+                fetch('{{ route('admin.rooms.selected-tab') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            tab_key: tabKey
+                        })
+                    }).then(response => response.json())
+                    .then(data => console.log('Tab saved:', data));
+            });
+        });
+    </script>
     {{-- Hàm load các rạp chiếu khi chọn chi nhánh & modal create rạp chiếu --}}
     <script>
         function loadCinemas(branchIdElementId, cinemaSelectElementId, selectedCinemaId = null) {
@@ -795,7 +821,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
@@ -808,7 +836,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
@@ -821,7 +851,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
@@ -840,7 +872,9 @@
                                 previous: "Trước"
                             },
                             lengthMenu: "Hiển thị _MENU_ mục",
-                            info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                            info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                            emptyTable: "Không có dữ liệu để hiển thị",
+                            zeroRecords: "Không tìm thấy kết quả phù hợp"
                         },
                     });
             @endforeach

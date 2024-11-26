@@ -185,11 +185,12 @@ class StatisticalController extends Controller
 
     public function statisticalMovies(Request $request)
     {
-        $branches = Branch::all();
+        // dd(session()->all());
+        $branches = Branch::where('is_active', 1)->get();
 
         // Lấy giá trị mặc định cho start_date và end_date (1 tháng gần nhất)
-        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d\TH:i'));
-        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d\TH:i'));
+        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d'));
 
         // Khởi tạo query cho doanh thu theo phim
         $query = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')

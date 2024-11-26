@@ -402,7 +402,7 @@
 
 .bold {
     color: black;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .container-screen .legend div:last-child {

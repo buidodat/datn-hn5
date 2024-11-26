@@ -30,10 +30,6 @@
                                             <option value="">Chọn Rạp</option>
                                         </select>
                                     </div>
-                                @else
-                                    <div class="col-md-2">
-                                        <label for="">Lọc theo ngày:</label>
-                                    </div>
                                 @endif
 
 

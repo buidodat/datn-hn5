@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
             ->timezone('Asia/Ho_Chi_Minh')
             ->withoutOverlapping();*/
         // $schedule->job(new CheckBirthdayJob)->everyMinute()->timezone('Asia/Ho_Chi_Minh');
-        $schedule->command('points:expire')->daily();
+        // $schedule->command('points:expire')->daily();
         $schedule->command('membership:reset')->yearly();
     }
 
