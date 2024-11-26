@@ -52,12 +52,11 @@
                         <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
-                                    <label for="">Lọc theo Rạp/Ngày Chiếu/Trạng thái</label>
+                                 
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
-                                           
+                                            <label for="">Lọc theo Thành Phố</label>
                                             <select name="branch_id" id="branch" class="form-select">
-                                                <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}"
                                                         {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
@@ -67,9 +66,9 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
+                                            <label for="">Rạp</label>
                                             <select name="cinema_id" id="cinema" class="form-select">
-                                                <option value="">Chọn Rạp</option>
                                                 @foreach ($cinemas as $cinema)
                                                     <option value="{{ $cinema->id }}"
                                                         {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
@@ -81,23 +80,28 @@
                                     @endif
 
                                     <div class="col-md-2">
+                                        <label for="">Ngày chiếu</label>
                                         <input type="date" name="date" class="form-control"
                                             value="{{ session('date', now()->format('Y-m-d')) }}">
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
+                                        <label for="">Trạng thái</label>
                                         <select name="is_active" class="form-select">
                                             <option value=""
                                                 {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả</option>
                                             <option value="0"
-                                                {{ session('is_active', null) === '0' ? 'selected' : '' }}>Tắt</option>
+                                                {{ session('is_active', null) === '0' ? 'selected' : '' }}>Không hoạt động</option>
                                             <option value="1"
-                                                {{ session('is_active', null) === '1' ? 'selected' : '' }}>Bật</option>
+                                                {{ session('is_active', null) === '1' ? 'selected' : '' }}>Đang hoạt động</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <button class="btn btn-success" name="btnSearch" type="submit">Tìm kiếm</button>
+                                        {{-- <label for="">Lọc</label> --}}
+                                        <button class="btn btn-success" name="btnSearch" type="submit">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                            Lọc</button>
                                     </div>
                                 </div>
 
@@ -106,7 +110,7 @@
                         </div>
                         <div class="col-md-2" align="right">
                             {{-- <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a> --}}
-                            <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                            <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
                         </div>
                     </div>
 

@@ -312,6 +312,8 @@
                 addFood(foodCount);
             });
 
+            
+
             function displayValidationErrors(errors) {
                 // Xóa thông báo lỗi cũ
                 $('.invalid-feedback').empty();

@@ -18,6 +18,7 @@ use App\Models\TypeRoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ShowtimeController extends Controller
 {
@@ -39,10 +40,19 @@ class ShowtimeController extends Controller
     public function index(Request $request)
     {
         // Giá trị mặc định
-        $defaultBranchId = 1;
-        $defaultCinemaId = 1;
-        $defaultDate = now()->format('Y-m-d');
-        $defaultIsActive = null;
+        $user = Auth::user();
+        if ($user->cinema_id == "") {
+            $defaultBranchId = 1;
+            $defaultCinemaId = 1;
+            $defaultDate = now()->format('Y-m-d');
+            $defaultIsActive = null;
+        } else {
+            $defaultBranchId = $user->cinema->branch_id;
+            $defaultCinemaId = $user->cinema_id;
+            $defaultDate = now()->format('Y-m-d');
+            $defaultIsActive = null;
+        }
+
 
         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
         $branchId = $request->input('branch_id', session('branch_id', $defaultBranchId));
@@ -58,13 +68,14 @@ class ShowtimeController extends Controller
             'is_active' => $isActive
         ]);
 
-        $branches = Branch::all();
-        $cinemas = Cinema::where('branch_id', $branchId)->get();
+        //Thiếu where is_active
+        $branches = Branch::where('is_active', '1')->get();
+        $cinemas = Cinema::where('branch_id', $branchId)->where('is_active', '1')->get();
 
         $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
             ->whereDate('date', $date);
 
-        if ($isActive !== null) { 
+        if ($isActive !== null) {
             $showtimesQuery->where('is_active', $isActive);
         }
         $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();

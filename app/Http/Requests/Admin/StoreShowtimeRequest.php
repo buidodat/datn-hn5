@@ -35,7 +35,7 @@ class StoreShowtimeRequest extends FormRequest
                     }),
                 ],
                 'movie_id' => 'required',
-                'cinema_id' => 'required',
+                // 'cinema_id' => 'required',
                 'movie_version_id' => 'required|exists:movie_versions,id',
                 'date' => 'required|date|after_or_equal:today',
 
@@ -62,7 +62,7 @@ class StoreShowtimeRequest extends FormRequest
                     }),
                 ],
                 'movie_id' => 'required',
-                'cinema_id' => 'required',
+                // 'cinema_id' => 'required',
                 'movie_version_id' => 'required|exists:movie_versions,id',
                 'date' => 'required|date|after_or_equal:today',
 

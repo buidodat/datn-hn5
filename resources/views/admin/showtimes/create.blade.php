@@ -32,7 +32,7 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
-                {{-- @if ($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -40,7 +40,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif --}}
+                @endif
             </div>
             <div class="col-lg-9">
                 <div class="card">
@@ -149,7 +149,7 @@
                                             <select name="room_id" id="room" class="form-select">
                                                 <option value="">Chọn phòng</option>
                                                 @foreach ($rooms as $room)
-                                                    <option value="{{ $room->id }}">{{ $room->name }} -
+                                                    <option value="{{ $room->id }}"  @selected($room->id == old('room_id'))>{{ $room->name }} -
                                                         {{ $room->typeRoom->name }}
                                                         - {{ $room->seats->where('is_active', true)->count() }} ghế
                                                     </option>
