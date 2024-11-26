@@ -38,7 +38,7 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">      
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header ">
                     {{-- d-flex justify-content-between --}}
@@ -55,7 +55,7 @@
                                     <label for="">Lọc theo Rạp/Ngày Chiếu/Trạng thái</label>
                                     @if (Auth::user()->hasRole('System Admin'))
                                         <div class="col-md-3">
-                                           
+
                                             <select name="branch_id" id="branch" class="form-select">
                                                 <option value="">Chi nhánh</option>
                                                 @foreach ($branches as $branch)
@@ -333,7 +333,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: []
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+            },
         });
     </script>
 
@@ -416,7 +425,7 @@
                             .is_active); // Ẩn nút sửa, xóa
 
                         // checkbox.closest('tr').find('.select-showtime').toggle(!response.data
-                        //     .is_active); // Ẩn nút select checkbox 
+                        //     .is_active); // Ẩn nút select checkbox
 
                         if (response.data.is_active) {
                             checkbox.closest('td').find('.select-showtime')

@@ -81,7 +81,7 @@
                                         <label for="matrix_id" class="form-label "><span class="text-danger">*</span> Ma
                                             trận ghế:</label>
                                         <select name="" id="" class='form-select' disabled>
-                                            @foreach (App\Models\Room::MATRIXS as $matrix)
+                                            @foreach (App\Models\SeatTemplate::MATRIXS as $matrix)
                                                 <option value="{{ $matrix['name'] }}">
                                                     {{ $matrix['name'] }}
                                                 </option>

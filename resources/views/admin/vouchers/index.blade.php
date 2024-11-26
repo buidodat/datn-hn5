@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Vouchers
+    Quản lý mã giảm giá
 @endsection
 
 @section('style-libs')
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Vouchers</h4>
+                <h4 class="mb-sm-0">Quản lý mã giảm giá</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Vouchers</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Mã giảm giá</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
 
@@ -38,7 +38,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Danh sách vouchers </h5>
+                    <h5 class="card-title mb-0"> Danh sách mã giảm giá </h5>
                     <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
                 </div>
 
@@ -55,11 +55,10 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100">
+                        <thead class='table-light'>
                             <tr>
-                                {{--<th>#</th>--}}
+                                {{-- <th>#</th> --}}
                                 <th>Mã voucher</th>
                                 {{-- <th>Thông tin voucher</th> --}}
                                 <th>Tiêu đề</th>
@@ -68,7 +67,7 @@
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
                                 <th>Giới hạn</th>
-                                {{--<th>Thể loại</th>--}}
+                                {{-- <th>Thể loại</th> --}}
                                 {{-- <th>Mô tả</th> --}}
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
@@ -77,9 +76,9 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    {{--<td>{{ $item->id }}</td>--}}
+                                    {{-- <td>{{ $item->id }}</td> --}}
                                     <td>{{ $item->code }}</td>
-                                    <td>{{ Str::limit($item->title ,30)}}</td>
+                                    <td>{{ Str::limit($item->title, 30) }}</td>
                                     {{-- <td class="nav nav-sm flex-column">
                                     --}}{{-- <li class="nav-item mb-2"><span
                                             class="fw-semibold">Mã code:</span> {{ $item->code }}</li> --}}{{--
@@ -115,19 +114,19 @@
                                     <td>{{ $item->discount }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ $item->limit }}</td>
-                                    {{--<td>
+                                    {{-- <td>
                                             @if ($item->type == 1)
                                                 Toàn hệ thống
                                             @elseif ($item->type == 2)
                                                     Người dùng
                                             @endif
-                                    </td>--}}
+                                    </td> --}}
                                     {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
                                         <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-voucher-id="{{ $item->id }}" @checked($item->is_active)
+                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
+                                                @checked($item->is_active)
                                                 onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
                                     </td>
@@ -176,12 +175,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -243,7 +249,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-voucher-id="${voucherId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-voucher-id="${voucherId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

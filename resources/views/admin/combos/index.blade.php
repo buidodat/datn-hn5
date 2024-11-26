@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Danh sách Combo
+    Quản lý combo
 @endsection
 
 @section('style-libs')
@@ -18,11 +18,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Combo</h4>
+                <h4 class="mb-sm-0">Quản lý combo</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Combo</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Combo</a></li>
+                        <li class="breadcrumb-item active">Danh sách</li>
                     </ol>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Danh sách Combo</h5>
+                    <h5 class="card-title mb-0">Danh sách combo</h5>
                     <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
                 </div>
 
@@ -51,13 +51,14 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100"">
+                        <thead class='table-light'>
                             <tr>
                                 <th>#</th>
-                                <th>Tên combo</th>
+                                <th>Tên </th>
                                 <th>Hình ảnh</th>
+                                {{-- <th>Đồ ăn</th>
+                                <th>Nước uống</th> --}}
                                 <th>Thông tin combo</th>
                                 <th>Giá gốc</th>
                                 <th>Giá bán</th>
@@ -89,7 +90,7 @@
                                         @endif --}}
                                     </td>
                                     <td>
-                                       
+
                                         @foreach ($item->food as $itemFood)
                                             <ul class="nav nav-sm flex-column">
                                                 <li class="nav-item mb-2">
@@ -156,7 +157,8 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [],
+                order: [
+                ],
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {

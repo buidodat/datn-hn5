@@ -76,19 +76,6 @@
                             <h4 class="card-title mb-0 flex-grow-1">Sơ đồ ghế</h4>
                         </div><!-- end card header -->
                         <div class="card-body mb-3">
-
-                            @php
-                                $rowRegular = App\Models\SeatTemplate::ROW_REGULAR;
-                                $rowDouble = App\Models\SeatTemplate::ROW_DOUBLE;
-                                $regularRows = range(0, $rowRegular - 1); // Các hàng ghế thường
-
-                                $doubleRows =
-                                    $rowDouble > 0
-                                        ? range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1)
-                                        : []; // Các hàng ghế đôi
-                                $doubleRows = range($matrix['max_row'] - $rowDouble, $matrix['max_row'] - 1);
-                                $vipRows = range($seatTemplate->row_regular, $matrix['max_row'] - $rowDouble - 1);
-                            @endphp
                             @if (!$seatTemplate->is_publish)
                                 <input type="hidden" name="seat_structure" id="seatStructure">
                                 <input type="hidden" name="action" id="formAction">
@@ -99,18 +86,18 @@
                                                 $rowClass = '';
                                                 $isAllRegular = $isAllVip = $isAllDouble = false;
 
-                                                if (in_array($row, $regularRows)) {
+                                                if ($row < $seatTemplate->row_regular ) {
                                                     $rowTypeSeat = 1;
                                                     $rowClass = 'light-orange'; // Ghế thường
                                                     $isAllRegular = true;
-                                                } elseif (in_array($row, $doubleRows)) {
-                                                    $rowClass = 'light-pink'; // Ghế đôi
-                                                    $rowTypeSeat = 3;
-                                                    $isAllDouble = true;
-                                                } else {
+                                                } elseif ($row < $seatTemplate->row_vip + $seatTemplate->row_regular ) {
                                                     $rowClass = 'light-blue'; // Ghế VIP
                                                     $isAllVip = true;
                                                     $rowTypeSeat = 2;
+                                                } else{
+                                                    $rowClass = 'light-pink'; // Ghế đôi
+                                                    $rowTypeSeat = 3;
+                                                    $isAllDouble = true;
                                                 }
                                             @endphp
                                             <tr data-row-type-seat={{ $rowTypeSeat }}>
@@ -148,7 +135,7 @@
                                                         <td class="box-item border-1 {{ $rowClass }}"
                                                             data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}>
                                                             <div class="box-item-seat"
-                                                                data-type-seat-id="{{ $seatType ?? (in_array($row, $regularRows) ? 1 : (in_array($row, $doubleRows) ? 3 : 2)) }}">
+                                                                data-type-seat-id="{{$rowTypeSeat }}">
                                                                 @switch($seatType)
                                                                     @case(1)
                                                                         <img src="{{ asset('svg/seat-regular.svg') }}"

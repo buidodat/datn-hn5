@@ -144,7 +144,7 @@
 
 
 
-                                                        @if (!$room->is_publish)
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist())
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
@@ -220,14 +220,13 @@
                                                                 data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$room->is_publish)
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist())
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
                                                                     onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
                                                         @endif
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -297,7 +296,7 @@
                                                                 data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$room->is_publish)
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist())
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
@@ -788,15 +787,42 @@
         $(document).ready(function() {
             // Khởi tạo DataTable cho các bảng cố định
             let tableAllRoom = new DataTable("#tableAllRoom", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsPublish = new DataTable("#tableIsPublish", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsDraft = new DataTable("#tableIsDraft", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             // Khởi tạo đối tượng cinemaTables để chứa các DataTable của các cinema
@@ -806,7 +832,16 @@
             @foreach ($cinemas as $cinema)
                 cinemaTables["tableCinemaID{{ $cinema->id }}"] = new DataTable(
                     "#tableCinemaID{{ $cinema->id }}", {
-                        order: []
+                        order: [],
+                        language: {
+                            search: "Tìm kiếm:",
+                            paginate: {
+                                next: "Tiếp theo",
+                                previous: "Trước"
+                            },
+                            lengthMenu: "Hiển thị _MENU_ mục",
+                            info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                        },
                     });
             @endforeach
 
@@ -886,14 +921,14 @@
                                 @endforeach
 
                                 Swal.fire({
-                                icon: 'success',
-                                title: 'Thành công!',
-                                text: 'Trạng thái hoạt động đã được cập nhật.',
-                                confirmButtonText: 'Đóng',
-                                timer: 3000,
-                                timerProgressBar: true,
+                                    icon: 'success',
+                                    title: 'Thành công!',
+                                    text: 'Trạng thái hoạt động đã được cập nhật.',
+                                    confirmButtonText: 'Đóng',
+                                    timer: 3000,
+                                    timerProgressBar: true,
 
-                            });
+                                });
                             }
                         }
                     },
@@ -907,7 +942,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-id="${roomId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-id="${roomId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

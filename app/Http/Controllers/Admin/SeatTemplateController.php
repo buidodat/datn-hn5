@@ -25,7 +25,7 @@ class SeatTemplateController extends Controller
     }
     public function index()
     {
-        $seatTemplates = SeatTemplate::all();
+        $seatTemplates = SeatTemplate::latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('seatTemplates'));
     }
 
@@ -99,11 +99,11 @@ class SeatTemplateController extends Controller
     public function destroy(SeatTemplate $seatTemplate)
     {
         try {
-            if ($seatTemplate->is_publish) {
-                return redirect()->back()->with('error', 'Đã sảy ra lỗi, vui lòng thử lại sau.');
+            if (!$seatTemplate->is_publish || $seatTemplate->rooms()->doesntExist() ) {
+                $seatTemplate->delete();
+                return redirect()->back()->with('success', 'Thao tác thành công!');
             }
-            $seatTemplate->delete();
-            return redirect()->back()->with('success', 'Thao tác thành công!');
+            return redirect()->back()->with('error', 'Đã có phòng chiếu sử dụng mẫu sơ đồ ghế này, không thể xóa!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
