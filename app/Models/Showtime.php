@@ -73,4 +73,9 @@ class Showtime extends Model
 
         return $formattedPart1 . '-' . $formattedPart2;
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

@@ -24,10 +24,10 @@ class UpdateActiveController extends Controller
             $branch->save();
             $data = [
                 'is_active' => $branch->is_active,
-                'updated_date'=>$branch->updated_at->format('d/m/Y'),
-                'updated_time'=>$branch->updated_at->format('H:i:s'),
+                'updated_date' => $branch->updated_at->format('d/m/Y'),
+                'updated_time' => $branch->updated_at->format('H:i:s'),
             ];
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$data]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $data]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }
@@ -40,9 +40,9 @@ class UpdateActiveController extends Controller
             $cinema->is_active = $request->is_active;
             $cinema->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$cinema]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $cinema]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$cinema]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $cinema]);
         }
     }
     public function food(Request $request)
@@ -53,9 +53,9 @@ class UpdateActiveController extends Controller
             $food->is_active = $request->is_active;
             $food->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$food]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $food]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$food]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $food]);
         }
     }
     public function combo(Request $request)
@@ -66,9 +66,9 @@ class UpdateActiveController extends Controller
             $combo->is_active = $request->is_active;
             $combo->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$combo]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $combo]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$combo]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $combo]);
         }
     }
     public function voucher(Request $request)
@@ -79,9 +79,9 @@ class UpdateActiveController extends Controller
             $voucher->is_active = $request->is_active;
             $voucher->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$voucher]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $voucher]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$voucher]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $voucher]);
         }
     }
     public function slideshow(Request $request)
@@ -92,9 +92,9 @@ class UpdateActiveController extends Controller
             $slideshow->is_active = $request->is_active;
             $slideshow->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$slideshow]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $slideshow]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$slideshow]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $slideshow]);
         }
     }
     public function post(Request $request)
@@ -105,9 +105,9 @@ class UpdateActiveController extends Controller
             $post->is_active = $request->is_active;
             $post->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$post]);
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $post]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$post]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.', 'data' => $post]);
         }
     }
     public function showtime(Request $request)
@@ -118,10 +118,18 @@ class UpdateActiveController extends Controller
             $showtime->is_active = $request->is_active;
             $showtime->save();
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.','data'=>$showtime]);
+            $data = [
+                'is_active' => $showtime->is_active,
+            ];
+
+            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $data]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.','data'=>$showtime]);
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }
     }
+
+
+
+
     //showtime và slideshow chưa xử lý
 }

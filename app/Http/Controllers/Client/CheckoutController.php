@@ -28,7 +28,7 @@ class CheckoutController extends Controller
         $showtime = Showtime::where('slug', $slug)->first();
         // dd($showtime->toArray());
 
-        if(empty($showtime)){
+        if (empty($showtime)) {
             return redirect()->route('home')->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
         }
 
@@ -58,18 +58,19 @@ class CheckoutController extends Controller
             ->get();
 
         // Lấy danh sách combo và thực phẩm liên quan
-        $data = Combo::query()->where('is_active', '1')->with('comboFood')->latest('id')->get();
-        $foods = Food::query()->select('id', 'name', 'type')->get();
+        $data = Combo::query()->where('is_active', '1')->with('food')->latest('id')->get();
 
         // Trả về view với dữ liệu
-        return view('client.checkout', compact('data', 'foods', 'showtime', 'checkoutData', 'seats'));
+        return view('client.checkout', compact('data', 'showtime', 'checkoutData', 'seats'));
     }
 
 
     public function applyVoucher(Request $request)
 
     {
-        $voucher = Voucher::where('code', $request->code)->first();
+        $voucher = Voucher::where('is_active', 1)
+            ->where('code', $request->code)
+            ->first();
 
         if (!$voucher) {
             return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
@@ -124,10 +125,11 @@ class CheckoutController extends Controller
             return response()->json(['error' => 'Voucher đã hết lượt sử dụng.'], 400);
         }
 
-        // Bỏ qua phản hồi nếu discount = 0
         if ($voucher->discount == 0) {
             return response()->json(['error' => 'Voucher không hợp lệ.'], 400);
         }
+
+
         $paymentVoucher = [
             'voucher_id' => $voucher->id,
             'voucher_code' => $voucher->code,

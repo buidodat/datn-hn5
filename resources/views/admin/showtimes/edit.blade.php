@@ -101,13 +101,9 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="title" class="form-label ">Tên Chi Nhánh:</label>
-                                            <select name="branch_id" id="branch" class="form-select">
+                                            <select name="branch_id" id="branch" disabled @readonly(true) class="form-select">
                                                 <option value="">Chọn</option>
-                                                {{-- @foreach ($branches as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        @if ($item->id == $showtime->room->cinema->branch->id) selected @endif>
-                                                        {{ $item->name }}</option>
-                                                @endforeach --}}
+                                         
                                                 @foreach ($branches as $item)
                                                     <option value="{{ $item->id }}" @selected($item->id == old('branch_id', $showtime->cinema->branch_id ?? ''))>
                                                         {{ $item->name }}</option>
@@ -124,10 +120,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="title" class="form-label ">Tên Rạp:</label>
-                                            <select name="cinema_id" id="cinema" class="form-select">
+                                            <select name="cinema_id" id="cinema" disabled @readonly(true) class="form-select">
                                                 <option value="">Chọn</option>
-                                                {{-- <option value="{{ $showtime->room->cinema->id }}" selected>
-                                                    {{ $showtime->room->cinema->name }}</option> --}}
                                             </select>
                                             @error('cinema_id')
                                                 <div class='mt-1'>
@@ -250,7 +244,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Trạng thái hoạt động</label>
+                                            <label class="form-check-label" for="is_active">Hoạt động</label>
                                             <div class="form-check form-switch form-switch-default">
                                                 <input class="form-check-input" type="checkbox" role=""
                                                     name="is_active" @checked($showtime->is_active == 1)>

@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Checkout
+    Xác thực và thanh toán
 @endsection
 
 @section('content')
@@ -106,26 +106,18 @@
                                                                     @endif
                                                                 </td>
                                                                 {{-- <td>{{ $item->name }} - {{ number_format($item->price_sale) }} Vnđ
-                                                </td> --}}
+                                                                </td> --}}
                                                                 <td>{{ $item->name }} - <span class="combo-price"
                                                                         data-price="{{ $item->price_sale }}">{{ number_format($item->price_sale) }}</span>Vnđ
                                                                 </td>
 
                                                                 <td>
-                                                                    @foreach ($item->comboFood as $value)
-                                                                        @foreach ($foods as $food)
-                                                                            @if ($value->food_id == $food->id)
-                                                                                <ul class="nav nav-sm flex-column">
-                                                                                    <li class="nav-item mb-2">
-                                                                                        <span
-                                                                                            class="fw-semibold">{{ $food->type }}:
-                                                                                        </span>
-                                                                                        {{ $food->name }} x
-                                                                                        ({{ $value->quantity }})
-                                                                                    </li>
-                                                                                </ul>
-                                                                            @endif
-                                                                        @endforeach
+                                                                    @foreach ($item->food as $itemFood)
+                                                                        <ul class="nav nav-sm flex-column">
+                                                                            <li class="nav-item mb-2">
+                                                                                {{ $itemFood->name }} x
+                                                                                ({{ $itemFood->pivot->quantity }})
+                                                                        </ul>
                                                                     @endforeach
                                                                 </td>
 
@@ -286,9 +278,11 @@
                                                         <input type="checkbox" id="checkbox">
                                                         Tôi đồng ý với điều khoản sử dụng và mua vé.
                                                     </label>
-                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng và mua vé, 
+                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng
+                                                        và mua vé,
                                                         <span id="showModal" style="color: #ff7307; cursor: pointer;">
-                                                        tại đây.</span></p>
+                                                            tại đây.</span>
+                                                    </p>
 
                                                     @include('client.layouts.components.modal-clause')
 
@@ -536,20 +530,13 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    @foreach ($item->comboFood as $value)
-                                                                        @foreach ($foods as $food)
-                                                                            @if ($value->food_id == $food->id)
-                                                                                <ul class="nav nav-sm flex-column">
-                                                                                    <li class="nav-item mb-2">
-                                                                                        <span
-                                                                                            class="fw-semibold">{{ $food->type }}:
-                                                                                        </span>
-                                                                                        {{ $food->name }} x
-                                                                                        ({{ $value->quantity }})
-                                                                                    </li>
-                                                                                </ul>
-                                                                            @endif
-                                                                        @endforeach
+                                                                    @foreach ($item->food as $itemFood)
+                                                                        <ul class="nav nav-sm flex-column">
+                                                                            <li class="nav-item mb-2">
+                                                                                {{ $itemFood->name }} x
+                                                                                ({{ $itemFood->pivot->quantity }})
+                                                                            </li>
+                                                                        </ul>
                                                                     @endforeach
                                                                 </td>
 
@@ -725,9 +712,11 @@
                                                         <input type="checkbox" id="checkbox">
                                                         Tôi đồng ý với điều khoản sử dụng và mua vé.
                                                     </label>
-                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng và mua vé, 
+                                                    <p><span class="text-danger">* </span>Xem chi tiết điều khoản sử dụng
+                                                        và mua vé,
                                                         <span id="showModal" style="color: #ff7307; cursor: pointer;">
-                                                        tại đây.</span></p>
+                                                            tại đây.</span>
+                                                    </p>
 
                                                     @include('client.layouts.components.modal-clause')
 
@@ -851,15 +840,15 @@
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-         function showAlertMessage(message, type = 'error') {
-                Swal.fire({
-                    text: message,
-                    icon: type,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    confirmButtonText: 'Đóng'
-                });
-            }
+        function showAlertMessage(message, type = 'error') {
+            Swal.fire({
+                text: message,
+                icon: type,
+                timer: 5000,
+                timerProgressBar: true,
+                confirmButtonText: 'Đóng'
+            });
+        }
         $(document).ready(function() {
             const quantityInputs = document.querySelectorAll('.quantity-input');
 
@@ -1145,7 +1134,7 @@
         document.getElementById('btnPayment').addEventListener('click', function() {
             // Kiểm tra xem checkbox đã được chọn hay chưa
             if (!document.getElementById('checkbox').checked) {
-                showAlertMessage('Bạn chưa đồng ý với điều kiện và điều khoản của chúng tôi.','warning')
+                showAlertMessage('Bạn chưa đồng ý với điều kiện và điều khoản của chúng tôi.', 'warning')
                 // Swal.fire({
                 //     text: 'Bạn chưa đồng ý với điều kiện và điều khoản của chúng tôi.',
                 //     icon:'warning',
@@ -1153,39 +1142,39 @@
                 // timerProgressBar: true,
                 //     confirmButtonText: 'Đóng',
                 // });
-//                 Swal.fire({
-//     title: "Đang đếm ngược",
-//     html: '<b id="time-line">10:00</b> phút còn lại...',  // Thay đổi id thành "time-line"
-//     icon: "info",
-//     timer: 600000,  // Thời gian tự động đóng sau 10 phút (600,000 ms)
-//     timerProgressBar: true,  // Hiển thị thanh tiến trình
-//     didOpen: () => {
-//         // Lấy phần tử với id "time-line" từ HTML
-//         const timeLineElement = document.getElementById('time-line');
+                //                 Swal.fire({
+                //     title: "Đang đếm ngược",
+                //     html: '<b id="time-line">10:00</b> phút còn lại...',  // Thay đổi id thành "time-line"
+                //     icon: "info",
+                //     timer: 600000,  // Thời gian tự động đóng sau 10 phút (600,000 ms)
+                //     timerProgressBar: true,  // Hiển thị thanh tiến trình
+                //     didOpen: () => {
+                //         // Lấy phần tử với id "time-line" từ HTML
+                //         const timeLineElement = document.getElementById('time-line');
 
-//         // Kiểm tra phần tử tồn tại hay không
-//         if (!timeLineElement) {
-//             console.error('Không thể tìm thấy phần tử với id "time-line"');
-//             return;
-//         }
+                //         // Kiểm tra phần tử tồn tại hay không
+                //         if (!timeLineElement) {
+                //             console.error('Không thể tìm thấy phần tử với id "time-line"');
+                //             return;
+                //         }
 
-//         let countdown = 600;  // Khởi tạo thời gian đếm ngược (10 phút = 600 giây)
+                //         let countdown = 600;  // Khởi tạo thời gian đếm ngược (10 phút = 600 giây)
 
-//         const interval = setInterval(() => {
-//             countdown--;  // Giảm 1 giây mỗi lần
-//             let minutes = Math.floor(countdown / 60);  // Tính số phút còn lại
-//             let seconds = countdown % 60;  // Tính số giây còn lại
-//             seconds = seconds < 10 ? '0' + seconds : seconds;  // Đảm bảo giây luôn có 2 chữ số
+                //         const interval = setInterval(() => {
+                //             countdown--;  // Giảm 1 giây mỗi lần
+                //             let minutes = Math.floor(countdown / 60);  // Tính số phút còn lại
+                //             let seconds = countdown % 60;  // Tính số giây còn lại
+                //             seconds = seconds < 10 ? '0' + seconds : seconds;  // Đảm bảo giây luôn có 2 chữ số
 
-//             // Cập nhật phần tử time-line trong SweetAlert
-//             timeLineElement.textContent = `${minutes}:${seconds}`;
+                //             // Cập nhật phần tử time-line trong SweetAlert
+                //             timeLineElement.textContent = `${minutes}:${seconds}`;
 
-//             if (countdown <= 0) {
-//                 clearInterval(interval);  // Dừng đếm ngược khi thời gian còn lại là 0
-//             }
-//         }, 1000);  // Đếm ngược mỗi giây
-//     }
-// });
+                //             if (countdown <= 0) {
+                //                 clearInterval(interval);  // Dừng đếm ngược khi thời gian còn lại là 0
+                //             }
+                //         }, 1000);  // Đếm ngược mỗi giây
+                //     }
+                // });
                 // alert('Bạn chưa đồng ý với điều kiện và điều khoản của chúng tôi.');
             } else {
                 // Gửi form khi checkbox đã được chọn

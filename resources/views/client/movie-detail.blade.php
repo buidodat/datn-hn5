@@ -162,6 +162,16 @@
                                                                 action="{{ route('movies.addReview', ['slug' => $movie->slug]) }}">
                                                                 @csrf
                                                                 @if (!$userReviewed)
+                                                                    <!-- Hiển thị lỗi validation -->
+                                                                    @if ($errors->any())
+                                                                        <div class="alert alert-danger">
+                                                                            <ul>
+                                                                                @foreach ($errors->all() as $error)
+                                                                                    <li>{{ $error }}</li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    @endif
                                                                     <div class="form-comment">
                                                                         <div class="st_rating_box">
                                                                             <fieldset class="rating">

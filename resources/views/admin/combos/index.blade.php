@@ -59,10 +59,9 @@
                                 <th>Hình ảnh</th>
                                 {{-- <th>Đồ ăn</th>
                                 <th>Nước uống</th> --}}
-                                <th>Thông tin </th>
+                                <th>Thông tin combo</th>
                                 <th>Giá gốc</th>
                                 <th>Giá bán</th>
-                                <th>Mô tả</th>
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -91,28 +90,23 @@
                                         @endif --}}
                                     </td>
                                     <td>
-                                        @foreach ($item->comboFood as $value)
-                                            @foreach ($foods as $food)
-                                                @if ($value->food_id == $food->id)
-                                                    <ul class="nav nav-sm flex-column">
-                                                        <li class="nav-item mb-2">
-                                                            <span class="fw-semibold">{{ $food->type }}: </span>
-                                                            {{ $food->name }} x
-                                                            ({{ $value->quantity }})
-                                                        </li>
-                                                    </ul>
-                                                @endif
-                                            @endforeach
+
+                                        @foreach ($item->food as $itemFood)
+                                            <ul class="nav nav-sm flex-column">
+                                                <li class="nav-item mb-2">
+                                                    {{ $itemFood->name }} x
+                                                    ({{ $itemFood->pivot->quantity }})
+                                                </li>
+                                            </ul>
                                         @endforeach
                                     </td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ number_format($item->price_sale) }} VNĐ</td>
-                                    <td>{{ $item->description }}</td>
                                     <td>
                                         <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-combo-id="{{ $item->id }}" @checked($item->is_active)
+                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                type="checkbox" role="switch" data-combo-id="{{ $item->id }}"
+                                                @checked($item->is_active)
                                                 onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
                                     </td>
@@ -121,7 +115,7 @@
                                         {{-- <a href="{{ route('admin.combos.show',$item) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
-                                        <a href="{{ route('admin.combos.edit',$item) }}">
+                                        <a href="{{ route('admin.combos.edit', $item) }}">
                                             <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                     class="fas fa-edit"></i></button>
                                         </a>
@@ -160,20 +154,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
     <script>
-
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                 order: [],
-            language: {
-                search: "Tìm kiếm:",
-                paginate: {
-                    next: "Tiếp theo",
-                    previous: "Trước"
-                },
-                lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
-            },
+                order: [
+                ],
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {

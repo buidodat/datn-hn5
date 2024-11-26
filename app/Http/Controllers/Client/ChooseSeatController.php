@@ -426,6 +426,84 @@ class ChooseSeatController extends Controller
     // }
 
 
+    // public function updateSeat(Request $request)
+    // {
+    //     try {
+    //         $seatId = $request->seat_id;
+    //         $showtimeId = $request->showtime_id;
+    //         $action = $request->action; // 'hold' hoặc 'release'
+    //         $userId = auth()->id();
+    //         $timeKey = 'timeData.' . $showtimeId;
+    //         $timeData = session()->get($timeKey);
+
+    //         // Kiểm tra xem thời gian giữ chỗ có hợp lệ không
+    //         if ($action === 'hold' && (!$timeData || !isset($timeData['end_time']))) {
+    //             return response()->json(['message' => 'Dữ liệu thời gian không hợp lệ.'], 400);
+    //         }
+
+    //         $holdExpiresAt = Carbon::parse($timeData['end_time']);
+
+    //         DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
+    //             // Tìm ghế trong showtime và kiểm tra trạng thái
+    //             $seatShowtime = DB::table('seat_showtimes')
+    //                 ->join('seats', 'seats.id', '=', 'seat_showtimes.seat_id')
+    //                 ->where('seat_showtimes.seat_id', $seatId)
+    //                 ->where('seat_showtimes.showtime_id', $showtimeId)
+    //                 ->where('seats.is_active', 1)
+    //                 ->lockForUpdate()
+    //                 ->first();
+
+    //             if (!$seatShowtime) {
+    //                 throw new \Exception('Không tìm thấy ghế trong showtime này.');
+    //             }
+
+    //             // Cập nhật trạng thái ghế
+    //             if ($action === 'hold' && $seatShowtime->status === 'available') {
+    //                 DB::table('seat_showtimes')
+    //                     ->where('seat_id', $seatId)
+    //                     ->where('showtime_id', $showtimeId)
+    //                     ->update([
+    //                         'status' => 'hold',
+    //                         'user_id' => $userId,
+    //                         'hold_expires_at' => $holdExpiresAt,
+    //                     ]);
+    //             } elseif ($action === 'release' && $seatShowtime->status === 'hold') {
+    //                 DB::table('seat_showtimes')
+    //                     ->where('seat_id', $seatId)
+    //                     ->where('showtime_id', $showtimeId)
+    //                     ->update([
+    //                         'status' => 'available',
+    //                         'user_id' => null,
+    //                         'hold_expires_at' => null,
+    //                     ]);
+    //             }
+    //         });
+
+    //         // Lấy lại dữ liệu ghế sau khi transaction thành công
+    //         $seatData = DB::table('seat_showtimes')
+    //             ->where('seat_id', $seatId)
+    //             ->where('showtime_id', $showtimeId)
+    //             ->first();
+
+    //         // Phát sự kiện sau khi transaction hoàn tất
+    //         if ($action === 'hold') {
+    //             broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'hold'))->toOthers();
+    //             ReleaseSeatHoldJob::dispatch([$seatData->seat_id], $showtimeId, null)->delay($holdExpiresAt);
+    //         } elseif ($action === 'release') {
+    //             broadcast(new SeatStatusChange($seatData->seat_id, $showtimeId, 'available'))->toOthers();
+    //         }
+
+
+    //         return response()->json(['message' => 'Cập nhật trạng thái ghế thành công.'], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'message' => 'Có lỗi xảy ra khi cập nhật trạng thái ghế.',
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+
     public function updateSeat(Request $request)
     {
         try {
@@ -443,22 +521,32 @@ class ChooseSeatController extends Controller
 
             $holdExpiresAt = Carbon::parse($timeData['end_time']);
 
-            DB::transaction(function () use ($seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
-                // Tìm ghế trong showtime và kiểm tra trạng thái
-                $seatShowtime = DB::table('seat_showtimes')
-                    ->join('seats', 'seats.id', '=', 'seat_showtimes.seat_id')
-                    ->where('seat_showtimes.seat_id', $seatId)
-                    ->where('seat_showtimes.showtime_id', $showtimeId)
-                    ->where('seats.is_active', 1)
-                    ->lockForUpdate()
-                    ->first();
+            // Tìm ghế trong showtime và kiểm tra trạng thái
+            $seatShowtime = DB::table('seat_showtimes')
+                ->join('seats', 'seats.id', '=', 'seat_showtimes.seat_id')
+                ->where('seat_showtimes.seat_id', $seatId)
+                ->where('seat_showtimes.showtime_id', $showtimeId)
+                ->where('seats.is_active', 1)
+                ->lockForUpdate()
+                ->first();
 
-                if (!$seatShowtime) {
-                    throw new \Exception('Không tìm thấy ghế trong showtime này.');
-                }
+            if (!$seatShowtime) {
+                throw new \Exception('Không tìm thấy ghế trong showtime này.');
+            }
 
+            if (
+                $action == 'hold' && $seatShowtime->status != 'available' &&
+                ($seatShowtime->user_id != $userId || $seatShowtime->user_id != null) &&
+                $seatShowtime->seat_id == $seatId && $seatShowtime->showtime_id == $showtimeId
+            ) {
+                return response()->json([
+                    'message' => 'Ghế này đã có người khác chọn. Vui lòng chọn ghế khác.',
+                ], 409); // HTTP 409 Conflict
+            }
+
+            DB::transaction(function () use ($seatShowtime, $seatId, $showtimeId, $userId, $action, $holdExpiresAt) {
                 // Cập nhật trạng thái ghế
-                if ($action === 'hold' && $seatShowtime->status === 'available') {
+                if ($action === 'hold' && $seatShowtime->status === 'available' && $seatShowtime->user_id === null) {
                     DB::table('seat_showtimes')
                         ->where('seat_id', $seatId)
                         ->where('showtime_id', $showtimeId)
@@ -467,7 +555,7 @@ class ChooseSeatController extends Controller
                             'user_id' => $userId,
                             'hold_expires_at' => $holdExpiresAt,
                         ]);
-                } elseif ($action === 'release' && $seatShowtime->status === 'hold') {
+                } elseif ($action === 'release' && $seatShowtime->status === 'hold' && $seatShowtime->user_id === $userId) {
                     DB::table('seat_showtimes')
                         ->where('seat_id', $seatId)
                         ->where('showtime_id', $showtimeId)

@@ -28,7 +28,7 @@
                                 <li><a href="{{ route('my-account.edit', 'cinema-journey') }}"><i
                                             class="fa-regular fa-paper-plane"></i> Lịch sử giao dịch</a></li>
                                 {{-- <li><a href=""><i class="fa-regular fa-hand-point-right"></i> Điểm Poly</a></li> --}}
-                                <li><a href=""><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
+                                <li><a href="{{ route('my-account.edit', 'my-voucher') }}"><i class="fa-solid fa-ticket"></i> Voucher của tôi</a></li>
                                 <li>
 
                                     <a href="{{ route('logout') }}"
@@ -125,9 +125,12 @@
                                         @endforeach
                                     </ul>
                                 </li>
+                        
                             @elseif(Auth::user()->type == 'admin' && Auth::user()->cinema_id != '')
                                 <li class="default-base">
                                     @php
+                                        // use Illuminate\Support\Facades\Session;
+                                        // Session::put('cinema_id', Auth::user()->cinema_id);
                                         $selectedCinema = App\Models\Cinema::find(Auth::user()->cinema_id);
                                     @endphp
                                     <a href="#">Poly {{ $selectedCinema->name }} </a>

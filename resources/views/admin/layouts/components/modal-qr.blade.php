@@ -102,7 +102,12 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.redirect_url) {
+                        // Mở tab mới
                         window.open(data.redirect_url, '_blank');
+
+                        // Khởi động lại scanner
+                        barcodeResult.innerText = "";
+                        startScanner();
                     }
                 })
                 .catch(error => {

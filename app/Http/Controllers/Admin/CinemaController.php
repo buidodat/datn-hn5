@@ -107,6 +107,7 @@ class CinemaController extends Controller
             // Lưu cinema_id vào session
             Session::put('cinema_id', $cinema->id);
         }
+        
 
         // Điều hướng lại hoặc trả về kết quả phù hợp
         return redirect()->back();
