@@ -197,7 +197,7 @@
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-combo-id="${comboId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                 </div>`;
-                            row.cell(row.index(), 7).data(statusHtml).draw(false);
+                            row.cell(row.index(), 6).data(statusHtml).draw(false);
 
                             Swal.fire({
                                 icon: 'success',

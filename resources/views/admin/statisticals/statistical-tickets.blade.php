@@ -78,8 +78,7 @@
                             </div><!-- end card header -->
 
                             <div class="card-body">
-                                <div id="line_chart_dashed" data-colors='["--vz-primary", "--vz-danger", "--vz-success"]'
-                                    class="apex-charts" dir="ltr"></div>
+                                <canvas id="invoiceStatusChart" height="165"></canvas>
                             </div>
                         </div> <!-- .card-->
                     </div> <!-- .col-->
@@ -90,10 +89,6 @@
     </div>
 @endsection
 
-@section('script-libs')
-    <!-- linecharts init -->
-    <script src="{{ asset('theme/admin/assets/js/pages/apexcharts-line.init.js') }}"></script>
-@endsection
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -194,5 +189,83 @@
             },
             plugins: [ChartDataLabels] // Kích hoạt plugin
         });
+    </script>
+
+    <script>
+        // thống kê hóa đơn
+        const labels = @json($labels);
+        const pendingData = @json($pending);
+        const completedData = @json($completed);
+        const expiredData = @json($expired);
+
+        // Cấu hình biểu đồ
+        const data = {
+            labels: labels,
+            datasets: [{
+                    label: 'Chưa xuất vé',
+                    data: pendingData,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0.4, // Làm mịn đường
+                },
+                {
+                    label: 'Đã xuất vé',
+                    data: completedData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                },
+                {
+                    label: 'Đã hết hạn',
+                    data: expiredData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.4,
+                }
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Thống kê hóa đơn theo trạng thái'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Ngày'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Số lượng hóa đơn'
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1, // Khoảng cách giữa các số trên trục Y
+                            callback: function(value) {
+                                return Number.isInteger(value) ? value : null; // Chỉ hiển thị số nguyên
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Render biểu đồ
+        const invoiceStatusChart = new Chart(
+            document.getElementById('invoiceStatusChart'), config
+        );
     </script>
 @endsection
