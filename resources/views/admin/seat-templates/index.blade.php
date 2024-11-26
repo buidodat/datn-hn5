@@ -281,7 +281,7 @@
 
 
 
-                                                        @if (!$seatTemplate->is_publish || $seatTemplate->rooms()->doesntExist() )
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist() )
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"

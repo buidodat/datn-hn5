@@ -144,7 +144,7 @@
 
 
 
-                                                        @if (!$room->is_publish)
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist() )
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
@@ -220,14 +220,13 @@
                                                                 data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$room->is_publish)
-                                                            @can('Xóa phòng chiếu')
-                                                                <a class="cursor-pointer text-danger small"
-                                                                    href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
-                                                            @endcan
-                                                        @endif
-
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist() )
+                                                        @can('Xóa phòng chiếu')
+                                                            <a class="cursor-pointer text-danger small"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                        @endcan
+                                                    @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -297,13 +296,13 @@
                                                                 data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$room->is_publish)
-                                                            @can('Xóa phòng chiếu')
-                                                                <a class="cursor-pointer text-danger small"
-                                                                    href="{{ route('admin.rooms.destroy', $room) }}"
-                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
-                                                            @endcan
-                                                        @endif
+                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist() )
+                                                        @can('Xóa phòng chiếu')
+                                                            <a class="cursor-pointer text-danger small"
+                                                                href="{{ route('admin.rooms.destroy', $room) }}"
+                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                        @endcan
+                                                    @endif
 
                                                     </div>
                                                 </div>

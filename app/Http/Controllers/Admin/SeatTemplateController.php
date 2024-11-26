@@ -25,7 +25,7 @@ class SeatTemplateController extends Controller
     }
     public function index()
     {
-        $seatTemplates = SeatTemplate::all();
+        $seatTemplates = SeatTemplate::latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('seatTemplates'));
     }
 
