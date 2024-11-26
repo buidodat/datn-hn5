@@ -109,7 +109,7 @@
                                         <label for="birthday"><span style="color: red;">*</span>&nbsp;Ngày sinh</label>
                                         <i class="fa fa-calendar birthday-icon"></i>
                                         <input type="date" id="birthday"
-                                               value="{{ old('birthday', $user->birthday->format('Y-m-d')) }}"
+                                               value="{{ old('birthday', $user->birthday) }}"
                                                class="my-account-form-control" name="birthday" placeholder="Ngày sinh"
                                                data-date-format="yyyy-mm-dd"/>
                                         @error('birthday')
