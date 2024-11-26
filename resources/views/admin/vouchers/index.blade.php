@@ -55,10 +55,10 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100">
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100">
                         <thead class='table-light'>
                             <tr>
-                                {{--<th>#</th>--}}
+                                {{-- <th>#</th> --}}
                                 <th>Mã voucher</th>
                                 {{-- <th>Thông tin voucher</th> --}}
                                 <th>Tiêu đề</th>
@@ -67,7 +67,7 @@
                                 <th>Giảm giá</th>
                                 <th>Số lượng</th>
                                 <th>Giới hạn</th>
-                                {{--<th>Thể loại</th>--}}
+                                {{-- <th>Thể loại</th> --}}
                                 {{-- <th>Mô tả</th> --}}
                                 <th>Hoạt động</th>
                                 <th>Chức năng</th>
@@ -76,9 +76,9 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    {{--<td>{{ $item->id }}</td>--}}
+                                    {{-- <td>{{ $item->id }}</td> --}}
                                     <td>{{ $item->code }}</td>
-                                    <td>{{ Str::limit($item->title ,30)}}</td>
+                                    <td>{{ Str::limit($item->title, 30) }}</td>
                                     {{-- <td class="nav nav-sm flex-column">
                                     --}}{{-- <li class="nav-item mb-2"><span
                                             class="fw-semibold">Mã code:</span> {{ $item->code }}</li> --}}{{--
@@ -114,19 +114,19 @@
                                     <td>{{ $item->discount }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ $item->limit }}</td>
-                                    {{--<td>
+                                    {{-- <td>
                                             @if ($item->type == 1)
                                                 Toàn hệ thống
                                             @elseif ($item->type == 2)
                                                     Người dùng
                                             @endif
-                                    </td>--}}
+                                    </td> --}}
                                     {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
                                         <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-voucher-id="{{ $item->id }}" @checked($item->is_active)
+                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
+                                                @checked($item->is_active)
                                                 onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                         </div>
                                     </td>
@@ -175,12 +175,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -242,7 +249,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-voucher-id="${voucherId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-voucher-id="${voucherId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

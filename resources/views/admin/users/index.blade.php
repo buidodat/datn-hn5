@@ -78,9 +78,8 @@
                         {{-- Tất cả ok rồi --}}
                         <div class="tab-pane active" id="admin" role="tabpanel">
 
-                            <table
-                               class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAdmin">
-                               <thead class='table-light'>
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAdmin">
+                                <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
                                         <th>Họ và tên</th>
@@ -182,9 +181,8 @@
 
                         <div class="tab-pane " id="users" role="tabpanel">
 
-                            <table
-                               class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableUsers">
-                               <thead class='table-light'>
+                            <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableUsers">
+                                <thead class='table-light'>
                                     <tr>
                                         <th>#</th>
                                         <th>Họ và tên</th>
@@ -290,17 +288,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#tableAdmin", {
-            order: [
-
-
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+            },
         });
 
         new DataTable("#tableUsers", {
-            order: [
-
-
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+            },
         });
     </script>
 @endsection

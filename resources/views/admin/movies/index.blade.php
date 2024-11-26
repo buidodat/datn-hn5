@@ -560,6 +560,15 @@
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
                 order: [],
+                 language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },,
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.change-is-active', function() {
@@ -649,15 +658,42 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let tableAllSeatTemplate = new DataTable("#tableAllMovie", {
-                order: []
+                order: [],
+                 language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsPublish = new DataTable("#tableIsPublish", {
-                order: []
+                order: [],
+                 language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsDraft = new DataTable("#tableIsDraft", {
-                order: []
+                order: [],
+                 language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             // Xử lý sự kiện change cho checkbox .changeActive

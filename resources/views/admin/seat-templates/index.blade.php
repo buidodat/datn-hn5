@@ -125,13 +125,13 @@
 
 
 
-                                                        @if (!$item->is_publish || $item->rooms()->doesntExist() )
-                                                        @can('Xóa mẫu sơ đồ ghế')
-                                                            <a class="cursor-pointer text-danger small"
-                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
-                                                        @endcan
-                                                    @endif
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
+                                                            @can('Xóa mẫu sơ đồ ghế')
+                                                                <a class="cursor-pointer text-danger small"
+                                                                    href="{{ route('admin.seat-templates.destroy', $item) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                            @endcan
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -200,13 +200,13 @@
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$item->is_publish || $item->rooms()->doesntExist() )
-                                                        @can('Xóa mẫu sơ đồ ghế')
-                                                            <a class="cursor-pointer text-danger small"
-                                                                href="{{ route('admin.seat-templates.destroy', $item) }}"
-                                                                onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
-                                                        @endcan
-                                                    @endif
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
+                                                            @can('Xóa mẫu sơ đồ ghế')
+                                                                <a class="cursor-pointer text-danger small"
+                                                                    href="{{ route('admin.seat-templates.destroy', $item) }}"
+                                                                    onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
+                                                            @endcan
+                                                        @endif
 
                                                     </div>
                                                 </div>
@@ -281,7 +281,7 @@
 
 
 
-                                                        @if (!$item->is_publish || $item->rooms()->doesntExist() )
+                                                        @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.seat-templates.destroy', $item) }}"
@@ -529,7 +529,8 @@
         document.querySelectorAll('.openUpdateSeatTemplateModal').forEach(button => {
             button.addEventListener('click', function() {
 
-                const seatTemplateId = this.getAttribute('data-seat-template-id'); // Lấy roomId từ data attribute
+                const seatTemplateId = this.getAttribute(
+                'data-seat-template-id'); // Lấy roomId từ data attribute
                 const seatTemplateName = this.getAttribute('data-seat-template-name');
                 const seatTemplateDescription = this.getAttribute('data-seat-template-description');
                 const matrixId = this.getAttribute('data-matrix-id');
@@ -539,7 +540,8 @@
                 const isPublish = this.getAttribute('data-is-publish');
 
                 // Điền dữ liệu vào modal
-                document.getElementById('updateSeatTemplateId').value =seatTemplateId; // Gán giá trị roomId
+                document.getElementById('updateSeatTemplateId').value =
+                seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
@@ -671,15 +673,42 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsPublish = new DataTable("#tableIsPublish", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             let tableIsDraft = new DataTable("#tableIsDraft", {
-                order: []
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                },
             });
 
             // Xử lý sự kiện change cho checkbox .changeActive
@@ -793,10 +822,6 @@
 
     {{-- ajax load matrix --}}
     <script>
-
-
-
-
         $(document).ready(function() {
             // Lắng nghe sự kiện change cho cả hai select (create và update)
             $('#createMatrixId, #updateMatrixId').on('change', function() {
