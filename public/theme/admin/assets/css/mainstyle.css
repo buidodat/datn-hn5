@@ -5,7 +5,15 @@ td.table-showtime {
 .status-showtime {
     width: 120px;
 }
-
+i.ri-add-circle-fill {
+    /* color: crimson; */
+    font-size: 15px;
+}
+.ri-indeterminate-circle-fill:before {
+    content: "\ee56";
+    font-size: 15px;
+    color: rgb(238, 6, 6);
+}
 .inputCheckBoxShowtimes {
     width: 36px;
 }

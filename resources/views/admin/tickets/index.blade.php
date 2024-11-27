@@ -54,7 +54,7 @@
                             </div> --}}
                             <!--end col-->
 
-                            {{--Loc--}}
+                            {{-- Loc --}}
                             <div class="col-9 d-flex">
                                 <!--end col-->
                                 @if (Auth::user()->hasRole('System Admin'))
@@ -81,7 +81,7 @@
                                 <div class="col-xxl-2 col-sm-6 me-2">
                                     <div>
                                         <input type="date" name="date" id="" class="form-control"
-                                               value="{{ request('date', now()->format('Y-m-d')) }}">
+                                            value="{{ request('date', now()->format('Y-m-d')) }}">
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -100,15 +100,18 @@
                                 </div>
                             </div>
 
-                            {{--quet qr--}}
+                            {{-- quet qr --}}
                             <div class="col-3 d-flex justify-content-end">
                                 <div class="col-xxl-3 text-end">
-                                    <div>
-                                        <!-- center modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal" data-source="index">Quét QR
-                                        </button>
+                                    @can('Quét hóa đơn')
+                                        <div>
+                                            <!-- center modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#scanModal" data-source="index">Quét QR
+                                            </button>
 
-                                    </div>
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
 
@@ -241,11 +244,13 @@
                                      </select>
                                  </td> --}}
                                     <td>
-                                        <a href="{{ route('admin.tickets.show', $ticket) }}">
-                                            <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i
-                                                    class="fas fa-eye"></i>
-                                            </button>
-                                        </a>
+                                        @can('Xem chi tiết hóa đơn')
+                                            <a href="{{ route('admin.tickets.show', $ticket) }}">
+                                                <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i
+                                                        class="fas fa-eye"></i>
+                                                </button>
+                                            </a>
+                                        @endcan
                                         {{-- @if ($ticket->status == 'Đã xuất vé')
                                         <a href="{{ route('admin.tickets.print', $ticket) }}">
                                             <button title="print" class="btn btn-success btn-sm" type="button"><i
@@ -286,9 +291,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"
             integrity="sha512-bCsBoYoW6zE0aja5xcIyoCDPfT27+cGr7AOCqelttLVRGay6EKGQbR6wm6SUcUGOMGXJpj+jrIpMS6i80+kZPw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>--}}
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
     <script>
         new DataTable("#example", {
             order: []
@@ -431,7 +436,7 @@
                 stopScanner(); // Dừng scanner sau khi đọc được mã
 
                 // Gửi mã code qua AJAX
-                fetch('{{ route("admin.tickets.processScan") }}', {
+                fetch('{{ route('admin.tickets.processScan') }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -465,7 +470,5 @@
                 startScanner(); // Bắt đầu quét lại
             });
         });*/
-
-
     </script>
 @endsection
