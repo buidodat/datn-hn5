@@ -34,7 +34,7 @@
                             </div><!-- end card header -->
                             <!-- end card header -->
 
-                            <canvas id="revenueChartDaily" style="width: 300px; height: 120px;"></canvas>
+                            <canvas id="revenueChartDaily" height="490"></canvas>
                         </div><!-- end card -->
                     </div><!-- end col -->
                 </div>

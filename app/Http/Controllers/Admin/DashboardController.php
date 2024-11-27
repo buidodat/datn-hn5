@@ -37,6 +37,34 @@ class DashboardController extends Controller
 
         // return view(self::PATH_VIEW . __FUNCTION__);
 
-        return view('admin.dashboard', compact('todayRevenue', 'weekRevenue', 'monthRevenue', 'yearRevenue'));
+
+        // doanh thu theo phim
+        $startDate = '2024-05-01';
+        $endDate = '2024-11-30';
+
+        //doanh thu theo khung giờ chiếu
+        $timeSlots = [
+            ['start' => '09:00:00', 'end' => '13:00:00', 'label' => '9:00 - 13:00'],
+            ['start' => '13:00:00', 'end' => '18:00:00', 'label' => '13:00 - 18:00'],
+            ['start' => '18:00:00', 'end' => '24:00:00', 'label' => '18:00 - 24:00'],
+        ];
+
+        $revenueTimeSlot = [];
+        foreach ($timeSlots as $slot) {
+            $totalRevenue = Ticket::join('showtimes', 'tickets.showtime_id', '=', 'showtimes.id')
+                ->whereBetween('tickets.created_at', [$startDate, $endDate])
+                ->whereTime('showtimes.start_time', '>=', $slot['start'])
+                ->whereTime('showtimes.start_time', '<', $slot['end'])
+                ->sum('tickets.total_price');
+
+            $revenueTimeSlot[] = [
+                'label' => $slot['label'],
+                'revenue' => (float)$totalRevenue, // Chuyển sang kiểu số thực
+            ];
+        }
+
+        // dd($revenueByMovies);
+
+        return view('admin.dashboard', compact('todayRevenue', 'weekRevenue', 'monthRevenue', 'yearRevenue', 'revenueTimeSlot'));
     }
 }
