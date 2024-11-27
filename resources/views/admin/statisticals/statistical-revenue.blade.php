@@ -8,61 +8,21 @@
     <div class="row">
         <div class="col">
             <div class="h-100">
-                <div class="row">
-                    <div class="col-md-10">
-                        <form action="{{ route('admin.statistical-revenue') }}" method="GET">
-                            <div class="row">
-                                @if (Auth::user()->hasRole('System Admin'))
-                                    <div class="col-md-3">
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Tất cả chi nhánh</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}"
-                                                    {{ $branch->id == $branchId ? 'selected' : '' }}>
-                                                    {{ $branch->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Tất cả Rạp chiếu</option>
-                                        </select>
-                                    </div>
-                                @endif
-
-                                <div class="col-md-2">
-                                    <input type="date" name="start_date" class="form-control"
-                                        value="{{ request('start_date', $startDate) }}">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <input type="date" name="end_date" class="form-control"
-                                        value="{{ request('end_date', $endDate) }}">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button class="btn btn-success" type="submit">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-
-                    </div>
-                    <div class="col-md-2" align="right">
-                        <a href="" class="btn btn-primary mb-3 ">Tổng quan</a>
-                    </div>
-                </div>
+                
+                <form action="{{ route('admin.statistical-revenue') }}" method="GET" class="mb-3">
+                    @include('admin.layouts.components.statistical-filter')
+                </form>
 
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
 
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo ngày
+                                    @if (Auth::user()->cinema_id != '')
+                                        - {{ Auth::user()->cinema->name }}
+                                    @endif
+                                </h4>
                                 {{-- <div class="flex-shrink-0">
                                     <select id="timeRangeSelect" class="form-select">
                                         <option value="daily">Theo ngày</option>
@@ -95,8 +55,8 @@
     <script>
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ phía server
-            var selectedBranchId = "{{ request('branch_id', '') }}";
-            var selectedCinemaId = "{{ request('cinema_id', '') }}";
+            var selectedBranchId = "{{ session('statistical.branch_id', '') }}";
+            var selectedCinemaId = "{{ session('statistical.cinema_id', '') }}";
             var isLoading = false; // Cờ để kiểm tra trạng thái đang tải
 
             // Xử lý sự kiện thay đổi chi nhánh

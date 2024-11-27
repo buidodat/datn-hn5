@@ -228,8 +228,7 @@
                 foodList.querySelector(`#${id}_item .food-quantity`).addEventListener('input', updateTotalPrice);
 
                 foodCount++;
-
-
+                
                 updateSelectOptions(); // Cập nhật các tùy chọn sau khi thêm món ăn mới
             }
 
