@@ -46,9 +46,11 @@ use Illuminate\Http\Request;
 //     return view('client.home');
 // })->name('home');
 
-Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('policy', [HomeController::class, 'policy'])->name('policy');
-
+Route::get('/',                                  [HomeController::class, 'home'])->name('home');
+Route::get('policy',                             [HomeController::class, 'policy'])->name('policy');
+Route::get('load-more-movie-showing',            [HomeController::class, 'loadMoreMovieShowing'])->name('load-more-movie-showing');
+Route::get('load-more-movie-upcoming',            [HomeController::class, 'loadMoreMovieUpcoming'])->name('load-more-movie-upcoming');
+Route::get('load-more-movie-special',            [HomeController::class, 'loadMoreMovieSpecial'])->name('load-more-movie-special');
 // Route gửi lại email xác thực
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
@@ -137,11 +139,15 @@ Route::controller(\App\Http\Controllers\Auth\GoogleAuthController::class)->group
     Route::get('auth/google/callback', 'callBackGoogle');
 });
 
-Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
+// Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 
-Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
-Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
+// Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
+// Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 // Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+
+Route::get('movies/load-more', action: [HomeController::class, 'loadMore'])->name('movies.loadMore');
+
+
 
 Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
 
@@ -204,7 +210,3 @@ Route::get('hihi/{id}', function () {
     $ticket = Ticket::find(20); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
-
-
-
-

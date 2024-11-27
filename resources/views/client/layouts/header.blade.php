@@ -18,7 +18,7 @@
                                     class="fa-solid fa-chevron-down"></i></a>
                             <ul class="sub-menu-account">
                                 @if (Auth::user()->type == 'admin')
-                                    <li><a href="/admin"><i class="fa-regular fa-user"></i> Truy cập trang quản trị</a>
+                                    <li><a href="/admin"><i class="fa-solid fa-user-tie"></i> Truy cập trang quản trị</a>
                                     </li>
                                 @endif
                                 <li><a href="{{ route('my-account.edit') }}"><i class="fa-regular fa-user"></i> Thông tin
