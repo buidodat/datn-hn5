@@ -52,64 +52,95 @@
                         <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
-                                 
-                                    @if (Auth::user()->hasRole('System Admin'))
-                                        <div class="col-md-3">
-                                            <label for="">Chi nhánh</label>
-                                            <select name="branch_id" id="branch" class="form-select">
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}"
-                                                        {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
-                                                        {{ $branch->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            @if (Auth::user()->hasRole('System Admin'))
+                                                <div class="col-md-3">
+                                                    <label class="mb-0">Chi nhánh</label>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="mb-0">Rạp</label>
+                                                </div>
+                                            @endif
+                                            <div class="col-md-2">
+                                                <label class="mb-0">Ngày chiếu</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="mb-0">Trạng thái</label>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            @if (Auth::user()->hasRole('System Admin'))
+                                                <div class="col-md-3">
+                                                    {{-- <label for="">Chi nhánh</label> --}}
+                                                    <select name="branch_id" id="branch" class="form-select">
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}"
+                                                                {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
+                                                                {{ $branch->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
 
-                                        <div class="col-md-2">
-                                            <label for="">Rạp</label>
-                                            <select name="cinema_id" id="cinema" class="form-select">
-                                                @foreach ($cinemas as $cinema)
-                                                    <option value="{{ $cinema->id }}"
-                                                        {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
-                                                        {{ $cinema->name }}
+                                                <div class="col-md-2">
+                                                    {{-- <label for="">Rạp</label> --}}
+                                                    <select name="cinema_id" id="cinema" class="form-select">
+                                                        @foreach ($cinemas as $cinema)
+                                                            <option value="{{ $cinema->id }}"
+                                                                {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
+                                                                {{ $cinema->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
+
+                                            <div class="col-md-2">
+                                                {{-- <label for="">Ngày chiếu</label> --}}
+                                                <input type="date" name="date" class="form-control"
+                                                    value="{{ session('date', now()->format('Y-m-d')) }}">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                {{-- <label for="">Trạng thái</label> --}}
+                                                <select name="is_active" class="form-select">
+                                                    <option value=""
+                                                        {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả
                                                     </option>
-                                                @endforeach
-                                            </select>
+                                                    <option value="0"
+                                                        {{ session('is_active', null) === '0' ? 'selected' : '' }}>Không
+                                                        hoạt động
+                                                    </option>
+                                                    <option value="1"
+                                                        {{ session('is_active', null) === '1' ? 'selected' : '' }}>Đang
+                                                        hoạt động
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                {{-- <label for="">Lọc</label> --}}
+                                                <button class="btn btn-success" name="btnSearch" type="submit">
+                                                    <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                                    Lọc</button>
+                                            </div>
                                         </div>
-                                    @endif
-
-                                    <div class="col-md-2">
-                                        <label for="">Ngày chiếu</label>
-                                        <input type="date" name="date" class="form-control"
-                                            value="{{ session('date', now()->format('Y-m-d')) }}">
                                     </div>
-
-                                    <div class="col-md-3">
-                                        <label for="">Trạng thái</label>
-                                        <select name="is_active" class="form-select">
-                                            <option value=""
-                                                {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả</option>
-                                            <option value="0"
-                                                {{ session('is_active', null) === '0' ? 'selected' : '' }}>Không hoạt động</option>
-                                            <option value="1"
-                                                {{ session('is_active', null) === '1' ? 'selected' : '' }}>Đang hoạt động</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        {{-- <label for="">Lọc</label> --}}
-                                        <button class="btn btn-success" name="btnSearch" type="submit">
-                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                            Lọc</button>
-                                    </div>
+                                    {{-- <div class="col-md-2" align="right">
+                                        <a href="{{ route('admin.statistical-movies') }}" class="btn btn-primary">Tổng
+                                            quan</a>
+                                    </div> --}}
                                 </div>
 
                             </form>
 
                         </div>
                         <div class="col-md-2" align="right">
-                            {{-- <a href="{{ route('admin.showtimes.index') }}" class="btn btn-info mb-3 ">Danh sách</a> --}}
                             <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
                         </div>
                     </div>
@@ -142,8 +173,12 @@
                                 @endphp
                                 <tr class="movie-row">
                                     <td class="plusShowtime">
-                                        <button class="toggle-button btn btn-link"><b>+</b></button>
+                                        <button class="toggle-button btn btn-link">
+                                            {{-- icon cộng --}}
+                                            <i class="ri-add-circle-fill"></i>
+                                        </button>
                                     </td>
+
                                     <td>
                                         <b>
                                             @php
@@ -260,7 +295,8 @@
                                                                 <a href="{{ route('admin.showtimes.edit', $showtime) }}">
                                                                     <button title="sửa"
                                                                         class="btn btn-warning btn-edit btn-sm"
-                                                                        type="button"><i class="fas fa-edit"></i></button>
+                                                                        type="button"><i
+                                                                            class="fas fa-edit"></i></button>
                                                                 </a>
 
                                                                 <form
@@ -346,8 +382,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>
@@ -469,19 +505,23 @@
 
 
 
+
+
         $(document).ready(function() {
             $('.toggle-button').click(function() {
                 // Tìm hàng suất chiếu liền kề và chuyển đổi hiển thị
                 $(this).closest('tr').next('.showtime-row').toggle();
 
-
-                if ($(this).text() === '+') {
-                    $(this).text('-');
+                // Chuyển đổi giữa biểu tượng cộng và trừ
+                const icon = $(this).find('i');
+                if (icon.hasClass('ri-add-circle-fill')) {
+                    icon.removeClass('ri-add-circle-fill').addClass('ri-indeterminate-circle-fill');
                 } else {
-                    $(this).text('+');
+                    icon.removeClass('ri-indeterminate-circle-fill').addClass('ri-add-circle-fill');
                 }
             });
         });
+
 
 
 
@@ -507,6 +547,7 @@
             });
 
 
+            // Chức năng xóa tất cả
             $('#delete-all').on('click', function(e) {
                 e.preventDefault();
                 var selectedIds = [];
@@ -515,26 +556,65 @@
                 });
 
                 if (selectedIds.length === 0) {
-                    alert('Vui lòng chọn ít nhất một suất chiếu!');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn suất chiếu!',
+                        text: 'Vui lòng chọn ít nhất một suất chiếu để xóa.',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
                     return;
                 }
 
-                if (confirm('Bạn chắc chắn muốn xóa tất cả các suất chiếu đã chọn?')) {
-                    $.ajax({
-                        url: '{{ route('showtimes.deleteSelected') }}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            showtime_ids: selectedIds
-                        },
-                        success: function(response) {
-                            // Xử lý sau khi xóa thành công
-                            location.reload();
-                            // alert(response.message);
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Xác nhận xóa',
+                    text: 'Bạn chắc chắn muốn xóa tất cả các suất chiếu đã chọn?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Đang xử lý...',
+                            text: 'Vui lòng chờ trong giây lát.',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+
+                        $.ajax({
+                            url: '{{ route('showtimes.deleteSelected') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                showtime_ids: selectedIds
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công!',
+                                    text: response.message ||
+                                        'Các suất chiếu đã được xóa.',
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi!',
+                                    text: 'Không thể xóa các suất chiếu. Vui lòng thử lại.',
+                                    timer: 3000
+                                });
+                            }
+                        });
+                    }
+                });
             });
+
 
             // Chức năng thay đổi trạng thái tất cả
             $('#change-status-all').on('click', function(e) {
@@ -545,27 +625,65 @@
                 });
 
                 if (selectedIds.length === 0) {
-                    alert('Vui lòng chọn ít nhất một suất chiếu!');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn suất chiếu!',
+                        text: 'Vui lòng chọn ít nhất một suất chiếu để thay đổi trạng thái.',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
                     return;
                 }
 
-                if (confirm(
-                        'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa'
-                    )) {
-                    $.ajax({
-                        url: '{{ route('showtimes.changeStatusSelected') }}', // Add your change status route
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            showtime_ids: selectedIds
-                        },
-                        success: function(response) {
-                            // Cập nhật trạng thái thành công
-                            location.reload();
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Xác nhận thay đổi trạng thái',
+                    text: 'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa.',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Thay đổi',
+                    cancelButtonText: 'Hủy',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Đang xử lý...',
+                            text: 'Vui lòng chờ trong giây lát.',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+
+                        $.ajax({
+                            url: '{{ route('showtimes.changeStatusSelected') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                showtime_ids: selectedIds
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công!',
+                                    text: response.message ||
+                                        'Trạng thái đã được cập nhật.',
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi!',
+                                    text: 'Không thể cập nhật trạng thái. Vui lòng thử lại.',
+                                    timer: 3000
+                                });
+                            }
+                        });
+                    }
+                });
             });
+
         });
     </script>
 @endsection
