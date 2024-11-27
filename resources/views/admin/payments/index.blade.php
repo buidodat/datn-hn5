@@ -39,7 +39,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Quản lý thanh toán</h5>
-                    <a href="{{ route('admin.payments.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @can('Thêm thanh toán')
+                        <a href="{{ route('admin.payments.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @endcan
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -68,22 +70,25 @@
                                         {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
-
-                                        <a href="{{ route('admin.payments.edit', $payment) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-
-                                        <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
-                                        </form>
+                                        @can('Sửa thanh toán')
+                                            <a href="{{ route('admin.payments.edit', $payment) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
+                                        @can('Xóa thanh toán')
+                                            <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -121,7 +126,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>

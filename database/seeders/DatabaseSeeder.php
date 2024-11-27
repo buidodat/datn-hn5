@@ -42,24 +42,34 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        //3 bản ghi slideshow
+        // 3 bản ghi slideshow
         Slideshow::insert([
             [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
-            ],
-            [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg'
-            ],
-            [
-                'img_thumbnail' => 'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                'img_thumbnail' => json_encode([
+                    'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
+                    'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg',
+                    'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
+                ]),
+                'is_active' => 1,
             ]
         ]);
+
+
 
         //20 bản ghi movie và 40 bản ghi movie_version
         $url_youtubes = [
             'VmJ4oB3Xguo',
             'XuX2HKeMkVw',
-            'SGg9DxLFCtc','m6MF1MqsDhc','dNwuFYhwTAk','4oxoPMxBO6s','b1Yqng0uSWM','IK-eb2AbKQ','Tx5JuN-5n8U','kMjlJkmt5nk','gTo9JwsmjT4','4rgYUipGJNo'
+            'SGg9DxLFCtc',
+            'm6MF1MqsDhc',
+            'dNwuFYhwTAk',
+            '4oxoPMxBO6s',
+            'b1Yqng0uSWM',
+            'IK-eb2AbKQ',
+            'Tx5JuN-5n8U',
+            'kMjlJkmt5nk',
+            'gTo9JwsmjT4',
+            '4rgYUipGJNo'
         ];
         $booleans = [
             true,
@@ -120,7 +130,7 @@ class DatabaseSeeder extends Seeder
             $rating = $ratings[array_rand($ratings)];
             $x = ($i % 21) + 1;
 
-            $img = "images/movies/". $x . ".png";
+            $img = "images/movies/" . $x . ".png";
             $movie = DB::table('movies')->insertGetId([
                 'name' => $movieNames[$i],
                 'slug' => Str::slug($movieNames[$i]),
@@ -207,7 +217,7 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['P201', 'L202', 'P303', 'P404'];
 
         // Tạo template ghế
-         SeatTemplate::create([
+        SeatTemplate::create([
             'name' => 'Template Standard',
             'description' => 'Mẫu sơ đồ ghế tiêu chuẩn.',
             'matrix_id' => 1, // ID matrix ví dụ
@@ -215,15 +225,16 @@ class DatabaseSeeder extends Seeder
             'is_publish' => 1, // Đã publish
             'is_active' => 1, // Đã kích hoạt
         ]);
-         SeatTemplate::create([
-            'name' => 'Template Large' ,
+        SeatTemplate::create([
+            'name' => 'Template Large',
             'description' => 'Mẫu sơ đồ ghế lớn.',
             'matrix_id' => 3, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure2(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
             'is_active' => 1, // Đã kích hoạt
         ]);
-        function randomSeatTemplateId() {
+        function randomSeatTemplateId()
+        {
             // Tạo một số ngẫu nhiên từ 1 đến 100
             $randomNumber = rand(1, 100);
 
@@ -655,6 +666,45 @@ class DatabaseSeeder extends Seeder
                 'type' => 'admin',
                 'cinema_id' => 2,
             ],
+            [
+                'name' => 'Nhân viên Rạp',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'phone' => '0965266625',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'nhanvienrapHaDong@fpt.edu.vn',
+                'password' => Hash::make('nhanvienrapHaDong@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'admin',
+                'cinema_id' => 1,
+            ],
+            [
+                'name' => 'Nhân viên Rạp',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'phone' => '0965265555',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'nhanvienrapMyDinh@fpt.edu.vn',
+                'password' => Hash::make('nhanvienrapMyDinh@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'admin',
+                'cinema_id' => 2,
+            ],
+            [
+                'name' => 'Bùi Phú Sơn',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'phone' => '0999965555',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'buiphusonph33333@fpt.edu.vn',
+                'password' => Hash::make('buiphusonph33858@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'member',
+                'cinema_id' => null,
+            ],
         ];
 
         // Chèn tất cả người dùng vào cơ sở dữ liệu
@@ -997,6 +1047,7 @@ class DatabaseSeeder extends Seeder
             'Thêm bài viết',
             'Sửa bài viết',
             'Xóa bài viết',
+            'Xem chi tiết bài viết',
             'Danh sách slideshows',
             'Thêm slideshows',
             'Sửa slideshows',
@@ -1012,9 +1063,7 @@ class DatabaseSeeder extends Seeder
             'Cấu hình website',
             'Danh sách thống kê',
             'Thẻ thành viên'
-            // 'Thêm thống kê',
-            // 'Sửa thống kê',
-            // 'Xóa thống kê',
+    
         ];
 
         // Tạo các quyền từ danh sách
@@ -1096,6 +1145,8 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('Quản lý cơ sở');
         $user = User::find(7);
         $user->assignRole('Quản lý cơ sở');
+        $user = User::find(8);
+        $user->assignRole('Nhân viên');
 
 
         $user = User::find(5);
@@ -1178,7 +1229,7 @@ class DatabaseSeeder extends Seeder
                     <li></li>
                 </ul>',
 
-            'terms_of_service_image'=> 'theme/client/images/header/P.svg',
+            'terms_of_service_image' => 'theme/client/images/header/P.svg',
 
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
             'introduction_image' => 'theme/client/images/header/P.svg',

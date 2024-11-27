@@ -106,8 +106,18 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $user = User::findOrFail($userID);
         try {
-            $dataUser = $request->all();
+            $dataUser = [
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'address' => $request->address,
+            ];
 
+
+            if ($user->birthday == null && $request->filled('birthday')) {
+                $dataUser['birthday'] = $request->birthday;
+            }
+            
             if ($request->hasFile('img_thumbnail')) {
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
                 $ImgThumbnailCurrent = $user->img_thumbnail;
@@ -209,10 +219,10 @@ class UserController extends Controller
 
     // Hành trình điện ảnh
 
-    public function showCinemaJourney()
-    {
-        return view('client.users.cinema-journey');
-    }
+    // public function showCinemaJourney()
+    // {
+    //     return view('client.users.cinema-journey');
+    // }
 
     public function ticketDetail($ticketId)
     {
@@ -234,9 +244,9 @@ class UserController extends Controller
         return view('client.users.ticket-detail', compact('ticketSeat', 'qrCode', 'barcode'));
     }
 
-    function transactionHistory()
-    {
-        return redirect()->back();
-        // dd('Quay trở về');
-    }
+    // function transactionHistory()
+    // {
+    //     return redirect()->back();
+    //     // dd('Quay trở về');
+    // }
 }

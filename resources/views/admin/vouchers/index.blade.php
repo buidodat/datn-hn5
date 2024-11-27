@@ -35,11 +35,92 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Cài đặt giảm giá Voucher Sinh Nhật</h4>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <div class="live-preview">
+                        <form action="{{ route('admin.vouchers.update-discount') }}" method="post">
+                            @csrf
+                            <div class="row ">
+                                <div class="mb-2">
+                                    <label for="name" class="form-label">
+                                        Số tiền giảm giá (VND)
+                                    </label>
+                                    <input type="number" name="discount" class="form-control"
+                                        value="{{ \App\Models\VoucherConfig::getValue('birthday_voucher', 50000) }}"
+                                        min="1000" required>
+                                    <div class="form-text">
+                                        *Khuyến nghị: Nhập số tiền giảm giá từ 1,000 đến 500,000 VND
+                                    </div>
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="text-end mt-2">
+                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <!--end row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title mb-0"> Danh sách mã giảm giá </h5>
-                    <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
+                    <div>
+                        <h5 class="card-title mb-0"> Danh sách vouchers </h5>
+                        {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#discountModal">
+                            Cài đặt giảm giá Voucher Sinh Nhật
+                        </button>
+                        <div class="modal fade" id="discountModal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="{{ route('admin.vouchers.update-discount') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Cài đặt giảm giá Voucher Sinh Nhật</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Số tiền giảm giá (VND)</label>
+                                                <input
+                                                    type="number"
+                                                    name="discount"
+                                                    class="form-control"
+                                                    value="{{ \App\Models\VoucherConfig::getValue('birthday_voucher', 50000) }}"
+                                                    min="1000"
+                                                    required
+                                                >
+                                                <small class="form-text text-muted">
+                                                    *Khuyến nghị: Nhập số tiền giảm giá từ 1,000 đến 500,000 VND
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> --}}
+                    </div>
+                    @can('Thêm vouchers')
+                        <div>
+                            <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
+                        </div>
+                    @endcan
+
+
+
                 </div>
 
                 @if (session()->has('success'))
@@ -123,22 +204,33 @@
                                     </td> --}}
                                     {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
-                                                @checked($item->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa vouchers')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
+                                                    @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" disabled readonly role="switch"
+                                                    data-voucher-id="{{ $item->id }}" @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
                                         {{-- <a href="{{ route('admin.vouchers.show', $item) }}">
                                         <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                 class="fas fa-eye"></i></button>
                                     </a> --}}
-                                        <a href="{{ route('admin.vouchers.edit', $item) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
+                                        @can('Sửa vouchers')
+                                            <a href="{{ route('admin.vouchers.edit', $item) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
 
                                         {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
@@ -186,7 +278,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
             // Xử lý sự kiện change cho checkbox .changeActive

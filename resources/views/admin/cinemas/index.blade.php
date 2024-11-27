@@ -35,7 +35,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách rạp chiếu</h5>
-                    <a href="{{ route('admin.cinemas.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @can('Thêm rạp')
+                        <a href="{{ route('admin.cinemas.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -70,33 +72,46 @@
                                     <td>{{ $item->branch->name }}</td>
                                     <td>{{ $item->address }}</td>
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-cinema-id="{{ $item->id }}"
-                                                @checked($item->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa rạp')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-cinema-id="{{ $item->id }}"
+                                                    @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly
+                                                    data-cinema-id="{{ $item->id }}" @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
                                         {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button">
                                                 <i class="fas fa-eye"></i></button>
                                         </a> --}}
-                                        <a href="{{ route('admin.cinemas.edit', $item) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
-                                        </a>
-                                        @if ($item->rooms()->count() == 0)
-                                            <form action="{{ route('admin.cinemas.destroy', $item) }}" method="POST"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn có muốn xóa không')">
-                                                    <i class="ri-delete-bin-7-fill"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+                                        @can('Sửa rạp')
+                                            <a href="{{ route('admin.cinemas.edit', $item) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button">
+                                                    <i class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
+                                        @can('Xóa rạp')
+                                            @if ($item->rooms()->count() == 0)
+                                                <form action="{{ route('admin.cinemas.destroy', $item) }}" method="POST"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn có muốn xóa không')">
+                                                        <i class="ri-delete-bin-7-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -127,16 +142,18 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                 order: [],
-            language: {
-                search: "Tìm kiếm:",
-                paginate: {
-                    next: "Tiếp theo",
-                    previous: "Trước"
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
-                lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
-            },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -200,7 +217,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-cinema-id="${cinemaId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-cinema-id="${cinemaId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

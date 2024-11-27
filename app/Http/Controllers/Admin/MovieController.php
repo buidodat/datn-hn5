@@ -31,6 +31,9 @@ class MovieController extends Controller
 
     public function index()
     {
+        if (!session()->has('movies.selected_tab')) {
+            session(['movies.selected_tab' => 'publish']); // Tab mặc định
+        }
         $movies = Movie::query()->with('movieVersions')->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies'));
     }
@@ -188,6 +191,12 @@ class MovieController extends Controller
         }
     }
 
+
+    public  function selectedTab(Request $request){
+        $tabKey = $request->tab_key;
+        session(['movies.selected_tab' => $tabKey]);
+        return response()->json(['message' => 'Tab saved', 'tab' => $tabKey]);
+    }
 
     public function destroy(Movie $movie)
     {

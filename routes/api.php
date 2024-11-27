@@ -38,7 +38,7 @@ Route::post('showtimes/deleteSelected', [APIController::class, 'deleteSelected']
 Route::post('showtimes/changeStatusSelected', [APIController::class, 'changeStatusSelected'])->name('showtimes.changeStatusSelected');
 
 
-Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes']);
+Route::middleware('web')->get('movie/{movie}/showtimes', [MovieController::class, 'getShowtimes'])->name('showtime-by-movie');
 
 Route::middleware('web')->resource('rooms', RoomController::class);
 

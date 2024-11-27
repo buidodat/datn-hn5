@@ -94,6 +94,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="text-end mt-2">
                                     <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                                 </div>
@@ -160,9 +161,11 @@
                                             <td>{{ $rank->ticket_percentage }}%</td>
                                             <td>{{ $rank->combo_percentage }}%</td>
                                             <td class="small">{{ $rank->created_at->format('d/m/Y') }}
-                                                <br>{{ $rank->created_at->format('H:i:s') }}</td>
+                                                <br>{{ $rank->created_at->format('H:i:s') }}
+                                            </td>
                                             <td class="small">{{ $rank->updated_at->format('d/m/Y') }}
-                                                <br>{{ $rank->updated_at->format('H:i:s') }}</td>
+                                                <br>{{ $rank->updated_at->format('H:i:s') }}
+                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -258,7 +261,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>

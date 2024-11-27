@@ -15,6 +15,7 @@
 
 @section('content')
     <!-- start page title -->
+    
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -51,9 +52,8 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
+                    <table id="example" class="table table-bordered dt-responsive nowrap w-100">
+                        <thead class='table-light'>
                             <tr>
                                 <th>ID</th>
                                 <th>Tên vai trò</th>
@@ -131,9 +131,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
         new DataTable("#example", {
-            order: [
-                // [0, 'desc']
-            ]
+            order: [],
+            language: {
+                search: "Tìm kiếm:",
+                paginate: {
+                    next: "Tiếp theo",
+                    previous: "Trước"
+                },
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
+            },
         });
     </script>
 @endsection

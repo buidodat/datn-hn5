@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Membership;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('point_histories', function (Blueprint $table) {
+        Schema::create('voucher_configs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Membership::class);
-            $table->unsignedBigInteger('points');
-            $table->string('type');
-            // $table->string('description')->nullable();
-            // $table->date('expiry_date')->nullable();
+            $table->string('name');
+            $table->unsignedInteger('discount');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('point_histories');
+        Schema::dropIfExists('voucher_configs');
     }
 };

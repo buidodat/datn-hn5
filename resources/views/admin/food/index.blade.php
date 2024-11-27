@@ -35,7 +35,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách đồ ăn</h5>
-                    <a href="{{ route('admin.food.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @can('Thêm đồ ăn')
+                        <a href="{{ route('admin.food.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -89,33 +91,46 @@
                                     </td>
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-food-id="{{ $item->id }}"
-                                                @checked($item->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa đồ ăn')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-food-id="{{ $item->id }}"
+                                                    @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly
+                                                    data-food-id="{{ $item->id }}" @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
                                         {{-- <a href="">
                                             <button title="xem" class="btn btn-success btn-sm " type="button">
                                                 <i class="fas fa-eye"></i></button>
                                         </a> --}}
-                                        <a href="{{ route('admin.food.edit', $item) }}">
-                                            <button title="sửa" class="btn btn-warning btn-sm " type="button">
-                                                <i class="fas fa-edit"></i></button>
-                                        </a>
-                                        @if ($item->combos()->count() == 0)
-                                            <form action="{{ route('admin.food.destroy', $item) }}" method="POST"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn có muốn xóa không')">
-                                                    <i class="ri-delete-bin-7-fill"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+                                        @can('Sửa đồ ăn')
+                                            <a href="{{ route('admin.food.edit', $item) }}">
+                                                <button title="sửa" class="btn btn-warning btn-sm " type="button">
+                                                    <i class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
+                                        @can('Xóa đồ ăn')
+                                            @if ($item->combos()->count() == 0)
+                                                <form action="{{ route('admin.food.destroy', $item) }}" method="POST"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn có muốn xóa không')">
+                                                        <i class="ri-delete-bin-7-fill"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endcan
 
                                     </td>
                                 </tr>
@@ -156,7 +171,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
             // Xử lý sự kiện change cho checkbox .changeActive

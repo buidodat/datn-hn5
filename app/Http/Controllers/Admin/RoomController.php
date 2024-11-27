@@ -31,6 +31,11 @@ class RoomController extends Controller
     }
     public function index()
     {
+
+        if (!session()->has('rooms.selected_tab')) {
+            session(['rooms.selected_tab' => 'publish']); // Tab mặc định
+        }
+        
         $rooms = Room::query()->with(['typeRoom', 'cinema', 'seats'])->latest('id')->get();
         $branches = Branch::all();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
@@ -129,5 +134,11 @@ class RoomController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    public  function selectedTab(Request $request){
+        $tabKey = $request->tab_key;
+        session(['rooms.selected_tab' => $tabKey]);
+        return response()->json(['message' => 'Tab saved', 'tab' => $tabKey]);
     }
 }

@@ -82,6 +82,8 @@
                                             <option value="resolved" {{ $contact->status == 'resolved' ? 'selected' : '' }}>Đã xử lí</option>
                                         </select>
                                     </td>
+
+                                    
                                     <td>
                                         {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
@@ -154,7 +156,9 @@
                     previous: "Trước"
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        emptyTable: "Không có dữ liệu để hiển thị",
+        zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>

@@ -60,30 +60,33 @@
 
                     <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link  All  py-3" data-bs-toggle="tab" href="#allSeatTemplate" role="tab"
-                                aria-selected="true">
+                            <a class="nav-link  All  py-3  {{ session('seatTemplates.selected_tab') === 'all' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#allSeatTemplate" role="tab" aria-selected="true"
+                                data-tab-key='all'>
                                 Tất cả
                                 <span class="badge bg-dark align-middle ms-1">{{ $seatTemplates->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 active isPublish" data-bs-toggle="tab" href="#isPublish" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3  isPublish {{ session('seatTemplates.selected_tab') === 'publish' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isPublish" role="tab" aria-selected="false"
+                                data-tab-key='publish'>
                                 Đã xuất bản
                                 <span
                                     class="badge bg-success align-middle ms-1">{{ $seatTemplates->where('is_publish', 1)->count() }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#isDraft" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link py-3 isDraft {{ session('seatTemplates.selected_tab') === 'draft' ? 'active' : '' }}"
+                                data-bs-toggle="tab" href="#isDraft" role="tab" aria-selected="false"
+                                data-tab-key='draft'>
                                 Bản nháp<span
                                     class="badge bg-warning align-middle ms-1">{{ $seatTemplates->where('is_publish', 0)->count() }}</span>
                             </a>
                         </li>
                     </ul>
                     <div class="card-body tab-content ">
-                        <div class="tab-pane  " id="allSeatTemplate" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'all' ? 'active' : '' }} " id="allSeatTemplate" role="tabpanel">
                             <table id="tableAllSeatTemplate"
                                 class="table table-bordered dt-responsive nowrap align-middle w-100" style="width:100%">
                                 <thead>
@@ -164,7 +167,7 @@
 
                             </table>
                         </div>
-                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'publish' ? 'active' : '' }} " id="isPublish" role="tabpanel">
                             <table id="tableIsPublish" class="table table-bordered dt-responsive nowrap align-middle w-100">
                                 <thead>
                                     <tr>
@@ -200,6 +203,7 @@
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
+                                                        
                                                         @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
@@ -241,7 +245,7 @@
 
                             </table>
                         </div>
-                        <div class="tab-pane " id="isDraft" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'draft' ? 'active' : '' }}" id="isDraft" role="tabpanel">
 
                             <table id="tableIsDraft" class="table table-bordered dt-responsive nowrap align-middle w-100"
                                 style="width:100%">
@@ -530,7 +534,7 @@
             button.addEventListener('click', function() {
 
                 const seatTemplateId = this.getAttribute(
-                'data-seat-template-id'); // Lấy roomId từ data attribute
+                    'data-seat-template-id'); // Lấy roomId từ data attribute
                 const seatTemplateName = this.getAttribute('data-seat-template-name');
                 const seatTemplateDescription = this.getAttribute('data-seat-template-description');
                 const matrixId = this.getAttribute('data-matrix-id');
@@ -541,7 +545,7 @@
 
                 // Điền dữ liệu vào modal
                 document.getElementById('updateSeatTemplateId').value =
-                seatTemplateId; // Gán giá trị roomId
+                    seatTemplateId; // Gán giá trị roomId
                 document.getElementById('updateName').value = seatTemplateName;
                 document.getElementById('updateDescription').value = seatTemplateDescription;
                 document.getElementById('updateMatrixId').value = matrixId;
@@ -670,6 +674,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabKey = this.getAttribute('data-tab-key');
+                console.log(tabKey);
+
+                fetch('{{ route('admin.seat-templates.selected-tab') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            tab_key: tabKey
+                        })
+                    }).then(response => response.json())
+                    .then(data => console.log('Tab saved:', data));
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             // Khởi tạo DataTable
             let tableAllSeatTemplate = new DataTable("#tableAllSeatTemplate", {
@@ -681,7 +705,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
@@ -694,7 +720,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
@@ -707,7 +735,9 @@
                         previous: "Trước"
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
-                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục"
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
 
