@@ -27,7 +27,7 @@ class SlideShowController extends Controller
 
     public function index()
     {
-        $slideshows = Slideshow::all();
+        $slideshows = Slideshow::latest()->get();
 
         foreach ($slideshows as $slideshow) {
             $slideshow->img_thumbnail = json_decode($slideshow->img_thumbnail);
@@ -50,7 +50,7 @@ class SlideShowController extends Controller
     {
         $validatedData = $request->validated();
 
-        $validatedData['is_active'] = $request->has('is_active') ? 1 : 0;
+        $validatedData['is_active'] = 0;
 
         $imagePaths = [];
         if ($request->hasFile('img_thumbnail')) {

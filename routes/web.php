@@ -46,9 +46,11 @@ use Illuminate\Http\Request;
 //     return view('client.home');
 // })->name('home');
 
-Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('policy', [HomeController::class, 'policy'])->name('policy');
-
+Route::get('/',                                  [HomeController::class, 'home'])->name('home');
+Route::get('policy',                             [HomeController::class, 'policy'])->name('policy');
+Route::get('load-more-movie-showing',            [HomeController::class, 'loadMoreMovieShowing'])->name('load-more-movie-showing');
+Route::get('load-more-movie-upcoming',            [HomeController::class, 'loadMoreMovieUpcoming'])->name('load-more-movie-upcoming');
+Route::get('load-more-movie-special',            [HomeController::class, 'loadMoreMovieSpecial'])->name('load-more-movie-special');
 // Route gửi lại email xác thực
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();

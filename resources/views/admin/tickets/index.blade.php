@@ -54,87 +54,69 @@
                             </div> --}}
                             <!--end col-->
 
-                            <!--end col-->
-                            @if (Auth::user()->hasRole('System Admin'))
-                                <div class="col-xxl-2 col-sm-4">
+                            {{-- Loc --}}
+                            <div class="col-9 d-flex">
+                                <!--end col-->
+                                @if (Auth::user()->hasRole('System Admin'))
+                                    <div class="col-xxl-2 col-sm-4 me-2">
+                                        <div>
+                                            <select name="branch_id" id="branch" class="form-select">
+                                                <option value="">Chi nhánh</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-2 col-sm-4 me-2">
+                                        <div>
+                                            <select name="cinema_id" id="cinema" class="form-select">
+                                                <option value="">Chọn Rạp</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="col-xxl-2 col-sm-6 me-2">
                                     <div>
-                                        <select name="branch_id" id="branch" class="form-select">
-                                            <option value="">Chi nhánh</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    {{ $branch->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input type="date" name="date" id="" class="form-control"
+                                            value="{{ request('date', now()->format('Y-m-d')) }}">
                                     </div>
                                 </div>
                                 <!--end col-->
-                                <div class="col-xxl-2 col-sm-4">
+                                <div class="col-xxl-1 col-sm-4 me-2">
                                     <div>
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            <option value="">Chọn Rạp</option>
-                                        </select>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                            Lọc
+                                        </button>
                                     </div>
                                 </div>
-                            @endif
-                            <div class="col-xxl-2 col-sm-6">
-                                <div>
-                                    <input type="date" name="date" id="" class="form-control"
-                                        value="{{ request('date', now()->format('Y-m-d')) }}">
+                                <div class="col-xxl-2 col-sm-4">
+                                    <div>
+                                        <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
+                                    </div>
                                 </div>
                             </div>
-                            <!--end col-->
-                            <div class="col-xxl-1 col-sm-4">
-                                <div>
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                        Lọc
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
-                                </div>
-                            </div>
-                            {{-- <div class="col-xxl-2 col-sm-4">
-                                <div>
-                                    <a href="{{ route('admin.tickets.scan') }}" class="btn btn-primary">Quét mã</a>
-                                </div>
-                            </div> --}}
 
-                            <div class="col-xxl-3 text-end">
-                                <div>
+                            {{-- quet qr --}}
+                            <div class="col-3 d-flex justify-content-end">
+                                <div class="col-xxl-3 text-end">
                                     @can('Quét hóa đơn')
-                                        <!-- center modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#scanModal" data-source="index">Quét QR
-                                        </button>
-                                    @endcan
-                                    {{-- <div class="modal fade" id="scanModal" tabindex="-1"
-                                         aria-labelledby="" aria-hidden="true" style="display: none;">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content" style="width: 680px; ">
-                                                <div class="modal-body text-center">
-                                                    <div id="camera"
-                                                         style="width: 640px; height: 360px; border: 1px solid gray; margin: 0 auto;"></div>
-                                                    <div class="mt-4">
+                                        <div>
+                                            <!-- center modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#scanModal" data-source="index">Quét QR
+                                            </button>
 
-                                                        --}}{{-- <div id="message-result" style="color: #26ee26; margin-top: 10px;"></div> --}}{{--
-                                                        <div id="barcode-result" style="color: red; margin-top: 35px;"></div>
-                                                        <div id="error-message" style="color: red; margin-top: 10px;"></div>
-                                                        <div class="hstack gap-2 justify-content-center">
-                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng
-                                                            </button>
-                                                            <button type="button" class="btn btn-warning" id="scanAnotherBtn">Quét lại
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal --> --}}
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
+
+
+
 
                             <!--end col-->
                         </div>
