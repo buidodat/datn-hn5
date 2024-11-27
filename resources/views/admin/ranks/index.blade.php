@@ -94,6 +94,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="text-end mt-2">
                                     <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
                                 </div>

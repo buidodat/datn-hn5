@@ -35,7 +35,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách combo</h5>
-                    <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @can('Thêm combo')
+                        <a href="{{ route('admin.combos.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -51,7 +53,7 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100"">
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100"">
                         <thead class='table-light'>
                             <tr>
                                 <th>#</th>
@@ -103,22 +105,33 @@
                                     <td>{{ number_format($item->price) }} VNĐ</td>
                                     <td>{{ number_format($item->price_sale) }} VNĐ</td>
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-combo-id="{{ $item->id }}"
-                                                @checked($item->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa combo')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-combo-id="{{ $item->id }}"
+                                                    @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly
+                                                    data-combo-id="{{ $item->id }}" @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
 
                                         {{-- <a href="{{ route('admin.combos.show',$item) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
-                                        <a href="{{ route('admin.combos.edit', $item) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
+                                        @can('Sửa combo')
+                                            <a href="{{ route('admin.combos.edit', $item) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
                                         {{-- <form action="{{route('admin.combos.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
@@ -157,8 +170,7 @@
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                order: [
-                ],
+                order: [],
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -222,7 +234,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-combo-id="${comboId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-combo-id="${comboId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

@@ -36,10 +36,19 @@ return [
         'client_secret' => '1cdae081c9bd6ba5cd5fff569e7912a7',
         'redirect' => env('APP_URL') . '/auth/facebook/callback',
     ],
-    'google' => [
+    /*'google' => [
         'client_id' => "484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com",
         'client_secret' => "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",
         'redirect' =>  "http://datn-hn5.me/auth/google/callback",
+    ],*/
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID', '484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => 'http://datn-hn5.me/auth/google/callback',
     ],
+    # Google Auth ENV
+    /*GOOGLE_CLIENT_ID=484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com
+    GOOGLE_CLIENT_SECRET=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
+    GOOGLE_REDIRECT_URI=http://datn-hn5.me/auth/google/callback*/
 
 ];

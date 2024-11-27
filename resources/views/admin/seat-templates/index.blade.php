@@ -203,6 +203,7 @@
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
+                                                        
                                                         @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"

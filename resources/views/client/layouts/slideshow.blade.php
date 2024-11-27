@@ -5,40 +5,36 @@
         <!-- START REVOLUTION SLIDER 5.4.1 fullwidth mode -->
         <div id="rev_slider_41_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.1">
             <ul>
-                @foreach($slideShow as $index => $slide)
-                    <!-- SLIDE  -->
-                    @php
-                        $url = $slide->img_thumbnail;
+                @php
+                    $indexCounter = 0;
+                @endphp
 
-                        if (!\Str::contains($url, 'http')) {
-                            $url = Storage::url($url);
-                        }
-                    @endphp
+                @foreach($slideShow as $slide)
+                    <!-- SLIDE -->
                     @if(!empty($slide->img_thumbnail))
-                    <li data-index="{{ $slide->id }}" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
-                        data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
-                        data-rotate="0" data-saveperformance="off" data-title="{{ $slide->title }}" data-param1=""
-                        data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
-                        data-param8="" data-param9="" data-param10="" data-description="{{ $slide->description }}">
-                        <!-- MAIN IMAGE -->
-                        <img src="{{ asset($url) }}" alt="" data-bgposition="center center" data-bgfit="contain"
-                             data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-                        <!-- LAYERS -->
-                        <!-- LAYER NR. 3 -->
-                        <div class="tp-caption FoodCarousel-CloseButton rev-btn  tp-resizeme" id="{{ $slide->id }}-layer-5"
-                             data-x="441" data-y="110" data-width="['auto']" data-height="['auto']" data-type="button"
-                             data-actions='[{"event":"click","action":"stoplayer","layer":"{{ $slide->id }}-layer-3","delay":""},{"event":"click","action":"stoplayer","layer":"{{ $slide->id }}-layer-5","delay":""},{"event":"click","action":"startlayer","layer":"{{ $slide->id }}-layer-1","delay":""}]'
-                             data-responsive_offset="on"
-                             data-frames='[{"from":"z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;","speed":800,"to":"o:1;","delay":"bytrigger","ease":"Power3.easeInOut"},{"delay":"bytrigger","speed":500,"to":"auto:auto;","ease":"nothing"},{"frame":"hover","speed":"300","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgba(255,255,255,1);bg:rgba(41,46,49,1);bw:1px 1px 1px 1px;"}]'
-                             data-textAlign="['left','left','left','left']" data-paddingtop="[14,14,14,14]"
-                             data-paddingright="[14,14,14,14]" data-paddingbottom="[14,14,14,14]"
-                             data-paddingleft="[16,16,16,16]" data-lasttriggerstate="reset"
-                             style="z-index: 7; white-space: nowrap;border-color:transparent;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
-                            <i class="fa-icon-remove"></i>
-                        </div>
-                    </li>
+                        @if(is_array($slide->img_thumbnail))
+                            @foreach($slide->img_thumbnail as $image)
+                                <li data-index="{{ $indexCounter }}" data-transition="fade" data-slotamount="7" data-hideafterloop="0"
+                                    data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
+                                    data-rotate="0" data-saveperformance="off" data-title=""
+                                    data-description="{{ $slide->description }}">
+
+                                    <!-- MAIN IMAGE -->
+                                    @if(filter_var($image, FILTER_VALIDATE_URL))
+                                        <img src="{{ $image }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                                             data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                                    @else
+                                        <img src="{{ Storage::url($image) }}" alt="" data-bgposition="center center" data-bgfit="contain"
+                                             data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+                                    @endif
+                                </li>
+                                @php
+                                    $indexCounter++;
+                                @endphp
+                            @endforeach
+                        @endif
                     @else
-                        không có ảnh!
+                        <li>Không có ảnh!</li>
                     @endif
                 @endforeach
 

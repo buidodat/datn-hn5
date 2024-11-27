@@ -9,9 +9,11 @@ use App\Http\Requests\Admin\UpdateVoucherRequest;
 use App\Models\User;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
+use App\Models\VoucherConfig;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -33,8 +35,24 @@ class VoucherController extends Controller
 
     public function index()
     {
-        $data = Voucher::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
+        $data = Voucher::where(function($query) {
+            $query->whereNot(function($q) {
+                $q->where('type', 2);
+            });
+        })->get();
+        $discount = VoucherConfig::getValue('birthday_voucher', 50000);
+        return view(self::PATH_VIEW . __FUNCTION__, compact('data','discount'));
+    }
+
+    public function updateDiscount(Request $request)
+    {
+        $request->validate([
+            'discount' => 'required|numeric|min:1000'
+        ]);
+
+        VoucherConfig::updateValue('birthday_voucher', $request->discount);
+
+        return redirect()->back()->with('success', 'Đã cập nhật giá trị giảm giá');
     }
 
     /**
@@ -128,7 +146,12 @@ class VoucherController extends Controller
     {
         try {
             $data = $request->all();
+
+            $data['start_date_time'] = Carbon::parse($request->input('start_date_time'), 'Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+            $data['end_date_time'] = Carbon::parse($request->input('end_date_time'), 'Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
             $data['is_active'] = $request->has('is_active') ? 1 : 0;
+            $data['is_publish'] = $request->has('is_publish') ? 1 : 0;
+
             $voucher = Voucher::query()->findOrFail($id);
 
             $voucher->update($data);
