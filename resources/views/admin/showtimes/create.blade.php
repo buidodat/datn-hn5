@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.showtimes.store') }}" method="post" enctype="multipart/form-data">
+    <form id="showtimesForm" action="{{ route('admin.showtimes.store') }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -149,7 +149,8 @@
                                             <select name="room_id" id="room" class="form-select">
                                                 <option value="">Chọn phòng</option>
                                                 @foreach ($rooms as $room)
-                                                    <option value="{{ $room->id }}"  @selected($room->id == old('room_id'))>{{ $room->name }} -
+                                                    <option value="{{ $room->id }}" @selected($room->id == old('room_id'))>
+                                                        {{ $room->name }} -
                                                         {{ $room->typeRoom->name }}
                                                         - {{ $room->seats->where('is_active', true)->count() }} ghế
                                                     </option>
@@ -165,6 +166,8 @@
                                 </div>
                             @endif
 
+
+
                             <div class="row mb-3">
                                 <div class="col-md-8">
                                     <span class='text-danger'>*</span>
@@ -179,11 +182,13 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="" class="form-label"></label>
-                                    <button type="button" class="btn btn-primary btn-start-time"
-                                        onclick="addShowtime()">Thêm giờ
+                                    <button type="button" class="btn btn-primary mt-4" onclick="addShowtime()">Thêm giờ
                                         chiếu</button>
                                 </div>
                             </div>
+
+
+
                             <div class="form-group">
                                 <label>
                                     <input type="checkbox" id="auto-generate-showtimes" name="auto_generate_showtimes"
@@ -215,56 +220,17 @@
                             </div>
 
 
-                            <div class="row" id="add-start-time">
-                                <div id="showtime-container">
-                                    <div class="row showtime-row">
+                            <div id="showtime-container">
 
-                                        <div class="col-md-4 mb-3">
-                                            <span class='text-danger'>*</span>
-                                            <label for="start_time" class="form-label ">Giờ chiếu:</label>
-                                            <input type="time" class="form-control" name="start_time[]"
-                                                id="start_time" value="">
-                                            @error('start_time.*')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
-
-                                        </div>
-                                        {{-- <input type="checkbox" > --}}
-
-                                        <div class="col-md-4">
-                                            <label for="end_time" class="form-label ">Giờ kết thúc:</label>
-                                            <input type="time" class="form-control" name="end_time[]" id="end_time"
-                                                readonly>
-                                            @error('end_time')
-                                                <div class='mt-1'>
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                </div>
-                                            @enderror
-
-                                        </div>
-
-                                    </div>
-                                </div>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
-
-                {{-- <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <label class="form-check-label" for="is_active">Is Active</label>
-                            <div class="form-check form-switch form-switch-default">
-                                <input class="form-check-input" type="checkbox" role="" name="is_active" checked>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -476,166 +442,197 @@
 
 
 
-        const cleaningTime = {{ $cleaningTime }}; // Thời gian dọn phòng = 15 phút
-        // Ajax lấy thời lượng phim theo phim để tự động tính thời gian kết thúc chiếu
-        $(document).ready(function() {
-            let movieDuration = 0;
+        const cleaningTime = {{ $cleaningTime }}; // Thời gian dọn phòng
+        let movieDuration = 0;
 
-            $('#movie').on('change', function() {
-                var movieId = $(this).val();
-                if (movieId) {
-                    $.ajax({
-                        url: "{{ env('APP_URL') }}/api/getMovieDuration/" + movieId,
-                        method: 'GET',
-                        success: function(data) {
-                            if (data.duration) {
-                                movieDuration = parseInt(data
-                                    .duration); // Lưu lại thời lượng
-                                updateAllEndTimes(
-                                    movieDuration); // Cập nhật tất cả giờ kết thúc
-                            } else {
-                                alert("Không tìm thấy thời lượng phim!");
-                            }
-                        }
-                    });
-                }
+        // Lấy thời lượng phim
+        $('#movie').on('change', function() {
+            const movieId = $(this).val();
+            if (!movieId) return;
+
+            $.get(`{{ env('APP_URL') }}/api/getMovieDuration/${movieId}`, function(data) {
+                movieDuration = parseInt(data.duration || 0);
+                if (!movieDuration) alert("Không tìm thấy thời lượng phim!");
+                updateAllEndTimes();
             });
-
-
-            // Cập nhật lại thời gian kết thúc khi start_time thay đổi cho hàng cụ thể
-            $(document).on('change', 'input[name="start_time[]"]', function() {
-                const row = $(this).closest('.showtime-row'); // Lấy hàng hiện tại
-                const startTime = $(this).val();
-
-                // Lấy giá trị end_time của hàng trước đó
-                const prevRowEndTime = row.prev('.showtime-row').find('input[name="end_time[]"]').val();
-
-                // Kiểm tra nếu start_time mới nhỏ hơn end_time của hàng trước
-                if (prevRowEndTime && startTime < prevRowEndTime) {
-                    alert('Giờ chiếu mới không được nhỏ hơn giờ kết thúc trước đó!');
-                    $(this).val(prevRowEndTime); // Đặt lại start_time bằng end_time của hàng trước
-                    return;
-                }
-
-                updateEndTimeForRow(row, movieDuration,
-                    startTime); // Cập nhật end_time cho hàng hiện tại
-            });
-
-
-            // Hàm cập nhật end-time dựa trên thời lượng phim và thời gian bắt đầu cho hàng đấy
-            function updateEndTimeForRow(row, duration, startTime) {
-                if (startTime && duration) {
-                    let [hours, minutes] = startTime.split(':'); // Tách giờ và phút
-                    let startTimeDate = new Date();
-                    startTimeDate.setHours(parseInt(hours), parseInt(minutes)); // Đặt thời gian bắt đầu
-
-                    let totalMinutes = duration + cleaningTime; // Thêm thời lượng phim và thời gian dọn phòng
-                    startTimeDate.setMinutes(startTimeDate.getMinutes() +
-                        totalMinutes); // Tính thời gian kết thúc
-
-                    // Định dạng lại thời gian kết thúc
-                    let endHours = String(startTimeDate.getHours()).padStart(2, '0');
-                    let endMinutes = String(startTimeDate.getMinutes()).padStart(2, '0');
-                    const endTime = `${endHours}:${endMinutes}`;
-
-                    // Cập nhật end_time vào ô input
-                    row.find('input[name="end_time[]"]').val(endTime);
-                } else {
-                    console.log("Thiếu thông tin về thời gian bắt đầu hoặc thời lượng phim!");
-                }
-            }
-
-
-            // Hàm cập nhật thời gian kết thúc cho tất cả các hàng khi thay đổi thời lượng phim
-            function updateAllEndTimes(duration) {
-                $('input[name="start_time[]"]').each(function() {
-                    const row = $(this).closest('.showtime-row');
-                    const startTime = $(this).val();
-                    updateEndTimeForRow(row, duration, startTime); // Cập nhật end_time cho từng hàng
-                });
-            }
         });
 
-        // Thêm giao diện hàng mới cho suất chiếu
-        function addShowtime() {
-            // Lấy giá trị end_time của hàng cuối cùng để đặt start_time tiếp theo
-            const lastEndTimeInput = $('#showtime-container .showtime-row').last().find('input[name="end_time[]"]');
-            let nextStartTime = '';
 
-            if (lastEndTimeInput.length > 0 && lastEndTimeInput.val()) {
-                nextStartTime = lastEndTimeInput.val(); // Đặt start_time tiếp theo bằng end_time của hàng cuối
-            }
 
-            var newRow = `
-                <div class="row showtime-row">
-                    <div class="col-md-4 mb-3">
-                        <span class='text-danger'>*</span>
-                        <label for="start_time" class="form-label">Giờ chiếu:</label>
-                        <input type="time" class="form-control" name="start_time[]" value="${nextStartTime}">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="end_time" class="form-label">Giờ kết thúc:</label>
-                        <input type="time" class="form-control" name="end_time[]" readonly>
-                    </div>
-                    <div class="col-md-4 mt-4" align='left'>
-                        <button type="button" class="btn btn-danger remove-btn delete-showtime">
-                            <span class="bx bx-trash"></span>
-                        </button>
-                    </div>
-                </div>`;
+        let showtimeCount = 0;
+        const minShowtimeItems = 1;
+        const maxShowtimeItems = 8;
 
-            $('#showtime-container').append(newRow); // Thêm suất chiếu mới vào giao diện
+        const showtimeContainer = document.getElementById('showtime-container');
 
-            // Lấy hàng mới vừa được thêm
-            const newRowElement = $('#showtime-container .showtime-row').last();
+        // Thêm sẵn tối thiểu 2 món ăn
+        for (let i = 0; i < minShowtimeItems; i++) {
+            addShowtime(i);
 
-            // Cập nhật end_time cho hàng mới
-            if (movieDuration > 0) {
-                updateEndTimeForRow(newRowElement, movieDuration, nextStartTime);
-            } else {
-                alert('Vui lòng chọn phim để tính toán thời gian kết thúc!');
-            }
         }
 
+        function addShowtime(i) {
 
+            // Thêm hàng giờ chiếu
+            const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+            const lastEndTime = $('#showtime-container .showtime-row:last input[name="end_time[]"]').val() ||
+                '';
+            const newRow = `
+                    <div class="row showtime-row" id="${id}_item">
+                        <div class="col-md-4 mb-3">
+                            <label for="${id}_startTime">
+                                <span class="text-danger">*</span> Giờ chiếu:
+                            </label>
+                            <input type="time" id="${id}_startTime" class="form-control" name="start_time[]" value="${lastEndTime}">
+                            <div class="invalid-feedback fs-6" id="${showtimeCount}_startTime_error"></div> 
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label  for="${id}_endTime">Giờ kết thúc:</label>
+                            <input type="time"  id="${id}_endTime"  class="form-control" name="end_time[]" readonly>
+                            <div class="invalid-feedback fs-6" id="${showtimeCount}_endTime_error"></div> 
+                        </div>
+                        <div class="col-md-4 pt-4">
+                            <button type="button" class="btn btn-danger delete-showtime">  <span class="bx bx-trash"></span></button>
+                        </div>
+                
+                    </div>`;
 
+            // $('#showtime-container').append(newRow);
+            showtimeContainer.insertAdjacentHTML('beforeend', newRow);
+            updateEndTimeForRow($('#showtime-container .showtime-row:last'), lastEndTime);
 
+            showtimeCount++;
+            // console.log(i);
+            console.log(showtimeCount);
+
+        }
+
+        // Cập nhật giờ kết thúc khi thay đổi giờ bắt đầu
+        $(document).on('change', 'input[name="start_time[]"]', function() {
+            const currentRow = $(this).closest('.showtime-row');
+            validateStartTime(currentRow);
+            updateEndTimeForRow(currentRow, $(this).val());
+        });
+
+        // Xóa hàng giờ chiếu
         $(document).on('click', '.delete-showtime', function() {
             $(this).closest('.showtime-row').remove();
         });
 
+        // Hàm cập nhật giờ kết thúc
+        function updateEndTimeForRow(row, startTime) {
+            if (!startTime || !movieDuration) return;
 
-        // Hàm kiểm tra nếu thời gian start_time của hàng hiện tại lớn hơn end_time của hàng trước
-        function checkTimeOrder(currentRow) {
-            // Lấy start_time của hàng hiện tại
-            const currentStartTime = currentRow.find('input[name="start_time[]"]').val();
+            const [hours, minutes] = startTime.split(':');
+            const endTime = new Date();
+            endTime.setHours(parseInt(hours), parseInt(minutes) + movieDuration + cleaningTime);
 
-            // Lấy hàng trước đó
-            const prevRow = currentRow.prev('.showtime-row');
-            if (prevRow.length > 0) {
-                const prevEndTime = prevRow.find('input[name="end_time[]"]').val();
+            const formattedEndTime = endTime.toTimeString().slice(0, 5);
+            row.find('input[name="end_time[]"]').val(formattedEndTime);
+        }
 
-                if (currentStartTime && prevEndTime) {
-                    // So sánh thời gian, kiểm tra nếu start_time nhỏ hơn end_time của hàng trước
-                    if (currentStartTime <= prevEndTime) {
-                        alert("Giờ bắt đầu không được nhỏ hơn giờ kết thúc của suất chiếu trước!");
-                        currentRow.find('input[name="start_time[]"]').val(prevEndTime); // Đặt lại thời gian hợp lệ
-                    }
+        // Hàm kiểm tra giờ bắt đầu hợp lệ
+        function validateStartTime(row) {
+            const startTime = row.find('input[name="start_time[]"]').val();
+            const prevEndTime = row.prev('.showtime-row').find('input[name="end_time[]"]').val();
+
+            if (prevEndTime && startTime < prevEndTime) {
+                alert('Giờ bắt đầu không được nhỏ hơn giờ kết thúc của suất trước!');
+                row.find('input[name="start_time[]"]').val(prevEndTime);
+            }
+        }
+
+        // Hàm cập nhật tất cả giờ kết thúc
+        function updateAllEndTimes() {
+            $('#showtime-container .showtime-row').each(function() {
+                const startTime = $(this).find('input[name="start_time[]"]').val();
+                updateEndTimeForRow($(this), startTime);
+            });
+        }
+
+
+        function displayValidationErrors(errors) {
+            // Xóa thông báo lỗi cũ
+            $('.invalid-feedback').empty();
+
+            // hiển thị validate của trường Giờ chiếu + Giờ kết thúc
+            for (let field in errors) {
+                let fieldErrors = errors[field];
+
+                // Tìm id giờ chiếu và giờ kết thúc
+                let errorDiv;
+
+                if (field.startsWith('start_time')) {
+
+                    let index = field.match(/\d+/)[0]; //output:3
+                    errorDiv = $(`#${index}_startTime_error`); //output: gán id = 3_startTime_error
+
+                } else if (field.startsWith('end_time')) {
+                    let index = field.match(/\d+/)[0];
+                    errorDiv = $(`#${index}_endTime_error`);
+                }
+
+                if (errorDiv && errorDiv.length) {
+                    errorDiv.text(fieldErrors[0]); // Gán lỗi vào div
+                    errorDiv.show();
+                }
+                // console.log(errorDiv);
+
+            }
+
+            // hiển thị validate của các trường còn lại (movie, room, branch, cinema, date)
+            $('.error-message').remove();
+            // Hiển thị thông báo lỗi mới
+            for (let field in errors) {
+                let fieldErrors = errors[field]; // Array lỗi của từng field
+                let input = $(`[name="${field}"]`); // Tìm input theo tên
+
+                // Thêm lỗi phía dưới input
+                if (input.length > 0) {
+                    input.after(`<div class="error-message text-danger">${fieldErrors[0]}</div>`);
                 }
             }
         }
 
-        // Sk thay đổi start_time cho tất cả các suất chiếu
-        $(document).on('change', 'input[name="start_time[]"]', function() {
-            const currentRow = $(this).closest('.showtime-row');
-            checkTimeOrder(currentRow); // Gọi hàm kiểm tra khi có thay đổi
+        $('#showtimesForm').on('submit', function(e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        // alert(response.message);
+                        window.location.href = '/admin/showtimes';
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+
+                        let errors = xhr.responseJSON.errors;
+                        console.log(errors); // Kiểm tra lỗi
+                        displayValidationErrors(errors);
+                    } else {
+                        alert('Đã xảy ra lỗi, vui lòng thử lại!');
+                    }
+                }
+            });
         });
+
+
 
 
         // Js để hiển thị/ẩn các input giờ mở và đóng cửa khi chọn checkbox
         document.addEventListener('DOMContentLoaded', function() {
             const showtimeSettings = document.getElementById('auto-showtime-settings');
-            const addStartTime = document.getElementById('add-start-time');
+            // const addStartTime = document.getElementById('add-start-time');
+            const addStartTime = document.getElementById('showtime-container');
+
             const autoGenerateCheckbox = document.getElementById('auto-generate-showtimes');
 
             // Hiển thị auto-showtime-settings nếu checkbox được chọn
@@ -650,7 +647,7 @@
                     addStartTime.style.display = 'none';
                 } else {
                     showtimeSettings.style.display = 'none';
-                    addStartTime.style.display = 'flex';
+                    addStartTime.style.display = 'block';
                 }
             });
         });

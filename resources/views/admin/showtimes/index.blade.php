@@ -55,10 +55,10 @@
                                     <div class="col-md-10">
                                         <div class="row">
                                             @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label class="mb-0">Chi nhánh</label>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     <label class="mb-0">Rạp</label>
                                                 </div>
                                             @endif
@@ -75,24 +75,24 @@
                                     <div class="col-md-10">
                                         <div class="row">
                                             @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     {{-- <label for="">Chi nhánh</label> --}}
                                                     <select name="branch_id" id="branch" class="form-select">
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}"
-                                                                {{ $branch->id == session('branch_id', 1) ? 'selected' : '' }}>
+                                                                {{ $branch->id == session('showtime.branch_id', 1) ? 'selected' : '' }}>
                                                                 {{ $branch->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     {{-- <label for="">Rạp</label> --}}
                                                     <select name="cinema_id" id="cinema" class="form-select">
                                                         @foreach ($cinemas as $cinema)
                                                             <option value="{{ $cinema->id }}"
-                                                                {{ $cinema->id == session('cinema_id', 1) ? 'selected' : '' }}>
+                                                                {{ $cinema->id == session('showtime.cinema_id', 1) ? 'selected' : '' }}>
                                                                 {{ $cinema->name }}
                                                             </option>
                                                         @endforeach
@@ -103,21 +103,21 @@
                                             <div class="col-md-2">
                                                 {{-- <label for="">Ngày chiếu</label> --}}
                                                 <input type="date" name="date" class="form-control"
-                                                    value="{{ session('date', now()->format('Y-m-d')) }}">
+                                                    value="{{ session('showtime.date', now()->format('Y-m-d')) }}">
                                             </div>
 
                                             <div class="col-md-3">
                                                 {{-- <label for="">Trạng thái</label> --}}
                                                 <select name="is_active" class="form-select">
                                                     <option value=""
-                                                        {{ session('is_active', null) === null ? 'selected' : '' }}>Tất cả
+                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>Tất cả
                                                     </option>
                                                     <option value="0"
-                                                        {{ session('is_active', null) === '0' ? 'selected' : '' }}>Không
+                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>Không
                                                         hoạt động
                                                     </option>
                                                     <option value="1"
-                                                        {{ session('is_active', null) === '1' ? 'selected' : '' }}>Đang
+                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>Đang
                                                         hoạt động
                                                     </option>
                                                 </select>

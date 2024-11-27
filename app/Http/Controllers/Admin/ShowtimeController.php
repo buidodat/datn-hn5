@@ -55,17 +55,17 @@ class ShowtimeController extends Controller
 
 
         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
-        $branchId = $request->input('branch_id', session('branch_id', $defaultBranchId));
-        $cinemaId = $request->input('cinema_id', session('cinema_id', $defaultCinemaId));
-        $date = $request->input('date', session('date', $defaultDate));
-        $isActive = $request->input('is_active', session('is_active', $defaultIsActive));
+        $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
+        $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+        $date = $request->input('date', session('showtime.date', $defaultDate));
+        $isActive = $request->input('is_active', session('showtime.is_active', $defaultIsActive));
 
         // Lưu vào session
         session([
-            'branch_id' => $branchId,
-            'cinema_id' => $cinemaId,
-            'date' => $date,
-            'is_active' => $isActive
+            'showtime.branch_id' => $branchId,
+            'showtime.cinema_id' => $cinemaId,
+            'showtime.date' => $date,
+            'showtime.is_active' => $isActive
         ]);
 
         //Thiếu where is_active
@@ -101,89 +101,7 @@ class ShowtimeController extends Controller
     }
 
 
-    // public function store(StoreShowtimeRequest $request)
-    // {
-    //     try {
-    //         DB::transaction(function () use ($request) {
-    //             $movieVersion = MovieVersion::find($request->movie_version_id);
-    //             $room = Room::find($request->room_id);
-    //             $typeRoom = TypeRoom::find($room->type_room_id);
-    //             $movie = Movie::find($request->movie_id);
-    //             $movieDuration = $movie ? $movie->duration : 0;
-    //             $cleaningTime = Showtime::CLEANINGTIME;
-    //             $user = auth()->user();
 
-    //             //lấy suất chiếu đang có theo room, date
-    //             $existingShowtimes = Showtime::where('room_id', $request->room_id)
-    //                 ->where('date', $request->date)
-    //                 ->get();
-
-    //             // lặp qua tất cả start-time
-    //             foreach ($request->start_time as $i => $startTimeChild) {
-    //                 $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
-    //                 $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
-
-    //                 // kiểm tra tg chiếu
-    //                 foreach ($existingShowtimes as $showtime) {
-    //                     if ($startTime < $showtime->end_time && $endTime > $showtime->start_time) {
-    //                         throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
-    //                     }
-    //                 }
-
-    //                 $dataShowtimes = [
-    //                     'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : $user->cinema_id,
-    //                     'room_id' => $request->room_id,
-    //                     'format' => $typeRoom->name . ' ' . $movieVersion->name,
-    //                     'movie_version_id' => $request->movie_version_id,
-    //                     'movie_id' => $request->movie_id,
-    //                     'date' => $request->date,
-    //                     'start_time' => $startTime->format('Y-m-d H:i'),
-    //                     'end_time' => $endTime->format('Y-m-d H:i'),
-    //                     'is_active' => isset($request->is_active) ? 1 : 0,
-    //                 ];
-
-    //                 $showtime = Showtime::create($dataShowtimes);
-
-
-    //                 $seats = Seat::where('room_id', $room->id)->get();
-
-    //                 $seatShowtimes = [];
-    //                 foreach ($seats as $seat) {
-
-    //                     $cinemaPrice = $room->cinema->surcharge;
-    //                     $moviePrice = $movie->surcharge;
-    //                     $typeRoomPrice = $typeRoom->surcharge;
-    //                     $typeSeat = $seat->typeSeat->price;
-
-    //                     // dd($cinemaPrice . '-' . $moviePrice  . '-' . $typeRoomPrice  . '-' . $typeSeat);
-
-    //                     $price = $cinemaPrice + $moviePrice + $typeRoomPrice + $typeSeat;
-    //                     if ($seat->is_active == 0) {
-    //                         $status = 'broken';
-    //                     } else {
-    //                         $status = 'available';
-    //                     }
-
-    //                     $seatShowtimes[] = [
-    //                         'showtime_id' => $showtime->id,
-    //                         'seat_id' => $seat->id,
-    //                         'status' => $status,
-    //                         'price' => $price
-    //                     ];
-    //                 }
-
-
-    //                 SeatShowtime::insert($seatShowtimes);
-    //             }
-    //         });
-
-    //         return redirect()
-    //             ->route('admin.showtimes.index')
-    //             ->with('success', 'Thêm mới thành công!');
-    //     } catch (\Throwable $th) {
-    //         return back()->with('error', $th->getMessage());
-    //     }
-    // }
 
     public function store(StoreShowtimeRequest $request)
     {
@@ -300,11 +218,6 @@ class ShowtimeController extends Controller
                     foreach ($request->start_time as $i => $startTimeChild) {
                         $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startTimeChild);
 
-                        // Kiểm tra nếu thời gian chiếu nằm trong quá khứ
-                        // if ($startTime->isPast()) {
-                        //     return back()->with('error', "Giờ chiếu tại hàng " . ($i + 1) . " phải nằm trong tương lai.");
-                        // }
-
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
                         foreach ($existingShowtimes as $showtime) {
@@ -351,11 +264,10 @@ class ShowtimeController extends Controller
                 }
             });
 
-            return redirect()
-                ->route('admin.showtimes.index')
-                ->with('success', 'Thêm mới thành công!');
+            session()->flash('success', 'Thêm mới thành công!');
+            return response()->json(['success' => true, 'message' => 'Thêm mới thành công!']);
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 500);
         }
     }
 
