@@ -137,11 +137,15 @@ Route::controller(\App\Http\Controllers\Auth\GoogleAuthController::class)->group
     Route::get('auth/google/callback', 'callBackGoogle');
 });
 
-Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
+// Route::get('movies2', [HomeController::class, 'loadMoreMovies2']);
 
-Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
-Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
+// Route::get('movies3', [HomeController::class, 'loadMoreMovies3']);
+// Route::get('movies1', [HomeController::class, 'loadMoreMovies1']);
 // Route::get('movie/{id}/showtimes', [HomeController::class, 'getShowtimes']);
+
+Route::get('movies/load-more', action: [HomeController::class, 'loadMore'])->name('movies.loadMore');
+
+
 
 Route::post('change-cinema', [CinemaController::class, 'changeCinema'])->name('change-cinema');
 
@@ -204,7 +208,3 @@ Route::get('hihi/{id}', function () {
     $ticket = Ticket::find(20); // Lấy ticket có ID là 1
     return view('welcome', compact('ticket'));
 });
-
-
-
-
