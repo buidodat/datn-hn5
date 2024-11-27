@@ -71,7 +71,7 @@
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Giới hạn sử dụng</label>
-                                        <input type="text" name="limit" id="" class="form-control"  value="{{ $voucher->limit }}">
+                                        <input type="text" name="limit" id="" class="form-control" value="{{ $voucher->limit }}">
                                         @error('limit')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -141,16 +141,24 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-2">
-                                            <label class="form-check-label" for="is_active">Is Active</label>
-                                            <div class="form-check form-switch form-switch-default">
-                                                <input class="form-check-input" type="checkbox" role=""
-                                                       name="is_active" @checked($voucher->is_active) value="1">
-                                            </div>
+
+                                    <div class="col-md-6 d-flex">
+                                        <label class="form-check-label" for="is_active">Is Active</label>
+                                        <div class="form-check form-switch form-switch-default">
+                                            <input class="form-check-input" type="checkbox" role=""
+                                                   name="is_active" @checked($voucher->is_active) value="1">
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6 d-flex ">
+                                        <label class="form-label">Publish:</label>
+                                        <span class="text-muted mx-2">
+                                            <div class="form-check form-switch form-switch-danger">
+                                                <input class="form-check-input switch-is-active" name="is_publish"
+                                                       type="checkbox" role="switch" @checked($voucher->is_publish) value="1">
+                                            </div>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

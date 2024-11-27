@@ -89,22 +89,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($slideshows as $slideshow)
-                                <tr>
-                                    <td>{{ $slideshow->id }}</td>
-                                    <td class="text-center" style="width: 400px;">
-                                        <div class="overflow-x-auto">
-                                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
-                                                @if (is_array($slideshow->img_thumbnail))
-                                                    @foreach ($slideshow->img_thumbnail as $image)
-                                                        <img src="{{ Storage::url($image) }}" width="100px"
-                                                            alt="Slideshow image" class="rounded-2">
-                                                    @endforeach
-                                                @else
-                                                    No image !
-                                                @endif
-                                            </div>
+                        @foreach($slideshows as $slideshow)
+                            <tr>
+                                <td>{{ $slideshow->id }}</td>
+                                <td class="text-center" style="width: 400px;">
+                                    <div class="overflow-x-auto">
+                                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
+                                            @if(is_array($slideshow->img_thumbnail))
+                                                @foreach($slideshow->img_thumbnail as $image)
+                                                    @if (filter_var($image, FILTER_VALIDATE_URL))
+                                                        <img src="{{ $image }}" width="100px" alt="Slideshow image" class="rounded-2">
+                                                    @else
+                                                        <img src="{{ Storage::url($image) }}" width="100px" alt="Slideshow image" class="rounded-2">
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <p>No image !</p>
+                                            @endif
                                         </div>
+
+                                    </div>
 
 
                                         <!-- Swiper -->
@@ -175,7 +179,7 @@
                                             <input class="form-check-input switch-is-active changeActive" name="is_active"
                                                 type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
                                                 @checked($slideshow->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                onclick="return checkActive(this)">
                                         </div>
                                     </td>
                                     <td>
@@ -238,7 +242,7 @@
             },
         });
     </script>
-    <script>
+    {{--<script>
         $(document).ready(function() {
             $('.changeActive').on('change', function() {
                 let slideshowId = $(this).data('slideshow-id');
@@ -264,5 +268,72 @@
                 });
             });
         });
+    </script>--}}
+    <script>
+        $(document).ready(function () {
+            // Set về trạng thái mặc định khi load trang
+            $('.changeActive').each(function () {
+                let isActive = $(this).is(':checked') ? 1 : 0;
+                $(this).data('current-active', isActive);
+            });
+
+            // Xử lý sự kiện thay đổi trạng thái
+            $('.changeActive').on('change', function () {
+                let currentCheckbox = $(this);
+                let slideshowId = currentCheckbox.data('slideshow-id');
+                let is_active = currentCheckbox.is(':checked') ? 1 : 0;
+
+                // Kiểm tra nếu checkbox đang bật mà bị tắt chính nó
+                if (!is_active && currentCheckbox.data('current-active') === 1) {
+                    alert('Bạn không thể tắt slideshow đang hoạt động!');
+                    currentCheckbox.prop('checked', true); // Hoàn tác thay đổi
+                    return;
+                }
+
+                // Xác nhận nếu người dùng muốn thay đổi
+                if (!confirm('Bạn có chắc muốn thay đổi?')) {
+                    currentCheckbox.prop('checked', !currentCheckbox.is(':checked')); // Hoàn tác thay đổi
+                    return;
+                }
+
+                // Tắt tất cả các checkbox khác nếu bật checkbox hiện tại
+                if (is_active === 1) {
+                    $('.changeActive').not(currentCheckbox).prop('checked', false);
+                }
+
+                // Gửi yêu cầu AJAX để cập nhật trạng thái
+                $.ajax({
+                    url: '{{ route('slideshows.change-active') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: slideshowId,
+                        is_active: is_active
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Cập nhật trạng thái hiện tại
+                            $('.changeActive').data('current-active', 0); // Reset trạng thái cho tất cả
+                            if (is_active === 1) {
+                                currentCheckbox.data('current-active', 1); // Đặt trạng thái mới cho checkbox đang bật
+                            }
+                            alert('Cập nhật thành công.');
+                        } else {
+                            alert('Có lỗi xảy ra, vui lòng thử lại.');
+                            console.error(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Lỗi kết nối hoặc server không phản hồi.');
+                        console.error(error);
+
+                        // Hoàn tác thay đổi nếu server phản hồi lỗi
+                        currentCheckbox.prop('checked', !currentCheckbox.is(':checked'));
+                    }
+                });
+            });
+        });
     </script>
+
+
 @endsection
