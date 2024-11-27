@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
                     'https://www.webstrot.com/html/moviepro/html/images/header/02.jpg',
                     'https://www.webstrot.com/html/moviepro/html/images/header/03.jpg'
                 ]),
+                'is_active' => 1,
             ]
         ]);
 
