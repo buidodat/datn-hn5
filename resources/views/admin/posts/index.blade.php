@@ -39,7 +39,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách bài viết</h5>
-                    <a href="{{ route('admin.posts.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @can('Thêm bài viết')
+                        <a href="{{ route('admin.posts.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -48,7 +50,7 @@
                 @endif
 
                 <div class="card-body">
-                    <table id="example"  class="table table-bordered dt-responsive nowrap align-middle w-100"">
+                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100"">
                         <thead class='table-light'>
                             <tr>
                                 <th>#</th>
@@ -78,36 +80,48 @@
                                     </td>
 
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive"
-                                                name="is_active" type="checkbox" role="switch"
-                                                data-post-id="{{ $post->id }}" @checked($post->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa bài viết')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-post-id="{{ $post->id }}"
+                                                    @checked($post->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly
+                                                    data-post-id="{{ $post->id }}" @checked($post->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
 
 
                                     <td>
                                         <div class="d-flex">
-
-
-                                            <a href="{{ route('admin.posts.show', $post) }}">
-                                                <button title="xem" class="btn btn-success btn-sm " type="button"><i
-                                                        class="fas fa-eye"></i></button></a>
-                                            <a class="mx-1" href="{{ route('admin.posts.edit', $post) }}">
-                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                        class="fas fa-edit"></i></button>
-                                            </a>
+                                            @can('Xem chi tiết bài viết')
+                                                <a href="{{ route('admin.posts.show', $post) }}">
+                                                    <button title="xem" class="btn btn-success btn-sm " type="button"><i
+                                                            class="fas fa-eye"></i></button></a>
+                                            @endcan
+                                            @can('Sửa bài viết')
+                                                <a class="mx-1" href="{{ route('admin.posts.edit', $post) }}">
+                                                    <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                            class="fas fa-edit"></i></button>
+                                                </a>
+                                            @endcan
                                             {{-- Xóa --}}
-
-                                            <form action="{{ route('admin.posts.destroy', $post) }}" method="post"
-                                                class="d-inline-block">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
-                                                        class="ri-delete-bin-7-fill"></i></button>
-                                            </form>
+                                            @can('Xóa bài viết')
+                                                <form action="{{ route('admin.posts.destroy', $post) }}" method="post"
+                                                    class="d-inline-block">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')"><i
+                                                            class="ri-delete-bin-7-fill"></i></button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
@@ -138,22 +152,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script>
-
         $(document).ready(function() {
             // Khởi tạo DataTable
             let table = $('#example').DataTable({
-                 order: [],
-            language: {
-                search: "Tìm kiếm:",
-                paginate: {
-                    next: "Tiếp theo",
-                    previous: "Trước"
+                order: [],
+                language: {
+                    search: "Tìm kiếm:",
+                    paginate: {
+                        next: "Tiếp theo",
+                        previous: "Trước"
+                    },
+                    lengthMenu: "Hiển thị _MENU_ mục",
+                    info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
-                lengthMenu: "Hiển thị _MENU_ mục",
-                info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
-            },
             });
             // Xử lý sự kiện change cho checkbox .changeActive
             $(document).on('change', '.changeActive', function() {
@@ -215,7 +228,8 @@
                             showConfirmButton: true,
                         });
 
-                        let checkbox = $(`[data-post-id="${postId}"]`).closest('tr').find('.changeActive');
+                        let checkbox = $(`[data-post-id="${postId}"]`).closest('tr').find(
+                            '.changeActive');
                         checkbox.prop('checked', !is_active);
                     }
                 });

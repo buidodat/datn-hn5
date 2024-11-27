@@ -110,14 +110,17 @@
                                                 {{-- <label for="">Trạng thái</label> --}}
                                                 <select name="is_active" class="form-select">
                                                     <option value=""
-                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>Tất cả
+                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>
+                                                        Tất cả
                                                     </option>
                                                     <option value="0"
-                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>Không
+                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>
+                                                        Không
                                                         hoạt động
                                                     </option>
                                                     <option value="1"
-                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>Đang
+                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>
+                                                        Đang
                                                         hoạt động
                                                     </option>
                                                 </select>
@@ -140,9 +143,11 @@
                             </form>
 
                         </div>
-                        <div class="col-md-2" align="right">
-                            <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
-                        </div>
+                        @can('Thêm suất chiếu')
+                            <div class="col-md-2" align="right">
+                                <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
+                            </div>
+                        @endcan
                     </div>
 
                 </div>
@@ -275,41 +280,58 @@
                                                             {{ $showtime->format }}
                                                         </td>
                                                         <td>
-                                                            <div
-                                                                class="form-check form-switch form-switch-success d-inline-block">
-                                                                <input
-                                                                    class="form-check-input switch-is-active changeActive"
-                                                                    name="is_active" type="checkbox" role="switch"
-                                                                    data-showtime-id="{{ $showtime->id }}"
-                                                                    @checked($showtime->is_active)
-                                                                    @if ($showtime->is_active) disabled @endif>
-                                                            </div>
+                                                            @can('Sửa suất chiếu')
+                                                                <div
+                                                                    class="form-check form-switch form-switch-success d-inline-block">
+                                                                    <input
+                                                                        class="form-check-input switch-is-active changeActive"
+                                                                        name="is_active" type="checkbox" role="switch"
+                                                                        data-showtime-id="{{ $showtime->id }}"
+                                                                        @checked($showtime->is_active)
+                                                                        @if ($showtime->is_active) disabled @endif>
+                                                                </div>
+                                                            @else
+                                                                <div
+                                                                    class="form-check form-switch form-switch-success d-inline-block">
+                                                                    <input
+                                                                        class="form-check-input switch-is-active changeActive"
+                                                                        name="is_active" disabled readonly type="checkbox"
+                                                                        role="switch" data-showtime-id="{{ $showtime->id }}"
+                                                                        @checked($showtime->is_active)
+                                                                        @if ($showtime->is_active) disabled @endif>
+                                                                </div>
+                                                            @endcan
                                                         </td>
 
                                                         <td>
-                                                            <a href="{{ route('admin.showtimes.show', $showtime) }}">
-                                                                <button title="xem" class="btn btn-success btn-sm "
-                                                                    type="button"><i class="fas fa-eye"></i></button></a>
-
+                                                            @can('Xem chi tiết suất chiếu')
+                                                                <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                                    <button title="xem" class="btn btn-success btn-sm "
+                                                                        type="button"><i class="fas fa-eye"></i></button></a>
+                                                            @endcan
                                                             @if ($showtime->is_active == 0)
-                                                                <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                    <button title="sửa"
-                                                                        class="btn btn-warning btn-edit btn-sm"
-                                                                        type="button"><i
-                                                                            class="fas fa-edit"></i></button>
-                                                                </a>
+                                                                @can('Sửa suất chiếu')
+                                                                    <a href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                                        <button title="sửa"
+                                                                            class="btn btn-warning btn-edit btn-sm"
+                                                                            type="button"><i
+                                                                                class="fas fa-edit"></i></button>
+                                                                    </a>
+                                                                @endcan
 
-                                                                <form
-                                                                    action="{{ route('admin.showtimes.destroy', $showtime) }}"
-                                                                    method="post" class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-destroy btn-sm"
-                                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                                        <i class="ri-delete-bin-7-fill"></i>
-                                                                    </button>
-                                                                </form>
+                                                                @can('Xóa suất chiếu')
+                                                                    <form
+                                                                        action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                                        method="post" class="d-inline-block">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger btn-destroy btn-sm"
+                                                                            onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                            <i class="ri-delete-bin-7-fill"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @endcan
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -320,21 +342,24 @@
                                                     <td colspan="7">
                                                         @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
                                                             <div class="d-flex justify-content-between">
-                                                                <form action="" method="post"
-                                                                    class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit" id="delete-all"
-                                                                        class="btn btn-danger btn-sm">
-                                                                        Xóa tất cả
-                                                                    </button>
-                                                                </form>
-
-                                                                <a href="" class="px-5">
-                                                                    <button id="change-status-all" title="thay đổi"
-                                                                        class="btn btn-primary btn-sm">Bật trạng thái
-                                                                        tất cả</button>
-                                                                </a>
+                                                                @can('Xóa suất chiếu')
+                                                                    <form action="" method="post"
+                                                                        class="d-inline-block">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <button type="submit" id="delete-all"
+                                                                            class="btn btn-danger btn-sm">
+                                                                            Xóa tất cả
+                                                                        </button>
+                                                                    </form>
+                                                                @endcan
+                                                                @can('Sửa suất chiếu')
+                                                                    <a href="" class="px-5">
+                                                                        <button id="change-status-all" title="thay đổi"
+                                                                            class="btn btn-primary btn-sm">Bật trạng thái
+                                                                            tất cả</button>
+                                                                    </a>
+                                                                @endcan
                                                             </div>
                                                         @endif
 

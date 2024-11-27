@@ -62,7 +62,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Danh sách slideshow </h5>
-                    <a href="{{ route('admin.slideshows.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @can('Thêm slideshows')
+                        <a href="{{ route('admin.slideshows.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -171,27 +173,40 @@
                                     </td>
                                     <td>{{ $slideshow->description }}</td>
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
-                                                @checked($slideshow->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa slideshows')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
+                                                    @checked($slideshow->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly
+                                                    data-slideshow-id="{{ $slideshow->id }}" @checked($slideshow->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
-                                        </form>
+                                        @can('Sửa slideshows')
+                                            <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
+                                        @can('Xóa slideshows')
+                                            <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
 
                                 </tr>
@@ -233,8 +248,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>

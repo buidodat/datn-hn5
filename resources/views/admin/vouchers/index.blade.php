@@ -39,7 +39,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Danh sách mã giảm giá </h5>
-                    <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
+
+                    @can('Thêm vouchers')
+                        <a href="{{ route('admin.vouchers.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -123,22 +126,33 @@
                                     </td> --}}
                                     {{-- <td>{{ $item->description }}</td> --}}
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
-                                                @checked($item->is_active)
-                                                onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                        </div>
+                                        @can('Sửa vouchers')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-voucher-id="{{ $item->id }}"
+                                                    @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" disabled readonly role="switch"
+                                                    data-voucher-id="{{ $item->id }}" @checked($item->is_active)
+                                                    onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                            </div>
+                                        @endcan
                                     </td>
                                     <td>
                                         {{-- <a href="{{ route('admin.vouchers.show', $item) }}">
                                         <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                 class="fas fa-eye"></i></button>
                                     </a> --}}
-                                        <a href="{{ route('admin.vouchers.edit', $item) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
+                                        @can('Sửa vouchers')
+                                            <a href="{{ route('admin.vouchers.edit', $item) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
 
                                         {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
@@ -187,8 +201,8 @@
                     },
                     lengthMenu: "Hiển thị _MENU_ mục",
                     info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                    emptyTable: "Không có dữ liệu để hiển thị",
+                    zeroRecords: "Không tìm thấy kết quả phù hợp"
                 },
             });
             // Xử lý sự kiện change cho checkbox .changeActive

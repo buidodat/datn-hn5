@@ -68,7 +68,8 @@
                                 <table class="table table-bordered rounded align-middle">
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ  <span class="text-muted">(VNĐ)</span></th>
+                                            <th colspan='2' class="text-center">GIÁ THEO GHẾ <span
+                                                    class="text-muted">(VNĐ)</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -77,8 +78,7 @@
                                                 <td>{{ $typeSeat->name }}</td>
                                                 <td>
                                                     <input type="number" name="prices[{{ $typeSeat->id }}]" id=""
-                                                        class="form-control"
-                                                        value="{{ $typeSeat->price }}">
+                                                        class="form-control" value="{{ $typeSeat->price }}">
                                                     @error('price')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -89,7 +89,8 @@
 
                                     <thead>
                                         <tr class="table-light">
-                                            <th colspan='2' class="text-center">PHỤ THU THEO LOẠI PHÒNG  <span class="text-muted">(VNĐ)</span></th>
+                                            <th colspan='2' class="text-center">PHỤ THU THEO LOẠI PHÒNG <span
+                                                    class="text-muted">(VNĐ)</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,9 +109,12 @@
                                     </tbody>
 
                                 </table>
-                                <div class='text-end'>
-                                    <button class='btn btn-primary'>Cập nhật</button>
-                                </div>
+
+                                @can('Sửa giá')
+                                    <div class='text-end'>
+                                        <button class='btn btn-primary'>Cập nhật</button>
+                                    </div>
+                                @endcan
                             </form>
                         </div>
 
@@ -167,8 +171,7 @@
                     <form action="{{ route('admin.ticket-update') }}" method="POST">
                         @csrf
                         <div class="card-body pt-0" style="max-height: 474px; overflow-y: auto;">
-                            <table id="example"
-                                class="table table-bordered dt-responsive nowrap align-middle w-100">
+                            <table id="example" class="table table-bordered dt-responsive nowrap align-middle w-100">
                                 <thead class='table-light'>
                                     <tr>
                                         <th>Tên rạp</th>
@@ -184,16 +187,18 @@
                                             <td>{{ $cinema->name }}</td>
                                             <td><input type="number" class="form-control"
                                                     name="surchargesCinema[{{ $cinema->id }}]" id="{{ $cinema->id }}"
-                                                   value="{{ $cinema->surcharge }}"></td>
+                                                    value="{{ $cinema->surcharge }}"></td>
                                         </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
                         </div>
-                        <div class='text-end'>
-                            <button class='btn btn-primary m-3'>Cập nhật</button>
-                        </div>
+                        @can('Sửa giá')
+                            <div class='text-end'>
+                                <button class='btn btn-primary m-3'>Cập nhật</button>
+                            </div>
+                        @endcan
                     </form>
                 </div>
             </div>
