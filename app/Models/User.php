@@ -55,7 +55,6 @@ class User extends Authenticatable implements MustVerifyEmail, ShouldQueue
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'birthday' => 'datetime',
     ];
     const TYPE_ADMIN = 'admin';
     const TYPE_MEMBER = 'member';

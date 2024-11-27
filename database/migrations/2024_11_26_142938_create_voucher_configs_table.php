@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('slideshows', function (Blueprint $table) {
+        Schema::create('voucher_configs', function (Blueprint $table) {
             $table->id();
-//            $table->string('title')->nullable();
-            $table->text('img_thumbnail');
-            $table->text('description')->nullable();
-//            $table->string('route_url')->comment('Đường dẫn điều hướng')->nullable();
-            $table->boolean('is_active')->default(false);
+            $table->string('name');
+            $table->unsignedInteger('discount');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('slideshows');
+        Schema::dropIfExists('voucher_configs');
     }
 };

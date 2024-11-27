@@ -241,7 +241,7 @@
                                                             </span>
                                     </div>
                                     <div class="col-md-6 d-flex ">
-                                        <label class="form-label">publish:</label>
+                                        <label class="form-label">Publish:</label>
                                         <span class="text-muted mx-2">
                                                                 <div class="form-check form-switch form-switch-danger">
                                                                     <input class="form-check-input switch-is-active"
