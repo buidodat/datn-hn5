@@ -62,7 +62,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0"> Danh sách slideshow </h5>
-                    <a href="{{ route('admin.slideshows.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @can('Thêm slideshows')
+                        <a href="{{ route('admin.slideshows.create') }}" class="btn btn-primary">Thêm mới</a>
+                    @endcan
                 </div>
 
                 @if (session()->has('success'))
@@ -89,26 +91,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($slideshows as $slideshow)
-                            <tr>
-                                <td>{{ $slideshow->id }}</td>
-                                <td class="text-center" style="width: 400px;">
-                                    <div class="overflow-x-auto">
-                                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
-                                            @if(is_array($slideshow->img_thumbnail))
-                                                @foreach($slideshow->img_thumbnail as $image)
-                                                    @if (filter_var($image, FILTER_VALIDATE_URL))
-                                                        <img src="{{ $image }}" width="100px" alt="Slideshow image" class="rounded-2">
-                                                    @else
-                                                        <img src="{{ Storage::url($image) }}" width="100px" alt="Slideshow image" class="rounded-2">
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <p>No image !</p>
-                                            @endif
-                                        </div>
+                            @foreach ($slideshows as $slideshow)
+                                <tr>
+                                    <td>{{ $slideshow->id }}</td>
+                                    <td class="text-center" style="width: 400px;">
+                                        <div class="overflow-x-auto">
+                                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
+                                                @if (is_array($slideshow->img_thumbnail))
+                                                    @foreach ($slideshow->img_thumbnail as $image)
+                                                        @if (filter_var($image, FILTER_VALIDATE_URL))
+                                                            <img src="{{ $image }}" width="100px"
+                                                                alt="Slideshow image" class="rounded-2">
+                                                        @else
+                                                            <img src="{{ Storage::url($image) }}" width="100px"
+                                                                alt="Slideshow image" class="rounded-2">
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <p>No image !</p>
+                                                @endif
+                                            </div>
 
-                                    </div>
+                                        </div>
 
 
                                         <!-- Swiper -->
@@ -175,27 +179,39 @@
                                     </td>
                                     <td>{{ $slideshow->description }}</td>
                                     <td>
-                                        <div class="form-check form-switch form-switch-success">
-                                            <input class="form-check-input switch-is-active changeActive" name="is_active"
-                                                type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
-                                                @checked($slideshow->is_active)
-                                                onclick="return checkActive(this)">
-                                        </div>
+                                        @can('Sửa slideshows')
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" data-slideshow-id="{{ $slideshow->id }}"
+                                                    @checked($slideshow->is_active) onclick="return checkActive(this)">
+                                            </div>
+                                        @else
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input switch-is-active changeActive" name="is_active"
+                                                    type="checkbox" role="switch" disabled readonly data-slideshow-id="{{ $slideshow->id }}"
+                                                    @checked($slideshow->is_active) onclick="return checkActive(this)">
+                                            </div>
+                                        @endcan
+
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
-                                            <button title="xem" class="btn btn-warning btn-sm " type="button"><i
-                                                    class="fas fa-edit"></i></button>
-                                        </a>
-                                        <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"
-                                            class="d-inline-block">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                <i class="ri-delete-bin-7-fill"></i>
-                                            </button>
-                                        </form>
+                                        @can('Sửa slideshows')
+                                            <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
+                                                <button title="xem" class="btn btn-warning btn-sm " type="button"><i
+                                                        class="fas fa-edit"></i></button>
+                                            </a>
+                                        @endcan
+                                        @can('Xóa slideshows')
+                                            <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
 
                                 </tr>
@@ -237,12 +253,12 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>
-    {{--<script>
+    {{-- <script>
         $(document).ready(function() {
             $('.changeActive').on('change', function() {
                 let slideshowId = $(this).data('slideshow-id');
@@ -268,17 +284,17 @@
                 });
             });
         });
-    </script>--}}
+    </script> --}}
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Set về trạng thái mặc định khi load trang
-            $('.changeActive').each(function () {
+            $('.changeActive').each(function() {
                 let isActive = $(this).is(':checked') ? 1 : 0;
                 $(this).data('current-active', isActive);
             });
 
             // Xử lý sự kiện thay đổi trạng thái
-            $('.changeActive').on('change', function () {
+            $('.changeActive').on('change', function() {
                 let currentCheckbox = $(this);
                 let slideshowId = currentCheckbox.data('slideshow-id');
                 let is_active = currentCheckbox.is(':checked') ? 1 : 0;
@@ -310,12 +326,14 @@
                         id: slideshowId,
                         is_active: is_active
                     },
-                    success: function (response) {
+                    success: function(response) {
                         if (response.success) {
                             // Cập nhật trạng thái hiện tại
-                            $('.changeActive').data('current-active', 0); // Reset trạng thái cho tất cả
+                            $('.changeActive').data('current-active',
+                            0); // Reset trạng thái cho tất cả
                             if (is_active === 1) {
-                                currentCheckbox.data('current-active', 1); // Đặt trạng thái mới cho checkbox đang bật
+                                currentCheckbox.data('current-active',
+                                1); // Đặt trạng thái mới cho checkbox đang bật
                             }
                             alert('Cập nhật thành công.');
                         } else {
@@ -323,7 +341,7 @@
                             console.error(response.message);
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         alert('Lỗi kết nối hoặc server không phản hồi.');
                         console.error(error);
 
@@ -334,6 +352,4 @@
             });
         });
     </script>
-
-
 @endsection

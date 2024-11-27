@@ -39,7 +39,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách tài khoản</h5>
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+
+                    @can('Thêm tài khoản')
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -151,9 +154,12 @@
 
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ route('admin.users.show', $item) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @can('Xem chi tiết tài khoản')
+                                                        <a href="{{ route('admin.users.show', $item) }}">
+                                                            <button title="xem" class="btn btn-success btn-sm "
+                                                                type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @endcan
+
                                                     @if ($item->name != 'System Admin')
                                                         <a href="{{ route('admin.users.edit', $item) }}">
                                                             <button title="xem" class="btn btn-warning btn-sm mx-1 "
@@ -297,8 +303,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
 
@@ -312,8 +318,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>
