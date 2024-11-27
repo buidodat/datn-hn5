@@ -26,39 +26,52 @@ class HomeController extends Controller
         $currentNow = now();
         $endDate = now()->addDays(7);
 
-        // phim sắp chiếu
+        // phim đang chiếu
         $moviesShowing = Movie::where([
             ['is_active', '1'],
+            ['is_publish', '1'],
             ['release_date', '<=', $currentNow],
             ['end_date', '>=', $currentNow]
-        ])
-            ->orderBy('is_hot', 'desc')
+        ]);
+        $totalMovieShowing = $moviesShowing->count();
+        $moviesShowing = $moviesShowing->orderBy('is_hot', 'desc')
             ->latest('id')
-            ->paginate(8);
+            ->limit(8)
+            ->get();
 
-        // Phim sắp chiếu (chưa đến thời gian khởi chiếu)
+
+
+        // Phim sắp chiếu
         $moviesUpcoming = Movie::where([
             ['is_active', '1'],
+            ['is_publish', '1'],
             ['release_date', '>', $currentNow]
-        ])
-            ->orderBy('is_hot', 'desc')
+        ]);
+        $totalMovieUpcoming = $moviesUpcoming->count();
+        $moviesUpcoming = $moviesUpcoming->orderBy('is_hot', 'desc')
             ->latest('id')
-            ->paginate(8);
+            ->limit(8)
+            ->get();
+
+
 
         // Phim suất chiếu đặc biệt (chưa đến ngày khởi chiếu hoặc đã hết thời gian khởi chiếu)
         $moviesSpecial = Movie::where([
             ['is_active', '1'],
+            ['is_publish', '1'],
             ['is_special', '1']
-        ])
+        ]);
+        $totalMovieSpecial = $moviesSpecial->count();
+        $moviesSpecial = $moviesSpecial
             ->orderBy('is_hot', 'desc')
             ->latest('id')
-            ->paginate(8);
+            ->limit(8)->get();
 
 
 
         $posts = Post::where('is_active', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'posts', 'currentNow', 'endDate'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'posts', 'currentNow', 'endDate', 'totalMovieShowing', 'totalMovieUpcoming', 'totalMovieSpecial'));
     }
 
     public function policy()
@@ -66,61 +79,6 @@ class HomeController extends Controller
         return view('client.policy');
     }
 
-    public function loadMoreMovies2(Request $request)
-    {
-        $currentNow = now()->format('Y-m-d');
-
-        // Lấy phim theo trang
-        $moviesShowing = Movie::where([
-            ['is_active', '1'],
-
-            ['release_date', '<=', $currentNow],
-            ['end_date', '>', $currentNow],
-            ['is_special', '!=', '1']
-        ])
-            ->orderBy('is_hot', 'desc')
-            ->latest('id')->paginate(8);
-
-        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
-        return view('client.layouts.components.movie-list2', compact('moviesShowing'))->render();
-    }
-
-    public function loadMoreMovies1(Request $request)
-    {
-        $currentNow = now()->format('Y-m-d');
-
-        // Lấy phim theo trang
-        $moviesUpcoming = Movie::where([
-            ['is_active', '1'],
-
-            ['release_date', '>', $currentNow],
-            ['is_special', '!=', '1']
-        ])
-            ->orderBy('is_hot', 'desc')
-            ->latest('id')
-            ->paginate(8);
-
-        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
-        return view('client.layouts.components.movie-list1', compact('moviesUpcoming'))->render();
-    }
-
-    public function loadMoreMovies3(Request $request)
-    {
-        $currentNow = now()->format('Y-m-d');
-
-        // Lấy phim theo trang
-        $moviesSpecial = Movie::where([
-            ['is_active', '1'],
-
-            ['is_special', '1']
-        ])
-            ->orderBy('is_hot', 'desc')
-            ->latest('id')
-            ->paginate(8);
-
-        // Trả về view chứa thêm các phim (chỉ phần HTML của phim)
-        return view('client.layouts.components.movie-list3', compact('moviesSpecial'))->render();
-    }
 
     public function getShowtimes($movieId)
     {
@@ -130,5 +88,73 @@ class HomeController extends Controller
             ->get();
 
         return response()->json($showtimes);
+    }
+
+
+
+
+
+
+    public function loadMoreMovieShowing(Request $request)
+    {
+        $currentNow = now();
+        $endDate = now()->addDays(7);
+        $offset = $request->offset ?? 8;
+
+        // Lọc danh sách phim sắp chiếu
+        $movies = Movie::where([
+            ['is_active', '1'],
+            ['is_publish', '1'],
+            ['release_date', '<=', $currentNow],
+            ['end_date', '>=', $currentNow]
+        ])
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->skip($offset)
+            ->limit(8)
+            ->get();
+
+        return view('client.layouts.components.load-more-movie-showing', compact('movies', 'currentNow', 'endDate'))->render();
+    }
+    public function loadMoreMovieUpcoming(Request $request)
+    {
+        $currentNow = now();
+        $endDate = now()->addDays(7);
+        $offset = $request->offset ?? 8;
+
+        // phim đang chiếu
+        $movies = Movie::where([
+            ['is_active', '1'],
+            ['is_publish', '1'],
+            ['release_date', '>', $currentNow]
+        ])
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->skip($offset)
+            ->limit(8)
+            ->get();
+
+        return view('client.layouts.components.load-more-movie-upcoming', compact('movies', 'currentNow', 'endDate'))->render();
+    }
+
+    public function loadMoreMovieSpecial(Request $request)
+    {
+        $currentNow = now();
+        $endDate = now()->addDays(7);
+        $offset = $request->offset ?? 8;
+
+        // Phim suất chiếu đặc biệt (chưa đến ngày khởi chiếu hoặc đã hết thời gian khởi chiếu)
+        $movies = Movie::where([
+            ['is_active', '1'],
+            ['is_publish', '1'],
+            ['is_special', '1']
+        ])
+            ->orderBy('is_hot', 'desc')
+            ->latest('id')
+            ->skip($offset)
+            ->limit(8)
+            ->get();
+
+        return view('client.layouts.components.load-more-movie-special', compact('movies', 'currentNow', 'endDate'))->render();
     }
 }
