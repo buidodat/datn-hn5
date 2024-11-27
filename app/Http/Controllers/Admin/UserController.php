@@ -50,6 +50,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try {
+            // dd($request->all());
             $dataUser = $request->all();
             $dataUser['type'] = "admin";
             $dataUser['cinema_id'] = $request->cinema_id;
