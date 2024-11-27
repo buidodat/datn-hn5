@@ -312,6 +312,8 @@
                 addFood(foodCount);
             });
 
+            
+
             function displayValidationErrors(errors) {
                 // Xóa thông báo lỗi cũ
                 $('.invalid-feedback').empty();
@@ -322,9 +324,12 @@
 
                     // Tìm id combo_food và combo_quantity
                     let errorDiv;
+
                     if (field.startsWith('combo_food')) {
-                        let index = field.match(/\d+/)[0];
-                        errorDiv = $(`#${index}_food_error`);
+
+                        let index = field.match(/\d+/)[0];    //output:3
+                        errorDiv = $(`#${index}_food_error`);       //output: gán id = 3_food_error
+                        
                     } else if (field.startsWith('combo_quantity')) {
                         let index = field.match(/\d+/)[0];
                         errorDiv = $(`#${index}_quantity_error`);
@@ -334,9 +339,11 @@
                         errorDiv.text(fieldErrors[0]); // Gán lỗi vào div
                         errorDiv.show();
                     }
+                    // console.log(errorDiv);
+                    
                 }
 
-                // hiển thị validate của các trường còn lại
+                // hiển thị validate của các trường còn lại (name, description, img_thumbnail)
                 $('.error-message').remove();
                 // Hiển thị thông báo lỗi mới
                 for (let field in errors) {
@@ -369,6 +376,7 @@
                     },
                     error: function(xhr) {
                         if (xhr.status === 422) {
+
                             let errors = xhr.responseJSON.errors;
                             console.log(errors); // Kiểm tra lỗi
                             displayValidationErrors(errors);
