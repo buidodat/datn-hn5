@@ -10,74 +10,18 @@
             <div class="h-100">
 
                 <form action="{{ route('admin.statistical-movies') }}" method="GET" class="mb-3">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="row">
-                                @if (Auth::user()->hasRole('System Admin'))
-                                    <div class="col-md-2">
-                                        <label class="mb-0">Chi nhánh</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="mb-0">Rạp</label>
-                                    </div>
-                                @endif
-                                <div class="col-md-2">
-                                    <label class="mb-0">Ngày bắt đầu</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="mb-0">Ngày kết thúc</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="row">
-                                @if (Auth::user()->hasRole('System Admin'))
-                                    <div class="col-md-2">
-                                        <select name="branch_id" id="branch" class="form-select py-2 px-2">
-                                            <option value="">Tất cả chi nhánh</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}"
-                                                    {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
-                                                    {{ $branch->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select name="cinema_id" id="cinema" class="form-select">
-                                            {{-- <option value="">Tất cả rạp</option> --}}
-                                        </select>
-                                    </div>
-                                @endif
-                                <div class="col-md-2">
-                                    <input type="date" name="start_date" class="form-control"
-                                        value="{{ old('start_date', $startDate) }}">
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="date" name="end_date" class="form-control"
-                                        value="{{ old('end_date', $endDate) }}">
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-success" type="submit">
-                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2" align="right">
-                                <a href="{{ route('admin.statistical-movies') }}" class="btn btn-primary">Tổng
-                                    quan</a>
-                        </div>
-                    </div>
+                    @include('admin.layouts.components.statistical-filter')
                 </form>
 
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header border-0 align-items-center">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu của phim</h4>
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu phim
+                                    @if (Auth::user()->cinema_id != '')
+                                        - {{ Auth::user()->cinema->name }}
+                                    @endif
+                                </h4>
                             </div><!-- end card header -->
 
                             <div class="card-header p-0 border-0 bg-light-subtle">
@@ -131,8 +75,8 @@
     <script>
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ phía server
-            var selectedBranchId = "{{ request('branch_id', '') }}";
-            var selectedCinemaId = "{{ request('cinema_id', '') }}";
+            var selectedBranchId = "{{ session('statistical.branch_id', '') }}";
+            var selectedCinemaId = "{{ session('statistical.cinema_id', '') }}";
             var isLoading = false; // Cờ để kiểm tra trạng thái đang tải
 
             // Xử lý sự kiện thay đổi chi nhánh
