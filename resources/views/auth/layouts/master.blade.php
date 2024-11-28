@@ -27,11 +27,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
-    
+
     @yield('style-libs')
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('theme/client/images/header/poly2.svg') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('theme/client/images/header/P2.svg') }}" />
 
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
@@ -104,7 +104,7 @@
     <script src="{{ asset('theme/admin/assets/libs/particles.js/particles.js') }}"></script>
     <!-- particles app js -->
     <script src="{{ asset('theme/admin/assets/js/pages/particles.app.js') }}"></script>
-    
+
 
     @yield('scripts')
 </body>
