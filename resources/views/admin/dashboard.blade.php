@@ -265,44 +265,12 @@
                         <!-- card -->
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
-                                <div class="flex-shrink-0">
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        Export Report
-                                    </button>
-                                </div>
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu theo khung giờ chiếu</h4>
                             </div><!-- end card header -->
 
                             <!-- card body -->
                             <div class="card-body">
-
-                                <div id="sales-by-locations" data-colors='["--vz-light", "--vz-success", "--vz-primary"]'
-                                    style="height: 269px" dir="ltr"></div>
-
-                                <div class="px-2 py-2 mt-1">
-                                    <p class="mb-1">Canada <span class="float-end">75%</span></p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Greenland <span class="float-end">47%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 47%" aria-valuenow="47" aria-valuemin="0" aria-valuemax="47">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Russia <span class="float-end">82%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="82">
-                                        </div>
-                                    </div>
-                                </div>
+                                <canvas id="revenueChartTimeSlot"></canvas>
                             </div>
                             <!-- end card body -->
                         </div>
@@ -990,4 +958,64 @@
 
         </div> <!-- end col -->
     </div>
+@endsection
+
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script>
+        // thống kê doanh thu theo khung giờ chiếu
+        const revenueChartTimeSlot = document.getElementById('revenueChartTimeSlot').getContext('2d');
+        const revenueChartTimeSlotData = {
+            labels: @json(array_column($revenueTimeSlot, 'label')),
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: @json(array_column($revenueTimeSlot, 'revenue')),
+                backgroundColor: [
+                    'rgb(247, 184, 75)',
+                    'rgb(10, 179, 156)',
+                    'rgb(240, 101, 72)'
+                ]
+            }]
+        };
+
+        new Chart(revenueChartTimeSlot, {
+            type: 'doughnut', // Biểu đồ tròn
+            data: revenueChartTimeSlotData,
+            options: {
+                responsive: true,
+                plugins: {
+                    datalabels: {
+                        formatter: (value, context) => {
+                            // Chuyển đổi giá trị revenue từ chuỗi sang số
+                            const total = context.chart.data.datasets[0].data.reduce((sum, currentValue) =>
+                                sum + parseFloat(currentValue), 0);
+
+                            // Tính phần trăm chính xác dựa trên tổng
+                            const percentage = ((parseFloat(value) / total) * 100).toFixed(2) + '%';
+                            return percentage; // Hiển thị phần trăm
+                        },
+                        color: '#fff', // Màu chữ hiển thị
+                        font: {
+                            weight: 'bold',
+                            size: 14 // Cỡ chữ
+                        },
+                        anchor: 'center',
+                        align: 'center',
+                        offset: 0 // Đặt lại vị trí hiển thị
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw.toLocaleString() + ' VNĐ';
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels] // Kích hoạt plugin
+        });
+    </script>
 @endsection
