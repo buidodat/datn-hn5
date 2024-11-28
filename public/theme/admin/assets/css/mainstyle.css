@@ -8,11 +8,16 @@ td.table-showtime {
 i.ri-add-circle-fill {
     /* color: crimson; */
     font-size: 15px;
+    border: 2px solid #ccc5c5;
+    border-radius: 50%;
 }
+
 .ri-indeterminate-circle-fill:before {
     content: "\ee56";
     font-size: 15px;
-    color: rgb(238, 6, 6);
+    color: #f06548;
+    border: 2px solid #ccc5c5;
+    border-radius: 50%;
 }
 .inputCheckBoxShowtimes {
     width: 36px;
