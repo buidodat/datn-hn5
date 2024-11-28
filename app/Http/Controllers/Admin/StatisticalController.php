@@ -291,6 +291,7 @@ class StatisticalController extends Controller
 
     public function statisticalTickets(Request $request)
     {
+        // dd(session()->all());
         $user = Auth::user();
         $branches = Branch::where('is_active', 1)->get();
 

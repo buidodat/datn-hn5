@@ -43,84 +43,99 @@
                 {{-- fillter --}}
                 <div class="card-body border border-dashed border-end-0 border-start-0">
                     <form method="GET" action="{{ route('admin.tickets.index') }}">
-                        {{-- @csrf --}}
-                        <div class="row g-3">
-                            {{-- <div class="col-xxl-5 col-sm-6">
-                                 <div class="search-box">
-                                    <input type="text" class="form-control search"
-                                        placeholder="Tìm kiếm theo ID, khách hàng, trạng thái...">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                            </div> --}}
-                            <!--end col-->
+                        <div class="row">
+                            <div class="col-md-12">
 
-                            {{-- Loc --}}
-                            <div class="col-9 d-flex">
-                                <!--end col-->
-                                @if (Auth::user()->hasRole('System Admin'))
-                                    <div class="col-xxl-2 col-sm-4 me-2">
-                                        <div>
+                                <div class="row">
+                                    @if (Auth::user()->hasRole('System Admin'))
+                                        <div class="col-md-2">
+                                            <label class="mb-0">Chi nhánh</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="mb-0">Rạp</label>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Ngày</label>
+                                    </div>
+
+                                    <div class="col-md-3">
+
+                                        <label class="mb-0">Phim</label>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Trạng thái</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="row">
+                                    @if (Auth::user()->hasRole('System Admin'))
+                                        <div class="col-md-2">
                                             <select name="branch_id" id="branch" class="form-select">
-                                                <option value="">Chi nhánh</option>
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">
-                                                        {{ $branch->name }}</option>
+                                                @foreach ($branches as $id => $name)
+                                                    <option value="{{ $id }}"
+                                                        {{ $id == $branchId ? 'selected' : '' }}>
+                                                        {{ $name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-xxl-2 col-sm-4 me-2">
-                                        <div>
+                                        <div class="col-md-2">
                                             <select name="cinema_id" id="cinema" class="form-select">
-                                                <option value="">Chọn Rạp</option>
+                                                @foreach ($cinemas as $id => $name)
+                                                    <option value="{{ $id }}"
+                                                        {{ $id == $cinemaId ? 'selected' : '' }}>
+                                                        {{ $name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
+                                    @endif
+
+                                    <div class="col-md-2">
+                                        <input type="date" name="date" class="form-control"
+                                            value="{{ $date }}">
                                     </div>
-                                @endif
-                                <div class="col-xxl-2 col-sm-6 me-2">
-                                    <div>
-                                        <input type="date" name="date" id="" class="form-control"
-                                            value="{{ request('date', now()->format('Y-m-d')) }}">
+
+                                    <div class="col-md-3">
+
+                                        <select name="movie_id" class="form-select">
+                                            <option value="">Tất cả các phim</option>
+                                            @foreach ($movies as $id => $name)
+                                                <option value="{{ $id }}"
+                                                    {{ $id == $movieId ? 'selected' : '' }}>
+                                                    {{ $name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </div>
-                                <!--end col-->
-                                <div class="col-xxl-1 col-sm-4 me-2">
-                                    <div>
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                            Lọc
+
+                                    <div class="col-md-2">
+                                        <select name="status" class="form-select">
+                                            <option value="">Tất cả</option>
+                                            <option value="0" {{ $status === '0' ? 'selected' : '' }}>Chưa xuất vé
+                                            </option>
+                                            <option value="1" {{ $status === '1' ? 'selected' : '' }}>Đã xuất vé
+                                            </option>
+                                            <option value="2" {{ $status === '2' ? 'selected' : '' }}>Đã hết
+                                                hạn</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>Lọc
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-xxl-2 col-sm-4">
-                                    <div>
-                                        <a href="{{ route('admin.tickets.index') }}" class="btn btn-primary">Danh sách</a>
-                                    </div>
-                                </div>
                             </div>
-
-                            {{-- quet qr --}}
-                            <div class="col-3 d-flex justify-content-end">
-                                <div class="col-xxl-3 text-end">
-                                    @can('Quét hóa đơn')
-                                        <div>
-                                            <!-- center modal -->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#scanModal" data-source="index">Quét QR
-                                            </button>
-
-                                        </div>
-                                    @endcan
-                                </div>
-                            </div>
-
-
-
-
-                            <!--end col-->
                         </div>
-                        <!--end row-->
+
+
                     </form>
                 </div>
 
@@ -165,7 +180,7 @@
                                         : 'Không có';
                                 @endphp
                                 <tr>
-                                    <td>{{ $code }}</td>
+                                    <td class="text-center">{{ $code }}</td>
                                     <td>
                                         <ul class="nav nav-sm flex-column">
                                             <li class="nav-item mb-1"><span class="fw-semibold">Người dùng:</span>
@@ -243,7 +258,7 @@
                                          @endif
                                      </select>
                                  </td> --}}
-                                    <td>
+                                    <td class="text-center">
                                         @can('Xem chi tiết hóa đơn')
                                             <a href="{{ route('admin.tickets.show', $ticket) }}">
                                                 <button title="Chi tiết" class="btn btn-success btn-sm" type="button"><i
@@ -345,19 +360,19 @@
         /*Hiển thị rạp*/
         $(document).ready(function() {
             // Lấy giá trị branchId và cinemaId từ Laravel
-            // var selectedBranchId = "{{ old('branch_id', '') }}";
-            // var selectedCinemaId = "{{ old('cinema_id', '') }}";
+            var selectedBranchId = "{{ old('branch_id', '') }}";
+            var selectedCinemaId = "{{ old('cinema_id', '') }}";
 
             // Xử lý sự kiện thay đổi chi nhánh
             $('#branch').on('change', function() {
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
                 cinemaSelect.empty();
-                cinemaSelect.append('<option value="">Chọn Rạp</option>');
+
 
                 if (branchId) {
                     $.ajax({
-                        url: "{{ url('api/cinemas') }}/" + branchId,
+                        url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
                         method: 'GET',
                         success: function(data) {
                             $.each(data, function(index, cinema) {
@@ -368,7 +383,7 @@
                             // Chọn lại cinema nếu có selectedCinemaId
                             if (selectedCinemaId) {
                                 cinemaSelect.val(selectedCinemaId);
-                                // selectedCinemaId = false;
+                                selectedCinemaId = false;
                             }
                         }
                     });
@@ -376,10 +391,10 @@
             });
 
             // Nếu có selectedBranchId thì tự động kích hoạt thay đổi chi nhánh để load danh sách cinema
-            // if (selectedBranchId) {
-            //     $('#branch').val(selectedBranchId).trigger('change');
+            if (selectedBranchId) {
+                $('#branch').val(selectedBranchId).trigger('change');
 
-            // }
+            }
         });
 
         /*modal quét qr*/
