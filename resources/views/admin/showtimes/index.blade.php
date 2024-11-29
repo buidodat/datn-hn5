@@ -426,7 +426,7 @@
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
                 cinemaSelect.empty();
-                cinemaSelect.append('<option value="">Chọn Rạp</option>');
+                // cinemaSelect.append('<option value="">Chọn Rạp</option>');
 
                 if (branchId) {
                     $.ajax({
