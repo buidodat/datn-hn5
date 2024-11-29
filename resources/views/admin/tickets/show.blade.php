@@ -33,7 +33,7 @@
                     <hr>
                     <strong>Poly Cinemas {{ $oneTicket->cinema->name }} -
                         {{ $oneTicket->cinema->branch->name }}</strong><br>
-                    Thời gian đặt vé: {{ $oneTicket->created_at }}
+                    Thời gian đặt vé: {{ \Carbon\Carbon::parse($oneTicket->created_at)->format('H:i d/m/Y') }}
                     <hr>
                     @php
                         $ticketSeat = $oneTicket->ticketSeats()->first();
@@ -42,36 +42,49 @@
                     <strong>{{ $oneTicket->movie->name }} ({{ $oneTicket->showtime->format }}) </strong><br>
                     ({{ $rating['name'] }}) {{ $rating['description'] }}<br>
                     <strong>Phòng:</strong> {{ $ticket->room->name }} <br>
-                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }}
-                    <hr>
-                    <div class="ticket-info border-bottom-dashed border-top-dashed mt-2">
-                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
-                            @php
-                                $combo = $ticketCombo->combo;
-                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
-                                $totalPrice = $price * $ticketCombo->quantity;
-                            @endphp
+                    <strong>Ghế:</strong> {{ $ticket->ticketSeats->pluck('seat.name')->implode(', ') }} <br>
+                    <span>
+                        <strong>Suất chiếu:</strong>
+                        {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }} ~
+                        {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }}
+                    </span><br>
 
-                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }}
-                                    vnđ)</b></p>
+                    <span>
+                        <strong>Ngày chiếu:</strong>
+                        {{ \Carbon\Carbon::parse($oneTicket->showtime->date)->format('d/m/Y') }}
+                    </span><br>
 
-                            <ul>
-                                @foreach ($combo->food as $food)
-                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
-                                @endforeach
-                            </ul>
-                        @endforeach
-                    </div>
                     <hr>
+                    @if ($ticket->ticketCombos->isNotEmpty())
+                        <div class="ticket-info border-bottom-dashed border-top-dashed mt-2">
+                            @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                                <p><b>{{ $ticketCombo->combo->name }} x {{ $ticketCombo->quantity }}
+                                        ({{ number_format($ticketCombo->combo->price_sale) }}
+                                        vnđ)</b></p>
+
+                                <ul>
+                                    @foreach ($ticketCombo->combo->food as $food)
+                                        <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                    @endforeach
+                                </ul>
+                            @endforeach
+                        </div>
+                        <hr>
+                    @endif
                 </div>
 
                 <div class="invoice-summary">
-                    <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
-                    <div><span>Giá combo:</span><span>{{ number_format($totalComboPrice, 0, ',', '.') }} VND</span></div>
-                    <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} VND</span>
+                    <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} vnd</span></div>
+                    @if ($ticket->ticketCombos->isNotEmpty())
+                        <div><span>Giá combo:</span><span>{{ number_format($totalComboPrice, 0, ',', '.') }} vnd</span>
+                        </div>
+                    @endif
+                    <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }} vnd</span>
                     </div>
-                    <div><strong>Thành tiền:</strong><strong>{{ number_format($ticket->total_price, 0, ',', '.') }}
-                            VND</strong></div>
+                    <div><span>Điểm Poly:</span><span>{{ number_format($ticket->point_discount, 0, ',', '.') }} vnd</span>
+                    </div>
+                    <div><strong>Thành
+                            tiền:</strong><strong>{{ number_format($ticket->total_price, 0, ',', '.') }}vnd</strong></div>
                 </div>
 
                 <div class="barcode">
@@ -82,51 +95,55 @@
         </div>
 
         {{-- hoa don combo --}}
-        <div class="invoice-container">
-            <div class="invoice-content">
-                <h2 class="invoice-title">Hóa đơn combo</h2>
+        @if ($ticket->ticketCombos->isNotEmpty())
+            <div class="invoice-container">
+                <div class="invoice-content">
+                    <h2 class="invoice-title">Hóa đơn combo</h2>
 
-                <div class="invoice-details">
-                    <strong>Chi nhánh công ty Poly Cinemas vietnam tại {{ $oneTicket->cinema->branch->name }}</strong><br>
-                    Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
-                    mst: 012147901412
-                    <hr>
-                    <strong>Poly Cinemas {{ $oneTicket->cinema->name }} -
-                        {{ $oneTicket->cinema->branch->name }}</strong><br>
-                    Thời gian: {{ $oneTicket->created_at }}
-                    <hr>
-                    <div class="ticket-info border-bottom-dashed mt-2">
-                        @foreach ($oneTicket->ticketCombos as $ticketCombo)
-                            @php
-                                $combo = $ticketCombo->combo;
-                                $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
-                                $totalPrice = $price * $ticketCombo->quantity;
-                            @endphp
+                    <div class="invoice-details">
+                        <strong>Chi nhánh công ty Poly Cinemas vietnam tại
+                            {{ $oneTicket->cinema->branch->name }}</strong><br>
+                        Địa chỉ: 69 {{ $oneTicket->cinema->name }} - {{ $oneTicket->cinema->branch->name }}<br>
+                        mst: 012147901412
+                        <hr>
+                        <strong>Poly Cinemas {{ $oneTicket->cinema->name }} -
+                            {{ $oneTicket->cinema->branch->name }}</strong><br>
+                        Thời gian đặt vé: {{ \Carbon\Carbon::parse($oneTicket->created_at)->format('H:i d/m/Y') }}
+                        <hr>
+                        <div class="ticket-info border-bottom-dashed mt-2">
+                            @foreach ($oneTicket->ticketCombos as $ticketCombo)
+                                @php
+                                    $combo = $ticketCombo->combo;
+                                    $price = $combo->price_sale > 0 ? $combo->price_sale : $combo->price;
+                                    $totalPrice = $price * $ticketCombo->quantity;
+                                @endphp
 
-                            <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }} ({{ number_format($totalPrice) }}
-                                    vnđ)</b></p>
+                                <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
+                                        ({{ number_format($combo->price_sale) }}
+                                        VND)</b></p>
 
-                            <ul>
-                                @foreach ($combo->food as $food)
-                                    <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
-                                @endforeach
-                            </ul>
-                        @endforeach
+                                <ul>
+                                    @foreach ($combo->food as $food)
+                                        <li>{{ $food->name }} x {{ $food->pivot->quantity }}</li>
+                                    @endforeach
+                                </ul>
+                            @endforeach
+                        </div>
+                        <hr>
                     </div>
-                    <hr>
-                </div>
 
-                <div class="invoice-summary">
-                    <div><strong>Thành tiền:</strong><strong>{{ number_format($totalComboPrice, 0, ',', '.') }}
-                            VND</strong></div>
-                </div>
+                    <div class="invoice-summary">
+                        <div><strong>Thành tiền:</strong><strong>{{ number_format($totalComboPrice, 0, ',', '.') }}
+                                VND</strong></div>
+                    </div>
 
-                <div class="barcode">
-                    {!! $barcode !!}
+                    <div class="barcode">
+                        {!! $barcode !!}
+                    </div>
+                    <div class="invoice-code">{{ $oneTicket->code }}</div>
                 </div>
-                <div class="invoice-code">{{ $oneTicket->code }}</div>
             </div>
-        </div>
+        @endif
 
         {{-- hoa don ve --}}
         @foreach ($oneTicket->ticketSeats as $seat)
@@ -143,7 +160,7 @@
                         <hr>
                         <strong>Poly Cinemas {{ $oneTicket->cinema->name }} -
                             {{ $oneTicket->cinema->branch->name }}</strong><br>
-                        Thời gian: {{ $oneTicket->created_at }}
+                        Thời gian đặt vé: {{ \Carbon\Carbon::parse($oneTicket->created_at)->format('H:i d/m/Y') }}
                         <hr>
                         @php
                             $ticketSeat = $oneTicket->ticketSeats()->first();
@@ -153,17 +170,22 @@
                         ({{ $rating['name'] }})
                         {{ $rating['description'] }}<br>
                         <strong>Phòng:</strong> {{ $ticket->room->name }}<br>
-                        <strong>Ghế:</strong> {{ $seat->seat->name }}
+                        <strong>Ghế:</strong> {{ $seat->seat->name }} <br>
+                        <span>
+                            <strong>Suất chiếu:</strong>
+                            {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }} ~
+                            {{ \Carbon\Carbon::parse($oneTicket->showtime->start_time)->format('H:i') }}
+                        </span><br>
+
+                        <span>
+                            <strong>Ngày chiếu:</strong>
+                            {{ \Carbon\Carbon::parse($oneTicket->showtime->date)->format('d/m/Y') }}
+                        </span>
                         <hr>
                     </div>
 
                     <div class="invoice-summary">
-                        <div><span>Giá vé:</span><span>{{ number_format($totalPriceSeat, 0, ',', '.') }} VND</span></div>
-                        <div><span>Giảm giá:</span><span>{{ number_format($ticket->voucher_discount, 0, ',', '.') }}
-                                VND</span></div>
-                        <div><strong>Thành
-                                tiền:</strong><strong>{{ number_format($totalPriceSeat - $ticket->voucher_discount, 0, ',', '.') }}
-                                VND</strong></div>
+                        <div><strong>Giá vé:</strong><span>{{ number_format($seat->price, 0, ',', '.') }} VND</span></div>
                     </div>
 
                     <div class="barcode">
@@ -306,57 +328,59 @@
                             </tbody>
 
                             @if ($ticket->ticketCombos->isNotEmpty())
-                            <thead class="table-light text-muted">
-                                <tr>
-                                    <th scope="col">Combo</th>
-                                    <th scope="col">Chi tiết</th>
-                                    <th scope="col">Số lượng x giá</th>
-                                    <th scope="col" class="text-end">Giá combo</th>
-                            </thead>
-                            <tbody>
-                                @foreach ($ticket->ticketCombos as $ticketCombo)
+                                <thead class="table-light text-muted">
                                     <tr>
-                                        <td>
-                                            @php
+                                        <th scope="col">Combo</th>
+                                        <th scope="col">Chi tiết</th>
+                                        <th scope="col">Số lượng x giá</th>
+                                        <th scope="col" class="text-end">Giá combo</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($ticket->ticketCombos as $ticketCombo)
+                                        <tr>
+                                            <td>
+                                                @php
 
-                                                $url = $ticketCombo->combo->img_thumbnail;
-                                                if (!\Str::contains($url, 'http')) {
-                                                    $url = Storage::url($url);
-                                                }
-                                            @endphp
-                                            <div style="display: flex; justify-content: center">
-                                                @if (!empty($ticketCombo->combo->img_thumbnail))
-                                                    <img src="{{ $url }}" alt="Movie Thumbnail"
-                                                        class="rounded-2" width="70px">
-                                                @else
-                                                    No image!
-                                                @endif
-                                            </div>
-                                            <div style="display: flex; justify-content: center">
-                                                <p class="mt-2 mb-0 fs-6 link-primary"><b>{{ $ticketCombo->combo->name }}</b></p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @foreach ($ticketCombo->combo->food as $itemFood)
-                                                <li>
-                                                    {{ $itemFood->name }} x
-                                                    ({{ $itemFood->pivot->quantity }})
-                                                </li>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            <span class="link-primary fw-medium">
-                                                {{ $ticketCombo->quantity }} x
-                                                {{ number_format($ticketCombo->combo->price_sale, 0, ',', '.') }} vnđ
-                                            </span>
-                                        </td>
-                                        <td class="fw-medium text-end">
-                                            {{ number_format($ticketCombo->price, 0, ',', '.') }} vnđ
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                                    $url = $ticketCombo->combo->img_thumbnail;
+                                                    if (!\Str::contains($url, 'http')) {
+                                                        $url = Storage::url($url);
+                                                    }
+                                                @endphp
+                                                <div style="display: flex; justify-content: center">
+                                                    @if (!empty($ticketCombo->combo->img_thumbnail))
+                                                        <img src="{{ $url }}" alt="Movie Thumbnail"
+                                                            class="rounded-2" width="70px">
+                                                    @else
+                                                        No image!
+                                                    @endif
+                                                </div>
+                                                <div style="display: flex; justify-content: center">
+                                                    <p class="mt-2 mb-0 fs-6 link-primary">
+                                                        <b>{{ $ticketCombo->combo->name }}</b>
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @foreach ($ticketCombo->combo->food as $itemFood)
+                                                    <li>
+                                                        {{ $itemFood->name }} x
+                                                        ({{ $itemFood->pivot->quantity }})
+                                                    </li>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                <span class="link-primary fw-medium">
+                                                    {{ $ticketCombo->quantity }} x
+                                                    {{ number_format($ticketCombo->combo->price_sale, 0, ',', '.') }} vnđ
+                                                </span>
+                                            </td>
+                                            <td class="fw-medium text-end">
+                                                {{ number_format($ticketCombo->price, 0, ',', '.') }} vnđ
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                            </tbody>
+                                </tbody>
                             @endif
 
                             <tbody class="border-top border-top-dashed">
@@ -367,15 +391,19 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Giảm giá :</td>
-                                                    <td class="text-end">{{ number_format($ticket->voucher_discount, 0, ',', '.') }} vnđ</td>
+                                                    <td class="text-end">
+                                                        {{ number_format($ticket->voucher_discount, 0, ',', '.') }} vnđ
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Điểm Poly :</td>
-                                                    <td class="text-end">{{ number_format($ticket->point_discount, 0, ',', '.') }} vnđ</td>
+                                                    <td class="text-end">
+                                                        {{ number_format($ticket->point_discount, 0, ',', '.') }} vnđ</td>
                                                 </tr>
                                                 <tr class="border-top border-top-dashed">
                                                     <th scope="row">Tổng tiền :</th>
-                                                    <th class="text-end">{{ number_format($ticket->total_price, 0, ',', '.') }}
+                                                    <th class="text-end">
+                                                        {{ number_format($ticket->total_price, 0, ',', '.') }}
                                                         vnđ</th>
                                                 </tr>
                                             </tbody>
