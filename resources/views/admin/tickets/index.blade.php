@@ -199,7 +199,7 @@
                                     </td>
                                     <td class="text-center">
                                         @if (!empty($ticket->movie->img_thumbnail))
-                                            <img src="{{ $url }}" alt="Movie Thumbnail" width="100px">
+                                            <img src="{{ $url }}" alt="Movie Thumbnail" class="rounded-2" width="100px">
                                         @else
                                             No image !
                                         @endif

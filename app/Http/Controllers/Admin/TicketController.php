@@ -333,7 +333,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = $ticket->load(['ticketCombos.combo', 'showtime']);
+        $oneTicket = $ticket->load(['ticketCombos.combo', 'showtime', 'cinema']);
         $totalPriceSeat = $ticket->ticketSeats->sum('price');
         $totalComboPrice = $ticket->ticketCombos->sum('price');
         $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);
