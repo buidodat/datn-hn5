@@ -60,7 +60,8 @@
                             @foreach ($oneTicket->ticketCombos as $ticketCombo)
                                 <p><b>{{ $ticketCombo->combo->name }} x {{ $ticketCombo->quantity }}
                                         ({{ number_format($ticketCombo->combo->price_sale) }}
-                                        vnđ)</b></p>
+                                        vnđ)
+                                    </b></p>
 
                                 <ul>
                                     @foreach ($ticketCombo->combo->food as $food)
@@ -120,7 +121,8 @@
 
                                 <p><b>{{ $combo->name }} x {{ $ticketCombo->quantity }}
                                         ({{ number_format($combo->price_sale) }}
-                                        VND)</b></p>
+                                        VND)
+                                    </b></p>
 
                                 <ul>
                                     @foreach ($combo->food as $food)
@@ -483,7 +485,9 @@
                                         <img src="{{ $url }}" alt="Movie Thumbnail" width="50px"
                                             class="avatar-sm rounded">
                                     @else
-                                        No image!
+                                        <img class="avatar-sm rounded"
+                                            src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/users/user-dummy-img.jpg"
+                                            alt="Header Avatar">
                                     @endif
                                     {{-- <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-sm rounded"> --}}
                                 </div>
