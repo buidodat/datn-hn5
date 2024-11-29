@@ -42,8 +42,10 @@ class ShowtimeController extends Controller
         // Giá trị mặc định
         $user = Auth::user();
         if ($user->cinema_id == "") {
+            $cinema = Cinema::where('is_active', '1')->first();
+            // $branch = Branch::where('is_active', '1')->first();
             $defaultBranchId = 1;
-            $defaultCinemaId = 1;
+            $defaultCinemaId =  1;
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         } else {
@@ -70,7 +72,7 @@ class ShowtimeController extends Controller
 
         //Thiếu where is_active
         $branches = Branch::where('is_active', '1')->get();
-        $cinemas = Cinema::where('branch_id', $branchId)->where('is_active', '1')->get();
+        $cinemas = Cinema::where('is_active', '1')->get();
 
         $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
             ->whereDate('date', $date);
@@ -126,6 +128,10 @@ class ShowtimeController extends Controller
                     $movie->is_special = "1";
                     $movie->save();
                 }
+                session([
+                    'showtime.date' => $request->date,
+                    'showtime.is_active' => 0,
+                ]);
 
                 if ($request->has('auto_generate_showtimes')) {
                     //
