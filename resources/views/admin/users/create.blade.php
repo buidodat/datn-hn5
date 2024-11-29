@@ -40,6 +40,7 @@
                     <div class="card-body">
                         <form action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="email_verified_at" value="{{ \Carbon\Carbon::now()->toDateTimeString() }}">
                             <div class="tab-content">
                                 <div class="" id="pills-info-desc" role="tabpanel"
                                     aria-labelledby="pills-info-desc-tab">
