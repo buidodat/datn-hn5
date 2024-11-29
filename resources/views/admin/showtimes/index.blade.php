@@ -80,7 +80,7 @@
                                                     <select name="branch_id" id="branch" class="form-select">
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}"
-                                                                {{ $branch->id == session('showtime.branch_id', 1) ? 'selected' : '' }}>
+                                                                {{ $branch->id == session('showtime.branch_id') ? 'selected' : '' }}>
                                                                 {{ $branch->name }}
                                                             </option>
                                                         @endforeach
@@ -92,7 +92,7 @@
                                                     <select name="cinema_id" id="cinema" class="form-select">
                                                         @foreach ($cinemas as $cinema)
                                                             <option value="{{ $cinema->id }}"
-                                                                {{ $cinema->id == session('showtime.cinema_id', 1) ? 'selected' : '' }}>
+                                                                {{ $cinema->id == session('showtime.cinema_id') ? 'selected' : '' }}>
                                                                 {{ $cinema->name }}
                                                             </option>
                                                         @endforeach
@@ -426,7 +426,7 @@
                 var branchId = $(this).val();
                 var cinemaSelect = $('#cinema');
                 cinemaSelect.empty();
-                // cinemaSelect.append('<option value="">Chọn Rạp</option>');
+                cinemaSelect.append('<option value="">Chọn Rạp</option>');
 
                 if (branchId) {
                     $.ajax({
