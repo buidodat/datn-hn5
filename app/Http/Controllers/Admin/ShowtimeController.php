@@ -42,10 +42,10 @@ class ShowtimeController extends Controller
         // Giá trị mặc định
         $user = Auth::user();
         if ($user->cinema_id == "") {
-            $cinema = Cinema::where('is_active', '1')->first();
-            // $branch = Branch::where('is_active', '1')->first();
-            $defaultBranchId = 1;
-            $defaultCinemaId =  1;
+            $defaultBranchId = Branch::where('is_active', 1)->first()?->id ?? null;
+            $defaultCinemaId = Cinema::where('branch_id', $defaultBranchId)->where('is_active', 1)->first()?->id ?? null;
+            // $defaultCinemaId = $user->cinema_id ? (int) $user->cinema_id : null;
+
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         } else {
@@ -59,6 +59,8 @@ class ShowtimeController extends Controller
         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
         $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
         $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+        // $cinemaId = (int) $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+
         $date = $request->input('date', session('showtime.date', $defaultDate));
         $isActive = $request->input('is_active', session('showtime.is_active', $defaultIsActive));
 
@@ -72,7 +74,7 @@ class ShowtimeController extends Controller
 
         //Thiếu where is_active
         $branches = Branch::where('is_active', '1')->get();
-        $cinemas = Cinema::where('is_active', '1')->get();
+        $cinemas = Cinema::where('branch_id', $branchId)->where('is_active', '1')->get();
 
         $showtimesQuery = Showtime::where('cinema_id', $cinemaId)
             ->whereDate('date', $date);
