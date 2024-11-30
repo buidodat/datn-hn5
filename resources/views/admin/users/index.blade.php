@@ -101,7 +101,7 @@
                                         <tr>
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 @php
                                                     $url = $item->img_thumbnail;
 
@@ -116,14 +116,14 @@
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image "
                                                         alt="user-profile-image">
                                                 @else
-                                                    {{-- <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
-                                                alt="user-profile-image"> --}}
-                                                    {{-- Trống --}}
+                                                    <img class="avatar-sm rounded"
+                                                        src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/users/user-dummy-img.jpg"
+                                                        alt="Header Avatar">
                                                 @endif
 
                                             </td>
-                                            <td>{{ $item->email }}
+                                            <td>
+                                                {{ $item->email }}
                                             </td>
                                             {{-- <td>{{ $item->phone }}</td>
                                     <td>{{ Carbon\Carbon::parse($item->birthday)->format('d/m/Y') ?? 'null' }}</td> --}}
@@ -206,7 +206,7 @@
                                         <tr>
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 @php
                                                     $url = $user->img_thumbnail;
 
@@ -221,7 +221,9 @@
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image "
                                                         alt="user-profile-image">
                                                 @else
-                                                    {{-- Trống --}}
+                                                    <img class="avatar-sm rounded"
+                                                        src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/users/user-dummy-img.jpg"
+                                                        alt="Header Avatar">
                                                 @endif
 
                                             </td>

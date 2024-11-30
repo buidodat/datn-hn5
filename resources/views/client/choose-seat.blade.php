@@ -120,11 +120,11 @@
                                                     <p>Tổng tiền:</p>
                                                     <p id="total-price" class="bold">0 Vnđ</p>
                                                 </div>
-                                                <div>
+                                                {{-- <div>
                                                     <p>Thời gian còn lại:</p>
                                                     <p id="timer" class="bold">{{ gmdate('i:s', $remainingSeconds) }}
                                                     </p>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 10px">
                         <div class="col-md-12">
                             <div class="st_dtts_bs_wrapper float_left info-movie">
                                 <div class="st_dtts_bs_heading float_left">
@@ -211,6 +211,18 @@
                                     </form>
 
                                 </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="st_dtts_bs_wrapper float_left info-movie"
+                                style="padding: 20px; border-radius: 5px; text-align: center; background-color: #ffffff; color: #fa8c16; font-weight: 600">
+                                <p style="font-size: 17px; margin-bottom: 15px">Thời gian còn lại</p>
+
+                                <p id="timer" class="bold" style="font-size: 30px; color: #fa8c16; font-weight: 600">
+                                    {{ gmdate('i:s', $remainingSeconds) }}</p>
 
                             </div>
                         </div>
