@@ -156,16 +156,52 @@
 
                                                         <div class="voucher-form">
 
-                                                            <label for="voucher_code">Vui lòng nhập mã voucher vào ô
-                                                                trống
-                                                                phía
-                                                                dưới để được giảm giá!</label> <br>
+                                                            {{-- <label for="voucher_code">Mã Voucher</label> --}}
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code" id="voucher_code"
                                                                     placeholder="Nhập mã voucher">
 
                                                                 <button type="button" id="apply-voucher-btn">Xác nhận
                                                                 </button>
+                                                            </div>
+                                                            <div class="voucher-list">
+                                                                <label for="voucher_code">Voucher đang có:</label>
+                                                                <table class="points-table voucher-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Mã CODE</th>
+                                                                            <th>Giảm giá</th>
+                                                                            <th>HSD</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                FĐFBGSGXCVB
+                                                                            </td>
+                                                                            <td>Giảm giá 70k</td>
+                                                                            <td>20/12/2024</td>
+                                                                            <td>
+                                                                                <button type="button"
+                                                                                    id="apply-voucher-btn">Áp dụng
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                FĐFBGSEGSC
+                                                                            </td>
+                                                                            <td>Giảm giá 50k nhân ngày sinh nhật bạn</td>
+                                                                            <td>20/12/2024</td>
+                                                                            <td>
+                                                                                <button type="button"
+                                                                                    id="apply-voucher-btn">Áp dụng
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                             <div id="voucher-response">
 

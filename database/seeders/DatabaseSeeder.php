@@ -698,7 +698,20 @@ class DatabaseSeeder extends Seeder
                 'phone' => '0999965555',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'buiphusonph33333@fpt.edu.vn',
-                'password' => Hash::make('buiphusonph33858@fpt.edu.vn'),
+                'password' => Hash::make('buiphusonph33333@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'member',
+                'cinema_id' => null,
+            ],
+            [
+                'name' => 'Trương Đắc Đạt',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'phone' => '0999999995',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'truongdacdatph99999@fpt.edu.vn',
+                'password' => Hash::make('truongdacdatph99999@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
@@ -1063,7 +1076,7 @@ class DatabaseSeeder extends Seeder
             'Cấu hình website',
             'Danh sách thống kê',
             'Thẻ thành viên'
-    
+
         ];
 
         // Tạo các quyền từ danh sách

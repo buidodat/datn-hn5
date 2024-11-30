@@ -99,12 +99,9 @@ class ShowtimeController extends Controller
 
         $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
 
-
         $cleaningTime = Showtime::CLEANINGTIME;
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches', 'rooms'));
     }
-
-
 
 
     public function store(StoreShowtimeRequest $request)
