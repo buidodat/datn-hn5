@@ -288,11 +288,11 @@
 
                                                 </div>
                                             </div>
-                                            <div style="display: flex">
+                                            {{-- <div style="display: flex">
                                                 <p style="margin-right: 5px">Thời gian còn lại: </p>
                                                 <p id="timer" class="bold">
                                                     {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
-                                            </div>
+                                            </div> --}}
 
                                         </div>
 
@@ -301,7 +301,7 @@
                             </div>
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                            <div class="row">
+                            <div class="row" style="margin-bottom: 15px">
                                 <div class="col-md-12">
                                     <div class="st_dtts_bs_wrapper float_left info-movie">
                                         <div class="st_dtts_bs_heading float_left">
@@ -388,6 +388,19 @@
 
                                             <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="st_dtts_bs_wrapper float_left info-movie"
+                                        style="padding: 20px; border-radius: 5px; text-align: center; background-color: #fafafa; color: #fa8c16; font-weight: 600">
+                                        <p style="font-size: 17px; margin-bottom: 15px">Thời gian còn lại</p>
+
+                                        <p id="timer" class="bold"
+                                            style="font-size: 30px; color: #fa8c16; font-weight: 600">
+                                            {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
 
                                     </div>
                                 </div>
@@ -722,11 +735,12 @@
 
                                                 </div>
                                             </div>
-                                            <div style="display: flex">
+                                            {{-- <div style="display: flex">
                                                 <p style="margin-right: 5px">Thời gian còn lại: </p>
                                                 <p id="timer" class="bold">
                                                     {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
-                                            </div>
+                                                    
+                                            </div> --}}
 
                                         </div>
 
@@ -734,8 +748,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                            <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" >
+                            <div class="row" style="margin-bottom: 15px">
                                 <div class="col-md-12">
                                     <div class="st_dtts_bs_wrapper float_left info-movie">
                                         <div class="st_dtts_bs_heading float_left">
@@ -822,6 +836,19 @@
 
                                             <button type="submit" id="btnPayment">Tiếp tục</button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="st_dtts_bs_wrapper float_left info-movie"
+                                        style="padding: 20px; border-radius: 5px; text-align: center; background-color: #ffffff; color: #fa8c16; font-weight: 600">
+                                        <p style="font-size: 17px; margin-bottom: 15px">Thời gian còn lại</p>
+
+                                        <p id="timer" class="bold"
+                                            style="font-size: 30px; color: #fa8c16; font-weight: 600">
+                                            {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
+
                                     </div>
                                 </div>
                             </div>

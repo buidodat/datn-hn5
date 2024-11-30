@@ -577,7 +577,7 @@ class DatabaseSeeder extends Seeder
         $users = [
             [
                 'name' => 'System Admin',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'img_thumbnail' => '',
                 'phone' => '0332295555',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'admin@fpt.edu.vn',
@@ -590,7 +590,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Trương Công Lực',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'img_thumbnail' => '',
                 'phone' => '0332293871',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'luctcph37171@fpt.edu.vn',
@@ -603,7 +603,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
-                'img_thumbnail' => 'theme/admin/assets/images/users/user-dummy-img.jpg',
+                'img_thumbnail' => '',
                 'phone' => '0975098710',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'hieuhdph36384@fpt.edu.vn',
@@ -616,7 +616,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Đặng Phú An',
-                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
+                'img_thumbnail' => '',
                 'phone' => '0378633611',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'andpph31859@fpt.edu.vn',
@@ -642,7 +642,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
-                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Ac_8W5oiz3UQ7kNvgE477pl&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ajp6VrKXh1BJ4nvrLvN-bbm&oh=00_AYCMP6yTzIhdGeGsW8knCmMkdI3IBd1wi_dlZwVKIfdn6w&oe=670D6BD1',
+                'img_thumbnail' => '',
                 'phone' => '0973657594',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'sonnvph33874@fpt.edu.vn',
@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'img_thumbnail' => '',
                 'phone' => '0965263725',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'datbdph38211@fpt.edu.vn',
@@ -668,7 +668,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nhân viên Rạp',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'img_thumbnail' => '',
                 'phone' => '0965266625',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'nhanvienrapHaDong@fpt.edu.vn',
@@ -681,7 +681,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nhân viên Rạp',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'img_thumbnail' => '',
                 'phone' => '0965265555',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'nhanvienrapMyDinh@fpt.edu.vn',
@@ -694,7 +694,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Bùi Phú Sơn',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'img_thumbnail' => '',
                 'phone' => '0999965555',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'buiphusonph33333@fpt.edu.vn',
@@ -1099,9 +1099,9 @@ class DatabaseSeeder extends Seeder
             'Xóa phòng chiếu',
             'Xem chi tiết phòng chiếu',
             'Danh sách mẫu sơ đồ ghế',
-            'Thêm mẫu sơ đồ ghế',
-            'Sửa mẫu sơ đồ ghế',
-            'Xóa mẫu sơ đồ ghế',
+            // 'Thêm mẫu sơ đồ ghế',
+            // 'Sửa mẫu sơ đồ ghế',
+            // 'Xóa mẫu sơ đồ ghế',
             'Danh sách phim',
             'Xem chi tiết phim',
             'Danh sách suất chiếu',
@@ -1112,17 +1112,15 @@ class DatabaseSeeder extends Seeder
             'Danh sách hóa đơn',
             'Quét hóa đơn',
             'Xem chi tiết hóa đơn',
-            'Danh sách đồ ăn',
-            'Danh sách combo',
-            'Danh sách vouchers',
-            'Danh sách thanh toán',
-            'Danh sách bài viết',
-            'Danh sách slideshows',
-            'Danh sách liên hệ',
-            'Sửa liên hệ',
-
-            'Danh sách tài khoản',
-
+            // 'Danh sách đồ ăn',
+            // 'Danh sách combo',
+            // 'Danh sách vouchers',
+            // 'Danh sách thanh toán',
+            // 'Danh sách bài viết',
+            // 'Danh sách slideshows',
+            // 'Danh sách liên hệ',
+            // 'Sửa liên hệ',
+            // 'Danh sách tài khoản',
             'Danh sách thống kê',
         ]);
 
