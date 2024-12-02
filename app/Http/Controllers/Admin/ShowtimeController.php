@@ -99,12 +99,9 @@ class ShowtimeController extends Controller
 
         $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
 
-
         $cleaningTime = Showtime::CLEANINGTIME;
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches', 'rooms'));
     }
-
-
 
 
     public function store(StoreShowtimeRequest $request)
@@ -118,6 +115,8 @@ class ShowtimeController extends Controller
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
                 $user = auth()->user();
+                $branchId = $request->branch_id;
+                $cinemaId = $request->cinema_id;
 
                 // Lấy các suất chiếu hiện có trong phòng và ngày được chọn
                 $existingShowtimes = Showtime::where('room_id', $request->room_id)
@@ -131,8 +130,10 @@ class ShowtimeController extends Controller
                     $movie->save();
                 }
                 session([
+                    'showtime.branch_id' => $branchId,
+                    'showtime.cinema_id' => $cinemaId,
                     'showtime.date' => $request->date,
-                    'showtime.is_active' => 0,
+                    // 'showtime.is_active' => 0,
                 ]);
 
                 if ($request->has('auto_generate_showtimes')) {

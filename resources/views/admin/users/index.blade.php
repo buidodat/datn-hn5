@@ -67,13 +67,13 @@
 
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#usersLock" role="tab"
                                 aria-selected="false">
                                 Tài khoản bị khóa
 
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
 
@@ -185,6 +185,7 @@
                             </table>
                         </div>
 
+                        {{-- table khách hàng --}}
                         <div class="tab-pane " id="users" role="tabpanel">
 
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableUsers">
@@ -248,7 +249,7 @@
                                                     <a href="{{ route('admin.users.show', $user) }}">
                                                         <button title="xem" class="btn btn-success btn-sm "
                                                             type="button"><i class="fas fa-eye"></i></button></a>
-                                                    @if ($user->name != 'System Admin')
+                                                    {{-- @if ($user->name != 'System Admin')
                                                         <a href="{{ route('admin.users.edit', $user) }}">
                                                             <button title="xem" class="btn btn-warning btn-sm mx-1 "
                                                                 type="button"><i class="fas fa-edit"></i></button>
@@ -262,7 +263,7 @@
                                                                 <i class="ri-delete-bin-7-fill"></i>
                                                             </button>
                                                         </form>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </td>
                                         </tr>
