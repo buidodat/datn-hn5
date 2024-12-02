@@ -35,9 +35,9 @@ class RoomController extends Controller
         if (!session()->has('rooms.selected_tab')) {
             session(['rooms.selected_tab' => 'publish']); // Tab mặc định
         }
-        
+
         $rooms = Room::query()->with(['typeRoom', 'cinema', 'seats'])->latest('id')->get();
-        $branches = Branch::all();
+        $branches = Branch::where('is_active',1)->get();
         $typeRooms = TypeRoom::pluck('name', 'id')->all();
         if (Auth::user()->cinema_id == "") {
             $cinemas = Cinema::all();

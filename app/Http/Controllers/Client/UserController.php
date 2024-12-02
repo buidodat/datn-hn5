@@ -43,7 +43,7 @@ class UserController extends Controller
         $genders = User::GENDERS;
         $ranks = Rank::orderBy('total_spent', 'asc')->get();
         $vouchers = $this->getVoucher($userID);
-        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->paginate(5);
+        $tickets = Ticket::query()->with('ticketSeats')->where('user_id', $userID)->latest('id')->get();
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page','vouchers'));
     }
@@ -117,7 +117,6 @@ class UserController extends Controller
             if ($user->birthday == null && $request->filled('birthday')) {
                 $dataUser['birthday'] = $request->birthday;
             }
-            
             if ($request->hasFile('img_thumbnail')) {
                 $dataUser['img_thumbnail'] = Storage::put(self::PATH_UPLOAD, $request->img_thumbnail);
                 $ImgThumbnailCurrent = $user->img_thumbnail;

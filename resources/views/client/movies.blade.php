@@ -37,9 +37,9 @@
                     <div role="tabpanel" class="tab-pane fade" id="best">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
-                                <div class="row" id="movie-list1">
+                                <div class="row" id="movie-upcoming">
                                     @foreach ($moviesUpcoming as $movie)
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first movie-item">
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
@@ -78,11 +78,16 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
+                                                    <p><span class='text-bold'>Ngày khởi chiếu:</span>
+                                                        {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                                                    </p>
+
+
 
                                                 </div>
 
@@ -92,7 +97,8 @@
                                                     $hasShowtimeInNextWeek = $movie
                                                         ->showtimes()
                                                         ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
-                                                        ->whereBetween('start_time', [$currentNow, $endDate])
+                                                        ->where('start_time', '>', $currentNow)
+                                                        ->whereDate('date', '<', $endDate)
                                                         ->exists();
                                                 @endphp
 
@@ -105,21 +111,38 @@
 
 
                                             </div>
+
                                         </div>
                                     @endforeach
                                 </div>
 
                             </div>
                         </div>
+                        @if ($totalMovieUpcoming > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more-movie-upcoming"
+                                                    data-max={{ $totalMovieUpcoming }} data-offset="8">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     {{-- Phim đang chiếu --}}
                     <div role="tabpanel" class="tab-pane fade  in active" id="hot">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
-                                <div class="row" id="movie-list2">
+                                <div class="row" id="movie-showing">
                                     {{-- @dd($moviesShowing) --}}
                                     @foreach ($moviesShowing as $movie)
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first movie-item">
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
@@ -159,9 +182,9 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
-                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
+                                                    <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }} </p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
                                                         phút </p>
 
@@ -173,7 +196,8 @@
                                                     $hasShowtimeInNextWeek = $movie
                                                         ->showtimes()
                                                         ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
-                                                        ->whereBetween('start_time', [$currentNow, $endDate])
+                                                        ->where('start_time', '>', $currentNow)
+                                                        ->whereDate('date', '<', $endDate)
                                                         ->exists();
                                                 @endphp
 
@@ -192,14 +216,30 @@
 
                             </div>
                         </div>
+                        @if ($totalMovieShowing > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more-movie-showing"
+                                                    data-max={{ $totalMovieShowing }} data-offset="8">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     {{-- Suất chiếu đặc biệt --}}
                     <div role="tabpanel" class="tab-pane fade" id="trand">
                         <div class="tab-pane-content-movie-list">
                             <div class="item">
-                                <div class="row" id="movie-list3">
+                                <div class="row" id="movie-special">
                                     @foreach ($moviesSpecial as $movie)
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 prs_upcom_slide_first movie-item">
                                             <div class="movie_box_wrapper">
                                                 <div class="movie_img_box">
                                                     @if ($movie->is_hot == '1')
@@ -240,7 +280,7 @@
                                                 <div class="content-movie">
                                                     <h3 class="movie-name-home">
                                                         <a
-                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 19) }}</a>
+                                                            href="movies/{{ $movie->slug }}">{{ Str::limit($movie->name, 28) }}</a>
                                                     </h3>
                                                     <p><span class='text-bold'>Thể loại:</span> {{ $movie->category }}</p>
                                                     <p><span class='text-bold'>Thời lượng:</span> {{ $movie->duration }}
@@ -254,7 +294,8 @@
                                                     $hasShowtimeInNextWeek = $movie
                                                         ->showtimes()
                                                         ->where('cinema_id', session('cinema_id')) // Kiểm tra theo cinema_id
-                                                        ->whereBetween('start_time', [$currentNow, $endDate])
+                                                        ->where('start_time', '>', $currentNow)
+                                                        ->whereDate('date', '<', $endDate)
                                                         ->exists();
                                                 @endphp
 
@@ -273,6 +314,22 @@
 
                             </div>
                         </div>
+                        @if ($totalMovieSpecial > 8)
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="prs_animate_btn1 prs_upcom_main_wrapper">
+                                        <ul>
+                                            <li>
+                                                <button class="button button--tamaya prs_upcom_main_btn text-white"
+                                                    data-text="Xem thêm" id="load-more-movie-special"
+                                                    data-max={{ $totalMovieSpecial }} data-offset="8">Xem thêm</button>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -284,6 +341,115 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('theme/client/js/trailler.js') }}"></script>
+    <script src="{{ asset('theme/client/js/trailler.js') }}"></script>
     <script src="{{ asset('theme/client/js/showtime.js') }}"></script>
+
+     {{-- Xử lý nút xem thêm --}}
+     <script>
+        ///===Phim đang chiếu===\\\
+        $(document).ready(function() {
+            $('#load-more-movie-showing').click(function() {
+                var offset = $(this).data('offset');
+                const max = $(this).data('max')
+                var button = $(this); // Nút xem thêm
+
+                $.ajax({
+                    url: '{{ route('load-more-movie-showing') }}',
+                    method: 'GET',
+                    data: {
+                        offset: offset
+                    },
+                    beforeSend: function() {
+                        button.prop('disabled', true);
+                    },
+                    success: function(response) {
+                        $('#movie-showing').append(response);
+
+                        button.data('offset', offset + 8);
+
+                        if ($('#movie-showing .movie-item').length >= max) {
+                            button.hide();
+                        } else {
+                            button.prop('disabled', false);
+                        }
+                    },
+                    error: function() {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
+                        button.prop('disabled', false);
+                    }
+                });
+            });
+        });
+
+        ///===Phim sắp chiếu===\\\
+        $(document).ready(function() {
+            $('#load-more-movie-upcoming').click(function() {
+                var offset = $(this).data('offset');
+                const max = $(this).data('max')
+                var button = $(this); // Nút xem thêm
+
+                $.ajax({
+                    url: '{{ route('load-more-movie-upcoming') }}',
+                    method: 'GET',
+                    data: {
+                        offset: offset
+                    },
+                    beforeSend: function() {
+                        button.prop('disabled', true);
+                    },
+                    success: function(response) {
+                        $('#movie-upcoming').append(response);
+
+                        button.data('offset', offset + 8);
+
+                        if ($('#movie-upcoming .movie-item').length >= max) {
+                            button.hide();
+                        } else {
+                            button.prop('disabled', false);
+                        }
+                    },
+                    error: function() {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
+                        button.prop('disabled', false);
+                    }
+                });
+            });
+        });
+
+
+        ///===Suất chiếu đặc biệt===\\\
+        $(document).ready(function() {
+            $('#load-more-movie-special').click(function() {
+                var offset = $(this).data('offset');
+                const max = $(this).data('max')
+                var button = $(this); // Nút xem thêm
+
+                $.ajax({
+                    url: '{{ route('load-more-movie-special') }}',
+                    method: 'GET',
+                    data: {
+                        offset: offset
+                    },
+                    beforeSend: function() {
+                        button.prop('disabled', true);
+                    },
+                    success: function(response) {
+                        $('#movie-special').append(response);
+
+                        button.data('offset', offset + 8);
+
+                        if ($('#movie-special .movie-item').length >= max) {
+                            button.hide();
+                        } else {
+                            button.prop('disabled', false);
+                        }
+                    },
+                    error: function() {
+                        alert('Đã có lỗi xảy ra. Vui lòng thử lại!');
+                        button.prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

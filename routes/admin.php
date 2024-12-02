@@ -205,6 +205,8 @@ Route::get('/statistical-tickets', [StatisticalController::class, 'statisticalTi
 Route::get('/statistical-revenue', [StatisticalController::class, 'statisticalRevenue'])->name('statistical-revenue');
 Route::get('/statistical-cinemas', [StatisticalController::class, 'statisticalCinemas'])->name('statistical-cinemas');
 
+Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard.fillter');
+
 // Route::get('/statistical/revenue', [StatisticalController::class, 'revenue'])->name('statistical.revenue');
 // Route::get('/statistical/ticketsRevenue', [StatisticalController::class, 'ticketsRevenue'])->name('statistical.ticketsRevenue');
 Route::get('/statistical/cinemaRevenue', [StatisticalController::class, 'cinemaRevenue'])->name('statistical.cinemaRevenue');
