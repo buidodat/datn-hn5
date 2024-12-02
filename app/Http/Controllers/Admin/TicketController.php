@@ -274,42 +274,49 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('code', $ticketCode)->first();
 
-        if (!$ticket) {
+        if ($ticket) {
             return response()->json([
-                'success' => false,
-                'message' => 'Mã vé không hợp lệ.',
+                'success' => true,
+                'message' => 'Thao tác thành công',
+                'redirect_url' => route('admin.tickets.show', $ticket)
             ]);
         }
 
-        $now = Carbon::now();
-        if ($now > $ticket->expiry) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vé này đã hết hạn.',
-            ]);
-        }
 
-        switch ($ticket->status) {
-            case 'Chưa xuất vé':
-                return response()->json([
-                    'success' => true,
-                    'message' => 'QR code đã được xử lý thành công!',
-                    'redirect_url' => route('admin.tickets.show', $ticket)
-                ]);
 
-            case 'Đã xuất vé':
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Vé này đã được suất rồi.',
-                    'redirect_url' => route('admin.tickets.show', $ticket)
-                ]);
+        // $now = Carbon::now();
+        // if ($now > $ticket->expiry) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Vé này đã hết hạn.',
+        //     ]);
+        // }
 
-            default:
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vé không hợp lệ.',
-                ]);
-        }
+        // switch ($ticket->status) {
+        //     case 'Chưa xuất vé':
+        //         return response()->json([
+        //             'success' => true,
+        //             'message' => 'QR code đã được xử lý thành công!',
+        //             'redirect_url' => route('admin.tickets.show', $ticket)
+        //         ]);
+
+        //     case 'Đã xuất vé':
+        //         return response()->json([
+        //             'success' => true,
+        //             'message' => 'Vé này đã được suất rồi.',
+        //             'redirect_url' => route('admin.tickets.show', $ticket)
+        //         ]);
+
+        //     default:
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => 'Vé không hợp lệ.',
+        //         ]);
+        // }
+        return response()->json([
+            'success' => false,
+            'message' => 'Mã vé không hợp lệ.',
+        ]);
     }
 
     /**

@@ -41,7 +41,7 @@
                     <li class="nav-item">
                         <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
                             <i class="ri-dashboard-2-line"></i>
-                            <span data-key="t-dashboards">Dashboard</span>
+                            <span data-key="t-dashboards">Tổng quan</span>
                         </a>
                     </li>
                 @endif
