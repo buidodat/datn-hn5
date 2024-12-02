@@ -210,7 +210,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rooms->where('is_publish', true) as $index => $room)
+                                    @foreach ($rooms->where('is_publish', true)->when(Auth::user()->cinema_id, function ($query) {
+                                        return $query->where('cinema_id', Auth::user()->cinema_id);
+                                        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>

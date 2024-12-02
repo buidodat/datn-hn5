@@ -217,11 +217,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="st_dtts_bs_wrapper float_left info-movie"
-                                style="padding: 20px; border-radius: 5px; text-align: center; background-color: #ffffff; color: #fa8c16; font-weight: 600">
-                                <p style="font-size: 17px; margin-bottom: 15px">Thời gian còn lại</p>
+                            <div class="st_dtts_bs_wrapper float_left info-movie time-remaining">
+                                <p class="text-time">Thời gian còn lại</p>
 
-                                <p id="timer" class="bold" style="font-size: 30px; color: #fa8c16; font-weight: 600">
+                                <p id="timer" class="bold">
                                     {{ gmdate('i:s', $remainingSeconds) }}</p>
 
                             </div>
