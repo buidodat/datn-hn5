@@ -12,8 +12,8 @@ class Room extends Model
         'branch_id',
         'cinema_id',
         'type_room_id',
-        'name',
         'seat_template_id',
+        'name',
         'is_active',
         'is_publish'
     ];

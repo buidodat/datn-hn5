@@ -3,6 +3,7 @@
 use App\Models\Branch;
 use App\Models\Cenima;
 use App\Models\Cinema;
+use App\Models\SeatTemplate;
 use App\Models\TypeRoom;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,11 +18,11 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Branch::class);
-            $table->foreignIdFor(Cinema::class);
-            $table->foreignIdFor(TypeRoom::class);
+            $table->foreignIdFor(Branch::class)->constrained();
+            $table->foreignIdFor(Cinema::class)->constrained();
+            $table->foreignIdFor(TypeRoom::class)->constrained();
+            $table->foreignIdFor(SeatTemplate::class)->constrained();
             $table->string('name');
-            $table->string('seat_template_id');
             $table->boolean('is_active')->default(false);
             $table->boolean('is_publish')->default(false);
             $table->timestamps();
