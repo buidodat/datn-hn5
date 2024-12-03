@@ -97,17 +97,27 @@
                     <div class="listMovieScrening-date">
                         @php
                             $firstActiveSet = false; // Biến này để kiểm tra xem đã đánh dấu ngày nào là active hay chưa
+
+                            $user = auth()->user();
+                            $now = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
                         @endphp
                         @foreach ($dates as $date)
                             @php
-                                // Lọc tất cả các suất chiếu hợp lệ trong ngày này
-                                $validMoviesForDate = collect($date['showtimes'])->filter(function ($showtimes) {
+                                // Lọc lại toàn bộ suất chiếu hợp lệ cho ngày này
+                                $validMoviesForDate = collect($date['showtimes'])->filter(function ($showtimes) use (
+                                    $user,
+                                    $now,
+                                ) {
                                     return $showtimes
-                                        ->filter(function ($showtime) {
-                                            return \Carbon\Carbon::parse(
-                                                $showtime['start_time'],
-                                                'Asia/Ho_Chi_Minh',
-                                            )->isAfter(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'));
+                                        ->filter(function ($showtime) use ($user, $now) {
+                                            $startTime = \Carbon\Carbon::parse(
+                                                $showtime['start_time'], 'Asia/Ho_Chi_Minh',
+                                            );
+
+                                            if (!$user || $user->type === 'member') {
+                                                return $startTime->gt($now->addMinutes(10));
+                                            }
+                                            return $startTime->gt($now);
                                         })
                                         ->isNotEmpty();
                                 });
@@ -129,17 +139,26 @@
 
                 @php
                     $firstActiveSet = false; // Đặt lại biến để xử lý phần row_content
+
+                    $user = auth()->user();
+                    $now = \Carbon\Carbon::now('Asia/Ho_Chi_Minh');
                 @endphp
 
                 @foreach ($dates as $date)
                     @php
                         // Lọc lại toàn bộ suất chiếu hợp lệ cho ngày này
-                        $validMoviesForDate = collect($date['showtimes'])->filter(function ($showtimes) {
+                        $validMoviesForDate = collect($date['showtimes'])->filter(function ($showtimes) use (
+                            $user,
+                            $now,
+                        ) {
                             return $showtimes
-                                ->filter(function ($showtime) {
-                                    return \Carbon\Carbon::parse($showtime['start_time'], 'Asia/Ho_Chi_Minh')->isAfter(
-                                        \Carbon\Carbon::now('Asia/Ho_Chi_Minh'),
-                                    );
+                                ->filter(function ($showtime) use ($user, $now) {
+                                    $startTime = \Carbon\Carbon::parse($showtime['start_time'], 'Asia/Ho_Chi_Minh');
+
+                                    if (!$user || $user->type === 'member') {
+                                        return $startTime->gt($now->addMinutes(10));
+                                    }
+                                    return $startTime->gt($now);
                                 })
                                 ->isNotEmpty();
                         });
@@ -167,14 +186,18 @@
                                                 class="movie-poster">
                                         </div>
                                         <div class="movie-detail-content">
-                                            <h1 class="movie-title"><a href="movies/{{ $validShowtimes->first()->movie->slug }}" class="xanh-fpt1">{{ $validShowtimes->first()->movie->name }}</a></h1>
+                                            <h1 class="movie-title"><a
+                                                    href="movies/{{ $validShowtimes->first()->movie->slug }}"
+                                                    class="xanh-fpt1">{{ $validShowtimes->first()->movie->name }}</a></h1>
                                             <ul class="movie-info">
                                                 <span style="margin-right: 15px">
-                                                    <i class="fa fa-tags icons"></i> {{ $validShowtimes->first()->movie->category }}
+                                                    <i class="fa fa-tags icons"></i>
+                                                    {{ $validShowtimes->first()->movie->category }}
                                                 </span>
-                                               <span>
-                                                <i class="fa fa-clock-o icons"></i> {{ $validShowtimes->first()->movie->duration }} phút
-                                               </span>
+                                                <span>
+                                                    <i class="fa fa-clock-o icons"></i>
+                                                    {{ $validShowtimes->first()->movie->duration }} phút
+                                                </span>
                                             </ul>
                                             <!-- Lịch chiếu phim -->
                                             <div class="showtime-section">

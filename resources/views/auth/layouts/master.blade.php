@@ -31,7 +31,7 @@
     @yield('style-libs')
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('theme/client/images/header/poly2.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('theme/client/images/header/P2.svg') }}">
 
     <!-- Layout config Js -->
     <script src="{{ asset('theme/admin/assets/js/layout.js') }}"></script>
