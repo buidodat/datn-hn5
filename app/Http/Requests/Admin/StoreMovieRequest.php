@@ -45,7 +45,8 @@ class StoreMovieRequest extends FormRequest
                 'required',
                 Rule::in(array_column(Movie::VERSIONS, 'name')),
             ],
-            'surcharge' => 'nullable|integer|min:0'
+            'surcharge' => 'nullable|integer|min:0',
+            'surcharge_desc' => 'nullable|max:255'
         ];
     }
 

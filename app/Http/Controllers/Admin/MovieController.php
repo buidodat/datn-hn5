@@ -65,6 +65,7 @@ class MovieController extends Controller
                 'end_date' => $request->end_date,
                 'trailer_url' => $request->trailer_url,
                 'surcharge' => $request->surcharge,
+                'surcharge_desc' => $request->surcharge_desc,
                 'is_active' => isset($request->is_active) ? 1 : 0,
                 'is_hot' => isset($request->is_hot) ? 1 : 0,
             ];
@@ -137,6 +138,7 @@ class MovieController extends Controller
                 'rating' => $request->rating,
                 'trailer_url' => $request->trailer_url,
                 'surcharge' => $request->surcharge,
+                'surcharge_desc' => $request->surcharge_desc,
                 'is_active' => isset($request->is_active) ? 1 : 0,
                 'is_hot' => isset($request->is_hot) ? 1 : 0,
             ];

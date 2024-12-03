@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MovieController extends Controller
@@ -17,6 +18,10 @@ class MovieController extends Controller
 
         // Lấy ngày hiện tại
         $currentDate = new \DateTime();
+        $startTime = now()->addMinutes(10);
+        if (Auth::check() &&  Auth::user()->type == 'admin') {
+            $startTime = now();
+        }
 
         for ($i = 0; $i < 7; $i++) {
             // Format ngày và lấy lịch chiếu
@@ -24,9 +29,10 @@ class MovieController extends Controller
             $formattedDate = $currentDate->format('d/m') . ' - ' . $dayNames[$dayOfWeek];
             $showtimes = DB::table('showtimes')
                 ->where('showtimes.movie_id', $movie->id)
-                ->where('showtimes.cinema_id', session('cinema_id')) // Lọc trực tiếp theo cinema_id trong bảng showtimes
+                ->where('showtimes.cinema_id', session('cinema_id'))
+                ->where('showtimes.is_active', 1) // Lọc trực tiếp theo cinema_id trong bảng showtimes
                 ->whereDate('showtimes.date', $currentDate)
-                ->where('showtimes.start_time', '>', now())
+                ->where('showtimes.start_time', '>', $startTime)
                 ->orderBy('showtimes.start_time', 'asc')
                 ->get();
             $showtimeFormats  = [];
@@ -55,9 +61,6 @@ class MovieController extends Controller
     }
 
 
-    public function activeTab(){
-        
-    }
 
     public function updateActive(Request $request)
     {

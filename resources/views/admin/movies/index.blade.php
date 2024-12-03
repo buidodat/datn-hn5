@@ -88,7 +88,7 @@
 
                     <div class="card-body tab-content ">
                         {{-- Tất cả ok rồi --}}
-                        <div class="tab-pane " id="allMovie" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'all' ? 'active' : '' }} " id="allMovie" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllMovie">
                                 <thead class='table-light'>
                                     <tr>
@@ -229,7 +229,7 @@
                             </table>
                         </div>
                         {{-- Đã xuất bản --}}
-                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'publish' ? 'active' : '' }} " id="isPublish" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100"
                                 id="tableIsPublish">
                                 <thead class='table-light'>
@@ -372,7 +372,7 @@
                             </table>
                         </div>
                         {{-- Bản nháp --}}
-                        <div class="tab-pane " id="isDraft" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'draft' ? 'active' : '' }}" id="isDraft" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
                                 <thead class='table-light'>
                                     <tr>

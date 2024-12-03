@@ -127,13 +127,6 @@ class APIController extends Controller
 
         if ($membership) {
             $user = User::find($membership->user_id);
-        } else {
-            $user = User::where('email', $dataMembership)->first();
-
-            // Nếu tìm thấy user theo email, lấy membership tương ứng
-            if ($user) {
-                $membership = Membership::where('user_id', $user->id)->first();
-            }
         }
 
         // Nếu tìm thấy thông tin user và membership
