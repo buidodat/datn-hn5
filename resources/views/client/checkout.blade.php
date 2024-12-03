@@ -156,7 +156,10 @@
 
                                                         <div class="voucher-form">
 
-                                                            {{-- <label for="voucher_code">Mã Voucher</label> --}}
+                                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được giảm giá!</label>
+                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher đang có</span>
+                                                            </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code" id="voucher_code"
                                                                     placeholder="Nhập mã voucher">
@@ -168,6 +171,7 @@
                                                             <div id="voucher-response">
 
                                                             </div>
+                                                            @include('client.modals.modal-voucher')
                                                         </div>
                                                     </div>
 
@@ -581,11 +585,10 @@
                                                         <div class="voucher-title">Poly Voucher</div>
 
                                                         <div class="voucher-form">
-
                                                             
                                                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                                                 <label for="voucher_code">Vui lòng nhập mã voucher để được giảm giá!</label>
-                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher của tôi</span>
+                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher đang có</span>
                                                             </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code"

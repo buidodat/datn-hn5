@@ -1,7 +1,7 @@
 @extends('auth.layouts.master')
 
 @section('title')
-    Đăng ký
+    Xác minh email
 @endsection
 
 @section('content')
