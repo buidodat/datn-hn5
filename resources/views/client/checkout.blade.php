@@ -282,7 +282,7 @@
                                                             tại đây.</span>
                                                     </p>
 
-                                                    @include('client.layouts.components.modal-clause')
+                                                    @include('client.modals.modal-clause')
 
                                                 </div>
                                             </div>
@@ -582,10 +582,11 @@
 
                                                         <div class="voucher-form">
 
-                                                            <label for="voucher_code">Vui lòng nhập mã voucher vào ô
-                                                                trống
-                                                                phía
-                                                                dưới để được giảm giá!</label> <br>
+                                                            
+                                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được giảm giá!</label>
+                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher của tôi</span>
+                                                            </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code"
                                                                     id="voucher_code" placeholder="Nhập mã voucher">
@@ -597,10 +598,9 @@
                                                             <div id="voucher-response">
 
                                                             </div>
+
+                                                            @include('client.modals.modal-voucher')
                                                         </div>
-
-
-
                                                     </div>
 
 
@@ -725,7 +725,7 @@
                                                             tại đây.</span>
                                                     </p>
 
-                                                    @include('client.layouts.components.modal-clause')
+                                                    @include('client.modals.modal-clause')
 
                                                 </div>
                                             </div>
@@ -1235,7 +1235,7 @@
                 clearInterval(countdown); // Dừng đếm ngược
 
                 // Hiển thị thông báo và quay về trang chủ
-                alert('Hết thời gian! Bạn sẽ được chuyển về trang chủ.');
+                showAlertMessage('Hết thời gian! Bạn sẽ được chuyển về trang chủ.', 'warning')
                 window.location.href = '/'; // Điều hướng về trang chủ ("/")
             }
         }, 1000); // Cập nhật mỗi giây
@@ -1243,10 +1243,20 @@
 
 
     <script>
+        // modal điều khoản mua và đặt vé
         const showModal = document.getElementById("showModal");
         // Hiển thị modal khi bấm vào "tại đây"
         showModal.onclick = function() {
             modal.style.display = "flex";
+            document.body.classList.add('no-scroll');
+        }
+
+
+        // modal voucher của tôi
+        const showModalVoucher = document.getElementById("showModalVoucher");
+        // Hiển thị modal khi bấm vào "tại đây"
+        showModalVoucher.onclick = function() {
+            modalVoucher.style.display = "flex";
             document.body.classList.add('no-scroll');
         }
     </script>
