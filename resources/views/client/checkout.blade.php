@@ -164,7 +164,7 @@
                                                                 <button type="button" id="apply-voucher-btn">Xác nhận
                                                                 </button>
                                                             </div>
-                                                            
+
                                                             <div id="voucher-response">
 
                                                             </div>
@@ -456,7 +456,7 @@
                                                             </div>
                                                             <div class="form-membership" id='form-membership'>
                                                                 <input type="text" id="data_membership"
-                                                                    placeholder="Thẻ thành viên/Email">
+                                                                    placeholder="Thẻ thành viên">
                                                                 <button type="button" id='submit-membership'>Xác
                                                                     nhận</button>
                                                             </div>
@@ -733,7 +733,7 @@
                                                 <p style="margin-right: 5px">Thời gian còn lại: </p>
                                                 <p id="timer" class="bold">
                                                     {{ gmdate('i:s', $checkoutData['remainingSeconds']) }}</p>
-                                                    
+
                                             </div> --}}
 
                                         </div>
