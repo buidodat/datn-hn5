@@ -22,6 +22,7 @@ class Movie extends Model
         'end_date',
         'trailer_url',
         'surcharge',
+        'surcharge_desc',
         'is_active',
         'is_hot',
         'is_publish',

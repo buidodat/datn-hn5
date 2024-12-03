@@ -26,6 +26,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('trailer_url')->nullable();
             $table->unsignedInteger('surcharge')->nullable()->default(0);
+            $table->string('surcharge_desc')->nullable();
             $table->boolean('is_active')->default(false);
             $table->boolean('is_hot')->default(false);
             $table->boolean('is_special')->default(false);
