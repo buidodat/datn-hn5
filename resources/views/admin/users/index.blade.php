@@ -152,8 +152,8 @@
                                             </td>
 
 
-                                            <td >
-                                                <div class="d-flex " >
+                                            <td>
+                                                <div class="d-flex ">
                                                     @can('Xem chi tiết tài khoản')
                                                         <a href="{{ route('admin.users.show', $item) }}">
                                                             <button title="xem" class="btn btn-success btn-sm "
