@@ -39,7 +39,7 @@
                                     <div class="mb-3">
                                         <label class="form-label" for="email-input">Email</label>
                                         <div class="position-relative auth-pass-inputgroup">
-                                            <input id="email" type="email"
+                                            <input id="email" type="email" readonly
                                                 class="form-control @error('email') is-invalid @enderror" name="email"
                                                 value="{{ $email ?? old('email') }}" required autocomplete="email">
                                             @error('email')

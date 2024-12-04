@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomResetPassword;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,9 +20,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     public function sendEmailVerificationNotification()
-{
-    $this->notify(new CustomVerifyEmail());
-}
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token)); // Sử dụng thông báo tùy chỉnh của bạn
+    }
 
     /**
      * The attributes that are mass assignable.
