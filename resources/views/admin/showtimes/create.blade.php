@@ -516,7 +516,12 @@
 
         // Xóa hàng giờ chiếu
         $(document).on('click', '.delete-showtime', function() {
-            $(this).closest('.showtime-row').remove();
+            if (showtimeCount > minShowtimeItems) {
+                $(this).closest('.showtime-row').remove();
+                showtimeCount--;
+            } else {
+                alert('Phải có ít nhất ' + minShowtimeItems + ' giờ chiếu.');
+            }
         });
 
         // Hàm cập nhật giờ kết thúc

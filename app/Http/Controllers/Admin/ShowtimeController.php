@@ -39,30 +39,31 @@ class ShowtimeController extends Controller
 
     public function index(Request $request)
     {
-        // Giá trị mặc định
-        // $timeNow = now()->format('Y-m-d H:i:s');
-        // dd($timeNow);
+
         $user = Auth::user();
         if ($user->cinema_id == "") {
             $defaultBranchId = Branch::where('is_active', 1)->first()?->id ?? null;
             $defaultCinemaId = Cinema::where('branch_id', $defaultBranchId)->where('is_active', 1)->first()?->id ?? null;
-            // $defaultCinemaId = $user->cinema_id ? (int) $user->cinema_id : null;
-
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         } else {
             $defaultBranchId = $user->cinema->branch_id;
+
             $defaultCinemaId = $user->cinema_id;
+            // dd($defaultCinemaId);
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         }
 
 
         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
-        $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
-        $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
-        // $cinemaId = (int) $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
-
+        if ($user->cinema_id != "") {
+            $branchId = $user->cinema->branch_id;
+            $cinemaId = $user->cinema_id;
+        } else {
+            $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
+            $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+        }
         $date = $request->input('date', session('showtime.date', $defaultDate));
         $isActive = $request->input('is_active', session('showtime.is_active', $defaultIsActive));
 
@@ -73,6 +74,8 @@ class ShowtimeController extends Controller
             'showtime.date' => $date,
             'showtime.is_active' => $isActive
         ]);
+
+        // dd(sess)
 
         //Thiếu where is_active
         $branches = Branch::where('is_active', '1')->get();
@@ -85,6 +88,7 @@ class ShowtimeController extends Controller
             $showtimesQuery->where('is_active', $isActive);
         }
         $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();
+        // dd($showtimes);
 
         $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date', 'isActive'));
@@ -117,8 +121,14 @@ class ShowtimeController extends Controller
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
                 $user = auth()->user();
-                $branchId = $request->branch_id;
-                $cinemaId = $request->cinema_id;
+                if ($user->cinema_id != "") {
+                    $branchId = $user->cinema->branch_id;
+                    $cinemaId = $user->cinema_id;
+                } else {
+                    $branchId = $request->branch_id;
+                    $cinemaId = $request->cinema_id;
+                }
+
 
                 // Lấy các suất chiếu hiện có trong phòng và ngày được chọn
                 $existingShowtimes = Showtime::where('room_id', $request->room_id)

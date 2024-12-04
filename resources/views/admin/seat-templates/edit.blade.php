@@ -86,15 +86,15 @@
                                                 $rowClass = '';
                                                 $isAllRegular = $isAllVip = $isAllDouble = false;
 
-                                                if ($row < $seatTemplate->row_regular ) {
+                                                if ($row < $seatTemplate->row_regular) {
                                                     $rowTypeSeat = 1;
                                                     $rowClass = 'light-orange'; // Ghế thường
                                                     $isAllRegular = true;
-                                                } elseif ($row < $seatTemplate->row_vip + $seatTemplate->row_regular ) {
+                                                } elseif ($row < $seatTemplate->row_vip + $seatTemplate->row_regular) {
                                                     $rowClass = 'light-blue'; // Ghế VIP
                                                     $isAllVip = true;
                                                     $rowTypeSeat = 2;
-                                                } else{
+                                                } else {
                                                     $rowClass = 'light-pink'; // Ghế đôi
                                                     $rowTypeSeat = 3;
                                                     $isAllDouble = true;
@@ -135,7 +135,7 @@
                                                         <td class="box-item border-1 {{ $rowClass }}"
                                                             data-row="{{ chr(65 + $row) }}" data-col={{ $col + 1 }}>
                                                             <div class="box-item-seat"
-                                                                data-type-seat-id="{{$rowTypeSeat }}">
+                                                                data-type-seat-id="{{ $rowTypeSeat }}">
                                                                 @switch($seatType)
                                                                     @case(1)
                                                                         <img src="{{ asset('svg/seat-regular.svg') }}"
@@ -257,22 +257,34 @@
                                         </div>
                                         <div class="col-md-12 mb-3 d-flex ">
                                             <label class="form-label">Hoạt động:</label>
-                                            <span class="text-muted mx-2">
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active channge-is-active-room"
-                                                        type="checkbox" role="switch" name='is_active' value='1'
-                                                        @checked($seatTemplate->is_active)>
-                                                </div>
-                                            </span>
+                                            @can('Sửa mẫu sơ đồ ghế')
+                                                <span class="text-muted mx-2">
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active channge-is-active-room"
+                                                            type="checkbox" role="switch" name='is_active' value='1'
+                                                            @checked($seatTemplate->is_active)>
+                                                    </div>
+                                                </span>
+                                            @else
+                                                <span class="text-muted mx-2">
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active channge-is-active-room"
+                                                            type="checkbox" role="switch" disabled readonly name='is_active'
+                                                            value='1' @checked($seatTemplate->is_active)>
+                                                    </div>
+                                                </span>
+                                            @endcan
                                         </div>
                                     </div>
                                     <div class='text-end'>
                                         <a href="{{ route('admin.seat-templates.index') }}"
                                             class='btn btn-light mx-1'>Quay
                                             lại</a>
-                                        <button type="submit" id="submitFormSeatDiagram"
-                                            class='btn btn-primary mx-1'>Cập
-                                            nhật</button>
+                                        @can('Sửa mẫu sơ đồ ghế')
+                                            <button type="submit" id="submitFormSeatDiagram"
+                                                class='btn btn-primary mx-1'>Cập
+                                                nhật</button>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
