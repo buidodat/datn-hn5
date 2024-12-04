@@ -1243,7 +1243,7 @@ class DatabaseSeeder extends Seeder
             'terms_of_service_image' => 'theme/client/images/header/P.svg',
 
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
-            'introduction_image' => 'theme/client/images/header/P.svg',
+            'introduction_image' => 'theme/client/images/thumbnail-1-144816-050424-68.jpeg',
             'introduction' => '
             <p>F5 Poly Media được thành lập bởi doanh nhân F5 Poly Cinemas (F5 Poly Beta) vào cuối năm 2014 với sứ mệnh "Mang trải nghiệm điện ảnh với mức giá hợp lý cho mọi người dân Việt Nam".</p>
             <p>Với thiết kế độc đáo, trẻ trung, F5 Poly Cinemas mang đến trải nghiệm điện ảnh chất lượng với chi phí đầu tư và vận hành tối ưu - nhờ việc chọn địa điểm phù hợp, tận dụng tối đa diện tích, bố trí khoa học, nhằm duy trì giá vé xem phim trung bình chỉ từ 40,000/1 vé - phù hợp với đại đa số người dân Việt Nam.</p>

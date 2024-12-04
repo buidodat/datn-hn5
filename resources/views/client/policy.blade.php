@@ -55,6 +55,15 @@
                                                     <i>Ảnh khách hàng xem tại Rạp Poly Hà Đông</i>
                                                 </div>
 
+                                                <div style="margin-top:50px">
+                                                    <img width="100%"
+                                                    src="{{ asset('theme/client/images/z6051700724615_a08b293aa6185cf00143480033ccd489.jpg') }}"
+                                                    alt="">
+                                                    <div align='center'>
+                                                        <i>Ảnh phòng 4DMax Rạp Poly Hà Đông</i>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
