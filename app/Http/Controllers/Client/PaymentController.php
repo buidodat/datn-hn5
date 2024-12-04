@@ -44,6 +44,7 @@ class PaymentController extends Controller
         $seatIds = $request->seat_id; // Danh sách ghế từ request
         $showtimeId = $request->showtime_id;
         $userId = auth()->id(); // Lấy ID người dùng đang đăng nhập
+        $showtime = Showtime::where('id', $showtimeId)->first();
 
         // Kiểm tra ghế và tính tổng giá ghế trước khi bắt đầu transaction
         $seatShowtimes = DB::table('seat_showtimes')
@@ -86,7 +87,7 @@ class PaymentController extends Controller
                     }
                 });
             } catch (\Exception $e) {
-                return redirect()->route('checkout')
+                return redirect()->route('checkout', $showtime->slug)
                     ->with('error', $e->getMessage());
             }
         }
@@ -98,8 +99,6 @@ class PaymentController extends Controller
         $totalPrice = $priceSeat + $priceCombo;
         $totalDiscount = $pointDiscount + $voucherDiscount;
         $totalPayment = max($totalPrice - $totalDiscount, 10000); // Đảm bảo giá tối thiểu là 10k
-
-        $showtime = Showtime::where('id', $showtimeId)->first();
 
         $hasExpiredSeats = false; // Biến đánh dấu có ghế hết thời gian giữ chỗ
         foreach ($seatShowtimes as $seatShowtime) {
@@ -782,7 +781,7 @@ class PaymentController extends Controller
                     }
                 });
             } catch (\Exception $e) {
-                return redirect()->route('checkout')
+                return redirect()->route('checkout', $showtime->slug)
                     ->with('error', $e->getMessage());
             }
         }
