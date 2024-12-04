@@ -199,7 +199,8 @@
                                     </td>
                                     <td class="text-center">
                                         @if (!empty($ticket->movie->img_thumbnail))
-                                            <img src="{{ $url }}" alt="Movie Thumbnail" class="rounded-2" width="100px">
+                                            <img src="{{ $url }}" alt="Movie Thumbnail" class="rounded-2"
+                                                width="100px">
                                         @else
                                             No image !
                                         @endif
@@ -239,7 +240,13 @@
                                             </li>
                                             <li class="nav-item mb-1"><span class="fw-semibold">Lịch chiếu:</span>
                                                 {{ $showtimeStart }}
-                                                ~ {{ $showtimeEnd }}</li>
+                                                ~ {{ $showtimeEnd }}
+                                            </li>
+
+                                            <li class="nav-item mb-1"><span class="fw-semibold">Ngày chiếu:</span>
+                                                {{ \Carbon\Carbon::parse($ticket->showtime->date)->format('d/m/Y') }}
+                                            </li>
+
                                             <li class="nav-item mb-1"><span class="fw-semibold">Thời hạn sử dụng:</span>
                                                 {{ $ticket->expiry->format('H:i, d/m/Y') }}
                                             </li>
