@@ -20,7 +20,7 @@ class SeatTemplateController extends Controller
     {
         $this->middleware('can:Danh sách mẫu sơ đồ ghế')->only('index');
         $this->middleware('can:Thêm mẫu sơ đồ ghế')->only(['create', 'store']);
-        $this->middleware('can:Sửa mẫu sơ đồ ghế')->only(['edit', 'update']);
+        $this->middleware('can:Sửa mẫu sơ đồ ghế')->only(['update']);
         $this->middleware('can:Xóa mẫu sơ đồ ghế')->only('destroy');
     }
     public function index()

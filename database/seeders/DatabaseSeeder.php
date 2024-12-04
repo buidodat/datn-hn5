@@ -1126,7 +1126,7 @@ class DatabaseSeeder extends Seeder
             'Quét hóa đơn',
             'Xem chi tiết hóa đơn',
             // 'Danh sách đồ ăn',
-            // 'Danh sách combo',
+            'Danh sách combo',
             // 'Danh sách vouchers',
             // 'Danh sách thanh toán',
             // 'Danh sách bài viết',
