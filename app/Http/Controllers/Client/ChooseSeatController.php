@@ -15,6 +15,7 @@ use App\Events\SeatStatusChange;
 use App\Jobs\ReleaseSeatHoldJob;
 use App\Models\SeatShowtime;
 use App\Models\SeatTemplate;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -106,7 +107,17 @@ class ChooseSeatController extends Controller
         // dd($seatMap);
 
         // nếu hết giờ start_time < thời gian hiện tại thì chuyển về trang chủ
-        if($showtime->start_time < now()){
+        // if($showtime->start_time < now()){
+        //     return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
+        // }
+
+        if (auth()->user()->type === User::TYPE_MEMBER) {
+            // Kiểm tra nếu member không thể đặt vé trước 10 phút so với thời gian bắt đầu chiếu
+            if ($showtime->start_time <= now()->addMinutes(10)) {
+                return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
+            }
+        } elseif ($showtime->start_time < now()) {
+            // Nếu là admin, chỉ kiểm tra nếu suất chiếu đã bắt đầu
             return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
         }
 
