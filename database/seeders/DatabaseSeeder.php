@@ -15,6 +15,7 @@ use App\Models\Slideshow;
 use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Contact;
 use App\Models\Rank;
 use App\Models\Showtime;
 use App\Models\Ticket;
@@ -1297,6 +1298,58 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         // End tạo 10 bài viết
+
+        // 5 dữ liệu liên hệ
+        $contacts = [
+            [
+                'user_contact' => 'Bùi Đỗ Đạt',
+                'email' => 'buidodat@gmail.com',
+                'phone' => '0901234567',
+                'title' => 'Lỗi khi đặt vé',
+                'content' => 'Tôi gặp lỗi khi thanh toán vé online, vui lòng hỗ trợ.',
+                'status' => 'pending',
+                'created_at' => now(),
+            ],
+            [
+                'user_contact' => 'Trương Công Lực',
+                'email' => 'truongcongluc@gmail.com',
+                'phone' => '0912345678',
+                'title' => 'Hỏi về khuyến mãi',
+                'content' => 'Cho tôi hỏi về chương trình khuyến mãi vào cuối tuần này.',
+                'status' => 'resolved',
+                'created_at' => now()->subDays(2),
+            ],
+            [
+                'user_contact' => 'Nguyễn Viết Sơn',
+                'email' => 'nguyenvietson@gmail.com',
+                'phone' => '0923456789',
+                'title' => 'Phản ánh dịch vụ',
+                'content' => 'Nhân viên không hỗ trợ nhiệt tình, mong được cải thiện.',
+                'status' => 'pending',
+                'created_at' => now()->subDays(5),
+            ],
+            [
+                'user_contact' => 'Đặng Phú An',
+                'email' => 'dangphuan@gmail.com',
+                'phone' => '0934567890',
+                'title' => 'Hủy vé đã đặt',
+                'content' => 'Tôi muốn hủy vé vì không thể đi vào ngày đã chọn.',
+                'status' => 'resolved',
+                'created_at' => now()->subDays(7),
+            ],
+            [
+                'user_contact' => 'Hà Đắc Hiếu',
+                'email' => 'hadachieu@gmail.com',
+                'phone' => '0945678901',
+                'title' => 'Góp ý giao diện',
+                'content' => 'Giao diện trang web cần thêm màu sắc sinh động hơn.',
+                'status' => 'pending',
+                'created_at' => now()->subDays(10),
+            ],
+        ];
+        foreach ($contacts as $ct) {
+            Contact::create($ct);
+        }
 
 
         // Phân quyền : Danh sách quyền
