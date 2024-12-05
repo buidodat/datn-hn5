@@ -242,6 +242,10 @@
                                             <tbody>
                                                 @foreach ($showtimesByMovie as $showtime)
                                                     @php
+                                                        // $timeNow = now()->format('Y-m-d H:i:s');
+                                                        $timeNow = now();
+                                                        // dd($timeNow);
+
                                                         //danh sách ticket
                                                         $tickets = $showtime->tickets;
 
@@ -262,14 +266,16 @@
                                                     @endphp
                                                     <tr>
                                                         <td class="inputCheckBoxShowtimes">
-                                                            {{-- @if ($showtime->is_active == 0) --}}
-                                                            @if ($remainingSeats < $totalSeats)
-                                                            @else
-                                                                <input type="checkbox"
-                                                                    class="select-showtime movie-{{ $movieId }}"
-                                                                    data-showtime-id="{{ $showtime->id }}">
+
+                                                            @if (!$timeNow->greaterThan($showtime->start_time))
+                                                                {{-- Cho phép chọn checkbox nếu thời gian chưa qua --}}
+                                                                @if (!($remainingSeats < $totalSeats))
+                                                                    <input type="checkbox"
+                                                                        class="select-showtime movie-{{ $movieId }}"
+                                                                        data-showtime-id="{{ $showtime->id }}">
+                                                                @endif
                                                             @endif
-                                                            {{-- @endif --}}
+
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                                             -
@@ -293,7 +299,7 @@
                                                                         name="is_active" type="checkbox" role="switch"
                                                                         data-showtime-id="{{ $showtime->id }}"
                                                                         @checked($showtime->is_active)
-                                                                        @if ($remainingSeats < $totalSeats) disabled @endif>
+                                                                        @if ($remainingSeats < $totalSeats || $timeNow > $showtime->start_time) disabled @endif>
                                                                 </div>
                                                             @else
                                                                 <div
@@ -315,30 +321,34 @@
                                                                         type="button"><i class="fas fa-eye"></i></button></a>
                                                             @endcan
                                                             {{-- @if ($showtime->is_active == 0) --}}
-                                                            @if (!($remainingSeats < $totalSeats))
-                                                                @can('Sửa suất chiếu')
-                                                                    <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                        <button title="sửa"
-                                                                            class="btn btn-warning btn-edit btn-sm"
-                                                                            type="button"><i
-                                                                                class="fas fa-edit"></i></button>
-                                                                    </a>
-                                                                @endcan
+                                                            @if (!$timeNow->greaterThan($showtime->start_time))
+                                                                @if (!($remainingSeats < $totalSeats))
+                                                                    @can('Sửa suất chiếu')
+                                                                        <a
+                                                                            href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                                            <button title="sửa"
+                                                                                class="btn btn-warning btn-edit btn-sm"
+                                                                                type="button"><i
+                                                                                    class="fas fa-edit"></i></button>
+                                                                        </a>
+                                                                    @endcan
 
-                                                                @can('Xóa suất chiếu')
-                                                                    <form
-                                                                        action="{{ route('admin.showtimes.destroy', $showtime) }}"
-                                                                        method="post" class="d-inline-block">
-                                                                        @csrf
-                                                                        @method('delete')
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger btn-destroy btn-sm"
-                                                                            onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                                            <i class="ri-delete-bin-7-fill"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                @endcan
+                                                                    @can('Xóa suất chiếu')
+                                                                        <form
+                                                                            action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                                            method="post" class="d-inline-block">
+                                                                            @csrf
+                                                                            @method('delete')
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger btn-destroy btn-sm"
+                                                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                                <i class="ri-delete-bin-7-fill"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endcan
+                                                                @endif
                                                             @endif
+
                                                         </td>
                                                     </tr>
                                                 @endforeach

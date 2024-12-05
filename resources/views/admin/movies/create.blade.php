@@ -226,11 +226,11 @@
 
                                             @endforeach --}}
                                             <tr>
-                                                <td><span class='text-danger'></span> Giá vé thu thêm</td>
+                                                <td>Giá vé thu thêm</td>
                                                 <td>
                                                     <input type="number" name="surcharge"
                                                         class="form-control" value="{{ old('surcharge') }}"
-                                                        onwheel="return false;" placeholder="0đ">
+                                                        onwheel="return false;" placeholder="20.000đ">
                                                     @error('surcharge')
                                                         <div class='mt-1'>
                                                             <span class="text-danger">{{ $message }}</span>
@@ -238,6 +238,17 @@
                                                     @enderror
                                                 </td>
 
+                                            </tr>
+                                            <tr>
+                                                <td>Lý do thu thêm</td>
+                                                <td>
+                                                    <textarea name="surcharge_desc" rows="2" class='form-control' placeholder="Phim hot nên là thu thêm.">{{ old('surcharge_desc') }}</textarea>
+                                                    @error('surcharge_desc')
+                                                        <div class='mt-1'>
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        </div>
+                                                    @enderror
+                                                </td>
                                             </tr>
                                         </tbody>
 

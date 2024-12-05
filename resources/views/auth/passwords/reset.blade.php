@@ -39,7 +39,7 @@
                                     <div class="mb-3">
                                         <label class="form-label" for="email-input">Email</label>
                                         <div class="position-relative auth-pass-inputgroup">
-                                            <input id="email" type="email"
+                                            <input id="email" type="email" readonly
                                                 class="form-control @error('email') is-invalid @enderror" name="email"
                                                 value="{{ $email ?? old('email') }}" required autocomplete="email">
                                             @error('email')
@@ -80,21 +80,6 @@
                                                     class="ri-eye-fill align-middle"></i></button>
                                         </div>
                                     </div>
-
-                                    {{-- <div id="password-contain" class="p-3 bg-light mb-2 rounded">
-                                        <h5 class="fs-13">Password must contain:</h5>
-                                        <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
-                                        <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b> letter (a-z)</p>
-                                        <p id="pass-upper" class="invalid fs-12 mb-2">At least <b>uppercase</b> letter (A-Z)
-                                        </p>
-                                        <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p>
-                                    </div> --}}
-
-                                    {{-- <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember"
-                                            id="auth-remember-check" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="auth-remember-check">Nhớ tôi nhé!</label>
-                                    </div> --}}
 
                                     <div class="mt-4">
                                         <button class="btn btn-success w-100" type="submit">Đặt lại mật khẩu</button>
