@@ -21,19 +21,7 @@ class HomeController extends Controller
 
     public function home()
     {
-        // Lấy tất cả các slideshow
-        $slideShow = Slideshow::query()->where('is_active', 1)->get();
-
-        // Kiểm tra nếu img_thumbnail là một chuỗi JSON, chuyển đổi về mảng
-        foreach ($slideShow as $slide) {
-            // Kiểm tra nếu img_thumbnail có dữ liệu
-            if ($slide->img_thumbnail) {
-                $images = json_decode($slide->img_thumbnail);
-                if (is_array($images) && count($images) > 0) {
-                    $slide->img_thumbnail = $images;
-                }
-            }
-        }
+        $slideShows = Slideshow::where('is_active', 1)->get();
 
         $currentNow = now();
         $endDate = now()->addDays(7);
@@ -82,7 +70,7 @@ class HomeController extends Controller
 
         $posts = Post::where('is_active', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShow', 'posts', 'currentNow', 'endDate', 'totalMovieShowing', 'totalMovieUpcoming', 'totalMovieSpecial'));
+        return view('client.home', compact('moviesUpcoming', 'moviesShowing', 'moviesSpecial', 'slideShows', 'posts', 'currentNow', 'endDate', 'totalMovieShowing', 'totalMovieUpcoming', 'totalMovieSpecial'));
     }
 
     public function policy()
