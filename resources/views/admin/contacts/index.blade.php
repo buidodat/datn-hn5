@@ -54,7 +54,7 @@
                                 <th>#</th>
                                 <th>Thông tin liên hệ</th>
                                 <th>Tiêu đề</th>
-                                <th>Nội dung</th>
+                                {{-- <th>Nội dung</th> --}}
                                 <th>Ngày tạo</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
@@ -69,8 +69,8 @@
                                         <strong>Email:</strong> {{ $contact->email }}<br>
                                         <strong>SĐT:</strong> {{ $contact->phone }}
                                     </td>
-                                    <td>   {{ \Illuminate\Support\Str::limit($contact->title, 50, '...') }}</td>
-                                    <td>   {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }} </td>
+                                    <td>   {{ \Illuminate\Support\Str::limit($contact->title, 30, '...') }}</td>
+                                    {{-- <td>   {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }} </td> --}}
                                     <td>{{ \Carbon\Carbon::parse($contact->created_at)->format('d/m/Y, H:i:s') }}</td>
                                     <td>
                                         <select class="form-select status-select" data-id="{{ $contact->id }}" {{ $contact->status == 'resolved' ? 'disabled' : '' }} >
