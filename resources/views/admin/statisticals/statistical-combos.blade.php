@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thống kê phim
+    Thống kê combo
 @endsection
 
 @section('content')
@@ -9,66 +9,31 @@
         <div class="col">
             <div class="h-100">
 
-                <form action="{{ route('admin.statistical-movies') }}" method="GET" class="mb-3">
+                <form action="{{ route('admin.statistical-combos') }}" method="GET" class="mb-3">
                     @include('admin.layouts.components.statistical-filter')
                 </form>
 
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
-                            <div class="card-header border-0 align-items-center">
-                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu phim
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Thống kê Combo
                                     @if (Auth::user()->cinema_id != '')
                                         - {{ Auth::user()->cinema->name }}
                                     @endif
                                 </h4>
                             </div><!-- end card header -->
 
-                            <div class="card-header p-0 border-0 bg-light-subtle">
-                                <div class="row g-0 text-center">
-                                    <div class="col-6 col-sm-6">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value"
-                                                    data-target="{{ $totalMovies }}">0</span>
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng phim</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    {{-- <div class="col-6 col-sm-4">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="150">0</span>
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng hóa đơn</p>
-                                        </div>
-                                    </div> --}}
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-6">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value"
-                                                    data-target="{{ $totalRevenue }}">0</span>VNĐ
-                                            </h5>
-                                            <p class="text-muted mb-0">Tổng doanh thu</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- end card header -->
-
-                            <canvas id="revenueChartByMovies" height="460"></canvas>
-
-                        </div><!-- end card -->
-                    </div><!-- end col -->
-                </div>
+                            <canvas id="comboChart" height="490"></canvas>
+                        </div> <!-- .card-->
+                    </div> <!-- .col-->
+                </div> <!-- end row-->
             </div> <!-- end .h-100-->
 
         </div> <!-- end col -->
     </div>
 @endsection
 
-@section('script-libs')
-    <!-- linecharts init -->
-    <script src="{{ asset('theme/admin/assets/js/pages/apexcharts-line.init.js') }}"></script>
-@endsection
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -145,46 +110,56 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
-        // thống kê doanh thu theo phim
-        const revenueChartByMovies = document.getElementById('revenueChartByMovies').getContext('2d');
-        const revenueChartByMoviesData = {
-            labels: @json($revenueByMovies->pluck('name')),
+        const labels = @json($comboStatistics->pluck('name'));
+        const summaries = @json($comboStatistics->pluck('summary'));
+    
+        const data = {
+            labels: labels,
             datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: @json($revenueByMovies->pluck('total_revenue')),
-                backgroundColor: 'rgba(10, 179, 156, 0.9)',
-                borderColor: 'rgba(10, 179, 156, 0.9)',
+                label: 'Combo Statistics (Số lượng & Doanh thu)',
+                data: summaries.map(s => parseFloat(s.split(' ')[0])), // Hiển thị bằng số lượng
+                backgroundColor: '#405189',
+                borderColor: '#405189',
                 borderWidth: 1
             }]
         };
-
-        new Chart(revenueChartByMovies, {
-            type: 'bar', // Biểu đồ cột
-            data: revenueChartByMoviesData,
+    
+        const config = {
+            type: 'bar',
+            data: data,
             options: {
                 responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const index = tooltipItem.dataIndex;
+                                return `${labels[index]}: ${summaries[index]}`;
+                            }
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Doanh thu (VNĐ)',
-                            font: {
-                                size: 14 // Tăng cỡ chữ tại đây
-                            }
+                            text: 'Số lượng'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Tên phim',
-                            font: {
-                                size: 14 // Tăng cỡ chữ tại đây
-                            }
+                            text: 'Combo'
                         }
                     }
                 }
             }
-        });
+        };
+    
+        new Chart(document.getElementById('comboChart'), config);
     </script>
 @endsection
