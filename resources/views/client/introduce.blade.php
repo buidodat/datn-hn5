@@ -50,7 +50,7 @@
                                                         <img width="100%" src="{{ asset('theme/client/images/header/P.svg') }}" alt="introduction_image" class="introduce-logo">
                                                     @endif
                                                     <div align='center'>
-                                                        <i>Hình ảnh Rạp Poly Hà Đông</i>
+                                                        <i>Hình ảnh Rạp Poly Cinemas Hà Đông</i>
                                                     </div>
 
                                             </div>
