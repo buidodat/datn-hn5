@@ -122,19 +122,18 @@ class SlideShowController extends Controller
      */
     public function destroy(string $id)
     {
-        $slide = Slideshow::query()->findOrFail($id);
-        // Giải mã mảng JSON và kiểm tra từng ảnh
-        if ($slide->img_thumbnail) {
-            $imagePaths = json_decode($slide->img_thumbnail, true);
+        $slide = Slideshow::findOrFail($id);
 
-            if (is_array($imagePaths)) {
-                foreach ($imagePaths as $path) {
-                    if (Storage::exists($path)) {
-                        Storage::delete($path);
-                    }
+        if ($slide->img_thumbnail) {
+            $imagePaths = $slide->img_thumbnail;
+
+            foreach ($imagePaths as $path) {
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
                 }
             }
         }
+
         $slide->delete();
         return redirect()
             ->route('admin.slideshows.index')
