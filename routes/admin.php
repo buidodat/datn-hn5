@@ -204,6 +204,7 @@ Route::get('/statistical-movies', [StatisticalController::class, 'statisticalMov
 Route::get('/statistical-tickets', [StatisticalController::class, 'statisticalTickets'])->name('statistical-tickets');
 Route::get('/statistical-revenue', [StatisticalController::class, 'statisticalRevenue'])->name('statistical-revenue');
 Route::get('/statistical-cinemas', [StatisticalController::class, 'statisticalCinemas'])->name('statistical-cinemas');
+Route::get('/statistical-combos', [StatisticalController::class, 'statisticalCombos'])->name('statistical-combos');
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard.fillter');
 

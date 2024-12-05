@@ -157,15 +157,17 @@
                             <div class="card-header border-0 align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Doanh thu</h4>
 
-                                Năm:
-                                <select id="year-select">
+                                <div class="flex-shrink-0">
+                                    
+                                <select id="year-select" class="form-select form-select-sm">
                                     @foreach ($years as $year)
                                         <option value="{{ $year }}" @selected($year == now()->year)>
-                                            {{ $year }}</option>
+                                            Năm: {{ $year }}</option>
 
                                     @endforeach
 
                                 </select>
+                                </div>
                             </div><!-- end card header -->
 
                             <div class="card-header p-0 border-0 bg-light-subtle">
@@ -1044,7 +1046,7 @@
                         datalabels: {
                             color: '#fff',
                             font: {
-                                size: 14,
+                                size: 12,
                                 weight: 'bold'
                             },
                             formatter: function(value, context) {
@@ -1054,7 +1056,7 @@
                             }
                         }
                     },
-                    cutout: '65%' // Độ rộng lỗ tròn ở giữa
+                    cutout: '60%' // Độ rộng lỗ tròn ở giữa
                 },
                 plugins: [ChartDataLabels]
             });

@@ -300,13 +300,17 @@ class ShowtimeController extends Controller
         //dd($showtime);
         $showtime->load(['room.cinema', 'room.seatTemplate', 'movieVersion', 'movie', 'seats']);
 
-        $matrix = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
-        //dd($matrix);
+        $matrixSeat = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
 
-        $soldSeats = $showtime->seats()->wherePivot('status', 'sold')->pluck('seats.id')->toArray();
+        $seatMap = [];
+        foreach ($seats as $seat) {
+            $seatMap[$seat->coordinates_y][$seat->coordinates_x] = $seat;
+        }
+        // dd($matrixSeat);
+        // dd($showtime->toArray());
 
-        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrix', 'seats', 'soldSeats'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('showtime', 'matrixSeat', 'seats', 'seatMap'));
     }
 
 
