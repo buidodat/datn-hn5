@@ -85,8 +85,8 @@
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
 
-                                        <button class="btn btn-info btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
-                                            <i class="fas fa-eye"></i> Xem
+                                        <button class="btn btn-success btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                            <i class="fas fa-eye"></i>
                                         </button>
 
                                         {{-- <a href="{{ route('admin.contacts.edit', $contact)}}">
