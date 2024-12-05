@@ -25,7 +25,7 @@ class ContactController extends Controller
      */
     public function index(Request $request, Contact $contact)
     {
-        $contacts = Contact::query()->latest('id')->get();
+        $contacts = Contact::query()->latest('created_at')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('contacts'));
     }
 

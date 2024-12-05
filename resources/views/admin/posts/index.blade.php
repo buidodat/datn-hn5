@@ -56,9 +56,9 @@
                                 <th>#</th>
                                 <th>Tiêu đề</th>
                                 <th>Hình ảnh</th>
-                                <th>Mô tả ngắn</th>
-
+                                {{-- <th>Mô tả ngắn</th> --}}
                                 <th>Hoạt động</th>
+                                <th>Ngày tạo</th>                       
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -76,8 +76,7 @@
                                         @endif
 
                                     </td>
-                                    <td>{{ \Illuminate\Support\Str::limit($post->description, 50, '...') }}</td>
-
+                                    {{-- <td>{{ \Illuminate\Support\Str::limit($post->description, 50, '...') }}</td> --}}
                                     <td>
                                         @can('Sửa bài viết')
                                             <div class="form-check form-switch form-switch-success">
@@ -96,7 +95,7 @@
                                         @endcan
                                     </td>
 
-
+                                    <td>{{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y, H:i:s') }}</td>
                                     <td>
                                         <div class="d-flex">
                                             @can('Xem chi tiết bài viết')
