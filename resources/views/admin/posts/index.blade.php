@@ -56,9 +56,10 @@
                                 <th>#</th>
                                 <th>Tiêu đề</th>
                                 <th>Hình ảnh</th>
-                                {{-- <th>Mô tả ngắn</th> --}}
-                                <th>Hoạt động</th>
-                                <th>Ngày tạo</th>                       
+                                <th>Người tạo</th>
+                                <th>Lượt xem</th>
+                                <th>Ngày tạo</th>  
+                                <th>Hoạt động</th>                     
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
@@ -74,9 +75,10 @@
                                         @else
                                             Không có ảnh
                                         @endif
-
                                     </td>
-                                    {{-- <td>{{ \Illuminate\Support\Str::limit($post->description, 50, '...') }}</td> --}}
+                                    <td>{{ $post->user->name }}</td>
+                                    <td>{{ number_format($post->view_count) }}</td>
+                                    <td>{{ $post->created_at->format('d/m/Y') }}<br>{{ $post->created_at->format('H:i:s') }}</td>
                                     <td>
                                         @can('Sửa bài viết')
                                             <div class="form-check form-switch form-switch-success">
@@ -94,8 +96,7 @@
                                             </div>
                                         @endcan
                                     </td>
-
-                                    <td>{{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y, H:i:s') }}</td>
+                                    
                                     <td>
                                         <div class="d-flex">
                                             @can('Xem chi tiết bài viết')
@@ -204,7 +205,7 @@
                                     <input class="form-check-input switch-is-active changeActive"
                                         type="checkbox" data-post-id="${postId}"   onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
                                 </div> `;
-                            row.cell(row.index(), 4).data(statusHtml).draw(false);
+                            row.cell(row.index(), 6).data(statusHtml).draw(false);
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Thành công!',
