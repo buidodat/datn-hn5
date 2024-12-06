@@ -8,6 +8,7 @@ use App\Models\Movie;
 use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Carbon\Carbon; // Import Carbon để xử lý ngày tháng
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ShowtimeController extends Controller
@@ -17,17 +18,27 @@ class ShowtimeController extends Controller
         // dd(session()->all());
         $cinema = Cinema::where('id', session('cinema_id'))->firstOrFail();
 
-        $showtimes = Showtime::with(['movie' => function ($query) {
-            $query->where('is_active', 1); // Chỉ lấy phim đang active
-        }, 'room'])
-            ->where([['cinema_id', $cinema->id], ['is_active', '1']])
-            ->get();
-
         $dates = [];
         $dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
         $currentDate = now(); // Sử dụng Carbon để làm việc với ngày giờ
-        $now = now(); // Thời gian hiện tại khi truy cập vào trang
         $firstAvailableDay = null; // Biến để lưu ngày đầu tiên có suất chiếu
+
+        $now = now()->addMinutes(10);
+        if (Auth::check() &&  Auth::user()->type == 'admin') {
+            $now = now(); // Thời gian hiện tại khi truy cập vào trang
+        }
+
+        $showtimes = Showtime::with(['movie' => function ($query) {
+            $query->where('is_active', 1); // Chỉ lấy phim đang active
+        }, 'room'])
+            ->where([
+                ['cinema_id', $cinema->id],
+                ['is_active', '1'],
+                ['start_time', '>', $now]
+            ])
+            ->get();
+
+        // dd($showtimes->toArray());
 
         for ($i = 0; $i < 7; $i++) {
             $formattedDate = $currentDate->format('d/m') . ' - ' . $dayNames[$currentDate->dayOfWeek];

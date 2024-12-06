@@ -106,6 +106,17 @@
                             </ul>
                         </div>
 
+                        <div class="menu-dropdown collapse" id="chart" style="">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.statistical-combos') }}" class="nav-link menu-link"
+                                        data-key="t-horizontal">
+                                        <span data-key="t-dashboards">Thống kê combo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                         {{-- <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">

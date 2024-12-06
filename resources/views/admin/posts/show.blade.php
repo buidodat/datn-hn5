@@ -75,12 +75,28 @@
 
                                         Trạng thái hoạt động:
                                         @if ($post->is_active == 1)
-                                            <span class="badge bg-success">Yes</span>
+                                            <span class="badge bg-success">Hoạt động</span>
                                         @else
-                                            <span class="badge bg-danger">No</span>
+                                            <span class="badge bg-danger">Không hoạt động</span>
                                         @endif
 
 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="" class="form-label">Lượt xem:</label>
+                                    <span class="badge bg-success">{{ number_format($post->view_count) }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="" class="form-label">Người tạo:</label>
+                                    @if ($post->user)
+                                        <span class="badge bg-success">{{ $post->user->name }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">Không xác định</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">

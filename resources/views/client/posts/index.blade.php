@@ -23,12 +23,12 @@
                     </div>
                     <div class="hs_blog_box1_cont_main_wrapper">
                         <div class="hs_blog_cont_heading_wrapper">
-                            <ul>
+                            {{-- <ul>
                                 <li>{{ $post->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</li>
                                 <li>{{ $post->user->name ?? 'Không có người đăng' }}</li>
                                 <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
-                            </ul>
-                            <h2>{{ $post->title }}</h2>
+                            </ul> --}}
+                            <h2>{{ Str::limit($post->title, 30) }}</h2>
                             <p>{{ Str::limit($post->description, 100) }}</p>
                             <h5><a href="{{ route('posts.show', $post->slug) }}">Đọc thêm <i class="fa fa-long-arrow-right"></i></a></h5>
                         </div>
@@ -52,51 +52,21 @@
 
 @section('styles')
     <style>
-    .hs_blog_box1_main_wrapper {
-        background-color: #f3f3f9;
-        padding: 20px;
-        border-radius: 10px;
-        height: 450px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .hs_blog_box1_img_wrapper {
-        width: 100%;
-        height: 250px;
-        overflow: hidden;
-    }
-
-    .hs_blog_box1_img_wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-    .hs_blog_box1_cont_main_wrapper {
-        padding-top: 15px;
-    }
-
-    .hs_blog_cont_heading_wrapper ul {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 10px;
-        color: #ff6600;
-    }
-
-    .hs_blog_cont_heading_wrapper h2 {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .hs_blog_cont_heading_wrapper p {
-        color: #666;
-    }
-
-    .pager_wrapper .pagination {
+        .hs_blog_box1_main_wrapper {
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 500px;
+        }
+        .hs_blog_cont_heading_wrapper p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .pager_wrapper .pagination {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -135,3 +105,4 @@
     }
     </style>
 @endsection
+

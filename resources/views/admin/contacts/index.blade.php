@@ -54,7 +54,7 @@
                                 <th>#</th>
                                 <th>Thông tin liên hệ</th>
                                 <th>Tiêu đề</th>
-                                <th>Nội dung</th>
+                                {{-- <th>Nội dung</th> --}}
                                 <th>Ngày tạo</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
@@ -69,12 +69,8 @@
                                         <strong>Email:</strong> {{ $contact->email }}<br>
                                         <strong>SĐT:</strong> {{ $contact->phone }}
                                     </td>
-                                    <td>{{ $contact->title }}</td>
-                                    <td>
-                                        <div>
-                                            {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }}
-                                        </div>
-                                    </td>
+                                    <td>   {{ \Illuminate\Support\Str::limit($contact->title, 30, '...') }}</td>
+                                    {{-- <td>   {{ \Illuminate\Support\Str::limit($contact->content, 50, '...') }} </td> --}}
                                     <td>{{ \Carbon\Carbon::parse($contact->created_at)->format('d/m/Y, H:i:s') }}</td>
                                     <td>
                                         <select class="form-select status-select" data-id="{{ $contact->id }}" {{ $contact->status == 'resolved' ? 'disabled' : '' }} >
@@ -89,8 +85,8 @@
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i
                                                     class="fas fa-eye"></i></button></a> --}}
 
-                                        <button class="btn btn-info btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
-                                            <i class="fas fa-eye"></i> Xem
+                                        <button class="btn btn-success btn-sm view-contact" data-id="{{ $contact->id }}" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                            <i class="fas fa-eye"></i>
                                         </button>
 
                                         {{-- <a href="{{ route('admin.contacts.edit', $contact)}}">

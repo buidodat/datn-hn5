@@ -363,4 +363,64 @@ class StatisticalController extends Controller
             'expired'
         ));
     }
+
+
+    public function statisticalCombos(Request $request)
+    {
+        $user = Auth::user();
+        $branches = Branch::where('is_active', 1)->get();
+
+        $startDate = $request->input('start_date', session('statistical.start_date', Carbon::now()->subDays(30)->format('Y-m-d')));
+        $endDate = $request->input('end_date', session('statistical.end_date', Carbon::now()->format('Y-m-d')));
+        $branchId = $request->input('branch_id', session('statistical.branch_id'));
+        $cinemaId = $request->input('cinema_id', session('statistical.cinema_id'));
+
+        // Truy vấn kết hợp bộ lọc
+        $query = DB::table('ticket_combos')
+            ->join('combos', 'ticket_combos.combo_id', '=', 'combos.id')
+            ->join('tickets', 'ticket_combos.ticket_id', '=', 'tickets.id') // cần join với bảng tickets để có cinema_id
+            ->select(
+                'combos.name',
+                DB::raw('CONCAT(SUM(ticket_combos.quantity), " lượt - ", FORMAT(SUM(ticket_combos.price), 0), " VND") as summary')
+            )
+            ->whereDate('ticket_combos.created_at', '>=', $startDate)
+            ->whereDate('ticket_combos.created_at', '<=', $endDate)
+            ->groupBy('combos.name');
+
+        // Áp dụng lọc theo vai trò
+        if (!$user->hasRole('System Admin')) {
+            $query->where('tickets.cinema_id', $user->cinema_id);
+        } else {
+            if ($branchId) {
+                $cinemaIds = Cinema::where('branch_id', $branchId)->pluck('id');
+                $query->whereIn('tickets.cinema_id', $cinemaIds);
+            }
+
+            if ($cinemaId) {
+                $query->where('tickets.cinema_id', $cinemaId);
+            }
+        }
+
+        // Thực thi truy vấn
+        $comboStatistics = $query->get();
+
+        // dd($comboStatistics->toArray());
+
+        // Lưu vào session khi lọc
+        session([
+            'statistical.branch_id' => $branchId,
+            'statistical.cinema_id' => $cinemaId,
+            'statistical.start_date' => $startDate,
+            'statistical.end_date' => $endDate,
+        ]);
+
+        return view('admin.statisticals.statistical-combos', compact(
+            'branches',
+            'branchId',
+            'cinemaId',
+            'startDate',
+            'endDate',
+            'comboStatistics'
+        ));
+    }
 }
