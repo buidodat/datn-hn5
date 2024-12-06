@@ -51,7 +51,7 @@
         }
 
         /* Ảnh trong bài viết */
-        .hs_blog_detail_img_main_wrapper img {
+        /* .hs_blog_detail_img_main_wrapper img {
             max-width: 100%;
             height: auto;
             object-fit: cover;
@@ -64,7 +64,22 @@
             text-align: left;
             margin-bottom: 30px;
             margin-top: 30px;
+        } */
+        .hs_blog_detail_img_main_wrapper {
+            text-align: center;  /* Căn giữa ảnh */
+            margin-bottom: 30px;
+            margin-top: 30px;
         }
+
+        .hs_blog_detail_img_main_wrapper img {
+            width: 100%;  /* Chiếm toàn bộ chiều rộng */
+            min-height: 400px;  /* Đảm bảo ảnh không bị mất theo chiều cao */
+            object-fit: contain;  /* Đảm bảo ảnh không bị cắt mà vẫn giữ tỷ lệ */
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
 
         /* Cải thiện kiểu dáng nội dung */
         .hs_blog_detail_cont_main_wrapper {

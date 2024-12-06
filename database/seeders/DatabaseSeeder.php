@@ -15,6 +15,7 @@ use App\Models\Slideshow;
 use App\Models\TypeRoom;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Contact;
 use App\Models\Rank;
 use App\Models\Showtime;
 use App\Models\Ticket;
@@ -961,44 +962,393 @@ class DatabaseSeeder extends Seeder
 
 
         // Tạo 10 bài viết
-        for ($i = 1; $i <= 10; $i++) {
-            Post::create([
-                'user_id' => random_int(1, 5),
-                'title' => 'Bài viết số ' . $i,
-                'slug' => 'bai-viet-so-' . $i,
-                'img_post' => 'https://www.webstrot.com/html/moviepro/html/images/header/01.jpg',
-                'description' => 'Đây là phần mô tả cho bài viết số ' . $i . '. Đây là đoạn văn ngắn mô tả nội dung của bài viết.',
+        $posts = [
+            // 1
+            [
+                'title' => 'ĐẶT VÉ BETA CINEMAS, MOMO LIỀN! 🚀',
+                'slug' => 'dat-ve-beta-cinemas-momo-lien',
+                'img_post' => 'https://files.betacorp.vn//media/images/2024/09/01/545x415-131203-010924-53.jpg',
+                'description' => 'Đặt vé tại Beta Cinemas qua MoMo nhanh chóng, tiện lợi và nhận ngay ưu đãi hấp dẫn. Trải nghiệm phim yêu thích dễ dàng chỉ trong vài bước!',
                 'content' => '
-                    <h2>Giới thiệu về bài viết số ' . $i . '</h2>
-                    <p>Đây là phần mở đầu cho bài viết số ' . $i . '. Nội dung bài viết này sẽ tập trung vào việc cung cấp thông tin chi tiết về một chủ đề nhất định. Các thông tin sẽ được trình bày rõ ràng và dễ hiểu.</p>
-
-                    <h3>Phần 1: Tổng quan về nội dung</h3>
-                    <p>Bài viết này sẽ đi sâu vào chi tiết của chủ đề được chọn. Mỗi phần của bài viết đều có mục đích riêng, giúp người đọc nắm bắt thông tin một cách dễ dàng hơn.</p>
-                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-mada.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-
-                    <p>Tiếp theo là một số giải thích và minh họa thêm để tăng sự hấp dẫn cho bài viết. Các hình ảnh và nội dung được bố trí hợp lý để không gây nhàm chán.</p>
-                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-kumanthong.jpg" alt="Image 2 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-
-                    <h3>Phần 2: Chi tiết chủ đề</h3>
-                    <p>Chủ đề chính của bài viết sẽ được bàn luận sâu hơn trong phần này. Người viết sẽ cố gắng làm rõ các khía cạnh quan trọng của chủ đề. Bên cạnh đó, một số hình ảnh sẽ giúp minh họa rõ hơn cho các nội dung được đề cập.</p>
-                    <p>Mỗi phần của bài viết đều có thể đi kèm với nhiều đoạn văn bản dài để cung cấp đầy đủ thông tin cho người đọc.</p>
-                    <img src="https://www.webstrot.com/html/moviepro/html/images/header/03.jpg" alt="Image 3 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-
-                    <p>Bài viết số ' . $i . ' còn bao gồm các đoạn văn chi tiết về các chủ đề liên quan, mỗi đoạn văn sẽ giúp bổ sung thêm thông tin. Người đọc có thể dễ dàng theo dõi mạch nội dung nhờ cách trình bày rõ ràng, mạch lạc.</p>
-                    <img src="https://www.webstrot.com/html/moviepro/html/images/header/02.jpg" alt="Image 1 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-
-                    <h3>Phần 3: Phân tích và đánh giá</h3>
-                    <p>Phần này sẽ đi sâu hơn vào việc phân tích chủ đề đã được trình bày ở phần trước. Một số phân tích chuyên sâu sẽ được đưa ra để giúp người đọc hiểu rõ hơn về các khía cạnh của vấn đề.</p>
-                    <p>Ngoài ra, người viết sẽ cố gắng cung cấp thêm các ví dụ thực tiễn để minh họa cho các ý tưởng được nêu ra.</p>
-                    <img src="' . asset('theme/client/images/Fpoly_Cinemas.jpg') . '" alt="Image 5 for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
-
-                    <h3>Kết luận</h3>
-                    <p>Cái này xem hay nè:)) .Đi xem đánh giá ở lotte 9.4/10.0 . Lúc nào rảnh đi xem tiếp cho đỡ sợ:)) .Phần kết luận của bài viết số ' . $i . ' sẽ tóm tắt các ý chính đã được thảo luận. Đây là nơi mà người viết có thể nhấn mạnh những điểm quan trọng và đưa ra kết luận cuối cùng. Để hoàn tất bài viết, thêm một hình ảnh minh họa cuối cùng sẽ giúp kết thúc nội dung một cách hợp lý.</p>
-                    <img src="https://iguov8nhvyobj.vcdn.cloud/media/catalog/product/cache/1/thumbnail/240x388/c88460ec71d04fa96e628a21494d2fd3/r/s/rsz_ty2-main-poster-printing.jpg" alt="Final Image for Post ' . $i . '" style="width: 100%; max-width: 400px; height: auto;">
+                    <p><strong>MUA VÉ U22 THANH TOÁN BẰNG MOMO TẠI BETA CINEMAS!</strong></p>
+                    <p><strong>Giá vé ưu đãi nay còn có thêm hình thức thanh toán quốc dân MoMo! Ngại gì mà không ra rạp ngay từ hôm nay để trải nghiệm sự tiện lợi này!
+                    Danh sách phim lễ đã đầy đủ, lựa phim và ra rạp Beta Cinemas thôi các bạn ơi!</strong></p>
+                    <h2><strong>🔥 Ưu đãi với khách hàng có thẻ học sinh sinh viên, trẻ em cao dưới 1,3m và người trên 55 tuổi</strong></h2>
+                    <p>🎊 50k cho phim 2D, 70k cho phim 3D: Giải Phóng</p>
+                    <p>🎊 45k cho phim 2D, 65k cho phim 3D: Mỹ Đình, Thanh Xuân, Đan Phượng, Tân Uyên, Empire Bình Dương (Thủ Dầu Một)</p>
+                    <p>🎊 40K cho phim 2D, 60k cho phim 3D: Bắc Giang, Biên Hòa, Nha Trang, Thanh Hóa, Thái Nguyên</p>
+                    <p>🎊 45k (thứ 2-5) & 50k (thứ 6-7-CN) cho phim 2D, 65k (thứ 2-5-) & 70k (thứ 6-7-CN) cho phim 3D: Lào Cai</p>
+                    <p>🎊 45k (từ thứ 2-5) & 55k (thứ 6-7-CN) cho phim 2D, 65k (từ thứ 2-5) & 75k (thứ 6-7-CN) cho phim 3D: Quang Trung</p>
+                    <p>🎊 40k (thứ 2-4-5-6) & 50k (thứ 7-CN) cho phim 2D, 60k (thứ 2-4-5-6) & 70k (thứ 7-CN) cho phim 3D: Long Khánh</p>
+                    <h2><strong>Điều kiện áp dụng:</strong></h2>
+                    <p>Xuất trình thẻ HSSV (nếu có) hoặc CMND/CCCD, bằng lái xe dưới 22 tuổi.</p>
+                    <p>Mặc đồng phục của trường</p>
+                    <p>Chiều cao dưới 1m3</p>
+                    <h2><strong>Lưu ý:</strong></h2>
+                    <p><strong>Chỉ áp dụng cho khách hàng thành viên của Beta Cinemas.</strong></p>
+                    <p>Thẻ học sinh, sinh viên phải còn thời hạn áp dụng.</p>
+                    <p>1 thẻ học sinh, sinh viên có thể áp dụng được cho cả nhóm khách hàng đi cùng đối với phim không giới hạn độ tuổi
+                    (các phim từ T13 trở lên cần kiểm tra thẻ của từng người).</p>
+                    <p>Ưu đãi áp dụng với người lớn tuổi (trên 55t) và phải xuất trình CMND trước khi mua vé.</p>
+                    <p>Không áp dụng đồng thời với các chương trình khuyến mãi khác.</p>
+                    <p>Chỉ áp dụng cho mua vé tại quầy.</p>
+                    <p>Không áp dụng cho mua vé Online.</p>
+                    <p>Không áp dụng nếu trùng vào ngày lễ, Tết.</p>
+                    <p>Không áp dụng cho các suất chiếu đặc biệt hoặc phim ra mắt sớm.</p>
+                    <h3><strong>ĐẶT VÉ BETA CINEMAS, MOMO LIỀN! 🚀</strong></h3>
+                    <p><strong>Một chạm có vé:</strong><a href="https://bit.ly/MoMo-Movies"> https://bit.ly/MoMo-Movies </a></p>
                 ',
+            ],
+            // 2
+            [
+                'title' => 'DÀNH TẶNG 10K CHO CÁC BETA-ER',
+                'slug' => 'danh-tang-10k-cho-cac-beta-er',
+                'img_post' => 'https://files.betacorp.vn/media/images/2024/12/04/sppxbeta-545x415-155204-041224-61.png',
+                'description' => 'Ưu đãi cực hot: Beta Cinemas dành tặng 10K cho tất cả Beta-er! Đừng bỏ lỡ cơ hội nhận ngay quà tặng giá trị này khi đặt vé hôm nay.',
+                'content' => '
+                    <p><strong>Ưu đãi cực khủng tháng 12.2024 dành cho khách hàng của Beta Cinemas</strong></p>
+                    <p>Giảm 10K cho hóa đơn từ 100k! Áp dụng cho khách hàng nhận được mã giảm giá trong Kho Voucher trên Ví ShopeePay</p>
+                    <p>- Thời gian áp dụng: 01/12/2024 - 31/12/2024.</p>
+                    <p>- Áp dụng khi thực hiện giao dịch tại Website/App Beta Cinemas và thanh toán bằng Ví ShopeePay.</p>
+                    <p>- Mỗi khách hàng được hưởng ưu đãi tối đa 1 lần.</p>
+                    <p><strong>Đặt vé ngay tại:</strong> <a>https://betacinemas.vn/lich-chieu.htm</a></p>
+                ',
+            ],
+            // 3
+            [
+                'title' => 'BETA VÉ RẺ, MOMO MUA LIỀN!',
+                'slug' => 'beta-ve-re-momo-mua-lien',
+                'img_post' => 'https://files.betacorp.vn/media/images/2024/04/16/339090620-769688404468201-6997705945754521027-n-113050-160424-59.jpg',
+                'description' => 'Vé xem phim tại Beta Cinemas siêu rẻ, chỉ cần thanh toán qua MoMo! Nhanh tay đặt ngay để không bỏ lỡ những bộ phim bom tấn.',
+                'content' => '
+                    <p><strong>Beta Cinemas đẹp thôi chưa đủ, mà giá lại còn “vừa túi tiền”. Từ nay, các mọt phim tha hồ thưởng thức những thước phim
+                    điện ảnh đỉnh cao tại tất cả cụm rạp Beta trên toàn quốc với giá cực ưu đãi khi đặt vé trên MoMo.</strong></p>
+                    <p><strong>- Thứ 2 đến Thứ 6 hàng tuần: 58.000đ/vé 2D</strong></p>
+                    <p><strong>- Thứ 7 và Chủ Nhật hàng tuần: 62.000đ/vé 2D</strong></p>
+                    <p><strong>Thời gian áp dụng: Từ nay đến khi hết ngân sách khuyến mãi.</strong></p>
+                    <p><strong>Điều khoản, điều kiện áp dụng:</strong></p>
+                    <p><strong>Chỉ áp dụng khi đặt vé xem phim và thanh toán trực tiếp trên MoMo, không áp dụng chương trình khuyến mãi 
+                    khi khách hàng đặt và thanh toán tại quầy hoặc qua các hình thức khác.</strong></p>
+                    <p><strong>Áp dụng tại tất cả các rạp Beta trên toàn quốc, trừ Beta Phú Mỹ và Beta Hồ Tràm.</strong></p>
+                    <p><strong>Chương trình áp dụng cho các suất chiếu 2D trong suốt thời gian diễn ra chương trình.</strong></p>
+                    <p><strong>Chương trình cho tất cả các loại ghế: ghế đơn thường, ghế VIP và ghế đôi.</strong></p>
+                    <p><strong>Chương trình không bao gồm suất chiếu sớm, lễ tết và các suất chiếu tại các phòng chiếu đặc biệt.</strong></p>
+                    <p><strong>Chỉ áp dụng trên giá vé, không áp dụng cho các combo hoặc dịch vụ khác đi kèm.</strong></p>
+                    <p><strong>Không áp dụng đồng thời các chương trình khuyến mãi khác của rạp.</strong></p>
+                    <p><strong>Chương trình có thể kết thúc sớm hơn dự kiến nếu hết ngân sách. </strong></p>
+                    <p><strong>Khiếu nại không được giải quyết nếu khách hàng chấp nhận thanh toán giá vé cuối cùng hiển thị trên màn hình giao dịch.</strong></p>
+                    <p><strong>Mua vé Beta 58.000Đ - 62.000Đ với các bước:</strong></p>
+                    <p><strong>Bước 1: Truy cập App MoMo, trên giao diện chính chọn “Mua vé xem phim”.</strong></p>
+                    <p><strong>Bước 2: Nhấn vào thanh “Tìm kiếm” và gõ chọn rạp “Beta” gần khu vực.</strong></p>
+                    <p><strong>Bước 3: Sau khi đã chọn rạp, màn hình chuyển qua các phim và suất chiếu.</strong></p>
+                    <p><strong>Ở đây khách hàng sẽ chọn ngày, chọn phim và suất chiếu.</strong></p>
+                    <p><strong>Bước 4: Sau khi chọn phim và suất chiếu phù hợp, màn hình chuyển qua giao diện chọn ghế.</strong></p>
+                    <p><strong>Bước 5: Chọn thêm Combo bắp nước. Sau đó nhấn “Tiếp tục”.</strong></p>
+                    <p><strong>Bước 6: Tổng giao dịch hiển thị trên màn hình. Nhấn “Tiếp tục” để tiến hành thanh toán.</strong></p>
+                    <p><strong>Bước 7: Nhấn “Xác nhận” để thanh toán giao dịch.</strong></p>
+                    <p><strong>Sau khi thanh toán “Giao dịch thành công”, khách hàng kiểm tra vé đã mua trong “Mua vé xem phim” => “Tôi” => “Vé đã mua”.</strong></p>
+                    <p><strong>Hình ảnh Thông tin vé Khách hàng đã mua.</strong></p>
+                    <p><strong>👉 ĐẶT VÉ NGAY TẠI:</strong> <a href="https://momo.vn/cinema/rap/beta-cinemas">https://momo.vn/cinema/rap/beta-cinemas</a></p>
+                ',
+            ],
+            // 4
+            [
+                'title' => 'THÀNH VIÊN BETA - ĐỒNG GIÁ 45K/50K',
+                'slug' => 'thanh-vien-beta-dong-gia-45k-50k',
+                'img_post' => 'https://files.betacorp.vn//cms/images/2024/04/03/545x415-member-130929-030424-88.jpg',
+                'description' => 'Trở thành thành viên Beta Cinemas để tận hưởng ưu đãi đồng giá vé 45K hoặc 50K. Xem phim tiết kiệm mà vẫn đầy đủ trải nghiệm!',
+                'content' => '
+                    <p>Nhanh tay đặt vé cùng bạn bè đón những suất chiếu sớm giá rẻ nào các bạn !!!</p>
+                    <p><strong>Nội Dung Chương Trình: </strong></p>
+                    <p>💗 Chỉ 45K/ vé 2D tại Beta Thanh Xuân, Mỹ Đình, Biên Hòa, Thái Nguyên, Nha Trang.</p>
+                    <p>💗 Chỉ 50K/ vé 2D tại Beta Giải Phóng.</p>
+                    <p><strong>Điều Kiện Áp Dụng: </strong></p>
+                    <p><strong>Chỉ áp dụng cho khách hàng thành viên của Beta Cinemas.</strong></p>
+                    <p>Chỉ áp dụng từ thứ 2 đến thứ 6 hàng tuần</p>
+                    <p>Áp dụng cho cả mua vé tại quầy và mua Online</p>
+                    <p>Không áp dụng đồng thời với các chương trình khuyến mại khác</p>
+                    <p>Không áp dụng nếu trùng vào ngày lễ, Tết.</p>
+                    <p>Không áp dụng cho các suất chiếu đặc biệt hoặc phim ra mắt sớm</p>
+                    <p>Phụ thu 5k cho ghế VIP/đôi</p>
+                    <p>Xem lịch chiếu và đăt vé tại: <a href="http://onelink.to/zmb6dp">http://onelink.to/zmb6dp</a></p>
+                ',
+            ],
+            // 5
+            [
+                'title' => 'THỨ BA VUI VẺ',
+                'slug' => 'thu-ba-vui-ve',
+                'img_post' => 'https://files.betacorp.vn//cms/images/2024/04/03/545x415-t3vv-130807-030424-88.jpg',
+                'description' => 'Đừng bỏ lỡ ngày thứ Ba vui vẻ tại Beta Cinemas với giá vé ưu đãi cực rẻ! Lên lịch ngay để cùng bạn bè thưởng thức phim yêu thích.',
+                'content' => '
+                    <p>
+                    <strong>😍😍 Mọi người đừng quên ngày " Thứ 3 vui vẻ" của Beta Cinemas với mức giá chỉ 40 - 45 - 50k với tất cả các phim nhé! 😍😍</strong></p>
+                    <p><strong>💸 Đồng giá giá vé phim :</strong></p>
+                    <p>💗 Chỉ 40K/vé 2D - 60K/vé 3D tại Beta Bắc Giang, Thanh Hóa, Biên Hòa, Nha Trang, Thái Nguyên.</p>
+                    <p>💗 Chỉ 45K/vé 2D - 65K/vé 3D tại Beta Mỹ Đình, Thanh Xuân, Đan Phượng, Tân Uyên, Empire Bình Dương (Thủ Dầu Một), Lào Cai.</p>
+                    <p>💗 Chỉ 45K/vé 2D - 65K/vé 3D (học sinh sinh viên, trẻ em, người cao tuổi) & 50K/vé 2D - 70K/vé 3D (người lớn) tại Quang Trung.</p>
+                    <p>💗 Chỉ 40K/vé 2D - 60K/vé 3D (học sinh sinh viên, trẻ em, người cao tuổi) & 45K/vé 2D - 65K/vé 3D (người lớn) tại Long Khánh.</p>
+                    <p>💗 Chỉ 50K/vé 2D - 70K/vé 3D tại Giải Phóng, Ung Văn Khiêm, Trần Quang Khải.</p>
+                    <p>💗 Chỉ 50K/vé (học sinh sinh viên, trẻ em, người cao tuổi, nhân viên) & 60K/vé (người lớn) tại Hồ Tràm, TRMall Phú Quốc. </p>
+                    <p><strong>💢 Điều kiện áp dụng:</strong></p>
+                    <p><strong>- Chỉ áp dụng cho khách hàng thành viên của Beta Cinemas.</strong></p>
+                    <p>- Áp dụng cho cả mua vé tại quầy và mua Online</p>
+                    <p>- Không áp dụng đồng thời với các chương trình khuyến mại khác</p>
+                    <p>- Không áp dụng nếu trùng vào ngày lễ, Tết.</p>
+                    <p>- Không áp dụng cho các suất chiếu đặc biệt hoặc phim ra mắt sớm</p>
+                    <p>- KHÔNG PHỤ THU GHẾ VIP/ĐÔI</p>
+                    <p>- Phụ thu 10k với khách hàng không có tài khoản thành viên Beta Member (đăng ký nhanh trong 1 nốt nhạc tại 
+                    <a href="http://onelink.to/zmb6dp">http://onelink.to/zmb6dp<a/>)</p>
+                ',
+            ],
+            // 6
+            [
+                'title' => 'SALE KHÔNG NGỪNG - MỪNG "MAD SALE DAY"',
+                'slug' => 'sale-khong-ngung-mad-sale-day',
+                'img_post' => 'https://files.betacorp.vn//cms/images/2024/04/03/545x415-mad-sale-day-131034-030424-25.jpg',
+                'description' => 'Bùng nổ ưu đãi cùng ngày "Mad Sale Day" tại Beta Cinemas! Giảm giá không ngừng cho tất cả vé xem phim và combo.',
+                'content' => '
+                    <p><strong>SALE KHÔNG NGỪNG - MỪNG "MAD SALE DAY"</strong></p>
+                    <p><strong>Không thể bỏ lỡ Mad Sale Day - Thứ 2 đầu tiên của tháng - Ngày hội khuyến mãi hấp dẫn nhất tại Beta Cinemas:</strong></p>
+                    <p><strong>💢 ĐỪNG BỎ LỠ - MAD SALE DAY VỚI CÁC ƯU ĐÃI SAU💢</strong></p>                  
+                    <p>🎁 Đồng giá 40K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại các cụm rạp Beta Thái Nguyên, Thanh Hóa, Bắc Giang, Nha Trang, Biên Hòa.</p>
+                    <p>🎁 Đồng giá 45K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Thanh Xuân, 
+                    Mỹ Đình, Đan Phượng, Long Khánh, Tân Uyên, Empire Bình Dương (Thủ Dầu Một), Phú Mỹ, Lào Cai.</p>
+                    <p>🎁 Đồng giá 45k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 50k/vé 
+                    (người lớn) đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Quang Trung.</p>
+                    <p>🎁 Đồng giá 50K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Giải Phóng, Ung Văn Khiêm, Trần Quang Khải.</p>
+                    <p>🎁 Đồng giá 50k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 60k/vé (người lớn) 
+                    đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Hồ Tràm, TRMall Phú Quốc.</p>
+                    <p>⚠️ LƯU Ý:</p>
+                    <p>🔹 Áp dụng cho tất cả khách hàng.</p>
+                    <p>🔹 Áp dụng khi mua vé trực tiếp tại quầy và mua online.</p>
+                    <p>🔹 Không giới hạn suất chiếu và ghế ngồi.</p>
+                    <p>🔹 Áp dụng tại toàn bộ các rạp Beta Cinemas.</p>
+                    <p>🔹 Không áp dụng đồng thời với các chương trình khuyến mại khác.</p>
+                    <p>🔹 Không áp dụng nếu trùng vào ngày lễ, Tết và các ngày nghỉ bù theo lịch của Nhà nước.</p>
+                    <p>🔹 Không phụ thu phim bom tấn, ghế VIP, ghế đôi.</p>
+                    <p>🔹 Giá vé giảm Mad Sale Day không áp dụng với các phim có suất chiếu sớm, hoặc giá vé đặc biệt từ nhà phát hành.
+                    Với các phim này, vé phim sẽ chỉ được tặng Bắp MIỄN PHÍ</p>
+                    <p><strong>"BOM TẤN" ĐÃ NỔ, CÒN BẠN ĐÃ "NỔ VÍ" HAY CHƯA?</strong></p>
+                    <p>-----------------------------</p>
+                    <p><strong>🤩𝔹𝔼𝕋𝔸 ℂ𝕀ℕ𝔼𝕄𝔸𝕊 - ℝẠℙ ℕ𝔾𝕆ℕ 𝔾𝕀Á ℕ𝔾Ọ𝕋🤩</strong></p>
+                    <p><strong>🎈LỊCH CHIẾU VÀ HỆ THỐNG RẠP:</strong> <a href="https://www.betacineplex.vn/">https://www.betacineplex.vn/</a></p>
+                    <p><strong>🎈TRUY CẬP APP</strong> <a href="http://onelink.to/zmb6dp">http://onelink.to/zmb6dp</a></p>
+                ',
+            ],
+            // 7
+            [
+                'title' => 'GIÁ VÉ ƯU ĐÃI CHO HỌC SINH, SINH VIÊN',
+                'slug' => 'gia-ve-uu-dai-hoc-sinh-sinh-vien',
+                'img_post' => 'https://files.betacorp.vn//cms/images/2024/04/03/545x415-hssv-131204-030424-20.jpg',
+                'description' => 'Học sinh, sinh viên nhận ngay ưu đãi giá vé cực thấp tại Beta Cinemas! Chỉ cần mang theo thẻ sinh viên để nhận khuyến mãi hấp dẫn.',
+                'content' => '
+                    <p>
+                    <strong>Rạp sinh viên – giá vé cũng rất sinh viên</strong></p>
+                    <p>Ưu đãi với khách hàng có thẻ học sinh sinh viên, trẻ em cao dưới 1,3m và người trên 55 tuổi</p>
+                    <p>🎊 40K cho phim 2D, 60k cho phim 3D: Bắc Giang, Biên Hòa, Nha Trang, Thanh Hóa, Thái Nguyên</p>
+                    <p>🎊 40k (thứ 2-4-5-6) & 50k (thứ 7-CN) cho phim 2D, 60k (thứ 2-4-5-6) & 70k (thứ 7-CN) cho phim 3D: Long Khánh</p>
+                    <p>🎊 45k (thứ 2-5) & 50k (thứ 6-7-CN) cho phim 2D, 65k (thứ 2-5-) & 70k (thứ 6-7-CN) cho phim 3D: Lào Cai</p>
+                    <p>🎊 45k (từ thứ 2-5) & 55k (thứ 6-7-CN) cho phim 2D, 65k (từ thứ 2-5) & 75k (thứ 6-7-CN) cho phim 3D: Quang Trung</p>
+                    <p>🎊 45k cho phim 2D, 65k cho phim 3D: Mỹ Đình, Thanh Xuân, Đan Phượng, Tân Uyên, Empire Bình Dương (Thủ Dầu Một)</p>
+                    <p>🎊 50k cho phim 2D, 70k cho phim 3D: Giải Phóng</p>
+                    <p>🎊 50k (từ thứ 2-5) & 55k (thứ 6-7-CN) cho phim 2D, 70k (từ thứ 2-5) & 75k (thứ 6-7-CN) cho phim 3D: Trần Quang Khải, Ung Văn Khiêm</p>
+                    <p><strong>Điều kiện áp dụng:</strong></p>
+                    <p>Xuất trình thẻ HSSV (nếu có) hoặc CMND/CCCD, bằng lái xe dưới 22 tuổi.</p>
+                    <p>Mặc đồng phục của trường</p>
+                    <p>Chiều cao dưới 1m3</p>
+                    <p><strong>Lưu ý:</strong></p>
+                    <p><strong>Chỉ áp dụng cho khách hàng thành viên của Beta Cinemas.</strong></p>
+                    <p>Thẻ học sinh, sinh viên phải còn thời hạn áp dụng.</p>
+                    <p>1 thẻ học sinh, sinh viên có thể áp dụng được cho cả nhóm khách hàng đi cùng đối với phim không giới hạn độ tuổi 
+                    (các phim từ T13 trở lên cần kiểm tra thẻ của từng người).</p>
+                    <p>Ưu đãi áp dụng với người lớn tuổi (trên 55t) và phải xuất trình CMND trước khi mua vé.</p>
+                    <p>Không áp dụng đồng thời với các chương trình khuyến mãi khác.</p>
+                    <p>Chỉ áp dụng cho mua vé tại quầy.</p>
+                    <p>Không áp dụng cho mua vé Online.</p>
+                    <p>Không áp dụng nếu trùng vào ngày lễ, Tết.</p>
+                    <p>Không áp dụng cho các suất chiếu đặc biệt hoặc phim ra mắt sớm.</p>
+                ',
+            ],
+            // 8
+            [
+                'title' => 'THÀNH LẬP LIÊN DOANH BETA MEDIA VÀ AEON ENTERTAINMENT',
+                'slug' => 'lien-doanh-beta-media-aeon-entertainment',
+                'img_post' => 'https://files.betacorp.vn//media/images/2024/09/05/z5799808128187-c7065a264ae65ee9119069e5f37ee079-144458-050924-43.jpg',
+                'description' => 'Beta Media chính thức hợp tác cùng AEON Entertainment, mở ra kỷ nguyên mới cho ngành giải trí 
+                                tại Việt Nam với nhiều dự án rạp chiếu phim hấp dẫn.',
+                'content' => '
+                    <p><strong>Ngày 31.07.2024, Beta Media (Việt Nam) và Aeon Entertainment (Nhật Bản) chính thức bố công ty liên doanh tại Việt Nam.
+                    Liên doanh này tập trung vào việc phát triển, quản lý, vận hành chuỗi rạp chiếu phim cao cấp; đầu tư sản xuất phim điện ảnh 
+                    và phát hành các bộ phim Việt Nam, Nhật Bản và quốc tế tại thị trường Việt Nam.</strong></p>
+                    <p><strong>Sự kiện công bố liên doanh này là dấu mốc quan trọng trong sự phát triển chung của nền điện ảnh Việt Nam, 
+                    cũng như sự hợp tác kinh tế giữa hai quốc gia Nhật Bản – Việt Nam. Buổi lễ công bố đã thu hút sự tham dự của các cơ quan báo chí, các đơn vị,
+                    cá nhân hoạt động trong lĩnh vực phim ảnh, giải trí. Đặc biệt, sự kiện vinh dự đón tiếp ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment 
+                    và ông Bùi Quang Minh – Chủ tịch Beta Group.</strong></p>
+                    <p><strong>Dự kiến, vài chục tỉ Yên (vài nghìn tỉ đồng) sẽ được đầu tư để xây dựng hơn 50 cụm rạp chiếu phim đẳng cấp với thương hiệu 
+                    Aeon Beta Cinema cho tới năm 2035, mang phong cách hiện đại hài hoà với các giá trị truyền thống của Việt Nam và Nhật Bản.
+                    Các rạp chiếu phim Aeon Beta Cinema sẽ được triển khai trên khắp các tỉnh thành của Việt Nam, mang đến cho khán giả những trải nghiệm 
+                    xem phim tuyệt vời nhất. Dự kiến, rạp chiếu phim Aeon Beta Cinema đầu tiên sẽ khai trương vào năm 2025.</strong></p>
+                    <p><strong>Liên doanh này không chỉ dừng lại ở việc phát triển hệ thống rạp chiếu phim mà còn đặt mục tiêu tham gia mạnh mẽ vào lĩnh vực sản xuất,
+                    phát hành phim. Theo thoả thuận, các dự án sản xuất và phát hành phim điện ảnh sẽ được triển khai với thương hiệu Aeon Beta, hứa hẹn mang đến 
+                    cho khán giả những bộ phim chất lượng, giàu giá trị nghệ thuật và giải trí.</strong></p>
+                    <p><strong>Được thành lập từ năm 2014, Beta Media là một công ty của hệ sinh thái Beta Group. Là công ty vận hành, phát triển 
+                    chuỗi rạp chiếu phim nhắm vào phân khúc tầm trung tại Việt Nam, Beta Media đã phát triển 20 cụm rạp chiếu Beta Cinemas khắp các tỉnh thành 
+                    trên cả nước. Trong khi Beta Cinemas vẫn giữ chiến lược phục vụ khách hàng trung cấp (mass market), sự ra đời của Aeon Beta sẽ mang đến 
+                    những trải nghiệm đẳng cấp cho các khách hàng thuộc phân khúc cao cấp hơn. </strong></p>
+                    <p><strong>Về phía đối tác chiến lược, Aeon Entertainment là một công ty con thuộc Tập đoàn Aeon Nhật Bản. Được thành lập từ năm 1991, 
+                    Aeon Entertainment hiện có 96 rạp chiếu phim, là chuỗi rạp lớn nhất ở đất nước mặt trời mọc (tính đến tháng 7/2024). Đặc biệt, với triết lý mở rộng 
+                    ranh giới của sự phấn khích cho giới mộ điệu điện ảnh và lấp đầy cuộc sống con người bằng niềm vui và sự phấn khích, đơn vị này luôn đi đầu 
+                    trong việc khởi chiếu những bộ phim điện ảnh mới nhất trên thế giới. Việc thành lập liên doanh ở Việt Nam cho thấy tiềm lực và nỗ lực phát triển 
+                    trên thị trường quốc tế của Aeon Entertainment.</strong></p>
+                    <p><strong>Theo chia sẻ của ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment, Beta Media là đối tác hoàn hảo, bởi doanh nghiệp này 
+                    có sự hiểu biết sâu rộng về thị trường Việt Nam, kiến thức marketing vượt trội và khả năng kết nối mạng lưới địa phương mạnh mẽ. “Điện ảnh 
+                    có khả năng kết nối con người và tâm hồn lại với nhau. Chúng tôi tin vào sức mạnh đó và sẽ tiếp tục thách thức bản thân để mang đến sự bất ngờ 
+                    và phấn khích cho khách hàng tại Việt Nam”, ông Nobuyuki Fujiwara khẳng định.</strong></p>
+                    <p><strong>Cùng quan điểm với đối tác, ông Bùi Quang Minh, Chủ tịch Beta Group, nhấn mạnh: “Liên doanh này là kết quả tốt đẹp của sự chia sẻ 
+                    tầm nhìn, khát vọng, cũng như giá trị cốt lõi để cùng nhau mang lại những trải nghiệm mới mẻ và giá trị bền vững cho cộng đồng. Sự kết hợp giữa 
+                    Aeon Entertainment, với tiềm lực mạnh mẽ và bề dày kinh nghiệm trong ngành công nghiệp điện ảnh, cùng Beta Media, với sự hiểu biết sâu sắc về 
+                    thị trường Việt Nam và năng lực đổi mới sáng tạo, sẽ tạo ra những cơ hội phát triển đột phá cho cả hai bên”. </strong></p>
+                    <p><strong>Với sự ra đời của Liên doanh Aeon Beta, thị trường rạp chiếu phim, sản xuất và phát hành phim sẽ có thêm một thương hiệu quy mô và 
+                    đẳng cấp, góp phần nâng tầm trải nghiệm cho những người yêu thích điện ảnh. Đồng thời, Liên doanh này cam kết xây dựng và phát triển văn hoá, 
+                    quan hệ Việt-Nhật, đóng góp vào sự phát triển bền vững cho cộng đồng và xã hội.</strong></p>
+                    <p><strong>Cùng xem lại Lễ ký kết liên doanh Aeon Beta tại đây: RECAP LIÊN DOANH BETA MEDIA VÀ AEON ENTERTAINMENT</strong></p>
+                ',
+            ],
+            // 9
+            [
+                'title' => 'SHARK MINH BETA KÝ KẾT NHƯỢNG QUYỀN “RẠP CHIẾU PHIM TRIỆU LIKE”, NÂNG TỔNG SỐ LÊN 19 CỤM RẠP BETA CINEMAS',
+                'slug' => 'shark-minh-beta-nhuong-quyen-19-rap',
+                'img_post' => 'https://files.betacorp.vn//cms/images/2024/04/03/nghh6516-1-134044-030424-58.png',
+                'description' => 'Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, đưa tổng số rạp Beta Cinemas lên con số 19.
+                                Xem phim dễ dàng tại nhiều địa điểm hơn bao giờ hết!',
+                'content' => '
+                    <p><strong>Vừa qua, ngày 21 tháng 12 năm 2023 tại tòa nhà Trung tâm văn hoá đa năng IMC, tọa lạc tại 62 Trần Quang Khải,
+                     Quận 1, TP Hồ Chí Minh. Chủ tịch Beta Group - Bùi Quang Minh ký kết hợp tác nhượng quyền rạp phim Beta Cinemas lần thứ 19 tại Sài Gòn.</strong></p>
+                    <p>Lễ ký kết với sự tham gia của đại diện Beta Media ông Bùi Quang Minh (Nhà Điều Hành kiêm Nhà Sáng Lập Beta Group),
+                    cùng với Công Ty Cổ Phần APJ Entertainment đại diện bên nhượng quyền và các khách mời đặc biệt là lãnh đạo cấp cao của các công ty đối tác,
+                    nhà đầu tư, đơn vị báo đài, các phòng ban quan trọng của cả 2 công ty.</p>
+                    <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas</p>
+                    <p>Lễ ký kết đem đến cơ hội đầu tư “uy tín - an toàn” với mô hình nhượng quyền rạp phim đa dạng về các phân khúc. Đây cũng là thương hiệu 
+                    rạp chiếu phim nhượng quyền đầu tiên tại Việt Nam, hiện đang có 19 cụm rạp trải dài khắp cả nước và vẫn đang tiếp tục mở rộng.</p>
+                    <p>Beta Cinemas đang giới thiệu 3 gói nhượng quyền: Beta Lite (Thiết kế trẻ trung, chất lượng tiêu chuẩn), Beta Standard (Thiết kế hiện đại, 
+                    chất lượng quốc tế), Beta Premium (Thiết kế sang trọng, chất lượng đẳng cấp). Rạp phim được trang bị cơ sở vật chất, thiết bị hiện đại theo 
+                    tiêu chuẩn Hollywood 100% nhập khẩu từ nước ngoài.</p>
+                    <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 2).</p>
+                    <p>Đối với rạp phim Beta Cinemas Trần Quang Khải, mỗi phòng vé đều được lắp đặt hệ thống âm thanh Dolby 7.1 và hệ thống cách âm chuẩn quốc tế 
+                    giúp đem lại trải nghiệm âm thanh và hình ảnh sống động chất lượng cho từng thước phim bom tấn. Các bộ phim điện ảnh được cập nhật liên tục, 
+                    đảm bảo độ HOT trên thị trường, mang đến những siêu phẩm chất lượng nhất cho khán giả. </p>
+                    <p>Ngoài mức giá cạnh tranh phù hợp với chi tiêu của giới trẻ, đặc biệt là thế hệ Gen Z, Beta Cinemas Trần Quang Khải còn thường xuyên 
+                    có chương trình khuyến mại, ưu đãi cực kỳ đa dạng như Mad Sale Day vào thứ 2 đầu tiên của tháng, đồng giá vé vào các ngày Thứ 3 vui vẻ hàng tuần,...</p>
+                    <p><strong>Đánh dấu cột mốc rạp Beta thứ 19 trong chuỗi rạp Beta Cinemas </strong></p>
+                    <p>Beta Cinemas là mô hình rạp chiếu với giá vé hợp lý, hướng tới nhóm khách hàng học sinh, sinh viên và người thu nhập ở mức trung bình nhưng 
+                    vẫn đảm bảo những tiêu chuẩn chất lượng dịch vụ và trải nghiệm tốt. Sau gần 10 năm thành lập và phát triển, Beta Cinemas đã xây dựng 18 cụm 
+                    rạp trải dài khắp cả nước bao gồm: TP.HCM, Hà Nội, Thái Nguyên, Thanh Hóa, Bắc Giang… và mới nhất là cụm thứ 19 trong chuỗi rạp Beta Cinemas, 
+                    đây cũng là rạp thứ 2 ở TP. Hồ Chí Minh.</p>
+                    <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 3).</p>
+                    <p>Rạp chiếu phim được thành lập với mục tiêu đem đến cho khách hàng các sản phẩm và dịch vụ chất lượng tốt nhất, giá cả hợp lý nhất, với 
+                    2 mảng kinh doanh chính là: Tổ hợp dịch vụ ăn uống giải trí và cung cấp dịch vụ truyền thông. Cùng mục tiêu đem lại những trải nghiệm văn hoá 
+                    và giải trí tuyệt vời cho người dân Việt Nam. Với sứ mệnh mong muốn mang tới giá trị văn hóa hiện đại và chất lượng, Beta luôn lắng nghe, 
+                    nghiên cứu nhằm thấu hiểu và thoả mãn nhu cầu của khách hàng, sáng tạo trong từng sản phẩm, tận tâm đem đến chất lượng dịch vụ hàng đầu. </p>
+                    <p>Beta Cinemas sẽ chính thức có mặt tại tòa nhà Trung tâm văn hoá đa năng IMC, tọa lạc tại 62 Trần Quang Khải, Quận 1, TP Hồ Chí Minh vào 
+                    đầu năm 2024. Thương hiệu hướng đến mục tiêu mở rộng thị trường tại TP Hồ Chí Minh và các tỉnh thành khác trên cả nước trong tương lai. 
+                    Đa dạng phân khúc khách hàng với nhiều mô hình ưu Việt phù hợp với các nhà đầu tư. Trung tâm văn hóa đa năng IMC với tổ hợp dịch vụ vui chơi 
+                    giải trí được đầu tư chỉn chu, kỹ lưỡng và tinh tế đáp ứng nhu cầu ngày càng đa dạng của khách hàng.</p>
+                    <p>Bên cạnh đó, với vị thế đắc địa của trung tâm Quận 1, TP Hồ Chí Minh nơi giao thương sầm uất. Đây chính là tiền đề quan trọng cho Lễ ký 
+                    kết hợp tác nhượng quyền rạp phim Beta Cinemas Trần Quang Khải giữa Công Ty Cổ Phần Beta Media và Công Ty Cổ Phần APJ Entertainment. </p>
+                    <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 4).</p>
+                    <p>Với sứ mệnh luôn tự tin trong việc đi đầu trong phân khúc thị trường trung cấp và là chuỗi rạp đầu tiên hoàn thiện chính sách nhượng quyền 
+                    thương hiệu phát triển mạnh nhất tại thị trường trong nước. Đội ngũ quản lý chuyên nghiệp, sẽ sẵn sàng luôn hỗ trợ các nhà nhượng quyền trong 
+                    việc tiếp xúc với thị trường có số lượng khách nhất định. Đặc biệt, chỉ với một khoản đầu tư hợp lý, Beta sử dụng hiệu quả chi phí đầu tư & 
+                    tối ưu việc vận hành trong kinh doanh. Thời gian hoàn vốn nhanh chỉ từ 3 - 5 năm với tỷ suất lợi nhuận cao và ổn định.</p>
+                    <p>Là thị trường nhượng quyền thu hút các nhiều nhà đầu tư lớn, Beta Cinemas sẽ luôn không ngừng nỗ lực để tạo ra nhiều giá trị hơn nữa đến các 
+                    phân khúc khách hàng.</p>
+                ',
+            ],
+            // 10
+            [
+                'title' => 'BETA TRMALL PHÚ QUỐC CHÍNH THỨC KHAI TRƯƠNG VÀO 10/11/2023',
+                'slug' => 'beta-trmall-phu-quoc-khai-truong-10-11-2023',
+                'img_post' => 'https://files.betacorp.vn//media/images/2024/04/16/b8c25b2a-b154-4cf5-9a5d-c4b119b4477d-113630-160424-78.jpeg',
+                'description' => 'Beta TRMall Phú Quốc chính thức khai trương vào ngày 10/11/2023. Đến ngay để trải nghiệm không gian giải trí đẳng cấp cùng 
+                nhiều ưu đãi hấp dẫn!',
+                'content' => '
+                    <p><strong>
+                    NGÀY ẤY ĐÃ ĐẾN!!!</strong></p>
+                    <p><strong>🎉🎉🎉 BETA TRMALL PHÚ QUỐC CHÍNH THỨC KHAI TRƯƠNG VÀO THỨ 6 TUẦN NÀY (10/11/2023) 🎉🎉🎉</strong></p>                   
+                    <p><strong>Xin thông báo tới toàn thể server Beta, "người chơi" hệ Premium - Beta TRMall Phú Quốc đã sẵn sàng 🔥</strong></p>
+                    <p><strong>Sinh sau đẻ muộn nhưng thần thái ngút ngàn, Beta TRMall Phú Quốc quyết tâm trình làng với diện mạo "chanh sả" hết cỡ, 
+                    khuyến mại tới tấp và list phim cực kỳ uy tín 😤</strong></p>
+                    <p><strong>Nào anh em, full đồ max ping cùng ad ghé rạp săn góc sống ảo, săn sale, săn phim nào!</strong></p>
+                    <p><strong>⛳ Địa chỉ rạp: TTTM TR MALL - Sonasea - Đường Bãi Trường - Xã Dương Tơ - Thành phố Phú Quốc - Tỉnh Kiên Giang</strong></p>
+                    <p><strong>☎ Hotline: 0983 474 440</strong></p>
+                ',
+            ],
+        ];
+    
+        foreach ($posts as $post) {
+            Post::create([
+                'user_id' => random_int(1, 4),
+                'title' => $post['title'],
+                'slug' => $post['slug'],
+                'img_post' => $post['img_post'],
+                'description' => $post['description'],
+                'content' => $post['content'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        }
+        // End tạo 10 bài viết
+
+        // 5 dữ liệu liên hệ
+        $contacts = [
+            [
+                'user_contact' => 'Bùi Đỗ Đạt',
+                'email' => 'buidodat@gmail.com',
+                'phone' => '0901234567',
+                'title' => 'Lỗi khi đặt vé',
+                'content' => 'Tôi gặp lỗi khi thanh toán vé online, vui lòng hỗ trợ.',
+                'status' => 'pending',
+                'created_at' => now(),
+            ],
+            [
+                'user_contact' => 'Trương Công Lực',
+                'email' => 'truongcongluc@gmail.com',
+                'phone' => '0912345678',
+                'title' => 'Hỏi về khuyến mãi',
+                'content' => 'Cho tôi hỏi về chương trình khuyến mãi vào cuối tuần này.',
+                'status' => 'resolved',
+                'created_at' => now()->subDays(2),
+            ],
+            [
+                'user_contact' => 'Nguyễn Viết Sơn',
+                'email' => 'nguyenvietson@gmail.com',
+                'phone' => '0923456789',
+                'title' => 'Phản ánh dịch vụ',
+                'content' => 'Nhân viên không hỗ trợ nhiệt tình, mong được cải thiện.',
+                'status' => 'pending',
+                'created_at' => now()->subDays(5),
+            ],
+            [
+                'user_contact' => 'Đặng Phú An',
+                'email' => 'dangphuan@gmail.com',
+                'phone' => '0934567890',
+                'title' => 'Hủy vé đã đặt',
+                'content' => 'Tôi muốn hủy vé vì không thể đi vào ngày đã chọn.',
+                'status' => 'resolved',
+                'created_at' => now()->subDays(7),
+            ],
+            [
+                'user_contact' => 'Hà Đắc Hiếu',
+                'email' => 'hadachieu@gmail.com',
+                'phone' => '0945678901',
+                'title' => 'Góp ý giao diện',
+                'content' => 'Giao diện trang web cần thêm màu sắc sinh động hơn.',
+                'status' => 'pending',
+                'created_at' => now()->subDays(10),
+            ],
+        ];
+        foreach ($contacts as $ct) {
+            Contact::create($ct);
         }
 
 

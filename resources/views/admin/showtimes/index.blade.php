@@ -40,117 +40,102 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header ">
-                    {{-- d-flex justify-content-between --}}
-                    <div class="row mb-3">
-                        <h5 class="card-title mb-0">Danh sách Suất chiếu
-
-                        </h5>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-10">
-                            <form action="{{ route('admin.showtimes.index') }}" method="GET">
+                <div class="card-body border border-dashed border-end-0 border-start-0">
+                    <form action="{{ route('admin.showtimes.index') }}" method="GET">
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-3">
-                                                    <label class="mb-0">Chi nhánh</label>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="mb-0">Rạp</label>
-                                                </div>
-                                            @endif
-                                            <div class="col-md-2">
-                                                <label class="mb-0">Ngày chiếu</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="mb-0">Trạng thái</label>
-                                            </div>
+                                    @if (Auth::user()->hasRole('System Admin'))
+                                        <div class="col-md-2">
+                                            <label class="mb-0">Chi nhánh</label>
                                         </div>
+                                        <div class="col-md-2">
+                                            <label class="mb-0">Rạp</label>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Ngày chiếu</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="mb-0">Trạng thái</label>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-3">
-                                                    {{-- <label for="">Chi nhánh</label> --}}
-                                                    <select name="branch_id" id="branch" class="form-select">
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}"
-                                                                {{ $branch->id == session('showtime.branch_id') ? 'selected' : '' }}>
-                                                                {{ $branch->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    {{-- <label for="">Rạp</label> --}}
-                                                    <select name="cinema_id" id="cinema" class="form-select">
-                                                        @foreach ($cinemas as $cinema)
-                                                            <option value="{{ $cinema->id }}"
-                                                                {{ $cinema->id == session('showtime.cinema_id') ? 'selected' : '' }}>
-                                                                {{ $cinema->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
-
-                                            <div class="col-md-2">
-                                                {{-- <label for="">Ngày chiếu</label> --}}
-                                                <input type="date" name="date" class="form-control"
-                                                    value="{{ session('showtime.date', now()->format('Y-m-d')) }}">
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                {{-- <label for="">Trạng thái</label> --}}
-                                                <select name="is_active" class="form-select">
-                                                    <option value=""
-                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>
-                                                        Tất cả
-                                                    </option>
-                                                    <option value="0"
-                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>
-                                                        Không
-                                                        hoạt động
-                                                    </option>
-                                                    <option value="1"
-                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>
-                                                        Đang
-                                                        hoạt động
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                {{-- <label for="">Lọc</label> --}}
-                                                <button class="btn btn-success" name="btnSearch" type="submit">
-                                                    <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                                    Lọc</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- <div class="col-md-2" align="right">
-                                        <a href="{{ route('admin.statistical-movies') }}" class="btn btn-primary">Tổng
-                                            quan</a>
-                                    </div> --}}
-                                </div>
-
-                            </form>
-
-                        </div>
-                        @can('Thêm suất chiếu')
-                            <div class="col-md-2" align="right">
-                                <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
                             </div>
-                        @endcan
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    @if (Auth::user()->hasRole('System Admin'))
+                                        <div class="col-md-2">
+                                            {{-- <label for="">Chi nhánh</label> --}}
+                                            <select name="branch_id" id="branch" class="form-select">
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}"
+                                                        {{ $branch->id == session('showtime.branch_id') ? 'selected' : '' }}>
+                                                        {{ $branch->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-                    </div>
+                                        <div class="col-md-2">
+                                            {{-- <label for="">Rạp</label> --}}
+                                            <select name="cinema_id" id="cinema" class="form-select">
+                                                @foreach ($cinemas as $cinema)
+                                                    <option value="{{ $cinema->id }}"
+                                                        {{ $cinema->id == session('showtime.cinema_id') ? 'selected' : '' }}>
+                                                        {{ $cinema->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
+                                    <div class="col-md-2">
+                                        {{-- <label for="">Ngày chiếu</label> --}}
+                                        <input type="date" name="date" class="form-control"
+                                            value="{{ session('showtime.date', now()->format('Y-m-d')) }}">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        {{-- <label for="">Trạng thái</label> --}}
+                                        <select name="is_active" class="form-select">
+                                            <option value=""
+                                                {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>
+                                                Tất cả
+                                            </option>
+                                            <option value="0"
+                                                {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>
+                                                Không
+                                                hoạt động
+                                            </option>
+                                            <option value="1"
+                                                {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>
+                                                Đang
+                                                hoạt động
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        {{-- <label for="">Lọc</label> --}}
+                                        <button class="btn btn-success" name="btnSearch" type="submit">
+                                            <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                            Lọc</button>
+                                    </div>
+                                    @can('Thêm suất chiếu')
+                                        @if (Auth::user()->hasRole('System Admin'))
+                                            <div class="col-md-2" align="right">
+                                        @else
+                                            <div class="col-md-6 text" align="right">
+                                        @endif
+                                                <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary">Thêm mới</a>
+                                            </div>
+                                    @endcan
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">

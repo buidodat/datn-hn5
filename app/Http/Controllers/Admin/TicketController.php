@@ -90,7 +90,10 @@ class TicketController extends Controller
         // Truy vấn danh sách vé dựa trên bộ lọc
         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'showtime'])
             ->when($cinemaId, fn($query) => $query->where('cinema_id', $cinemaId))
-            ->when($date, fn($query) => $query->whereDate('created_at', $date))
+            // ->when($date, fn($query) => $query->whereDate('created_at', $date))
+            ->when($date, function ($query) use ($date) {
+                $query->whereHas('showtime', fn($q) => $q->whereDate('start_time', $date));
+            })
             ->when($movieId !== null, fn($query) => $query->where('movie_id', $movieId))
             ->when($status !== null && $status !== '', function ($query) use ($status) {
                 switch ($status) {
