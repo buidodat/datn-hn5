@@ -9,7 +9,7 @@
                     $indexCounter = 0;
                 @endphp
 
-                @foreach($slideShow as $slide)
+                @foreach($slideShows as $slide)
                     <!-- SLIDE -->
                     @if(!empty($slide->img_thumbnail))
                         @if(is_array($slide->img_thumbnail))

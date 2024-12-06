@@ -232,13 +232,13 @@
                                             </a>
                                         @endcan
 
-                                        {{-- <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
+                                         <form action="{{route('admin.vouchers.destroy', $item)}}" method="POST" class="d-inline-block">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa không')">
                                                 <i class="ri-delete-bin-7-fill"></i>
                                             </button>
-                                        </form> --}}
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

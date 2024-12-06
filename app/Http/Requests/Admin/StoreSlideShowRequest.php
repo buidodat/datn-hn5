@@ -22,7 +22,7 @@ class StoreSlideShowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'img_thumbnail' => 'required|array',
+            'img_thumbnail' => 'required|array|min:3',
             'img_thumbnail.*' => 'image|max:2048',
             'description' => 'nullable|string|max:1000',
         ];
@@ -30,8 +30,9 @@ class StoreSlideShowRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'img_thumbnail.required' => 'Vui lòng chọn ít nhất một ảnh.',
+            'img_thumbnail.required' => 'Vui lòng chọn ít nhất 3 ảnh.',
             'img_thumbnail.array' => 'Ảnh phải là một mảng.',
+            'img_thumbnail.min' => 'Vui lòng chọn ít nhất 3 ảnh.',
             'img_thumbnail.*.image' => 'Mỗi ảnh phải có định dạng hợp lệ (jpeg, png, jpg, gif, svg).',
             'img_thumbnail.*.max' => 'Kích thước mỗi ảnh không được vượt quá 2MB.',
             'description.string' => 'Mô tả phải là một chuỗi văn bản.',
