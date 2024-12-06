@@ -82,6 +82,8 @@
                                             <option value="resolved" {{ $contact->status == 'resolved' ? 'selected' : '' }}>Đã xử lí</option>
                                         </select>
                                     </td>
+
+                                    
                                     <td>
                                         {{-- <a href="{{ route('admin.contacts.show',$contact) }}">
                                             <button title="xem" class="btn btn-success btn-sm " type="button"><i

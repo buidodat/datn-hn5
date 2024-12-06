@@ -51,7 +51,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách phim</h5>
-                    <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @can('Thêm phim')
+                        <a href="{{ route('admin.movies.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
                 <div class="card-body">
 
@@ -86,7 +88,7 @@
 
                     <div class="card-body tab-content ">
                         {{-- Tất cả ok rồi --}}
-                        <div class="tab-pane " id="allMovie" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'all' ? 'active' : '' }} " id="allMovie" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAllMovie">
                                 <thead class='table-light'>
                                     <tr>
@@ -151,21 +153,39 @@
                                                 </ul>
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active change-is-active"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
 
                                             <td>
-                                                <div class="form-check form-switch form-switch-danger">
-                                                    <input class="form-check-input switch-is-active change-is-hot"
-                                                        name="is_hot" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_hot)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
                                             <td>
                                                 {!! $movie->is_publish == 1
@@ -174,24 +194,30 @@
                                             </td>
                                             <td>
                                                 <div class='d-flex'>
-                                                    <a href="{{ route('admin.movies.show', $movie) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
-                                                    <a href="{{ route('admin.movies.edit', $movie) }}">
-                                                        <button title="sủa" class="btn btn-warning btn-sm mx-1"
-                                                            type="button"><i class="fas fa-edit"></i></button>
-                                                    </a>
-                                                    @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
-                                                        <form action="{{ route('admin.movies.destroy', $movie) }}"
-                                                            method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                                <i class="ri-delete-bin-7-fill"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                    @can('Xem chi tiết phim')
+                                                        <a href="{{ route('admin.movies.show', $movie) }}">
+                                                            <button title="xem" class="btn btn-success btn-sm "
+                                                                type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @endcan
+                                                    @can('Sửa phim')
+                                                        <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                            <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                                type="button"><i class="fas fa-edit"></i></button>
+                                                        </a>
+                                                    @endcan
+                                                    @can('Xóa phim')
+                                                        @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
+                                                            <form action="{{ route('admin.movies.destroy', $movie) }}"
+                                                                method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    @endcan
 
 
                                                 </div>
@@ -203,7 +229,7 @@
                             </table>
                         </div>
                         {{-- Đã xuất bản --}}
-                        <div class="tab-pane active " id="isPublish" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'publish' ? 'active' : '' }} " id="isPublish" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100"
                                 id="tableIsPublish">
                                 <thead class='table-light'>
@@ -270,21 +296,39 @@
                                                 </ul>
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active change-is-active"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
 
                                             <td>
-                                                <div class="form-check form-switch form-switch-danger">
-                                                    <input class="form-check-input switch-is-active change-is-hot"
-                                                        name="is_hot" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_hot)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
                                             <td>
                                                 {!! $movie->is_publish == 1
@@ -293,24 +337,30 @@
                                             </td>
                                             <td>
                                                 <div class='d-flex'>
-                                                    <a href="{{ route('admin.movies.show', $movie) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
-                                                    <a href="{{ route('admin.movies.edit', $movie) }}">
-                                                        <button title="sủa" class="btn btn-warning btn-sm mx-1"
-                                                            type="button"><i class="fas fa-edit"></i></button>
-                                                    </a>
-                                                    @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
-                                                        <form action="{{ route('admin.movies.destroy', $movie) }}"
-                                                            method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                                <i class="ri-delete-bin-7-fill"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                    @can('Xem chi tiết phim')
+                                                        <a href="{{ route('admin.movies.show', $movie) }}">
+                                                            <button title="xem" class="btn btn-success btn-sm "
+                                                                type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @endcan
+                                                    @can('Sửa phim')
+                                                        <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                            <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                                type="button"><i class="fas fa-edit"></i></button>
+                                                        </a>
+                                                    @endcan
+                                                    @can('Xóa phim')
+                                                        @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
+                                                            <form action="{{ route('admin.movies.destroy', $movie) }}"
+                                                                method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    @endcan
 
 
                                                 </div>
@@ -322,7 +372,7 @@
                             </table>
                         </div>
                         {{-- Bản nháp --}}
-                        <div class="tab-pane " id="isDraft" role="tabpanel">
+                        <div class="tab-pane {{ session('movies.selected_tab') === 'draft' ? 'active' : '' }}" id="isDraft" role="tabpanel">
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableIsDraft">
                                 <thead class='table-light'>
                                     <tr>
@@ -388,21 +438,39 @@
                                                 </ul>
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active change-is-active"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active change-is-active"
+                                                            name="is_active" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
 
                                             <td>
-                                                <div class="form-check form-switch form-switch-danger">
-                                                    <input class="form-check-input switch-is-active change-is-hot"
-                                                        name="is_hot" type="checkbox" role="switch"
-                                                        data-id="{{ $movie->id }}" @checked($movie->is_hot)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa phim')
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-danger">
+                                                        <input class="form-check-input switch-is-active change-is-hot"
+                                                            name="is_hot" disabled readonly type="checkbox" role="switch"
+                                                            data-id="{{ $movie->id }}" @checked($movie->is_hot)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
                                             <td>
                                                 {!! $movie->is_publish == 1
@@ -411,24 +479,30 @@
                                             </td>
                                             <td>
                                                 <div class='d-flex'>
-                                                    <a href="{{ route('admin.movies.show', $movie) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
-                                                    <a href="{{ route('admin.movies.edit', $movie) }}">
-                                                        <button title="sủa" class="btn btn-warning btn-sm mx-1"
-                                                            type="button"><i class="fas fa-edit"></i></button>
-                                                    </a>
-                                                    @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
-                                                        <form action="{{ route('admin.movies.destroy', $movie) }}"
-                                                            method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Bạn có muốn xóa không')">
-                                                                <i class="ri-delete-bin-7-fill"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                    @can('Xem chi phim')
+                                                        <a href="{{ route('admin.movies.show', $movie) }}">
+                                                            <button title="xem" class="btn btn-success btn-sm "
+                                                                type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @endcan
+                                                    @can('Sửa phim')
+                                                        <a href="{{ route('admin.movies.edit', $movie) }}">
+                                                            <button title="sủa" class="btn btn-warning btn-sm mx-1"
+                                                                type="button"><i class="fas fa-edit"></i></button>
+                                                        </a>
+                                                    @endcan
+                                                    @can('Xóa phim')
+                                                        @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
+                                                            <form action="{{ route('admin.movies.destroy', $movie) }}"
+                                                                method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Bạn có muốn xóa không')">
+                                                                    <i class="ri-delete-bin-7-fill"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    @endcan
 
 
                                                 </div>

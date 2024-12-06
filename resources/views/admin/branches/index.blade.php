@@ -54,10 +54,11 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="text-end mt-2">
-                                    <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
-                                </div>
-
+                                @can('Thêm chi nhánh')
+                                    <div class="text-end mt-2">
+                                        <button type="submit" class="btn btn-primary mx-1">Thêm mới</button>
+                                    </div>
+                                @endcan
                             </div>
                         </form>
 
@@ -95,28 +96,37 @@
                                                     <div>{{ $branch->name }} {!! $branch->is_default ? '<span class="text-black-50 small">(Mặc định)</span>' : null !!}
                                                     </div>
                                                     <div>
-
-                                                        <a class="cursor-pointer text-info small openUpdateBranchModal"
-                                                            data-branch-id="{{ $branch->id }}"
-                                                            data-branch-name="{{ $branch->name }}">Sửa</a>
-
-
-                                                        @if ($branch->cinemas()->count() == 0)
-                                                            <a href="{{ route('admin.branches.destroy', $branch) }}"
-                                                                class="cursor-pointer  mx-1 text-danger small"
-                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa ?')">Xóa</a>
-                                                        @endif
-
+                                                        @can('Sửa chi nhánh')
+                                                            <a class="cursor-pointer text-info small openUpdateBranchModal"
+                                                                data-branch-id="{{ $branch->id }}"
+                                                                data-branch-name="{{ $branch->name }}">Sửa</a>
+                                                        @endcan
+                                                        @can('Xóa chi nhánh')
+                                                            @if ($branch->cinemas()->count() == 0)
+                                                                <a href="{{ route('admin.branches.destroy', $branch) }}"
+                                                                    class="cursor-pointer  mx-1 text-danger small"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa ?')">Xóa</a>
+                                                            @endif
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active changeActive"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
-                                                </div>
+                                                @can('Sửa chi nhánh')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            name="is_active" type="checkbox" disabled @readonly(true) role="switch"
+                                                            data-branch-id="{{ $branch->id }}" @checked($branch->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')">
+                                                    </div>
+                                                @endcan
                                             </td>
                                             <td class="small">
                                                 {{ $branch->created_at->format('d/m/Y') }}<br>{{ $branch->created_at->format('H:i:s') }}

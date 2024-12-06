@@ -2,19 +2,32 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomResetPassword;
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail, ShouldQueue
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles;
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token)); // Sử dụng thông báo tùy chỉnh của bạn
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -76,6 +89,8 @@ class User extends Authenticatable implements MustVerifyEmail, ShouldQueue
         return $this->type === self::TYPE_ADMIN;
     }
 
+
+
     public function vouchers()
     {
         return $this->belongsToMany(Voucher::class, 'user_vouchers')
@@ -105,4 +120,8 @@ class User extends Authenticatable implements MustVerifyEmail, ShouldQueue
     {
         return $this->belongsTo(Cinema::class);
     }
+    // public function hasRole($role)
+    // {
+    //     return $this->roles->contains('name', $role);
+    // }
 }

@@ -41,7 +41,7 @@
                     <li class="nav-item">
                         <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
                             <i class="ri-dashboard-2-line"></i>
-                            <span data-key="t-dashboards">Dashboard</span>
+                            <span data-key="t-dashboards">Tổng quan</span>
                         </a>
                     </li>
                 @endif
@@ -73,7 +73,7 @@
                             </ul>
                         </div>
 
-                        <div class="menu-dropdown collapse" id="chart" style="">
+                        {{-- <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.statistical-cinemas') }}" class="nav-link menu-link"
@@ -82,7 +82,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
 
                         <div class="menu-dropdown collapse" id="chart" style="">
                             <ul class="nav nav-sm flex-column">

@@ -190,6 +190,7 @@
                                         </tr>
                                     @endforeach
 
+
                                 </tbody>
                             </table>
                         </div>
@@ -209,7 +210,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rooms->where('is_publish', true) as $index => $room)
+                                    @foreach ($rooms->where('is_publish', true)->when(Auth::user()->cinema_id, function ($query) {
+            return $query->where('cinema_id', Auth::user()->cinema_id);
+        }) as $index => $room)
                                         <tr>
                                             <td>{{ $room->id }}</td>
                                             <td>
@@ -701,8 +704,15 @@
             button.addEventListener('click', function() {
                 const roomId = this.getAttribute('data-room-id'); // Lấy roomId từ data attribute
                 const roomName = this.getAttribute('data-room-name');
-                const branchId = this.getAttribute('data-branch-id');
-                const cinemaId = this.getAttribute('data-cinema-id');
+                @if (Auth::user()->hasRole('System Admin'))
+                    const branchId = this.getAttribute('data-branch-id');
+                    const cinemaId = this.getAttribute('data-cinema-id');
+                    document.getElementById('updateBranchId').value = branchId;
+
+                    // Tải danh sách rạp chiếu và chọn rạp đã chọn
+                    loadCinemas('updateBranchId', 'updateCinemaId', cinemaId);
+                @endif
+
                 const typeRoomId = this.getAttribute('data-type-room-id');
                 const seatTemplateId = this.getAttribute('data-seat-template-id');
                 const isPublish = this.getAttribute('data-is-publish');
@@ -710,29 +720,29 @@
                 // Điền dữ liệu vào modal
                 document.getElementById('updateRoomId').value = roomId; // Gán giá trị roomId
                 document.getElementById('updateName').value = roomName;
-                document.getElementById('updateBranchId').value = branchId;
 
-                // Tải danh sách rạp chiếu và chọn rạp đã chọn
-                loadCinemas('updateBranchId', 'updateCinemaId', cinemaId);
 
                 document.getElementById('updateTypeRoomId').value = typeRoomId;
                 document.getElementById('updateSeatTemplateId').value = seatTemplateId;
                 if (isPublish == 1) {
                     // Chỉ cho phép nhập tên, các trường khác disabled
+                    @if (Auth::user()->hasRole('System Admin'))
                     document.getElementById('updateBranchId').disabled = true;
                     document.getElementById('updateCinemaId').disabled = true;
+                    @endif
                     document.getElementById('updateTypeRoomId').disabled = true;
                     document.getElementById('updateSeatTemplateId').disabled = true;
                 } else {
                     // Nếu chưa publish, cho phép chỉnh sửa tất cả
+                    @if (Auth::user()->hasRole('System Admin'))
                     document.getElementById('updateBranchId').disabled = false;
                     document.getElementById('updateCinemaId').disabled = false;
+                    @endif
                     document.getElementById('updateTypeRoomId').disabled = false;
                     document.getElementById('updateSeatTemplateId').disabled = false;
                 }
 
-                // Mở modal
-                console.log(roomId, roomName, branchId, cinemaId, typeRoomId, seatTemplateId);
+                // Mở moda
                 $('#updateRoomModal').modal('show');
             });
         });
@@ -777,8 +787,16 @@
         function handleErrors(errors, prefix) {
             // Reset thông báo lỗi trước đó
             document.getElementById(`${prefix}NameError`).innerText = '';
-            document.getElementById(`${prefix}BranchError`).innerText = '';
-            document.getElementById(`${prefix}CinemaError`).innerText = '';
+            @if (Auth::user()->hasRole('System Admin'))
+                document.getElementById(`${prefix}BranchError`).innerText = '';
+                document.getElementById(`${prefix}CinemaError`).innerText = '';
+                if (errors.branch_id) {
+                    document.getElementById(`${prefix}BranchError`).innerText = errors.branch_id.join(', ');
+                }
+                if (errors.cinema_id) {
+                    document.getElementById(`${prefix}CinemaError`).innerText = errors.cinema_id.join(', ');
+                }
+            @endif
             document.getElementById(`${prefix}SeatTemplateError`).innerText = '';
             document.getElementById(`${prefix}TypeRoomError`).innerText = '';
 
@@ -786,12 +804,7 @@
             if (errors.name) {
                 document.getElementById(`${prefix}NameError`).innerText = errors.name.join(', ');
             }
-            if (errors.branch_id) {
-                document.getElementById(`${prefix}BranchError`).innerText = errors.branch_id.join(', ');
-            }
-            if (errors.cinema_id) {
-                document.getElementById(`${prefix}CinemaError`).innerText = errors.cinema_id.join(', ');
-            }
+
             if (errors.seat_template_id) {
                 document.getElementById(`${prefix}SeatTemplateError`).innerText = errors.seat_template_id.join(', ');
             }

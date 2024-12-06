@@ -86,7 +86,8 @@
                         </li>
                     </ul>
                     <div class="card-body tab-content ">
-                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'all' ? 'active' : '' }} " id="allSeatTemplate" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'all' ? 'active' : '' }} "
+                            id="allSeatTemplate" role="tabpanel">
                             <table id="tableAllSeatTemplate"
                                 class="table table-bordered dt-responsive nowrap align-middle w-100" style="width:100%">
                                 <thead>
@@ -153,13 +154,23 @@
                                                     : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active changeActive"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $item->id }}" @checked($item->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
-                                                        @disabled(!$item->is_publish)>
-                                                </div>
+
+
+                                                @can('Sửa mẫu sơ đồ ghế')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $item->id }}" @checked($item->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                            @disabled(!$item->is_publish)>
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            type="checkbox" role="switch" disabled readonly
+                                                            @checked($item->is_active)>
+                                                    </div>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -167,7 +178,8 @@
 
                             </table>
                         </div>
-                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'publish' ? 'active' : '' }} " id="isPublish" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'publish' ? 'active' : '' }} "
+                            id="isPublish" role="tabpanel">
                             <table id="tableIsPublish" class="table table-bordered dt-responsive nowrap align-middle w-100">
                                 <thead>
                                     <tr>
@@ -203,6 +215,7 @@
                                                                 data-is-publish={{ $item->is_publish }}>Sửa</a>
                                                         @endcan
 
+
                                                         @if (!$item->is_publish || $item->rooms()->doesntExist())
                                                             @can('Xóa mẫu sơ đồ ghế')
                                                                 <a class="cursor-pointer text-danger small"
@@ -230,13 +243,23 @@
                                                     : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active changeActive"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $item->id }}" @checked($item->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
-                                                        @disabled(!$item->is_publish)>
-                                                </div>
+
+
+                                                @can('Sửa mẫu sơ đồ ghế')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $item->id }}" @checked($item->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                            @disabled(!$item->is_publish)>
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            type="checkbox" role="switch" disabled readonly
+                                                            @checked($item->is_active)>
+                                                    </div>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -244,7 +267,8 @@
 
                             </table>
                         </div>
-                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'draft' ? 'active' : '' }}" id="isDraft" role="tabpanel">
+                        <div class="tab-pane {{ session('seatTemplates.selected_tab') === 'draft' ? 'active' : '' }}"
+                            id="isDraft" role="tabpanel">
 
                             <table id="tableIsDraft" class="table table-bordered dt-responsive nowrap align-middle w-100"
                                 style="width:100%">
@@ -308,13 +332,21 @@
                                                     : '<span class="badge bg-danger-subtle text-danger">Bản nháp</span>' !!}
                                             </td>
                                             <td>
-                                                <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input switch-is-active changeActive"
-                                                        name="is_active" type="checkbox" role="switch"
-                                                        data-id="{{ $item->id }}" @checked($item->is_active)
-                                                        onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
-                                                        @disabled(!$item->is_publish)>
-                                                </div>
+                                                @can('Sửa mẫu sơ đồ ghế')
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            name="is_active" type="checkbox" role="switch"
+                                                            data-id="{{ $item->id }}" @checked($item->is_active)
+                                                            onclick="return confirm('Bạn có chắc muốn thay đổi ?')"
+                                                            @disabled(!$item->is_publish)>
+                                                    </div>
+                                                @else
+                                                    <div class="form-check form-switch form-switch-success">
+                                                        <input class="form-check-input switch-is-active changeActive"
+                                                            type="checkbox" role="switch" disabled readonly
+                                                            @checked($item->is_active)>
+                                                    </div>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

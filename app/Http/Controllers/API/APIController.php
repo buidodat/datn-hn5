@@ -61,13 +61,25 @@ class APIController extends Controller
         return response()->json(['message' => 'Xóa thành công !']);
     }
 
-    public function changeStatusSelected(Request $request)
+    public function onStatusSelected(Request $request)
     {
         $showtimeIds = $request->input('showtime_ids');
         $showtimes = Showtime::whereIn('id', $showtimeIds)->get();
 
         foreach ($showtimes as $showtime) {
-            $showtime->is_active = !$showtime->is_active;  // Toggle trạng thái
+            $showtime->is_active = 1;  // Toggle trạng thái
+            $showtime->save();
+        }
+
+        return response()->json(['message' => 'Cập nhật trạng thái thành công']);
+    }
+    public function offStatusSelected(Request $request)
+    {
+        $showtimeIds = $request->input('showtime_ids');
+        $showtimes = Showtime::whereIn('id', $showtimeIds)->get();
+
+        foreach ($showtimes as $showtime) {
+            $showtime->is_active = 0;  // Toggle trạng thái
             $showtime->save();
         }
 
@@ -115,13 +127,6 @@ class APIController extends Controller
 
         if ($membership) {
             $user = User::find($membership->user_id);
-        } else {
-            $user = User::where('email', $dataMembership)->first();
-
-            // Nếu tìm thấy user theo email, lấy membership tương ứng
-            if ($user) {
-                $membership = Membership::where('user_id', $user->id)->first();
-            }
         }
 
         // Nếu tìm thấy thông tin user và membership

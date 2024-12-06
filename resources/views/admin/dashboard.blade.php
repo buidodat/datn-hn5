@@ -10,186 +10,144 @@
             <div class="h-100">
                 <div class="row mb-3 pb-1">
                     <div class="col-12">
-                        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-                            <div class="flex-grow-1">
 
-                                <h4 class="fs-16 mb-1">Thống kê
-                                    @if (Auth::user()->cinema_id != '')
-                                        tại {{ Auth::user()->cinema->name }}
-                                    @else
-                                        trên toàn quốc
-                                    @endif
-                                </h4>
-                                <p class="text-muted mb-0">Thống kê doanh thu tổng quát hóa đơn hàng ngày.</p>
-                            </div>
-                            <div class="mt-3 mt-lg-0">
-                                <form action="javascript:void(0);">
-                                    <div class="row g-3 mb-0 align-items-center">
-                                        <div class="col-sm-auto">
-                                            <div class="input-group">
-                                                <input type="text"
-                                                    class="form-control border-0 dash-filter-picker shadow"
-                                                    data-provider="flatpickr" data-range-date="true"
-                                                    data-date-format="d M, Y"
-                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">
-                                                <div class="input-group-text bg-primary border-primary text-white">
-                                                    <i class="ri-calendar-2-line"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--end col-->
-                                        {{-- <div class="col-auto">
-                                            <button type="button" class="btn btn-soft-success"><i
-                                                    class="ri-add-circle-line align-middle me-1"></i>
-                                                Add Product</button>
-                                        </div>
-                                        <!--end col-->
-                                        <div class="col-auto">
-                                            <button type="button"
-                                                class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn"><i
-                                                    class="ri-pulse-line"></i></button>
-                                        </div> --}}
-                                        <!--end col-->
-                                    </div>
-                                    <!--end row-->
-                                </form>
-                            </div>
-                        </div><!-- end card header -->
                     </div>
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                                <div class="flex-grow-1">
+
+                                    <h4 class="fs-16 mb-1">Thống kê trên toàn hệ thống
+                                    </h4>
+                                    <p class="text-muted mb-0">Thống kê tổng quan trên toàn hệ thống Poly Cinemas.</p>
+                                </div>
+                            </div>
                     <!--end col-->
                 </div>
                 <!--end row-->
-
+                @php
+                    function getClass($value)
+                    {
+                        if ($value > 0) {
+                            return 'text-success';
+                        } elseif ($value < 0) {
+                            return 'text-danger';
+                        } else {
+                            return 'text-muted';
+                        }
+                    }
+                @endphp
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
                         <div class="card card-animate">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Hôm nay</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                            +16.24 %
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="{{ $todayRevenue }}">0</span> VNĐ
-                                        </h4>
-                                        <a href="" class="text-decoration-underline">Xem chi tiết</a>
+                                        <p class="fw-medium text-muted mb-0">Doanh thu</p>
+                                        <h3 class="mt-4 ff-secondary fw-semibold"><span class="counter-value"
+                                                data-target="{{ $ticket->total_revenue }}">0</span>VND</h3>
+                                        <p class="mb-0 text-muted"><span
+                                                class="badge bg-light {{ getClass($revenuePc) }} mb-0"> <i
+                                                    class="ri-arrow-up-line align-middle"></i> {{ $revenuePc }} % </span>
+                                            so với tháng
+
+                                            trước</p>
                                     </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-success-subtle rounded fs-3">
-                                            <i class="bx bx-dollar-circle text-success"></i>
-                                        </span>
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-success-subtle rounded fs-3">
+                                                <i class="bx bx-dollar-circle text-success"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- end card body -->
-                        </div><!-- end card -->
+                        </div>
                     </div><!-- end col -->
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
                         <div class="card card-animate">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Tuần này</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-danger fs-14 mb-0">
-                                            <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                            -3.57 %
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="{{ $weekRevenue }}">0</span> VNĐ
-                                        </h4>
-                                        <a href="" class="text-decoration-underline">Xem chi tiết</a>
+                                        <p class="fw-medium text-muted mb-0">Số vé bán ra</p>
+                                        <h3 class="mt-4 ff-secondary fw-semibold"><span class="counter-value"
+                                                data-target="{{ $ticket->total_sales }}">0</span> Vé</h3>
+                                        <p class="mb-0 text-muted"><span
+                                                class="badge bg-light {{ getClass($salesPc) }} mb-0"> <i
+                                                    class="ri-arrow-up-line align-middle"></i> {{ $salesPc }} % </span>
+                                            so với tháng
+                                            trước</p>
                                     </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-info-subtle rounded fs-3">
-                                            <i class="bx bx-shopping-bag text-info"></i>
-                                        </span>
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-info-subtle rounded fs-3">
+                                                <i class=" ri-ticket-2-line text-info"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- end card body -->
-                        </div><!-- end card -->
+                        </div>
                     </div><!-- end col -->
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
+
                         <div class="card card-animate">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Tháng này</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-success fs-14 mb-0">
-                                            <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                            +29.08 %
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="{{ $monthRevenue }}">0</span> VNĐ
-                                        </h4>
-                                        <a href="" class="text-decoration-underline">Xem chi tiết</a>
+                                        <p class="fw-medium text-muted mb-0">Khách hàng mới</p>
+                                        <h3 class="mt-4 ff-secondary fw-semibold"><span class="counter-value"
+                                                data-target="{{ $user }}">0</span></h3>
+                                        <p class="mb-0 text-muted"><span
+                                                class="badge bg-light {{ getClass($userPc) }} mb-0"> <i
+                                                    class="ri-arrow-up-line align-middle"></i> {{ $userPc }} %
+                                            </span>
+                                            so với tháng
+                                            trước</p>
                                     </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-warning-subtle rounded fs-3">
-                                            <i class="bx bx-user-circle text-warning"></i>
-                                        </span>
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-warning-subtle rounded fs-3">
+                                                <i class="bx bx-user-circle text-warning"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- end card body -->
-                        </div><!-- end card -->
+                        </div>
                     </div><!-- end col -->
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
+
+
                         <div class="card card-animate">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Năm nay</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <h5 class="text-muted fs-14 mb-0">
-                                            +0.00 %
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value"
-                                                data-target="{{ $yearRevenue }}">0</span> VNĐ
-                                        </h4>
-                                        <a href="" class="text-decoration-underline">Xem chi tiết</a>
+                                        <p class="fw-medium text-muted mb-0">Suất chiếu</p>
+                                        <h3 class="mt-4 ff-secondary fw-semibold"><span class="counter-value"
+                                                data-target="{{ $showtime }}">0</span></h4>
+                                            <p class="mb-0 text-muted"><span
+                                                    class="badge bg-light {{ getClass($showtimePc) }}  mb-0"> <i
+                                                        class="ri-arrow-up-line align-middle"></i> {{ $showtimePc }} %
+                                                </span> so với tháng
+                                                trước</p>
                                     </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                            <i class="bx bx-wallet text-primary"></i>
-                                        </span>
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                                <i class="ri-slideshow-3-line text-primary"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- end card body -->
-                        </div><!-- end card -->
+                        </div>
+
                     </div><!-- end col -->
                 </div> <!-- end row-->
 
@@ -197,65 +155,41 @@
                     <div class="col-xl-8">
                         <div class="card">
                             <div class="card-header border-0 align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
-                                <div>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        ALL
-                                    </button>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        1M
-                                    </button>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm">
-                                        6M
-                                    </button>
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        1Y
-                                    </button>
-                                </div>
+                                <h4 class="card-title mb-0 flex-grow-1">Doanh thu</h4>
+
+                                Năm:
+                                <select id="year-select">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}" @selected($year == now()->year)>
+                                            {{ $year }}</option>
+
+                                    @endforeach
+
+                                </select>
                             </div><!-- end card header -->
 
                             <div class="card-header p-0 border-0 bg-light-subtle">
                                 <div class="row g-0 text-center">
-                                    <div class="col-6 col-sm-3">
+                                    <div class="col-12 col-sm-12">
                                         <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="7585">0</span>
+                                            <p class="text-muted mb-0">Tổng doanh thu</p>
+                                            <h5 class="mb-1"><span class="counter-value" id='total-revenue-year'
+                                                    data-target="{{ $data['total_year_revenue'][now()->year] }}">0</span>
+                                                VND
                                             </h5>
-                                            <p class="text-muted mb-0">Orders</p>
+
                                         </div>
                                     </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-3">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1">$<span class="counter-value" data-target="22.89">0</span>k
-                                            </h5>
-                                            <p class="text-muted mb-0">Earnings</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-3">
-                                        <div class="p-3 border border-dashed border-start-0">
-                                            <h5 class="mb-1"><span class="counter-value" data-target="367">0</span>
-                                            </h5>
-                                            <p class="text-muted mb-0">Refunds</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-6 col-sm-3">
-                                        <div class="p-3 border border-dashed border-start-0 border-end-0">
-                                            <h5 class="mb-1 text-success"><span class="counter-value"
-                                                    data-target="18.92">0</span>%</h5>
-                                            <p class="text-muted mb-0">Conversation Ratio</p>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
+
                                 </div>
                             </div><!-- end card header -->
 
                             <div class="card-body p-0 pb-2">
                                 <div class="w-100">
-                                    <div id="customer_impression_charts"
+                                    {{-- <div id="customer_impression_charts"
                                         data-colors='["--vz-warning", "--vz-success", "--vz-danger"]' class="apex-charts"
-                                        dir="ltr"></div>
+                                        dir="ltr"></div> --}}
+                                    <canvas id="revenueChart"></canvas>
                                 </div>
                             </div><!-- end card body -->
                         </div><!-- end card -->
@@ -265,44 +199,14 @@
                         <!-- card -->
                         <div class="card card-height-100">
                             <div class="card-header align-items-center d-flex">
-                                <h4 class="card-title mb-0 flex-grow-1">Sales by Locations</h4>
-                                <div class="flex-shrink-0">
-                                    <button type="button" class="btn btn-soft-primary btn-sm">
-                                        Export Report
-                                    </button>
-                                </div>
+                                <h4 class="card-title mb-0 flex-grow-1">Tỷ lệ đặt ghế</h4>
                             </div><!-- end card header -->
 
                             <!-- card body -->
                             <div class="card-body">
+                                <!-- Phần tử canvas cho biểu đồ -->
+                                <canvas id="seatChart"></canvas>
 
-                                <div id="sales-by-locations" data-colors='["--vz-light", "--vz-success", "--vz-primary"]'
-                                    style="height: 269px" dir="ltr"></div>
-
-                                <div class="px-2 py-2 mt-1">
-                                    <p class="mb-1">Canada <span class="float-end">75%</span></p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Greenland <span class="float-end">47%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 47%" aria-valuenow="47" aria-valuemin="0" aria-valuemax="47">
-                                        </div>
-                                    </div>
-
-                                    <p class="mt-3 mb-1">Russia <span class="float-end">82%</span>
-                                    </p>
-                                    <div class="progress mt-2" style="height: 6px;">
-                                        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                            style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="82">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <!-- end card body -->
                         </div>
@@ -311,7 +215,7 @@
                     <!-- end col -->
                 </div>
 
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-xl-6">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
@@ -984,10 +888,244 @@
                             </div>
                         </div> <!-- .card-->
                     </div> <!-- .col-->
-                </div> <!-- end row-->
+                </div> <!-- end row--> --}}
 
             </div> <!-- end .h-100-->
 
         </div> <!-- end col -->
     </div>
+@endsection
+
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script>
+        const data = @json($data); // Dữ liệu từ server được truyền vào JavaScript
+
+        let currentData = {
+            months: data.months,
+            revenue: data.revenue[{{ now()->year }}], // Dữ liệu doanh thu cho năm {{ now()->year }}
+        };
+
+        // Tạo biểu đồ doanh thu cho năm {{ now()->year }}
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        let chartDoanhThu = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: currentData.months,
+                datasets: [{
+                    label: 'Doanh thu (VND)',
+                    data: currentData.revenue,
+                    backgroundColor: 'rgba(10, 179, 156, 0.9)',
+                    yAxisID: 'y-axis-revenue'
+                }]
+            },
+            options: {
+                responsive: true,
+                layout: {
+                    padding: 20
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Đặt legend ở dưới biểu đồ
+                        labels: {
+                            boxWidth: 10, // Kích thước chiều rộng biểu tượng
+                            boxHeight: 10, // Kích thước chiều cao biểu tượng (tương ứng để thành hình tròn nhỏ hơn)
+                            usePointStyle: true, // Biểu tượng hình tròn
+                            pointStyle: 'circle', // Xác định hình dạng là hình tròn
+                            color: '#333', // Màu chữ
+                            font: {
+                                size: 14 // Kích thước chữ
+                            }
+
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    'y-axis-revenue': {
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            callback: (value) => `${value} VND`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Lắng nghe thay đổi từ dropdown chọn năm
+        document.getElementById('year-select').addEventListener('change', function() {
+
+            let selectedYear = this.value;
+
+            // Cập nhật dữ liệu dựa trên năm đã chọn
+            currentData = {
+                months: data.months,
+                revenue: data.revenue[selectedYear],
+            };
+            document.getElementById('total-revenue-year').setAttribute('data-target', data.total_year_revenue[
+                selectedYear]);
+            document.getElementById('total-revenue-year').innerText = data.total_year_revenue[selectedYear];
+
+            // Cập nhật biểu đồ với dữ liệu mới
+            chartDoanhThu.data.labels = currentData.months;
+            chartDoanhThu.data.datasets[0].data = currentData.revenue;
+
+            chartDoanhThu.update();
+        });
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        const seatData = @json($seatData);
+        const labels = seatData.map(item => item.seat_name); // Tên các loại ghế
+        const dataTotalSeat = seatData.map(item => item.total);
+        console.log(data);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('seatChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels, // Nhãn
+                    datasets: [{
+                        data: dataTotalSeat, // Dữ liệu
+                        backgroundColor: [
+                            "rgba(0, 143, 251, 0.8)",
+                            "rgba(0, 227, 150, 0.8)",
+                            "rgba(254, 176, 25, 0.8)"
+                        ],
+                        hoverBackgroundColor: [
+                            "rgba(0, 143, 251, 1)",
+                            "rgba(0, 227, 150, 1)",
+                            "rgba(254, 176, 25, 1)"
+                        ],
+                        borderColor: "#fff",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    layout: {
+                        padding: 30
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 10, // Kích thước chiều rộng biểu tượng
+                                boxHeight: 10, // Kích thước chiều cao biểu tượng (tương ứng để thành hình tròn nhỏ hơn)
+                                usePointStyle: true, // Biểu tượng hình tròn
+                                pointStyle: 'circle', // Xác định hình dạng là hình tròn
+                                color: '#333', // Màu chữ
+                                font: {
+                                    size: 14 // Kích thước chữ
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((sum, value) => sum +
+                                        value, 0);
+                                    const percentage = ((context.raw / total) * 100).toFixed(2);
+                                    return `${context.label}: ${context.raw} (${percentage}%)`;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${percentage}%`;
+                            }
+                        }
+                    },
+                    cutout: '65%' // Độ rộng lỗ tròn ở giữa
+                },
+                plugins: [ChartDataLabels]
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Lấy giá trị branchId và cinemaId từ phía server
+            var selectedBranchId = "{{ session('dashboard.branch_id', '') }}";
+            var selectedCinemaId = "{{ session('dashboard.cinema_id', '') }}";
+            var isLoading = false; // Cờ để kiểm tra trạng thái đang tải
+
+            // Xử lý sự kiện thay đổi chi nhánh
+            $('#branch').on('change', function() {
+                var branchId = $(this).val();
+                var cinemaSelect = $('#cinema');
+
+                // Đặt lại giá trị của dropdown rạp về mặc định khi chọn chi nhánh khác
+                cinemaSelect.empty();
+
+                if (branchId) {
+                    if (!isLoading) {
+                        isLoading = true; // Đánh dấu đang tải dữ liệu
+                        cinemaSelect.html(
+                            '<option value="">Đang tải...</option>'); // Hiển thị "Đang tải..."
+
+                        $.ajax({
+                            url: "{{ env('APP_URL') }}/api/cinemas/" + branchId,
+                            method: 'GET',
+                            success: function(data) {
+                                cinemaSelect.empty();
+                                cinemaSelect.append(
+                                    '<option value="">Tất cả rạp</option>'
+                                ); // Hiển thị "Tất cả rạp" sau khi tải
+
+                                $.each(data, function(index, cinema) {
+                                    cinemaSelect.append('<option value="' + cinema.id +
+                                        '">' + cinema.name + '</option>');
+                                });
+
+                                // Chọn lại rạp nếu có selectedCinemaId và branchId khớp
+                                if (selectedCinemaId && branchId == selectedBranchId) {
+                                    cinemaSelect.val(selectedCinemaId);
+                                }
+                                isLoading = false; // Kết thúc quá trình tải
+                            },
+                            error: function() {
+                                cinemaSelect.html(
+                                    '<option value="">Không thể tải danh sách rạp</option>');
+                                isLoading = false; // Kết thúc quá trình tải
+                            }
+                        });
+                    }
+                } else {
+                    cinemaSelect.empty();
+                    cinemaSelect.append('<option value="">Tất cả rạp</option>');
+                }
+            });
+
+            // Kích hoạt thay đổi chi nhánh để load rạp nếu có selectedBranchId
+            // if (selectedBranchId) {
+            //     $('#branch').val(selectedBranchId).trigger('change');
+            // } else {
+            //     // Nếu không có selectedBranchId, hiển thị "Tất cả rạp"
+            //     var cinemaSelect = $('#cinema');
+            //     if (!cinemaSelect.val()) { // Kiểm tra nếu không có giá trị rạp nào được chọn
+            //         cinemaSelect.empty();
+            //         cinemaSelect.append('<option value="">Tất cả rạp</option>');
+            //     }
+            // }
+        });
+    </script>
 @endsection

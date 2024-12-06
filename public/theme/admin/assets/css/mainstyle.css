@@ -2,9 +2,26 @@ td.table-showtime {
     padding: 0px;
     padding-bottom: 20px;
 }
+
 .status-showtime {
     width: 120px;
 }
+
+i.ri-add-circle-fill {
+    /* color: crimson; */
+    font-size: 15px;
+    border: 2px solid #ccc5c5;
+    border-radius: 50%;
+}
+
+.ri-indeterminate-circle-fill:before {
+    content: "\ee56";
+    font-size: 15px;
+    color: #f06548;
+    border: 2px solid #ccc5c5;
+    border-radius: 50%;
+}
+
 
 .inputCheckBoxShowtimes {
     width: 36px;
@@ -16,12 +33,15 @@ td.table-showtime-row {
     /* border-top: 0px; */
     text-align: center;
 }
-td.table-showtime-row  table thead {
+
+td.table-showtime-row table thead {
     height: 35px;
 }
+
 td.plusShowtime {
     width: 25px;
 }
+
 td.plusShowtime .toggle-button {
     /* width: 24px; */
     padding: 6px;
@@ -206,7 +226,7 @@ td.plusShowtime .toggle-button {
 
 
 
-.icon-pointer{
+.icon-pointer {
     cursor: pointer;
 }
 

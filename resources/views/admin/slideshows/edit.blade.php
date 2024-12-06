@@ -97,20 +97,6 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title mb-0">Is Active</h4>
-                    </div><!-- end card header -->
-
-                    <div class="card-body">
-                        <div class="form-check form-switch form-switch-default">
-                            <input class="form-check-input" type="checkbox" role=""
-                                   name="is_active" @checked($slide->is_active)  value="1">
-                        </div>
-                    </div>
-                    <!-- end card body -->
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
                         <h4 class="card-title mb-0">Mô tả</h4>
                     </div><!-- end card header -->
 

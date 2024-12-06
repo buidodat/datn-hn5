@@ -52,10 +52,10 @@
                         <div class="col-md-10">
                             <form action="{{ route('admin.showtimes.index') }}" method="GET">
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <div class="row">
                                             @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     <label class="mb-0">Chi nhánh</label>
                                                 </div>
                                                 <div class="col-md-3">
@@ -72,15 +72,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <div class="row">
                                             @if (Auth::user()->hasRole('System Admin'))
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     {{-- <label for="">Chi nhánh</label> --}}
                                                     <select name="branch_id" id="branch" class="form-select">
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}"
-                                                                {{ $branch->id == session('showtime.branch_id', 1) ? 'selected' : '' }}>
+                                                                {{ $branch->id == session('showtime.branch_id') ? 'selected' : '' }}>
                                                                 {{ $branch->name }}
                                                             </option>
                                                         @endforeach
@@ -92,7 +92,7 @@
                                                     <select name="cinema_id" id="cinema" class="form-select">
                                                         @foreach ($cinemas as $cinema)
                                                             <option value="{{ $cinema->id }}"
-                                                                {{ $cinema->id == session('showtime.cinema_id', 1) ? 'selected' : '' }}>
+                                                                {{ $cinema->id == session('showtime.cinema_id') ? 'selected' : '' }}>
                                                                 {{ $cinema->name }}
                                                             </option>
                                                         @endforeach
@@ -106,18 +106,21 @@
                                                     value="{{ session('showtime.date', now()->format('Y-m-d')) }}">
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 {{-- <label for="">Trạng thái</label> --}}
                                                 <select name="is_active" class="form-select">
                                                     <option value=""
-                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>Tất cả
+                                                        {{ session('showtime.is_active', null) === null ? 'selected' : '' }}>
+                                                        Tất cả
                                                     </option>
                                                     <option value="0"
-                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>Không
+                                                        {{ session('showtime.is_active', null) === '0' ? 'selected' : '' }}>
+                                                        Không
                                                         hoạt động
                                                     </option>
                                                     <option value="1"
-                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>Đang
+                                                        {{ session('showtime.is_active', null) === '1' ? 'selected' : '' }}>
+                                                        Đang
                                                         hoạt động
                                                     </option>
                                                 </select>
@@ -140,9 +143,12 @@
                             </form>
 
                         </div>
-                        <div class="col-md-2" align="right">
-                            <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
-                        </div>
+                        @can('Thêm suất chiếu')
+                            <div class="col-md-2" align="right">
+                                <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary mb-3 mt-4">Thêm mới</a>
+                            </div>
+                        @endcan
+
                     </div>
 
                 </div>
@@ -218,10 +224,10 @@
                                                 <tr class="bg-light">
                                                     <th>
                                                         {{-- dùng hàm contains để kiểm tra tồn tại --}}
-                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
-                                                            <input type="checkbox" id="select-all-{{ $movieId }}"
-                                                                class="select-all-movie">
-                                                        @endif
+                                                        {{-- @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0)) --}}
+                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                            class="select-all-movie">
+                                                        {{-- @endif --}}
 
                                                     </th>
 
@@ -235,13 +241,41 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($showtimesByMovie as $showtime)
+                                                    @php
+                                                        // $timeNow = now()->format('Y-m-d H:i:s');
+                                                        $timeNow = now();
+                                                        // dd($timeNow);
+
+                                                        //danh sách ticket
+                                                        $tickets = $showtime->tickets;
+
+                                                        //Đếm số lượng ghế đã bán
+                                                        $soldSeats = \App\Models\TicketSeat::whereIn(
+                                                            'ticket_id',
+                                                            $tickets->pluck('id'),
+                                                        )->count();
+
+                                                        //Tổng số ghế trong phòng chiếu
+                                                        $totalSeats = $showtime->room->seats
+                                                            ->whereNull('deleted_at')
+                                                            ->where('is_active', true)
+                                                            ->count();
+
+                                                        //Tổng số ghế còn lại
+                                                        $remainingSeats = $totalSeats - $soldSeats;
+                                                    @endphp
                                                     <tr>
                                                         <td class="inputCheckBoxShowtimes">
-                                                            @if ($showtime->is_active == 0)
-                                                                <input type="checkbox"
-                                                                    class="select-showtime movie-{{ $movieId }}"
-                                                                    data-showtime-id="{{ $showtime->id }}">
+
+                                                            @if (!$timeNow->greaterThan($showtime->start_time))
+                                                                {{-- Cho phép chọn checkbox nếu thời gian chưa qua --}}
+                                                                @if (!($remainingSeats < $totalSeats))
+                                                                    <input type="checkbox"
+                                                                        class="select-showtime movie-{{ $movieId }}"
+                                                                        data-showtime-id="{{ $showtime->id }}">
+                                                                @endif
                                                             @endif
+
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
                                                             -
@@ -249,25 +283,6 @@
                                                         </td>
                                                         <td>{{ $showtime->room->name }}</td>
 
-                                                        @php
-                                                            //danh sách ticket
-                                                            $tickets = $showtime->tickets;
-
-                                                            //Đếm số lượng ghế đã bán
-                                                            $soldSeats = \App\Models\TicketSeat::whereIn(
-                                                                'ticket_id',
-                                                                $tickets->pluck('id'),
-                                                            )->count();
-
-                                                            //Tổng số ghế trong phòng chiếu
-                                                            $totalSeats = $showtime->room->seats
-                                                                ->whereNull('deleted_at')
-                                                                ->where('is_active', true)
-                                                                ->count();
-
-                                                            //Tổng số ghế còn lại
-                                                            $remainingSeats = $totalSeats - $soldSeats;
-                                                        @endphp
 
                                                         <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
 
@@ -275,42 +290,65 @@
                                                             {{ $showtime->format }}
                                                         </td>
                                                         <td>
-                                                            <div
-                                                                class="form-check form-switch form-switch-success d-inline-block">
-                                                                <input
-                                                                    class="form-check-input switch-is-active changeActive"
-                                                                    name="is_active" type="checkbox" role="switch"
-                                                                    data-showtime-id="{{ $showtime->id }}"
-                                                                    @checked($showtime->is_active)
-                                                                    @if ($showtime->is_active) disabled @endif>
-                                                            </div>
+                                                            @can('Sửa suất chiếu')
+                                                                {{-- Nút is_active --}}
+                                                                <div
+                                                                    class="form-check form-switch form-switch-success d-inline-block">
+                                                                    <input
+                                                                        class="form-check-input switch-is-active changeActive"
+                                                                        name="is_active" type="checkbox" role="switch"
+                                                                        data-showtime-id="{{ $showtime->id }}"
+                                                                        @checked($showtime->is_active)
+                                                                        @if ($remainingSeats < $totalSeats || $timeNow > $showtime->start_time) disabled @endif>
+                                                                </div>
+                                                            @else
+                                                                <div
+                                                                    class="form-check form-switch form-switch-success d-inline-block">
+                                                                    <input
+                                                                        class="form-check-input switch-is-active changeActive"
+                                                                        name="is_active" disabled readonly type="checkbox"
+                                                                        role="switch" data-showtime-id="{{ $showtime->id }}"
+                                                                        @checked($showtime->is_active)
+                                                                        @if ($showtime->is_active) disabled @endif>
+                                                                </div>
+                                                            @endcan
                                                         </td>
 
                                                         <td>
-                                                            <a href="{{ route('admin.showtimes.show', $showtime) }}">
-                                                                <button title="xem" class="btn btn-success btn-sm "
-                                                                    type="button"><i class="fas fa-eye"></i></button></a>
+                                                            @can('Xem chi tiết suất chiếu')
+                                                                <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                                    <button title="xem" class="btn btn-success btn-sm "
+                                                                        type="button"><i class="fas fa-eye"></i></button></a>
+                                                            @endcan
+                                                            {{-- @if ($showtime->is_active == 0) --}}
+                                                            @if (!$timeNow->greaterThan($showtime->start_time))
+                                                                @if (!($remainingSeats < $totalSeats))
+                                                                    @can('Sửa suất chiếu')
+                                                                        <a
+                                                                            href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                                            <button title="sửa"
+                                                                                class="btn btn-warning btn-edit btn-sm"
+                                                                                type="button"><i
+                                                                                    class="fas fa-edit"></i></button>
+                                                                        </a>
+                                                                    @endcan
 
-                                                            @if ($showtime->is_active == 0)
-                                                                <a href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                    <button title="sửa"
-                                                                        class="btn btn-warning btn-edit btn-sm"
-                                                                        type="button"><i
-                                                                            class="fas fa-edit"></i></button>
-                                                                </a>
-
-                                                                <form
-                                                                    action="{{ route('admin.showtimes.destroy', $showtime) }}"
-                                                                    method="post" class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-destroy btn-sm"
-                                                                        onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                                        <i class="ri-delete-bin-7-fill"></i>
-                                                                    </button>
-                                                                </form>
+                                                                    @can('Xóa suất chiếu')
+                                                                        <form
+                                                                            action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                                            method="post" class="d-inline-block">
+                                                                            @csrf
+                                                                            @method('delete')
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger btn-destroy btn-sm"
+                                                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                                <i class="ri-delete-bin-7-fill"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    @endcan
+                                                                @endif
                                                             @endif
+
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -318,10 +356,10 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="7">
-                                                        @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0))
-                                                            <div class="d-flex justify-content-between">
-                                                                <form action="" method="post"
-                                                                    class="d-inline-block">
+                                                        {{-- @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0)) --}}
+                                                        <div class="d-flex justify-content-between">
+                                                            @can('Xóa suất chiếu')
+                                                                <form action="" method="post" class="d-inline-block">
                                                                     @csrf
                                                                     @method('delete')
                                                                     <button type="submit" id="delete-all"
@@ -329,14 +367,23 @@
                                                                         Xóa tất cả
                                                                     </button>
                                                                 </form>
-
-                                                                <a href="" class="px-5">
-                                                                    <button id="change-status-all" title="thay đổi"
-                                                                        class="btn btn-primary btn-sm">Bật trạng thái
-                                                                        tất cả</button>
-                                                                </a>
-                                                            </div>
-                                                        @endif
+                                                            @endcan
+                                                            @can('Sửa suất chiếu')
+                                                                <div>
+                                                                    <a href="">
+                                                                        <button id="on-status-all" title="thay đổi"
+                                                                            class="btn btn-primary btn-sm">Bật trạng thái
+                                                                            tất cả</button>
+                                                                    </a>
+                                                                    <a href="">
+                                                                        <button id="off-status-all" title="thay đổi"
+                                                                            class="btn btn-secondary btn-sm">Tắt trạng thái
+                                                                            tất cả</button>
+                                                                    </a>
+                                                                </div>
+                                                            @endcan
+                                                        </div>
+                                                        {{-- @endif --}}
 
                                                     </td>
                                                 </tr>
@@ -438,7 +485,7 @@
             let is_active = $(this).is(':checked') ? 1 : 0;
 
             if (!confirm(
-                    'Bạn có chắc muốn thay đổi? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa')) {
+                    'Bạn có chắc muốn thay đổi?')) {
 
                 $(this).prop('checked', !is_active);
                 return;
@@ -462,20 +509,20 @@
                 success: function(response) {
                     if (response.success) {
                         let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
-                        checkbox.prop('disabled', response.data.is_active); // Disable nếu bật
-                        checkbox.closest('tr').find('.btn-edit, .btn-destroy').toggle(!response.data
-                            .is_active); // Ẩn nút sửa, xóa
+                        // checkbox.prop('disabled', response.data.is_active); // Disable nếu bật
+                        // checkbox.closest('tr').find('.btn-edit, .btn-destroy').toggle(!response.data
+                        //     .is_active); // Ẩn nút sửa, xóa
 
                         // checkbox.closest('tr').find('.select-showtime').toggle(!response.data
                         //     .is_active); // Ẩn nút select checkbox
 
-                        if (response.data.is_active) {
-                            checkbox.closest('td').find('.select-showtime')
-                                .remove(); // Loại bỏ checkbox khỏi DOM
-                        } else {
-                            checkbox.closest('td').find('.select-showtime')
-                                .show(); // Hiển thị lại checkbox nếu trạng thái tắt
-                        }
+                        // if (response.data.is_active) {
+                        //     checkbox.closest('td').find('.select-showtime')
+                        //         .remove(); // Loại bỏ checkbox khỏi DOM
+                        // } else {
+                        //     checkbox.closest('td').find('.select-showtime')
+                        //         .show(); // Hiển thị lại checkbox nếu trạng thái tắt
+                        // }
 
 
                         Swal.fire({
@@ -617,7 +664,7 @@
 
 
             // Chức năng thay đổi trạng thái tất cả
-            $('#change-status-all').on('click', function(e) {
+            $('#on-status-all').on('click', function(e) {
                 e.preventDefault();
                 var selectedIds = [];
                 $('.select-showtime:checked').each(function() {
@@ -637,7 +684,7 @@
 
                 Swal.fire({
                     title: 'Xác nhận thay đổi trạng thái',
-                    text: 'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn? Lưu ý: Khi bật trạng thái sẽ không được sửa xóa suất chiếu nữa.',
+                    text: 'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn?',
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonText: 'Thay đổi',
@@ -653,7 +700,75 @@
                         });
 
                         $.ajax({
-                            url: '{{ route('showtimes.changeStatusSelected') }}',
+                            url: '{{ route('showtimes.onStatusSelected') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                showtime_ids: selectedIds
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công!',
+                                    text: response.message ||
+                                        'Trạng thái đã được cập nhật.',
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi!',
+                                    text: 'Không thể cập nhật trạng thái. Vui lòng thử lại.',
+                                    timer: 3000
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+
+            $('#off-status-all').on('click', function(e) {
+                e.preventDefault();
+                var selectedIds = [];
+                $('.select-showtime:checked').each(function() {
+                    selectedIds.push($(this).data('showtime-id'));
+                });
+
+                if (selectedIds.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn suất chiếu!',
+                        text: 'Vui lòng chọn ít nhất một suất chiếu để thay đổi trạng thái.',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Xác nhận thay đổi trạng thái',
+                    text: 'Bạn chắc chắn muốn thay đổi trạng thái các suất chiếu đã chọn?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Thay đổi',
+                    cancelButtonText: 'Hủy',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Đang xử lý...',
+                            text: 'Vui lòng chờ trong giây lát.',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+
+                        $.ajax({
+                            url: '{{ route('showtimes.offStatusSelected') }}',
                             type: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}',

@@ -39,7 +39,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title mb-0">Danh sách tài khoản</h5>
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+
+                    @can('Thêm tài khoản')
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3 ">Thêm mới</a>
+                    @endcan
                 </div>
                 @if (session()->has('success'))
                     <div class="alert alert-success m-3">
@@ -64,13 +67,13 @@
 
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link py-3 isDraft" data-bs-toggle="tab" href="#usersLock" role="tab"
                                 aria-selected="false">
                                 Tài khoản bị khóa
 
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
 
@@ -98,7 +101,7 @@
                                         <tr>
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 @php
                                                     $url = $item->img_thumbnail;
 
@@ -113,14 +116,14 @@
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image "
                                                         alt="user-profile-image">
                                                 @else
-                                                    {{-- <img src="{{ asset('theme/admin/assets/images/users/user-dummy-img.jpg') }}"
-                                                class="rounded-circle avatar-lg img-thumbnail user-profile-image"
-                                                alt="user-profile-image"> --}}
-                                                    {{-- Trống --}}
+                                                    <img class="avatar-sm rounded"
+                                                        src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/users/user-dummy-img.jpg"
+                                                        alt="Header Avatar">
                                                 @endif
 
                                             </td>
-                                            <td>{{ $item->email }}
+                                            <td>
+                                                {{ $item->email }}
                                             </td>
                                             {{-- <td>{{ $item->phone }}</td>
                                     <td>{{ Carbon\Carbon::parse($item->birthday)->format('d/m/Y') ?? 'null' }}</td> --}}
@@ -150,10 +153,13 @@
 
 
                                             <td>
-                                                <div class="d-flex">
-                                                    <a href="{{ route('admin.users.show', $item) }}">
-                                                        <button title="xem" class="btn btn-success btn-sm "
-                                                            type="button"><i class="fas fa-eye"></i></button></a>
+                                                <div class="d-flex ">
+                                                    @can('Xem chi tiết tài khoản')
+                                                        <a href="{{ route('admin.users.show', $item) }}">
+                                                            <button title="xem" class="btn btn-success btn-sm "
+                                                                type="button"><i class="fas fa-eye"></i></button></a>
+                                                    @endcan
+
                                                     @if ($item->name != 'System Admin')
                                                         <a href="{{ route('admin.users.edit', $item) }}">
                                                             <button title="xem" class="btn btn-warning btn-sm mx-1 "
@@ -179,6 +185,7 @@
                             </table>
                         </div>
 
+                        {{-- table khách hàng --}}
                         <div class="tab-pane " id="users" role="tabpanel">
 
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableUsers">
@@ -200,7 +207,7 @@
                                         <tr>
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 @php
                                                     $url = $user->img_thumbnail;
 
@@ -215,7 +222,9 @@
                                                         class="rounded-circle avatar-lg img-thumbnail user-profile-image "
                                                         alt="user-profile-image">
                                                 @else
-                                                    {{-- Trống --}}
+                                                    <img class="avatar-sm rounded"
+                                                        src="{{ env('APP_URL') . '/theme/admin/' }}assets/images/users/user-dummy-img.jpg"
+                                                        alt="Header Avatar">
                                                 @endif
 
                                             </td>
@@ -240,7 +249,7 @@
                                                     <a href="{{ route('admin.users.show', $user) }}">
                                                         <button title="xem" class="btn btn-success btn-sm "
                                                             type="button"><i class="fas fa-eye"></i></button></a>
-                                                    @if ($user->name != 'System Admin')
+                                                    {{-- @if ($user->name != 'System Admin')
                                                         <a href="{{ route('admin.users.edit', $user) }}">
                                                             <button title="xem" class="btn btn-warning btn-sm mx-1 "
                                                                 type="button"><i class="fas fa-edit"></i></button>
@@ -254,7 +263,7 @@
                                                                 <i class="ri-delete-bin-7-fill"></i>
                                                             </button>
                                                         </form>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -297,8 +306,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
 
@@ -312,8 +321,8 @@
                 },
                 lengthMenu: "Hiển thị _MENU_ mục",
                 info: "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        emptyTable: "Không có dữ liệu để hiển thị",
-        zeroRecords: "Không tìm thấy kết quả phù hợp"
+                emptyTable: "Không có dữ liệu để hiển thị",
+                zeroRecords: "Không tìm thấy kết quả phù hợp"
             },
         });
     </script>

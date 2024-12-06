@@ -39,24 +39,31 @@ class ShowtimeController extends Controller
 
     public function index(Request $request)
     {
-        // Giá trị mặc định
+
         $user = Auth::user();
         if ($user->cinema_id == "") {
-            $defaultBranchId = 1;
-            $defaultCinemaId = 1;
+            $defaultBranchId = Branch::where('is_active', 1)->first()?->id ?? null;
+            $defaultCinemaId = Cinema::where('branch_id', $defaultBranchId)->where('is_active', 1)->first()?->id ?? null;
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         } else {
             $defaultBranchId = $user->cinema->branch_id;
+
             $defaultCinemaId = $user->cinema_id;
+            // dd($defaultCinemaId);
             $defaultDate = now()->format('Y-m-d');
             $defaultIsActive = null;
         }
 
 
         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
-        $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
-        $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+        if ($user->cinema_id != "") {
+            $branchId = $user->cinema->branch_id;
+            $cinemaId = $user->cinema_id;
+        } else {
+            $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
+            $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+        }
         $date = $request->input('date', session('showtime.date', $defaultDate));
         $isActive = $request->input('is_active', session('showtime.is_active', $defaultIsActive));
 
@@ -67,6 +74,8 @@ class ShowtimeController extends Controller
             'showtime.date' => $date,
             'showtime.is_active' => $isActive
         ]);
+
+        // dd(sess)
 
         //Thiếu where is_active
         $branches = Branch::where('is_active', '1')->get();
@@ -79,6 +88,7 @@ class ShowtimeController extends Controller
             $showtimesQuery->where('is_active', $isActive);
         }
         $showtimes = $showtimesQuery->with(['movie', 'room', 'movieVersion'])->latest('id')->get();
+        // dd($showtimes);
 
         $timeNow = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         return view(self::PATH_VIEW . __FUNCTION__, compact('showtimes', 'branches', 'cinemas', 'timeNow', 'branchId', 'cinemaId', 'date', 'isActive'));
@@ -95,12 +105,9 @@ class ShowtimeController extends Controller
 
         $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
 
-
         $cleaningTime = Showtime::CLEANINGTIME;
         return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'typeRooms', 'cleaningTime', 'branches', 'rooms'));
     }
-
-
 
 
     public function store(StoreShowtimeRequest $request)
@@ -114,6 +121,14 @@ class ShowtimeController extends Controller
                 $movieDuration = $movie ? $movie->duration : 0;
                 $cleaningTime = Showtime::CLEANINGTIME;
                 $user = auth()->user();
+                if ($user->cinema_id != "") {
+                    $branchId = $user->cinema->branch_id;
+                    $cinemaId = $user->cinema_id;
+                } else {
+                    $branchId = $request->branch_id;
+                    $cinemaId = $request->cinema_id;
+                }
+
 
                 // Lấy các suất chiếu hiện có trong phòng và ngày được chọn
                 $existingShowtimes = Showtime::where('room_id', $request->room_id)
@@ -126,6 +141,12 @@ class ShowtimeController extends Controller
                     $movie->is_special = "1";
                     $movie->save();
                 }
+                session([
+                    'showtime.branch_id' => $branchId,
+                    'showtime.cinema_id' => $cinemaId,
+                    'showtime.date' => $request->date,
+                    // 'showtime.is_active' => 0,
+                ]);
 
                 if ($request->has('auto_generate_showtimes')) {
                     //
@@ -170,7 +191,8 @@ class ShowtimeController extends Controller
                             'date' => $request->date,
                             'start_time' => $startTime->format('Y-m-d H:i'),
                             'end_time' => $endTime->format('Y-m-d H:i'),
-                            'is_active' => $request->has('is_active') ? 1 : 0,
+                            // 'is_active' => $request->has('is_active') ? 1 : 0,
+                            'is_active' => 1,
                         ];
 
                         $showtime = Showtime::create($dataShowtimes);
@@ -236,7 +258,8 @@ class ShowtimeController extends Controller
                             'date' => $request->date,
                             'start_time' => $startTime->format('Y-m-d H:i'),
                             'end_time' => $endTime->format('Y-m-d H:i'),
-                            'is_active' => $request->has('is_active') ? 1 : 0,
+                            // 'is_active' => $request->has('is_active') ? 1 : 0,
+                            'is_active' => 1,
                         ];
 
                         $showtime = Showtime::create($dataShowtimes);
@@ -287,31 +310,49 @@ class ShowtimeController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Showtime $showtime)
     {
-        //
-
-        $showtimes = Showtime::with(['room', 'movieVersion'])->get();
-
-        $movies = Movie::where('is_active', '1')->get();
-        $user = auth()->user();
-        if ($user->cinema_id == "") {
-            $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
-        } else {
-            $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
+        $timeNow = now();
+        $seatShowtimes = SeatShowtime::where('showtime_id', $showtime->id)->pluck('status', 'id')->all();
+        // dd($seatShowtime);
+        $statusSeat = true;
+        foreach ($seatShowtimes as $id => $status) {
+            if ($status != "available") {
+                $statusSeat = false;
+                break;
+            }
         }
-        $movieVersions = MovieVersion::all();
-        $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
-        $branches = Branch::where('is_active', '1')->get();
+        if ($statusSeat) {
+            if (!$timeNow->greaterThan($showtime->start_time)) {
+                $showtimes = Showtime::with(['room', 'movieVersion'])->get();
 
-        $movieDuration = $showtime->movie->duration;
+                $movies = Movie::where('is_active', '1')->get();
+                $user = auth()->user();
+                if ($user->cinema_id == "") {
+                    $rooms = Room::where('is_active', '1')->with(['cinema'])->first('id')->get();
+                } else {
+                    $rooms = Room::with('typeRoom', 'seats')->where('is_active', '1')->where('cinema_id', $user->cinema_id)->get();
+                }
+                $movieVersions = MovieVersion::all();
+                $cinemas = Cinema::where('is_active', '1')->with(['branch'])->first('id')->get();
+                $branches = Branch::where('is_active', '1')->get();
+
+                $movieDuration = $showtime->movie->duration;
 
 
-        $cleaningTime = Showtime::CLEANINGTIME;
-        return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
+                $cleaningTime = Showtime::CLEANINGTIME;
+                return view(self::PATH_VIEW . __FUNCTION__, compact('movies', 'rooms', 'movieVersions', 'cinemas', 'cleaningTime', 'branches', 'showtime', 'movieDuration'));
+            } else {
+                return redirect()
+                    ->route('admin.showtimes.index')
+                    ->with('error', 'Bạn không được sửa suất chiếu trong quá khứ!');
+            }
+        } else {
+            return redirect()
+                ->route('admin.showtimes.index')
+                ->with('error', 'Sửa không thành công! Suất chiếu này đã/đang có người đặt!');
+        }
     }
 
     public function update(UpdateShowtimeRequest $request, Showtime $showtime)
@@ -330,7 +371,7 @@ class ShowtimeController extends Controller
             $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
             $dataShowtimes = [
-                'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : $user->cinema_id,
+                // 'cinema_id' => isset($request->cinema_id) ? $request->cinema_id : $user->cinema_id,
                 'room_id' => $request->room_id,
                 'format' => $typeRoom->name . ' ' . $movieVersion->name,
                 'movie_version_id' => $request->movie_version_id,
@@ -354,19 +395,39 @@ class ShowtimeController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Showtime $showtime)
     {
-        //
-        try {
-            //code...
-            $showtime->delete();
 
-            return redirect()
-                ->route('admin.showtimes.index')
-                ->with('success', 'Xóa thành công!');
+        try {
+
+            $timeNow = now();
+            $seatShowtimes = SeatShowtime::where('showtime_id', $showtime->id)->pluck('status', 'id')->all();
+            // dd($seatShowtime);
+            $statusSeat = true;
+            foreach ($seatShowtimes as $id => $status) {
+                if ($status != "available") {
+                    $statusSeat = false;
+                    break;
+                }
+            }
+            if ($statusSeat) {
+                if (!$timeNow->greaterThan($showtime->start_time)) {
+                    $showtime->delete();
+
+                    return redirect()
+                        ->route('admin.showtimes.index')
+                        ->with('success', 'Xóa thành công!');
+                } else {
+                    return redirect()
+                        ->route('admin.showtimes.index')
+                        ->with('error', 'Bạn không được sửa suất chiếu trong quá khứ!');
+                }
+            } else {
+                return redirect()
+                    ->route('admin.showtimes.index')
+                    ->with('error', 'Xóa không thành công! Suất chiếu này đã/đang có người đặt!');
+            }
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

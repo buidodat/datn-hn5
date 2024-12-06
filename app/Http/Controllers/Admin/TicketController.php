@@ -36,40 +36,152 @@ class TicketController extends Controller
 
     public function index(Request $request)
     {
-        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'showtime'])
-            ->latest('id');
-        if (Auth::user()->cinema_id != "") {
-            $tickets = $tickets->where('cinema_id', Auth::user()->cinema_id);
+
+        // dd(session()->all());
+        $user = Auth::user();
+
+        if ($user->hasRole('System Admin')) {
+            // Thiết lập giá trị mặc định
+            $defaultBranchId = Branch::where('is_active', 1)->first()?->id ?? null;
+            $defaultCinemaId = Cinema::where('branch_id', $defaultBranchId)->where('is_active', 1)->first()?->id ?? null;
+            $defaultDate = now()->format('Y-m-d');
+            $defaultMovie = null;
+            $defaultStatus = null;
+        } else {
+            // Thiết lập giá trị mặc định
+            $defaultBranchId = $user->cinema->branch_id;
+            $defaultCinemaId = $user->cinema_id;
+            $defaultDate = now()->format('Y-m-d');
+            $defaultMovie = null;
+            $defaultStatus = null;
         }
 
 
-        // Lọc theo cinema_id
-        if ($request->input('cinema_id')) {
-            $tickets = $tickets->whereHas('cinema', function ($query) use ($request) {
-                $query->where('id', $request->cinema_id);
-            });
-        }
+        // Lấy giá trị từ request, nếu có thay đổi sẽ lưu vào session
+        if ($request->hasAny(['branch_id', 'cinema_id', 'date', 'movie_id', 'is_active'])) {
+            $branchId = $request->input('branch_id', $defaultBranchId);
+            $cinemaId = $request->input('cinema_id', $defaultCinemaId);
+            $date = $request->input('date', $defaultDate);
+            $movieId = $request->input('movie_id', $defaultMovie);
+            $status = $request->input('status', $defaultStatus);
 
-        // Lọc theo ngày
-        if ($request->input('date')) {
-            $date = $request->input('date');
-            // lọc theo created_at, vì khác định dạng date vs timestamp
-            $tickets = $tickets->whereBetween('created_at', [
-                Carbon::parse($date)->startOfDay(),         // 00:00:00 ngày ý
-                Carbon::parse($date)->endOfDay()            // 23:59:59 của ngày ý
+            // Lưu giá trị lọc vào session
+            session([
+                'ticket.branch_id' => $branchId,
+                'ticket.cinema_id' => $cinemaId,
+                'ticket.date' => $date,
+                'ticket.movie_id' => $movieId,
+                'ticket.status' => $status
             ]);
+        } else {
+            // Lấy giá trị từ session hoặc giá trị mặc định nếu session chưa tồn tại
+            $branchId = session('ticket.branch_id', $defaultBranchId);
+            $cinemaId = session('ticket.cinema_id', $defaultCinemaId);
+            $date = session('ticket.date', $defaultDate);
+            $movieId = session('ticket.movie_id', $defaultMovie);
+            $status = session('ticket.status', $defaultStatus);
         }
 
-        $tickets = $tickets->get()->groupBy('code');
+        // Lấy danh sách các chi nhánh, rạp và phim theo bộ lọc
+        $branches = Branch::where('is_active', 1)->pluck('name', 'id')->all();
+        $cinemas = Cinema::where('branch_id', $branchId)->where('is_active', 1)->pluck('name', 'id')->all();
+        $movies = Movie::where('is_active', 1)->pluck('name', 'id')->all();
 
+        // Truy vấn danh sách vé dựa trên bộ lọc
+        $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'showtime'])
+            ->when($cinemaId, fn($query) => $query->where('cinema_id', $cinemaId))
+            ->when($date, fn($query) => $query->whereDate('created_at', $date))
+            ->when($movieId !== null, fn($query) => $query->where('movie_id', $movieId))
+            ->when($status !== null && $status !== '', function ($query) use ($status) {
+                switch ($status) {
+                    case '0':
+                        $query->where('status', 'Chưa xuất vé');
+                        break;
+                    case '1':
+                        $query->where('status', 'Đã xuất vé');
+                        break;
+                    case '2':
+                        $query->where('status', 'Đã hết hạn');
+                        break;
+                }
+            })
+            ->latest('id')
+            ->get()
+            ->groupBy('code');
+
+        // Tạo mã vạch cho các vé
         $barcodes = [];
         foreach ($tickets as $code => $group) {
             $barcodes[$code] = DNS1D::getBarcodeHTML($code, 'C128', 1.5, 50);
         }
-        $cinemas = Cinema::all();
-        $branches = Branch::all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('tickets', 'cinemas', 'branches', 'barcodes'));
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact(
+            'tickets',
+            'cinemas',
+            'branches',
+            'movies',
+            'barcodes',
+            'branchId',
+            'cinemaId',
+            'date',
+            'movieId',
+            'status'
+        ));
     }
+
+
+    //     public function index(Request $request)
+    // {
+
+    //         $user = Auth::user();
+    //         if ($user->cinema_id == "") {
+    //             $defaultBranchId = 1;
+    //             $defaultCinemaId = 1;
+    //             $defaultDate = now()->format('Y-m-d');
+    //             $defaultIsActive = null;
+    //         } else {
+    //             $defaultBranchId = $user->cinema->branch_id;
+    //             $defaultCinemaId = $user->cinema_id;
+    //             $defaultDate = now()->format('Y-m-d');
+    //             $defaultIsActive = null;
+    //         }
+
+
+    //         // Lấy giá trị từ session hoặc sử dụng mặc định nếu session chưa có
+    //         $branchId = $request->input('branch_id', session('showtime.branch_id', $defaultBranchId));
+    //         $cinemaId = $request->input('cinema_id', session('showtime.cinema_id', $defaultCinemaId));
+    //         $date = $request->input('date', session('showtime.date', $defaultDate));
+    //         $isActive = $request->input('is_active', session('showtime.is_active', $defaultIsActive));
+
+    //         // Lưu vào session
+    //         session([
+    //             'showtime.branch_id' => $branchId,
+    //             'showtime.cinema_id' => $cinemaId,
+    //             'showtime.date' => $date,
+    //             'showtime.is_active' => $isActive
+    //         ]);
+
+    //         $branches = Branch::where('is_active', '1')->pluck('name', 'id')->all();
+    //         $cinemas = Cinema::where('branch_id', $branchId)->where('is_active', '1')->pluck('name', 'id')->all();
+    //         $movies = Movie::where('is_active', '1')->pluck('name', 'id')->all();
+
+
+    //         // dd($branches, $cinemas, $movies);
+
+
+    //         $tickets = Ticket::with(['user', 'cinema', 'movie', 'room', 'showtime'])
+    //             ->latest('id');
+
+    //         $tickets = $tickets->get()->groupBy('code');
+
+    //         $barcodes = [];
+    //         foreach ($tickets as $code => $group) {
+    //             $barcodes[$code] = DNS1D::getBarcodeHTML($code, 'C128', 1.5, 50);
+    //         }
+
+    //         return view(self::PATH_VIEW . __FUNCTION__, compact('tickets', 'cinemas', 'branches', 'movies', 'barcodes'));
+    //     }
+
 
 
     /*public function updateStatus(Request $request, Ticket $ticket)
@@ -119,8 +231,6 @@ class TicketController extends Controller
             'success' => true,
             'message' => 'Thay đổi trạng thái thành công!'
         ]);
-
-
     }
 
     /*public function print(Ticket $ticket)
@@ -164,43 +274,49 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('code', $ticketCode)->first();
 
-        if (!$ticket) {
+        if ($ticket) {
             return response()->json([
-                'success' => false,
-                'message' => 'Mã vé không hợp lệ.',
+                'success' => true,
+                'message' => 'Thao tác thành công',
+                'redirect_url' => route('admin.tickets.show', $ticket)
             ]);
         }
 
-        $now = Carbon::now();
-        if ($now > $ticket->expiry) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vé này đã hết hạn.',
-            ]);
-        }
 
-        switch ($ticket->status) {
-            case 'Chưa xuất vé':
-                return response()->json([
-                    'success' => true,
-                    'message' => 'QR code đã được xử lý thành công!',
-                    'redirect_url' => route('admin.tickets.show', $ticket)
-                ]);
 
-            case 'Đã xuất vé':
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Vé này đã được suất rồi.',
-                    'redirect_url' => route('admin.tickets.show', $ticket)
-                ]);
+        // $now = Carbon::now();
+        // if ($now > $ticket->expiry) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Vé này đã hết hạn.',
+        //     ]);
+        // }
 
-            default:
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vé không hợp lệ.',
-                ]);
-        }
+        // switch ($ticket->status) {
+        //     case 'Chưa xuất vé':
+        //         return response()->json([
+        //             'success' => true,
+        //             'message' => 'QR code đã được xử lý thành công!',
+        //             'redirect_url' => route('admin.tickets.show', $ticket)
+        //         ]);
 
+        //     case 'Đã xuất vé':
+        //         return response()->json([
+        //             'success' => true,
+        //             'message' => 'Vé này đã được suất rồi.',
+        //             'redirect_url' => route('admin.tickets.show', $ticket)
+        //         ]);
+
+        //     default:
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => 'Vé không hợp lệ.',
+        //         ]);
+        // }
+        return response()->json([
+            'success' => false,
+            'message' => 'Mã vé không hợp lệ.',
+        ]);
     }
 
     /**
@@ -224,7 +340,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $oneTicket = $ticket->load(['ticketCombos.combo', 'showtime']);
+        $oneTicket = $ticket->load(['ticketCombos.combo', 'showtime', 'cinema']);
         $totalPriceSeat = $ticket->ticketSeats->sum('price');
         $totalComboPrice = $ticket->ticketCombos->sum('price');
         $barcode = DNS1D::getBarcodeHTML($ticket->code, 'C128', 1.5, 50);

@@ -60,7 +60,16 @@ class DatabaseSeeder extends Seeder
         $url_youtubes = [
             'VmJ4oB3Xguo',
             'XuX2HKeMkVw',
-            'SGg9DxLFCtc','m6MF1MqsDhc','dNwuFYhwTAk','4oxoPMxBO6s','b1Yqng0uSWM','IK-eb2AbKQ','Tx5JuN-5n8U','kMjlJkmt5nk','gTo9JwsmjT4','4rgYUipGJNo'
+            'SGg9DxLFCtc',
+            'm6MF1MqsDhc',
+            'dNwuFYhwTAk',
+            '4oxoPMxBO6s',
+            'b1Yqng0uSWM',
+            'IK-eb2AbKQ',
+            'Tx5JuN-5n8U',
+            'kMjlJkmt5nk',
+            'gTo9JwsmjT4',
+            '4rgYUipGJNo'
         ];
         $booleans = [
             true,
@@ -121,7 +130,7 @@ class DatabaseSeeder extends Seeder
             $rating = $ratings[array_rand($ratings)];
             $x = ($i % 21) + 1;
 
-            $img = "images/movies/". $x . ".png";
+            $img = "images/movies/" . $x . ".png";
             $movie = DB::table('movies')->insertGetId([
                 'name' => $movieNames[$i],
                 'slug' => Str::slug($movieNames[$i]),
@@ -208,7 +217,7 @@ class DatabaseSeeder extends Seeder
         $roomsName = ['P201', 'L202', 'P303', 'P404'];
 
         // Tạo template ghế
-         SeatTemplate::create([
+        SeatTemplate::create([
             'name' => 'Template Standard',
             'description' => 'Mẫu sơ đồ ghế tiêu chuẩn.',
             'matrix_id' => 1, // ID matrix ví dụ
@@ -216,15 +225,16 @@ class DatabaseSeeder extends Seeder
             'is_publish' => 1, // Đã publish
             'is_active' => 1, // Đã kích hoạt
         ]);
-         SeatTemplate::create([
-            'name' => 'Template Large' ,
+        SeatTemplate::create([
+            'name' => 'Template Large',
             'description' => 'Mẫu sơ đồ ghế lớn.',
             'matrix_id' => 3, // ID matrix ví dụ
             'seat_structure' => $this->generateSeatStructure2(), // Cấu trúc ghế
             'is_publish' => 1, // Đã publish
             'is_active' => 1, // Đã kích hoạt
         ]);
-        function randomSeatTemplateId() {
+        function randomSeatTemplateId()
+        {
             // Tạo một số ngẫu nhiên từ 1 đến 100
             $randomNumber = rand(1, 100);
 
@@ -567,7 +577,7 @@ class DatabaseSeeder extends Seeder
         $users = [
             [
                 'name' => 'System Admin',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'img_thumbnail' => '',
                 'phone' => '0332295555',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'admin@fpt.edu.vn',
@@ -580,7 +590,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Trương Công Lực',
-                'img_thumbnail' => 'https://scontent.fhan15-2.fna.fbcdn.net/v/t1.6435-9/120126178_348109963289562_6937582485606445898_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHid5NvhW-nESNEUj9ywLECXaEHST7cvOBdoQdJPty84IP_DVL80XXFk3A34r6MY74TmbUrOl9cT3z_tkk8yBpH&_nc_ohc=DaV5AI-jumsQ7kNvgEJyVwd&_nc_ht=scontent.fhan15-2.fna&_nc_gid=Ab13vfocbX2Kak6-8LFNd4V&oh=00_AYAJfw8Mmq-xdk03sYw9OuLasodK7x2LrDtLynf23sQb3Q&oe=670D372A',
+                'img_thumbnail' => '',
                 'phone' => '0332293871',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'luctcph37171@fpt.edu.vn',
@@ -593,7 +603,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
-                'img_thumbnail' => 'theme/admin/assets/images/users/user-dummy-img.jpg',
+                'img_thumbnail' => '',
                 'phone' => '0975098710',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'hieuhdph36384@fpt.edu.vn',
@@ -606,7 +616,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Đặng Phú An',
-                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/306327985_2574238996060074_6867027671439425864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=YRrqayQEKLgQ7kNvgEDcnj8&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ao0SmZtyeZSItEd293QviMy&oh=00_AYB3v2346IuyWcD4IuDiv2JwLbS9HP5CEH737vmguoTskg&oe=670D806D',
+                'img_thumbnail' => '',
                 'phone' => '0378633611',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'andpph31859@fpt.edu.vn',
@@ -632,7 +642,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Nguyễn Viết Sơn',
-                'img_thumbnail' => 'https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/283601921_1482562385498894_735717922201179640_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Ac_8W5oiz3UQ7kNvgE477pl&_nc_ht=scontent.fhan2-5.fna&_nc_gid=Ajp6VrKXh1BJ4nvrLvN-bbm&oh=00_AYCMP6yTzIhdGeGsW8knCmMkdI3IBd1wi_dlZwVKIfdn6w&oe=670D6BD1',
+                'img_thumbnail' => '',
                 'phone' => '0973657594',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'sonnvph33874@fpt.edu.vn',
@@ -645,7 +655,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'img_thumbnail' => '',
                 'phone' => '0965263725',
                 'email_verified_at' => '2024-11-01 19:58:51',
                 'email' => 'datbdph38211@fpt.edu.vn',
@@ -655,6 +665,58 @@ class DatabaseSeeder extends Seeder
                 'birthday' => '2004-10-14',
                 'type' => 'admin',
                 'cinema_id' => 2,
+            ],
+            [
+                'name' => 'Nhân viên Rạp',
+                'img_thumbnail' => '',
+                'phone' => '0965266625',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'nhanvienrapHaDong@fpt.edu.vn',
+                'password' => Hash::make('nhanvienrapHaDong@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'admin',
+                'cinema_id' => 1,
+            ],
+            [
+                'name' => 'Nhân viên Rạp',
+                'img_thumbnail' => '',
+                'phone' => '0965265555',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'nhanvienrapMyDinh@fpt.edu.vn',
+                'password' => Hash::make('nhanvienrapMyDinh@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'admin',
+                'cinema_id' => 2,
+            ],
+            [
+                'name' => 'Bùi Phú Sơn',
+                'img_thumbnail' => '',
+                'phone' => '0999965555',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'buiphusonph33333@fpt.edu.vn',
+                'password' => Hash::make('buiphusonph33333@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'member',
+                'cinema_id' => null,
+            ],
+            [
+                'name' => 'Trương Đắc Đạt',
+                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'phone' => '0999999995',
+                'email_verified_at' => '2024-11-01 19:58:51',
+                'email' => 'truongdacdatph99999@fpt.edu.vn',
+                'password' => Hash::make('truongdacdatph99999@fpt.edu.vn'),
+                'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
+                'gender' => 'Nam',
+                'birthday' => '2004-10-14',
+                'type' => 'member',
+                'cinema_id' => null,
             ],
         ];
 
@@ -998,6 +1060,7 @@ class DatabaseSeeder extends Seeder
             'Thêm bài viết',
             'Sửa bài viết',
             'Xóa bài viết',
+            'Xem chi tiết bài viết',
             'Danh sách slideshows',
             'Thêm slideshows',
             'Sửa slideshows',
@@ -1013,9 +1076,7 @@ class DatabaseSeeder extends Seeder
             'Cấu hình website',
             'Danh sách thống kê',
             'Thẻ thành viên'
-            // 'Thêm thống kê',
-            // 'Sửa thống kê',
-            // 'Xóa thống kê',
+
         ];
 
         // Tạo các quyền từ danh sách
@@ -1051,9 +1112,9 @@ class DatabaseSeeder extends Seeder
             'Xóa phòng chiếu',
             'Xem chi tiết phòng chiếu',
             'Danh sách mẫu sơ đồ ghế',
-            'Thêm mẫu sơ đồ ghế',
-            'Sửa mẫu sơ đồ ghế',
-            'Xóa mẫu sơ đồ ghế',
+            // 'Thêm mẫu sơ đồ ghế',
+            // 'Sửa mẫu sơ đồ ghế',
+            // 'Xóa mẫu sơ đồ ghế',
             'Danh sách phim',
             'Xem chi tiết phim',
             'Danh sách suất chiếu',
@@ -1064,17 +1125,15 @@ class DatabaseSeeder extends Seeder
             'Danh sách hóa đơn',
             'Quét hóa đơn',
             'Xem chi tiết hóa đơn',
-            'Danh sách đồ ăn',
+            // 'Danh sách đồ ăn',
             'Danh sách combo',
-            'Danh sách vouchers',
-            'Danh sách thanh toán',
-            'Danh sách bài viết',
-            'Danh sách slideshows',
-            'Danh sách liên hệ',
-            'Sửa liên hệ',
-
-            'Danh sách tài khoản',
-
+            // 'Danh sách vouchers',
+            // 'Danh sách thanh toán',
+            // 'Danh sách bài viết',
+            // 'Danh sách slideshows',
+            // 'Danh sách liên hệ',
+            // 'Sửa liên hệ',
+            // 'Danh sách tài khoản',
             'Danh sách thống kê',
         ]);
 
@@ -1097,6 +1156,8 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('Quản lý cơ sở');
         $user = User::find(7);
         $user->assignRole('Quản lý cơ sở');
+        $user = User::find(8);
+        $user->assignRole('Nhân viên');
 
 
         $user = User::find(5);
@@ -1107,17 +1168,17 @@ class DatabaseSeeder extends Seeder
         SiteSetting::create([
             'website_logo' => 'theme/client/images/header/P.svg',
             'site_name' => 'Poly Cinemas',
-            'brand_name' => 'Công Ty Phim Việt Nam Poly Cinemas',
-            'slogan' => 'Hãy đặt vé Xem phim ngay!',
-            'phone' => '0123456789',
-            'email' => 'polycinemas@poly.cenimas',
+            'brand_name' => 'Hệ thống Rạp chiếu phim toàn quốc Poly Cinemas',
+            'slogan' => 'Chất lượng dịch vụ luôn là số 1',
+            'phone' => '0999999999',
+            'email' => 'polycinemas@poly.cenimas.vn',
             'headquarters' => 'Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội',
             'business_license' => 'Đây là giấy phép kinh doanh',
             'working_hours' => '7:00 - 22:00',
             'facebook_link' => 'https://facebook.com/',
             'youtube_link' => 'https://youtube.com/',
             'instagram_link' => 'https://instagram.com/',
-            'privacy_policy_image' => 'theme/client/images/header/P.svg',
+            'privacy_policy_image' => 'theme/client/images/z6051700744901_e30e7f1c520f5521d677eed36a1e7e3c.jpg',
             'privacy_policy' => '
                 <b>Chào mừng Quý khách hàng đến với Hệ thống Bán Vé Online của chuỗi Rạp Chiếu Phim POLY CINEMAS!</b>
                 <p>Xin cảm ơn và chúc Quý khách hàng có những giây phút xem phim tuyệt vời tại POLY CINEMAS!</p>
@@ -1176,13 +1237,13 @@ class DatabaseSeeder extends Seeder
                         sẽ liên hệ với Quý khách qua các thông tin liên hệ trong mục Thông
                         tin thành
                         viên để thông báo và xác nhận.</li>
-                    <li></li>
+                    <li>8. Nếu Khách hàng mua vé tại website, khi đến quầy tại rạp cần xuất trình hóa đơn để nhân viên đối chiếu và cung cấp cho bạn vé vào rạp xem phim !.</li>
                 </ul>',
 
-            'terms_of_service_image'=> 'theme/client/images/header/P.svg',
+            'terms_of_service_image' => 'theme/client/images/header/P.svg',
 
             'terms_of_service' => 'Đây là  điều khoản Dịch vụ',
-            'introduction_image' => 'theme/client/images/header/P.svg',
+            'introduction_image' => 'theme/client/images/thumbnail-1-144816-050424-68.jpeg',
             'introduction' => '
             <p>F5 Poly Media được thành lập bởi doanh nhân F5 Poly Cinemas (F5 Poly Beta) vào cuối năm 2014 với sứ mệnh "Mang trải nghiệm điện ảnh với mức giá hợp lý cho mọi người dân Việt Nam".</p>
             <p>Với thiết kế độc đáo, trẻ trung, F5 Poly Cinemas mang đến trải nghiệm điện ảnh chất lượng với chi phí đầu tư và vận hành tối ưu - nhờ việc chọn địa điểm phù hợp, tận dụng tối đa diện tích, bố trí khoa học, nhằm duy trì giá vé xem phim trung bình chỉ từ 40,000/1 vé - phù hợp với đại đa số người dân Việt Nam.</p>

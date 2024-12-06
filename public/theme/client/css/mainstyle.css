@@ -386,15 +386,15 @@
 .container-screen .legend {
     margin-top: 20px;
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     border: 1px solid rgb(138, 138, 138);
     border-radius: 5px;
     height: 50px;
 }
 
 .container-screen .legend div {
-    /* margin: 0px 20px; */
-    padding: 0px 9px;
+    /* margin: 0px 10px; */
+    padding: 0px 30px;
     display: flex;
     align-items: center;
     border-right: 1px solid rgb(222, 222, 222);
@@ -402,7 +402,7 @@
 
 .bold {
     color: black;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .container-screen .legend div:last-child {
@@ -699,6 +699,26 @@
 
 
 /* Css trang thanh toán checkout */
+.time-remaining {
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #ffffff;
+    color: #434f89;
+    font-weight: 600
+}
+
+.time-remaining .text-time {
+    font-size: 17px;
+    margin-bottom: 15px
+}
+
+.time-remaining #timer {
+    font-size: 30px;
+    color: #434f89;
+    font-weight: 600
+}
+
 .ei--user {
     display: inline-block;
     width: 3em;
@@ -1039,6 +1059,14 @@
 .box-voucher .points-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+.box-voucher .voucher-list label {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+
+
 
 /* Hiển thị form khi click vào tiêu đề */
 .box-voucher .voucher-section.active .voucher-form,
@@ -1418,15 +1446,20 @@
     text-decoration: underline;
 
 }
+
 .form-select {
-    border-radius: 0.25rem; /* Viền bo tròn */
-    background-color: #f8f9fa; /* Màu nền nhạt */
+    border-radius: 0.25rem;
+    /* Viền bo tròn */
+    background-color: #f8f9fa;
+    /* Màu nền nhạt */
 }
 
 /* Tùy chỉnh màu sắc khi select được chọn */
 .form-select:focus {
-    border-color: #80bdff; /* Màu viền khi focus */
-    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, 0.25); /* Hiệu ứng shadow khi focus */
+    border-color: #80bdff;
+    /* Màu viền khi focus */
+    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, 0.25);
+    /* Hiệu ứng shadow khi focus */
 }
 
 .tab-content .is_hot {
@@ -1529,6 +1562,7 @@
     width: 184px;
     height: 40px;
 }
+
 .header .img-logo {
     display: flex;
     align-items: center;
@@ -2084,6 +2118,7 @@ div text {
     .container-ticket-price .table-ticket-price td {
         font-size: 14px;
     }
+
     .container-verify-email div p {
         font-size: 10px;
         color: #d77534;
@@ -2106,7 +2141,7 @@ div text {
 
 .verify-email-header {
     background-color: #FFF8EB;
-    font-family: "Roboto" !important ;
+    font-family: "Roboto" !important;
     /* opacity: 0.5; */
 }
 
@@ -2158,41 +2193,51 @@ div text {
 
 
 .badge-not-issued {
-    background-color: #f0ad4e; /* Màu vàng: Chưa xuất vé */
+    background-color: #f0ad4e;
+    /* Màu vàng: Chưa xuất vé */
     color: white;
 }
+
 .badge-issued {
-    background-color: #5cb85c; /* Màu xanh lá: Đã xuất vé */
+    background-color: #5cb85c;
+    /* Màu xanh lá: Đã xuất vé */
     color: white;
 }
+
 .badge-expired {
-    background-color: #d9534f; /* Màu đỏ: Đã hết hạn */
+    background-color: #d9534f;
+    /* Màu đỏ: Đã hết hạn */
     color: white;
 }
+
 /* Nút Chi tiết */
 .btn-custom-primary {
-    background-color: #007bff; /* Màu xanh dương */
+    background-color: #007bff;
+    /* Màu xanh dương */
     color: #fff;
     border: 1px solid #007bff;
     border-radius: 4px;
 }
 
 .btn-custom-primary:hover {
-    background-color: #0056b3; /* Xanh đậm hơn khi hover */
+    background-color: #0056b3;
+    /* Xanh đậm hơn khi hover */
     border-color: #0056b3;
     color: white;
 }
 
 /* Nút Đánh giá */
 .btn-custom-warning {
-    background-color: #ffc107; /* Màu vàng */
+    background-color: #ffc107;
+    /* Màu vàng */
     color: #212529;
     border: 1px solid #ffc107;
     border-radius: 4px;
 }
 
 .btn-custom-warning:hover {
-    background-color: #e0a800; /* Vàng đậm hơn khi hover */
+    background-color: #e0a800;
+    /* Vàng đậm hơn khi hover */
     border-color: #d39e00;
 }
 
@@ -2200,23 +2245,27 @@ div text {
 .action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Khoảng cách giữa các nút */
+    gap: 10px;
+    /* Khoảng cách giữa các nút */
 }
 
 .action-buttons .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px; /* Cỡ chữ */
-    padding: 6px 12px; /* Khoảng cách trong */
+    font-size: 14px;
+    /* Cỡ chữ */
+    padding: 6px 12px;
+    /* Khoảng cách trong */
 }
 
 .action-buttons .btn i {
-    margin-right: 5px; /* Khoảng cách giữa icon và text */
-    font-size: 16px; /* Kích thước icon */
+    margin-right: 5px;
+    /* Khoảng cách giữa icon và text */
+    font-size: 16px;
+    /* Kích thước icon */
 }
 
 
 
 /* Tạo hiệu ứng hover trên mỗi hàng */
-

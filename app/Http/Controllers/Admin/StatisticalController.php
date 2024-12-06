@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 // use App\Models\Ticket;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 
 class StatisticalController extends Controller
 {
@@ -81,26 +81,56 @@ class StatisticalController extends Controller
 
     public function statisticalRevenue(Request $request)
     {
-        $branches = Branch::all();
-        $branchId = $request->input('branch_id');
-        $cinemaId = $request->input('cinema_id');
+        $user = Auth::user();
+        $branches = Branch::where('is_active', 1)->get();
 
-        // Lọc danh sách cinema theo branch đã chọn (nếu có)
-        $cinemas = $branchId ? Cinema::where('branch_id', $branchId)->get() : Cinema::all();
+        // Kiểm tra xem có bộ lọc nào từ request hay không
+        $isFiltering = $request->hasAny(['branch_id', 'cinema_id', 'start_date', 'end_date']);
+
+        // Lấy thông tin từ session hoặc giá trị mặc định
+        $startDate = $request->input('start_date', session('statistical.start_date', Carbon::now()->subDays(30)->format('Y-m-d')));
+        $endDate = $request->input('end_date', session('statistical.end_date', Carbon::now()->format('Y-m-d')));
+        $branchId = $request->input('branch_id', session('statistical.branch_id'));
+        $cinemaId = $request->input('cinema_id', session('statistical.cinema_id'));
 
 
         $timeRange = $request->input('time_range', 'daily');
-        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d'));
-        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d'));
+
+
 
         // Khởi tạo doanh thu dựa trên lựa chọn lọc
         $query = Ticket::whereDate('created_at', '>=', $startDate)
             ->whereDate('created_at', '<=', $endDate);
         // whereBetween('created_at', [$startDate, $endDate]);
 
-        if ($cinemaId) {
-            $query->where('cinema_id', $cinemaId);
+
+        if (!$user->hasRole('System Admin')) {
+            // Lọc theo cinema_id của user
+            $cinemaId = $user->cinema_id;
+            $query->where('tickets.cinema_id', $cinemaId);
+        } else {
+            // Lọc theo chi nhánh nếu có
+            if ($branchId) {
+                $cinemaIds = Cinema::where('branch_id', $branchId)->pluck('id');
+                $query->whereIn('tickets.cinema_id', $cinemaIds);
+            }
+
+            // Lọc theo rạp nếu có
+            if ($cinemaId) {
+                $query->where('tickets.cinema_id', $cinemaId);
+            }
         }
+
+        // Lưu thông tin vào session khi có bộ lọc
+        if ($isFiltering) {
+            session([
+                'statistical.branch_id' => $branchId,
+                'statistical.cinema_id' => $cinemaId,
+                'statistical.start_date' => $startDate,
+                'statistical.end_date' => $endDate,
+            ]);
+        }
+
 
         $revenueData = [];
         if ($timeRange == 'daily') {
@@ -135,7 +165,7 @@ class StatisticalController extends Controller
         $yearlyRevenue = $query->selectRaw("YEAR(created_at) as year, SUM(total_price) as total_revenue")
             ->groupBy('year')->orderBy('year', 'asc')->get();
 
-        return view('admin.statisticals.statistical-revenue', compact('cinemas', 'branches', 'branchId', 'cinemaId', 'revenueData', 'timeRange', 'startDate', 'endDate', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue'));
+        return view('admin.statisticals.statistical-revenue', compact('branches', 'branchId', 'cinemaId', 'revenueData', 'timeRange', 'startDate', 'endDate', 'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue', 'yearlyRevenue'));
     }
 
 
@@ -181,45 +211,46 @@ class StatisticalController extends Controller
         return view('admin.statisticals.statistical-cinemas', compact('branches', 'revenueByCinema', 'startDate', 'endDate'));
     }
 
-
-
     public function statisticalMovies(Request $request)
     {
         // dd(session()->all());
+        $user = Auth::user();
         $branches = Branch::where('is_active', 1)->get();
 
-        // Lấy giá trị mặc định cho start_date và end_date (1 tháng gần nhất)
-        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->startOfDay()->format('Y-m-d'));
-        $endDate = $request->input('end_date', Carbon::now()->endOfDay()->format('Y-m-d'));
+        // Kiểm tra xem có bộ lọc nào từ request hay không
+        $isFiltering = $request->hasAny(['branch_id', 'cinema_id', 'start_date', 'end_date']);
 
-        // Khởi tạo query cho doanh thu theo phim
+        // Lấy thông tin từ session hoặc giá trị mặc định
+        $startDate = $request->input('start_date', session('statistical.start_date', Carbon::now()->subDays(30)->format('Y-m-d')));
+        $endDate = $request->input('end_date', session('statistical.end_date', Carbon::now()->format('Y-m-d')));
+        $branchId = $request->input('branch_id', session('statistical.branch_id'));
+        $cinemaId = $request->input('cinema_id', session('statistical.cinema_id'));
+
         $query = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.id')
             ->select('movies.name', DB::raw('SUM(tickets.total_price) as total_revenue'))
             ->groupBy('movies.id', 'movies.name');
 
-        // Áp dụng lọc theo chi nhánh nếu có
-        if ($request->has('branch_id') && $request->input('branch_id') != '') {
-            $cinemaIds = Cinema::where('branch_id', $request->input('branch_id'))->pluck('id');
-            $query->whereIn('tickets.cinema_id', $cinemaIds);
-        }
-
-        // Áp dụng lọc theo rạp nếu có
-        if ($request->has('cinema_id') && $request->input('cinema_id') != '') {
-            $query->where('tickets.cinema_id', $request->input('cinema_id'));
-        }
-
-        // Áp dụng lọc theo ngày nếu có
-        if (
-            $request->has('start_date') && $request->has('end_date') &&
-            $request->input('start_date') != '' && $request->input('end_date') != ''
-        ) {
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+        if (!$user->hasRole('System Admin')) {
+            // Lọc theo cinema_id của user
+            $cinemaId = $user->cinema_id;
+            $query->where('tickets.cinema_id', $cinemaId);
         } else {
-            // Nếu không có start_date và end_date, mặc định lấy 1 tháng gần nhất
-            $query->whereBetween('tickets.created_at', [$startDate, $endDate]);
+            // Lọc theo chi nhánh nếu có
+            if ($branchId) {
+                $cinemaIds = Cinema::where('branch_id', $branchId)->pluck('id');
+                $query->whereIn('tickets.cinema_id', $cinemaIds);
+            }
+
+            // Lọc theo rạp nếu có
+            if ($cinemaId) {
+                $query->where('tickets.cinema_id', $cinemaId);
+            }
         }
+
+        // Lọc theo khoảng thời gian
+        $query->whereDate('tickets.created_at', '>=', $startDate)
+            ->whereDate('tickets.created_at', '<=', $endDate);
+
 
         // Lấy kết quả doanh thu theo phim
         $revenueByMovies = $query->get();
@@ -234,65 +265,102 @@ class StatisticalController extends Controller
         $totalRevenue = $revenueByMovies->sum('total_revenue');
         // dd($totalRevenue);
 
-        return view('admin.statisticals.statistical-movies', compact('revenueByMovies', 'branches', 'startDate', 'endDate', 'totalMovies', 'totalRevenue'));
+        // Lưu thông tin vào session khi có bộ lọc
+        if ($isFiltering) {
+            session([
+                'statistical.branch_id' => $branchId,
+                'statistical.cinema_id' => $cinemaId,
+                'statistical.start_date' => $startDate,
+                'statistical.end_date' => $endDate,
+            ]);
+        }
+
+        return view('admin.statisticals.statistical-movies', compact(
+            'revenueByMovies',
+            'branches',
+            'startDate',
+            'endDate',
+            'totalMovies',
+            'totalRevenue',
+            'branchId',
+            'cinemaId'
+        ));
     }
 
 
-    public function statisticalTickets()
+
+    public function statisticalTickets(Request $request)
     {
+        // dd(session()->all());
+        $user = Auth::user();
+        $branches = Branch::where('is_active', 1)->get();
 
-        $branches = Branch::all();
+        // Kiểm tra xem có bộ lọc nào từ request hay không
+        $isFiltering = $request->hasAny(['branch_id', 'cinema_id', 'start_date', 'end_date']);
 
-        // doanh thu theo phim
-        $startDate = '2024-05-01';
-        $endDate = '2024-11-30';
+        // Lấy thông tin từ session hoặc giá trị mặc định
+        $startDate = $request->input('start_date', session('statistical.start_date', Carbon::now()->subDays(30)->format('Y-m-d')));
+        $endDate = $request->input('end_date', session('statistical.end_date', Carbon::now()->format('Y-m-d')));
+        $branchId = $request->input('branch_id', session('statistical.branch_id'));
+        $cinemaId = $request->input('cinema_id', session('statistical.cinema_id'));
 
-        //doanh thu theo khung giờ chiếu
-        $timeSlots = [
-            ['start' => '09:00:00', 'end' => '13:00:00', 'label' => '9:00 - 13:00'],
-            ['start' => '13:00:00', 'end' => '18:00:00', 'label' => '13:00 - 18:00'],
-            ['start' => '18:00:00', 'end' => '24:00:00', 'label' => '18:00 - 24:00'],
-        ];
-
-        $revenueTimeSlot = [];
-        foreach ($timeSlots as $slot) {
-            $totalRevenue = Ticket::join('showtimes', 'tickets.showtime_id', '=', 'showtimes.id')
-                ->whereBetween('tickets.created_at', [$startDate, $endDate])
-                ->whereTime('showtimes.start_time', '>=', $slot['start'])
-                ->whereTime('showtimes.start_time', '<', $slot['end'])
-                ->sum('tickets.total_price');
-
-            $revenueTimeSlot[] = [
-                'label' => $slot['label'],
-                'revenue' => (float)$totalRevenue, // Chuyển sang kiểu số thực
-            ];
-        }
-
-        // dd($revenueByMovies);
-
-
-
-        // Lấy thống kê số lượng vé theo ngày cho mỗi trạng thái
-        $ticketsData = Ticket::select(
+        // Khởi tạo truy vấn và áp dụng các điều kiện lọc
+        $query = Ticket::select(
             DB::raw("DATE(created_at) as date"),
             DB::raw("SUM(CASE WHEN status = 'Chưa xuất vé' THEN 1 ELSE 0 END) as pending"),
             DB::raw("SUM(CASE WHEN status = 'Đã xuất vé' THEN 1 ELSE 0 END) as completed"),
             DB::raw("SUM(CASE WHEN status = 'Đã hết hạn' THEN 1 ELSE 0 END) as expired")
         )
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy(DB::raw("DATE(created_at)"))
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate);
+
+        // Lọc theo vai trò người dùng
+        if (!$user->hasRole('System Admin')) {
+            $query->where('cinema_id', $user->cinema_id);
+        } else {
+            // Lọc theo chi nhánh nếu có
+            if ($branchId) {
+                $cinemaIds = Cinema::where('branch_id', $branchId)->pluck('id');
+                $query->whereIn('cinema_id', $cinemaIds);
+            }
+
+            // Lọc theo rạp nếu có
+            if ($cinemaId) {
+                $query->where('cinema_id', $cinemaId);
+            }
+        }
+
+        // Thực hiện truy vấn sau khi áp dụng tất cả các bộ lọc
+        $query = $query->groupBy(DB::raw("DATE(created_at)"))
             ->orderBy('date', 'ASC')
             ->get();
 
+        // Lưu thông tin vào session khi có bộ lọc
+        if ($isFiltering) {
+            session([
+                'statistical.branch_id' => $branchId,
+                'statistical.cinema_id' => $cinemaId,
+                'statistical.start_date' => $startDate,
+                'statistical.end_date' => $endDate,
+            ]);
+        }
+
         // Chuyển dữ liệu thành dạng phù hợp cho Chart.js
-        $labels = $ticketsData->pluck('date')->toArray(); // Các ngày
-        $pending = $ticketsData->pluck('pending')->toArray(); // Vé 'Chưa xuất vé'
-        $completed = $ticketsData->pluck('completed')->toArray(); // Vé 'Đã xuất vé'
-        $expired = $ticketsData->pluck('expired')->toArray(); // Vé 'Đã hết hạn'
+        $labels = $query->pluck('date')->toArray();       // Các ngày
+        $pending = $query->pluck('pending')->toArray();   // Vé 'Chưa xuất vé'
+        $completed = $query->pluck('completed')->toArray(); // Vé 'Đã xuất vé'
+        $expired = $query->pluck('expired')->toArray();   // Vé 'Đã hết hạn'
 
-
-        // dd($labels, $pending, $completed, $expired);
-
-        return view('admin.statisticals.statistical-tickets', compact('revenueTimeSlot', 'branches', 'labels', 'pending', 'completed', 'expired'));
+        return view('admin.statisticals.statistical-tickets', compact(
+            'branches',
+            'branchId',
+            'cinemaId',
+            'startDate',
+            'endDate',
+            'labels',
+            'pending',
+            'completed',
+            'expired'
+        ));
     }
 }

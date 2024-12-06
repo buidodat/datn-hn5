@@ -120,11 +120,11 @@
                                                     <p>Tổng tiền:</p>
                                                     <p id="total-price" class="bold">0 Vnđ</p>
                                                 </div>
-                                                <div>
+                                                {{-- <div>
                                                     <p>Thời gian còn lại:</p>
                                                     <p id="timer" class="bold">{{ gmdate('i:s', $remainingSeconds) }}
                                                     </p>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 10px">
                         <div class="col-md-12">
                             <div class="st_dtts_bs_wrapper float_left info-movie">
                                 <div class="st_dtts_bs_heading float_left">
@@ -211,6 +211,17 @@
                                     </form>
 
                                 </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="st_dtts_bs_wrapper float_left info-movie time-remaining">
+                                <p class="text-time">Thời gian còn lại</p>
+
+                                <p id="timer" class="bold">
+                                    {{ gmdate('i:s', $remainingSeconds) }}</p>
 
                             </div>
                         </div>
