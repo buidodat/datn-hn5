@@ -13,7 +13,8 @@
                     <ul class="post-meta">
                         <li><i class="fa fa-calendar"></i> {{ $post->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</li>
                         <li>{{ $post->user->name ?? 'Không có người đăng' }}</li>
-                        <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li>
+                        {{-- <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li> --}}
+                        <li><i class="fa fa-eye"></i> {{ number_format($post->view_count) }} lượt xem</li>
                     </ul>
 
                     <h2 style="color: #333; font-weight: bold; font-size: 32px; margin-bottom: 20px;">{{ $post->title }}</h2>
@@ -43,45 +44,26 @@
             margin-top: 60px;
             margin-bottom: 60px;
         }
-
-        /* Container cho phần bài viết */
         .container {
-            max-width: 1200px;
+            max-width: 75%;
             margin: 0 auto;
         }
 
-        /* Ảnh trong bài viết */
-        /* .hs_blog_detail_img_main_wrapper img {
-            max-width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
         .hs_blog_detail_img_main_wrapper {
-            text-align: left;
-            margin-bottom: 30px;
-            margin-top: 30px;
-        } */
-        .hs_blog_detail_img_main_wrapper {
-            text-align: center;  /* Căn giữa ảnh */
+            text-align: center;  
             margin-bottom: 30px;
             margin-top: 30px;
         }
 
         .hs_blog_detail_img_main_wrapper img {
-            width: 100%;  /* Chiếm toàn bộ chiều rộng */
-            min-height: 400px;  /* Đảm bảo ảnh không bị mất theo chiều cao */
-            object-fit: contain;  /* Đảm bảo ảnh không bị cắt mà vẫn giữ tỷ lệ */
+            width: 100%;  
+            min-height: 400px; 
+            object-fit: contain;  
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-
-        /* Cải thiện kiểu dáng nội dung */
         .hs_blog_detail_cont_main_wrapper {
             background-color: #fff;
             padding: 40px;
@@ -89,7 +71,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Định dạng typography cho bài viết */
         .hs_blog_detail_body {
             font-size: 16px;
             line-height: 1.8;
@@ -108,7 +89,6 @@
             margin-bottom: 15px;
         }
 
-        /* CSS cho danh sách meta của bài viết */
         .post-meta {
             list-style: none;
             padding: 0;
