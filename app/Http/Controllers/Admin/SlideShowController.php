@@ -45,7 +45,7 @@ class SlideShowController extends Controller
      */
     public function store(StoreSlideShowRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $data['is_active'] = 0;
 
@@ -57,7 +57,6 @@ class SlideShowController extends Controller
             }
         }
 
-        // Lưu đường dẫn ảnh dưới dạng JSON
         $data['img_thumbnail'] = $imagePaths;
 
         Slideshow::create($data);
