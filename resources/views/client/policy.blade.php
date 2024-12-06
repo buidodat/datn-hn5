@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row box-policy">
-                                    <h3>Chính sách thanh toán, đổi trả - hoàn vé</h3>
+                                    <h3>Chính sách thanh toán</h3>
                                     <div class="row text-policy">
                                         <div class="col-md-8">
                                             <div class="mt-0 note-policy">

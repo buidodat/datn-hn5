@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Showtime;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class UpdateShowtimeRequest extends FormRequest
 {
@@ -29,45 +31,45 @@ class UpdateShowtimeRequest extends FormRequest
                 'required',
             ],
             'movie_id' => 'required',
-            // 'cinema_id' => 'required',
-            // 'branch_id' => 'required',
+         
             'movie_version_id' => 'required|exists:movie_versions,id',
             'date' => 'required|date|after_or_equal:today',   //ngăn chặn chọn ngày trog quá khứ
-            'start_time' => 'required',
+           
+            'start_time' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $startTime = Carbon::parse($this->date . ' ' . $value);
+
+                    // Kiểm tra giờ chiếu trong tương lai
+                    if ($startTime->isPast()) {
+                        $fail("Giờ chiếu phải nằm trong tương lai.");
+                    }
+
+                    // Lấy các suất chiếu hiện tại trong phòng và ngày
+                    $existingShowtimes = Showtime::where('room_id', $this->room_id)
+                        ->where('date', $this->date)
+                        ->where('id', '!=', $this->route('showtime')->id)
+                        ->get();
+
+                    // Kiểm tra trùng với các suất chiếu hiện có
+                    foreach ($existingShowtimes as $showtime) {
+                        $existingStartTime = Carbon::parse($showtime->start_time);
+                        $existingEndTime = Carbon::parse($showtime->end_time);
+
+                        // Nếu thời gian bắt đầu nằm giữa bất kỳ suất chiếu nào khác
+                        if (
+                            $startTime->between($existingStartTime, $existingEndTime) ||
+                            $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration))
+                        ) {
+                            $fail("Giờ chiếu $value bị trùng lặp với suất chiếu khác trong phòng.");
+                            return;
+                        }
+                    }
+                },
+            ],
             'end_time' => 'required',
 
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $roomId = $this->room_id; // ID phòng
-            $date = $this->date; // Ngày chiếu
-            $startTime = \Carbon\Carbon::parse($this->date . ' ' . $this->start_time); // Giờ bắt đầu
-            $movieDuration = $this->movie_id ? \App\Models\Movie::find($this->movie_id)->duration : 0;
-            $cleaningTime = \App\Models\Showtime::CLEANINGTIME;
-            $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime); // Giờ kết thúc
-
-            // Truy vấn các suất chiếu khác trong cùng phòng và ngày
-            $conflictingShowtimes = \App\Models\Showtime::where('room_id', $roomId)
-                ->where('date', $date)
-                ->where('id', '!=', $this->route('showtime')->id) // Loại bỏ suất chiếu hiện tại
-                ->where(function ($query) use ($startTime, $endTime) {
-                    $query->whereBetween('start_time', [$startTime, $endTime])
-                        ->orWhereBetween('end_time', [$startTime, $endTime])
-                        ->orWhere(function ($query) use ($startTime, $endTime) {
-                            $query->where('start_time', '<=', $startTime)
-                                ->where('end_time', '>=', $endTime);
-                        });
-                })
-                ->exists();
-
-            // Nếu phát hiện trùng lặp, thêm lỗi
-            if ($conflictingShowtimes) {
-                $validator->errors()->add('start_time', 'Giờ chiếu trùng lặp với suất chiếu khác.');
-            }
-        });
     }
 
 
