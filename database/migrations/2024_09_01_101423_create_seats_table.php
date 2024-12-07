@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Room::class);
-            $table->foreignIdFor(TypeSeat::class);
+            $table->foreignIdFor(Room::class)->constrained();
+            $table->foreignIdFor(TypeSeat::class)->constrained();
             $table->unsignedTinyInteger('coordinates_x')->comment('Tọa độ X (1, 2, 3)');
             $table->string('coordinates_y')->comment('Tọa độ Y (A, B, C)'); // Tọa độ ghế bằng (x,y) <=> (5,B)
             $table->string('name');

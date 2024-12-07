@@ -16,9 +16,9 @@ return new class extends Migration
     {
         Schema::create('seat_showtimes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Seat::class);
-            $table->foreignIdFor(Showtime::class);
-            $table->foreignIdFor(User::class)->nullable();
+            $table->foreignIdFor(Seat::class)->constrained();
+            $table->foreignIdFor(Showtime::class)->constrained();
+            $table->foreignIdFor(User::class)->nullable()->constrained();
             $table->string('status');
             $table->unsignedInteger('price')->nullable();
             $table->timestamp('hold_expires_at')->nullable();

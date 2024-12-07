@@ -154,14 +154,15 @@
     <div id="myModalVoucher" class="modal-voucher">
         <div class="modal-voucher-content">
             <div class="fixed-header-voucher">
-                <h3>Chọn Voucher</h3>
+                <h3>Voucher Của Tôi</h3>
                 <span class="close-btn" id="closeModalVoucher">&times;</span>
             </div>
-            <div class="content">
+            <div class="content" id="data-my-voucher">
                 <!-- Mẫu mã voucher -->
+                @include('client.modals.data-my-voucher',$vouchers)
 
 
-                <div class="voucher-item">
+                {{-- <div class="voucher-item">
                     <div class="voucher-left">
                         <div class="voucher-tag">FREE SHIP</div>
                         <div class="voucher-info">
@@ -173,21 +174,7 @@
                         <button class="apply-btn">Áp dụng</button>
                         <p class="voucher-status">Còn 10 mã</p>
                     </div>
-                </div>
-
-                <div class="voucher-item">
-                    <div class="voucher-left">
-                        <div class="voucher-tag">FREE SHIP</div>
-                        <div class="voucher-info">
-                            <h4>Giảm tối đa ₫15k</h4>
-                            <p>Đơn tối thiểu ₫40k</p>
-                        </div>
-                    </div>
-                    <div class="voucher-right">
-                        <button class="apply-btn">Áp dụng</button>
-                        <p class="voucher-status">Còn 10 mã</p>
-                    </div>
-                </div>
+                </div> --}}
 
                 <!-- Bạn có thể thêm nhiều mẫu mã khác nếu cần -->
             </div>

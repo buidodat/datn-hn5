@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('point_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Membership::class);
+            $table->foreignIdFor(Membership::class)->constrained();
             $table->unsignedBigInteger('points');
             $table->string('type');
             // $table->string('description')->nullable();
