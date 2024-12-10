@@ -19,7 +19,7 @@ return new class extends Migration
     {
         Schema::create('ticket_seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Ticket::class);
+            $table->foreignIdFor(Ticket::class)->constrained();
             $table->foreignIdFor(Seat::class);
             $table->unsignedInteger('price');
             $table->timestamps();

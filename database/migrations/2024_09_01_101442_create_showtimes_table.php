@@ -18,10 +18,10 @@ return new class extends Migration
         Schema::create('showtimes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cinema::class);
-            $table->foreignIdFor(Room::class);
+            $table->foreignIdFor(Room::class)->constrained();
             $table->string('slug');
             $table->string('format');       //Format = type_room + movie_version; Ví dụ: Format = 2D + Lồng tiếng = 2D Lồng tiếng
-            $table->foreignIdFor(MovieVersion::class);
+            $table->foreignIdFor(MovieVersion::class)->constrained();
             $table->foreignIdFor(Movie::class);
             $table->date('date');
             $table->dateTime('start_time');

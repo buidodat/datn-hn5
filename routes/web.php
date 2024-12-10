@@ -82,6 +82,7 @@ Route::post('/update-seat', [ChooseSeatController::class, 'updateSeat'])->name('
 Route::get('checkout/{slug}', [CheckoutController::class, 'checkout'])->middleware('verified')->name('checkout');
 Route::post('checkout/apply-voucher', [CheckoutController::class, 'applyVoucher'])->name('applyVoucher')->middleware('auth');
 route::delete('checkout/cancel-voucher', [CheckoutController::class, 'cancelVoucher'])->name('cancelVoucher');
+Route::post('checkout/get-my-voucher', [CheckoutController::class, 'getMyVoucher'])->name('get-my-voucher');
 
 route::post('payment', [PaymentController::class, 'payment'])->name('payment');
 route::post('payment-admin', [PaymentController::class, 'paymentAdmin'])->name('payment-admin');
