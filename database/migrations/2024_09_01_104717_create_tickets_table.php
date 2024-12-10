@@ -21,9 +21,9 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Cinema::class)->constrained();
+            $table->foreignIdFor(Cinema::class);
             $table->foreignIdFor(Room::class)->constrained();
-            $table->foreignIdFor(Movie::class)->constrained();
+            $table->foreignIdFor(Movie::class);
             $table->foreignIdFor(Showtime::class)->constrained();
             $table->string('voucher_code')->nullable();
             $table->unsignedInteger('voucher_discount')->nullable();

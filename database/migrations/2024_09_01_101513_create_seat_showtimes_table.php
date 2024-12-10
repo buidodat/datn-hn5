@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Seat::class)->constrained();
             $table->foreignIdFor(Showtime::class)->constrained();
-            $table->foreignIdFor(User::class)->nullable()->constrained();
+            $table->foreignIdFor(User::class)->nullable();
             $table->string('status');
             $table->unsignedInteger('price')->nullable();
             $table->timestamp('hold_expires_at')->nullable();
