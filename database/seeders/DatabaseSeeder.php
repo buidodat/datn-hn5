@@ -1284,7 +1284,7 @@ class DatabaseSeeder extends Seeder
                 ',
             ],
         ];
-    
+
         foreach ($posts as $post) {
             Post::create([
                 'user_id' => random_int(1, 4),
@@ -1507,6 +1507,8 @@ class DatabaseSeeder extends Seeder
         $user = User::find(7);
         $user->assignRole('Quản lý cơ sở');
         $user = User::find(8);
+        $user->assignRole('Nhân viên');
+        $user = User::find(9);
         $user->assignRole('Nhân viên');
 
 
