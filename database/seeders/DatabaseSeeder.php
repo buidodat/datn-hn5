@@ -1508,6 +1508,8 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('Quản lý cơ sở');
         $user = User::find(8);
         $user->assignRole('Nhân viên');
+        $user = User::find(9);
+        $user->assignRole('Nhân viên');
 
 
         $user = User::find(5);

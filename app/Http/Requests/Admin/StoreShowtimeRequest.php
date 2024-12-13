@@ -62,7 +62,7 @@ class StoreShowtimeRequest extends FormRequest
 
                             // Kiểm tra nếu giờ mở cửa nằm trong khoảng giờ chiếu
                             if ($startHour->between($existingStartTime, $existingEndTime)) {
-                                $fail("Giờ mở cửa nằm trong khoảng thời gian chiếu của suất chiếu khác.");
+                                $fail("Giờ mở cửa không được nằm trong khoảng thời gian chiếu của suất chiếu khác.");
                                 return;
                             }
                         }
@@ -148,29 +148,4 @@ class StoreShowtimeRequest extends FormRequest
         ];
     }
 
-
-    // public function messages()
-    // {
-    //     return [
-    //         'movie_id.required' => "Vui lòng chọn phim",
-    //         'cinema_id.required' => "Vui lòng chọn Tên rạp",
-    //         'branch_id.required' => "Vui lòng chọn Chi nhánh",
-    //         'room_id.required' => 'Vui lòng chọn phòng.',
-    //         'room_id.exists' => 'Phòng đã chọn không tồn tại.',
-    //         'movie_version_id.required' => 'Vui lòng chọn phiên bản phim.',
-    //         'movie_version_id.exists' => 'Phiên bản phim đã chọn không tồn tại.',
-    //         'date.required' => 'Vui lòng chọn ngày chiếu.',
-    //         'date.date' => 'Ngày chiếu không hợp lệ.',
-    //         'date.after_or_equal' => 'Ngày chiếu phải từ hôm nay trở đi.',
-    //         'start_time.required' => 'Vui lòng chọn giờ chiếu.',
-    //         'start_time.date_format' => 'Giờ chiếu không hợp lệ (định dạng phải là HH:MM).',
-    //         'start_time.after' => 'Giờ chiếu phải lớn hơn thời gian hiện tại.',
-    //         'start_time.before' => 'Giờ chiếu phải trước giờ kết thúc.',
-    //         'end_time.required' => 'Vui lòng nhập giờ kết thúc.',
-    //         'end_time.date_format' => 'Giờ kết thúc không hợp lệ (định dạng phải là HH:MM).',
-    //         'end_time.after' => 'Giờ kết thúc phải sau giờ chiếu.',
-    //         'end_hour.required' => "Vui lòng nhập giờ đóng cửa",
-    //         'end_hour.after' => 'Giờ đóng cửa phải lớn hơn giờ mở cửa',
-    //     ];
-    // }
 }
