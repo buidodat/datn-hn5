@@ -47,7 +47,7 @@ class UserController extends Controller
         // $tickets = TicketMovie::with('ticket', 'movie')->where('tickets.user_id', $userID)->paginate(5);
         return view('client.users.my-account', compact('user', 'genders', 'tickets','ranks','page','vouchers'));
     }
-    private function getVoucher($userId)
+    public static function getVoucher($userId)
     {
         $user = User::whereNotNull('email_verified_at')
             ->find($userId);

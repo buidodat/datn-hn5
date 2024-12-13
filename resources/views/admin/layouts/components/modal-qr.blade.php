@@ -19,10 +19,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const scanModal = document.getElementById('scanModal');
-        if (!scanModal) {
-            console.error('Không tìm thấy modal với ID "scanModal". Kiểm tra lại HTML.');
-            return;
-        }
         const scanAnotherBtn = document.getElementById("scanAnotherBtn");
         const errorMessage = document.getElementById("error-message");
         const barcodeResult = document.getElementById("barcode-result");
@@ -37,10 +33,10 @@
 
             if (sourcePage === 'index') {
                 startScanner();
-                console.log("Modal được mở từ Trang Index");
+                // console.log("Modal được mở từ Trang Index");
             } else if (sourcePage === 'header') {
                 startScanner();
-                console.log("Modal được mở từ Header");
+                // console.log("Modal được mở từ Header");
             }
 
 
@@ -91,58 +87,57 @@
             barcodeResult.innerText = code; // Hiển thị mã quét được
             stopScanner();
 
-            // Swal.fire({
-            //         title: 'Đang xử lý...',
-            //         text: 'Vui lòng chờ trong giây lát.',
-            //         allowOutsideClick: false, // Không cho phép đóng ngoài khi đang xử lý
-            //         didOpen: () => {
-            //             Swal.showLoading(); // Hiển thị spinner loading
-            //         }
-            //     });
-            // Gửi mã code qua AJAX
-            // fetch('{{ route('admin.tickets.processScan') }}', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //         },
-            //         body: JSON.stringify({
-            //             code: code
-            //         })
-            //     })
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         if (data.success && data.redirect_url) {
-            //             Swal.fire({
-            //                 icon: 'success',
-            //                 title: 'Thành công!',
-            //                 text: 'Tìm kiếm hóa đơn thành công.',
-            //                 confirmButtonText: 'Đóng',
-            //                 timer: 3000,
-            //                 timerProgressBar: true,
+            Swal.fire({
+                    title: 'Đang xử lý...',
+                    text: 'Vui lòng chờ trong giây lát.',
+                    allowOutsideClick: false, // Không cho phép đóng ngoài khi đang xử lý
+                    didOpen: () => {
+                        Swal.showLoading(); // Hiển thị spinner loading
+                    }
+                });
+            fetch('{{ route('admin.tickets.processScan') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        code: code
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.redirect_url) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Tìm kiếm hóa đơn thành công.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            timerProgressBar: true,
 
-            //             });
-            //             window.open(data.redirect_url, '_blank');
+                        });
+                        window.open(data.redirect_url, '_blank');
 
-            //             // Khởi động lại scanner
-            //             barcodeResult.innerText = "";
-            //             startScanner();
-            //         } else {
-            //             Swal.fire({
-            //                 icon: 'error',
-            //                 title: 'Lỗi!',
-            //                 text: 'Không tìm thấy mã hóa đơn, vui lòng thử lại.',
-            //                 confirmButtonText: 'Đóng',
-            //                 timer: 3000,
-            //                 showConfirmButton: true,
-            //             });
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.error("Lỗi:", error);
+                        // Khởi động lại scanner
+                        barcodeResult.innerText = "";
+                        startScanner();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Không tìm thấy mã hóa đơn, vui lòng thử lại.',
+                            confirmButtonText: 'Đóng',
+                            timer: 3000,
+                            showConfirmButton: true,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi:", error);
 
-            //         errorMessage.innerText = 'Lỗi kết nối, vui lòng thử lại sau!';
-            //     });
+                    errorMessage.innerText = 'Lỗi kết nối, vui lòng thử lại sau!';
+                });
         }
 
         // Hàm xóa mã vạch và thông báo lỗi

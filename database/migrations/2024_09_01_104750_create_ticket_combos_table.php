@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('ticket_combos', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Ticket::class);
-            $table->foreignIdFor(Combo::class);
+            $table->foreignIdFor(Ticket::class)->constrained();
+            $table->foreignIdFor(Combo::class)->constrained();
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->timestamps();
