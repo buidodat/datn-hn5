@@ -19,10 +19,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const scanModal = document.getElementById('scanModal');
-        if (!scanModal) {
-            console.error('Không tìm thấy modal với ID "scanModal". Kiểm tra lại HTML.');
-            return;
-        }
         const scanAnotherBtn = document.getElementById("scanAnotherBtn");
         const errorMessage = document.getElementById("error-message");
         const barcodeResult = document.getElementById("barcode-result");
@@ -37,10 +33,10 @@
 
             if (sourcePage === 'index') {
                 startScanner();
-                console.log("Modal được mở từ Trang Index");
+                // console.log("Modal được mở từ Trang Index");
             } else if (sourcePage === 'header') {
                 startScanner();
-                console.log("Modal được mở từ Header");
+                // console.log("Modal được mở từ Header");
             }
 
 
@@ -99,7 +95,6 @@
                         Swal.showLoading(); // Hiển thị spinner loading
                     }
                 });
-            Gửi mã code qua AJAX
             fetch('{{ route('admin.tickets.processScan') }}', {
                     method: 'POST',
                     headers: {
