@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('movie_versions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Movie::class);
+            $table->foreignIdFor(Movie::class)->constrained();
             $table->string('name');             //Vietsub, Lồng tiếng, thuyết minh
             $table->timestamps();
             $table->unique(['movie_id','name'],'movie_version');

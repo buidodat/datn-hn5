@@ -7,6 +7,7 @@ use App\Models\Combo;
 use App\Models\Food;
 use App\Models\Seat;
 use App\Models\Showtime;
+use App\Models\User;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
 use Carbon\Carbon;
@@ -59,15 +60,17 @@ class CheckoutController extends Controller
 
         // Lấy danh sách combo và thực phẩm liên quan
         $data = Combo::query()->where('is_active', '1')->with('food')->latest('id')->get();
+        $vouchers = $this->getVoucher(Auth::user()->id);
 
         // Trả về view với dữ liệu
-        return view('client.checkout', compact('data', 'showtime', 'checkoutData', 'seats'));
+        return view('client.checkout', compact('data', 'showtime', 'checkoutData', 'seats', 'vouchers'));
     }
 
 
     public function applyVoucher(Request $request)
 
     {
+        // $customerId = $request->customerId;
         $voucher = Voucher::where('is_active', 1)
             ->where('code', $request->code)
             ->first();
@@ -178,5 +181,111 @@ class CheckoutController extends Controller
     {
         session()->forget('payment_voucher');
         return response()->json(['success' => true]);
+    }
+
+
+    public static function getVoucher($userId)
+    {
+        $user = User::whereNotNull('email_verified_at')
+            ->find($userId);
+
+        // Nếu user chưa xác nhận thì ko trả về voucher nào (rỗng)
+        if (!$user) {
+            return collect();
+        }
+
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+
+        // Lấy danh sách voucher
+        $vouchersQuery = Voucher::where('is_publish', 1)
+            ->where('is_active', 1)
+            ->where('start_date_time', '<=', $now)
+            ->where('end_date_time', '>=', $now)
+            ->where('quantity', '>', 0)
+            ->whereDoesntHave('users', function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->whereColumn('user_vouchers.usage_count', '>=', 'vouchers.limit');
+            });
+
+        if (!$user->birthday) {
+            $vouchersQuery->where('type', 1);
+        } else {
+            $vouchersQuery->where(function ($query) use ($userId) {
+                $query->where('type', 1)
+                    ->orWhere(function ($q) use ($userId) {
+                        $q->where('type', 2)
+                            ->whereExists(function ($subquery) use ($userId) {
+                                $subquery->from('user_vouchers')
+                                    ->whereColumn('vouchers.id', 'user_vouchers.voucher_id')
+                                    ->where('user_vouchers.user_id', $userId);
+                            });
+                    });
+            });
+        }
+
+        $vouchers = $vouchersQuery->get();
+
+        // Tính số lượt sử dụng còn lại
+        foreach ($vouchers as $voucher) {
+            $usageCount = $voucher->users()
+                ->where('user_id', $userId)
+                ->first()
+                ->pivot->usage_count ?? 0;
+
+            $voucher->remaining_uses = max(0, $voucher->limit - $usageCount);
+        }
+
+        return $vouchers;
+    }
+    public  function getMyVoucher(Request $request)
+    {
+
+
+        $userId = $request->userId;
+
+        $user = User::findOrFail($userId);
+
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+
+        // Lấy danh sách voucher
+        $vouchersQuery = Voucher::where('is_publish', 1)
+            ->where('is_active', 1)
+            ->where('start_date_time', '<=', $now)
+            ->where('end_date_time', '>=', $now)
+            ->where('quantity', '>', 0)
+            ->whereDoesntHave('users', function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->whereColumn('user_vouchers.usage_count', '>=', 'vouchers.limit');
+            });
+
+        if (!$user->birthday) {
+            $vouchersQuery->where('type', 1);
+        } else {
+            $vouchersQuery->where(function ($query) use ($userId) {
+                $query->where('type', 1)
+                    ->orWhere(function ($q) use ($userId) {
+                        $q->where('type', 2)
+                            ->whereExists(function ($subquery) use ($userId) {
+                                $subquery->from('user_vouchers')
+                                    ->whereColumn('vouchers.id', 'user_vouchers.voucher_id')
+                                    ->where('user_vouchers.user_id', $userId);
+                            });
+                    });
+            });
+        }
+
+        $vouchers = $vouchersQuery->get();
+
+        // Tính số lượt sử dụng còn lại
+        foreach ($vouchers as $voucher) {
+            $usageCount = $voucher->users()
+                ->where('user_id', $userId)
+                ->first()
+                ->pivot->usage_count ?? 0;
+
+            $voucher->remaining_uses = max(0, $voucher->limit - $usageCount);
+        }
+
+        return view('client.modals.data-my-voucher', compact('vouchers'))->render();
     }
 }

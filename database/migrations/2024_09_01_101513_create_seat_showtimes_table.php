@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('seat_showtimes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Seat::class);
-            $table->foreignIdFor(Showtime::class);
+            $table->foreignIdFor(Seat::class)->constrained();
+            $table->foreignIdFor(Showtime::class)->constrained();
             $table->foreignIdFor(User::class)->nullable();
             $table->string('status');
             $table->unsignedInteger('price')->nullable();

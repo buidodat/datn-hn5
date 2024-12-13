@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->unique();
-            $table->foreignIdFor(Rank::class)->default(1);
+            $table->foreignIdFor(User::class)->unique()->constrained();
+            $table->foreignIdFor(Rank::class)->default(1)->constrained();
             $table->string('code')->unique();
             $table->unsignedBigInteger('points')->default(0);
             $table->unsignedBigInteger('total_spent')->default(0);

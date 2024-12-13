@@ -14,6 +14,7 @@ class Slideshow extends Model
         'is_active',
     ];
     protected $casts =[
+        'img_thumbnail' => 'json',
         'is_active'=>'boolean',
     ];
 }

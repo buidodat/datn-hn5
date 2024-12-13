@@ -211,7 +211,12 @@ class DatabaseSeeder extends Seeder
             ['name' => 'IMAX', 'surcharge' => 50000]
         ];
         DB::table('type_rooms')->insert($typeRooms);
-
+        $typeSeats = [
+            ['name' => 'Ghế Thường', 'price' => 50000],
+            ['name' => 'Ghế Vip', 'price' => 75000],
+            ['name' => 'Ghế Đôi', 'price' => 120000],
+        ];
+        DB::table('type_seats')->insert($typeSeats);
 
         // Duyệt qua các rạp và tạo phòng cho mỗi rạp
         $cinemaCount = [1, 2];
@@ -375,12 +380,7 @@ class DatabaseSeeder extends Seeder
 
 
         //3 bản ghi loại ghế
-        $typeSeats = [
-            ['name' => 'Ghế Thường', 'price' => 50000],
-            ['name' => 'Ghế Vip', 'price' => 75000],
-            ['name' => 'Ghế Đôi', 'price' => 120000],
-        ];
-        DB::table('type_seats')->insert($typeSeats);
+
 
         // Lấy số lượng rạp và phòng đã có
         $roomCount = DB::table('rooms')->count();
@@ -1027,7 +1027,7 @@ class DatabaseSeeder extends Seeder
                     <p><strong>- Thứ 7 và Chủ Nhật hàng tuần: 62.000đ/vé 2D</strong></p>
                     <p><strong>Thời gian áp dụng: Từ nay đến khi hết ngân sách khuyến mãi.</strong></p>
                     <p><strong>Điều khoản, điều kiện áp dụng:</strong></p>
-                    <p><strong>Chỉ áp dụng khi đặt vé xem phim và thanh toán trực tiếp trên MoMo, không áp dụng chương trình khuyến mãi 
+                    <p><strong>Chỉ áp dụng khi đặt vé xem phim và thanh toán trực tiếp trên MoMo, không áp dụng chương trình khuyến mãi
                     khi khách hàng đặt và thanh toán tại quầy hoặc qua các hình thức khác.</strong></p>
                     <p><strong>Áp dụng tại tất cả các rạp Beta trên toàn quốc, trừ Beta Phú Mỹ và Beta Hồ Tràm.</strong></p>
                     <p><strong>Chương trình áp dụng cho các suất chiếu 2D trong suốt thời gian diễn ra chương trình.</strong></p>
@@ -1096,7 +1096,7 @@ class DatabaseSeeder extends Seeder
                     <p>- Không áp dụng nếu trùng vào ngày lễ, Tết.</p>
                     <p>- Không áp dụng cho các suất chiếu đặc biệt hoặc phim ra mắt sớm</p>
                     <p>- KHÔNG PHỤ THU GHẾ VIP/ĐÔI</p>
-                    <p>- Phụ thu 10k với khách hàng không có tài khoản thành viên Beta Member (đăng ký nhanh trong 1 nốt nhạc tại 
+                    <p>- Phụ thu 10k với khách hàng không có tài khoản thành viên Beta Member (đăng ký nhanh trong 1 nốt nhạc tại
                     <a href="http://onelink.to/zmb6dp">http://onelink.to/zmb6dp<a/>)</p>
                 ',
             ],
@@ -1109,14 +1109,14 @@ class DatabaseSeeder extends Seeder
                 'content' => '
                     <p><strong>SALE KHÔNG NGỪNG - MỪNG "MAD SALE DAY"</strong></p>
                     <p><strong>Không thể bỏ lỡ Mad Sale Day - Thứ 2 đầu tiên của tháng - Ngày hội khuyến mãi hấp dẫn nhất tại Beta Cinemas:</strong></p>
-                    <p><strong>💢 ĐỪNG BỎ LỠ - MAD SALE DAY VỚI CÁC ƯU ĐÃI SAU💢</strong></p>                  
+                    <p><strong>💢 ĐỪNG BỎ LỠ - MAD SALE DAY VỚI CÁC ƯU ĐÃI SAU💢</strong></p>
                     <p>🎁 Đồng giá 40K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại các cụm rạp Beta Thái Nguyên, Thanh Hóa, Bắc Giang, Nha Trang, Biên Hòa.</p>
-                    <p>🎁 Đồng giá 45K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Thanh Xuân, 
+                    <p>🎁 Đồng giá 45K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Thanh Xuân,
                     Mỹ Đình, Đan Phượng, Long Khánh, Tân Uyên, Empire Bình Dương (Thủ Dầu Một), Phú Mỹ, Lào Cai.</p>
-                    <p>🎁 Đồng giá 45k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 50k/vé 
+                    <p>🎁 Đồng giá 45k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 50k/vé
                     (người lớn) đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Quang Trung.</p>
                     <p>🎁 Đồng giá 50K/vé đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Giải Phóng, Ung Văn Khiêm, Trần Quang Khải.</p>
-                    <p>🎁 Đồng giá 50k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 60k/vé (người lớn) 
+                    <p>🎁 Đồng giá 50k/vé (học sinh, sinh viên, trẻ em, người cao tuổi), 60k/vé (người lớn)
                     đối với 2D  ➕ tặng 1 bắp: Áp dụng tại Beta Hồ Tràm, TRMall Phú Quốc.</p>
                     <p>⚠️ LƯU Ý:</p>
                     <p>🔹 Áp dụng cho tất cả khách hàng.</p>
@@ -1159,7 +1159,7 @@ class DatabaseSeeder extends Seeder
                     <p><strong>Lưu ý:</strong></p>
                     <p><strong>Chỉ áp dụng cho khách hàng thành viên của Beta Cinemas.</strong></p>
                     <p>Thẻ học sinh, sinh viên phải còn thời hạn áp dụng.</p>
-                    <p>1 thẻ học sinh, sinh viên có thể áp dụng được cho cả nhóm khách hàng đi cùng đối với phim không giới hạn độ tuổi 
+                    <p>1 thẻ học sinh, sinh viên có thể áp dụng được cho cả nhóm khách hàng đi cùng đối với phim không giới hạn độ tuổi
                     (các phim từ T13 trở lên cần kiểm tra thẻ của từng người).</p>
                     <p>Ưu đãi áp dụng với người lớn tuổi (trên 55t) và phải xuất trình CMND trước khi mua vé.</p>
                     <p>Không áp dụng đồng thời với các chương trình khuyến mãi khác.</p>
@@ -1174,42 +1174,42 @@ class DatabaseSeeder extends Seeder
                 'title' => 'THÀNH LẬP LIÊN DOANH BETA MEDIA VÀ AEON ENTERTAINMENT',
                 'slug' => 'lien-doanh-beta-media-aeon-entertainment',
                 'img_post' => 'https://files.betacorp.vn//media/images/2024/09/05/z5799808128187-c7065a264ae65ee9119069e5f37ee079-144458-050924-43.jpg',
-                'description' => 'Beta Media chính thức hợp tác cùng AEON Entertainment, mở ra kỷ nguyên mới cho ngành giải trí 
+                'description' => 'Beta Media chính thức hợp tác cùng AEON Entertainment, mở ra kỷ nguyên mới cho ngành giải trí
                                 tại Việt Nam với nhiều dự án rạp chiếu phim hấp dẫn.',
                 'content' => '
                     <p><strong>Ngày 31.07.2024, Beta Media (Việt Nam) và Aeon Entertainment (Nhật Bản) chính thức bố công ty liên doanh tại Việt Nam.
-                    Liên doanh này tập trung vào việc phát triển, quản lý, vận hành chuỗi rạp chiếu phim cao cấp; đầu tư sản xuất phim điện ảnh 
+                    Liên doanh này tập trung vào việc phát triển, quản lý, vận hành chuỗi rạp chiếu phim cao cấp; đầu tư sản xuất phim điện ảnh
                     và phát hành các bộ phim Việt Nam, Nhật Bản và quốc tế tại thị trường Việt Nam.</strong></p>
-                    <p><strong>Sự kiện công bố liên doanh này là dấu mốc quan trọng trong sự phát triển chung của nền điện ảnh Việt Nam, 
+                    <p><strong>Sự kiện công bố liên doanh này là dấu mốc quan trọng trong sự phát triển chung của nền điện ảnh Việt Nam,
                     cũng như sự hợp tác kinh tế giữa hai quốc gia Nhật Bản – Việt Nam. Buổi lễ công bố đã thu hút sự tham dự của các cơ quan báo chí, các đơn vị,
-                    cá nhân hoạt động trong lĩnh vực phim ảnh, giải trí. Đặc biệt, sự kiện vinh dự đón tiếp ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment 
+                    cá nhân hoạt động trong lĩnh vực phim ảnh, giải trí. Đặc biệt, sự kiện vinh dự đón tiếp ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment
                     và ông Bùi Quang Minh – Chủ tịch Beta Group.</strong></p>
-                    <p><strong>Dự kiến, vài chục tỉ Yên (vài nghìn tỉ đồng) sẽ được đầu tư để xây dựng hơn 50 cụm rạp chiếu phim đẳng cấp với thương hiệu 
+                    <p><strong>Dự kiến, vài chục tỉ Yên (vài nghìn tỉ đồng) sẽ được đầu tư để xây dựng hơn 50 cụm rạp chiếu phim đẳng cấp với thương hiệu
                     Aeon Beta Cinema cho tới năm 2035, mang phong cách hiện đại hài hoà với các giá trị truyền thống của Việt Nam và Nhật Bản.
-                    Các rạp chiếu phim Aeon Beta Cinema sẽ được triển khai trên khắp các tỉnh thành của Việt Nam, mang đến cho khán giả những trải nghiệm 
+                    Các rạp chiếu phim Aeon Beta Cinema sẽ được triển khai trên khắp các tỉnh thành của Việt Nam, mang đến cho khán giả những trải nghiệm
                     xem phim tuyệt vời nhất. Dự kiến, rạp chiếu phim Aeon Beta Cinema đầu tiên sẽ khai trương vào năm 2025.</strong></p>
                     <p><strong>Liên doanh này không chỉ dừng lại ở việc phát triển hệ thống rạp chiếu phim mà còn đặt mục tiêu tham gia mạnh mẽ vào lĩnh vực sản xuất,
-                    phát hành phim. Theo thoả thuận, các dự án sản xuất và phát hành phim điện ảnh sẽ được triển khai với thương hiệu Aeon Beta, hứa hẹn mang đến 
+                    phát hành phim. Theo thoả thuận, các dự án sản xuất và phát hành phim điện ảnh sẽ được triển khai với thương hiệu Aeon Beta, hứa hẹn mang đến
                     cho khán giả những bộ phim chất lượng, giàu giá trị nghệ thuật và giải trí.</strong></p>
-                    <p><strong>Được thành lập từ năm 2014, Beta Media là một công ty của hệ sinh thái Beta Group. Là công ty vận hành, phát triển 
-                    chuỗi rạp chiếu phim nhắm vào phân khúc tầm trung tại Việt Nam, Beta Media đã phát triển 20 cụm rạp chiếu Beta Cinemas khắp các tỉnh thành 
-                    trên cả nước. Trong khi Beta Cinemas vẫn giữ chiến lược phục vụ khách hàng trung cấp (mass market), sự ra đời của Aeon Beta sẽ mang đến 
+                    <p><strong>Được thành lập từ năm 2014, Beta Media là một công ty của hệ sinh thái Beta Group. Là công ty vận hành, phát triển
+                    chuỗi rạp chiếu phim nhắm vào phân khúc tầm trung tại Việt Nam, Beta Media đã phát triển 20 cụm rạp chiếu Beta Cinemas khắp các tỉnh thành
+                    trên cả nước. Trong khi Beta Cinemas vẫn giữ chiến lược phục vụ khách hàng trung cấp (mass market), sự ra đời của Aeon Beta sẽ mang đến
                     những trải nghiệm đẳng cấp cho các khách hàng thuộc phân khúc cao cấp hơn. </strong></p>
-                    <p><strong>Về phía đối tác chiến lược, Aeon Entertainment là một công ty con thuộc Tập đoàn Aeon Nhật Bản. Được thành lập từ năm 1991, 
-                    Aeon Entertainment hiện có 96 rạp chiếu phim, là chuỗi rạp lớn nhất ở đất nước mặt trời mọc (tính đến tháng 7/2024). Đặc biệt, với triết lý mở rộng 
-                    ranh giới của sự phấn khích cho giới mộ điệu điện ảnh và lấp đầy cuộc sống con người bằng niềm vui và sự phấn khích, đơn vị này luôn đi đầu 
-                    trong việc khởi chiếu những bộ phim điện ảnh mới nhất trên thế giới. Việc thành lập liên doanh ở Việt Nam cho thấy tiềm lực và nỗ lực phát triển 
+                    <p><strong>Về phía đối tác chiến lược, Aeon Entertainment là một công ty con thuộc Tập đoàn Aeon Nhật Bản. Được thành lập từ năm 1991,
+                    Aeon Entertainment hiện có 96 rạp chiếu phim, là chuỗi rạp lớn nhất ở đất nước mặt trời mọc (tính đến tháng 7/2024). Đặc biệt, với triết lý mở rộng
+                    ranh giới của sự phấn khích cho giới mộ điệu điện ảnh và lấp đầy cuộc sống con người bằng niềm vui và sự phấn khích, đơn vị này luôn đi đầu
+                    trong việc khởi chiếu những bộ phim điện ảnh mới nhất trên thế giới. Việc thành lập liên doanh ở Việt Nam cho thấy tiềm lực và nỗ lực phát triển
                     trên thị trường quốc tế của Aeon Entertainment.</strong></p>
-                    <p><strong>Theo chia sẻ của ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment, Beta Media là đối tác hoàn hảo, bởi doanh nghiệp này 
-                    có sự hiểu biết sâu rộng về thị trường Việt Nam, kiến thức marketing vượt trội và khả năng kết nối mạng lưới địa phương mạnh mẽ. “Điện ảnh 
-                    có khả năng kết nối con người và tâm hồn lại với nhau. Chúng tôi tin vào sức mạnh đó và sẽ tiếp tục thách thức bản thân để mang đến sự bất ngờ 
+                    <p><strong>Theo chia sẻ của ông Nobuyuki Fujiwara – Chủ tịch Aeon Entertainment, Beta Media là đối tác hoàn hảo, bởi doanh nghiệp này
+                    có sự hiểu biết sâu rộng về thị trường Việt Nam, kiến thức marketing vượt trội và khả năng kết nối mạng lưới địa phương mạnh mẽ. “Điện ảnh
+                    có khả năng kết nối con người và tâm hồn lại với nhau. Chúng tôi tin vào sức mạnh đó và sẽ tiếp tục thách thức bản thân để mang đến sự bất ngờ
                     và phấn khích cho khách hàng tại Việt Nam”, ông Nobuyuki Fujiwara khẳng định.</strong></p>
-                    <p><strong>Cùng quan điểm với đối tác, ông Bùi Quang Minh, Chủ tịch Beta Group, nhấn mạnh: “Liên doanh này là kết quả tốt đẹp của sự chia sẻ 
-                    tầm nhìn, khát vọng, cũng như giá trị cốt lõi để cùng nhau mang lại những trải nghiệm mới mẻ và giá trị bền vững cho cộng đồng. Sự kết hợp giữa 
-                    Aeon Entertainment, với tiềm lực mạnh mẽ và bề dày kinh nghiệm trong ngành công nghiệp điện ảnh, cùng Beta Media, với sự hiểu biết sâu sắc về 
+                    <p><strong>Cùng quan điểm với đối tác, ông Bùi Quang Minh, Chủ tịch Beta Group, nhấn mạnh: “Liên doanh này là kết quả tốt đẹp của sự chia sẻ
+                    tầm nhìn, khát vọng, cũng như giá trị cốt lõi để cùng nhau mang lại những trải nghiệm mới mẻ và giá trị bền vững cho cộng đồng. Sự kết hợp giữa
+                    Aeon Entertainment, với tiềm lực mạnh mẽ và bề dày kinh nghiệm trong ngành công nghiệp điện ảnh, cùng Beta Media, với sự hiểu biết sâu sắc về
                     thị trường Việt Nam và năng lực đổi mới sáng tạo, sẽ tạo ra những cơ hội phát triển đột phá cho cả hai bên”. </strong></p>
-                    <p><strong>Với sự ra đời của Liên doanh Aeon Beta, thị trường rạp chiếu phim, sản xuất và phát hành phim sẽ có thêm một thương hiệu quy mô và 
-                    đẳng cấp, góp phần nâng tầm trải nghiệm cho những người yêu thích điện ảnh. Đồng thời, Liên doanh này cam kết xây dựng và phát triển văn hoá, 
+                    <p><strong>Với sự ra đời của Liên doanh Aeon Beta, thị trường rạp chiếu phim, sản xuất và phát hành phim sẽ có thêm một thương hiệu quy mô và
+                    đẳng cấp, góp phần nâng tầm trải nghiệm cho những người yêu thích điện ảnh. Đồng thời, Liên doanh này cam kết xây dựng và phát triển văn hoá,
                     quan hệ Việt-Nhật, đóng góp vào sự phát triển bền vững cho cộng đồng và xã hội.</strong></p>
                     <p><strong>Cùng xem lại Lễ ký kết liên doanh Aeon Beta tại đây: RECAP LIÊN DOANH BETA MEDIA VÀ AEON ENTERTAINMENT</strong></p>
                 ',
@@ -1228,39 +1228,39 @@ class DatabaseSeeder extends Seeder
                     cùng với Công Ty Cổ Phần APJ Entertainment đại diện bên nhượng quyền và các khách mời đặc biệt là lãnh đạo cấp cao của các công ty đối tác,
                     nhà đầu tư, đơn vị báo đài, các phòng ban quan trọng của cả 2 công ty.</p>
                     <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas</p>
-                    <p>Lễ ký kết đem đến cơ hội đầu tư “uy tín - an toàn” với mô hình nhượng quyền rạp phim đa dạng về các phân khúc. Đây cũng là thương hiệu 
+                    <p>Lễ ký kết đem đến cơ hội đầu tư “uy tín - an toàn” với mô hình nhượng quyền rạp phim đa dạng về các phân khúc. Đây cũng là thương hiệu
                     rạp chiếu phim nhượng quyền đầu tiên tại Việt Nam, hiện đang có 19 cụm rạp trải dài khắp cả nước và vẫn đang tiếp tục mở rộng.</p>
-                    <p>Beta Cinemas đang giới thiệu 3 gói nhượng quyền: Beta Lite (Thiết kế trẻ trung, chất lượng tiêu chuẩn), Beta Standard (Thiết kế hiện đại, 
-                    chất lượng quốc tế), Beta Premium (Thiết kế sang trọng, chất lượng đẳng cấp). Rạp phim được trang bị cơ sở vật chất, thiết bị hiện đại theo 
+                    <p>Beta Cinemas đang giới thiệu 3 gói nhượng quyền: Beta Lite (Thiết kế trẻ trung, chất lượng tiêu chuẩn), Beta Standard (Thiết kế hiện đại,
+                    chất lượng quốc tế), Beta Premium (Thiết kế sang trọng, chất lượng đẳng cấp). Rạp phim được trang bị cơ sở vật chất, thiết bị hiện đại theo
                     tiêu chuẩn Hollywood 100% nhập khẩu từ nước ngoài.</p>
                     <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 2).</p>
-                    <p>Đối với rạp phim Beta Cinemas Trần Quang Khải, mỗi phòng vé đều được lắp đặt hệ thống âm thanh Dolby 7.1 và hệ thống cách âm chuẩn quốc tế 
-                    giúp đem lại trải nghiệm âm thanh và hình ảnh sống động chất lượng cho từng thước phim bom tấn. Các bộ phim điện ảnh được cập nhật liên tục, 
+                    <p>Đối với rạp phim Beta Cinemas Trần Quang Khải, mỗi phòng vé đều được lắp đặt hệ thống âm thanh Dolby 7.1 và hệ thống cách âm chuẩn quốc tế
+                    giúp đem lại trải nghiệm âm thanh và hình ảnh sống động chất lượng cho từng thước phim bom tấn. Các bộ phim điện ảnh được cập nhật liên tục,
                     đảm bảo độ HOT trên thị trường, mang đến những siêu phẩm chất lượng nhất cho khán giả. </p>
-                    <p>Ngoài mức giá cạnh tranh phù hợp với chi tiêu của giới trẻ, đặc biệt là thế hệ Gen Z, Beta Cinemas Trần Quang Khải còn thường xuyên 
+                    <p>Ngoài mức giá cạnh tranh phù hợp với chi tiêu của giới trẻ, đặc biệt là thế hệ Gen Z, Beta Cinemas Trần Quang Khải còn thường xuyên
                     có chương trình khuyến mại, ưu đãi cực kỳ đa dạng như Mad Sale Day vào thứ 2 đầu tiên của tháng, đồng giá vé vào các ngày Thứ 3 vui vẻ hàng tuần,...</p>
                     <p><strong>Đánh dấu cột mốc rạp Beta thứ 19 trong chuỗi rạp Beta Cinemas </strong></p>
-                    <p>Beta Cinemas là mô hình rạp chiếu với giá vé hợp lý, hướng tới nhóm khách hàng học sinh, sinh viên và người thu nhập ở mức trung bình nhưng 
-                    vẫn đảm bảo những tiêu chuẩn chất lượng dịch vụ và trải nghiệm tốt. Sau gần 10 năm thành lập và phát triển, Beta Cinemas đã xây dựng 18 cụm 
-                    rạp trải dài khắp cả nước bao gồm: TP.HCM, Hà Nội, Thái Nguyên, Thanh Hóa, Bắc Giang… và mới nhất là cụm thứ 19 trong chuỗi rạp Beta Cinemas, 
+                    <p>Beta Cinemas là mô hình rạp chiếu với giá vé hợp lý, hướng tới nhóm khách hàng học sinh, sinh viên và người thu nhập ở mức trung bình nhưng
+                    vẫn đảm bảo những tiêu chuẩn chất lượng dịch vụ và trải nghiệm tốt. Sau gần 10 năm thành lập và phát triển, Beta Cinemas đã xây dựng 18 cụm
+                    rạp trải dài khắp cả nước bao gồm: TP.HCM, Hà Nội, Thái Nguyên, Thanh Hóa, Bắc Giang… và mới nhất là cụm thứ 19 trong chuỗi rạp Beta Cinemas,
                     đây cũng là rạp thứ 2 ở TP. Hồ Chí Minh.</p>
                     <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 3).</p>
-                    <p>Rạp chiếu phim được thành lập với mục tiêu đem đến cho khách hàng các sản phẩm và dịch vụ chất lượng tốt nhất, giá cả hợp lý nhất, với 
-                    2 mảng kinh doanh chính là: Tổ hợp dịch vụ ăn uống giải trí và cung cấp dịch vụ truyền thông. Cùng mục tiêu đem lại những trải nghiệm văn hoá 
-                    và giải trí tuyệt vời cho người dân Việt Nam. Với sứ mệnh mong muốn mang tới giá trị văn hóa hiện đại và chất lượng, Beta luôn lắng nghe, 
+                    <p>Rạp chiếu phim được thành lập với mục tiêu đem đến cho khách hàng các sản phẩm và dịch vụ chất lượng tốt nhất, giá cả hợp lý nhất, với
+                    2 mảng kinh doanh chính là: Tổ hợp dịch vụ ăn uống giải trí và cung cấp dịch vụ truyền thông. Cùng mục tiêu đem lại những trải nghiệm văn hoá
+                    và giải trí tuyệt vời cho người dân Việt Nam. Với sứ mệnh mong muốn mang tới giá trị văn hóa hiện đại và chất lượng, Beta luôn lắng nghe,
                     nghiên cứu nhằm thấu hiểu và thoả mãn nhu cầu của khách hàng, sáng tạo trong từng sản phẩm, tận tâm đem đến chất lượng dịch vụ hàng đầu. </p>
-                    <p>Beta Cinemas sẽ chính thức có mặt tại tòa nhà Trung tâm văn hoá đa năng IMC, tọa lạc tại 62 Trần Quang Khải, Quận 1, TP Hồ Chí Minh vào 
-                    đầu năm 2024. Thương hiệu hướng đến mục tiêu mở rộng thị trường tại TP Hồ Chí Minh và các tỉnh thành khác trên cả nước trong tương lai. 
-                    Đa dạng phân khúc khách hàng với nhiều mô hình ưu Việt phù hợp với các nhà đầu tư. Trung tâm văn hóa đa năng IMC với tổ hợp dịch vụ vui chơi 
+                    <p>Beta Cinemas sẽ chính thức có mặt tại tòa nhà Trung tâm văn hoá đa năng IMC, tọa lạc tại 62 Trần Quang Khải, Quận 1, TP Hồ Chí Minh vào
+                    đầu năm 2024. Thương hiệu hướng đến mục tiêu mở rộng thị trường tại TP Hồ Chí Minh và các tỉnh thành khác trên cả nước trong tương lai.
+                    Đa dạng phân khúc khách hàng với nhiều mô hình ưu Việt phù hợp với các nhà đầu tư. Trung tâm văn hóa đa năng IMC với tổ hợp dịch vụ vui chơi
                     giải trí được đầu tư chỉn chu, kỹ lưỡng và tinh tế đáp ứng nhu cầu ngày càng đa dạng của khách hàng.</p>
-                    <p>Bên cạnh đó, với vị thế đắc địa của trung tâm Quận 1, TP Hồ Chí Minh nơi giao thương sầm uất. Đây chính là tiền đề quan trọng cho Lễ ký 
+                    <p>Bên cạnh đó, với vị thế đắc địa của trung tâm Quận 1, TP Hồ Chí Minh nơi giao thương sầm uất. Đây chính là tiền đề quan trọng cho Lễ ký
                     kết hợp tác nhượng quyền rạp phim Beta Cinemas Trần Quang Khải giữa Công Ty Cổ Phần Beta Media và Công Ty Cổ Phần APJ Entertainment. </p>
                     <p>Xã hội - Shark Minh Beta ký kết nhượng quyền “Rạp chiếu phim triệu like”, nâng tổng số lên 19 cụm rạp Beta Cinemas (Hình 4).</p>
-                    <p>Với sứ mệnh luôn tự tin trong việc đi đầu trong phân khúc thị trường trung cấp và là chuỗi rạp đầu tiên hoàn thiện chính sách nhượng quyền 
-                    thương hiệu phát triển mạnh nhất tại thị trường trong nước. Đội ngũ quản lý chuyên nghiệp, sẽ sẵn sàng luôn hỗ trợ các nhà nhượng quyền trong 
-                    việc tiếp xúc với thị trường có số lượng khách nhất định. Đặc biệt, chỉ với một khoản đầu tư hợp lý, Beta sử dụng hiệu quả chi phí đầu tư & 
+                    <p>Với sứ mệnh luôn tự tin trong việc đi đầu trong phân khúc thị trường trung cấp và là chuỗi rạp đầu tiên hoàn thiện chính sách nhượng quyền
+                    thương hiệu phát triển mạnh nhất tại thị trường trong nước. Đội ngũ quản lý chuyên nghiệp, sẽ sẵn sàng luôn hỗ trợ các nhà nhượng quyền trong
+                    việc tiếp xúc với thị trường có số lượng khách nhất định. Đặc biệt, chỉ với một khoản đầu tư hợp lý, Beta sử dụng hiệu quả chi phí đầu tư &
                     tối ưu việc vận hành trong kinh doanh. Thời gian hoàn vốn nhanh chỉ từ 3 - 5 năm với tỷ suất lợi nhuận cao và ổn định.</p>
-                    <p>Là thị trường nhượng quyền thu hút các nhiều nhà đầu tư lớn, Beta Cinemas sẽ luôn không ngừng nỗ lực để tạo ra nhiều giá trị hơn nữa đến các 
+                    <p>Là thị trường nhượng quyền thu hút các nhiều nhà đầu tư lớn, Beta Cinemas sẽ luôn không ngừng nỗ lực để tạo ra nhiều giá trị hơn nữa đến các
                     phân khúc khách hàng.</p>
                 ',
             ],
@@ -1269,14 +1269,14 @@ class DatabaseSeeder extends Seeder
                 'title' => 'BETA TRMALL PHÚ QUỐC CHÍNH THỨC KHAI TRƯƠNG VÀO 10/11/2023',
                 'slug' => 'beta-trmall-phu-quoc-khai-truong-10-11-2023',
                 'img_post' => 'https://files.betacorp.vn//media/images/2024/04/16/b8c25b2a-b154-4cf5-9a5d-c4b119b4477d-113630-160424-78.jpeg',
-                'description' => 'Beta TRMall Phú Quốc chính thức khai trương vào ngày 10/11/2023. Đến ngay để trải nghiệm không gian giải trí đẳng cấp cùng 
+                'description' => 'Beta TRMall Phú Quốc chính thức khai trương vào ngày 10/11/2023. Đến ngay để trải nghiệm không gian giải trí đẳng cấp cùng
                 nhiều ưu đãi hấp dẫn!',
                 'content' => '
                     <p><strong>
                     NGÀY ẤY ĐÃ ĐẾN!!!</strong></p>
-                    <p><strong>🎉🎉🎉 BETA TRMALL PHÚ QUỐC CHÍNH THỨC KHAI TRƯƠNG VÀO THỨ 6 TUẦN NÀY (10/11/2023) 🎉🎉🎉</strong></p>                   
+                    <p><strong>🎉🎉🎉 BETA TRMALL PHÚ QUỐC CHÍNH THỨC KHAI TRƯƠNG VÀO THỨ 6 TUẦN NÀY (10/11/2023) 🎉🎉🎉</strong></p>
                     <p><strong>Xin thông báo tới toàn thể server Beta, "người chơi" hệ Premium - Beta TRMall Phú Quốc đã sẵn sàng 🔥</strong></p>
-                    <p><strong>Sinh sau đẻ muộn nhưng thần thái ngút ngàn, Beta TRMall Phú Quốc quyết tâm trình làng với diện mạo "chanh sả" hết cỡ, 
+                    <p><strong>Sinh sau đẻ muộn nhưng thần thái ngút ngàn, Beta TRMall Phú Quốc quyết tâm trình làng với diện mạo "chanh sả" hết cỡ,
                     khuyến mại tới tấp và list phim cực kỳ uy tín 😤</strong></p>
                     <p><strong>Nào anh em, full đồ max ping cùng ad ghé rạp săn góc sống ảo, săn sale, săn phim nào!</strong></p>
                     <p><strong>⛳ Địa chỉ rạp: TTTM TR MALL - Sonasea - Đường Bãi Trường - Xã Dương Tơ - Thành phố Phú Quốc - Tỉnh Kiên Giang</strong></p>

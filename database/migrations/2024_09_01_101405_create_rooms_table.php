@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Branch::class)->constrained();
+            $table->foreignIdFor(Branch::class);
             $table->foreignIdFor(Cinema::class)->constrained();
             $table->foreignIdFor(TypeRoom::class)->constrained();
             $table->foreignIdFor(SeatTemplate::class)->constrained();

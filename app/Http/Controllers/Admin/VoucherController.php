@@ -169,6 +169,11 @@ class VoucherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $voucher = Voucher::findOrFail($id);
+
+        $voucher->delete();
+        return redirect()
+            ->route('admin.vouchers.index')
+            ->with('success', 'Xóa thành công!');
     }
 }

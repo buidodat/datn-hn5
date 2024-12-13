@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('movie_reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Movie::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Movie::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->unsignedTinyInteger('rating');
             $table->string('description');
             $table->timestamps();

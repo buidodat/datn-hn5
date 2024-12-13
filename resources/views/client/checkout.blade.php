@@ -156,9 +156,13 @@
 
                                                         <div class="voucher-form">
 
-                                                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được giảm giá!</label>
-                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher đang có</span>
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; align-items: center;">
+                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được
+                                                                    giảm giá!</label>
+                                                                <span id="showModalVoucher"
+                                                                    style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher
+                                                                    đang có</span>
                                                             </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code" id="voucher_code"
@@ -585,10 +589,14 @@
                                                         <div class="voucher-title">Poly Voucher</div>
 
                                                         <div class="voucher-form">
-                                                            
-                                                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được giảm giá!</label>
-                                                                <span id="showModalVoucher" style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher đang có</span>
+
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; align-items: center;">
+                                                                <label for="voucher_code">Vui lòng nhập mã voucher để được
+                                                                    giảm giá!</label>
+                                                                <span id="showModalVoucher"
+                                                                    style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher
+                                                                    đang có</span>
                                                             </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code"
@@ -601,8 +609,13 @@
                                                             <div id="voucher-response">
 
                                                             </div>
+                                                            {{-- @php
+                                                               $vouchers = App\Http\Controllers\Client\UserController::getVoucher(1);
+                                                            @endphp --}}
+                                                            <div id="list-my-voucher">
+                                                                @include('client.modals.modal-voucher',$vouchers)
+                                                            </div>
 
-                                                            @include('client.modals.modal-voucher')
                                                         </div>
                                                     </div>
 
@@ -745,7 +758,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12" >
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                             <div class="row" style="margin-bottom: 15px">
                                 <div class="col-md-12">
                                     <div class="st_dtts_bs_wrapper float_left info-movie">
@@ -872,6 +885,23 @@
             });
         }
         $(document).ready(function() {
+            function loadVouchers(userId) {
+                $.ajax({
+                    url: "get-my-voucher", // Đường dẫn đến route xử lý
+                    type: "POST", // Phương thức POST
+                    data: {
+                        userId: userId, // Dữ liệu gửi lên server
+                        _token: "{{ csrf_token() }}" // CSRF token để bảo mật
+                    },
+                    success: function(html) {
+                        $('#data-my-voucher').empty();
+                        $('#data-my-voucher').html(html);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
             const quantityInputs = document.querySelectorAll('.quantity-input');
 
             // Hàm hiển thị thông báo
@@ -1026,7 +1056,7 @@
                                 $('#points-membership').text(data.points);
                                 $('#form-membership').hide();
                                 $('#change-membership').show();
-                                console.log(data.customer);
+                                loadVouchers(data.customer);
 
                             }
                             $('#error-membership').empty();
@@ -1065,6 +1095,7 @@
                             '{{ auth()->user()->membership->points }}');
                         $('#userId').val({{ auth()->user()->id }});
                         $('#change-membership').hide(); // Ẩn nút đổi thành viên
+                        loadVouchers({{  auth()->user()->id }});
                     },
                     error: function(xhr) {
                         console.error(xhr.responseJSON.message); // Xử lý lỗi
