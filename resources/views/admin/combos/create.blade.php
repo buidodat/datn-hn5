@@ -263,7 +263,7 @@
                             foodCount--;
                             updateTotalPrice();
                             updateSelectOptions();
-                        }, 500);
+                        }, 400);
                     }
                 } else {
                     alert('Phải có ít nhất ' + minFoodItems + ' đồ ăn.');
