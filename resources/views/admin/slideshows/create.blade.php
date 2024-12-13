@@ -1,23 +1,9 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Quản lý slide show
+    Thêm mới slide show
 @endsection
 
-@section('style-libs')
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-
-    <!-- dropzone css -->
-    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/dropzone/dropzone.css') }}" type="text/css"/>
-    <!-- Filepond css -->
-    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/filepond/filepond.min.css') }}" type="text/css"/>
-    <link rel="stylesheet" href="{{ asset('theme/admin/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
-
-    <style>
-
-    </style>
-@endsection
 
 @section('content')
     <form action="{{ route('admin.slideshows.store') }}" method="post" enctype="multipart/form-data">
@@ -36,125 +22,42 @@
             </div>
         </div>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    {{-- @dd($errors) --}}
+                @endforeach
+            </div>
+        @endif
+
 
         <div class="container-fluid">
             <!-- end page title -->
 
             <div class="row">
-                {{--<div class="col-lg-7">
+                <div class="col-lg-7">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title mb-0">Chọn ảnh</h4>
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <p class="text-muted">Vui lòng chọn một hoặc nhiều hình ảnh.</p>
-
-                            <div class="dropzone">
-                                <div class="fallback">
-                                    <input name="img_thumbnail" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                    </div>
-
-                                    <h4>Kéo thả hoặc chọn ảnh.</h4>
-                                </div>
+                            <div class="col-md-12 d-flex justify-content-between">
+                                <label for="" class="form-label"></label>
+                                <button type="button" class="btn btn-primary" onclick="addSlide()">Thêm ảnh</button>
                             </div>
 
-                            <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                <li class="mt-2" id="dropzone-preview-list">
-                                    <!-- This is used as the file preview template -->
-                                    <div class="border rounded">
-                                        <div class="d-flex p-2">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-sm bg-light rounded">
-                                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="{{ asset('theme/admin/assets/images/new-document.png') }}" alt="Dropzone-Image"/>
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="pt-1">
-                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0 ms-3">
-                                                <button data-dz-remove class="btn btn-sm btn-danger">Xóa</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- end dropzon-preview -->
-                            @error('img_thumbnail')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <!-- end card body -->
-                    </div>
-                    <!-- end card -->
-                </div> <!-- end col -->--}}
-
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title mb-0">Chọn ảnh</h4>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            <div class="d-flex mb-1 justify-content-between">
-                                <p class="text-muted">Vui lòng chọn một hoặc nhiều hình ảnh.</p>
-                                <p class="btn btn-sm btn-primary fw-bold" id="add-row" style="cursor: pointer">Thêm ảnh </p>
+                            <div id="slide_list" class="col-md-12">
+                                <!-- Các phần tử slide sẽ được thêm vào đây -->
                             </div>
-                            <div class="my-3">
 
-                                <table style="width: 100%;">
-                                    <tbody id="img-table">
-                                    <tr>
-                                        <td class="d-flex align-items-center justify-content-around">
-                                            <div style="width: 100%;">
-                                                <div class="border rounded">
-                                                    <div class="d-flex p-2">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <div class="avatar-sm bg-light rounded">
-                                                                <img id="preview_0" src="" style="width: 45px; height: 45px">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div class="pt-1" style="width: 73%;">
-                                                                <input type="file" id="img_thumbnail" name="img_thumbnail[id_0]"
-                                                                       class="form-control @error('img_thumbnail') is-invalid @enderror" onchange="previewImg(this, 0)">
-                                                                @error('img_thumbnail.0')
-                                                                <div class="invalid-feedback">
-                                                                    {{ $message }}
-                                                                </div>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        {{--<div class="flex-shrink-0 ms-3">
-                                                            <button class="btn btn-sm btn-danger">Xóa</button>
-                                                        </div>--}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- end dropzon-preview -->
-                            @error('img_thumbnail')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                         <!-- end card body -->
                     </div>
                     <!-- end card -->
                 </div> <!-- end col -->
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title mb-0">Mô tả</h4>
@@ -163,9 +66,9 @@
                         <div class="card-body">
                             <textarea class="form-control @error('description') is-invalid @enderror" rows="7" name="description"></textarea>
                             @error('description')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <!-- end card body -->
@@ -194,82 +97,108 @@
     </form>
 @endsection
 
-@section('script-libs')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    <!-- dropzone min -->
-    <script src="{{ asset('theme/admin/assets/libs/dropzone/dropzone-min.js') }}"></script>
-    <!-- filepond js -->
-    <script src="{{ asset('theme/admin/assets/libs/filepond/filepond.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
-    <script src="{{ asset('theme/admin/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js') }}"></script>
-
-    <script src="{{ asset('theme/admin/assets/js/pages/form-file-upload.init.js') }}"></script>
-
-    <script src="https:////cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        CKEDITOR.replace("content", {
-            width: "100%",
-            height: "750px"
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var rowCount = 1;
-            document.getElementById('add-row').addEventListener('click', function () {
-                var tableBody = document.getElementById('img-table');
+        document.addEventListener('DOMContentLoaded', function() {
 
-                var newRow = document.createElement('tr');
+            let slideCount = 0;
+            const minSlideItems = 3;
+            const maxSlideItems = 8;
 
-                newRow.innerHTML = `
-                                         <td class="d-flex align-items-center justify-content-around">
-                                            <div class="mt-2" style="width: 100%;">
-                                                <div class="border rounded">
-                                                    <div class="d-flex p-2">
-                                                        <div class="flex-shrink-0 me-3">
-                                                            <div class="avatar-sm bg-light rounded">
-                                                                <img id="preview_${rowCount}" src="" style="width: 45px; height: 45px">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <div class="pt-1" style="width: 80%;">
-                                                                <input type="file" id="img_thumbnail" name="img_thumbnail[id_${rowCount}]"
-                                                                       class="form-control" onchange="previewImg(this, ${rowCount})">
-                                                            </div>
-                                                        </div>
-                                                        <div class="flex-shrink-0 ms-3">
-                                                            <button class="btn btn-sm btn-danger" onclick="removeRow(this)">Xóa</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                `;
+            const slideList = document.getElementById('slide_list');
 
-                tableBody.appendChild(newRow);
-                rowCount++;
-            })
-        });
+            for (let i = 0; i < minSlideItems; i++) {
+                addSlide(i);
+            }
 
-        function previewImg(input, rowindex) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
 
-                reader.onload = function (e) {
-                    document.getElementById(`preview_${rowindex}`).setAttribute('src', e.target.result)
+            function addSlide(index) {
+                if (slideCount >= maxSlideItems) {
+                    alert('Chỉ được thêm tối đa ' + maxSlideItems + ' ảnh.');
+                    return;
                 }
 
-                reader.readAsDataURL(input.files[0])
+
+                const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+
+
+                const html = `
+                    <div class="col-md-12 mb-3" id="${id}_item">
+                        <div class="d-flex">
+                            <div class="mt-2" style="width: 100%;">
+                                <div class="border rounded">
+                                    <div class="d-flex p-2">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="bg-light">
+                                                <img id="preview_${index}" src="" style="width: 105px; height: 45px">
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="pt-1" style="width: 80%;">
+                                                <input type="file" id="img_thumbnail_${index}" name="img_thumbnail[]" required
+                                                        class="form-control" onchange="previewImg(this, ${index})">
+                                            </div>
+                                        </div>
+                                        <div class="mt-1">
+                                            <button type="button" class="btn btn-danger remove-btn">
+                                                <span class="bx bx-trash"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+
+                slideList.insertAdjacentHTML('beforeend', html);
+
+                // Gán sự kiện cho nút xóa và select box
+                slideList.querySelector(`#${id}_item .remove-btn`).addEventListener('click', function() {
+                    removeSlide(`${id}_item`);
+                });
+
+                slideCount++;
+                console.log();
+
             }
-        }
 
-        function removeRow(item) {
-            var row = item.closest('tr');
-            row.remove();
-        }
+            // Hàm xem trước hình ảnh
+            window.previewImg = function (input, id) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const preview = document.getElementById(`preview_${id}`);
+                        preview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            };
 
+            function removeSlide(id) {
+                if (slideCount > minSlideItems) {
+                    if (confirm('Bạn có chắc muốn xóa không?')) {
+
+                    const element = document.getElementById(id);
+                    element.style.transition = 'opacity 0.5s ease';
+                    element.style.opacity = '0';
+
+                    setTimeout(() => {
+                        element.remove();
+                        slideCount--;
+                    }, 350);
+                }
+                } else {
+                    alert('Phải có ít nhất ' + minSlideItems + ' ảnh.');
+                }
+            }
+
+            document.querySelector('button[onclick="addSlide()"]').addEventListener('click', function() {
+                addSlide(slideCount);
+            });
+            
+        });
     </script>
 @endsection
