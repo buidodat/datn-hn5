@@ -78,7 +78,7 @@
                     </ul>
 
                     <div class="card-body tab-content ">
-                        {{-- Tất cả ok rồi --}}
+                
                         <div class="tab-pane active" id="admin" role="tabpanel">
 
                             <table class="table table-bordered dt-responsive nowrap align-middle w-100" id="tableAdmin">
@@ -142,6 +142,7 @@
                                                         <span class="badge bg-primary">{{ $role->name }}</span>
                                                     @endforeach
                                                 @endif
+                                                
                                             </td>
                                             <td>
                                                 @if ($item->cinema != '')
@@ -165,7 +166,7 @@
                                                             <button title="xem" class="btn btn-warning btn-sm mx-1 "
                                                                 type="button"><i class="fas fa-edit"></i></button>
                                                         </a>
-                                                        <form action="{{ route('admin.users.destroy', $item) }}"
+                                                        {{-- <form action="{{ route('admin.users.destroy', $item) }}"
                                                             method="POST" class="d-inline-block">
                                                             @csrf
                                                             @method('DELETE')
@@ -173,7 +174,7 @@
                                                                 onclick="return confirm('Bạn có muốn xóa không')">
                                                                 <i class="ri-delete-bin-7-fill"></i>
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     @endif
                                                 </div>
                                             </td>

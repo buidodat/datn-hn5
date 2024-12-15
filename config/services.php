@@ -43,7 +43,7 @@ return [
     ],*/
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID', '484709232894-5vvb3cg57qggodm9v6hgbdvcd6o4n34i.apps.googleusercontent.com'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET','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'),
         'redirect' => 'http://datn-hn5.me/auth/google/callback',
     ],
     # Google Auth ENV

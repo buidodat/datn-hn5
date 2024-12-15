@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StoreSlideShowRequest;
 use App\Http\Requests\Admin\UpdateSlideShowRequest;
 use App\Models\Slideshow;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class SlideShowController extends Controller
@@ -45,25 +46,31 @@ class SlideShowController extends Controller
      */
     public function store(StoreSlideShowRequest $request)
     {
-        $data = $request->validated();
+        try {
+            DB::transaction(function () use ($request) {
+                $data = $request->validated();
 
-        $data['is_active'] = 0;
+                $data['is_active'] = 0;
 
-        $imagePaths = [];
-        if ($request->hasFile('img_thumbnail')) {
-            foreach ($request->file('img_thumbnail') as $file) {
-                $path = $file->store(self::PATH_UPLOAD);
-                $imagePaths[] = $path;
-            }
+                $imagePaths = [];
+                if ($request->hasFile('img_thumbnail')) {
+                    foreach ($request->file('img_thumbnail') as $file) {
+                        $path = $file->store(self::PATH_UPLOAD);
+                        $imagePaths[] = $path;
+                    }
+                }
+
+                $data['img_thumbnail'] = $imagePaths;
+
+                Slideshow::create($data);
+            });
+
+            return redirect()
+                ->route('admin.slideshows.index')
+                ->with('success', 'Thêm thành công!');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Thêm không thất bại!');;
         }
-
-        $data['img_thumbnail'] = $imagePaths;
-
-        Slideshow::create($data);
-
-        return redirect()
-            ->route('admin.slideshows.index')
-            ->with('success', 'Thêm thành công!');
     }
 
     /**

@@ -392,7 +392,7 @@ class ShowtimeController extends Controller
 
 
             return redirect()
-                ->route('admin.showtimes.index')
+                ->back()
                 ->with('success', 'Cập nhật thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
