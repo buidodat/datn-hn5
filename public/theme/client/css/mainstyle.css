@@ -1425,6 +1425,12 @@
 .content-movie span {
     font-weight: 600;
 }
+.title-post {
+    letter-spacing: -0.5px !important;
+    font-family: Oswald !important;
+    color: #434f89;
+    font-weight: 500;
+}
 
 .movie-name-home {
     padding-top: 10px;

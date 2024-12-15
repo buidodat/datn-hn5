@@ -160,9 +160,9 @@
                                                                 style="display: flex; justify-content: space-between; align-items: center;">
                                                                 <label for="voucher_code">Vui lòng nhập mã voucher để được
                                                                     giảm giá!</label>
-                                                                <span id="showModalVoucher"
+                                                                {{-- <span id="showModalVoucher"
                                                                     style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher
-                                                                    đang có</span>
+                                                                    đang có</span> --}}
                                                             </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code" id="voucher_code"
@@ -175,7 +175,7 @@
                                                             <div id="voucher-response">
 
                                                             </div>
-                                                            @include('client.modals.modal-voucher')
+                                                            {{-- @include('client.modals.modal-voucher') --}}
                                                         </div>
                                                     </div>
 
@@ -290,7 +290,7 @@
                                                             tại đây.</span>
                                                     </p>
 
-                                                    @include('client.modals.modal-clause')
+                                                    {{-- @include('client.modals.modal-clause') --}}
 
                                                 </div>
                                             </div>
@@ -594,9 +594,9 @@
                                                                 style="display: flex; justify-content: space-between; align-items: center;">
                                                                 <label for="voucher_code">Vui lòng nhập mã voucher để được
                                                                     giảm giá!</label>
-                                                                <span id="showModalVoucher"
+                                                                {{-- <span id="showModalVoucher"
                                                                     style="color: #ff7307; cursor: pointer; margin-bottom: 5px">Voucher
-                                                                    đang có</span>
+                                                                    đang có</span> --}}
                                                             </div>
                                                             <div class="form-row">
                                                                 <input type="text" name="voucher_code"
@@ -1287,11 +1287,11 @@
 
 
         // modal voucher của tôi
-        const showModalVoucher = document.getElementById("showModalVoucher");
-        // Hiển thị modal khi bấm vào "tại đây"
-        showModalVoucher.onclick = function() {
-            modalVoucher.style.display = "flex";
-            document.body.classList.add('no-scroll');
-        }
+        // const showModalVoucher = document.getElementById("showModalVoucher");
+        // // Hiển thị modal khi bấm vào "tại đây"
+        // showModalVoucher.onclick = function() {
+        //     modalVoucher.style.display = "flex";
+        //     document.body.classList.add('no-scroll');
+        // }
     </script>
 @endsection

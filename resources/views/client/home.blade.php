@@ -371,7 +371,7 @@
                                             </div>
                                         </div>
                                         <div class="prs_feature_img_cont">
-                                            <h2>{!! Str::limit($postItem->title, 28) !!}</h2>
+                                            <h4 class="title-post" >{!! Str::limit($postItem->title, 45) !!}</h4 >
                                             <br>
                                             <div class="prs_ft_small_cont_center">
                                                 {!! Str::limit($postItem->description, 70) !!}
@@ -401,7 +401,7 @@
 @section('style-libs')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    
+
 
 
 
