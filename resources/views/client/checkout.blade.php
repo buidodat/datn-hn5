@@ -1095,7 +1095,8 @@
                             '{{ auth()->user()->membership->points }}');
                         $('#userId').val({{ auth()->user()->id }});
                         $('#change-membership').hide(); // Ẩn nút đổi thành viên
-                        loadVouchers({{  auth()->user()->id }});
+                        cancelVoucher();
+                        // loadVouchers({{  auth()->user()->id }});
                     },
                     error: function(xhr) {
                         console.error(xhr.responseJSON.message); // Xử lý lỗi
