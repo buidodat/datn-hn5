@@ -70,7 +70,10 @@ class CheckoutController extends Controller
     public function applyVoucher(Request $request)
 
     {
-        // $customerId = $request->customerId;
+        $customerId = Auth::id();
+        if (session()->has('customer')) {
+            $customerId = session('customer');
+        }
         $voucher = Voucher::where('is_active', 1)
             ->where('code', $request->code)
             ->first();
@@ -115,7 +118,7 @@ class CheckoutController extends Controller
         // Kiểm tra quyền truy cập vào voucher của người dùng
         $userVoucher = UserVoucher::firstOrNew([
             'voucher_id' => $voucher->id,
-            'user_id' => Auth::id(),
+            'user_id' => $customerId,
         ]);
 
         if ($voucher->type == 2) { // Voucher sinh nhật
