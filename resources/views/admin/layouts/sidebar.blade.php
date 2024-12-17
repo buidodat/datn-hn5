@@ -36,15 +36,15 @@
 
 
 
-                @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở'))
-                    {{-- Dashboard --}}
-                    <li class="nav-item">
-                        <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
-                            <i class="ri-dashboard-2-line"></i>
-                            <span data-key="t-dashboards">Tổng quan</span>
-                        </a>
-                    </li>
-                @endif
+                {{-- @if (Auth::user()->hasRole('System Admin') || Auth::user()->hasRole('Quản lý cơ sở')) --}}
+                {{-- Dashboard --}}
+                <li class="nav-item">
+                    <a href="/admin" class="nav-link menu-link" data-key="t-horizontal">
+                        <i class="ri-dashboard-2-line"></i>
+                        <span data-key="t-dashboards">Tổng quan</span>
+                    </a>
+                </li>
+                {{-- @endif --}}
 
                 @canany(['Danh sách thống kê'])
                     <li class="nav-item">
@@ -340,7 +340,7 @@
                                     </li>
                                 @endcan
 
-{{--
+                                {{--
                                 @canany(['Danh sách thanh toán', 'Thêm thanh toán', 'Sửa thanh toán', 'Xóa thanh toán'])
                                     <li class="nav-item">
                                         <a href="{{ route('admin.payments.index') }}" class="nav-link menu-link"
