@@ -148,6 +148,7 @@ class PaymentController extends Controller
 
                 // Dispatch job để giải phóng ghế sau 15 phút
                 ReleaseSeatHoldJob::dispatch($seatIds, $showtimeId, $voucher->code ?? null)->delay(now()->addMinutes(15));
+
             });
 
             // Chuyển hướng tới trang thanh toán

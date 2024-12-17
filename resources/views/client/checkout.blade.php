@@ -290,7 +290,7 @@
                                                             tại đây.</span>
                                                     </p>
 
-                                                    {{-- @include('client.modals.modal-clause') --}}
+                                                    @include('client.modals.modal-clause')
 
                                                 </div>
                                             </div>
