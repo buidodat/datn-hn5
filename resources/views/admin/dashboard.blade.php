@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Thống kê
+    Tổng quan
 @endsection
 
 @section('content')
