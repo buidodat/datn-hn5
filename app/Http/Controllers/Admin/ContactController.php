@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreContactRequest; 
+use App\Http\Requests\Admin\StoreContactRequest;
 use Illuminate\Http\Request;
 use App\Models\Contact;
 
@@ -25,7 +25,7 @@ class ContactController extends Controller
      */
     public function index(Request $request, Contact $contact)
     {
-        $contacts = Contact::query()->latest('created_at')->get();
+        $contacts = Contact::query()->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('contacts'));
     }
 
@@ -47,7 +47,7 @@ class ContactController extends Controller
             $data = $request->all();
 
             Contact::query()->create($data);
-            
+
             return redirect()
                 ->route('admin.contacts.index')
                 ->with('success', 'Thêm thành công');
@@ -64,7 +64,7 @@ class ContactController extends Controller
     {
         return response()->json(['contact' => $contact]);
     }
-    
+
     public function edit(Contact $contact){
         $status = Contact::STATUS;
         // Loại bỏ 'Chưa xử lí' nếu trạng thái hiện tại là 'Đã xử lí'
@@ -83,7 +83,7 @@ class ContactController extends Controller
             $data = $request->all();
 
             $contact->update($data);
-            
+
             return redirect()
                 ->back()
                 ->with('success', 'Cập nhật thành công');
