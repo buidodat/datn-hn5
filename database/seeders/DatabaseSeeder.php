@@ -349,8 +349,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nữ',
                 'birthday' => '2004-02-07',
-                'type' => 'admin',
-                'cinema_id' => 1,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
@@ -362,8 +362,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-08-08',
-                'type' => 'admin',
-                'cinema_id' => 2,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Đặng Phú An',
@@ -375,8 +375,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-06-06',
-                'type' => 'admin',
-                'cinema_id' => 3,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'An Dang Phu',
@@ -401,8 +401,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-11-11',
-                'type' => 'admin',
-                'cinema_id' => 3,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
@@ -414,8 +414,8 @@ class DatabaseSeeder extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'admin',
-                'cinema_id' => 2,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Nhân viên Rạp',
@@ -444,30 +444,30 @@ class DatabaseSeeder extends Seeder
                 'cinema_id' => 2,
             ],
             [
-                'name' => 'Bùi Phú Sơn',
+                'name' => 'Quản lý cơ sở Hà Đông',
                 'img_thumbnail' => '',
                 'phone' => '0999965555',
                 'email_verified_at' => '2024-11-01 19:58:51',
-                'email' => 'buiphusonph33333@fpt.edu.vn',
-                'password' => Hash::make('buiphusonph33333@fpt.edu.vn'),
+                'email' => 'quanlycosoHaDong@fpt.edu.vn',
+                'password' => Hash::make('quanlycosoHaDong@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'member',
-                'cinema_id' => null,
+                'type' => 'admin',
+                'cinema_id' => 1,
             ],
             [
-                'name' => 'Trương Đắc Đạt',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'name' => 'Quản lý cơ sở Mỹ Đình',
+                'img_thumbnail' => '',
                 'phone' => '0999999995',
                 'email_verified_at' => '2024-11-01 19:58:51',
-                'email' => 'truongdacdatph99999@fpt.edu.vn',
-                'password' => Hash::make('truongdacdatph99999@fpt.edu.vn'),
+                'email' => 'quanlycosoMyDinh@fpt.edu.vn',
+                'password' => Hash::make('quanlycosoMyDinh@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'member',
-                'cinema_id' => null,
+                'type' => 'admin',
+                'cinema_id' => 2,
             ],
         ];
 
@@ -1096,25 +1096,26 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $user = User::find(2);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(3);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(4);
-        $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(2);
+        // $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(3);
+        // $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(4);
+        // $user->assignRole('Quản lý cơ sở');
 
-        $user = User::find(6);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(7);
-        $user->assignRole('Quản lý cơ sở');
         $user = User::find(8);
         $user->assignRole('Nhân viên');
         $user = User::find(9);
         $user->assignRole('Nhân viên');
 
+        $user = User::find(10);
+        $user->assignRole('Quản lý cơ sở');
+        $user = User::find(11);
+        $user->assignRole('Quản lý cơ sở');
 
-        $user = User::find(5);
-        $user->assignRole('Nhân viên');
+
+        // $user = User::find(5);
+        // $user->assignRole('Nhân viên');
 
 
         // Cấu hình website
