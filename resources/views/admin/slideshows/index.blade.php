@@ -194,13 +194,13 @@
                                     @endcan
 
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @if (!$slideshow->is_active)
                                         @can('Sửa slideshows')
-                                            <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
+                                            {{-- <a href="{{ route('admin.slideshows.edit', $slideshow) }}">
                                                 <button title="xem" class="btn btn-warning btn-sm " type="button"><i
                                                         class="fas fa-edit"></i></button>
-                                            </a>
+                                            </a> --}}
                                         @endcan
                                         @can('Xóa slideshows')
                                             <form action="{{ route('admin.slideshows.destroy', $slideshow) }}" method="POST"

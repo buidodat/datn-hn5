@@ -10,15 +10,15 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="hs_blog_detail_cont_main_wrapper" style="background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+                    <h2 style="margin-bottom: 15px;" class='title-post'>{{ $post->title }}</h2>
                     <ul class="post-meta">
                         <li><i class="fa fa-calendar"></i> {{ $post->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</li>
                         <li>{{ $post->user->name ?? 'Không có người đăng' }}</li>
                         {{-- <li><i class="fa fa-eye"></i> {{ $post->view_count }} lượt xem</li> --}}
                         <li><i class="fa fa-eye"></i> {{ number_format($post->view_count) }} lượt xem</li>
                     </ul>
-
-                    <h2 style="color: #333; font-weight: bold; font-size: 32px; margin-bottom: 20px;">{{ $post->title }}</h2>
-                    <p style="font-size: 18px; line-height: 1.6; color: #555;">{{ $post->description }}</p>
+                    <p >{{ $post->description }}</p>
                     <div class="hs_blog_detail_img_main_wrapper">
                         @php
                             $url = $post->img_post;
@@ -50,15 +50,15 @@
         }
 
         .hs_blog_detail_img_main_wrapper {
-            text-align: center;  
+            text-align: center;
             margin-bottom: 30px;
             margin-top: 30px;
         }
 
         .hs_blog_detail_img_main_wrapper img {
-            width: 100%;  
-            min-height: 400px; 
-            object-fit: contain;  
+            width: 100%;
+            min-height: 400px;
+            object-fit: contain;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
