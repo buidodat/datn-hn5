@@ -43,6 +43,7 @@ class BirthdayVoucherMail extends Mailable
             with: [
                 'name' => $this->user->name,
                 'code' => $this->voucher->code,
+                'discount' => $this->voucher->discount,
             ],
         );
 

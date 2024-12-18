@@ -805,7 +805,7 @@ class PaymentController extends Controller
             'user_id' => $customerId,
             'showtime_id' => $showtimeId,
             'staff_id' => $authId,
-            'payment_name' => $request->payment_name,
+            'payment_name' => "Thanh toán tiền mặt",
             'voucher_code' => $voucherCode ?? null,
             'voucher_discount' => $voucherDiscount,
             'point_use' => $dataUsePoint['use_points'] ?? null,
