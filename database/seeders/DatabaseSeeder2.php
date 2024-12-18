@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Branch;
 use App\Models\Combo;
+use App\Models\Voucher;
 use App\Models\ComboFood;
 use App\Models\Food;
 use App\Models\Membership;
@@ -17,6 +18,7 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Contact;
 use App\Models\Rank;
+use App\Models\Room;
 use App\Models\Showtime;
 use App\Models\Ticket;
 use Illuminate\Database\Seeder;
@@ -29,7 +31,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\SiteSetting;
 
-class DatabaseSeeder2 extends Seeder
+class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -42,6 +44,8 @@ class DatabaseSeeder2 extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $now = now();
 
         // 3 bản ghi slideshow
         Slideshow::insert([
@@ -127,6 +131,7 @@ class DatabaseSeeder2 extends Seeder
 
         for ($i = 0; $i < 25; $i++) {
             $releaseDate = fake()->dateTimeBetween(now()->subMonths(5), now()->addMonths(2));
+
             $endDate = fake()->dateTimeBetween($releaseDate, now()->addMonths(5));
             $rating = $ratings[array_rand($ratings)];
             $x = ($i % 21) + 1;
@@ -146,20 +151,28 @@ class DatabaseSeeder2 extends Seeder
                 'end_date' => $endDate,
                 'trailer_url' => $url_youtubes[array_rand($url_youtubes)],
                 'is_active' => true,
-                'is_hot' => $booleans[rand(0, 7)],
-                'is_special' => $booleans[rand(0, 7)],
+                'is_hot' => fake()->boolean(30),
+                'is_special' => false,
                 'is_publish' => true,
-                'surcharge' => [10000, 20000][array_rand([10000, 20000])],
+                'surcharge' => [0, 10000, 20000][array_rand([0, 10000, 20000])],
 
             ]);
             DB::table('movie_versions')->insert([
                 'movie_id' => $movie,
                 'name' => 'Phụ Đề'
             ]);
-            DB::table('movie_versions')->insert([
-                'movie_id' => $movie,
-                'name' => 'Lồng Tiếng'
-            ]);
+            if (rand(1, 100) <= 50) { // 50% tỷ lệ
+                DB::table('movie_versions')->insert([
+                    'movie_id' => $movie,
+                    'name' => 'Lồng Tiếng'
+                ]);
+            }
+            if (rand(1, 100) <= 5) { // 5% tỷ lệ
+                DB::table('movie_versions')->insert([
+                    'movie_id' => $movie,
+                    'name' => 'Thuyết Minh'
+                ]);
+            }
         }
 
         //4 bản ghi chi nhánh
@@ -218,9 +231,7 @@ class DatabaseSeeder2 extends Seeder
         ];
         DB::table('type_seats')->insert($typeSeats);
 
-        // Duyệt qua các rạp và tạo phòng cho mỗi rạp
-        $cinemaCount = [1, 2];
-        $roomsName = ['P201', 'L202', 'P303', 'P404'];
+
 
         // Tạo template ghế
         SeatTemplate::create([
@@ -248,28 +259,31 @@ class DatabaseSeeder2 extends Seeder
             return ($randomNumber <= 80) ? 1 : 2;
         }
 
-        foreach ($cinemaCount as $cinema_id) { // Duyệt qua từng rạp
-            // Lấy branch_id từ cinema_id
-            $branch_id = DB::table('cinemas')->where('id', $cinema_id)->value('branch_id');
 
-            foreach ($roomsName as $room) { // Tạo phòng cho mỗi rạp
+        // =========Đây là tạo phòng chiếu =================
+        for ($i = 0; $i < count($cinemas); $i++) {
+            $branch_id = DB::table('cinemas')->where('id', $i + 1)->value('branch_id');
+            // Tạo phòng cho mỗi rạp
+            for ($r = 0; $r < 2; $r++) {
                 $roomId = DB::table('rooms')->insertGetId([
                     'branch_id' => $branch_id,
-                    'cinema_id' => $cinema_id,
+                    'cinema_id' => $i + 1,
                     'type_room_id' => fake()->numberBetween(1, 3), // Loại phòng ngẫu nhiên
-                    'name' => $room, // Tên phòng
-                    'seat_template_id' => randomSeatTemplateId(), // ID template ghế vừa tạo
+                    'name' => 'P20' . $r + 1, // Tên phòng
+                    'seat_template_id' => randomSeatTemplateId(), //loai mau so do ghe
                     'is_active' => 1,
                     'is_publish' => 1,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'created_at' => $now,
+                    'updated_at' => $now,
                 ]);
 
                 $seatTemplateId = DB::table('rooms')->where('id', $roomId)->value('seat_template_id');
                 $seatTemplate = SeatTemplate::find($seatTemplateId);
-                $seatStructure = json_decode($seatTemplate->seat_structure, true);
+                $seatStructure = json_decode($seatTemplate->seat_structure,true);
 
-                $dataSeats = []; // Mảng lưu trữ ghế
+                $dataSeats = [];
+
+                //Tạo ghế trong phòng chiếu
                 foreach ($seatStructure as $seat) {
                     $name = $seat['coordinates_y'] . $seat['coordinates_x'];
 
@@ -284,8 +298,8 @@ class DatabaseSeeder2 extends Seeder
                         'name' => $name,
                         'type_seat_id' => $seat['type_seat_id'],
                         'room_id' => $roomId,
-                        'created_at' => now(),
-                        'updated_at' => now(),
+                        'created_at' => $now,
+                        'updated_at' => $now,
                     ];
                 }
 
@@ -294,10 +308,7 @@ class DatabaseSeeder2 extends Seeder
             }
         }
 
-
-        // Fake data Suất chiếu
-        // branch , cinema , phòng, ngày, giờ
-        // Duyệt qua tất cả các phòng và tạo lịch chiếu cho mỗi phòng
+        //=========Đây là tạo lịch chiếu =================
 
         $roomCount = [1, 2, 3, 4];
         foreach ($roomCount as $room_id) {
@@ -574,6 +585,18 @@ class DatabaseSeeder2 extends Seeder
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         //tạo 5 bản ghỉ user type admin
         $users = [
             [
@@ -599,8 +622,8 @@ class DatabaseSeeder2 extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nữ',
                 'birthday' => '2004-02-07',
-                'type' => 'admin',
-                'cinema_id' => 1,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Hà Đắc Hiếu',
@@ -612,8 +635,8 @@ class DatabaseSeeder2 extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-08-08',
-                'type' => 'admin',
-                'cinema_id' => 2,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Đặng Phú An',
@@ -625,8 +648,8 @@ class DatabaseSeeder2 extends Seeder
                 'address' => 'Văn Chấn, Yên Bái.',
                 'gender' => 'Nam',
                 'birthday' => '2004-06-06',
-                'type' => 'admin',
-                'cinema_id' => 3,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'An Dang Phu',
@@ -651,8 +674,8 @@ class DatabaseSeeder2 extends Seeder
                 'address' => 'Núi Trầm, Chương Mỹ, Hà Nội.',
                 'gender' => 'Nam',
                 'birthday' => '2004-11-11',
-                'type' => 'admin',
-                'cinema_id' => 3,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Bùi Đỗ Đạt',
@@ -664,8 +687,8 @@ class DatabaseSeeder2 extends Seeder
                 'address' => 'Bích Hòa, Thanh Oai, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'admin',
-                'cinema_id' => 2,
+                'type' => 'member',
+                'cinema_id' => null,
             ],
             [
                 'name' => 'Nhân viên Rạp',
@@ -694,30 +717,30 @@ class DatabaseSeeder2 extends Seeder
                 'cinema_id' => 2,
             ],
             [
-                'name' => 'Bùi Phú Sơn',
+                'name' => 'Quản lý cơ sở Hà Đông',
                 'img_thumbnail' => '',
                 'phone' => '0999965555',
                 'email_verified_at' => '2024-11-01 19:58:51',
-                'email' => 'buiphusonph33333@fpt.edu.vn',
-                'password' => Hash::make('buiphusonph33333@fpt.edu.vn'),
+                'email' => 'quanlycosoHaDong@fpt.edu.vn',
+                'password' => Hash::make('quanlycosoHaDong@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'member',
-                'cinema_id' => null,
+                'type' => 'admin',
+                'cinema_id' => 1,
             ],
             [
-                'name' => 'Trương Đắc Đạt',
-                'img_thumbnail' => 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/440936776_1188528172581066_7999369970856372504_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=MBdgh5UiWusQ7kNvgGLPe8r&_nc_ht=scontent.fhan2-3.fna&_nc_gid=Aj_DJrZPHc3NaAJFFRTaj5w&oh=00_AYBSl6B6bOXFnuWr28y70nx3iTGjkHk98LldAS5jUjsJ1A&oe=670D71B1',
+                'name' => 'Quản lý cơ sở Mỹ Đình',
+                'img_thumbnail' => '',
                 'phone' => '0999999995',
                 'email_verified_at' => '2024-11-01 19:58:51',
-                'email' => 'truongdacdatph99999@fpt.edu.vn',
-                'password' => Hash::make('truongdacdatph99999@fpt.edu.vn'),
+                'email' => 'quanlycosoMyDinh@fpt.edu.vn',
+                'password' => Hash::make('quanlycosoMyDinh@fpt.edu.vn'),
                 'address' => 'Bích Hòa, Chương Mỹ, Hà Nội',
                 'gender' => 'Nam',
                 'birthday' => '2004-10-14',
-                'type' => 'member',
-                'cinema_id' => null,
+                'type' => 'admin',
+                'cinema_id' => 2,
             ],
         ];
 
@@ -783,182 +806,33 @@ class DatabaseSeeder2 extends Seeder
                 ->where('id', $combo->id)
                 ->update(['price' => $totalPrice, 'price_sale' => $totalPrice - 20000]);
         }
-        $userIds = range(1, 6);
-        for ($i = 0; $i < 2; $i++) {
-            $voucherId  = DB::table('vouchers')->insertGetId([
-                'code' => strtoupper(Str::random(10)),
-                'title' => fake()->sentence(3),
-                'description' => fake()->text(50),
+        // $userIds = range(1, 6);
+        $dataVouchers = [
+            ['title'=>'Chúc mừng giáng sinh Merry Christmas', 'code'=> 'GIANGSINHANLANH', 'description'=> 'Nhân dịp giáng sinh Polycinemas tặng quý khách hàng mã vouchers giảm giá 30.000 VNĐ khi đặt vé tại rạp.','discount'=>30000],
+            ['title'=>'Chúc mừng năm mới 2024', 'code'=> 'HPNY2025', 'description'=> 'Đầu xuân năm mới Polycinemas chúc quý khách hàng một năm an khang thịnh vượng !','discount'=>10000]
+        ];
+        foreach ($dataVouchers as $vc) {
+            Voucher::create([
+                'code' => $vc['code'],
+                'title' => $vc['title'],
+                'description' => $vc['description'],
                 'start_date_time' => Carbon::now()->subDays(rand(0, 30)),
                 'end_date_time' => Carbon::now()->addDays(rand(30, 60)),
-                'discount' => fake()->numberBetween(1000, 100000),
+                'discount' => $vc['discount'],
                 'quantity' => fake()->numberBetween(1, 100),
                 'limit' => fake()->numberBetween(1, 5),
                 'is_active' => 1,
                 'is_publish' => 1,
                 'type' => 1,
             ]);
-            foreach ($userIds as $userId) {
-                DB::table('user_vouchers')->insert([
-                    'user_id' => $userId,
-                    'voucher_id' => $voucherId,
-                    'usage_count' => 0,
-                ]);
-            }
+            // foreach ($userIds as $userId) {
+            //     DB::table('user_vouchers')->insert([
+            //         'user_id' => $userId,
+            //         'voucher_id' => $voucherId,
+            //         'usage_count' => 0,
+            //     ]);
+            // }
         }
-
-
-        // tickets
-        $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
-        $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
-        $movieIds = DB::table('movies')->pluck('id')->toArray();
-        $comboIds = DB::table('combos')->pluck('id')->toArray();
-        $userIds = User::pluck('id')->toArray(); // Lấy tất cả ID của người dùng từ bảng users
-
-        $today = Carbon::now();
-
-        // Xác định ngày bắt đầu là 6 tháng trước
-        $startDate = Carbon::now()->subMonths(6);
-
-        // Tổng số tháng cần phân bổ
-        $totalMonths = $today->diffInMonths($startDate);
-
-        foreach ($userIds as $userId) {
-            $expiryDate = Carbon::now()->addMonth();
-
-            for ($i = 0; $i < 2; $i++) {
-                $randomMonth = rand(0, $totalMonths);  // Chọn tháng ngẫu nhiên
-                $randomDay = rand(1, 28);  // Chọn ngày ngẫu nhiên trong tháng (28 để tránh vượt quá số ngày của các tháng)
-
-                // Tạo ngày ngẫu nhiên theo tháng và năm
-                $randomDate = $startDate->copy()->addMonths($randomMonth)->day($randomDay);
-                $ticketId = DB::table('tickets')->insertGetId([
-                    'user_id' => $userId,
-                    'cinema_id' => fake()->randomElement($cinemaIds),
-                    'room_id' => DB::table('rooms')->inRandomOrder()->value('id'),
-                    'movie_id' => fake()->randomElement($movieIds),
-                    'showtime_id' => fake()->randomElement($showtimeIds),
-                    'voucher_code' => null,
-                    'voucher_discount' => null,
-                    'point_use' => fake()->numberBetween(0, 500),
-                    'point_discount' => fake()->numberBetween(0, 100),
-                    'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
-                    'code' => fake()->regexify('[A-Za-z0-9]{10}'),
-                    'total_price' => fake()->numberBetween(50, 200) * 1000,
-                    'status' => Ticket::NOT_ISSUED,
-                    'staff' => fake()->randomElement(['admin', 'member']),
-                    'expiry' => $expiryDate,
-                    'created_at' => $randomDate,  // Gán ngày ngẫu nhiên
-                    'updated_at' => $randomDate,  // Gán lại ngày updated_at tương tự
-                ]);
-
-                $showtimeId = DB::table('tickets')->where('id', $ticketId)->value('showtime_id');
-                $roomId = DB::table('showtimes')->where('id', $showtimeId)->value('room_id');
-                $seatIds = DB::table('seats')->where('room_id', $roomId)->orderBy('id')->pluck('id')->toArray();
-
-                $seatCount = ($i == 0) ? 3 : 1;
-                $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
-                $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
-                $price = fake()->numberBetween(50, 200) * 1000;
-
-                foreach ($selectedSeats as $seatId) {
-                    DB::table('ticket_seats')->insert([
-                        'ticket_id' => $ticketId,
-                        'seat_id' => $seatId,
-                        'price' => $price,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-
-                $comboCount = fake()->numberBetween(1, 3);
-
-                for ($j = 0; $j < $comboCount; $j++) {
-                    DB::table('ticket_combos')->insert([
-                        'ticket_id' => $ticketId,
-                        'combo_id' => fake()->randomElement($comboIds),
-                        'price' => fake()->numberBetween(50, 200) * 1000,
-                        'quantity' => fake()->numberBetween(1, 5),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
-        }
-
-        // LỰC CMT
-        // // tickets
-        // $showtimeIds = DB::table('showtimes')->pluck('id')->toArray();
-        // $cinemaIds = DB::table('cinemas')->pluck('id')->toArray();
-        // $movieIds = DB::table('movies')->pluck('id')->toArray();
-        // $comboIds = DB::table('combos')->pluck('id')->toArray();
-        // $userIds = range(1, 6);
-
-        // foreach ($userIds as $userId) {
-        //     // Giới hạn trong 1 tháng
-        //     $expiryDate = Carbon::now()->addMonth();
-
-        //     for ($i = 0; $i < 2; $i++) {
-        //         // Fake ticket data
-        //         $ticketId = DB::table('tickets')->insertGetId([
-        //             'user_id' => $userId,
-        //             'cinema_id' => fake()->randomElement($cinemaIds),
-        //             'room_id' => DB::table('rooms')->inRandomOrder()->value('id'),
-        //             'movie_id' => fake()->randomElement($movieIds),
-        //             'voucher_code' => null,
-        //             'voucher_discount' => null,
-        //             'payment_name' => fake()->randomElement(['Tiền mặt', 'Momo', 'Zalopay', 'Vnpay']),
-        //             'code' => fake()->regexify('[A-Za-z0-9]{10}'),
-        //             'total_price' => fake()->numberBetween(50, 200) * 1000,
-        //             'status' => fake()->randomElement(['Chưa xuất vé']),
-        //             'staff' => fake()->randomElement(['admin', 'member']),
-        //             'expiry' => $expiryDate,
-        //             'created_at' => now(),
-        //             'updated_at' => now(),
-        //         ]);
-
-        //         // Lấy showtime ngẫu nhiên
-        //         $showtime_id = fake()->randomElement($showtimeIds);
-        //         $room_id = DB::table('showtimes')->where('id', $showtime_id)->value('room_id');
-
-        //         // Ghế theo phòng
-        //         $seatIds = DB::table('seats')->where('room_id', $room_id)->orderBy('id')->pluck('id')->toArray();
-
-        //         $seatCount = ($i == 0) ? 3 : 1;
-        //         $startIndex = fake()->numberBetween(0, count($seatIds) - $seatCount);
-        //         $selectedSeats = array_slice($seatIds, $startIndex, $seatCount);
-
-        //         $price = fake()->numberBetween(50, 200) * 1000;
-
-        //         foreach ($selectedSeats as $seatId) {
-        //             // Fake ticket_seats data
-        //             DB::table('ticket_seats')->insert([
-        //                 'ticket_id' => $ticketId,
-        //                 'showtime_id' => $showtime_id,
-        //                 'seat_id' => $seatId,
-        //                 'price' => $price,
-        //                 'created_at' => now(),
-        //                 'updated_at' => now(),
-        //             ]);
-        //         }
-
-        //         // Fake combos cho mỗi ticket
-        //         $comboCount = fake()->numberBetween(1, 3);
-
-        //         for ($j = 0; $j < $comboCount; $j++) {
-        //             DB::table('ticket_combos')->insert([
-        //                 'ticket_id' => $ticketId,
-        //                 'combo_id' => fake()->randomElement($comboIds),
-        //                 'price' => fake()->numberBetween(50, 200) * 1000,
-        //                 'quantity' => fake()->numberBetween(1, 5),
-        //                 // 'status' => fake()->randomElement(['Đã lấy đồ ăn', 'Chưa lấy đồ ăn']),
-        //                 'created_at' => now(),
-        //                 'updated_at' => now(),
-        //             ]);
-        //         }
-        //     }
-        // }
-
 
 
         // Tạo 10 bài viết
@@ -1293,8 +1167,8 @@ class DatabaseSeeder2 extends Seeder
                 'img_post' => $post['img_post'],
                 'description' => $post['description'],
                 'content' => $post['content'],
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
         }
         // End tạo 10 bài viết
@@ -1308,7 +1182,7 @@ class DatabaseSeeder2 extends Seeder
                 'title' => 'Lỗi khi đặt vé',
                 'content' => 'Tôi gặp lỗi khi thanh toán vé online, vui lòng hỗ trợ.',
                 'status' => 'pending',
-                'created_at' => now(),
+                'created_at' => $now,
             ],
             [
                 'user_contact' => 'Trương Công Lực',
@@ -1317,7 +1191,7 @@ class DatabaseSeeder2 extends Seeder
                 'title' => 'Hỏi về khuyến mãi',
                 'content' => 'Cho tôi hỏi về chương trình khuyến mãi vào cuối tuần này.',
                 'status' => 'resolved',
-                'created_at' => now()->subDays(2),
+                'created_at' => $now->subDays(2),
             ],
             [
                 'user_contact' => 'Nguyễn Viết Sơn',
@@ -1326,7 +1200,7 @@ class DatabaseSeeder2 extends Seeder
                 'title' => 'Phản ánh dịch vụ',
                 'content' => 'Nhân viên không hỗ trợ nhiệt tình, mong được cải thiện.',
                 'status' => 'pending',
-                'created_at' => now()->subDays(5),
+                'created_at' => $now->subDays(5),
             ],
             [
                 'user_contact' => 'Đặng Phú An',
@@ -1335,7 +1209,7 @@ class DatabaseSeeder2 extends Seeder
                 'title' => 'Hủy vé đã đặt',
                 'content' => 'Tôi muốn hủy vé vì không thể đi vào ngày đã chọn.',
                 'status' => 'resolved',
-                'created_at' => now()->subDays(7),
+                'created_at' => $now->subDays(7),
             ],
             [
                 'user_contact' => 'Hà Đắc Hiếu',
@@ -1344,7 +1218,7 @@ class DatabaseSeeder2 extends Seeder
                 'title' => 'Góp ý giao diện',
                 'content' => 'Giao diện trang web cần thêm màu sắc sinh động hơn.',
                 'status' => 'pending',
-                'created_at' => now()->subDays(10),
+                'created_at' => $now->subDays(10),
             ],
         ];
         foreach ($contacts as $ct) {
@@ -1495,25 +1369,26 @@ class DatabaseSeeder2 extends Seeder
         ]);
 
 
-        $user = User::find(2);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(3);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(4);
-        $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(2);
+        // $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(3);
+        // $user->assignRole('Quản lý cơ sở');
+        // $user = User::find(4);
+        // $user->assignRole('Quản lý cơ sở');
 
-        $user = User::find(6);
-        $user->assignRole('Quản lý cơ sở');
-        $user = User::find(7);
-        $user->assignRole('Quản lý cơ sở');
         $user = User::find(8);
         $user->assignRole('Nhân viên');
         $user = User::find(9);
         $user->assignRole('Nhân viên');
 
+        $user = User::find(10);
+        $user->assignRole('Quản lý cơ sở');
+        $user = User::find(11);
+        $user->assignRole('Quản lý cơ sở');
 
-        $user = User::find(5);
-        $user->assignRole('Nhân viên');
+
+        // $user = User::find(5);
+        // $user->assignRole('Nhân viên');
 
 
         // Cấu hình website
@@ -1603,8 +1478,8 @@ class DatabaseSeeder2 extends Seeder
             <p>Tính đến thời điểm hiện tại, Poly Cinemas đang có 20 cụm rạp trải dài khắp cả nước, phục vụ tới 6 triệu khách hàng mỗi năm, là doanh nghiệp dẫn đầu phân khúc đại chúng của thị trường điện ảnh Việt. Poly Media cũng hoạt động tích cực trong lĩnh vực sản xuất và phát hành phim.</p>
             <p>Ngoài đa số các cụm rạp do Poly Media tự đầu tư, ¼ số cụm rạp của Poly Media còn được phát triển bằng hình thức nhượng quyền linh hoạt. Chi phí đầu tư rạp chiếu phim Poly Cinemas được tối ưu giúp nhà đầu tư dễ dàng tiếp cận và nhanh chóng hoàn vốn, mang lại hiệu quả kinh doanh cao và đảm bảo.</p>',
             'copyright' => 'Bản quyền © 2024 Poly Cinemas',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
     }
 
