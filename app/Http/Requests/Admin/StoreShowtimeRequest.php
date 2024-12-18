@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Movie;
 use App\Models\Showtime;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -41,15 +42,23 @@ class StoreShowtimeRequest extends FormRequest
                 'movie_version_id' => 'required|exists:movie_versions,id',
                 'date' => 'required|date|after_or_equal:today',
 
+
                 'start_hour' => [
                     'required',
                     function ($attribute, $value, $fail) {
-                        $startTime = \Carbon\Carbon::parse($this->date . ' ' . $value);
-                        if ($startTime->isPast()) {
-                            $fail("Giờ mở cửa phải nằm trong tương lai.");
-                        }
-
                         $startHour = Carbon::parse($this->date . ' ' . $value);
+                        $endHour = Carbon::parse($this->date . ' ' . $this->end_hour);
+
+                        // Kiểm tra giờ mở cửa phải nằm trong tương lai
+                        // if ($startHour->isPast()) {
+                        //     $fail("Giờ mở cửa phải nằm trong tương lai.");
+                        //     return;
+                        // }
+
+                        if ($startHour->lt(Carbon::now()->addHour())) {
+                            $fail("Giờ mở cửa phải từ hiện tại cộng thêm 1 tiếng trở đi(Không được nhập giờ quá khứ!)");
+                            return;
+                        }
 
                         // Lấy các suất chiếu đã tồn tại trong phòng, ngày được chọn
                         $existingShowtimes = Showtime::where('room_id', $this->room_id)
@@ -60,15 +69,48 @@ class StoreShowtimeRequest extends FormRequest
                             $existingStartTime = Carbon::parse($showtime->start_time);
                             $existingEndTime = Carbon::parse($showtime->end_time);
 
-                            // Kiểm tra nếu giờ mở cửa nằm trong khoảng giờ chiếu
-                            if ($startHour->between($existingStartTime, $existingEndTime)) {
-                                $fail("Giờ mở cửa không được nằm trong khoảng thời gian chiếu của suất chiếu khác.");
+                            // Kiểm tra nếu khoảng giờ mở cửa và đóng cửa giao nhau với bất kỳ suất chiếu nào
+                            if (
+                                $startHour->between($existingStartTime, $existingEndTime) || // Giờ mở cửa nằm trong khoảng thời gian suất chiếu
+                                $endHour->between($existingStartTime, $existingEndTime) ||   // Giờ đóng cửa nằm trong khoảng thời gian suất chiếu
+                                $existingStartTime->between($startHour, $endHour) ||         // Giờ bắt đầu của suất chiếu nằm trong khoảng giờ mở cửa
+                                $existingEndTime->between($startHour, $endHour)              // Giờ kết thúc của suất chiếu nằm trong khoảng giờ mở cửa
+                            ) {
+                                $fail("Khoảng thời gian từ $value đến {$this->end_hour} bị trùng lặp với suất chiếu khác trong phòng.");
                                 return;
                             }
                         }
                     },
                 ],
-                'end_hour' => 'required|after:start_hour'
+                'end_hour' => [
+                    'required',
+                    'after:start_hour',
+                    function ($attribute, $value, $fail) {
+                        $startHour = Carbon::parse($this->date . ' ' . $this->start_hour);
+                        $endHour = Carbon::parse($this->date . ' ' . $value);
+
+                        // Lấy các suất chiếu đã tồn tại trong phòng, ngày được chọn
+                        $existingShowtimes = Showtime::where('room_id', $this->room_id)
+                            ->where('date', $this->date)
+                            ->get();
+
+                        foreach ($existingShowtimes as $showtime) {
+                            $existingStartTime = Carbon::parse($showtime->start_time);
+                            $existingEndTime = Carbon::parse($showtime->end_time);
+
+                            // Kiểm tra nếu khoảng giờ mở cửa và đóng cửa giao nhau với bất kỳ suất chiếu nào
+                            if (
+                                $startHour->between($existingStartTime, $existingEndTime) || // Giờ mở cửa nằm trong khoảng thời gian suất chiếu
+                                $endHour->between($existingStartTime, $existingEndTime) ||   // Giờ đóng cửa nằm trong khoảng thời gian suất chiếu
+                                $existingStartTime->between($startHour, $endHour) ||         // Giờ bắt đầu của suất chiếu nằm trong khoảng giờ mở cửa
+                                $existingEndTime->between($startHour, $endHour)              // Giờ kết thúc của suất chiếu nằm trong khoảng giờ mở cửa
+                            ) {
+                                $fail("Khoảng thời gian từ {$this->start_hour} đến $value bị trùng lặp với suất chiếu khác trong phòng.");
+                                return;
+                            }
+                        }
+                    },
+                ],
             ];
         }
         if ($this->input('auto_generate_showtimes') != 'on') {
@@ -90,14 +132,44 @@ class StoreShowtimeRequest extends FormRequest
                 'start_time.*' => [
                     'required',
                     function ($attribute, $value, $fail) {
+                        $movie = Movie::findOrFail($this->input('movie_id'));
                         $startTime = Carbon::parse($this->date . ' ' . $value);
+                        $endTime = $startTime->copy()->addMinutes($movie->duration + 15);
 
-                        // Kiểm tra giờ chiếu trong tương lai
-                        if ($startTime->isPast()) {
-                            $fail("Giờ chiếu phải nằm trong tương lai.");
+
+                        // Kiểm tra giờ chiếu phải từ hiện tại cộng thêm 1 tiếng trở đi
+                        if ($startTime->lt(Carbon::now()->addHour())) {
+                            $fail("Giờ chiếu phải từ hiện tại cộng thêm 1 tiếng trở đi(Không được nhập giờ quá khứ!)");
+                            return;
                         }
 
-                        // Lấy các suất chiếu hiện tại trong phòng và ngày
+
+                        // Kiểm tra trùng lặp trong dữ liệu đã gửi từ form
+                        $startTimeArray = $this->input('start_time', []);
+                        $endTimeArray = $this->input('end_time', []);
+
+                        foreach ($startTimeArray as $index => $time) {
+                            if ($value === $time) {
+                                continue; // Bỏ qua chính nó
+                            }
+
+                            $existingStartTime = Carbon::parse($this->date . ' ' . $time);
+                            $existingEndTime = isset($endTimeArray[$index])
+                                ? Carbon::parse($this->date . ' ' . $endTimeArray[$index])
+                                : null;
+
+                            // Nếu thời gian mới giao nhau với bất kỳ khoảng thời gian nào trước đó
+                            if (
+                                
+                                $startTime->between($existingStartTime, $existingEndTime) ||
+                                ($existingEndTime && $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration)))
+                            ) {
+                                $fail("Giờ chiếu $value bị trùng lặp với hàng trước đó trong danh sách.");
+                                return;
+                            }
+                        }
+
+                        // Kiểm tra trùng lặp với các suất chiếu trong database
                         $existingShowtimes = Showtime::where('room_id', $this->room_id)
                             ->where('date', $this->date)
                             ->get();
@@ -107,17 +179,25 @@ class StoreShowtimeRequest extends FormRequest
                             $existingStartTime = Carbon::parse($showtime->start_time);
                             $existingEndTime = Carbon::parse($showtime->end_time);
 
-                            // Nếu thời gian bắt đầu nằm giữa bất kỳ suất chiếu nào khác
+
+
                             if (
-                                $startTime->between($existingStartTime, $existingEndTime) ||
-                                $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration))
+                                // $startTime->between($existingStartTime, $existingEndTime) ||
+                                // $endTime->between($existingStartTime, $existingEndTime) ||
+                                $startTime->lt($existingEndTime) && $endTime->gt($existingStartTime) ||
+                                $startTime == $existingEndTime ||
+                                $endTime == $existingStartTime 
+
                             ) {
-                                $fail("Giờ chiếu $value bị trùng lặp với suất chiếu khác trong phòng.");
+                                $fail("Suất chiếu bạn chọn trùng với một suất chiếu đã tồn tại từ " . $existingStartTime->format('H:i') . " - " . $existingEndTime->format('H:i') . ".");
                                 return;
                             }
                         }
                     },
+                    // Code cũ
                 ],
+
+
             ];
         }
         return [];
@@ -147,5 +227,4 @@ class StoreShowtimeRequest extends FormRequest
             'start_hour.required_if' => 'Vui lòng nhập giờ mở cửa khi sử dụng tự động tạo suất chiếu.',
         ];
     }
-
 }
