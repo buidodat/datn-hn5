@@ -669,7 +669,7 @@ class DatabaseSeeder extends Seeder
                 'cinema_id' => null,
             ],
             [
-                'name' => 'Nhân viên Rạp',
+                'name' => 'Nhân viên Rạp Hà Đông',
                 'img_thumbnail' => '',
                 'phone' => '0965266625',
                 'email_verified_at' => '2024-11-01 19:58:51',
@@ -682,7 +682,7 @@ class DatabaseSeeder extends Seeder
                 'cinema_id' => 1,
             ],
             [
-                'name' => 'Nhân viên Rạp',
+                'name' => 'Nhân viên Rạp Mỹ Đình',
                 'img_thumbnail' => '',
                 'phone' => '0965265555',
                 'email_verified_at' => '2024-11-01 19:58:51',

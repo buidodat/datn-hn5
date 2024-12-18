@@ -121,6 +121,10 @@ class ChooseSeatController extends Controller
             return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
         }
 
+        if($showtime->cinema_id != session('cinema_id')){
+            return redirect()->route('home');
+        }
+
         // cập nhật lại ghế nếu gặp phải 1 trong các trường hợp sau
         DB::table('seat_showtimes')
             ->where('showtime_id', $showtime->id)

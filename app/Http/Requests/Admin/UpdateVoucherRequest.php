@@ -24,7 +24,7 @@ class UpdateVoucherRequest extends FormRequest
         $voucherId = $this->route('voucher');
 
         return [
-            'code' => 'required|string|max:255|unique:vouchers,code,' . $voucherId,
+            'code' => 'required|string|max:30|min:6|unique:vouchers,code,' . $voucherId,
             'title' => 'required|string|max:255',
             'start_date_time' => 'required|date|before:end_date_time',
             'end_date_time' => 'required|date|after:start_date_time',
@@ -40,7 +40,8 @@ class UpdateVoucherRequest extends FormRequest
             'code.required' => 'Mã là bắt buộc.',
             'code.string' => 'Mã phải là kiểu chuỗi.',
             'code.unique' => 'Mã này đã tồn tại.',
-            'code.max' => 'Mã không được dài quá 255 ký tự.',
+            'code.max' => 'Mã không được dài quá 30 ký tự.',
+            'code.min' => 'Mã không được ngắn hơn 6 ký tự.',
 
             'title.required' => 'Tiêu đề là bắt buộc.',
             'title.string' => 'Tiêu đề phải là kiểu chuỗi.',

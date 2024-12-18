@@ -69,7 +69,7 @@
                         <li class="nav-item">
                             <a class="nav-link py-3 isPublish {{ session('movies.selected_tab') === 'publish' ? 'active' : '' }}"
                                 data-bs-toggle="tab" href="#isPublish" role="tab" aria-selected="false"
-                                data-tab-key='pulish'>
+                                data-tab-key='publish'>
                                 Đã xuất bản
                                 <span
                                     class="badge bg-success align-middle ms-1">{{ $movies->where('is_publish', true)->count() }}</span>
