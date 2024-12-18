@@ -22,7 +22,7 @@ class StoreVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|unique:vouchers,code|size:10',
+            'code' => 'required|string|max:30|min:6|unique:vouchers,code',
             'title' => 'required|string|min:3|max:255',
             'start_date_time' => 'required|date|before_or_equal:end_date_time',
             'end_date_time' => 'required|date|after:start_date_time|after_or_equal:now',
@@ -38,7 +38,8 @@ class StoreVoucherRequest extends FormRequest
             'code.required' => 'Mã voucher là bắt buộc.',
             'code.string' => 'Mã voucher phải là một chuỗi ký tự.',
             'code.unique' => 'Mã voucher này đã tồn tại, vui lòng chọn mã khác.',
-            'code.size' => 'Mã voucher phải đúng 10 ký tự.',
+            'code.max' => 'Mã không được dài quá 30 ký tự.',
+            'code.min' => 'Mã không được ngắn hơn 6 ký tự.',
 
             'title.required' => 'Tiêu đề là bắt buộc.',
             'title.string' => 'Tiêu đề phải là một chuỗi ký tự.',

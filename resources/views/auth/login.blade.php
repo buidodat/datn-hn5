@@ -96,9 +96,9 @@
                                             <h5 class="fs-13 mb-4 title">Đăng nhập bằng</h5>
                                         </div>
                                         <div>
-                                            <a href="{{ route('auth.facebook') }}"
+                                            {{-- <a href="{{ route('auth.facebook') }}"
                                                 class="btn btn-primary btn-icon waves-effect waves-light"><i
-                                                    class="ri-facebook-fill fs-16"></i></a>
+                                                    class="ri-facebook-fill fs-16"></i></a> --}}
                                             <a href="{{ route('auth.google') }}"
                                                 class="btn btn-danger btn-icon waves-effect waves-light"><i
                                                     class="ri-google-fill fs-16"></i></a>

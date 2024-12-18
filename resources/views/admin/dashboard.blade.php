@@ -158,7 +158,7 @@
                                 <h4 class="card-title mb-0 flex-grow-1">Doanh thu</h4>
 
                                 <div class="flex-shrink-0">
-                                    
+
                                 <select id="year-select" class="form-select form-select-sm">
                                     @foreach ($years as $year)
                                         <option value="{{ $year }}" @selected($year == now()->year)>

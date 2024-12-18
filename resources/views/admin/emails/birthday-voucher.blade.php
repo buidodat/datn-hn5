@@ -198,6 +198,9 @@
                                                             <td align="center" class="es-m-p10r es-m-p10l" style="padding:0;Margin:0;padding-top:10px;padding-bottom:5px"><h2 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:bold;line-height:24px;color:#002240">Mã voucher của bạn!</h2></td>
                                                         </tr>
                                                         <tr style="border-collapse:collapse">
+                                                            <td align="center" class="es-m-p10r es-m-p10l" style="padding:0;Margin:0;padding-top:10px;padding-bottom:5px"><h2 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:bold;line-height:24px;color:#002240">Giảm giá: {{ number_format($discount) }}đ</h2></td>
+                                                        </tr>
+                                                        <tr style="border-collapse:collapse">
                                                             <td align="center" class="es-m-p10r es-m-p10l" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><h2 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:bold;line-height:28.8px;color:#009200">{{ $code }}</h2></td>
                                                         </tr>
                                                         <tr style="border-collapse:collapse">

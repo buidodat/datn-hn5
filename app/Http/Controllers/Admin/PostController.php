@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::query()->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('posts'));
     }
 
@@ -56,16 +56,16 @@ class PostController extends Controller
                 'user_id' => auth()->user()->id, // Thêm dòng này để gán user_id từ người dùng đăng nhập
                 'view_count' => 0, // Khởi tạo view_count = 0
             ];
-    
+
             // Xử lý upload ảnh nếu có
             if ($request->hasFile('img_post')) {
                 $dataPost['img_post'] = $request->file('img_post')
                     ->storeAs(self::PATH_UPLOAD, Str::uuid() . '.' . $request->file('img_post')->getClientOriginalExtension());
             }
-    
+
             // Tạo bài viết mới
             Post::create($dataPost);
-    
+
             return redirect()->route('admin.posts.index')->with('success', 'Thêm mới bài viết thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
@@ -102,7 +102,7 @@ class PostController extends Controller
                 'content' => $request->content,
                 'is_active' => $request->has('is_active') ? 1 : 0,
             ];
-    
+
             // Kiểm tra nếu có file ảnh mới
             if ($request->hasFile('img_post')) {
                 // Xoá ảnh cũ nếu tồn tại
@@ -116,7 +116,7 @@ class PostController extends Controller
                 // Giữ lại ảnh cũ nếu không có ảnh mới
                 $dataPost['img_post'] = $post->img_post;
             }
-    
+
             // Cập nhật bài viết
             $post->update($dataPost);
 
@@ -139,10 +139,10 @@ class PostController extends Controller
             if ($post->img_post && Storage::exists($post->img_post)) {
                 Storage::delete($post->img_post);
             }
-    
+
             // Xóa bài viết
             $post->delete();
-    
+
             return back()->with('success', 'Xóa thành công!');
         } catch (\Throwable $th) {
             return back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
