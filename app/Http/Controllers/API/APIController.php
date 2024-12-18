@@ -95,6 +95,7 @@ class APIController extends Controller
         $showtimes = Showtime::with('room')
             ->where('room_id', $roomId)
             ->where('date', $date)
+            ->orderBy('start_time')
             ->get();
 
         if ($showtimes->isEmpty()) {

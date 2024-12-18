@@ -465,46 +465,88 @@
 
         const showtimeContainer = document.getElementById('showtime-container');
 
-        // Thêm sẵn tối thiểu 2 món ăn
+        // Thêm sẵn tối thiểu 1 showtime
         for (let i = 0; i < minShowtimeItems; i++) {
             addShowtime(i);
 
         }
 
-        function addShowtime(i) {
+        // function addShowtime(i) {
 
+        //     // Thêm hàng giờ chiếu
+        //     const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+        //     const lastEndTime = $('#showtime-container .showtime-row:last input[name="end_time[]"]').val() || '';
+        //     const newRow = `
+    //             <div class="row showtime-row" id="${id}_item">
+    //                 <div class="col-md-4 mb-3">
+    //                     <label for="${id}_startTime">
+    //                         <span class="text-danger">*</span> Giờ chiếu:
+    //                     </label>
+    //                     <input type="time" id="${id}_startTime" class="form-control" name="start_time[]" value="${lastEndTime}">
+    //                     <div class="invalid-feedback fs-6" id="${showtimeCount}_startTime_error"></div> 
+    //                 </div>
+    //                 <div class="col-md-4 mb-3">
+    //                     <label  for="${id}_endTime">Giờ kết thúc:</label>
+    //                     <input type="time"  id="${id}_endTime"  class="form-control" name="end_time[]" readonly>
+    //                     <div class="invalid-feedback fs-6" id="${showtimeCount}_endTime_error"></div> 
+    //                 </div>
+    //                 <div class="col-md-4 pt-4">
+    //                     <button type="button" class="btn btn-danger delete-showtime">  <span class="bx bx-trash"></span></button>
+    //                 </div>
+
+    //             </div>`;
+
+        //     // $('#showtime-container').append(newRow);
+        //     showtimeContainer.insertAdjacentHTML('beforeend', newRow);
+        //     updateEndTimeForRow($('#showtime-container .showtime-row:last'), lastEndTime);
+
+        //     showtimeCount++;
+        //     // console.log(i);
+        //     console.log(showtimeCount);
+
+        // }
+
+        function addShowtime(i) {
             // Thêm hàng giờ chiếu
             const id = 'gen_' + Math.random().toString(36).substring(2, 15).toLowerCase();
-            const lastEndTime = $('#showtime-container .showtime-row:last input[name="end_time[]"]').val() ||
-                '';
-            const newRow = `
-                    <div class="row showtime-row" id="${id}_item">
-                        <div class="col-md-4 mb-3">
-                            <label for="${id}_startTime">
-                                <span class="text-danger">*</span> Giờ chiếu:
-                            </label>
-                            <input type="time" id="${id}_startTime" class="form-control" name="start_time[]" value="${lastEndTime}">
-                            <div class="invalid-feedback fs-6" id="${showtimeCount}_startTime_error"></div> 
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label  for="${id}_endTime">Giờ kết thúc:</label>
-                            <input type="time"  id="${id}_endTime"  class="form-control" name="end_time[]" readonly>
-                            <div class="invalid-feedback fs-6" id="${showtimeCount}_endTime_error"></div> 
-                        </div>
-                        <div class="col-md-4 pt-4">
-                            <button type="button" class="btn btn-danger delete-showtime">  <span class="bx bx-trash"></span></button>
-                        </div>
-                
-                    </div>`;
+            const lastEndTime = $('#showtime-container .showtime-row:last input[name="end_time[]"]').val() || '';
 
-            // $('#showtime-container').append(newRow);
-            showtimeContainer.insertAdjacentHTML('beforeend', newRow);
-            updateEndTimeForRow($('#showtime-container .showtime-row:last'), lastEndTime);
+            // Thêm 5 phút vào giờ kết thúc cuối cùng để làm giờ bắt đầu mới
+            let newStartTime = '';
+            if (lastEndTime) {
+                const [hours, minutes] = lastEndTime.split(':');
+                const newTime = new Date();
+                newTime.setHours(parseInt(hours), parseInt(minutes) + 5);
+                newStartTime = newTime.toTimeString().slice(0, 5);
+            }
+
+            const newRow = `
+        <div class="row showtime-row" id="${id}_item">
+            <div class="col-md-4 mb-3">
+                <label for="${id}_startTime">
+                    <span class="text-danger">*</span> Giờ chiếu:
+                </label>
+                <input type="time" id="${id}_startTime" class="form-control" name="start_time[]" value="${newStartTime}">
+                <div class="invalid-feedback fs-6" id="${showtimeCount}_startTime_error"></div> 
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="${id}_endTime">Giờ kết thúc:</label>
+                <input type="time" id="${id}_endTime" class="form-control" name="end_time[]" readonly>
+                <div class="invalid-feedback fs-6" id="${showtimeCount}_endTime_error"></div> 
+            </div>
+            <div class="col-md-4 pt-4">
+                <button type="button" class="btn btn-danger delete-showtime"><span class="bx bx-trash"></span></button>
+            </div>
+        </div>`;
+
+            // Thêm hàng mới vào container
+            $('#showtime-container').append(newRow);
+
+            // Cập nhật giờ kết thúc cho hàng mới
+            updateEndTimeForRow($('#showtime-container .showtime-row:last'), newStartTime);
 
             showtimeCount++;
-            // console.log(i);
             console.log(showtimeCount);
-
         }
 
         // Cập nhật giờ kết thúc khi thay đổi giờ bắt đầu
@@ -536,6 +578,18 @@
             row.find('input[name="end_time[]"]').val(formattedEndTime);
         }
 
+        // // Hàm kiểm tra giờ bắt đầu hợp lệ
+        // function validateStartTime(row) {
+        //     const startTime = row.find('input[name="start_time[]"]').val();
+        //     const prevEndTime = row.prev('.showtime-row').find('input[name="end_time[]"]').val();
+
+        //     if (prevEndTime && startTime < prevEndTime) {
+        //         alert('Giờ bắt đầu không được nhỏ hơn giờ kết thúc của suất trước!');
+        //         row.find('input[name="start_time[]"]').val(prevEndTime);
+        //     }
+        // }
+
+
         // Hàm kiểm tra giờ bắt đầu hợp lệ
         function validateStartTime(row) {
             const startTime = row.find('input[name="start_time[]"]').val();
@@ -543,7 +597,19 @@
 
             if (prevEndTime && startTime < prevEndTime) {
                 alert('Giờ bắt đầu không được nhỏ hơn giờ kết thúc của suất trước!');
-                row.find('input[name="start_time[]"]').val(prevEndTime);
+
+                // Tính giờ bắt đầu mới: `prevEndTime` + 5 phút
+                const [hours, minutes] = prevEndTime.split(':');
+                const adjustedTime = new Date();
+                adjustedTime.setHours(parseInt(hours), parseInt(minutes) + 5);
+
+                const newStartTime = adjustedTime.toTimeString().slice(0, 5);
+
+                // Đặt lại giá trị cho input `start_time`
+                row.find('input[name="start_time[]"]').val(newStartTime);
+
+                // Cập nhật giờ kết thúc tương ứng
+                updateEndTimeForRow(row, newStartTime);
             }
         }
 
