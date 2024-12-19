@@ -86,6 +86,7 @@ class StoreShowtimeRequest extends FormRequest
                     'required',
                     'after:start_hour',
                     function ($attribute, $value, $fail) {
+                        $movie = Movie::findOrFail($this->input('movie_id'));
                         $startHour = Carbon::parse($this->date . ' ' . $this->start_hour);
                         $endHour = Carbon::parse($this->date . ' ' . $value);
 
@@ -93,6 +94,11 @@ class StoreShowtimeRequest extends FormRequest
                         $existingShowtimes = Showtime::where('room_id', $this->room_id)
                             ->where('date', $this->date)
                             ->get();
+
+                        if ($startHour->copy()->addMinutes($movie->duration + 15) > $endHour) {
+                            $fail("Giờ đóng cửa quá sớm. Không thể tạo được ít nhất 1 suất chiếu !");
+                            return;
+                        }
 
                         foreach ($existingShowtimes as $showtime) {
                             $existingStartTime = Carbon::parse($showtime->start_time);
@@ -160,9 +166,9 @@ class StoreShowtimeRequest extends FormRequest
 
                             // Nếu thời gian mới giao nhau với bất kỳ khoảng thời gian nào trước đó
                             if (
-                                
+
                                 $startTime->between($existingStartTime, $existingEndTime) ||
-                                ($existingEndTime && $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration)))
+                                ($existingEndTime && $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration + 15)))
                             ) {
                                 $fail("Giờ chiếu $value bị trùng lặp với hàng trước đó trong danh sách.");
                                 return;
@@ -179,14 +185,12 @@ class StoreShowtimeRequest extends FormRequest
                             $existingStartTime = Carbon::parse($showtime->start_time);
                             $existingEndTime = Carbon::parse($showtime->end_time);
 
-
-
                             if (
                                 // $startTime->between($existingStartTime, $existingEndTime) ||
                                 // $endTime->between($existingStartTime, $existingEndTime) ||
                                 $startTime->lt($existingEndTime) && $endTime->gt($existingStartTime) ||
                                 $startTime == $existingEndTime ||
-                                $endTime == $existingStartTime 
+                                $endTime == $existingStartTime
 
                             ) {
                                 $fail("Suất chiếu bạn chọn trùng với một suất chiếu đã tồn tại từ " . $existingStartTime->format('H:i') . " - " . $existingEndTime->format('H:i') . ".");

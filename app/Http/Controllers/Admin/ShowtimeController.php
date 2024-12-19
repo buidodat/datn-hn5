@@ -150,36 +150,53 @@ class ShowtimeController extends Controller
 
                 if ($request->has('auto_generate_showtimes')) {
                     //
-                    $startHour = $request->input('start_hour'); // Giờ mở cửa
-                    $endHour = $request->input('end_hour'); // Giờ đóng cửa
+                    $inputStartHour = $request->input('start_hour'); // Giờ mở cửa
+                    $inputEndHour = $request->input('end_hour'); // Giờ đóng cửa
 
-                    // if (!$startHour || !$endHour) {
-                    //     return back()->with('error', 'Bạn phải nhập Giờ mở cửa và Giờ đóng cửa khi chọn tự động tạo suất chiếu.');
-                    // }
-
-                    //
-                    $startTime = \Carbon\Carbon::parse($request->date . ' ' . $startHour);
-                    $endOfDay = \Carbon\Carbon::parse($request->date . ' ' . $endHour);
+                    //giờ mở cửa, giờ đóng cửa 
+                    $startTime = \Carbon\Carbon::parse($request->date . ' ' . $inputStartHour);
+                    $endOfDay = \Carbon\Carbon::parse($request->date . ' ' . $inputEndHour);
 
                     // Kiểm tra nếu giờ mở cửa hoặc đóng cửa trong quá khứ
                     if ($startTime->isPast() || $endOfDay->isPast()) {
                         return back()->with('error', "Giờ mở cửa và giờ đóng cửa phải nằm trong tương lai.");
                     }
 
-                    // Lặp
+                    // Lặp nếu giờ mở cửa < giờ đóng cửa
                     while ($startTime->lt($endOfDay)) {
+
                         $endTime = $startTime->copy()->addMinutes($movieDuration + $cleaningTime);
 
-                        // // Kiểm tra nếu suất chiếu trong quá khứ
-                        // if ($startTime->isPast()) {
-                        //     break; // Dừng tạo suất chiếu
-                        // }
+                        // Biến kiểm tra trùng lặp
+                        $isOverlap = false;
+
 
                         foreach ($existingShowtimes as $showtime) {
-                            if ($startTime->lt($showtime->end_time) && $endTime->gt($showtime->start_time)) {
-                                throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
+                            if (
+                                $endTime->gt($showtime->start_time) ||
+                                $endTime->between($showtime->start_time, $showtime->end_time)
+                            ) {
+                                $isOverlap = true; // Đánh dấu là bị trùng
+                                break;             // Thoát khỏi foreach
                             }
                         }
+                        if ($isOverlap) {
+                            break;
+                        }
+
+                        // foreach ($existingShowtimes as $showtime) {
+                        //     if ($startTime->lt($showtime->end_time) && $endTime->gt($showtime->start_time)) {
+                        //         throw new \Exception("Thời gian chiếu bị trùng lặp với suất chiếu khác.");
+                        //     }
+                        //     // if (
+                        //     //     $endTime->gt($showtime->start_time) ||
+                        //     //     $endTime->between($showtime->start_time, $showtime->end_time)
+                        //     // ) {
+                        //     //     dd('Bị trùng vs suất đang có');
+                        //     //     break;
+                        //     // }
+                        // }
+
 
                         $dataShowtimes = [
                             'cinema_id' => $request->cinema_id ?? $user->cinema_id,
@@ -219,6 +236,7 @@ class ShowtimeController extends Controller
 
                         SeatShowtime::insert($seatShowtimes);
 
+
                         //startTime suất chiếu mới
                         $startTime = $endTime;
 
@@ -231,6 +249,9 @@ class ShowtimeController extends Controller
                         if ($roundedMinute >= 60) {
                             $startTime->addHour()->minute(0);
                         }
+
+
+                        
                     }
                 } else {
                     if (empty($request->start_time)) {
