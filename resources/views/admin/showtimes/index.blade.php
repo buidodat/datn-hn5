@@ -126,265 +126,260 @@
                                     @can('Thêm suất chiếu')
                                         @if (Auth::user()->hasRole('System Admin'))
                                             <div class="col-md-2" align="right">
-                                        @else
-                                            <div class="col-md-6 text" align="right">
+                                            @else
+                                                <div class="col-md-6 text" align="right">
                                         @endif
-                                                <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary">Thêm mới</a>
-                                            </div>
-                                    @endcan
-                                </div>
+                                        <a href="{{ route('admin.showtimes.create') }}" class="btn btn-primary">Thêm mới</a>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
-                    </form>
                 </div>
-                @if (session()->has('success'))
-                    <div class="alert alert-success m-3">
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
+                </form>
+            </div>
+            @if (session()->has('success'))
+                <div class="alert alert-success m-3">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
 
-                <div class="card-body">
+            <div class="card-body">
 
-                    <table id="example" class="table table-bordered dt-responsive nowrap align-middle"
-                        style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>PHIM</th>
-                                <th>THỜI LƯỢNG</th>
-                                <th>THỂ LOẠI</th>
-                                {{-- <th>ĐỊNH DẠNG</th> --}}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($showtimes->groupBy('movie_id') as $movieId => $showtimesByMovie)
-                                @php
-                                    $movie = $showtimesByMovie->first()->movie;
-                                    // dd($showtimesByMovie->toArray());
-                                @endphp
-                                <tr class="movie-row">
-                                    <td class="plusShowtime">
-                                        <button class="toggle-button btn btn-link">
-                                            {{-- icon cộng --}}
-                                            <i class="ri-add-circle-fill"></i>
-                                        </button>
-                                    </td>
+                <table id="example" class="table table-bordered dt-responsive nowrap align-middle" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>PHIM</th>
+                            <th>THỜI LƯỢNG</th>
+                            <th>THỂ LOẠI</th>
+                            {{-- <th>ĐỊNH DẠNG</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($showtimes->groupBy('movie_id') as $movieId => $showtimesByMovie)
+                            @php
+                                $movie = $showtimesByMovie->first()->movie;
+                                // dd($showtimesByMovie->toArray());
+                            @endphp
+                            <tr class="movie-row">
+                                <td class="plusShowtime">
+                                    <button class="toggle-button btn btn-link">
+                                        {{-- icon cộng --}}
+                                        <i class="ri-add-circle-fill"></i>
+                                    </button>
+                                </td>
 
-                                    <td>
-                                        <b>
-                                            @php
-                                                $url = $movie->img_thumbnail;
+                                <td>
+                                    <b>
+                                        @php
+                                            $url = $movie->img_thumbnail;
 
-                                                if (!\Str::contains($url, 'http')) {
-                                                    $url = Storage::url($url);
-                                                }
+                                            if (!\Str::contains($url, 'http')) {
+                                                $url = Storage::url($url);
+                                            }
 
-                                            @endphp
-                                            @if (!empty($movie->img_thumbnail))
-                                                <img src="{{ $url }}" alt="" width="50px" height="60px"
-                                                    class="img-thumbnail">
-                                            @else
-                                                No image !
-                                            @endif
-
-                                            {{ $movie->name }}
-                                        </b>
-                                        @if ($movie->is_special == 1)
-                                            <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
-                                            </span>
+                                        @endphp
+                                        @if (!empty($movie->img_thumbnail))
+                                            <img src="{{ $url }}" alt="" width="50px" height="60px"
+                                                class="img-thumbnail">
                                         @else
+                                            No image !
                                         @endif
 
-
-                                    </td>
-                                    <td>{{ $movie->duration }} phút</td>
-                                    <td>{{ $movie->category }}</td>
-                                    {{-- <td>{{ $showtimesByMovie->first()->format }}</td> --}}
-                                </tr>
-
-                                <tr class="showtime-row" style="display: none;">
-                                    <td colspan="6" class="table-showtime-row">
-                                        <table class="table table-sm table-bordered">
-                                            <thead>
-                                                <tr class="bg-light">
-                                                    <th>
-                                                        {{-- dùng hàm contains để kiểm tra tồn tại --}}
-                                                        {{-- @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0)) --}}
-                                                        <input type="checkbox" id="select-all-{{ $movieId }}"
-                                                            class="select-all-movie">
-                                                        {{-- @endif --}}
-
-                                                    </th>
-
-                                                    <th>THỜI GIAN</th>
-                                                    <th>PHÒNG</th>
-                                                    <th>CÒN LẠI</th>
-                                                    <th>ĐỊNH DẠNG</th>
-                                                    <th class="status-showtime">HOẠT ĐỘNG</th>
-                                                    <th>CHỨC NĂNG</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($showtimesByMovie as $showtime)
-                                                    @php
-                                                        // $timeNow = now()->format('Y-m-d H:i:s');
-                                                        $timeNow = now();
-                                                        // dd($timeNow);
-
-                                                        //danh sách ticket
-                                                        $tickets = $showtime->tickets;
-
-                                                        //Đếm số lượng ghế đã bán
-                                                        $soldSeats = \App\Models\TicketSeat::whereIn(
-                                                            'ticket_id',
-                                                            $tickets->pluck('id'),
-                                                        )->count();
-
-                                                        //Tổng số ghế trong phòng chiếu
-                                                        $totalSeats = $showtime->room->seats
-                                                            ->whereNull('deleted_at')
-                                                            ->where('is_active', true)
-                                                            ->count();
-
-                                                        //Tổng số ghế còn lại
-                                                        $remainingSeats = $totalSeats - $soldSeats;
-                                                    @endphp
-                                                    <tr>
-                                                        <td class="inputCheckBoxShowtimes">
-
-                                                            @if (!$timeNow->greaterThan($showtime->start_time))
-                                                                {{-- Cho phép chọn checkbox nếu thời gian chưa qua --}}
-                                                                @if (!($remainingSeats < $totalSeats))
-                                                                    <input type="checkbox"
-                                                                        class="select-showtime movie-{{ $movieId }}"
-                                                                        data-showtime-id="{{ $showtime->id }}">
-                                                                @endif
-                                                            @endif
-
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
-                                                            -
-                                                            {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
-                                                        </td>
-                                                        <td>{{ $showtime->room->name }}</td>
+                                        {{ $movie->name }}
+                                    </b>
+                                    @if ($movie->is_special == 1)
+                                        <span class="badge bg-danger-subtle text-danger text-uppercase">Đặc biệt
+                                        </span>
+                                    @else
+                                    @endif
 
 
-                                                        <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
+                                </td>
+                                <td>{{ $movie->duration }} phút</td>
+                                <td>{{ $movie->category }}</td>
+                                {{-- <td>{{ $showtimesByMovie->first()->format }}</td> --}}
+                            </tr>
 
-                                                        <td>
-                                                            {{ $showtime->format }}
-                                                        </td>
-                                                        <td>
-                                                            @can('Sửa suất chiếu')
-                                                                {{-- Nút is_active --}}
-                                                                <div
-                                                                    class="form-check form-switch form-switch-success d-inline-block">
-                                                                    <input
-                                                                        class="form-check-input switch-is-active changeActive"
-                                                                        name="is_active" type="checkbox" role="switch"
-                                                                        data-showtime-id="{{ $showtime->id }}"
-                                                                        @checked($showtime->is_active)
-                                                                        @if ($remainingSeats < $totalSeats || $timeNow > $showtime->start_time) disabled @endif>
-                                                                </div>
-                                                            @else
-                                                                <div
-                                                                    class="form-check form-switch form-switch-success d-inline-block">
-                                                                    <input
-                                                                        class="form-check-input switch-is-active changeActive"
-                                                                        name="is_active" disabled readonly type="checkbox"
-                                                                        role="switch" data-showtime-id="{{ $showtime->id }}"
-                                                                        @checked($showtime->is_active)
-                                                                        @if ($showtime->is_active) disabled @endif>
-                                                                </div>
-                                                            @endcan
-                                                        </td>
+                            <tr class="showtime-row" style="display: none;">
+                                <td colspan="6" class="table-showtime-row">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr class="bg-light">
+                                                {{-- <th> --}}
+                                                    {{-- dùng hàm contains để kiểm tra tồn tại --}}
+                                                    {{-- @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0)) --}}
+                                                    {{-- <input type="checkbox" id="select-all-{{ $movieId }}"
+                                                        class="select-all-movie"> --}}
+                                                    {{-- @endif --}}
 
-                                                        <td>
-                                                            @can('Xem chi tiết suất chiếu')
-                                                                <a href="{{ route('admin.showtimes.show', $showtime) }}">
-                                                                    <button title="xem" class="btn btn-success btn-sm "
-                                                                        type="button"><i class="fas fa-eye"></i></button></a>
-                                                            @endcan
-                                                            {{-- @if ($showtime->is_active == 0) --}}
-                                                            @if (!$timeNow->greaterThan($showtime->start_time))
-                                                                @if (!($remainingSeats < $totalSeats))
-                                                                    @can('Sửa suất chiếu')
-                                                                        <a
-                                                                            href="{{ route('admin.showtimes.edit', $showtime) }}">
-                                                                            <button title="sửa"
-                                                                                class="btn btn-warning btn-edit btn-sm"
-                                                                                type="button"><i
-                                                                                    class="fas fa-edit"></i></button>
-                                                                        </a>
-                                                                    @endcan
+                                                {{-- </th> --}}
 
-                                                                    @can('Xóa suất chiếu')
-                                                                        <form
-                                                                            action="{{ route('admin.showtimes.destroy', $showtime) }}"
-                                                                            method="post" class="d-inline-block">
-                                                                            @csrf
-                                                                            @method('delete')
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-destroy btn-sm"
-                                                                                onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
-                                                                                <i class="ri-delete-bin-7-fill"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    @endcan
-                                                                @endif
-                                                            @endif
+                                                <th>THỜI GIAN</th>
+                                                <th>PHÒNG</th>
+                                                <th>CÒN LẠI</th>
+                                                <th>ĐỊNH DẠNG</th>
+                                                <th class="status-showtime">HOẠT ĐỘNG</th>
+                                                <th>CHỨC NĂNG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($showtimesByMovie as $showtime)
+                                                @php
+                                                    // $timeNow = now()->format('Y-m-d H:i:s');
+                                                    $timeNow = now();
+                                                    // dd($timeNow);
 
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                            <tfoot>
+                                                    //danh sách ticket
+                                                    $tickets = $showtime->tickets;
+
+                                                    //Đếm số lượng ghế đã bán
+                                                    $soldSeats = \App\Models\TicketSeat::whereIn(
+                                                        'ticket_id',
+                                                        $tickets->pluck('id'),
+                                                    )->count();
+
+                                                    //Tổng số ghế trong phòng chiếu
+                                                    $totalSeats = $showtime->room->seats
+                                                        ->whereNull('deleted_at')
+                                                        ->where('is_active', true)
+                                                        ->count();
+
+                                                    //Tổng số ghế còn lại
+                                                    $remainingSeats = $totalSeats - $soldSeats;
+                                                @endphp
                                                 <tr>
-                                                    <td colspan="7">
-                                                        {{-- @if ($showtimesByMovie->contains(fn($showtime) => $showtime->is_active == 0)) --}}
-                                                        <div class="d-flex justify-content-between">
-                                                            @can('Xóa suất chiếu')
-                                                                <form action="" method="post" class="d-inline-block">
-                                                                    @csrf
-                                                                    @method('delete')
-                                                                    <button type="submit" id="delete-all"
-                                                                        class="btn btn-danger btn-sm">
-                                                                        Xóa tất cả
-                                                                    </button>
-                                                                </form>
-                                                            @endcan
-                                                            @can('Sửa suất chiếu')
-                                                                <div>
-                                                                    <a href="">
-                                                                        <button id="on-status-all" title="thay đổi"
-                                                                            class="btn btn-primary btn-sm">Bật trạng thái
-                                                                            tất cả</button>
+                                                    {{-- <td class="inputCheckBoxShowtimes">
+
+                                                        @if (!$timeNow->greaterThan($showtime->start_time))
+                                                           
+                                                            @if (!($remainingSeats < $totalSeats))
+                                                                <input type="checkbox"
+                                                                    class="select-showtime movie-{{ $movieId }}"
+                                                                    data-showtime-id="{{ $showtime->id }}">
+                                                            @endif
+                                                        @endif
+
+                                                    </td> --}}
+                                                    <td>{{ \Carbon\Carbon::parse($showtime->start_time)->format('H:i') }}
+                                                        -
+                                                        {{ \Carbon\Carbon::parse($showtime->end_time)->format('H:i') }}
+                                                    </td>
+                                                    <td>{{ $showtime->room->name }}</td>
+
+
+                                                    <td>{{ $remainingSeats }}/{{ $totalSeats }} ghế</td>
+
+                                                    <td>
+                                                        {{ $showtime->format }}
+                                                    </td>
+                                                    <td>
+                                                        @can('Sửa suất chiếu')
+                                                            {{-- Nút is_active --}}
+                                                            <div
+                                                                class="form-check form-switch form-switch-success d-inline-block">
+                                                                <input class="form-check-input switch-is-active changeActive"
+                                                                    name="is_active" type="checkbox" role="switch"
+                                                                    data-showtime-id="{{ $showtime->id }}"
+                                                                    @checked($showtime->is_active)
+                                                                    @if ($remainingSeats < $totalSeats || $timeNow > $showtime->start_time) disabled @endif>
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="form-check form-switch form-switch-success d-inline-block">
+                                                                <input class="form-check-input switch-is-active changeActive"
+                                                                    name="is_active" disabled readonly type="checkbox"
+                                                                    role="switch" data-showtime-id="{{ $showtime->id }}"
+                                                                    @checked($showtime->is_active)
+                                                                    @if ($showtime->is_active) disabled @endif>
+                                                            </div>
+                                                        @endcan
+                                                    </td>
+
+                                                    <td>
+                                                        @can('Xem chi tiết suất chiếu')
+                                                            <a href="{{ route('admin.showtimes.show', $showtime) }}">
+                                                                <button title="xem" class="btn btn-success btn-sm "
+                                                                    type="button"><i class="fas fa-eye"></i></button></a>
+                                                        @endcan
+                                                        {{-- @if ($showtime->is_active == 0) --}}
+                                                        @if (!$timeNow->greaterThan($showtime->start_time))
+                                                            @if (!($remainingSeats < $totalSeats))
+                                                                @can('Sửa suất chiếu')
+                                                                    <a href="{{ route('admin.showtimes.edit', $showtime) }}">
+                                                                        <button title="sửa"
+                                                                            class="btn btn-warning btn-edit btn-sm"
+                                                                            type="button"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                     </a>
-                                                                    <a href="">
-                                                                        <button id="off-status-all" title="thay đổi"
-                                                                            class="btn btn-secondary btn-sm">Tắt trạng thái
-                                                                            tất cả</button>
-                                                                    </a>
-                                                                </div>
-                                                            @endcan
-                                                        </div>
-                                                        {{-- @endif --}}
+                                                                @endcan
+
+                                                                @can('Xóa suất chiếu')
+                                                                    <form
+                                                                        action="{{ route('admin.showtimes.destroy', $showtime) }}"
+                                                                        method="post" class="d-inline-block">
+                                                                        @csrf
+                                                                        @method('delete')
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger btn-destroy btn-sm"
+                                                                            onclick="return confirm('Bạn chắc chắn muốn xóa không?')">
+                                                                            <i class="ri-delete-bin-7-fill"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @endcan
+                                                            @endif
+                                                        @endif
 
                                                     </td>
                                                 </tr>
-                                            </tfoot>
-                                        </table>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                            @endforeach
+                                        </tbody>
+                                        {{-- <tfoot>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <div class="d-flex justify-content-between">
+                                                        @can('Xóa suất chiếu')
+                                                            <form action="" method="post" class="d-inline-block">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" id="delete-all"
+                                                                    class="btn btn-danger btn-sm">
+                                                                    Xóa tất cả
+                                                                </button>
+                                                            </form>
+                                                        @endcan
+                                                        @can('Sửa suất chiếu')
+                                                            <div>
+                                                                <a href="">
+                                                                    <button id="on-status-all" title="thay đổi"
+                                                                        class="btn btn-primary btn-sm">Bật trạng thái
+                                                                        tất cả</button>
+                                                                </a>
+                                                                <a href="">
+                                                                    <button id="off-status-all" title="thay đổi"
+                                                                        class="btn btn-secondary btn-sm">Tắt trạng thái
+                                                                        tất cả</button>
+                                                                </a>
+                                                            </div>
+                                                        @endcan
+                                                    </div>
+                                          
 
-
-
+                                                </td>
+                                            </tr>
+                                        </tfoot> --}}
+                                    </table>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+
+
+
         </div>
+    </div>
     </div>
 @endsection
 
@@ -517,6 +512,16 @@
                             timer: 3000,
                             timerProgressBar: true
                         });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: response.message,
+                            timer: 3000
+                        });
+                        // Hoàn lại trạng thái checkbox
+                        let checkbox = $(`[data-showtime-id="${showtimeId}"]`);
+                        checkbox.prop('checked', !is_active);
                     }
                 },
                 error: function() {
