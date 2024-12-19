@@ -153,13 +153,13 @@
 
 
 
-                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist())
+                                                        {{-- @if (!$room->is_publish || $room->showtimes()->doesntExist())
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
                                                                     onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
-                                                        @endif
+                                                        @endif --}}
 
 
                                                     </div>
@@ -233,13 +233,13 @@
                                                                 data-is-publish={{ $room->is_publish }}>Sửa</a>
                                                         @endcan
 
-                                                        @if (!$room->is_publish || $room->showtimes()->doesntExist())
+                                                        {{-- @if (!$room->is_publish || $room->showtimes()->doesntExist())
                                                             @can('Xóa phòng chiếu')
                                                                 <a class="cursor-pointer text-danger small"
                                                                     href="{{ route('admin.rooms.destroy', $room) }}"
                                                                     onclick="return confirm('Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn ?')">Xóa</a>
                                                             @endcan
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
                                                 </div>
                                             </td>
