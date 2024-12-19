@@ -8,6 +8,7 @@ use App\Models\Cinema;
 use App\Models\Combo;
 use App\Models\Food;
 use App\Models\Post;
+use App\Models\SeatShowtime;
 use App\Models\Showtime;
 use App\Models\Slideshow;
 use App\Models\Voucher;
@@ -123,16 +124,31 @@ class UpdateActiveController extends Controller
     public function showtime(Request $request)
     {
         try {
+
             $showtime = Showtime::findOrFail($request->id);
 
-            $showtime->is_active = $request->is_active;
-            $showtime->save();
+            $timeNow = now();
+            $seatShowtimes = SeatShowtime::where('showtime_id', $showtime->id)->pluck('status', 'id')->all();
+            // dd($seatShowtime);
+            $statusSeat = true;
+            foreach ($seatShowtimes as $id => $status) {
+                if ($status != "available") {
+                    $statusSeat = false;
+                    break;
+                }
+            }
+            if ($statusSeat) {
+                $showtime->is_active = $request->is_active;
+                $showtime->save();
 
-            $data = [
-                'is_active' => $showtime->is_active,
-            ];
+                $data = [
+                    'is_active' => $showtime->is_active,
+                ];
 
-            return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $data]);
+                return response()->json(['success' => true, 'message' => 'Cập nhật thành công.', 'data' => $data]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Cập nhật không thành công! Suất chiếu này đã/đang có người đặt!']);
+            }
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra, vui lòng thử lại.']);
         }

@@ -96,6 +96,11 @@ class ChooseSeatController extends Controller
         // $matrixSeat = Room::MATRIXS[$matrixKey];
 
         $showtime = Showtime::with(['room.cinema', 'room', 'movieVersion', 'movie', 'seats'])->where('slug', $slug)->first();
+
+        if (!$showtime || !$showtime->slug || $showtime->is_active != 1) {
+            return redirect()->route('home')->with('error', 'Suất chiếu không tồn tại.');
+        }
+
         $matrixSeat = SeatTemplate::getMatrixById($showtime->room->seatTemplate->matrix_id);
         $seats =  $showtime->seats;
 
@@ -121,7 +126,7 @@ class ChooseSeatController extends Controller
             return redirect()->route('home')->with('error', 'Đã hết thời gian đặt vé.');
         }
 
-        if($showtime->cinema_id != session('cinema_id')){
+        if ($showtime->cinema_id != session('cinema_id')) {
             return redirect()->route('home');
         }
 
@@ -205,7 +210,7 @@ class ChooseSeatController extends Controller
         $seatIds = explode(',', $request->seatId); // Chuỗi ghế thành mảng
         $userId = auth()->id();
 
-        $slug = Showtime::where('id',$showtimeId)->pluck('slug')->first();
+        $slug = Showtime::where('id', $showtimeId)->where('is_active', '1')->pluck('slug')->first();
 
         // dd($slug);
 
@@ -227,6 +232,10 @@ class ChooseSeatController extends Controller
         if ($hasExpiredSeats) {
             // Nếu có bất kỳ ghế nào hết thời gian giữ chỗ hoặc != hold hoặc khác người giữ chỗ
             return back()->with('error', 'Ghế đã có người khác giữ hoặc ghế đã bán. Vui lòng chọn lại ghế.');
+        }
+
+        if (!$slug) {
+            return redirect()->route('home')->with('error', 'Suất chiếu không tồn tại.');
         }
 
         session()->put([
