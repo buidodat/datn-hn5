@@ -75,7 +75,7 @@ class UpdateShowtimeRequest extends FormRequest
                             $endTime == $existingStartTime
 
                         ) {
-                            $fail("Giờ chiếu $value bị trùng lặp với suất chiếu " . $existingStartTime->format('H:i') . " - " . $existingEndTime->format('H:i') . ".");
+                            $fail("Giờ chiếu từ $value - $this->end_time bị trùng lặp với suất chiếu " . $existingStartTime->format('H:i') . " - " . $existingEndTime->format('H:i') . ".");
                             return;
                         }
                     }

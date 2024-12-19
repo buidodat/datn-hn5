@@ -98,7 +98,7 @@ class ShowtimeController extends Controller
     public function create()
     {
 
-        $movies = Movie::where('is_active', '1')->get();
+        $movies = Movie::where('is_active', '1')->where('is_publish', '1')->get();
         $typeRooms = TypeRoom::all();
         $branches = Branch::where('is_active', '1')->get();
         $user = auth()->user();
