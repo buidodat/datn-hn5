@@ -205,7 +205,7 @@
                                                                 type="button"><i class="fas fa-edit"></i></button>
                                                         </a>
                                                     @endcan
-                                                    @can('Xóa phim')
+                                                    {{-- @can('Xóa phim')
                                                         @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
                                                             <form action="{{ route('admin.movies.destroy', $movie) }}"
                                                                 method="POST" class="d-inline-block">
@@ -217,7 +217,7 @@
                                                                 </button>
                                                             </form>
                                                         @endif
-                                                    @endcan
+                                                    @endcan --}}
 
 
                                                 </div>
@@ -348,7 +348,7 @@
                                                                 type="button"><i class="fas fa-edit"></i></button>
                                                         </a>
                                                     @endcan
-                                                    @can('Xóa phim')
+                                                    {{-- @can('Xóa phim')
                                                         @if (!$movie->is_publish || $movie->showtimes()->doesntExist())
                                                             <form action="{{ route('admin.movies.destroy', $movie) }}"
                                                                 method="POST" class="d-inline-block">
@@ -360,7 +360,7 @@
                                                                 </button>
                                                             </form>
                                                         @endif
-                                                    @endcan
+                                                    @endcan --}}
 
 
                                                 </div>
