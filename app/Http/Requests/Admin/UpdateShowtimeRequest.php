@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Movie;
 use App\Models\Showtime;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -31,14 +32,17 @@ class UpdateShowtimeRequest extends FormRequest
                 'required',
             ],
             'movie_id' => 'required',
-         
+
             'movie_version_id' => 'required|exists:movie_versions,id',
             'date' => 'required|date|after_or_equal:today',   //ngăn chặn chọn ngày trog quá khứ
-           
+
             'start_time' => [
                 'required',
                 function ($attribute, $value, $fail) {
+                    // $startTime = Carbon::parse($this->date . ' ' . $value);
+                    $movie = Movie::findOrFail($this->input('movie_id'));
                     $startTime = Carbon::parse($this->date . ' ' . $value);
+                    $endTime = $startTime->copy()->addMinutes($movie->duration + 15);
 
                     // Kiểm tra giờ chiếu trong tương lai
                     if ($startTime->isPast()) {
@@ -57,11 +61,21 @@ class UpdateShowtimeRequest extends FormRequest
                         $existingEndTime = Carbon::parse($showtime->end_time);
 
                         // Nếu thời gian bắt đầu nằm giữa bất kỳ suất chiếu nào khác
+                        // if (
+                        //     $startTime->between($existingStartTime, $existingEndTime) ||
+                        //     $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration))
+                        // ) {
+                        //     $fail("Giờ chiếu $value bị trùng lặp với suất chiếu khác trong phòng.");
+                        //     return;
+                        // }
                         if (
-                            $startTime->between($existingStartTime, $existingEndTime) ||
-                            $existingStartTime->between($startTime, $startTime->copy()->addMinutes($this->movie_duration))
+
+                            $startTime->lt($existingEndTime) && $endTime->gt($existingStartTime) ||
+                            $startTime == $existingEndTime ||
+                            $endTime == $existingStartTime
+
                         ) {
-                            $fail("Giờ chiếu $value bị trùng lặp với suất chiếu khác trong phòng.");
+                            $fail("Giờ chiếu từ $value - $this->end_time bị trùng lặp với suất chiếu " . $existingStartTime->format('H:i') . " - " . $existingEndTime->format('H:i') . ".");
                             return;
                         }
                     }
